@@ -15,7 +15,8 @@ export type Blocks =
   | "QuestionManagementPageBlock"
   | "ReportedIssuesBlock"
   | "CreateRegularQuestionTypeBlock"
-  | "CreateCategoryBlock";
+  | "CreateCategoryBlock"
+  | "InclusionBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -32,6 +33,7 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
+  InclusionBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
@@ -75,7 +77,7 @@ export type QuestionnaireItem = {
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[] ;
+  answers: DDCAnswerOption[];
 };
 
 

@@ -1,0 +1,9 @@
+import React from "react";
+import withAuth from "core-library/core/utils/withAuth";
+import { ParseBlocks } from "core-library/system";
+
+const InclusionMainPage: React.FC = () => {
+    return <ParseBlocks blocks="InclusionBlock" />;
+};
+
+export default withAuth(InclusionMainPage);

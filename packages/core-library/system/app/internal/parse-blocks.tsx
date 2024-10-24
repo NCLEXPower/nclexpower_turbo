@@ -14,6 +14,7 @@ import {
   ReportedIssuesBlock,
   CreateCategoryBlock,
   CreateRegularQuestionTypeBlock,
+  InclusionBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -51,6 +52,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <CreateRegularQuestionTypeBlock />;
     case "CreateCategoryBlock":
       return <CreateCategoryBlock />;
+    case "InclusionBlock":
+      return <InclusionBlock />
     default:
       return null;
   }

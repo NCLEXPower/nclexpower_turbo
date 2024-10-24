@@ -27,7 +27,8 @@ import {
   GetAllInternalAccount,
   CreateRegularType,
   AuthorizedContentsResponseType,
-  WebGetContentsParams
+  WebGetContentsParams,
+  GetAllInclusionResponse
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -502,3 +503,22 @@ export const useGetContents = (
     { staleTime: Infinity }
   );
 }
+
+export const useGetAllInclusion = (
+  queryKey: string[]
+): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
+  const getAllInclusion = useApi((api) =>
+    api.webbackoffice.getAllInclusions()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllInclusion.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+

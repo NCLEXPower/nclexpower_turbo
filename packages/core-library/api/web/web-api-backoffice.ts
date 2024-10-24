@@ -22,6 +22,7 @@ import {
   DefaultReviewerParams,
   DiscrepanciesResponse,
   FileUploadParams,
+  GetAllInclusionResponse,
   GetAllInternalAccount,
   GetDefaultReviewerResponse,
   PricingListResponse,
@@ -35,7 +36,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -112,8 +113,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-              contentAccessKey: "",
-            })}`
+            contentAccessKey: "",
+          })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -265,5 +266,10 @@ export class WebApiBackOffice {
     return await this.axios.post<AuthorizedContentsResponseType[]>(
       `/api/v2/content/BaseContent/authorized-contents?${qs.stringify({ ...params })}`
     );
+  }
+
+  public async getAllInclusions() {
+    return await this.axios.get<GetAllInclusionResponse[]>(
+      `/api/v1/product/internal-all-inclusions`)
   }
 }
