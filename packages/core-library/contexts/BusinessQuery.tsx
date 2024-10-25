@@ -35,6 +35,7 @@ import {
   useCreateRegularQuestion,
   useGetContents,
   useGetAllInclusion,
+  useDeleteRoute,
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -231,7 +232,14 @@ interface BusinessQueryContextValue {
   businessQueryGetAllInclusion: (
     queryKey: string[]
   ) => UseQueryResult<GetAllInclusionResponse[] | undefined, any>
-
+  businessQueryDeleteRoute: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    string,
+    unknown
+  >;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -273,7 +281,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
   const businessQueryGetAllInclusion = useGetAllInclusion;
-
+  const businessQueryDeleteRoute = useDeleteRoute;
   return (
     <BusinessQueryContext.Provider
       value={{
@@ -305,7 +313,8 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInternalAccount,
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
-        businessQueryGetAllInclusion
+        businessQueryGetAllInclusion,
+        businessQueryDeleteRoute,
       }}
     >
       {children}

@@ -272,4 +272,10 @@ export class WebApiBackOffice {
     return await this.axios.get<GetAllInclusionResponse[]>(
       `/api/v1/product/internal-all-inclusions`)
   }
+
+  public async delete_route(MenuId: string) {
+    return await this.axios.delete<number>(
+      `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
+    );
+  }
 }
