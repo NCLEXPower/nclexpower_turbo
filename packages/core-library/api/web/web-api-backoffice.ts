@@ -112,8 +112,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-              contentAccessKey: "",
-            })}`
+            contentAccessKey: "",
+          })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -266,4 +266,11 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/authorized-contents?${qs.stringify({ ...params })}`
     );
   }
+
+  public async getSelectedApprover() {
+    return await this.axios.get<GetDefaultReviewerResponse[]>(
+      `/api/v2/content/BaseContent/get-selected-approvers`
+    )
+  }
+
 }
