@@ -1,9 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  WizardFormMap,
-  useActiveSteps,
-  useWizardForm,
-} from "core-library/hooks";
+
 import {
   CaseStudyQuestionTypeFormSteps,
   ChooseCaseStudyQuestionType,
@@ -17,6 +13,7 @@ import {
   ContainedRegularQuestionType,
 } from "../types";
 import { Stepper } from "core-library/components";
+import { useActiveSteps, useWizardForm, WizardFormMap } from '../../../../../../../../../../../hooks';
 
 export const useQuestionManagementWizardSteps = () => {
   const steps = useMemo(() => {
