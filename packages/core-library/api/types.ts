@@ -545,3 +545,10 @@ export type DefaultReviewerParams = {
 export type DefaultReviewerDto = {
   accountId: string;
 };
+
+export type ContactFormType = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};

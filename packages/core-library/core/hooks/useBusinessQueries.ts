@@ -27,6 +27,7 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
+  ContactFormType,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -511,6 +512,22 @@ export const useDeleteRoute = (
   return useAppMutation<AxiosResponse<number, AxiosError>, string>(
     async (id) => {
       const result = await deleteCategoryCb.execute(id);
+      return result;
+    },
+    opt
+  );
+};
+
+export const useCreateContactUs = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const contactUsSubmission = useApiCallback(
+    async (api, args: ContactFormType) =>
+      await api.web.web_create_contact_us(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, ContactFormType>(
+    async (data) => {
+      const result = await contactUsSubmission.execute({ ...data });
       return result;
     },
     opt

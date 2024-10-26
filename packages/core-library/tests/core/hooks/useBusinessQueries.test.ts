@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { renderHook, act, screen, render } from "../../common";
 import {
   useSelectQuestionsQuery,
@@ -11,6 +16,7 @@ import {
   useGetAllCurrencies,
   useGetAllPricing,
   useGetOrderNumber,
+  useCreateContactUs,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -18,6 +24,7 @@ import { useMutation, useQuery } from "react-query";
 import { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import {
   AuthorizedContentsResponseType,
+  ContactFormType,
   CreatePaymentIntentParams,
   CurrenciesResponse,
   GetAllInternalAccount,
@@ -1174,6 +1181,49 @@ describe("useGetContents", () => {
 
     expect(useQuery).toHaveBeenCalledTimes(1);
     expect(result.current.data).toEqual(mockOrderNumber);
+    expect(result.current.isLoading).toBe(false);
+  });
+});
+
+describe("useCreateContactUs", () => {
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: jest.fn(async (data) => {
+        const result = await mockExecute(data);
+        return result;
+      }),
+      isLoading: false,
+    });
+  });
+
+  it("should create a contact us request successfully", async () => {
+    const mockData: ContactFormType = {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "123-456-7890",
+      message: "This is a test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockExecute.mockResolvedValue(mockResult);
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    await act(async () => {
+      const response = await result.current.mutateAsync(mockData);
+      expect(response).toEqual(mockResult);
+    });
+
+    expect(mockExecute).toHaveBeenCalledWith(mockData);
     expect(result.current.isLoading).toBe(false);
   });
 });
