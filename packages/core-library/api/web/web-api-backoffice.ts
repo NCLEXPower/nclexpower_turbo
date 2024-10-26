@@ -17,10 +17,12 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
   DefaultReviewerParams,
   DiscrepanciesResponse,
+  EditInclusionParams,
   FileUploadParams,
   GetAllInclusionResponse,
   GetAllInternalAccount,
@@ -277,5 +279,21 @@ export class WebApiBackOffice {
     return await this.axios.delete<number>(
       `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
     );
+  }
+
+  public async createInclusions(params: CreateInclusionParams) {
+    return await this.axios.post<number>(
+      `/api/v1/product/internal-add-inclusions`, params)
+  }
+
+  public async deleteInclusion(InclusionId: string) {
+    return await this.axios.delete<number>(
+      `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
+    )
+  }
+
+  public async editInclusion(params: EditInclusionParams) {
+    return await this.axios.put<number>(
+      `/api/v1/product/internal-update-inclusion`, params)
   }
 }

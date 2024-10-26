@@ -7,17 +7,18 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useKeyDown } from '../../../../../../../hooks/useKeyDown'
 
 type InclusionFormPropsType = {
-    onSubmit(value: InclusionType): void
+    onSubmit: (value: InclusionType) => void
 }
 
 export const InclusionForm: React.FC<InclusionFormPropsType> = ({ onSubmit }) => {
     const form = useForm<InclusionType>({
         resolver: yupResolver(InclusionSchema)
     })
-    const { control, handleSubmit } = form
 
+    const { control, handleSubmit, reset } = form
     const handleSubmitForm = () => {
         handleSubmit(onSubmit)()
+        reset()
     }
 
     useKeyDown("Enter", () => handleSubmitForm());

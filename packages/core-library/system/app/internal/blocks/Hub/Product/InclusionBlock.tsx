@@ -1,17 +1,40 @@
 import React from 'react'
-import { useBusinessQueryContext } from '../../../../../../contexts'
+import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../../../contexts'
 import { useColumns } from '../../../../../../hooks'
-import { Alert, Card, DataGrid } from '../../../../../../components'
-import { Box, Container } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import { InclusionSchema, InclusionType } from './inclusion/validation'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { Alert, Card, ConfirmationModal, DataGrid } from '../../../../../../components'
+import { Box, Container, ListItemButton } from '@mui/material'
+import { InclusionType } from './inclusion/validation'
 import { InclusionForm } from './inclusion/InclusionForm'
+import { CustomPopover } from '../../../../../../components/Popover/Popover'
+import { GridMoreVertIcon } from '@mui/x-data-grid'
+import { atom, useAtom } from 'jotai'
+import { EditInclusionParams, GetAllInclusionResponse } from '../../../../../../api/types'
+
+export const InclusionIdAtom = atom<EditInclusionParams>()
 
 export const InclusionBlock: React.FC = () => {
-    const { businessQueryGetAllInclusion } = useBusinessQueryContext()
-    const { data, isLoading } = businessQueryGetAllInclusion(["getAllInclusionApi"])
+    const [, setId] = useAtom(InclusionIdAtom)
+    const { openDialog } = useDialogContext()
+    const { businessQueryGetAllInclusion, businessQueryCreateInclusion, businessQueryDeleteInclusion } = useBusinessQueryContext()
+    const { data, isLoading, refetch } = businessQueryGetAllInclusion(["getAllInclusionApi"])
+    const { mutateAsync: createInclusion } = businessQueryCreateInclusion()
+    const { executeToast } = useExecuteToast()
+    const { mutateAsync: deleteInclusion } = businessQueryDeleteInclusion()
 
+    async function onDelete(row: GetAllInclusionResponse) {
+        await deleteInclusion(row.id)
+        refetch()
+    }
+
+    const handleEdit = (row: EditInclusionParams) => {
+        setId(row)
+        openDialog(
+            "inclusion-edit-form",
+            "Update Inclusion",
+            [],
+            "xl"
+        );
+    }
 
     const { columns } = useColumns({
         columns: [
@@ -27,11 +50,45 @@ export const InclusionBlock: React.FC = () => {
                 headerName: "Options",
                 flex: 1,
             },
+            {
+                field: "",
+                sortable: true,
+                width: 100,
+                renderCell: ({ row }) => {
+                    return (
+                        <Box display="flex" alignItems="center" height={1}>
+                            <CustomPopover open withIcon={true} label='Actions' iconButton={<GridMoreVertIcon fontSize="small" />}>
+                                <ListItemButton
+                                    sx={{ color: 'black' }}
+                                    onClick={() => handleEdit(row)}>
+                                    Edit
+                                </ListItemButton>
+                                <ConfirmationModal
+                                    customButton={'ListDeleteButton'}
+                                    dialogContent="Are you sure you want to delete this item?"
+                                    isLoading={false}
+                                    handleSubmit={() => onDelete(row)}
+                                />
+                            </CustomPopover>
+                        </Box>
+                    )
+                }
+            },
         ]
     })
 
     async function onSubmit(value: InclusionType) {
-        console.log(value)
+        try {
+            await createInclusion(value)
+            refetch()
+        }
+        catch {
+            executeToast(
+                "Inclusion already exist",
+                'top-right',
+                true,
+                { type: 'error' })
+        }
     }
 
     return (
@@ -55,9 +112,7 @@ export const InclusionBlock: React.FC = () => {
                             rows={data ?? []} />
                     </Card>
                 </Box>
-
             </Container>
-
         </Box >
     )
 }

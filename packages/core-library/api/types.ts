@@ -550,3 +550,9 @@ export type GetAllInclusionResponse = {
   id: string,
   option: string,
 }
+
+export type CreateInclusionParams = {
+  option: string,
+}
+
+export type EditInclusionParams = GetAllInclusionResponse
