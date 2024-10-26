@@ -3,12 +3,12 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { WizardFormMap } from "core-library/hooks";
 import { SettingsManagement } from "./content/SettingsManagement";
 import { SettingsSelectionType } from "../types";
 import { QuestionManagementFormSteps } from "./QuestionManagementSettingsTypeStep";
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
+import { WizardFormMap } from '../../../../../../../../hooks';
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
