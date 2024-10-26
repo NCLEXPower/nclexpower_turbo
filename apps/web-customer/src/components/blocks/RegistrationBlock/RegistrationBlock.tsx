@@ -14,18 +14,11 @@ import { SelectedProductType } from 'core-library/types/global';
 
 export const RegistrationBlock = () => {
     const router = useRouter();
-    const toast = useExecuteToast();
+    const { showToast } = useExecuteToast();
 
     const orderDetail = useDecryptOrder() as SelectedProductType;
 
     const [orderNumber, setOrderNumber] = useOrderNumber();
-
-    const showToast = (message: string, type: "error" | "success") => {
-      toast.executeToast(message, "top-right", false, {
-        toastId: 0,
-        type,
-      });
-    };
 
     async function handleSubmit(values: RegistrationFormType) {
       const { productId, amount } = orderDetail;
