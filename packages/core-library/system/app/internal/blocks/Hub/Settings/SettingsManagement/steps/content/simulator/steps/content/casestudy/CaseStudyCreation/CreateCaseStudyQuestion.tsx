@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { useEffect, useState } from "react";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import {
@@ -199,7 +204,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
           </Box>
         </Box>
       </FormProvider>
-      <Box width="100%" display="flex" justifyContent="end">
+      <Box width="fit-content" display="flex" justifyContent="end" sx={{ position: 'fixed', top: '150px', right: '50px' }}>
         <Box width="fit-content">
           <ErrorMapping errors={errors} />
         </Box>

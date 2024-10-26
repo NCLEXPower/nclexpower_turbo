@@ -1,18 +1,26 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React from "react";
 import { Grid } from "@mui/material";
-import { TextField, Button, PhoneField, TextAreaField } from "core-library/components";
+import {
+  TextField,
+  Button,
+  PhoneField,
+  TextAreaField,
+} from "core-library/components";
 import { ContactFormType } from "./validation";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
-import { ContactMock, SocialMediaMock } from "../../../core/constant/ContactPageMock";
+import {
+  ContactMock,
+  SocialMediaMock,
+} from "../../../core/constant/ContactPageMock";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
-import { useSanitizedInputs } from 'core-library/hooks';
+import { useSanitizedInputs } from "core-library/hooks";
 
 interface FormValues {
   control: Control<ContactFormType>;
@@ -27,15 +35,13 @@ export const ContactForm: React.FC<FormValues> = ({
   handleSubmit,
   onSubmit,
   handleSetCountryCode,
-  countryCode
+  countryCode,
 }) => {
-  const { purifyInputs } = useSanitizedInputs({})
+  const { purifyInputs } = useSanitizedInputs({});
 
   return (
     <section className="relative flex justify-center mt-0 lg:mt-[-180px] mb-0 lg:mb-20">
-      <div
-        className="h-auto w-full lg:w-[1120px] flex flex-col lg:flex-row justify-between drop-shadow-lg"
-      >
+      <div className="h-auto w-full lg:w-[1120px] flex flex-col lg:flex-row justify-between drop-shadow-lg">
         <div className="flex flex-col w-full lg:w-1/2 bg-white p-6 sm:p-8 lg:p-16 rounded-l-none lg:rounded-l-[20px]">
           <p className="text-xl sm:text-2xl lg:text-3xl font-bold font-ptSans text-[#232323]">
             Send us a{" "}
@@ -54,12 +60,13 @@ export const ContactForm: React.FC<FormValues> = ({
                 control={control}
                 placeholder="Name"
                 sx={{
+                  borderRadius: "5px",
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "5px",
                   },
                   "& .MuiInputBase-input": {
                     borderRadius: "5px",
-                    padding: "16px",
+                    padding: "15px",
                   },
                 }}
                 data-testid="name-input"
@@ -71,12 +78,13 @@ export const ContactForm: React.FC<FormValues> = ({
                 control={control}
                 placeholder="Email"
                 sx={{
+                  borderRadius: "5px",
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "5px",
                   },
                   "& .MuiInputBase-input": {
                     borderRadius: "5px",
-                    padding: "16px",
+                    padding: "15px",
                   },
                 }}
                 data-testid="email-input"
@@ -90,6 +98,12 @@ export const ContactForm: React.FC<FormValues> = ({
                 placeholder="Phone"
                 onCountryCodeChanged={(code) => handleSetCountryCode(code)}
                 data-testid="phone-input"
+                sx={{
+                  "& .MuiOutlinedInput-input:focus": {
+                    borderRadius: "5px",
+                    padding: "13px",
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sx={{ marginY: 2 }}>
@@ -105,7 +119,14 @@ export const ContactForm: React.FC<FormValues> = ({
                 onClick={handleSubmit(onSubmit)}
                 variant="contained"
                 fullWidth
-                sx={{ px: 4, fontSize: "14px", fontWeight: 600, py: 2, backgroundColor: "#0F2A71", borderRadius: "5px" }}
+                sx={{
+                  px: 4,
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  py: 2,
+                  backgroundColor: "#0F2A71",
+                  borderRadius: "5px",
+                }}
                 data-testid="contactus-button"
               >
                 SUBMIT
@@ -114,8 +135,10 @@ export const ContactForm: React.FC<FormValues> = ({
           </form>
         </div>
 
-        <div className="
-        flex flex-col w-full lg:w-1/2 bg-hoverBlue p-6 sm:p-8 lg:p-16 space-y-6 sm:space-y-8 lg:space-y-16 relative rounded-r-none lg:rounded-r-[20px]">
+        <div
+          className="
+        flex flex-col w-full lg:w-1/2 bg-hoverBlue p-6 sm:p-8 lg:p-16 space-y-6 sm:space-y-8 lg:space-y-16 relative rounded-r-none lg:rounded-r-[20px]"
+        >
           <p className="text-xl sm:text-2xl  mx-0 my-1 lg:text-3xl font-bold font-ptSans text-white">
             Contact Info
           </p>
@@ -128,8 +151,12 @@ export const ContactForm: React.FC<FormValues> = ({
                   width={24}
                   height={32}
                 />
-                <div className="text-sm sm:text-md lg:text-xl text-white font-normal break-normal"
-                  dangerouslySetInnerHTML={{ __html: purifyInputs(item.subTitle) as TrustedHTML }} />
+                <div
+                  className="text-sm sm:text-md lg:text-xl text-white font-normal break-normal"
+                  dangerouslySetInnerHTML={{
+                    __html: purifyInputs(item.subTitle) as TrustedHTML,
+                  }}
+                />
               </div>
             ))}
           </div>
@@ -160,3 +187,4 @@ export const ContactForm: React.FC<FormValues> = ({
     </section>
   );
 };
+

@@ -27,7 +27,9 @@ import {
   GetAllInternalAccount,
   CreateRegularType,
   AuthorizedContentsResponseType,
-  WebGetContentsParams
+  WebGetContentsParams,
+  GetDefaultReviewerResponse,
+  DefaultReviewerDto
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -497,6 +499,23 @@ export const useGetContents = (
     queryKey,
     async () => {
       const result = await getRegularQuestions.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetSelectedApprovers = (
+  queryKey: string[]
+): UseQueryResult<DefaultReviewerDto[] | undefined, any> => {
+  const getSelectedApprover = useApi((api) =>
+    api.webbackoffice.getSelectedApprover()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSelectedApprover.execute();
       return result.data;
     },
     { staleTime: Infinity }

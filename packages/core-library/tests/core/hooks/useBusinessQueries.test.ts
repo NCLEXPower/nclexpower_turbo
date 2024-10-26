@@ -4,6 +4,7 @@ import {
   useAppMutation,
   useCreatePaymentIntent,
   useGetContents,
+  useGetSelectedApprovers,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApi, useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -12,6 +13,7 @@ import { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import {
   AuthorizedContentsResponseType,
   CreatePaymentIntentParams,
+  DefaultReviewerDto,
   PaymentIntentResponse,
   WebGetContentsParams,
 } from "../../../api/types";
@@ -340,6 +342,62 @@ describe("useGetContents", () => {
         examGroupId: "",
       })
     );
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
+  });
+});
+
+describe("useGetSelectedApprovers", () => {
+  const mockExecute = jest.fn();
+
+  it("should return a list of account ID", async () => {
+    const mockData: DefaultReviewerDto[] = [
+      {
+        accountId: "test-account-account"
+      }
+    ];
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() =>
+      useGetSelectedApprovers(["selectedApprovers"])
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(["selectedApprovers"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    const { result } = renderHook(() => useGetSelectedApprovers(["selectedApprovers"]));
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const { result } = renderHook(() => useGetSelectedApprovers(["selectedApprovers"]));
 
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();

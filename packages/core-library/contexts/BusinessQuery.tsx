@@ -34,6 +34,7 @@ import {
   useGetAllInternalAccounts,
   useCreateRegularQuestion,
   useGetContents,
+  useGetSelectedApprovers,
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -58,6 +59,7 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
+  DefaultReviewerDto,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -226,6 +228,12 @@ interface BusinessQueryContextValue {
     queryKey: string[],
     args: WebGetContentsParams
   ) => UseQueryResult<AuthorizedContentsResponseType[] | undefined, any>;
+
+  businessQuerySelectedApprovers
+  : (
+    queryKey: string[],
+  ) => UseQueryResult<DefaultReviewerDto[] | undefined, any>;
+
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -266,6 +274,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllInternalAccount = useGetAllInternalAccounts;
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
+  const businessQuerySelectedApprovers = useGetSelectedApprovers
   return (
     <BusinessQueryContext.Provider
       value={{
@@ -297,6 +306,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInternalAccount,
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
+        businessQuerySelectedApprovers
       }}
     >
       {children}

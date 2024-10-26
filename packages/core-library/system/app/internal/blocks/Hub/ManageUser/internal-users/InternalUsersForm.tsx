@@ -16,6 +16,7 @@ import {
   ControlledSelectField,
   MultipleSelectField,
   Card,
+  Alert,
 } from "core-library/components";
 import {
   Settings as SettingsIcon,
@@ -65,6 +66,11 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
 
   return (
     <FormProvider {...form}>
+      <Alert
+        severity="info"
+        title="Create Internal Users"
+        description="Create internal users with their details information, credentials, and permission routes."
+      />
       <Grid
         container
         direction="column"
@@ -78,7 +84,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">
@@ -174,7 +180,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">
@@ -261,7 +267,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">
