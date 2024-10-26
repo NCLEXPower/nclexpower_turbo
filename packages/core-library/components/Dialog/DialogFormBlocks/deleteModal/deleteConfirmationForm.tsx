@@ -52,11 +52,12 @@ export const DeleteConfirmationForm: React.FC<Props> = ({
           fill="#D44333"
         />
       </Box>
-      <Typography>
+      <Typography data-testid="text-content">
         This will permanently delete the <b>{textContent}</b>
       </Typography>
       <Box width="50%">
         <Typography
+          data-testid="render-text"
           sx={{
             userSelect: "none",
           }}
@@ -66,6 +67,7 @@ export const DeleteConfirmationForm: React.FC<Props> = ({
         <ControlledTextField
           control={control}
           name="inputText"
+          inputProps={{ "data-testid": "delete-input" }}
           sx={{
             width: "100%",
           }}
