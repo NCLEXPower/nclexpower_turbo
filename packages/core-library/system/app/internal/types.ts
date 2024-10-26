@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
 
@@ -17,6 +22,7 @@ export type Blocks =
   | "CreateRegularQuestionTypeBlock"
   | "CreateCategoryBlock"
   | "InclusionBlock"
+  | "DuplicateSessionBlock"
   | "ChatbotManagement";
 
 type BlockProps = {
@@ -35,6 +41,7 @@ type BlockProps = {
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
   InclusionBlock: {};
+  DuplicateSessionBlock: {};
   ChatbotManagement: {};
 };
 
