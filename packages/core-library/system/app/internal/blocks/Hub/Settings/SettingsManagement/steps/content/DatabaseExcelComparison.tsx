@@ -13,14 +13,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Chip, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
-import {
-  DiscrepanciesResponse,
-  FileUploadParams,
-} from "core-library/api/types";
 import { UploadFormType } from "../../types";
 import { useApiCallback, useColumns } from '../../../../../../../../../hooks';
 import { ExcelRowRegularQuestion } from '../../../../../../../../../core';
 import { useDialogContext } from '../../../../../../../../../contexts';
+import { DiscrepanciesResponse, FileUploadParams } from '../../../../../../../../../api/types';
 
 
 interface Props {
