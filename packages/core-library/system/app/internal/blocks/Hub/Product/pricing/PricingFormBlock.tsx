@@ -1,9 +1,6 @@
-import {
-  useBusinessQueryContext,
-  useExecuteToast,
-} from "core-library/contexts";
+import { useBusinessQueryContext, useExecuteToast } from '../../../../../../../contexts';
+import { PricingParams } from '../../../../../../../types/types';
 import { PricingForm } from "./PricingForm";
-import { PricingParams } from "core-library/types/types";
 
 export function PricingFormBlock() {
   const { businessQueryCreatePricing } = useBusinessQueryContext();

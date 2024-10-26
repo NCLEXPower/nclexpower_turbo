@@ -1,13 +1,11 @@
 import React from "react";
 import { Container, Box, Typography, Chip, Button } from "@mui/material";
-import { Alert, Card, DataGrid } from "core-library/components";
 import { ProductFormBlock } from "./products/ProductFormBlock";
-import { useColumns } from "core-library/hooks";
-import {
-  useBusinessQueryContext,
-  useExecuteToast,
-} from "core-library/contexts";
-import { ProductSetStatusParams } from "core-library/api/types";
+import { useBusinessQueryContext, useExecuteToast } from '../../../../../../contexts';
+import { useColumns } from '../../../../../../hooks';
+import { Alert, Card, DataGrid } from '../../../../../../components';
+import { ProductSetStatusParams } from '../../../../../../api/types';
+
 
 export const CreateProductBlock: React.FC = () => {
   const { businessQueryGetAllProducts, businessQuerySetProductStatus } =

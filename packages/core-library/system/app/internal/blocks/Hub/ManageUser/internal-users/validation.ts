@@ -1,5 +1,5 @@
-import { STRING_REGEX } from 'core-library'
 import * as yup from 'yup'
+import { STRING_REGEX } from '../../../../../../../utils'
 
 export const accountSetupSchema = yup.object({
   firstname: yup.string().required('First Name is required').default("").matches(STRING_REGEX, "Special characters not allowed"),
@@ -21,7 +21,7 @@ export const accountSetupSchema = yup.object({
       value: yup.string().required('Value is required'),
     })
   ).required('Routers are required')
-  .default([])
+    .default([])
 })
 
 export type AccountSetupType = yup.InferType<typeof accountSetupSchema>
