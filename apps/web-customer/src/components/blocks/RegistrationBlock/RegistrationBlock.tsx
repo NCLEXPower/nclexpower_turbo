@@ -30,20 +30,7 @@ export const RegistrationBlock = () => {
     async function handleSubmit(values: RegistrationFormType) {
       const { productId, amount } = orderDetail;
 
-      if (!orderNumber) {
-        showToast("Order number is missing. Please ensure your order is valid.", "error");
-        return;
-      }
-
-      if (!productId) {
-        showToast("Product ID is missing. Unable to proceed with registration.", "error");
-        return;
-      }
-
-      if(!amount) {
-        showToast("Order amount is missing. Unable to proceed with registration.", "error");
-        return;
-      }
+      if(!orderNumber || !productId || !amount) return;
 
       const filteredValues: AccountCreationData = {
         firstname: values.firstname,
@@ -57,11 +44,10 @@ export const RegistrationBlock = () => {
       };
 
       try {
-        //add createAccount api integration pass filteredValues as payload
         await new Promise((resolve) => setTimeout(resolve, 3000));
         showToast("Account has been successfully created.", "success");
       } catch (err) {
-        showToast("An error occurred during registration. Please try again.", "error");
+        showToast("Something went wrong. Please try again.", "error");
       }
     }
 

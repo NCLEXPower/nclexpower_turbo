@@ -8,6 +8,7 @@ import {
   ControlledCheckbox,
   EvaIcon,
   IconButton,
+  PasswordToggleAdornment,
   TextField,
 } from "core-library/components";
 import React, { useEffect } from "react";
@@ -18,7 +19,6 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useShowPassword } from "../ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { usePreviousValue } from "core-library/hooks";
 import { RegisterBG } from "core-library/assets";
 
@@ -179,13 +179,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           style: { padding: 15, borderRadius: "10px" },
                         }}
                         endAdornment={
-                          <IconButton
-                            aria-label="toggle password visibility"
+                          <PasswordToggleAdornment
+                            showPassword={showPassword}
                             onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
+                          />
                         }
                       />
                     </Box>
@@ -204,17 +201,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           style: { padding: 15, borderRadius: "10px" },
                         }}
                         endAdornment={
-                          <IconButton
-                            aria-label="toggle password visibility"
+                          <PasswordToggleAdornment
+                            showPassword={showconfirmPassword}
                             onClick={handleClickShowconfirmPassword}
-                            edge="end"
-                          >
-                            {showconfirmPassword ? (
-                              <Visibility />
-                            ) : (
-                              <VisibilityOff />
-                            )}
-                          </IconButton>
+                          />
                         }
                       />
                     </Box>
