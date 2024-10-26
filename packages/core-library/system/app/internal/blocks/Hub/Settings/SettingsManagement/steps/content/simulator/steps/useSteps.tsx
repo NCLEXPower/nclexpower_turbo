@@ -12,8 +12,8 @@ import {
   ContainedCaseStudyQuestionType,
   ContainedRegularQuestionType,
 } from "../types";
-import { Stepper } from "core-library/components";
 import { useActiveSteps, useWizardForm, WizardFormMap } from '../../../../../../../../../../../hooks';
+import { Stepper } from '../../../../../../../../../../../components';
 
 export const useQuestionManagementWizardSteps = () => {
   const steps = useMemo(() => {
