@@ -1192,7 +1192,7 @@ describe("useCreateContactUs", () => {
       web_create_contact_us: jest.fn(),
     },
   };
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -1267,5 +1267,50 @@ describe("useCreateContactUs", () => {
 
     expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
     expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should call contactUsSubmission.execute with the correct data", async () => {
+    const mockData = {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "123-456-7890",
+      message: "This is a test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockExecute.mockResolvedValue(mockResult);
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    await act(async () => {
+      await result.current.mutateAsync(mockData);
+    });
+
+    expect(mockExecute).toHaveBeenCalledWith(mockData);
+  });
+
+  it("should call web_create_contact_us on contactUsSubmission.execute", async () => {
+    const mockData = {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "123-456-7890",
+      message: "This is a test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockApi.web.web_create_contact_us.mockResolvedValue(mockResult);
+    mockExecute.mockImplementation(async (args) => {
+      return await mockApi.web.web_create_contact_us(args);
+    });
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    await act(async () => {
+      await result.current.mutateAsync(mockData);
+    });
+
+    expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
   });
 });
