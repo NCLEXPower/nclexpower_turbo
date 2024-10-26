@@ -1196,11 +1196,11 @@ describe("useCreateContactUs", () => {
     });
 
     (useMutation as jest.Mock).mockReturnValue({
-      mutateAsync: jest.fn(async (data) => {
-        const result = await mockExecute(data);
-        return result;
-      }),
-      isLoading: false,
+      mutateAsync: async (data: any) => {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        return await mockExecute(data);
+      },
+      isLoading: false, // Initial loading state
     });
   });
 
@@ -1218,12 +1218,39 @@ describe("useCreateContactUs", () => {
     const opt = { onSuccess: jest.fn() };
     const { result } = renderHook(() => useCreateContactUs(opt));
 
+    expect(result.current.isLoading).toBe(false);
+
     await act(async () => {
       const response = await result.current.mutateAsync(mockData);
       expect(response).toEqual(mockResult);
     });
 
     expect(mockExecute).toHaveBeenCalledWith(mockData);
+
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should indicate loading state", async () => {
+    const mockData: ContactFormType = {
+      name: "Jane Doe",
+      email: "jane.doe@example.com",
+      phone: "987-654-3210",
+      message: "This is another test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockExecute.mockResolvedValue(mockResult);
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      await result.current.mutateAsync(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+
     expect(result.current.isLoading).toBe(false);
   });
 });

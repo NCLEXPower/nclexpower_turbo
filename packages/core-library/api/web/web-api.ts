@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { AxiosError, AxiosInstance } from "axios";
 import { internalAccountType, RegisterParams } from "../../types/types";
 import qs from "query-string";
