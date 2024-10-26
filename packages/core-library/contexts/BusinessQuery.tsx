@@ -34,6 +34,7 @@ import {
   useGetAllInternalAccounts,
   useCreateRegularQuestion,
   useGetContents,
+  useDeleteRoute,
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -226,6 +227,15 @@ interface BusinessQueryContextValue {
     queryKey: string[],
     args: WebGetContentsParams
   ) => UseQueryResult<AuthorizedContentsResponseType[] | undefined, any>;
+
+  businessQueryDeleteRoute: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    string,
+    unknown
+  >;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -266,6 +276,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllInternalAccount = useGetAllInternalAccounts;
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
+  const businessQueryDeleteRoute = useDeleteRoute;
   return (
     <BusinessQueryContext.Provider
       value={{
@@ -297,6 +308,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInternalAccount,
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
+        businessQueryDeleteRoute,
       }}
     >
       {children}

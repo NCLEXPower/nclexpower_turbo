@@ -21,7 +21,8 @@ export type Blocks =
   | "ReportedIssuesBlock"
   | "CreateRegularQuestionTypeBlock"
   | "CreateCategoryBlock"
-  | "DuplicateSessionBlock";
+  | "DuplicateSessionBlock"
+  | "ChatbotManagement";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -39,6 +40,7 @@ type BlockProps = {
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
   DuplicateSessionBlock: {};
+  ChatbotManagement: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
