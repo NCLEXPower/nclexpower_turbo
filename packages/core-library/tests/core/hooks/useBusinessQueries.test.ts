@@ -1187,7 +1187,12 @@ describe("useGetContents", () => {
 
 describe("useCreateContactUs", () => {
   const mockExecute = jest.fn();
-
+  const mockApi = {
+    web: {
+      web_create_contact_us: jest.fn(),
+    },
+  };
+  
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -1197,15 +1202,22 @@ describe("useCreateContactUs", () => {
 
     (useMutation as jest.Mock).mockReturnValue({
       mutateAsync: async (data: any) => {
+        let isLoading = true;
         await new Promise((resolve) => setTimeout(resolve, 100));
-        return await mockExecute(data);
+        const result = await mockExecute(data);
+        isLoading = false;
+        return result;
       },
-      isLoading: false, // Initial loading state
+      isLoading: false,
+    });
+
+    mockExecute.mockImplementation(async (args) => {
+      return await mockApi.web.web_create_contact_us(args);
     });
   });
 
   it("should create a contact us request successfully", async () => {
-    const mockData: ContactFormType = {
+    const mockData = {
       name: "John Doe",
       email: "john.doe@example.com",
       phone: "123-456-7890",
@@ -1213,7 +1225,7 @@ describe("useCreateContactUs", () => {
     };
 
     const mockResult = { data: 200 };
-    mockExecute.mockResolvedValue(mockResult);
+    mockApi.web.web_create_contact_us.mockResolvedValue(mockResult);
 
     const opt = { onSuccess: jest.fn() };
     const { result } = renderHook(() => useCreateContactUs(opt));
@@ -1225,13 +1237,12 @@ describe("useCreateContactUs", () => {
       expect(response).toEqual(mockResult);
     });
 
-    expect(mockExecute).toHaveBeenCalledWith(mockData);
-
+    expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
     expect(result.current.isLoading).toBe(false);
   });
 
-  it("should indicate loading state", async () => {
-    const mockData: ContactFormType = {
+  it("should indicate loading state correctly", async () => {
+    const mockData = {
       name: "Jane Doe",
       email: "jane.doe@example.com",
       phone: "987-654-3210",
@@ -1239,7 +1250,7 @@ describe("useCreateContactUs", () => {
     };
 
     const mockResult = { data: 200 };
-    mockExecute.mockResolvedValue(mockResult);
+    mockApi.web.web_create_contact_us.mockResolvedValue(mockResult);
 
     const opt = { onSuccess: jest.fn() };
     const { result } = renderHook(() => useCreateContactUs(opt));
@@ -1247,10 +1258,14 @@ describe("useCreateContactUs", () => {
     expect(result.current.isLoading).toBe(false);
 
     await act(async () => {
-      await result.current.mutateAsync(mockData);
+      const promise = result.current.mutateAsync(mockData);
       expect(result.current.isLoading).toBe(false);
+
+      const response = await promise;
+      expect(response).toEqual(mockResult);
     });
 
+    expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
     expect(result.current.isLoading).toBe(false);
   });
 });
