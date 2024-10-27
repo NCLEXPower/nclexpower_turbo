@@ -25,10 +25,23 @@ describe('InclusionBlock', () => {
     });
 
     it("should render the page successfully", async () => {
+        const mockData = [{ id: 1, option: 'Option 1' }, { id: 2, option: 'Option 2' }];
+
+        jest.mock('../../../../contexts', () => ({
+            useBusinessQueryContext: () => ({
+                businessQueryGetAllInclusion: () => ({
+                    data: mockData,
+                    isLoading: false,
+                    refetch: jest.fn()
+                }),
+                businessQueryCreateInclusion: jest.fn(),
+                businessQueryDeleteInclusion: jest.fn()
+            }),
+        }));
+
         render(<InclusionBlock />);
 
         const inclusionElement = await screen.findByTestId('inclusion-block', {}, { timeout: 3000 });
-
         expect(inclusionElement).toBeInTheDocument();
     });
 });
