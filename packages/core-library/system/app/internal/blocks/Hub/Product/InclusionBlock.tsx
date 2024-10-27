@@ -92,7 +92,7 @@ export const InclusionBlock: React.FC = () => {
     }
 
     return (
-        <Box>
+        <Box data-testid="inclusion-block">
             <Container>
                 <Alert
                     severity="info"

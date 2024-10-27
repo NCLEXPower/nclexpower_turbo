@@ -11,6 +11,9 @@ import {
   useGetAllCurrencies,
   useGetAllPricing,
   useGetOrderNumber,
+  useGetAllInclusion,
+  useCreateInclusion,
+  useDeleteInclusion,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -18,8 +21,10 @@ import { useMutation, useQuery } from "react-query";
 import { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import {
   AuthorizedContentsResponseType,
+  CreateInclusionParams,
   CreatePaymentIntentParams,
   CurrenciesResponse,
+  GetAllInclusionResponse,
   GetAllInternalAccount,
   GetCategoryType,
   PaymentIntentResponse,
@@ -1177,3 +1182,173 @@ describe("useGetContents", () => {
     expect(result.current.isLoading).toBe(false);
   });
 });
+
+
+describe("useGetAllInclusion", () => {
+
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+  });
+
+  it("should fetch and return questions data", async () => {
+    const mockData: GetAllInclusionResponse[] = [
+      {
+        id: 'test-id',
+        option: 'test-inclusion'
+      },
+    ];
+    mockExecute.mockResolvedValue({ data: mockData });
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() =>
+      useGetAllInclusion(["getInclusionApi"])
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(["getInclusionApi"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+})
+
+describe("useCreateInclusion", () => {
+  const mockExecute = jest.fn();
+  const mockMutate = jest.fn();
+  const mockData: AxiosResponse<number, AxiosError> = {
+    data: 200,
+    status: 200,
+    statusText: "OK",
+    headers: new AxiosHeaders(),
+    config: { headers: new AxiosHeaders() },
+  };
+  const mockInclusionOption: CreateInclusionParams = {
+    option: "test-inclusion"
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: mockMutate,
+      isLoading: false,
+    });
+  });
+
+  it("should create a new inclusionSuccessFully", async () => {
+    const opt = { onSuccess: jest.fn() };
+    mockExecute.mockResolvedValue({ data: mockData });
+    const { result } = renderHook(() => useCreateInclusion(opt));
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockInclusionOption);
+    });
+
+    expect(mockMutate).toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", async () => {
+    (useMutation as jest.Mock).mockReturnValue({
+      isLoading: true,
+    });
+
+    const { result } = renderHook(() =>
+      useCreateInclusion()
+    );
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockInclusionOption);
+    });
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useMutation as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const { result } = renderHook(() => useCreateInclusion());
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockInclusionOption);
+    });
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it('should pass options to useMutation', () => {
+    const mockOptions = {
+      onSuccess: jest.fn(),
+      onError: jest.fn(),
+    };
+
+    renderHook(() => useCreateInclusion(mockOptions));
+
+    expect(useMutation).toHaveBeenCalledWith(expect.any(Function), mockOptions);
+  });
+
+})
+
+describe("useDeleteInclusion", () => {
+  const mockExecute = jest.fn();
+  const mockMutate = jest.fn();
+  const mockData: AxiosResponse<number, AxiosError> = {
+    data: 200,
+    status: 200,
+    statusText: "OK",
+    headers: new AxiosHeaders(),
+    config: { headers: new AxiosHeaders() },
+  };
+  const mockInclusionId: string = "test-inclusion-id";
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: mockMutate,
+      isLoading: false,
+    });
+  });
+
+  it("should delete inclusion successfully", async () => {
+    const opt = { onSuccess: jest.fn() };
+    mockExecute.mockResolvedValue({ data: mockData });
+    const { result } = renderHook(() => useDeleteInclusion(opt));
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockInclusionId);
+    });
+
+    expect(mockMutate).toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
+  });
+})
