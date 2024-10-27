@@ -108,9 +108,10 @@ export const InclusionBlock: React.FC = () => {
                     <InclusionForm onSubmit={onSubmit} />
                     <Card sx={{ width: 1, boxShadow: 1 }}>
                         <DataGrid
+                            data-testid="data-grid-inclusion"
                             sx={{ minHeight: "600px" }}
                             isLoading={isLoading}
-                            initPageSize={5}
+                            initPageSize={10}
                             rowSelection={false}
                             columns={columns}
                             getRowHeight={() => "auto"}

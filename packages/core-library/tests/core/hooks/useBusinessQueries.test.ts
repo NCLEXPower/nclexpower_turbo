@@ -14,6 +14,7 @@ import {
   useGetAllInclusion,
   useCreateInclusion,
   useDeleteInclusion,
+  useUpdateInclusion,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -24,6 +25,7 @@ import {
   CreateInclusionParams,
   CreatePaymentIntentParams,
   CurrenciesResponse,
+  EditInclusionParams,
   GetAllInclusionResponse,
   GetAllInternalAccount,
   GetCategoryType,
@@ -1346,6 +1348,46 @@ describe("useDeleteInclusion", () => {
 
     await act(async () => {
       await result.current?.mutateAsync?.(mockInclusionId);
+    });
+
+    expect(mockMutate).toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
+  });
+})
+
+describe("useUpdateInclusion", () => {
+  const mockExecute = jest.fn();
+  const mockMutate = jest.fn();
+  const mockData: AxiosResponse<number, AxiosError> = {
+    data: 200,
+    status: 200,
+    statusText: "OK",
+    headers: new AxiosHeaders(),
+    config: { headers: new AxiosHeaders() },
+  };
+  const mockInclusion: EditInclusionParams = {
+    id: 'test-id',
+    option: 'mock-option'
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: mockMutate,
+      isLoading: false,
+    });
+  });
+
+  it("should update inclusion successfully", async () => {
+    const opt = { onSuccess: jest.fn() };
+    mockExecute.mockResolvedValue({ data: mockData });
+    const { result } = renderHook(() => useUpdateInclusion(opt));
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockInclusion);
     });
 
     expect(mockMutate).toHaveBeenCalled();

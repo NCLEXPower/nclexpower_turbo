@@ -44,7 +44,7 @@ export const InclusionEditForm = () => {
     }
 
     return (
-        <Box display="flex" alignItems="end" gap={3}>
+        <Box display="flex" data-testid="inclusion-edit-form" alignItems="end" gap={3}>
             <TextField label="Inclusion" control={control} name="option" />
             <Button onClick={handleSubmit(onSubmit)}>Save</Button>
         </Box>
