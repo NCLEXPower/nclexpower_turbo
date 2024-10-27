@@ -17,6 +17,19 @@ jest.mock("../../../../contexts/DialogContext", () => ({
     useDialogContext: jest.fn(),
 }));
 
+jest.mock('@mui/x-data-grid', () => ({
+    ...jest.requireActual('@mui/x-data-grid'),
+    useGridApiRef: () => ({
+        current: {
+            state: {
+                rows: {
+                    dataRowIds: [1, 2], 
+                },
+            },
+        },
+    }),
+}));
+
 describe('InclusionBlock', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -43,16 +56,10 @@ describe('InclusionBlock', () => {
 
         render(<InclusionBlock />);
 
-
-
         const inclusionElement = await screen.findByTestId('inclusion-block', {}, { timeout: 3000 });
-        const inclusionDatagrid = await screen.findByTestId('data-grid-inclusion')
-
-        console.log(inclusionElement)
+        const inclusionDatagrid = await screen.findByTestId('data-grid-inclusion');
 
         expect(inclusionElement).toBeInTheDocument();
         expect(inclusionDatagrid).toBeInTheDocument();
     });
-
-
 });
