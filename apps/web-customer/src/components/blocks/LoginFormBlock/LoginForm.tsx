@@ -114,8 +114,17 @@ export const LoginForm: React.FC<Props> = ({
         </div>
         <div className="w-full">
           <div className="flex items-center justify-center">
+            <style>
+              {`
+                @media (max-width: 400px), (max-height: 750px) {
+                  .smaller-screen {
+                    display: none;
+                    }
+                }`}
+            </style>
             <Image
               src={CoreZigma}
+              className="smaller-screen"
               alt="CoreZigma"
               style={{ width: "150px", height: "150px", objectFit: "cover" }}
             />
@@ -213,7 +222,7 @@ export const LoginForm: React.FC<Props> = ({
               </div>
               <div className="flex items-center justify-center w-full">
                 <Button
-                  sx={{ paddingY: 1.5, borderRadius: "10px", boxShadow: 2, borderColor: "#1976D2" }}
+                  sx={{ paddingY: 1.5, borderRadius: "10px", boxShadow: 2, borderColor: "darkGray" }}
                   fullWidth
                   variant="outlined"
                   onClick={signInWithGoogle}
