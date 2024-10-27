@@ -1,3 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import React from 'react'
 import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../../../contexts'
 import { useColumns } from '../../../../../../hooks'
@@ -9,8 +15,7 @@ import { CustomPopover } from '../../../../../../components/Popover/Popover'
 import { GridMoreVertIcon } from '@mui/x-data-grid'
 import { atom, useAtom } from 'jotai'
 import { EditInclusionParams, GetAllInclusionResponse } from '../../../../../../api/types'
-
-export const InclusionIdAtom = atom<EditInclusionParams>()
+import { InclusionIdAtom } from '../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic'
 
 export const InclusionBlock: React.FC = () => {
     const [, setId] = useAtom(InclusionIdAtom)

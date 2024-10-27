@@ -1,7 +1,12 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import React from 'react'
 import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../contexts'
 import { useAtomValue } from 'jotai'
-import { InclusionIdAtom } from '../../../../system/app/internal/blocks'
 import { useForm } from 'react-hook-form'
 import { UpdateInclusionSchema, UpdateInclusionType } from './validation'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -9,6 +14,7 @@ import { Box } from '@mui/material'
 import { TextField } from '../../../forms/TextField'
 import { Button } from '../../../Button/Button'
 import { useQueryClient } from 'react-query'
+import { InclusionIdAtom } from './useAtomic'
 
 export const InclusionEditForm = () => {
     const Inclusion = useAtomValue(InclusionIdAtom)
