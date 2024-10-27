@@ -98,7 +98,7 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
               }
             }}
           >
-            PROCEED TO PAYMENT
+            PROCEED
           </Button>
           <p className="pt-sans-regular text-center text-sm">
             By proceeding, you accept our terms and conditions.
@@ -120,6 +120,6 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
       productId: orderDetail.productId,
       pricingId: orderDetail.pricingId,
     });
-    await router.push({ pathname: "/customer/payment/checkout" });
+    await router.push((route) => route.account_registration);
   }
 };

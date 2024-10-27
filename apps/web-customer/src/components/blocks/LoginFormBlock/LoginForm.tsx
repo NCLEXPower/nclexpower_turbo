@@ -234,7 +234,7 @@ export const LoginForm: React.FC<Props> = ({
               <div className="flex items-center justify-center mt-6 pt-sans-narrow-regular text-xl">
                 <p className="text-darkGray">Need an account?</p>
                 <Link
-                  href="/#pricing"
+                  href="/"
                   className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
                 >
                   Create One

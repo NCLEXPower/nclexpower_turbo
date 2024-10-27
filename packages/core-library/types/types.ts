@@ -98,3 +98,14 @@ export type UseDataTableParamsResult = {
   rows: DataTableRow[];
   loading: boolean;
 };
+
+export interface AccountCreationData {
+  firstname: string;
+  middlename: string | undefined | null;
+  lastname: string;
+  email: string;
+  password: string;
+  orderNumber: string;
+  productId: string;
+  totalAmount: number;
+};
