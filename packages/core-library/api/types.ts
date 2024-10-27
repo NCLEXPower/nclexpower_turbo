@@ -545,3 +545,7 @@ export type DefaultReviewerParams = {
 export type DefaultReviewerDto = {
   accountId: string;
 };
+
+export type SubsequentOptionType = {
+  optionText: string;
+}

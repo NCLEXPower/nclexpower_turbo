@@ -35,6 +35,7 @@ import {
   useCreateRegularQuestion,
   useGetContents,
   useDeleteRoute,
+  useCreateSubsequentOptions,
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -59,6 +60,7 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
+  SubsequentOptionType,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -236,6 +238,15 @@ interface BusinessQueryContextValue {
     string,
     unknown
   >;
+
+  businessQueryCreateSubsequentOptions: (
+    opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<SubsequentOptionType, AxiosError<unknown, any>>,
+    any,
+    SubsequentOptionType,
+    unknown
+  >;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -277,6 +288,8 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
   const businessQueryDeleteRoute = useDeleteRoute;
+  const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
+
   return (
     <BusinessQueryContext.Provider
       value={{
@@ -309,6 +322,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
         businessQueryDeleteRoute,
+        businessQueryCreateSubsequentOptions,
       }}
     >
       {children}

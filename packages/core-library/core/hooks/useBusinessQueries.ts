@@ -27,6 +27,7 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
+  SubsequentOptionType,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -511,6 +512,22 @@ export const useDeleteRoute = (
   return useAppMutation<AxiosResponse<number, AxiosError>, string>(
     async (id) => {
       const result = await deleteCategoryCb.execute(id);
+      return result;
+    },
+    opt
+  );
+};
+
+export const useCreateSubsequentOptions = (
+  opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
+) => {
+  const createSubsequentOption = useApiCallback(
+    async (api, args: SubsequentOptionType) =>
+      await api.webbackoffice.web_create_subsequent(args)
+  );
+  return useAppMutation<AxiosResponse<SubsequentOptionType, AxiosError>, SubsequentOptionType>(
+    async (data) => {
+      const result = await createSubsequentOption.execute({ ...data });
       return result;
     },
     opt
