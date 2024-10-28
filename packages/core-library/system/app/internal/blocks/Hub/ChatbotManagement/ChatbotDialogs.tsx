@@ -63,7 +63,7 @@ export const SubsequentDialog: React.FC<Props> = ({
 
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen}
+      <Button onClick={handleClickOpen} data-testid='subsequent-button'
         sx={{
           color: '#F3F3F3',
           width: "100%",
