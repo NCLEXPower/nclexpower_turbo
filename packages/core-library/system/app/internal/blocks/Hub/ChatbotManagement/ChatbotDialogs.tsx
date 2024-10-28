@@ -23,7 +23,7 @@ export const SubsequentDialog: React.FC<Props> = ({
   open
 }) => {
   const { businessQueryCreateSubsequentOptions } = useBusinessQueryContext();
-  const { mutateAsync } = businessQueryCreateSubsequentOptions();
+  const { mutateAsync, isLoading } = businessQueryCreateSubsequentOptions();
   const toast = useExecuteToast();
 
   const form = useForm({
@@ -116,7 +116,8 @@ export const SubsequentDialog: React.FC<Props> = ({
           <Box sx={{ width: '100%', marginTop: 4, display: 'flex', justifyContent: 'end' }}>
             <Button
               onClick={handleSubmit(onSubmit)}
-              loading={isSubmitting}
+              disabled={isSubmitting || isLoading}
+              loading={isSubmitting || isLoading}
               sx={{
                 width: 250,
                 backgroundColor: '#3B0086',
