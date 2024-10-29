@@ -13,7 +13,7 @@ export const usePageLoader = (): PageLoaderReturnType => {
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleRouteChangeStart = () => {
-            setIsPageLoading(true)
+            setIsPageLoading(router.loading)
     }
 
     const handleRouteChangeComplete = () => {
@@ -21,7 +21,7 @@ export const usePageLoader = (): PageLoaderReturnType => {
             clearTimeout(timeoutRef.current);
         }
         timeoutRef.current = setTimeout(() => {
-            setIsPageLoading(false);
+            setIsPageLoading(router.loading);
         }, 2000);
     }
 

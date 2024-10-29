@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { useTheme } from "@mui/material";
 import * as eva from "eva-icons";
 import { useEffect } from "react";
@@ -19,7 +24,7 @@ export const EvaIcon: React.FC<Props> = ({
   width,
   height,
   className,
-  ariaHidden = false,
+  ariaHidden = false
 }) => {
   const theme = useTheme();
 
@@ -31,7 +36,7 @@ export const EvaIcon: React.FC<Props> = ({
   const fillColor = fill === "#FF0000" ? theme.palette.primary.main : fill;
 
   return (
-    <i
+      <i
       id={id}
       data-eva={sanitizedName}
       data-eva-fill={fillColor}
@@ -39,6 +44,6 @@ export const EvaIcon: React.FC<Props> = ({
       data-eva-width={width}
       className={className}
       aria-hidden={ariaHidden}
-    />
+      />
   );
 };

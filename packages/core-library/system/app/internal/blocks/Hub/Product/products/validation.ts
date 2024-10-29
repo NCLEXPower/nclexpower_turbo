@@ -1,5 +1,5 @@
-import { STRING_REGEX } from "core-library";
 import * as yup from "yup";
+import { STRING_REGEX } from '../../../../../../../utils';
 
 export const productSchema = yup.object({
   productName: yup.string().required("Product name is required").default("").matches(STRING_REGEX, "Special characters not allowed"),
