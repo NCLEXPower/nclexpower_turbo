@@ -3,12 +3,13 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, DialogBox, EvaIcon, TextField } from '../../../../../../components';
 import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubsequentSchema, SubsequentType, } from './validation'
+import { useBusinessQueryContext, useExecuteToast } from '../../../../../../contexts';
 
 type Props = {
   open: boolean;
@@ -21,20 +22,48 @@ export const SubsequentDialog: React.FC<Props> = ({
   handleClose,
   open
 }) => {
+  const { businessQueryCreateSubsequentOptions } = useBusinessQueryContext();
+  const { mutateAsync, isLoading } = businessQueryCreateSubsequentOptions();
+  const toast = useExecuteToast();
+
   const form = useForm({
     mode: "all",
     resolver: yupResolver(SubsequentSchema),
     defaultValues: { ...SubsequentSchema.getDefault() }
   })
 
-  const { control, handleSubmit, clearErrors } = form
+  const { control, handleSubmit, clearErrors, formState: { isSubmitting } } = form
 
-  function onSubmit(values: SubsequentType) {
-    console.log(values)
+  async function onSubmit(params: SubsequentType) {
+    try {
+      await mutateAsync({ ...params });
+      handleClose();
+      toast.executeToast(
+        "Subsequent created successfully",
+        "top-right",
+        false,
+        {
+          toastId: 0,
+          type: "success",
+        }
+      )
+    }
+    catch {
+      toast.executeToast(
+        "An error occurred while creating subsequent",
+        "top-right",
+        false,
+        {
+          toastId: 0,
+          type: "error",
+        }
+      )
+    }
   }
+
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen}
+      <Button onClick={handleClickOpen} data-testid='subsequent-button'
         sx={{
           color: '#F3F3F3',
           width: "100%",
@@ -72,7 +101,7 @@ export const SubsequentDialog: React.FC<Props> = ({
           <TextField<SubsequentType>
             control={control}
             placeholder="Add subsequent"
-            name="subsequent"
+            name="optionText"
             sx={{
               borderRadius: "5px",
               width: "100%",
@@ -85,13 +114,18 @@ export const SubsequentDialog: React.FC<Props> = ({
             onBlur={() => clearErrors()}
           />
           <Box sx={{ width: '100%', marginTop: 4, display: 'flex', justifyContent: 'end' }}>
-            <Button onClick={handleSubmit(onSubmit)} sx={{
-              backgroundColor: '#3B0086',
-              border: "1px solid #3B0086",
-              borderRadius: 6,
-            }}
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              disabled={isSubmitting || isLoading}
+              loading={isSubmitting || isLoading}
+              sx={{
+                width: 250,
+                backgroundColor: '#3B0086',
+                border: "1px solid #3B0086",
+                borderRadius: '6px',
+              }}
             >
-              Create
+              {isSubmitting ? 'Creating...' : 'Create'}
             </Button>
           </Box>
         </Box>

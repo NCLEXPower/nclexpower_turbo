@@ -29,6 +29,7 @@ import {
   ProductSetStatusParams,
   RegularQuestionTypeParams,
   WebGetContentsParams,
+  SubsequentOptionType,
 } from "../types";
 
 export class WebApiBackOffice {
@@ -271,5 +272,12 @@ export class WebApiBackOffice {
     return await this.axios.delete<number>(
       `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
     );
+  }
+
+  public async web_create_subsequent(params: SubsequentOptionType){
+    return await this.axios.post<SubsequentOptionType>(
+      `/v1/api/Chatbot/create-subsequent-options`,
+      params
+    )
   }
 }
