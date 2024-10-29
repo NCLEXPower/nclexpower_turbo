@@ -3,25 +3,22 @@ import {
   InformationTitle,
   FileUploadField,
   Button,
-  Link,
   ProgressBar,
   DataGrid,
   Alert,
-} from "core-library/components";
+} from '../../../../../../../../../components';
 import React, { useEffect, useState } from "react";
 import { fileValidationErrors, uploadFormSchema } from "../../validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Chip, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
-import { ExcelRowRegularQuestion } from "core-library";
-import { useDialogContext } from "core-library/contexts";
-import { useApiCallback, useColumns } from "core-library/hooks";
-import {
-  DiscrepanciesResponse,
-  FileUploadParams,
-} from "core-library/api/types";
 import { UploadFormType } from "../../types";
+import { useApiCallback, useColumns } from '../../../../../../../../../hooks';
+import { ExcelRowRegularQuestion } from '../../../../../../../../../core';
+import { useDialogContext } from '../../../../../../../../../contexts';
+import { DiscrepanciesResponse, FileUploadParams } from '../../../../../../../../../api/types';
+
 
 interface Props {
   fileType?: string[];

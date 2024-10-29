@@ -21,6 +21,7 @@ export type Blocks =
   | "ReportedIssuesBlock"
   | "CreateRegularQuestionTypeBlock"
   | "CreateCategoryBlock"
+  | "InclusionBlock"
   | "DuplicateSessionBlock"
   | "ChatbotManagement";
 
@@ -39,6 +40,7 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
+  InclusionBlock: {};
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
 };
@@ -84,7 +86,7 @@ export type QuestionnaireItem = {
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[] ;
+  answers: DDCAnswerOption[];
 };
 
 

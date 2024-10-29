@@ -6,7 +6,7 @@
 import React, { ReactElement, ReactNode, useState } from "react";
 import { Button } from "../../../Button/Button";
 import { DialogBox } from "../../DialogBox";
-import { Box, Typography } from "@mui/material";
+import { Box, ListItemButton, Typography } from "@mui/material";
 import { EvaIcon } from "../../../EvaIcon";
 
 type Props = {
@@ -171,6 +171,16 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
           Delete
         </Button>
       );
+
+    case "ListDeleteButton":
+      return (
+        <ListItemButton
+          disabled={disabled}
+          onClick={onClickFn}>
+          Delete
+        </ListItemButton>
+      )
+
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>

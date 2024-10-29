@@ -27,7 +27,10 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
-  SubsequentOptionType,
+  GetAllInclusionResponse,
+  CreateInclusionParams,
+  EditInclusionParams,
+  SubsequentOptionType
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -501,7 +504,24 @@ export const useGetContents = (
     },
     { staleTime: Infinity }
   );
-};
+}
+
+export const useGetAllInclusion = (
+  queryKey: string[]
+): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
+  const getAllInclusion = useApi((api) =>
+    api.webbackoffice.getAllInclusions()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllInclusion.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
 
 export const useDeleteRoute = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -517,6 +537,52 @@ export const useDeleteRoute = (
     opt
   );
 };
+
+export const useCreateInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const createInclusionCB = useApiCallback(
+    async (api, args: CreateInclusionParams) =>
+      await api.webbackoffice.createInclusions(args)
+  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    CreateInclusionParams
+  >(async (data) => {
+    const result = await createInclusionCB.execute({ ...data });
+    return result;
+  }, opt);
+}
+
+export const useDeleteInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const deleteInclusionCB = useApiCallback(
+    async (api, args: string) =>
+      await api.webbackoffice.deleteInclusion(args)
+  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    string
+  >(async (data) => {
+    const result = await deleteInclusionCB.execute(data);
+    return result;
+  }, opt);
+}
+
+export const useUpdateInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const updateInclusionCB = useApiCallback(
+    async (api, args: EditInclusionParams) =>
+      await api.webbackoffice.editInclusion(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, EditInclusionParams>(
+    async (data) => {
+      const result = await updateInclusionCB.execute({ ...data });
+      return result;
+    }, opt);
+}
 
 export const useCreateSubsequentOptions = (
   opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>

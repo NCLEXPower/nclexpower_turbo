@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Box, Typography, Chip, Button } from "@mui/material";
-import { Alert, Card, DataGrid } from "core-library/components";
+import { Alert, Card, DataGrid } from "../../../../../../../components";
 import {
   useBusinessQueryContext,
   useDialogContext,
-} from "core-library/contexts";
-import { useColumns } from "core-library/hooks";
+} from "../../../../../../../contexts";
+import { useColumns } from "../../../../../../../hooks";
 
 export const CreateCategoryBlock: React.FC = () => {
   const { businessQuerySelectAllCategories, businessQueryDeleteCategory } =
