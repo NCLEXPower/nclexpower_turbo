@@ -20,7 +20,7 @@ interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
   previousStep(): void;
   values: Partial<SettingsSelectionType>;
-  accessLevel: number;
+  accessLevel?: number;
 }
 
 const chooseSettingsStepFormSchema = yup.object({
@@ -63,7 +63,7 @@ const ChooseProductsConfigurations = (props: {
     setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
-    return (
+  return (
     <Box sx={{ mb: 5 }}>
       <InformationTitle
         text="Configuration Changes"
@@ -74,7 +74,12 @@ const ChooseProductsConfigurations = (props: {
         containerProps={{ mb: 5 }}
         textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
-      <Grid justifyContent="center" container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Grid
+        justifyContent="center"
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      >
         {accessLevel === AccessLevels.ADMIN && (
           <>
             <Grid item xs={4}>
@@ -85,10 +90,13 @@ const ChooseProductsConfigurations = (props: {
             </Grid>
           </>
         )}
-        {(accessLevel === AccessLevels.ADMIN || accessLevel === AccessLevels.ENCODER) && (
+        {(accessLevel === AccessLevels.ADMIN ||
+          accessLevel === AccessLevels.ENCODER) && (
           <Grid item xs={4}>
             <Card
-              onClick={() => handleSelection({ chosen: "CONFIG", selection: "QM" })}
+              onClick={() =>
+                handleSelection({ chosen: "CONFIG", selection: "QM" })
+              }
               hoverEffect
               elevation={5}
               text="Web Simulator"
@@ -290,17 +298,17 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
       <AccessControl componentName="ChooseProductsConfigurations">
         <ChooseProductsConfigurations nextStep={nextStep} values={values} />
       </AccessControl>
-      
+
       <AccessControl componentName="OtherConfigurations">
         <Divider>Other Configurations</Divider>
         <OtherConfigurations nextStep={nextStep} values={values} />
       </AccessControl>
-      
+
       <AccessControl componentName="ContentManagementSystemSettings">
         <Divider>Content Management System</Divider>
         <ContentManagementSystemSettings nextStep={nextStep} values={values} />
       </AccessControl>
-      
+
       <AccessControl componentName="InAppManagement">
         <Divider>In App Routing</Divider>
         <InAppManagement nextStep={nextStep} values={values} />
