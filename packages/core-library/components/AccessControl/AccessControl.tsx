@@ -1,5 +1,5 @@
 import React from "react";
-import { useAccessControl } from "core-library/hooks";
+import { useAccessControl } from "../../hooks/useAccessControl";
 
 interface AccessControlProps {
   componentName: string;
