@@ -41,6 +41,7 @@ type ChooseSettingsStepFormType = yup.InferType<
 const ChooseProductsConfigurations = (props: {
   nextStep(values: Partial<SettingsSelectionType>): void;
   values: Partial<SettingsSelectionType>;
+  accessLevel?: Number;
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
