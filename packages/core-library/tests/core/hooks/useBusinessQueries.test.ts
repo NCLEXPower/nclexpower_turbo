@@ -15,6 +15,8 @@ import {
   useCreateInclusion,
   useDeleteInclusion,
   useUpdateInclusion,
+  useCreateSubsequentOptions,
+  useCreateReportIssue,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -32,6 +34,7 @@ import {
   PaymentIntentResponse,
   PricingListResponse,
   ReportIssueType,
+  SubsequentOptionType,
 } from "../../../api/types";
 
 jest.mock("../../../config", () => ({
@@ -1183,8 +1186,95 @@ describe("useGetContents", () => {
     expect(result.current.data).toEqual(mockOrderNumber);
     expect(result.current.isLoading).toBe(false);
   });
-});
 
+  describe("useCreateSubsequent", () => {
+    const mockExecute = jest.fn();
+    const mockMutate = jest.fn();
+    const mockData: AxiosResponse<SubsequentOptionType, AxiosError> = {
+      data: {
+        optionText: "some-text",
+      },
+      status: 200,
+      statusText: "OK",
+      headers: new AxiosHeaders(),
+      config: { headers: new AxiosHeaders() },
+    };
+  
+    const mockSubsequentOption: SubsequentOptionType = {
+      optionText: "some-text"
+    };
+  
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (useApiCallback as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+      });
+      (useMutation as jest.Mock).mockReturnValue({
+        mutateAsync: mockMutate,
+        isLoading: false,
+      });
+    });
+    it("should create a subsequent option successfully", async () => {
+      const opt = { onSuccess: jest.fn() };
+      mockExecute.mockResolvedValue({ data: mockData });
+      const { result } = renderHook(() => useCreateSubsequentOptions(opt));
+  
+      await act(async () => {
+        await result.current?.mutateAsync?.(mockSubsequentOption);
+      });
+  
+      expect(mockMutate).toHaveBeenCalled();
+      expect(result.current.isLoading).toBe(false);
+    });
+  });
+
+  describe("useCreateReportIssue", () => {
+    const mockExecute = jest.fn();
+    const mockMutate = jest.fn();
+    const mockData: AxiosResponse<ReportIssueType, AxiosError> = {
+      data: {
+        email: "some@gmail.com",
+        categoryId: "some-text",
+        description: "some-text",
+        systemProduct: 0,
+      },
+      status: 200,
+      statusText: "OK",
+      headers: new AxiosHeaders(),
+      config: { headers: new AxiosHeaders() },
+    };
+  
+    const mockReportIssue: ReportIssueType = {
+      email: "some@gmail.com",
+      categoryId: "some-text",
+      description: "some-text",
+      systemProduct: 0,
+    };
+  
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (useApiCallback as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+      });
+      (useMutation as jest.Mock).mockReturnValue({
+        mutateAsync: mockMutate,
+        isLoading: false,
+      });
+    });
+    it("should create a report issue successfully", async () => {
+      const opt = { onSuccess: jest.fn() };
+      mockExecute.mockResolvedValue({ data: mockData });
+      const { result } = renderHook(() => useCreateReportIssue(opt));
+  
+      await act(async () => {
+        await result.current?.mutateAsync?.(mockReportIssue);
+      });
+  
+      expect(mockMutate).toHaveBeenCalled();
+      expect(result.current.isLoading).toBe(false);
+    });
+  });
+});
 
 describe("useGetAllInclusion", () => {
 

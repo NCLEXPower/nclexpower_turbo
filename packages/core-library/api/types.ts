@@ -556,3 +556,6 @@ export type CreateInclusionParams = {
 }
 
 export type EditInclusionParams = GetAllInclusionResponse
+export type SubsequentOptionType = {
+  optionText: string;
+}

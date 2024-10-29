@@ -29,7 +29,8 @@ import {
   WebGetContentsParams,
   GetAllInclusionResponse,
   CreateInclusionParams,
-  EditInclusionParams
+  EditInclusionParams,
+  SubsequentOptionType
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -579,6 +580,20 @@ export const useUpdateInclusion = (
   return useAppMutation<AxiosResponse<number, AxiosError>, EditInclusionParams>(
     async (data) => {
       const result = await updateInclusionCB.execute({ ...data });
+      return result;
+    }, opt);
+}
+
+export const useCreateSubsequentOptions = (
+  opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
+) => {
+  const createSubsequentOption = useApiCallback(
+    async (api, args: SubsequentOptionType) =>
+      await api.webbackoffice.web_create_subsequent(args)
+  );
+  return useAppMutation<AxiosResponse<SubsequentOptionType, AxiosError>, SubsequentOptionType>(
+    async (data) => {
+      const result = await createSubsequentOption.execute({ ...data });
       return result;
     },
     opt

@@ -32,6 +32,7 @@ import {
   ProductSetStatusParams,
   RegularQuestionTypeParams,
   WebGetContentsParams,
+  SubsequentOptionType,
 } from "../types";
 
 export class WebApiBackOffice {
@@ -295,5 +296,11 @@ export class WebApiBackOffice {
   public async editInclusion(params: EditInclusionParams) {
     return await this.axios.put(
       `/api/v1/product/internal-update-inclusion`, params)
+  }
+  public async web_create_subsequent(params: SubsequentOptionType){
+    return await this.axios.post<SubsequentOptionType>(
+      `/v1/api/Chatbot/create-subsequent-options`,
+      params
+    )
   }
 }
