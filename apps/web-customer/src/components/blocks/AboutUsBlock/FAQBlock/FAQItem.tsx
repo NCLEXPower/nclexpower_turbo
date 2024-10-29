@@ -1,13 +1,26 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import React from "react";
+import { faqMockData } from "../../../../core/constant/AboutUsMock/FAQMock";
 import { ControlledAccordion } from "core-library/components";
-import { useForm } from "react-hook-form";
-import { faqMockData } from "@/core/constant/AboutUsMock/FAQMock";
+import { Box } from "@mui/material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 interface AccordionContentProps {
   description?: string[];
   subDescription?: string[];
 };
 
+interface AccordionHeaderProps {
+  id: number;
+  title: string;
+  expanded: boolean;
+  onToggle: (event: React.SyntheticEvent, newExpanded: boolean) => void
+}
 interface FAQItemBlockProps {
   topic: string;
 };
@@ -24,31 +37,69 @@ const renderListItems = (items: string[], className: string, marginLeft: string)
 
 const AccordionContent: React.FC<AccordionContentProps> = ({ description, subDescription }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 py-2">
       {description && renderListItems(description, "gap-4", "20px")}
       {subDescription && renderListItems(subDescription, "gap-2", "40px")}
     </div>
   );
 };
 
+const AccordionHeader: React.FC<AccordionHeaderProps> = ({id, title, expanded, onToggle}) => {
+  return (
+    <Box className="w-full flex justify-between px-8 items-center" key={id}>
+    <h4 className="text-[16px] font-ptSans text-darkBlue font-bold">{title}</h4>
+    <Box>
+      {expanded ? (
+        <>
+          <IndeterminateCheckBoxIcon
+            sx={{ fontSize: "2rem", color: "#0F2A71" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle(e, !expanded);
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <AddBoxIcon
+            sx={{ fontSize: "2rem", color: "#0F2A71" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle(e, !expanded);
+            }}
+          />
+        </>
+      )}
+    </Box>
+  </Box>
+  )
+}
+
 export const FAQItemBlock: React.FC<FAQItemBlockProps> = ({ topic }) => {
-  const { control } = useForm();
   const accordionItems = faqMockData
     .filter((item) => item.topic === topic)
     .map((item) => ({
+      id: item.id,
       title: item.question,
       content: <AccordionContent description={item.description} subDescription={item.subDescription} />,
     }));
 
   return (
-    <section className="mt-0 lg:mt-[-20px]">
-      <ControlledAccordion
+    <section className="mt-0 lg:mt-[-20px] h-auto">
+       <ControlledAccordion
+        accordionRadius="5px"
+        headerBackgroundColor="#dbdfea"
+        headerHeight="auto"
         items={accordionItems}
-        control={control}
-        name="accordion"
-        titleColor="#0F2A71"
-        titleFontWeight="bold"
-        titleFontSize="14px"
+        renderSummary={((item, expanded, onToggle) => {
+         const {id, title} = item;
+          return (
+            <AccordionHeader id={id} title={title} expanded={expanded} onToggle={onToggle}/>
+          );
+        })}
+        renderDetails={((item) => (
+          <Box className="w-full px-8">{item.content}</Box>
+        ))}
       />
     </section>
   );

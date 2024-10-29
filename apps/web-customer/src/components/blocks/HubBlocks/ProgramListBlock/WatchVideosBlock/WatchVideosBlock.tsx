@@ -35,7 +35,7 @@ export function WatchVideosBlock() {
     }
 
     if (programId) {
-      const programTitle = fetchedProgramList?.find((item) => item.programId === programId)?.title || "Welcome to CORE Zigma System";
+      const programTitle = fetchedProgramList?.find((item) => item.id === programId)?.title || "Welcome to CORE Zigma System";
       setSectionMainTitle(programTitle);
     }
   }, [router.query]);
@@ -46,7 +46,7 @@ export function WatchVideosBlock() {
 
   return (
     <section className="flex h-auto w-full justify-center bg-[#e7eaf1]">
-      <Box className="flex flex-col w-auto lg:w-[1045px] mt-[120px] mb-[40px] mx-4 gap-6">
+      <Box className="flex flex-col w-auto lg:w-[1045px] mt-[30px] lg:mt-[70px] mb-[40px] mx-4 gap-6">
         <div className="flex gap-2 items-center">
           <ArrowBackIosNewIcon fontSize="inherit" />
           <h4
