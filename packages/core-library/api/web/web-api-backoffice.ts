@@ -276,24 +276,24 @@ export class WebApiBackOffice {
   }
 
   public async delete_route(MenuId: string) {
-    return await this.axios.delete<number>(
+    return await this.axios.delete(
       `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
     );
   }
 
   public async createInclusions(params: CreateInclusionParams) {
-    return await this.axios.post<number>(
+    return await this.axios.post(
       `/api/v1/product/internal-add-inclusions`, params)
   }
 
   public async deleteInclusion(InclusionId: string) {
-    return await this.axios.delete<number>(
+    return await this.axios.delete(
       `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
     )
   }
 
   public async editInclusion(params: EditInclusionParams) {
-    return await this.axios.put<number>(
+    return await this.axios.put(
       `/api/v1/product/internal-update-inclusion`, params)
   }
 }
