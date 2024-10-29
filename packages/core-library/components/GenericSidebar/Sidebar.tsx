@@ -49,7 +49,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
     }
     return navigation;
   });
-
+  
   return (
     <Drawer
       open={open}

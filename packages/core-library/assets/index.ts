@@ -206,3 +206,5 @@ export const LottieLists = [
   { id: 34, label: "Forgot Password Image", image: ForgotPasswordImage },
   { id: 35, label: "Change Password Image", image: ChangePasswordImage },
 ];
+
+export const RegisterBG = require("./register/register_bg.jpg");

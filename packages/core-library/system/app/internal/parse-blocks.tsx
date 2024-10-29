@@ -1,4 +1,4 @@
-/**
+ /**
 * Property of the NCLEX Power.
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
@@ -21,7 +21,8 @@ import {
   CreateRegularQuestionTypeBlock,
   InclusionBlock,
   DuplicateSessionBlock,
-  ChatbotManagementBlock
+  ChatbotManagementBlock,
+  ContactUsManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -65,6 +66,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <DuplicateSessionBlock />;
     case "ChatbotManagement":
       return <ChatbotManagementBlock />;
+    case "ContactUsManagementBlock":
+      return <ContactUsManagementBlock />;
     default:
       return null;
   }

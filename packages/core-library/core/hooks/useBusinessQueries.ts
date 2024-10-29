@@ -30,7 +30,9 @@ import {
   GetAllInclusionResponse,
   CreateInclusionParams,
   EditInclusionParams,
-  SubsequentOptionType
+  SubsequentOptionType,
+  GetDefaultReviewerResponse,
+  DefaultReviewerDto
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -599,3 +601,20 @@ export const useCreateSubsequentOptions = (
     opt
   );
 };
+
+export const useGetSelectedApprovers = (
+  queryKey: string[]
+): UseQueryResult<DefaultReviewerDto[] | undefined, any> => {
+  const getSelectedApprover = useApi((api) =>
+    api.webbackoffice.getSelectedApprover()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSelectedApprover.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}

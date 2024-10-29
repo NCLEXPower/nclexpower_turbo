@@ -34,6 +34,7 @@ import {
   useGetAllInternalAccounts,
   useCreateRegularQuestion,
   useGetContents,
+  useGetSelectedApprovers,
   useGetAllInclusion,
   useDeleteRoute,
   useCreateInclusion,
@@ -64,6 +65,7 @@ import {
   CreateRegularType,
   AuthorizedContentsResponseType,
   WebGetContentsParams,
+  DefaultReviewerDto,
   GetAllInclusionResponse,
   CreateInclusionParams,
   EditInclusionParams,
@@ -234,6 +236,12 @@ interface BusinessQueryContextValue {
     queryKey: string[],
     args: WebGetContentsParams
   ) => UseQueryResult<AuthorizedContentsResponseType[] | undefined, any>;
+
+  businessQuerySelectedApprovers
+  : (
+    queryKey: string[],
+  ) => UseQueryResult<DefaultReviewerDto[] | undefined, any>;
+
   businessQueryGetAllInclusion: (
     queryKey: string[]
   ) => UseQueryResult<GetAllInclusionResponse[] | undefined, any>
@@ -309,6 +317,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllInternalAccount = useGetAllInternalAccounts;
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
+  const businessQuerySelectedApprovers = useGetSelectedApprovers
   const businessQueryGetAllInclusion = useGetAllInclusion;
   const businessQueryDeleteRoute = useDeleteRoute;
   const businessQueryCreateInclusion = useCreateInclusion;
@@ -347,6 +356,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInternalAccount,
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
+        businessQuerySelectedApprovers,
         businessQueryGetAllInclusion,
         businessQueryDeleteRoute,
         businessQueryCreateInclusion,

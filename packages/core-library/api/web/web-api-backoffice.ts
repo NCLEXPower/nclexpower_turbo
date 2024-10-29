@@ -303,4 +303,10 @@ export class WebApiBackOffice {
       params
     )
   }
+  public async getSelectedApprover() {
+    return await this.axios.get<GetDefaultReviewerResponse[]>(
+      `/api/v2/content/BaseContent/get-selected-approvers`
+    )
+  }
+
 }
