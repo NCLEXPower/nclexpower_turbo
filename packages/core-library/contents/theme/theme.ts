@@ -16,6 +16,7 @@ export const appColorsFromPrimary = (primaryColor: string) => {
   const color = new ColorGenerator(primaryColor);
   return {
     primary: color.primary,
+    purple: "#6900b7",
     secondary: {
       light: color.lightenColor(20),
       dark: color.darkenColor(20),
@@ -79,6 +80,7 @@ export const theme = (tenant?: CmsTenant | null) => {
   const info = "#0018CC";
   const infoColors = new ColorGenerator(info);
   const primaryColors = new ColorGenerator(appColors.primary);
+  const purple = "#560bad";
 
   return createTheme({
     spacing: 4,
@@ -94,6 +96,7 @@ export const theme = (tenant?: CmsTenant | null) => {
     },
     palette: {
       appColors,
+      purple: appColors.purple,
       primary: {
         light: primaryColors.lightenColor(80, 20),
         main: appColors.primary,

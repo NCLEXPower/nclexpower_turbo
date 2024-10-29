@@ -266,4 +266,10 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/authorized-contents?${qs.stringify({ ...params })}`
     );
   }
+
+  public async delete_route(MenuId: string) {
+    return await this.axios.delete<number>(
+      `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
+    );
+  }
 }
