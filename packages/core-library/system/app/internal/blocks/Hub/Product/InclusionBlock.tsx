@@ -84,15 +84,18 @@ export const InclusionBlock: React.FC = () => {
 
     async function onSubmit(value: InclusionType) {
         try {
-            await createInclusion(value)
+            const response = await createInclusion(value)
+            if (response.data === 409) {
+                executeToast(
+                    "Inclusion already exist",
+                    'top-right',
+                    true,
+                    { type: 'error' })
+            }
             refetch()
         }
         catch {
-            executeToast(
-                "Inclusion already exist",
-                'top-right',
-                true,
-                { type: 'error' })
+            executeToast('Somethin went wrong. Please try again later', 'top-right', true, { type: 'error' })
         }
     }
 

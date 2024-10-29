@@ -33,13 +33,20 @@ export const InclusionEditForm = () => {
 
     async function onSubmit(values: UpdateInclusionType) {
         try {
-            await mutateAsync(values)
+            const response = await mutateAsync(values)
+            if (response.data === 409) {
+                executeToast(
+                    "Inclusion already exist",
+                    'top-right',
+                    true,
+                    { type: 'error' })
+            }
             reset()
             closeDialog()
             queryClient.invalidateQueries("getAllInclusionApi")
         }
         catch {
-            executeToast('Inclusion Already Exist', 'top-right', true, { type: 'error' })
+            executeToast('Somethin went wrong. Please try again later', 'top-right', true, { type: 'error' })
         }
     }
 
