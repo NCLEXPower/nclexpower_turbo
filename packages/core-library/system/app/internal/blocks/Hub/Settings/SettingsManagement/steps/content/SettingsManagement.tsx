@@ -4,7 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import React, { useEffect } from "react";
-import { Card, InformationTitle } from "core-library/components";
+import { Card, InformationTitle, AccessControl } from "core-library/components";
 import { Box, Grid, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -14,11 +14,13 @@ import {
   SettingsSelectionType,
   ChooseSettingsOptions,
 } from "../../types";
-
+import { useAccessControl } from "core-library/hooks";
+import { AccessLevels } from "./permission";
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
   previousStep(): void;
   values: Partial<SettingsSelectionType>;
+  accessLevel: number;
 }
 
 const chooseSettingsStepFormSchema = yup.object({
@@ -46,6 +48,8 @@ const ChooseProductsConfigurations = (props: {
     criteriaMode: "all",
   });
 
+  const { accessLevel } = useAccessControl();
+
   useEffect(() => {
     reset({
       selection: props.values.selection,
@@ -58,7 +62,7 @@ const ChooseProductsConfigurations = (props: {
     setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
-  return (
+    return (
     <Box sx={{ mb: 5 }}>
       <InformationTitle
         text="Configuration Changes"
@@ -69,28 +73,27 @@ const ChooseProductsConfigurations = (props: {
         containerProps={{ mb: 5 }}
         textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
-      <Grid
-        justifyContent="center"
-        container
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-      >
-        <Grid item xs={4}>
-          <Card hoverEffect elevation={5} text="Web Customer" />
-        </Grid>
-        <Grid item xs={4}>
-          <Card hoverEffect elevation={5} text="Web BackOffice" />
-        </Grid>
-        <Grid item xs={4}>
-          <Card
-            onClick={() =>
-              handleSelection({ chosen: "CONFIG", selection: "QM" })
-            }
-            hoverEffect
-            elevation={5}
-            text="Web Simulator"
-          />
-        </Grid>
+      <Grid justifyContent="center" container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        {accessLevel === AccessLevels.ADMIN && (
+          <>
+            <Grid item xs={4}>
+              <Card hoverEffect elevation={5} text="Web Customer" />
+            </Grid>
+            <Grid item xs={4}>
+              <Card hoverEffect elevation={5} text="Web BackOffice" />
+            </Grid>
+          </>
+        )}
+        {(accessLevel === AccessLevels.ADMIN || accessLevel === AccessLevels.ENCODER) && (
+          <Grid item xs={4}>
+            <Card
+              onClick={() => handleSelection({ chosen: "CONFIG", selection: "QM" })}
+              hoverEffect
+              elevation={5}
+              text="Web Simulator"
+            />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
@@ -283,13 +286,24 @@ export const InAppManagement = (props: {
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   return (
     <Card sx={{ mt: 5, p: 5 }}>
-      <ChooseProductsConfigurations nextStep={nextStep} values={values} />
-      <Divider>Other Configurations</Divider>
-      <OtherConfigurations nextStep={nextStep} values={values} />
-      <Divider>Content Management System</Divider>
-      <ContentManagementSystemSettings nextStep={nextStep} values={values} />
-      <Divider>In App Routing</Divider>
-      <InAppManagement nextStep={nextStep} values={values} />
+      <AccessControl componentName="ChooseProductsConfigurations">
+        <ChooseProductsConfigurations nextStep={nextStep} values={values} />
+      </AccessControl>
+      
+      <AccessControl componentName="OtherConfigurations">
+        <Divider>Other Configurations</Divider>
+        <OtherConfigurations nextStep={nextStep} values={values} />
+      </AccessControl>
+      
+      <AccessControl componentName="ContentManagementSystemSettings">
+        <Divider>Content Management System</Divider>
+        <ContentManagementSystemSettings nextStep={nextStep} values={values} />
+      </AccessControl>
+      
+      <AccessControl componentName="InAppManagement">
+        <Divider>In App Routing</Divider>
+        <InAppManagement nextStep={nextStep} values={values} />
+      </AccessControl>
     </Card>
   );
 };

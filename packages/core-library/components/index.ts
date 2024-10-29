@@ -79,3 +79,4 @@ export * from "./GenericSidebar/BaseSidebar/BaseSidebar";
 export { default as ConfirmationModal } from "./Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 export * from "./Popover/Popover";
 export * from "./Popover/ActionsPopover";
+export * from "./AccessControl/AccessControl";

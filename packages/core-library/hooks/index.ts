@@ -23,4 +23,5 @@ export * from "./useSensitiveInformation";
 export * from "./useGoogleSignIn";
 export * from "./usePreventDuplicateSession";
 export * from './useMappedErrors'
-export *from "./useStyles"
+export * from "./useStyles"
+export * from "./useAccessControl"
