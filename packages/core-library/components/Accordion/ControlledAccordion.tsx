@@ -112,7 +112,7 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Header</h4>
+                    <h4 className="text-[16px] font-ptSans">No Available Header...</h4>
                   </Box>
                 )}
               </CustomAccordionSummary>
@@ -128,7 +128,7 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Details</h4>
+                    <h4 className="text-[16px] font-ptSans">No Available Details...</h4>
                   </Box>
                 )}
               </CustomAccordionDetails>
