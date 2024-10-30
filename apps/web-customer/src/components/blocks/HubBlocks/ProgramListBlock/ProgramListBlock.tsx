@@ -115,7 +115,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
               </div>
               <div className="flex gap-2 items-center">
                 <h4 className="text-white text-[14px] md:text-[18px] font-regular font-ptSansNarrow">
-                  {item.sections?.length ?? 0} Sections
+                  {item.sections?.length} Sections
                 </h4>
                 <IconButton
                   className={`text-white cursor-pointer transition-transform duration-300 ${expanded ? "rotate-180" : "rotate-0"}`}
@@ -156,8 +156,8 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
           </div>
         </Box>
         <Box className="flex flex-col space-y-2 bg-white px-10 py-2 pt-4 rounded-b-[16px]">
-          {(sections ?? []).length > 0 ? (
-            (sections ?? []).map((item) => {
+          {sections && sections.length > 0 ? (
+            sections.map((item) => {
               const {
                 sectionId,
                 sectionType,
@@ -181,11 +181,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       height={16}
                     />
                     <h4
-                      onClick={
-                        hasVideos
-                          ? () => handleShowVideos(sectionVideos, id)
-                          : undefined
-                      }
+                      onClick={() => hasVideos && handleShowVideos(sectionVideos, id)}
                       className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
                       {sectionTitle}
