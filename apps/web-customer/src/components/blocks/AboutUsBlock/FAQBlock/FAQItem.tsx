@@ -5,10 +5,8 @@
 */
 import React from "react";
 import { faqMockData } from "../../../../core/constant/AboutUsMock/FAQMock";
-import { ControlledAccordion } from "core-library/components";
+import { ControlledAccordion, EvaIcon, IconButton } from "core-library/components";
 import { Box } from "@mui/material";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 interface AccordionContentProps {
   description?: string[];
@@ -19,7 +17,7 @@ interface AccordionHeaderProps {
   id: number;
   title: string;
   expanded: boolean;
-  onToggle: (event: React.SyntheticEvent, newExpanded: boolean) => void
+  onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void
 }
 interface FAQItemBlockProps {
   topic: string;
@@ -47,32 +45,46 @@ const AccordionContent: React.FC<AccordionContentProps> = ({ description, subDes
 const AccordionHeader: React.FC<AccordionHeaderProps> = ({id, title, expanded, onToggle}) => {
   return (
     <Box className="w-full flex justify-between px-8 items-center" key={id}>
-    <h4 className="text-[16px] font-ptSans text-darkBlue font-bold">{title}</h4>
-    <Box>
-      {expanded ? (
-        <>
-          <IndeterminateCheckBoxIcon
-            sx={{ fontSize: "2rem", color: "#0F2A71" }}
+      <h4 className="text-[16px] font-ptSans text-darkBlue font-bold">
+        {title}
+      </h4>
+      <Box>
+        <React.Fragment>
+          <IconButton
             onClick={(e) => {
-              e.stopPropagation();
+              e?.stopPropagation();
               onToggle(e, !expanded);
             }}
-          />
-        </>
-      ) : (
-        <>
-          <AddBoxIcon
-            sx={{ fontSize: "2rem", color: "#0F2A71" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle(e, !expanded);
-            }}
-          />
-        </>
-      )}
+          >
+            <Box
+              sx={{
+                position: "relative",
+                "#open-icon": { display: expanded ? "none" : "flex" },
+                "#close-icon": { display: expanded ? "flex" : "none" },
+              }}
+            >
+              <EvaIcon
+                id="close-icon"
+                name="minus-square-outline"
+                fill="#0F2A71"
+                width={30}
+                height={30}
+                ariaHidden
+              />
+              <EvaIcon
+                id="open-icon"
+                name="plus-square-outline"
+                fill="#0F2A71"
+                width={30}
+                height={30}
+                ariaHidden
+              />
+            </Box>
+          </IconButton>
+        </React.Fragment>
+      </Box>
     </Box>
-  </Box>
-  )
+  );
 }
 
 export const FAQItemBlock: React.FC<FAQItemBlockProps> = ({ topic }) => {

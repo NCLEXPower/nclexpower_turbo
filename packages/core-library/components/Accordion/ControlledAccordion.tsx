@@ -25,12 +25,12 @@ interface Props<T> extends HeaderProps {
   renderSummary?: (
     item: T,
     expanded: boolean,
-    onToggle: (event: React.SyntheticEvent, newExpanded: boolean) => void
+    onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void
   ) => ReactNode;
   renderDetails?: (
     item: T,
     expanded: boolean,
-    onToggle: (event: React.SyntheticEvent, newExpanded: boolean) => void
+    onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void
   ) => ReactNode;
   noAvailableDataText?: string;
   disabled?: boolean;
@@ -72,7 +72,7 @@ export const ControlledAccordion = <T extends ItemProps>({
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    (panel: string) => (event?: React.SyntheticEvent, newExpanded?: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
 

@@ -12,7 +12,7 @@ import {
   SectionVideosType,
   StandardProgramListType,
 } from "core-library/types/wc/programList";
-import { ControlledAccordion } from "core-library/components";
+import { ControlledAccordion, EvaIcon, IconButton } from "core-library/components";
 import Image from "next/image";
 import { ProgressCircle } from "../../../../components/ProgressCircle/ProgressCircle";
 import useCalculateProgramProgress from "../../../../core/hooks/useCalculateProgramProgress";
@@ -21,7 +21,6 @@ import {
   getSectionTypeIcons,
   getStatusIcons,
 } from "../../.../../../../utils";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useRouter } from "core-library";
 
 interface ProgramListBlockProps {
@@ -33,7 +32,7 @@ interface ProgramListBlockProps {
 interface AccordionHeaderProps {
   item: StandardProgramListType;
   expanded: boolean;
-  onToggle: (event: React.SyntheticEvent, newExpanded: boolean) => void;
+  onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void;
 }
 
 interface AccordionDetailsProps {
@@ -114,23 +113,24 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                   loading="lazy"
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <h4 className="text-white text-[14px] md:text-[18px] font-regular font-ptSansNarrow">
                   {item.sections?.length ?? 0} Sections
                 </h4>
-
-                <ExpandMoreIcon
-                  sx={{
-                    color: "white",
-                    cursor: "pointer",
-                    transition: "transform 0.3s",
-                    transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-                  }}
+                <IconButton
+                  className={`text-white cursor-pointer transition-transform duration-300 ${expanded ? "rotate-180" : "rotate-0"}`}
                   onClick={(e) => {
-                    e.stopPropagation();
+                    e?.stopPropagation();
                     onToggle(e, !expanded);
                   }}
-                />
+                >
+                  <EvaIcon
+                    name="arrow-ios-downward-outline"
+                    fill="#ffffff"
+                    width={20}
+                    height={20}
+                  />
+                </IconButton>
               </div>
             </div>
           </div>
