@@ -1,115 +1,141 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import React, { ReactNode, useState } from "react";
+import { Box, Accordion, AccordionSlots, Fade } from "@mui/material";
+import { styled } from "@mui/material";
+import { CustomAccordionSummary } from "./CustomAccordionSummary";
+import { CustomAccordionDetails } from "./CustomAccordionDetails";
 
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid black`,
-  background: '#d0d6e4',
-  borderRadius: '4px',
-  '&::before': {
-    display: 'none',
-  },
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    {...props}
-  />
-))(({ theme }) => ({
-  padding: '10px',
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
-      : 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row',
-  '& .MuiAccordionSummary-expandIconWrapper': {
-    transition: 'none',
-  },
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'none',
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  backgroundColor: '#ffffff',
-}));
-
-interface AccordionItem {
-  title: string;
-  content: React.ReactNode;
+interface HeaderProps {
+  headerBackgroundColor?: string;
+  headerHeight?: string;
+  accordionRadius?: string;
 }
 
-interface ReusableAccordionProps<T extends FieldValues> {
-  items: AccordionItem[];
-  control: Control<T>;
-  name: Path<T>;
-  titleColor?: string;
-  titleFontWeight?: string;
-  titleFontSize?: string;
+interface ItemProps {
+  id: string | number;
+  disabled?: boolean;
 }
 
-export const ControlledAccordion = <T extends FieldValues>({
+interface Props<T> extends HeaderProps {
+  items: T[];
+  renderSummary?: (
+    item: T,
+    expanded: boolean,
+    onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void
+  ) => ReactNode;
+  renderDetails?: (
+    item: T,
+    expanded: boolean,
+    onToggle: (event?: React.SyntheticEvent, newExpanded?: boolean) => void
+  ) => ReactNode;
+  noAvailableDataText?: string;
+  disabled?: boolean;
+}
+
+const StyledAccordion = styled(Accordion)<{
+  expanded: boolean;
+  accordionRadius?: string;
+}>(({ expanded, accordionRadius }) => ({
+  borderRadius: accordionRadius ?? "0px",
+  "& .MuiAccordion-region": {
+    height: expanded ? "auto" : 0,
+  },
+  "& .MuiAccordionDetails-root": {
+    display: expanded ? "block" : "none",
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 0,
+  },
+  "&.Mui-disabled": {
+    backgroundColor: "white",
+    pointerEvents: "none",
+    opacity: 0.5,
+  },
+  "&.MuiAccordion-root:before": {
+    backgroundColor: "transparent",
+  },
+}));
+
+export const ControlledAccordion = <T extends ItemProps>({
   items,
-  control,
-  name,
-  titleColor = '#000',
-  titleFontWeight = 'normal',
-  titleFontSize = '1rem',
-}: ReusableAccordionProps<T>) => {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  renderSummary,
+  renderDetails,
+  headerBackgroundColor,
+  headerHeight,
+  noAvailableDataText,
+  accordionRadius,
+}: Props<T>) => {
+  const [expanded, setExpanded] = useState<string | false>(false);
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+  const handleChange =
+    (panel: string) => (event?: React.SyntheticEvent, newExpanded?: boolean) => {
+      setExpanded(newExpanded ? panel : false);
+    };
 
   return (
-    <div className="flex flex-col gap-4">
-      {items.map((item, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-        >
-          <AccordionSummary
-            aria-controls={`panel${index}d-content`}
-            id={`panel${index}d-header`}
-            expandIcon={
-              expanded === `panel${index}`
-                ? <IndeterminateCheckBoxIcon sx={{ fontSize: '2rem', color: '#0F2A71' }} />
-                : <AddBoxIcon sx={{ fontSize: '2rem', color: '#0F2A71' }} />
-            }
-          >
-            <Typography
-              sx={{
-                color: titleColor,
-                fontWeight: titleFontWeight,
-                fontSize: titleFontSize,
-              }}
+    <Box className="flex flex-col gap-4">
+      {items.length === 0 ? (
+        <h4 className="font-ptSansNarrow text-center text-gray-500 w-full">
+          {noAvailableDataText}
+        </h4>
+      ) : (
+        items.map((item) => {
+          const { id, disabled } = item;
+          const panelId = `panel${id}`;
+
+          return (
+            <StyledAccordion
+              accordionRadius={accordionRadius}
+              disabled={disabled}
+              key={panelId}
+              square
+              expanded={expanded === panelId}
+              slots={{ transition: Fade as AccordionSlots["transition"] }}
+              slotProps={{ transition: { timeout: 400 } }}
             >
-              {item.title}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Controller
-              name={name}
-              control={control}
-              render={({ field }) => <Typography>{item.content}</Typography>}
-            />
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </div>
+              <CustomAccordionSummary
+                expanded={expanded === panelId}
+                onToggle={handleChange(panelId)}
+                headerBackgroundColor={headerBackgroundColor}
+                headerHeight={headerHeight}
+                accordionRadius={accordionRadius}
+              >
+                {renderSummary ? (
+                  renderSummary(
+                    item,
+                    expanded === panelId,
+                    handleChange(panelId)
+                  )
+                ) : (
+                  <Box>
+                    <h4 className="text-[16px] font-ptSans">No Available Header...</h4>
+                  </Box>
+                )}
+              </CustomAccordionSummary>
+              <CustomAccordionDetails
+                expanded={expanded === panelId}
+                onToggle={handleChange(panelId)}
+              >
+                {renderDetails ? (
+                  renderDetails(
+                    item,
+                    expanded === panelId,
+                    handleChange(panelId)
+                  )
+                ) : (
+                  <Box>
+                    <h4 className="text-[16px] font-ptSans">No Available Details...</h4>
+                  </Box>
+                )}
+              </CustomAccordionDetails>
+            </StyledAccordion>
+          );
+        })
+      )}
+    </Box>
   );
 };

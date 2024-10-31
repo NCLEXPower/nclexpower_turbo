@@ -28,10 +28,12 @@ export const ProgramGridContent: React.FC<Props> = ({title, sections, closeModal
 
   const router = useRouter();
 
+  const lastPathSegment = router.asPath.split('/').filter(Boolean).pop();
+
   const handleShowVideos = (videos: SectionVideosType[], programId: string) => {
     const secVids = JSON.stringify(videos);
     const encodedSecVids = encodeURIComponent(secVids);
-    router.push(`/hub/programs/watch?secVids=${encodedSecVids}&programId=${programId}`);
+    router.push(`/hub/programs/${lastPathSegment}/watch?secVids=${encodedSecVids}&programId=${programId}`);
   };
 
   return (
