@@ -4,7 +4,7 @@ import { httpClient } from "./useApi";
 import { useAuthContext } from "../contexts";
 
 export const useAuthInterceptor = () => {
-  const { softLogout } = useAuthContext();
+  const { logout } = useAuthContext();
 
   useEffect(
     () => httpClient.setupMiddlewareOptions({ onErrorHandler: handleError }),
@@ -16,6 +16,6 @@ export const useAuthInterceptor = () => {
       return Promise.reject(error);
     }
 
-    return await softLogout();
+    return await logout();
   };
 };
