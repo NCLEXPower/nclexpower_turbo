@@ -18,6 +18,7 @@ export interface LoginParams {
   email: string;
   password: string;
   appName: string;
+  deviceId: string;
 }
 
 export interface SsoLoginParams {
@@ -49,6 +50,8 @@ export interface LoginResponse {
   twoFactorCodeExpiryTime: string;
   accountId: string;
   accessLevel: number;
+  sessionId: string;
+  fingerprint: string;
 }
 
 export interface RefreshTokenResponse {
@@ -396,6 +399,13 @@ export type RevokeParams = {
   email: string;
 };
 
+export interface EnrolledDeviceUpdaterParams {
+  deviceId: string;
+  accountId: string;
+  deviceType: string;
+  inUse: boolean;
+}
+
 export type OTPPreparation = {
   email: string;
   password: string;
@@ -467,8 +477,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export type Approver = User;
-export type Author = User;
+export interface Approver extends User {}
+
+export interface Author extends User {}
 
 export interface User {
   id: string;
@@ -547,15 +558,15 @@ export type DefaultReviewerDto = {
 };
 
 export type GetAllInclusionResponse = {
-  id: string,
-  option: string,
-}
+  id: string;
+  option: string;
+};
 
 export type CreateInclusionParams = {
-  option: string,
-}
+  option: string;
+};
 
-export type EditInclusionParams = GetAllInclusionResponse
+export type EditInclusionParams = GetAllInclusionResponse;
 export type SubsequentOptionType = {
   optionText: string;
-}
+};

@@ -3,7 +3,11 @@ import {
   pathExists,
   prepareMenus,
 } from "../components/GenericDrawerLayout/MockMenus";
-import { usePreventDuplicateSession, useValidateToken } from "../hooks";
+import {
+  useAuthInterceptor,
+  usePreventDuplicateSession,
+  useValidateToken,
+} from "../hooks";
 import { useAuthContext } from "../contexts";
 import { InternalPageEntryPoint } from "./app/internal/Page";
 import { QueryClient } from "react-query";
@@ -33,6 +37,8 @@ export const Page: React.FC<React.PropsWithChildren<Props>> = ({
   const queryClient = new QueryClient();
 
   const { duplicate } = usePreventDuplicateSession();
+
+  useAuthInterceptor();
 
   const isValid =
     (routes.length > 0 && pathExists(routes, router.asPath)) ||
