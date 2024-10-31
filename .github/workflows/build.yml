@@ -93,13 +93,15 @@ jobs:
           echo "::set-output name=BUILD_NUMBER::$BUILD_NUMBER"
 
       - name: Commit and Tag the Build
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/build_number.txt  # Explicitly add the file to be tracked
           git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
           git tag ${{ steps.build_info.outputs.BUILD_NUMBER }}
-          git push origin ${{ steps.build_info.outputs.BUILD_NUMBER }}
+          git push https://x-access-token:${GH_PAT}@github.com/NCLEXPower/nclexpower_turbo.git ${{ steps.build_info.outputs.BUILD_NUMBER }}
 
       - name: Deploy simulator to Vercel (Dev)
         if: github.ref == 'refs/heads/mdev'
