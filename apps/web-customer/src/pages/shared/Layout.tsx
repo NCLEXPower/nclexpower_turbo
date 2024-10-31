@@ -1,6 +1,6 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ThemeProvider, CssBaseline, useTheme } from "@mui/material";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import { LoadablePageContent } from "@/components/LoadablePageContent";
 import {
   StripeContextProvider,
@@ -19,47 +19,55 @@ import { DrawerLayout } from "core-library/components";
 import { useWebHeaderStyles } from "@/pages/contents/useWebHeaderStyles";
 import { useConfirmedIntent } from "core-library/contexts/auth/hooks";
 import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
-import { HideHeader } from "../../core/constant/HideHeader";
-import { useWebSidebarStyles } from "@/pages/contents/useWebSidebarStyles";
+import { theme } from "core-library/contents/theme/theme";
+import { useAuthInterceptor, useStyle } from "core-library/hooks";
+import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 
-interface Props { }
+interface Props {}
 
 const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
   const queryClient = new QueryClient();
   const theme = useTheme();
   const { publishableKey } = useStripeConfig();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, loading } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useWebSidebarStyles();
   const [confirmValue] = useConfirmedIntent();
   usePaymentSuccessRedirect(confirmValue);
+  useAuthInterceptor();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <HeaderTitleContextProvider>
-          <FormSubmissionContextProvider>
-            <StripeContextProvider publishableKey={publishableKey}>
-              <LoadablePageContent>
-                <DrawerLayout
-                  menu={headerMenu}
-                  isAuthenticated={isAuthenticated}
-                  headerStyles={headerStyles}
-                  sidebarStyles={sidebarStyles}
-                  hiddenHeaderPathnames={HideHeader}
-                  onLogout={logout}
-                >
-                  {children}
-                  <Footer info={CompanyInfo} list={list} />
-                </DrawerLayout>
-              </LoadablePageContent>
-            </StripeContextProvider>
-          </FormSubmissionContextProvider>
-        </HeaderTitleContextProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <PageLoaderContextProvider
+      isAuthenticated={isAuthenticated}
+      loading={false}
+    >
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme()}>
+          <CssBaseline />
+          <HeaderTitleContextProvider>
+            <FormSubmissionContextProvider>
+              <StripeContextProvider publishableKey={publishableKey}>
+                <LoadablePageContent loading={loading}>
+                  <DrawerLayout
+                    menu={headerMenu}
+                    isAuthenticated={isAuthenticated}
+                    headerStyles={headerStyles}
+                    sidebarStyles={sidebarStyles}
+                    onLogout={logout}
+                  >
+                    {children}
+                    <Footer info={CompanyInfo} list={list} />
+                    {/* dynamic hideHelp should be implemented here */}
+                    {true && <ChatBotWidget />}
+                  </DrawerLayout>
+                </LoadablePageContent>
+              </StripeContextProvider>
+            </FormSubmissionContextProvider>
+          </HeaderTitleContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </PageLoaderContextProvider>
   );
 };
 
