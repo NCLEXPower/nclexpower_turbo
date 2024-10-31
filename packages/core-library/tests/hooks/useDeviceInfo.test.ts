@@ -34,7 +34,7 @@ describe("useDeviceInfo", () => {
     const { result } = renderHook(() => useDeviceInfo());
 
     await waitFor(() => {
-      expect(result.current).toEqual({
+      expect(result.current.deviceInfo).toEqual({
         fingerprint: "mockedFingerprint",
         deviceName: "iOS 14.4 (mockedDeviceModel)",
         deviceType: "mobile",
@@ -52,7 +52,7 @@ describe("useDeviceInfo", () => {
     const { result } = renderHook(() => useDeviceInfo());
 
     await waitFor(() => {
-      expect(result.current).toEqual({
+      expect(result.current.deviceInfo).toEqual({
         fingerprint: "Unknown",
         deviceName: "iOS 14.4 (mockedDeviceModel)",
         deviceType: "mobile",
