@@ -96,8 +96,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add $BUILD_FILE
-          git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}"
+          git add .github/build_number.txt  # Explicitly add the file to be tracked
+          git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
           git tag ${{ steps.build_info.outputs.BUILD_NUMBER }}
           git push origin ${{ steps.build_info.outputs.BUILD_NUMBER }}
 
