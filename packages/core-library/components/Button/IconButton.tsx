@@ -9,8 +9,9 @@ import { IconButton as MuiIconButton } from "@mui/material";
 interface Props {
   size?: "small" | "medium" | "large";
   ariaLabel?: string;
-  onClick: () => void;
+  onClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   edge?: false | "start" | "end";
+  className?: string;
 };
 
 export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
@@ -18,10 +19,11 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   ariaLabel,
   onClick,
   edge,
-  children
+  children,
+  className
 }) => {
   return (
-    <MuiIconButton aria-label={ariaLabel} size={size} onClick={onClick} edge={edge}>
+    <MuiIconButton aria-label={ariaLabel} size={size} onClick={onClick} edge={edge} className={className}>
       {children}
     </MuiIconButton>
   );
