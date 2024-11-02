@@ -4,9 +4,14 @@ import { LoginForm } from "./LoginForm";
 import { config } from "core-library/config";
 import { Encryption } from "core-library/utils/Encryption";
 import { Decryption } from "core-library/utils/Decryption";
-import { useGoogleSignIn, useLocalStorage } from "core-library/hooks";
+import {
+  useDeviceInfo,
+  useGoogleSignIn,
+  useLocalStorage,
+} from "core-library/hooks";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
+import { useDeviceSession } from "core-library/contexts/auth/hooks";
 
 export interface SavedDataProps {
   email: string;
