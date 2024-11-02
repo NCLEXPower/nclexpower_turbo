@@ -41,7 +41,7 @@ export const DialogContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const openDialog = (
     value: string,
     title: string,
-    csvData?: ExcelRowRegularQuestion[],
+    csvData: ExcelRowRegularQuestion[] = [],
     maxWidth?: DialogProps["maxWidth"]
   ) => {
     setIsOpen(true);
@@ -78,6 +78,7 @@ export const DialogContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
         loading={loading}
         hideCloseButton={hideCloseButton}
         maxWidth={maxWidth}
+        ContentHeight="550px"
       >
         <DialogContextModal dialogFormType={dialogFormType} csvData={csvData} />
       </DialogBox>
