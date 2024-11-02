@@ -6,7 +6,7 @@
 import * as yup from 'yup';
 
 export const SubsequentSchema = yup.object({
-  subsequent: 
+  optionText: 
     yup.string()
     .min(3, 'Must be at least 3 characters')
     .required('Subsequent field is required')

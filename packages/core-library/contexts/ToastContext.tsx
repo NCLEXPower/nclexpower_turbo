@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import React, { createContext, useContext } from "react";
 import { toast, ToastOptions, ToastPosition } from "react-toastify";
 
@@ -8,6 +13,7 @@ export interface ToastContextSetup {
     hideProgressBar: boolean,
     options?: Partial<ToastOptions>
   ) => void;
+    showToast: (message: string, type: "error" | "success") => void;
 }
 
 export const ToastContext = createContext<ToastContextSetup>({} as any);
@@ -35,10 +41,19 @@ export const ToastProvider: React.FC<React.PropsWithChildren> = ({
       ...options,
     });
   };
+
+  const showToast = (message: string, type: "error" | "success") => {
+    executeToast(message, "top-right", false, {
+      toastId: 0,
+      type,
+    });
+  };
+
   return (
     <ToastContext.Provider
       value={{
         executeToast,
+        showToast
       }}
     >
       {children}

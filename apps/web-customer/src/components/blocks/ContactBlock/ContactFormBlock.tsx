@@ -6,7 +6,7 @@
 import React from "react";
 import { ContactForm } from "./ContactForm";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ContactFormType, contactSchema } from "./validation";
 import { useExecuteToast } from "core-library/contexts";
 

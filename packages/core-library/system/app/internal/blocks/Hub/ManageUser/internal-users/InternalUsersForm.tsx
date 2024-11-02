@@ -8,20 +8,21 @@ import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { Grid, Box, Typography } from "@mui/material";
 import { accountSetupSchema, AccountSetupType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMenu } from "core-library/components/GenericDrawerLayout/hooks/useMenu";
 import { AccountLevel } from "../../core/constant/accountLevel";
-import {
-  Button,
-  TextField,
-  ControlledSelectField,
-  MultipleSelectField,
-  Card,
-} from "core-library/components";
 import {
   Settings as SettingsIcon,
   Key as KeyIcon,
   AccountBox as AccountBoxIcon,
 } from "@mui/icons-material";
+import { useMenu } from '../../../../../../../components/GenericDrawerLayout/hooks/useMenu';
+import {
+  Card,
+  Button,
+  TextField,
+  ControlledSelectField,
+  MultipleSelectField,
+  Alert
+} from '../../../../../../../components';
 
 type Props = {
   onSubmit: (value: AccountSetupType) => void;
@@ -65,6 +66,11 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
 
   return (
     <FormProvider {...form}>
+      <Alert
+        severity="info"
+        title="Create Internal Users"
+        description="Create internal users with their details information, credentials, and permission routes."
+      />
       <Grid
         container
         direction="column"
@@ -78,7 +84,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">
@@ -174,7 +180,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">
@@ -261,7 +267,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
             height: "auto",
             backgroundColor: "rgba(59, 0, 134, 0.05)",
             gap: 3,
-            paddingX: 4,
+            padding: 4,
           }}
         >
           <div className="flex items-center gap-2 ">

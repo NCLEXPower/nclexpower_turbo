@@ -9,7 +9,7 @@ import {
   Button,
   ControlledRichTextEditor,
   EvaIcon
-} from "core-library/components";
+} from "../../../../../../components";
 import { SubsequentDialog, EndConversationDialog } from "./ChatbotDialogs";
 import { ChatbotParent } from "./ChatbotData";
 import { ChatbotOptionType, ChatbotOptionSchema } from './validation'

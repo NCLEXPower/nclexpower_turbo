@@ -1,9 +1,9 @@
 import React from "react";
-import { Alert, DataGrid } from "core-library/components";
 import { Box, Container } from "@mui/material";
-import { useColumns } from "core-library/hooks";
-import { useBusinessQueryContext } from "core-library/contexts";
 import { useDateFormat, useSystemProduct } from "../core/hooks";
+import { useColumns } from '../../../../../../hooks';
+import { useBusinessQueryContext } from '../../../../../../contexts';
+import { Alert, DataGrid } from '../../../../../../components';
 
 export function ReportedIssuesBlock() {
   const { businessQueryGetAllReportedIssues } = useBusinessQueryContext();

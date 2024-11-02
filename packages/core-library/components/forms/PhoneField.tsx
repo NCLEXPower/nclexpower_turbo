@@ -1,10 +1,11 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { KeyboardArrowDown } from "@mui/icons-material";
 import {
+  DialogProps,
   Grid,
   MenuItem,
   OutlinedInputProps,
@@ -31,6 +32,7 @@ import { CmsTooltip } from "../../types/common";
 import { ErrorTooltip } from "../ErrorTooltip";
 import { Tooltip } from "../Tooltip";
 import { FieldError } from "./FieldError";
+import { theme } from "../../contents/theme/theme";
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -47,6 +49,7 @@ interface Props<T extends FieldValues> {
   isLoading?: boolean;
   onFocus?: OutlinedInputProps["onFocus"];
   onBlur?: OutlinedInputProps["onBlur"];
+  sx?: DialogProps["sx"];
   onCountryCodeChanged(code: string): void;
 }
 
@@ -126,6 +129,10 @@ const PhoneFieldComponent = <T extends object>({
                 <Select
                   data-testid="phone-code-select"
                   fullWidth
+                  style={{
+                    borderRadius: "5px",
+                    padding: "15px",
+                  }}
                   inputProps={{ shrink: "false" }}
                   MenuProps={{ sx: { maxHeight: "300px", width: "100%" } }}
                   color="primary"
@@ -154,6 +161,15 @@ const PhoneFieldComponent = <T extends object>({
                   decimalSeparator="."
                   displayType="input"
                   type="text"
+                  style={{
+                    borderRadius: "5px",
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-input:focus": {
+                      borderRadius: "5px",
+                      padding: "15px",
+                    },
+                  }}
                   thousandSeparator={false}
                   allowNegative={true}
                   isNumericString={true}
@@ -190,3 +206,4 @@ const PhoneFieldComponent = <T extends object>({
     onBlur && onBlur(e);
   }
 };
+
