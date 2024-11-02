@@ -1,11 +1,8 @@
-import {
-  useBusinessQueryContext,
-  useExecuteToast,
-} from "core-library/contexts";
+
+import { useBusinessQueryContext, useExecuteToast } from '../../../../../../../contexts';
+import { ProductParams } from '../../../../../../../types/types';
 import { ProductForm } from "./ProductForm";
-import { ProductParams } from "core-library/types/types";
 import { Box } from "@mui/material";
-import { useColumns } from "core-library/hooks";
 
 export function ProductFormBlock() {
   const { businessQueryCreateProduct, businessQueryGetAllProducts } =

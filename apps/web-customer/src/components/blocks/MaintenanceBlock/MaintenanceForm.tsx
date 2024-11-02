@@ -1,3 +1,10 @@
+/**
+
+Property of the NCLEX Power.
+Reuse as a whole or in part is prohibited without permission.
+Created by the Software Strategy & Development Division
+*/
+
 import { UnderMaintenance } from "core-library/assets";
 import Image from "next/image";
 import { NotifySchema, NotifyType } from "../../../core/Schema";
@@ -18,22 +25,29 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
   const { control, handleSubmit } = form;
 
   return (
-    <div className="h-screen flex justify-center items-center ">
-      <div className="flex flex-col">
-        <div className="w-[800px]">
-          <h1 className="text-[#0f2a71] text-[55px] font-bold font-Rajdhani ml-12 pb-3">
+    <div className="h-screen flex flex-col lg:flex-row justify-center items-center px-4 sm:px-10 overflow-hidden lg:px-16 xl:px-20 pb-10">
+      <div className="w-full sm:w-[950px] flex justify-center sm:justify-end md:w-[700px] lg:w-4/5 xl:w-[55%] lg:flex-none lg:order-2 ">
+        <Image
+          src={UnderMaintenance}
+          alt="UnderMaintenance"
+          className="max-w-full h-auto"
+        />
+      </div>
+
+      <div className="flex flex-col gap-y-6 w-full sm:w-1/2 md:w-4/5 xl:w-1/2 lg:order-1 text-center lg:text-left lg:items-start">
+        <div className="w-full">
+          <h1 className="text-[#0f2a71] text-[32px] sm:text-[48px] lg:text-[55px] font-bold font-Rajdhani text-center lg:text-left ">
             Application Under Development
           </h1>
-
-          <p className="w-[600px] text-[20px] text-[#9A9A9A] font-ptSans pb-7 ml-12 bottom-3">
+          <p className="text-[16px] sm:text-[18px] lg:text-[20px] text-[#9A9A9A] font-ptSans text-center lg:text-left px-4 sm:px-0 lg:w-4/5">
             Our application is currently under development and is not yet
             online. We’re working to bring it to life. Please click the "Notify
             Me" button and provide your email address to stay informed.
           </p>
         </div>
 
-        <div className="flex mt-3">
-          <div className="w-[500px] ml-12">
+        <div className="w-full flex justify-center lg:justify-start">
+          <div className="flex-1">
             <FormProvider {...form}>
               <TextField
                 control={control}
@@ -41,27 +55,58 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
                 name="email"
                 sx={{
                   borderRadius: "10px",
-                  width: "100%",
+                  width: {
+                    xs: "100%",
+                    sm: "100%",
+                    md: "100%",
+                    lg: "80%",
+                  },
+                  fontSize: {
+                    xs: "12px",
+                    sm: "14px",
+                    lg: "16px",
+                  },
+                  height: {
+                    xs: "35px",
+                    lg: "46px",
+                  },
                 }}
-                inputProps={{ style: { padding: 12, borderRadius: "10px" } }}
+                endAdornment={
+                  <Button
+                    onClick={handleSubmit(onSubmit)}
+                    sx={{
+                      bgcolor: "#0F2A71",
+                      borderRadius: "10px",
+                      fontFamily: "'PT Sans', sans-serif",
+                      fontWeight: "bold",
+                      left: 15,
+                      zIndex: 1,
+                      padding: {
+                        xs: "6px 12px",
+                        lg: "8px 16px",
+                      },
+                      fontSize: {
+                        xs: "14px",
+                        lg: "16px",
+                      },
+                      "&:hover": {
+                        backgroundColor: "#00173F",
+                      },
+                    }}
+                  >
+                    Notify Me
+                  </Button>
+                }
+                inputProps={{
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "none",
+                  },
+                }}
               />
             </FormProvider>
           </div>
-
-          <div className="mt-[40px] ">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              className="bg-[#0F2A71] hover:bg-hoverBlue text-center text-white rounded-xl font-bold ml-2 font-ptSansNarrow text-[18px] "
-              size="medium"
-            >
-              Notify Me
-            </Button>
-          </div>
         </div>
-      </div>
-
-      <div className="w-[950px]">
-        <Image src={UnderMaintenance} alt="UnderMaintenance" />
       </div>
     </div>
   );

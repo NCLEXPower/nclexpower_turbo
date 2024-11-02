@@ -110,6 +110,8 @@ export const Default = require("./DefaultImage.jpg");
 export const PNBackground = require("./PNBackground.png");
 export const RNBackground = require("./RNBackground.png");
 
+export const DuplicateSession = require("./duplicate_session.svg");
+
 export const ImageLists = [
   { id: 1, label: "NCLEX Blue Logo", image: NCLEXBlueLogo },
   { id: 2, label: "NCLEX Yellow Logo", image: NCLEXYellowLogo },
@@ -205,3 +207,5 @@ export const LottieLists = [
   { id: 34, label: "Forgot Password Image", image: ForgotPasswordImage },
   { id: 35, label: "Change Password Image", image: ChangePasswordImage },
 ];
+
+export const RegisterBG = require("./register/register_bg.jpg");

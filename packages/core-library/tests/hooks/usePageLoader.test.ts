@@ -11,6 +11,7 @@ jest.mock("../../core", () => ({
             on: jest.fn(),
             off: jest.fn(),
         },
+        loading: true 
     }),
 }));
 

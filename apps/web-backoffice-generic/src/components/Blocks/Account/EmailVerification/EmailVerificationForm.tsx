@@ -1,6 +1,12 @@
 import { Box } from "@mui/material";
 import { forgotPasswordSchema, ForgotPasswordType } from "./validation";
-import { Alert, TextField, Button, Link, LottieAnimation } from "core-library/components";
+import {
+  Alert,
+  TextField,
+  Button,
+  Link,
+  LottieAnimation,
+} from "core-library/components";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ForgotPasswordImage } from "core-library/assets";
@@ -33,7 +39,7 @@ export const EmailVerificationForm: React.FC<Props> = ({
   return (
     <section className="w-full h-full flex justify-center items-center">
       <Box className="container-sm flex flex-col lg:flex-row items-center justify-center w-full space-x-0 px-8 lg:space-x-14 lg:px-4">
-        <div className="flex">
+        <div className="hidden md:flex">
           <LottieAnimation
             animationData={ForgotPasswordImage}
             width={280}
