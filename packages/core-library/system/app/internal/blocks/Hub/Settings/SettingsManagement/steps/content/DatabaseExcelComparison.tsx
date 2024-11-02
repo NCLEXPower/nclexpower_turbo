@@ -6,7 +6,7 @@ import {
   ProgressBar,
   DataGrid,
   Alert,
-} from '../../../../../../../../../components';
+} from "../../../../../../../../../components";
 import React, { useEffect, useState } from "react";
 import { fileValidationErrors, uploadFormSchema } from "../../validation";
 import { useForm } from "react-hook-form";
@@ -14,11 +14,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Chip, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
 import { UploadFormType } from "../../types";
-import { useApiCallback, useColumns } from '../../../../../../../../../hooks';
-import { ExcelRowRegularQuestion } from '../../../../../../../../../core';
-import { useDialogContext } from '../../../../../../../../../contexts';
-import { DiscrepanciesResponse, FileUploadParams } from '../../../../../../../../../api/types';
-
+import { useApiCallback, useColumns } from "../../../../../../../../../hooks";
+import { ExcelRowRegularQuestion } from "../../../../../../../../../core";
+import { useDialogContext } from "../../../../../../../../../contexts";
+import {
+  DiscrepanciesResponse,
+  FileUploadParams,
+} from "../../../../../../../../../api/types";
 
 interface Props {
   fileType?: string[];
@@ -274,6 +276,7 @@ const AutomationDBExcelChecker = ({
       "automation-db-comparison",
       "Regular Source Question Excel Data Preview",
       csvData,
+      undefined,
       "xl"
     );
   }
@@ -323,6 +326,7 @@ const AutomationDBExcelChecker = ({
               "automation-db-comparison",
               "Regular Source Question Excel Data Preview",
               formattedData,
+              undefined,
               "xl"
             );
             setUploading(false);
