@@ -98,11 +98,13 @@ jobs:
           git add .github/build_number.txt
           git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
 
-          # Check if the tag exists remotely
+          # Check and increment tag if it exists remotely
           TAG="${{ steps.build_info.outputs.BUILD_NUMBER }}"
-          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}"; then
-            TAG="${TAG}-1"
-          fi
+          SUFFIX=0
+          while git ls-remote --tags origin | grep -q "refs/tags/${TAG}"; do
+            SUFFIX=$((SUFFIX + 1))
+            TAG="${{ steps.build_info.outputs.BUILD_NUMBER }}-$SUFFIX"
+          done
 
           # Create and push the tag
           git tag "$TAG"
