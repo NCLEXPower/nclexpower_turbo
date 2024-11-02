@@ -29,6 +29,8 @@ export const DialogContextModal: React.FC<Props> = ({
       return <AutomationDBComparisonFormBlock csvData={csvData ?? []} />;
     case "inclusion-edit-form":
       return <InclusionEditForm />;
+    case "delete-modal":
+      return <DeleteConfirmationBlock data={data} />;
     default:
       return null;
   }
