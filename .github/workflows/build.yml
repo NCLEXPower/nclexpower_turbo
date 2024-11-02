@@ -97,11 +97,17 @@ jobs:
 
           git add .github/build_number.txt
           git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
-          git tag ${{ steps.build_info.outputs.BUILD_NUMBER }}
 
-          # Add remote with PAT
+          # Check if the tag exists remotely
+          TAG="${{ steps.build_info.outputs.BUILD_NUMBER }}"
+          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}"; then
+            TAG="${TAG}-1"
+          fi
+
+          # Create and push the tag
+          git tag "$TAG"
           git remote set-url origin https://x-access-token:${GH_PAT}@github.com/NCLEXPower/nclexpower_turbo.git
-          git push origin ${{ steps.build_info.outputs.BUILD_NUMBER }}
+          git push origin "$TAG"
 
       - name: Deploy simulator to Vercel (Dev)
         if: github.ref == 'refs/heads/mdev'
