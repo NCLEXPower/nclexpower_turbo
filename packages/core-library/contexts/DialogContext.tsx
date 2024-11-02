@@ -3,7 +3,6 @@ import { DialogBox } from "../components/Dialog/DialogBox";
 import { DialogContextModal } from "../components/Dialog/DialogContextModal";
 import { ExcelRowRegularQuestion } from "../core";
 import { DialogProps } from "@mui/material";
-import { delConType } from "../components";
 
 const context = createContext<{
   isDialogOpen: boolean;
@@ -11,7 +10,6 @@ const context = createContext<{
     value: string,
     title: string,
     csvData?: ExcelRowRegularQuestion[],
-    data?: delConType,
     maxWidth?: DialogProps["maxWidth"]
   ): void;
   closeDialog(): void;
@@ -20,7 +18,6 @@ const context = createContext<{
   setLoading(value: boolean): void;
   setHideCloseButton(value: boolean): void;
   csvData?: ExcelRowRegularQuestion[];
-  data?: delConType;
 }>(undefined as any);
 
 export const useDialogContext = () => {
@@ -39,27 +36,23 @@ export const DialogContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [hideCloseButton, setHideCloseButton] = useState<boolean>(false);
   const [csvData, setCsvData] = useState<ExcelRowRegularQuestion[]>([]);
-  const [data, setData] = useState<any>(null);
   const [maxWidth, setMaxWidth] = useState<DialogProps["maxWidth"]>("md");
 
   const openDialog = (
     value: string,
     title: string,
     csvData: ExcelRowRegularQuestion[] = [],
-    data?: delConType,
     maxWidth?: DialogProps["maxWidth"]
   ) => {
     setIsOpen(true);
     setDialogFormType(value);
     setTitle(title);
     setCsvData(csvData ?? []);
-    setData(data ?? null);
     setMaxWidth(maxWidth);
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    setData(null);
   };
 
   const dialogContextValue = useMemo(
@@ -87,11 +80,7 @@ export const DialogContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
         maxWidth={maxWidth}
         ContentHeight="550px"
       >
-        <DialogContextModal
-          dialogFormType={dialogFormType}
-          csvData={csvData}
-          data={data}
-        />
+        <DialogContextModal dialogFormType={dialogFormType} csvData={csvData} />
       </DialogBox>
     </context.Provider>
   );

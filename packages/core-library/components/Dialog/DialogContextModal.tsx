@@ -4,7 +4,6 @@ import {
   ProductDialogBlock,
   AutomationDBComparisonFormBlock,
   DeleteConfirmationBlock,
-  delConType,
 } from "./DialogFormBlocks";
 import { ExcelRowRegularQuestion } from "../../core";
 import { InclusionEditForm } from "./DialogFormBlocks/inclusion/InclusionEditForm";
@@ -12,13 +11,11 @@ import { InclusionEditForm } from "./DialogFormBlocks/inclusion/InclusionEditFor
 interface Props {
   dialogFormType: string;
   csvData?: ExcelRowRegularQuestion[];
-  data?: delConType;
 }
 
 export const DialogContextModal: React.FC<Props> = ({
   dialogFormType,
   csvData,
-  data,
 }) => {
   switch (dialogFormType) {
     case "category_form":
@@ -30,7 +27,7 @@ export const DialogContextModal: React.FC<Props> = ({
     case "inclusion-edit-form":
       return <InclusionEditForm />;
     case "delete-modal":
-      return <DeleteConfirmationBlock data={data} />;
+      return <DeleteConfirmationBlock />;
     default:
       return null;
   }

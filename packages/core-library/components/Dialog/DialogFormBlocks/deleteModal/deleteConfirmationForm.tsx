@@ -5,12 +5,12 @@
  */
 import React, { useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { ControlledTextField } from "../../../Textfield/TextField";
 import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeleteConfirmationSchema } from "./validation";
 import { Button } from "../../../Button/Button";
 import { EvaIcon } from "../../../EvaIcon";
+import { TextField } from "../../../forms/TextField";
 
 interface Props {
   handleDelete: () => void;
@@ -64,7 +64,7 @@ export const DeleteConfirmationForm: React.FC<Props> = ({
         >
           Type <b>{textContent}</b> to delete
         </Typography>
-        <ControlledTextField
+        <TextField
           control={control}
           name="inputText"
           inputProps={{ "data-testid": "delete-input" }}

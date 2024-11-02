@@ -1,12 +1,9 @@
 import React from "react";
-import { screen, fireEvent, waitFor } from "../../common";
-import { render } from "@testing-library/react";
-import { delConType, DeleteConfirmationBlock } from "../../../components";
-import { useDialogContext } from "../../../contexts";
-
-jest.mock("../../../contexts", () => ({
-  useDialogContext: jest.fn(),
-}));
+import { screen, fireEvent, waitFor, render } from "../../common";
+import { DeleteConfirmationBlock } from "../../../components";
+import { DialogContextProvider, useDialogContext } from "../../../contexts";
+import { Deletetype } from "../../../types/types";
+import { useAtom } from "jotai";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -19,22 +16,31 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("../../../contexts/DialogContext", () => ({
+  useDialogContext: jest.fn(),
+}));
+
+jest.mock("jotai", () => ({
+  ...jest.requireActual("jotai"),
+  useAtom: jest.fn(),
+}));
+
 describe("DeleteConfirmationDialog", () => {
   const mockCloseDialog = jest.fn();
-  const data: delConType = { id: 1, text: "Test Item" };
+  const data: Deletetype = { id: 1, text: "Test Item" };
+  const mockSetDeleteAtom = jest.fn();
 
   beforeEach(() => {
+    jest.clearAllMocks();
     (useDialogContext as jest.Mock).mockReturnValue({
       closeDialog: mockCloseDialog,
+      openDialog: jest.fn(),
     });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
+    (useAtom as jest.Mock).mockReturnValue([data, mockSetDeleteAtom]);
   });
 
   it("renders DeleteConfirmationForm with correct textContent", () => {
-    render(<DeleteConfirmationBlock data={data} />);
+    render(<DeleteConfirmationBlock />);
     expect(screen.getByTestId("text-content")).toHaveTextContent(
       "This will permanently delete the Test Item"
     );
@@ -44,7 +50,7 @@ describe("DeleteConfirmationDialog", () => {
   });
 
   it("enables Confirm button when input matches textContent and calls handleDelete on click", async () => {
-    render(<DeleteConfirmationBlock data={data} />);
+    render(<DeleteConfirmationBlock />);
     const confirmButton = screen.getByRole("button", { name: /Confirm/i });
     const input = screen.getByRole("textbox");
 

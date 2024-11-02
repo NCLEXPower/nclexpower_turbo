@@ -6,17 +6,14 @@
 import React, { useEffect } from "react";
 import { DeleteConfirmationForm } from "./deleteConfirmationForm";
 import { useDialogContext } from "../../../../contexts";
+import { Deletetype } from "../../../../types/types";
+import { useAtom } from "jotai";
+import { DeleteConfirmationAtom } from "./validation";
 
-export type delConType = {
-  id: number;
-  text: string;
-};
+interface Props {}
 
-interface Props {
-  data?: delConType;
-}
-
-export const DeleteConfirmationBlock: React.FC<Props> = ({ data }) => {
+export const DeleteConfirmationBlock: React.FC<Props> = () => {
+  const [deleteAtom, setDeleteAtom] = useAtom(DeleteConfirmationAtom);
   const { closeDialog } = useDialogContext();
   const handleDelete = () => {
     closeDialog();
@@ -24,7 +21,7 @@ export const DeleteConfirmationBlock: React.FC<Props> = ({ data }) => {
   return (
     <DeleteConfirmationForm
       handleDelete={handleDelete}
-      textContent={data?.text ?? ""}
+      textContent={deleteAtom?.text ?? ""}
     />
   );
 };
