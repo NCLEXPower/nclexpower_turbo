@@ -276,7 +276,6 @@ const AutomationDBExcelChecker = ({
       "automation-db-comparison",
       "Regular Source Question Excel Data Preview",
       csvData,
-      undefined,
       "xl"
     );
   }
@@ -326,7 +325,6 @@ const AutomationDBExcelChecker = ({
               "automation-db-comparison",
               "Regular Source Question Excel Data Preview",
               formattedData,
-              undefined,
               "xl"
             );
             setUploading(false);

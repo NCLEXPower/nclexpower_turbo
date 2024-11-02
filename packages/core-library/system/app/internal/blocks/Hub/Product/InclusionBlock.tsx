@@ -51,7 +51,7 @@ export const InclusionBlock: React.FC = () => {
 
   const handleEdit = (row: EditInclusionParams) => {
     setId(row);
-    openDialog("inclusion-edit-form", "Update Inclusion", [], undefined, "xl");
+    openDialog("inclusion-edit-form", "Update Inclusion", [], "xl");
   };
 
   const { columns } = useColumns({
