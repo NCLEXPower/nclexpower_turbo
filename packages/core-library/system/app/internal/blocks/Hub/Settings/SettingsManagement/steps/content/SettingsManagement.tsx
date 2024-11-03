@@ -13,12 +13,14 @@ import {
   SettingsSelectionType,
   ChooseSettingsOptions,
 } from "../../types";
-import { Card, InformationTitle } from '../../../../../../../../../components';
-
+import { useAccessControl } from "../../../../../../../../../hooks";
+import { AccessLevels } from "../../../../../../../../../core/utils/permission";
+import { Card, InformationTitle } from "../../../../../../../../../components";
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
   previousStep(): void;
   values: Partial<SettingsSelectionType>;
+  accessLevel?: number;
 }
 
 const chooseSettingsStepFormSchema = yup.object({
@@ -39,12 +41,15 @@ type ChooseSettingsStepFormType = yup.InferType<
 const ChooseProductsConfigurations = (props: {
   nextStep(values: Partial<SettingsSelectionType>): void;
   values: Partial<SettingsSelectionType>;
+  accessLevel?: Number;
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
     mode: "all",
     criteriaMode: "all",
   });
+
+  const { accessLevel } = useAccessControl();
 
   useEffect(() => {
     reset({
@@ -75,22 +80,29 @@ const ChooseProductsConfigurations = (props: {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        <Grid item xs={4}>
-          <Card hoverEffect elevation={5} text="Web Customer" />
-        </Grid>
-        <Grid item xs={4}>
-          <Card hoverEffect elevation={5} text="Web BackOffice" />
-        </Grid>
-        <Grid item xs={4}>
-          <Card
-            onClick={() =>
-              handleSelection({ chosen: "CONFIG", selection: "QM" })
-            }
-            hoverEffect
-            elevation={5}
-            text="Web Simulator"
-          />
-        </Grid>
+        {accessLevel === AccessLevels.ADMIN && (
+          <>
+            <Grid item xs={4}>
+              <Card hoverEffect elevation={5} text="Web Customer" />
+            </Grid>
+            <Grid item xs={4}>
+              <Card hoverEffect elevation={5} text="Web BackOffice" />
+            </Grid>
+          </>
+        )}
+        {(accessLevel === AccessLevels.ADMIN ||
+          accessLevel === AccessLevels.EDITOR) && (
+          <Grid item xs={4}>
+            <Card
+              onClick={() =>
+                handleSelection({ chosen: "CONFIG", selection: "QM" })
+              }
+              hoverEffect
+              elevation={5}
+              text="Web Simulator"
+            />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
@@ -281,15 +293,34 @@ export const InAppManagement = (props: {
 };
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
+  const { hasAccess } = useAccessControl();
+
   return (
     <Card sx={{ mt: 5, p: 5 }}>
-      <ChooseProductsConfigurations nextStep={nextStep} values={values} />
-      <Divider>Other Configurations</Divider>
-      <OtherConfigurations nextStep={nextStep} values={values} />
-      <Divider>Content Management System</Divider>
-      <ContentManagementSystemSettings nextStep={nextStep} values={values} />
-      <Divider>In App Routing</Divider>
-      <InAppManagement nextStep={nextStep} values={values} />
+      {hasAccess("ChooseProductsConfigurations") && (
+        <ChooseProductsConfigurations nextStep={nextStep} values={values} />
+      )}
+      {hasAccess("OtherConfigurations") && (
+        <>
+          <Divider>Other Configurations</Divider>
+          <OtherConfigurations nextStep={nextStep} values={values} />
+          <Divider>Content Management System</Divider>
+        </>
+      )}
+
+      {hasAccess("ContentManagementSystemSettings") && (
+        <>
+          <ContentManagementSystemSettings
+            nextStep={nextStep}
+            values={values}
+          />
+          <Divider>In App Routing</Divider>
+        </>
+      )}
+
+      {hasAccess("InAppManagement") && (
+        <InAppManagement nextStep={nextStep} values={values} />
+      )}
     </Card>
   );
 };
