@@ -1,11 +1,16 @@
-import { canAccess } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/permission";
-import { useAccessLevel } from "../contexts/auth/hooks";
+import { useEffect, useState } from "react";
+import { canAccess } from "../core/utils/permission";
 
 export const useAccessControl = () => {
-  const [accessLevel] = useAccessLevel();
+  const [accessLevel, setAccessLevel] = useState<number | null>(null);
+
+  useEffect(() => {
+    const userAccessLevel = sessionStorage.getItem("al");
+    setAccessLevel(Number(userAccessLevel));
+  }, []);
 
   const hasAccess = (component: string): boolean => {
-    if (typeof accessLevel !== "number") return false;
+    if (accessLevel === null) return false;
     return canAccess(accessLevel, component);
   };
 

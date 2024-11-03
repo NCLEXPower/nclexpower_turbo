@@ -4,7 +4,6 @@
  * Created by the Software Strategy & Development Division
  */
 import React, { useEffect } from "react";
-import { Card, InformationTitle, AccessControl } from "core-library/components";
 import { Box, Grid, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -14,8 +13,9 @@ import {
   SettingsSelectionType,
   ChooseSettingsOptions,
 } from "../../types";
-import { useAccessControl } from "core-library/hooks";
-import { AccessLevels } from "./permission";
+import { useAccessControl } from "../../../../../../../../../hooks";
+import { AccessLevels } from "../../../../../../../../../core/utils/permission";
+import { Card, InformationTitle } from "../../../../../../../../../components";
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
   previousStep(): void;
@@ -91,7 +91,7 @@ const ChooseProductsConfigurations = (props: {
           </>
         )}
         {(accessLevel === AccessLevels.ADMIN ||
-          accessLevel === AccessLevels.ENCODER) && (
+          accessLevel === AccessLevels.EDITOR) && (
           <Grid item xs={4}>
             <Card
               onClick={() =>
@@ -293,26 +293,34 @@ export const InAppManagement = (props: {
 };
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
+  const { hasAccess } = useAccessControl();
+
   return (
     <Card sx={{ mt: 5, p: 5 }}>
-      <AccessControl componentName="ChooseProductsConfigurations">
+      {hasAccess("ChooseProductsConfigurations") && (
         <ChooseProductsConfigurations nextStep={nextStep} values={values} />
-      </AccessControl>
+      )}
+      {hasAccess("OtherConfigurations") && (
+        <>
+          <Divider>Other Configurations</Divider>
+          <OtherConfigurations nextStep={nextStep} values={values} />
+          <Divider>Content Management System</Divider>
+        </>
+      )}
 
-      <AccessControl componentName="OtherConfigurations">
-        <Divider>Other Configurations</Divider>
-        <OtherConfigurations nextStep={nextStep} values={values} />
-      </AccessControl>
+      {hasAccess("ContentManagementSystemSettings") && (
+        <>
+          <ContentManagementSystemSettings
+            nextStep={nextStep}
+            values={values}
+          />
+          <Divider>In App Routing</Divider>
+        </>
+      )}
 
-      <AccessControl componentName="ContentManagementSystemSettings">
-        <Divider>Content Management System</Divider>
-        <ContentManagementSystemSettings nextStep={nextStep} values={values} />
-      </AccessControl>
-
-      <AccessControl componentName="InAppManagement">
-        <Divider>In App Routing</Divider>
+      {hasAccess("InAppManagement") && (
         <InAppManagement nextStep={nextStep} values={values} />
-      </AccessControl>
+      )}
     </Card>
   );
 };
