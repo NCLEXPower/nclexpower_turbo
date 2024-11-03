@@ -104,6 +104,7 @@ export const keySquare = require("./key-square.svg");
 export const TRDSqaureWhite = require("./3d-square 1(1).svg");
 export const TRDSquare = require("./3d-square 1.svg");
 export const DetectDevice = require("./DeviceDetection/DeviceDetection.svg");
+export const DeviceApproval = require("./DeviceDetection/DeviceApproval.svg");
 
 export const Default = require("./DefaultImage.jpg");
 export const PNBackground = require("./PNBackground.png");
