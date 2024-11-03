@@ -1,17 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { SettingsSelectionType } from "../../../types";
+import { RegularQuestionCreationBlock } from "./blocks/regular/RegularQuestionCreationBlock";
+import { CaseStudyQuestionCreationBlock } from "./blocks/casestudy/CaseStudyQuestionCreationBlock";
 import {
   Button,
   Card,
   TabOption,
   TabPanel,
-  TabsDesktop,
-} from "core-library/components";
-import { SettingsSelectionType } from "../../../types";
-import { useModal } from "core-library/hooks";
-import { useQuestionManagementWizardSteps } from "./steps/useSteps";
-import { useRouter } from "../../../../../../../../../../core";
-import { RegularQuestionCreationBlock } from "./blocks/regular/RegularQuestionCreationBlock";
-import { CaseStudyQuestionCreationBlock } from "./blocks/casestudy/CaseStudyQuestionCreationBlock";
+  TabsDesktop
+} from '../../../../../../../../../../components';
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;

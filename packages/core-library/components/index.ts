@@ -80,3 +80,5 @@ export { default as ConfirmationModal } from "./Dialog/DialogFormBlocks/RegularQ
 export * from "./Popover/Popover";
 export * from "./Popover/ActionsPopover";
 export * from "./AccessControl/AccessControl";
+export * from "./Button/IconButton";
+export * from "./PasswordToggleAdornment";

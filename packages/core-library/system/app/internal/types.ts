@@ -1,4 +1,4 @@
-/**
+ /**
 * Property of the NCLEX Power.
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
@@ -21,8 +21,10 @@ export type Blocks =
   | "ReportedIssuesBlock"
   | "CreateRegularQuestionTypeBlock"
   | "CreateCategoryBlock"
+  | "InclusionBlock"
   | "DuplicateSessionBlock"
-  | "ChatbotManagement";
+  | "ChatbotManagement"
+  | "ContactUsManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -39,8 +41,10 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
+  InclusionBlock: {};
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
+  ContactUsManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
@@ -84,7 +88,7 @@ export type QuestionnaireItem = {
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[] ;
+  answers: DDCAnswerOption[];
 };
 
 

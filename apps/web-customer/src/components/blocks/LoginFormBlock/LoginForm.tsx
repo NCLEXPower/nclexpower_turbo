@@ -143,7 +143,7 @@ export const LoginForm: React.FC<Props> = ({
                   control={control}
                   placeholder="Email"
                   sx={{ borderRadius: "10px" }}
-                  inputProps={{ style: { padding: 20, borderRadius: "10px" } }}
+                  inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
                 />
               </Grid>
               <Grid
@@ -162,9 +162,6 @@ export const LoginForm: React.FC<Props> = ({
                     name="password"
                     placeholder="Password"
                     sx={{ borderRadius: "10px", width: "100%" }}
-                    inputProps={{
-                      style: { padding: 20, borderRadius: "10px" },
-                    }}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
                       <IconButton
@@ -175,6 +172,11 @@ export const LoginForm: React.FC<Props> = ({
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     }
+                    inputProps={{
+                      style: {
+                        boxShadow: "none",
+                      },
+                    }}
                   />
                 </Box>
               </Grid>
@@ -241,7 +243,7 @@ export const LoginForm: React.FC<Props> = ({
               <div className="flex items-center justify-center mt-6 pt-sans-narrow-regular text-xl">
                 <p className="text-darkGray">Need an account?</p>
                 <Link
-                  href="/#pricing"
+                  href="/"
                   className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
                 >
                   Create One
@@ -254,3 +256,4 @@ export const LoginForm: React.FC<Props> = ({
     </div>
   );
 };
+

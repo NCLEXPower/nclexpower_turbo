@@ -1,9 +1,9 @@
 import React from "react";
-import { Alert, DataGrid } from "core-library/components";
 import { Box, Card, Container } from "@mui/material";
-import { useColumns } from "core-library/hooks";
-import { useBusinessQueryContext } from "core-library/contexts";
-import { useDateFormat } from "../../core/hooks/useDateFormat";
+import { useDateFormat } from '../../core/hooks';
+import { useBusinessQueryContext } from '../../../../../../../contexts';
+import { useColumns } from '../../../../../../../hooks';
+import { Alert, DataGrid } from '../../../../../../../components';
 
 export function ViewUserBlock() {
   const { businessQueryGetAllInternalAccount } = useBusinessQueryContext();

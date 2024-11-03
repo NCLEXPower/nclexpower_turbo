@@ -1,0 +1,133 @@
+name: NCLEXPower CI/CD Build
+
+on:
+  push:
+    branches:
+      - mdev
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
+  pull_request:
+    branches:
+      - mdev
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
+
+jobs:
+  build_and_test_core_library:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Remove local dependencies from package.json
+        run: |
+          cd packages/core-library
+          jq 'del(.devDependencies["@repo/eslint-config"]) | del(.devDependencies["@repo/typescript-config"])' package.json > temp.json && mv temp.json package.json
+
+      - name: Install dependencies for core-library
+        run: |
+          cd packages/core-library
+          npm install
+
+      - name: Run tests with coverage for core-library
+        run: |
+          cd packages/core-library
+          npm run test -- --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/core-library/coverage/**/coverage-final.json
+          flags: unittests
+          name: codecov-core-library
+
+  tag_and_deploy:
+    runs-on: ubuntu-latest
+    needs: [build_and_test_core_library]
+
+    outputs:
+      BUILD_NUMBER: ${{ steps.build_info.outputs.BUILD_NUMBER }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false # Disables the default token, allowing us to use GH_PAT instead
+
+      - name: Set up date and build number
+        id: build_info
+        run: |
+          DATE=$(date +"%Y%m%d")
+          BUILD_FILE=".github/build_number.txt"
+
+          if test -f "$BUILD_FILE"; then
+            LAST_BUILD=$(cat $BUILD_FILE)
+            if [[ $LAST_BUILD != $DATE-* ]]; then
+              BUILD_NUMBER="$DATE-1000"
+            else
+              BUILD_SEQ=${LAST_BUILD##*-}
+              BUILD_NUMBER="$DATE-$((BUILD_SEQ + 1))"
+            fi
+          else
+            BUILD_NUMBER="$DATE-1000"
+          fi
+
+          echo "$BUILD_NUMBER" > $BUILD_FILE
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+          echo "::set-output name=BUILD_NUMBER::$BUILD_NUMBER"
+
+      - name: Commit and Tag the Build
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .github/build_number.txt
+          git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
+
+          # Generate unique tag using date and time (to the minute)
+          DATE=$(date +"%Y%m%d")
+          TIME=$(date +"%H%M") # Hour and minute
+          TAG="${DATE}-${TIME}"
+
+          # Check if the tag already exists remotely
+          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}"; then
+            # If tag exists, add a unique suffix based on the commit hash (shortened)
+            TAG="${TAG}-$(git rev-parse --short HEAD)"
+          fi
+
+          # Create and push the tag
+          git tag "$TAG"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/NCLEXPower/nclexpower_turbo.git
+          git push origin "$TAG"
+
+      - name: Deploy simulator to Vercel (Dev)
+        if: github.ref == 'refs/heads/mdev'
+        run: |
+          cd apps/simulator
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power
+
+      - name: Deploy web-customer to Vercel (Dev)
+        if: github.ref == 'refs/heads/mdev'
+        run: |
+          cd apps/web-customer
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power
+
+      - name: Deploy web-backoffice-generic to Vercel (Dev)
+        if: github.ref == 'refs/heads/mdev'
+        run: |
+          cd apps/web-backoffice-generic
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power

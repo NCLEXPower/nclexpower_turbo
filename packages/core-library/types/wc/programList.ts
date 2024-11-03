@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { StaticImageData } from "next/image";
 
 export type SectionListType = {
@@ -20,9 +25,10 @@ export type SectionVideosType = {
 };
 
 export type StandardProgramListType = {
-    programId: string;
+    id: string;
     title: string;
     programStatus: string;
     programImage: StaticImageData;
     sections?: SectionListType[];
+    disabled?: boolean;
 };
