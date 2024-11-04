@@ -24,6 +24,7 @@ import {
   FileUploadParams,
   GetAllInternalAccount,
   GetDefaultReviewerResponse,
+  GetInternalInclusionsType,
   PricingListResponse,
   ProductListResponse,
   ProductSetStatusParams,
@@ -270,6 +271,12 @@ export class WebApiBackOffice {
   public async getSelectedApprover() {
     return await this.axios.get<GetDefaultReviewerResponse[]>(
       `/api/v2/content/BaseContent/get-selected-approvers`
+    )
+  }
+
+  public async getAllInclusionLists() {
+    return await this.axios.get<GetInternalInclusionsType[]>(
+      `/api/v1/Product/internal-all-inclusions`
     )
   }
 

@@ -544,3 +544,8 @@ export type DefaultReviewerParams = {
 export type DefaultReviewerDto = {
   accountId: string;
 };
+
+export type GetInternalInclusionsType = {
+  id: string;
+  option: string;
+}
