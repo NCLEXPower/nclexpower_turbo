@@ -7,6 +7,7 @@ import { Box, Grid } from "@mui/material";
 import {
   Button,
   MultipleSelectField,
+  GenericSelectField
 } from "core-library/components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -15,7 +16,6 @@ import { TextField } from "core-library/components";
 import { useFormFocusOnError } from "core-library/hooks";
 import React from "react";
 import { useBusinessQueryContext } from "core-library/contexts";
-import { GenericSelectField } from "core-library/components/Textfield/GenericSelectField";
 import { GetInternalInclusionsType } from "../../../../../../../api/types";
 
 type Props = {
@@ -42,10 +42,12 @@ export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   const { control, handleSubmit, clearErrors, setFocus, formState } = form;
   useFormFocusOnError<ProductFormType>(formState.errors, setFocus);
 
-  const inclusions = inclusionsData?.map((item: GetInternalInclusionsType) => ({
-    label: item.option,
-    value: item.option,
-  }))
+  const inclusions = inclusionsData && inclusionsData.length > 0
+    ? inclusionsData.map((item: GetInternalInclusionsType) => ({
+      label: item.option,
+      value: item.option,
+    }))
+    : [];
 
   return (
     <Box>
