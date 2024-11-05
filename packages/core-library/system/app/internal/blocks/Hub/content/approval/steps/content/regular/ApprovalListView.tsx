@@ -10,11 +10,11 @@ import {
   CustomBadge,
   EvaIcon,
   ReactTable,
+  CustomPopover,
 } from "../../../../../../../../../../components";
 import { Box, Container, ListItemButton, Switch, Tooltip } from "@mui/material";
 import { ColumnDef, RowModel } from "@tanstack/react-table";
 import { AuthorizedContentsResponseType } from "../../../../../../../../../../api/types";
-import { CustomPopover } from "../../../../../../../../../../components/Popover/Popover";
 
 export interface ApprovalBlockProps {
   multiple: boolean;

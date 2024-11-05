@@ -66,3 +66,9 @@ export const initQuestionsValues = (
     answers,
   };
 };
+
+export const actionButtons = [
+  { action: "view", label: "View" },
+  { action: "approval", label: "Approve" },
+  { action: "reject", label: "Reject" },
+];
