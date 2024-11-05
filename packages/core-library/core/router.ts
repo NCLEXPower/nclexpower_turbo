@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { NextRouter, useRouter as useNextRouter } from "next/router";
 import qs, { ParsedQuery } from "query-string";
 import { useEffect, useMemo, useState } from "react";
@@ -19,8 +19,8 @@ type StaticRoutes = Record<
   | "about"
   | "second_tab_redirect"
   | "order_summary"
-  | "account_registration",
-
+  | "account_registration"
+  | "device_not_recognized",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -44,7 +44,8 @@ export const STATIC_ROUTES: StaticRoutes = {
   account_registration: "/account/registration",
   about: "/about",
   second_tab_redirect: "/duplicate-session", //duplicate session page currently does not exist. remove this comment once created.
-  order_summary: "/order-summary"
+  order_summary: "/order-summary",
+  device_not_recognized: "/device-enrollment",
 };
 
 const routeTitles: Record<string, string> = {

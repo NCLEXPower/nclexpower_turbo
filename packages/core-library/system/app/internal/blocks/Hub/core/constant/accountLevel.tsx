@@ -1,4 +1,4 @@
-import { SelectOption } from 'core-library/components';
+import { SelectOption } from '../../../../../../../components';
 
 export const AccountLevel: SelectOption[] = [
   {

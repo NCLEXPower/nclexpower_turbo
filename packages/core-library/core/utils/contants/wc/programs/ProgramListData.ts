@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { StandardProgramListType } from "../../../../../types/wc/programList";
 import {
     WelcomeProgram,
@@ -33,17 +38,18 @@ import {
 
 export const standardProgramList: StandardProgramListType[] = [
     {
-        programId: "1",
+        id: "1",
         title: 'Welcome to the Program',
         programStatus: 'completed',
         programImage: WelcomeProgram,
         sections: [
             { sectionId: "1", sectionType: 'document', sectionTitle: 'Welcome to the CORE Zigma System', sectionStatus: 'completed' },
             { sectionId: "2", sectionType: 'document', sectionTitle: 'About the NGN (the current NCLEX)', sectionStatus: 'completed' },
-        ]
+        ],
+        disabled: false
     },
     {
-        programId: "2",
+        id: "2",
         title: '01 Cardiovascular System',
         programStatus: 'completed',
         programImage: CardioVascular,
@@ -74,13 +80,14 @@ export const standardProgramList: StandardProgramListType[] = [
                             secVidDescription: "'Conduction of the Heart: Cardiac Knowledge for Nursing Students' explains the heart's electrical conduction system, highlighting key components like the sinoatrial (SA) node, atrioventricular (AV) node, bundle of His, and Purkinje fibers. It helps nursing students understand how electrical impulses regulate the heart's rhythm and blood flow, essential for recognizing and managing cardiac conditions like arrhythmias."
                         }]
             },
-            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 1 Simulator', sectionStatus: 'completed' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 1 Simulator', sectionStatus: 'completed',  },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'completed' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'completed' },
-        ]
+        ],
+        disabled: false
     },
     {
-        programId: "3",
+        id: "3",
         title: '02 Respiratory System',
         programStatus: 'progress',
         programImage: Respiratory,
@@ -89,10 +96,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 2 Simulator', sectionStatus: 'in-progress' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'in-progress' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'in-progress' },
-        ]
+        ],
+        disabled: false
     },
     {
-        programId: "4",
+        id: "4",
         title: '03 Gastrointestinal System',
         programStatus: 'unavailable',
         programImage: Gastrointestinal,
@@ -101,10 +109,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 3 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "5",
+        id: "5",
         title: '04 Nephrology System',
         programStatus: 'unavailable',
         programImage: Nephrology,
@@ -113,10 +122,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 4 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "6",
+        id: "6",
         title: '05 Hematology System',
         programStatus: 'unavailable',
         programImage: Hematology,
@@ -125,10 +135,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 5 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "7",
+        id: "7",
         title: '06 Infectious Diseases',
         programStatus: 'unavailable',
         programImage: InfectiousDiseases,
@@ -137,20 +148,22 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 6 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "8",
+        id: "8",
         title: '07 Rest Day I',
         programStatus: 'unavailable',
         programImage: RestDayOne,
         sections: [
             { sectionId: "1", sectionType: 'perspective', sectionTitle: 'Perspectives', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'strategy', sectionTitle: 'Continue with Strategies', sectionStatus: 'available' }
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "9",
+        id: "9",
         title: '08 Neurology System',
         programStatus: 'unavailable',
         programImage: Neurology,
@@ -159,10 +172,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 8 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "10",
+        id: "10",
         title: '09 Endocrine System',
         programStatus: 'unavailable',
         programImage: Endocrine,
@@ -171,10 +185,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 9 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "11",
+        id: "11",
         title: '10 Musculoskeletal System',
         programStatus: 'unavailable',
         programImage: Musculoskeletal,
@@ -183,20 +198,22 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 10 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "12",
+        id: "12",
         title: '11 Integumentary/Skin System',
         programStatus: 'unavailable',
         programImage: Integumentary,
         sections: [
             { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 11 Videos', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 11 Simulator', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "13",
+        id: "13",
         title: '12 Oncology System',
         programStatus: 'unavailable',
         programImage: Oncology,
@@ -205,10 +222,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 12 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "14",
+        id: "14",
         title: '12 OB/GYN System',
         programStatus: 'unavailable',
         programImage: OBGYN,
@@ -217,30 +235,33 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 12 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "15",
+        id: "15",
         title: '13 Systems CAT',
         programStatus: 'unavailable',
         programImage: SystemsCAT,
         sections: [
             { sectionId: "1", sectionType: 'CAT', sectionTitle: 'Primer on Taking the Systems CAT', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'CAT', sectionTitle: 'Systems CAT Simulator', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "16",
+        id: "16",
         title: '14 Rest Day II',
         programStatus: 'unavailable',
         programImage: RestDayTwo,
         sections: [
             { sectionId: "1", sectionType: 'perspective', sectionTitle: 'Perspectives', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'strategy', sectionTitle: 'Intro to Patient Units Section', sectionStatus: 'available' }
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "17",
+        id: "17",
         title: '15 Mother-Baby',
         programStatus: 'unavailable',
         programImage: MotherBaby,
@@ -249,10 +270,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 15 Simulator (50 questions)', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "18",
+        id: "18",
         title: '16 Pediatrics',
         programStatus: 'unavailable',
         programImage: Pediatrics,
@@ -261,10 +283,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 16 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "19",
+        id: "19",
         title: '17 Medical-Surgical',
         programStatus: 'unavailable',
         programImage: MedicalSurgical,
@@ -272,10 +295,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 17 Videos', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 17 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "20",
+        id: "20",
         title: '18 Critical Care (ICU)',
         programStatus: 'unavailable',
         programImage: CriticalCare,
@@ -284,10 +308,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 18 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "21",
+        id: "21",
         title: '19 Emergency (ER)',
         programStatus: 'unavailable',
         programImage: Emergency,
@@ -296,10 +321,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 19 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "22",
+        id: "22",
         title: '20 Mental Health',
         programStatus: 'unavailable',
         programImage: MentalHealth,
@@ -308,10 +334,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 20 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "23",
+        id: "23",
         title: '20 Nurse Station',
         programStatus: 'unavailable',
         programImage: NurseStation,
@@ -319,30 +346,33 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 20 Videos', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 20 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "24",
+        id: "24",
         title: '20 Patient Units CAT',
         programStatus: 'unavailable',
         programImage: PatientUnitsCAT,
         sections: [
             { sectionId: "1", sectionType: 'CAT', sectionTitle: 'Primer on Taking the Units CAT', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'CAT', sectionTitle: 'Systems CAT Simulator (100 questions)', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "25",
+        id: "25",
         title: '21 Rest Day III',
         programStatus: 'unavailable',
         programImage: RestDayThree,
         sections: [
             { sectionId: "1", sectionType: 'perspective', sectionTitle: 'Perspectives', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'document', sectionTitle: 'What Endurance Means', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "26",
+        id: "26",
         title: '22 Case Studies',
         programStatus: 'unavailable',
         programImage: CaseStudies,
@@ -350,10 +380,11 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'document', sectionTitle: 'About Case Studies', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'document', sectionTitle: 'Guided Practice for Case Studies', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'simulator', sectionTitle: 'Case Studies Simulator', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "27",
+        id: "27",
         title: '23 Final CAT',
         programStatus: 'unavailable',
         programImage: FinalCAT,
@@ -361,13 +392,14 @@ export const standardProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'CAT', sectionTitle: 'Words on the Final CAT', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'CAT', sectionTitle: 'Final CAT Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'CAT', sectionTitle: 'Post Test: Final Words', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
 ];
 
 export const fastrackProgramList: StandardProgramListType[] = [
     {
-        programId: "1",
+        id: "1",
         title: 'Welcome to the Program',
         programStatus: 'available',
         programImage: WelcomeProgram,
@@ -377,10 +409,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "3", sectionType: 'document', sectionTitle: 'Intro to the Fastrack Program', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'content-cards', sectionTitle: 'View Content Cards for Body Systems', sectionStatus: 'available' },
             { sectionId: "5", sectionType: 'med-cards', sectionTitle: 'DL Med Cards for Body Systems', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: false
     },
     {
-        programId: "2",
+        id: "2",
         title: '01 Mother-Baby',
         programStatus: 'unavailable',
         programImage: MotherBaby,
@@ -389,10 +422,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 1 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "3",
+        id: "3",
         title: '02 Pediatrics',
         programStatus: 'unavailable',
         programImage: Pediatrics,
@@ -401,10 +435,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 2 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "4",
+        id: "4",
         title: '03 Medical-Surgical',
         programStatus: 'unavailable',
         programImage: MedicalSurgical,
@@ -412,10 +447,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 3 Videos', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 3 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "5",
+        id: "5",
         title: '04 Critical Care (ICU)',
         programStatus: 'unavailable',
         programImage: CriticalCare,
@@ -424,10 +460,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 4 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "6",
+        id: "6",
         title: '05 Emergency (ER)',
         programStatus: 'unavailable',
         programImage: Emergency,
@@ -436,10 +473,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 5 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "7",
+        id: "7",
         title: '06 Mental Health',
         programStatus: 'unavailable',
         programImage: MentalHealth,
@@ -448,10 +486,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 20 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
             { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "8",
+        id: "8",
         title: '06 Nurse Station',
         programStatus: 'unavailable',
         programImage: NurseStation,
@@ -459,10 +498,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 8 Videos', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 8 Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "9",
+        id: "9",
         title: '07 Case Studies',
         programStatus: 'unavailable',
         programImage: CaseStudies,
@@ -470,10 +510,11 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'document', sectionTitle: 'About Case Studies', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'document', sectionTitle: 'Guided Practice for Case Studies', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'simulator', sectionTitle: 'Case Studies Simulator', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
     {
-        programId: "10",
+        id: "10",
         title: '08 Final CAT',
         programStatus: 'unavailable',
         programImage: FinalCAT,
@@ -481,6 +522,7 @@ export const fastrackProgramList: StandardProgramListType[] = [
             { sectionId: "1", sectionType: 'CAT', sectionTitle: 'Words on the Final CAT', sectionStatus: 'available' },
             { sectionId: "2", sectionType: 'CAT', sectionTitle: 'Final CAT Simulator', sectionStatus: 'available' },
             { sectionId: "3", sectionType: 'CAT', sectionTitle: 'Post Test: Final Words', sectionStatus: 'available' },
-        ]
+        ],
+        disabled: true
     },
 ];

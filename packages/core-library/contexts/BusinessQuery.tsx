@@ -35,6 +35,12 @@ import {
   useCreateRegularQuestion,
   useGetContents,
   useGetSelectedApprovers,
+  useGetAllInclusion,
+  useDeleteRoute,
+  useCreateInclusion,
+  useDeleteInclusion,
+  useUpdateInclusion,
+  useCreateSubsequentOptions
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -60,6 +66,10 @@ import {
   AuthorizedContentsResponseType,
   WebGetContentsParams,
   DefaultReviewerDto,
+  GetAllInclusionResponse,
+  CreateInclusionParams,
+  EditInclusionParams,
+  SubsequentOptionType,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -214,12 +224,10 @@ interface BusinessQueryContextValue {
     ReportIssueType,
     unknown
   >;
-
   businessQueryGetReportCategories: (
     queryKey: string[],
     type: number
   ) => UseQueryResult<any | undefined, any>;
-
   businessQueryGetAllInternalAccount: (
     queryKey: string[]
   ) => UseQueryResult<GetAllInternalAccount[] | undefined, any>;
@@ -234,6 +242,41 @@ interface BusinessQueryContextValue {
     queryKey: string[],
   ) => UseQueryResult<DefaultReviewerDto[] | undefined, any>;
 
+  businessQueryGetAllInclusion: (
+    queryKey: string[]
+  ) => UseQueryResult<GetAllInclusionResponse[] | undefined, any>
+  businessQueryCreateInclusion: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    CreateInclusionParams,
+    unknown>
+  businessQueryDeleteRoute: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>, any, string, unknown>
+  businessQueryDeleteInclusion: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    string,
+    unknown
+  >;
+
+  businessQueryCreateSubsequentOptions: (
+    opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<SubsequentOptionType, AxiosError<unknown, any>>,
+    any,
+    SubsequentOptionType,
+    unknown
+  >;
+
+  businessQueryUpdateInclusion: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
+    any, GetAllInclusionResponse, unknown>
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -275,6 +318,13 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
   const businessQuerySelectedApprovers = useGetSelectedApprovers
+  const businessQueryGetAllInclusion = useGetAllInclusion;
+  const businessQueryDeleteRoute = useDeleteRoute;
+  const businessQueryCreateInclusion = useCreateInclusion;
+  const businessQueryDeleteInclusion = useDeleteInclusion;
+  const businessQueryUpdateInclusion = useUpdateInclusion;
+  const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
+
   return (
     <BusinessQueryContext.Provider
       value={{
@@ -306,7 +356,13 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInternalAccount,
         businessQueryCreateRegularQuestion,
         businessQueryGetContents,
-        businessQuerySelectedApprovers
+        businessQuerySelectedApprovers,
+        businessQueryGetAllInclusion,
+        businessQueryDeleteRoute,
+        businessQueryCreateInclusion,
+        businessQueryDeleteInclusion,
+        businessQueryUpdateInclusion,
+        businessQueryCreateSubsequentOptions,
       }}
     >
       {children}

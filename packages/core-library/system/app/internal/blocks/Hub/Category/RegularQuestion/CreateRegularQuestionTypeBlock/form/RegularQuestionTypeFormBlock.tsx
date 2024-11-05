@@ -1,7 +1,7 @@
-import { RegularQuestionTypeParams } from "core-library/api/types";
+import { RegularQuestionTypeParams } from '../../../../../../../../../api/types';
+import { useExecuteToast } from '../../../../../../../../../contexts';
+import { useApiCallback } from '../../../../../../../../../hooks';
 import { RegularQuestionTypeForm } from "./RegularQuestionTypeForm";
-import { useApiCallback } from "core-library/hooks";
-import { useExecuteToast } from "core-library/contexts";
 import { RegularQuestionTypeFormType } from "./validation";
 
 export function RegularQuestionTypeFormBlock() {
