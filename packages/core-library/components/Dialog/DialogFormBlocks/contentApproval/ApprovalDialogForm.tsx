@@ -6,36 +6,30 @@
 import { Box, Typography } from "@mui/material";
 import { Button } from "../../../Button/Button";
 import { DateField } from "../../../forms/datefield/DateField";
-import {
-  contentDateSchema,
-  ContentDateType,
-  ContentDateAtom,
-} from "./validation";
+import { contentDateSchema, ContentDateType } from "./validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-import { useAtom } from "jotai";
 
 type props = {
   onSubmit: (values: ContentDateType) => void;
+  values: ContentDateType;
 };
-export const ApprovalDialogForm: React.FC<props> = ({ onSubmit }) => {
-  const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
-
+export const ApprovalDialogForm: React.FC<props> = ({ onSubmit, values }) => {
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
-    defaultValues: approvalAtom,
+    defaultValues: values,
   });
 
   const { control, handleSubmit, setValue } = form;
 
   useEffect(() => {
-    approvalAtom?.approval?.forEach((item, index) => {
+    values?.approval?.forEach((item, index) => {
       setValue(`approval.${index}.contentId`, item.contentId);
       setValue(`approval.${index}.contentAuthorId`, item.contentAuthorId);
     });
-  }, [approvalAtom, setValue]);
+  }, [values, setValue]);
 
   return (
     <Box
@@ -59,7 +53,9 @@ export const ApprovalDialogForm: React.FC<props> = ({ onSubmit }) => {
         />
       </Box>
       <Box marginTop="14px">
-        <Button onClick={handleSubmit(onSubmit)}>Confirm</Button>
+        <Button data-testid="submit-button" onClick={handleSubmit(onSubmit)}>
+          Confirm
+        </Button>
       </Box>
     </Box>
   );
