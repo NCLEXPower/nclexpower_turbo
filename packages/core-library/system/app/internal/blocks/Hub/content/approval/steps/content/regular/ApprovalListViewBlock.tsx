@@ -54,7 +54,6 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   );
   const { contentLoader, setContentLoader } = usePageLoaderContext();
 
-  console.log("contentLoader in apprrovalListView", contentLoader);
   const { openDialog } = useDialogContext();
   const handleMultipleSelection = (
     event: React.ChangeEvent<HTMLInputElement>

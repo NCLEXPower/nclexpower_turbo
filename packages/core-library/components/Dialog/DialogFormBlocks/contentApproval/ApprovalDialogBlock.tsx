@@ -3,22 +3,24 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { ContentDateType } from "./validation";
+import { ContentDateAtom, ContentDateType } from "./validation";
 import { useDialogContext, useExecuteToast } from "../../../../contexts";
 import { usePageLoaderContext } from "../../../../contexts/PageLoaderContext";
 import { ApprovalDialogForm } from "./ApprovalDialogForm";
+import { useAtom } from "jotai";
 
 export const ApprovalDialogBlock = () => {
   const { closeDialog } = useDialogContext();
   const { contentLoader, setContentLoader } = usePageLoaderContext();
-  console.log("contentLoader in approvalDialogBlock", contentLoader);
+  const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
+
   const toast = useExecuteToast();
 
   const onSubmit = async (values: ContentDateType) => {
     try {
       console.log("onSubmit", values);
       toast.executeToast("Successfully submitted..", "top-right", false, {
-        toastId: 0,
+        toastId: 1,
         type: "success",
       });
     } catch (err) {
@@ -30,5 +32,16 @@ export const ApprovalDialogBlock = () => {
       setContentLoader(false);
     }
   };
-  return <ApprovalDialogForm onSubmit={onSubmit} />;
+
+  const defaultValues: ContentDateType = {
+    approval: [],
+    implementationSchedule: new Date(),
+  };
+
+  return (
+    <ApprovalDialogForm
+      onSubmit={onSubmit}
+      values={approvalAtom ?? defaultValues}
+    />
+  );
 };
