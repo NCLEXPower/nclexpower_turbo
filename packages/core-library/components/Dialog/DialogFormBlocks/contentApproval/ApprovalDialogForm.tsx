@@ -4,8 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { Box, Typography } from "@mui/material";
-import { Button } from "../../../Button/Button";
-import { DateField } from "../../../forms/datefield/DateField";
+import { Button, DateField } from "../../../../components";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

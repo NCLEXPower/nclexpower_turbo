@@ -7,25 +7,26 @@ import {
   EvaIcon,
   ComponentLoader,
   CustomTooltip,
+  CustomPopover,
 } from "../../../../../../../../../../components";
 import { Box, ListItemButton } from "@mui/material";
 import {
   useBusinessQueryContext,
   useDialogContext,
   useExecuteToast,
+  usePageLoaderContext,
 } from "../../../../../../../../../../contexts";
 import { useAccountId } from "../../../../../../../../../../contexts/auth/hooks";
 import { ColumnDef, RowModel } from "@tanstack/react-table";
 import { AuthorizedContentsResponseType } from "../../../../../../../../../../api/types";
-import { CustomPopover } from "../../../../../../../../../../components/Popover/Popover";
 import { useAtom } from "jotai";
+import { actionButtons } from "../../../../../Settings/SettingsManagement/constants/constants";
 import {
   ContentDateAtom,
   ContentDateType,
 } from "../../../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 import { useState } from "react";
 import { ApprovalListView } from "./ApprovalListView";
-import { usePageLoaderContext } from "../../../../../../../../../../contexts/PageLoaderContext";
 
 export interface ApprovalProps {
   nextStep(values: ContentDateType): void;
@@ -121,12 +122,6 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
         console.warn("Unknown action:", action);
     }
   };
-
-  const actionButtons = [
-    { action: "view", label: "View" },
-    { action: "approval", label: "Approve" },
-    { action: "reject", label: "Reject" },
-  ];
 
   const renderActionButtons = (contentId: string, contentAuthorId: string) =>
     actionButtons.map((btn) => {
