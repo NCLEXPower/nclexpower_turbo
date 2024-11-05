@@ -5,8 +5,8 @@
 */
 import React from "react";
 import { Container, Box, Typography, Chip, Button } from "@mui/material";
-import { Alert, Card, DataGrid } from "core-library/components";
-import { useColumns } from "core-library/hooks";
+import { Alert, Card, DataGrid } from "../../../../../../../components";
+import { useColumns } from "../../../../../../../hooks";
 import { useDateFormat } from "../../core/hooks";
 
 export const ContactUsManagementBlock: React.FC = () => {

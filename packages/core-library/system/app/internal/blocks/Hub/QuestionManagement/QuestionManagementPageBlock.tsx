@@ -1,15 +1,15 @@
 import React from "react";
 import { Container, Box, Typography, Chip, Button } from "@mui/material";
-import { Alert, Card, DataGrid } from "core-library/components";
 import { useRegularQuestionWizardSteps } from "./steps/useSteps";
-import { useModal, useWizardForm } from "core-library/hooks";
 import { RegularQuestionsSteps, RegularQuestionStepProps } from "./steps/types";
 import { RegularQuestionFormType } from "./types";
+import { Alert } from '../../../../../../components';
+import { useModal } from '../../../../../../hooks';
 
 export const QuestionManagementPageBlock = () => {
   const saveConfirmationModal = useModal<unknown>();
   const { render } = useRegularQuestionWizardSteps(
-    () => {},
+    () => { },
     saveConfirmationModal
   );
 

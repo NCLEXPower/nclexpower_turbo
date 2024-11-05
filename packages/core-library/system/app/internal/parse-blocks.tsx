@@ -19,6 +19,9 @@ import {
   ReportedIssuesBlock,
   CreateCategoryBlock,
   CreateRegularQuestionTypeBlock,
+  InclusionBlock,
+  DuplicateSessionBlock,
+  ChatbotManagementBlock,
   ContactUsManagementBlock,
 } from "./blocks";
 
@@ -57,6 +60,12 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <CreateRegularQuestionTypeBlock />;
     case "CreateCategoryBlock":
       return <CreateCategoryBlock />;
+    case "InclusionBlock":
+      return <InclusionBlock />;
+    case "DuplicateSessionBlock":
+      return <DuplicateSessionBlock />;
+    case "ChatbotManagement":
+      return <ChatbotManagementBlock />;
     case "ContactUsManagementBlock":
       return <ContactUsManagementBlock />;
     default:

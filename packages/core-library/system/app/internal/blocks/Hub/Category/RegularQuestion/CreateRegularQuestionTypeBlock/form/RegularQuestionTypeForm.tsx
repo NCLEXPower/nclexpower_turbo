@@ -1,4 +1,3 @@
-import { Button } from "core-library/components";
 import { Box } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
@@ -6,9 +5,9 @@ import {
   regularQuestionTypeFormSchema,
   RegularQuestionTypeFormType,
 } from "./validation";
-import { TextField } from "core-library/components";
-import { useFormFocusOnError } from "core-library/hooks";
 import React from "react";
+import { Button, TextField } from '../../../../../../../../../components';
+import { useFormFocusOnError } from '../../../../../../../../../hooks';
 
 interface Props {
   onSubmit(values: RegularQuestionTypeFormType): void;

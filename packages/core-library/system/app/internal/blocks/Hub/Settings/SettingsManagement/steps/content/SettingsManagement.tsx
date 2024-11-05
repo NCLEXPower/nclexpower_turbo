@@ -4,7 +4,6 @@
  * Created by the Software Strategy & Development Division
  */
 import React, { useEffect } from "react";
-import { Card, InformationTitle } from "core-library/components";
 import { Box, Grid, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -14,6 +13,7 @@ import {
   SettingsSelectionType,
   ChooseSettingsOptions,
 } from "../../types";
+import { Card, InformationTitle } from '../../../../../../../../../components';
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
