@@ -14,19 +14,19 @@ export const CreatePricingBlock: React.FC = () => {
         field: "id",
         headerName: "ID",
         sortable: true,
-        width: 120,
+        width: 280,
       },
       {
         field: "price",
         headerName: "Price",
         sortable: false,
-        width: 80,
+        width: 180,
       },
       {
         field: "currency",
         headerName: "Currency",
         sortable: false,
-        width: 80,
+        width: 180,
       },
     ],
   });
