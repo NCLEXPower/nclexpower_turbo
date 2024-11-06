@@ -1,8 +1,8 @@
- /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 export * from "./Hub/HubBlock";
 export * from "./Hub/content/approval/QuestionApprovalBlock";
 export * from "./LoginFormBlock/LoginFormBlock";
@@ -21,3 +21,4 @@ export * from "./Hub/Product/InclusionBlock";
 export * from "./DuplicateSession/DuplicateSessionBlock";
 export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";
+export * from "./Hub/SalesManagement/SalesManagementBlock";
