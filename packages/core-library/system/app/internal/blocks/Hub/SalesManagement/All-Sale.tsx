@@ -10,7 +10,7 @@ import {
   Typography,
   Checkbox,
 } from "@mui/material";
-import { DynamicChart } from "./Chart";
+import { DynamicChart } from "../../../../../../components";
 import { useState } from "react";
 import { AllSalesMockData } from "./SalesManagementData";
 

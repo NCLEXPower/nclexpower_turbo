@@ -45,7 +45,7 @@ type ChartOptions = {
 };
 
 interface DynamicChartProps {
-  type: "Bar" | "Line" | "Gauge";
+  type: "Bar" | "Line" | "Gauge" | string;
   width?: number;
   height?: number;
   dataSet: any;
