@@ -118,16 +118,16 @@ jobs:
         if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/simulator
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
 
       - name: Deploy web-customer to Vercel (Dev)
         if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/web-customer
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpowerdev
 
       - name: Deploy web-backoffice-generic to Vercel (Dev)
         if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/web-backoffice-generic
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officedev
