@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { useWizardForm, WizardFormMap } from "core-library/hooks";
 import {
   SettingsManagementSteps,
   ChooseSettingsTypeStep,
@@ -10,6 +9,7 @@ import { SettingsSelectionType } from "../types";
 import { QuestionManagementTypeStep } from "./QuestionManagementSettingsTypeStep";
 import { ReviewerSettings } from "./content/ReviewerSettings";
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
+import { useWizardForm, WizardFormMap } from '../../../../../../../../hooks';
 
 export const useSettingsManagementWizardSteps = () => {
   const steps = useMemo(() => {

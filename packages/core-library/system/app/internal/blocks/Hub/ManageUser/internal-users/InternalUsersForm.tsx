@@ -8,21 +8,21 @@ import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { Grid, Box, Typography } from "@mui/material";
 import { accountSetupSchema, AccountSetupType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMenu } from "core-library/components/GenericDrawerLayout/hooks/useMenu";
 import { AccountLevel } from "../../core/constant/accountLevel";
-import {
-  Button,
-  TextField,
-  ControlledSelectField,
-  MultipleSelectField,
-  Card,
-  Alert,
-} from "core-library/components";
 import {
   Settings as SettingsIcon,
   Key as KeyIcon,
   AccountBox as AccountBoxIcon,
 } from "@mui/icons-material";
+import { useMenu } from '../../../../../../../components/GenericDrawerLayout/hooks/useMenu';
+import {
+  Card,
+  Button,
+  TextField,
+  ControlledSelectField,
+  MultipleSelectField,
+  Alert
+} from '../../../../../../../components';
 
 type Props = {
   onSubmit: (value: AccountSetupType) => void;

@@ -109,6 +109,8 @@ export const Default = require("./DefaultImage.jpg");
 export const PNBackground = require("./PNBackground.png");
 export const RNBackground = require("./RNBackground.png");
 
+export const DuplicateSession = require("./duplicate_session.svg");
+
 export const ImageLists = [
   { id: 1, label: "NCLEX Blue Logo", image: NCLEXBlueLogo },
   { id: 2, label: "NCLEX Yellow Logo", image: NCLEXYellowLogo },

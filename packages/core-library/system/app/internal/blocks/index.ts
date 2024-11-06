@@ -17,4 +17,7 @@ export * from "./Hub/QuestionManagement/QuestionManagementPageBlock";
 export * from "./Hub/Reports/ReportIssuesBlock";
 export * from "./Hub/Category/CreateCategory/CreateCategoryBlock";
 export * from "./Hub/Category/RegularQuestion/CreateRegularQuestionTypeBlock/CreateRegularQuestionTypeBlock";
+export * from "./Hub/Product/InclusionBlock";
+export * from "./DuplicateSession/DuplicateSessionBlock";
+export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";

@@ -301,3 +301,24 @@ code {
     @apply text-error;
   }
 }
+
+.slick-dots {
+  z-index: 1000;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 45px;
+  font-size: 20px;
+  
+}
+.slick-dots li {
+  margin: 0 10px;
+}
+
+.slick-dots li button:before {
+  color: #fff;
+  font-size: 20px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #F4C501;
+}
