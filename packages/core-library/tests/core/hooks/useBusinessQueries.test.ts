@@ -18,6 +18,7 @@ import {
   useCreateSubsequentOptions,
   useCreateReportIssue,
   useGetSelectedApprovers,
+  useGetAllInternalInclusions,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -1541,4 +1542,60 @@ describe("useGetSelectedApprovers", () => {
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();
   });
+  describe("useGetAllInternalInclusions", () => {
+    const mockExecute = jest.fn();
+  
+    it("should return a list of inclusion lists", async () => {
+      const mockData: GetAllInclusionResponse[] = [
+        {
+          id: "test-id",
+          option: "test-option", 
+        }
+      ];
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: mockData,
+          isLoading: false,
+          error: null,
+        };
+      });
+  
+      const { result } = renderHook(() =>
+        useGetAllInternalInclusions(["getAllInternalInclusions"])
+      );
+  
+      expect(useQuery).toHaveBeenCalledWith(["getAllInternalInclusions"], expect.any(Function), {
+        staleTime: Infinity,
+      });
+  
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+  
+    it("should handle loading state", () => {
+      (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+      expect(result.current.isLoading).toBe(true);
+      expect(result.current.data).toBeUndefined();
+    });
+  
+    it("should handle error state", async () => {
+      const mockError = new Error("Failed to fetch data");
+      mockExecute.mockRejectedValue(mockError);
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: undefined,
+          isLoading: false,
+          error: mockError,
+        };
+      });
+  
+      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+  
+      expect(result.current.error).toEqual(mockError);
+      expect(result.current.data).toBeUndefined();
+    });
+  })
 });
