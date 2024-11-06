@@ -32,9 +32,9 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     return <ErrorBox label={error.message} />;
   }
 
-  if (data?.loadMaintenanceMode?.maintenanceModeType === 1) {
-    return <MaintenanceBlock />;
-  }
+  // if (data?.loadMaintenanceMode?.maintenanceModeType === 1) {
+  //   return <MaintenanceBlock />;
+  // }
 
   return (
     <React.Fragment>
