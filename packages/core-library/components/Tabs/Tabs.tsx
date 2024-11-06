@@ -9,6 +9,7 @@ interface CustomStyleProps {
   selectedColor?: string;
   defaultColor?: string;
   borderBottom?: string;
+  defaultBorderBottom?: string;
 }
 interface Props {
   id?: string;
@@ -42,7 +43,7 @@ export const Tabs: React.FC<Props> = ({
   return (
     <Grid container spacing={12}>
       {!isMobile && (
-        <Grid container item xs={12} justifyContent={justifyContent} spacing={1}>
+        <Grid container item xs={12} justifyContent={justifyContent} spacing={3}>
           {tabs.map((tab, index) => (
             <Grid item key={tab.id}>
               <TabButton
@@ -52,11 +53,17 @@ export const Tabs: React.FC<Props> = ({
                 }}
                 id={`tab-${index + 1}`}
                 active={selected === tab.id}
-                href={`#tab-section-${index + 1}`}
+                data-href={`#tab-section-${index + 1}`}
                 sx={{
+                  '&:focus': {
+                    outline: 'none !important',
+                    borderBottom:
+                      selected === tab.id ? customStyle?.borderBottom : customStyle?.defaultBorderBottom,
+                  },
                   '&:hover': {
                     background:
                       selected === tab.id ? customStyle?.background : 'default',
+                      boxShadow: "none",
                   },
                   width: 'auto',
                   background:
@@ -67,8 +74,10 @@ export const Tabs: React.FC<Props> = ({
                       ? customStyle?.selectedColor
                       : customStyle?.defaultColor || 'default',
                   borderBottom:
-                    selected === tab.id ? customStyle?.borderBottom : 'default',
+                    selected === tab.id ? customStyle?.borderBottom : customStyle?.defaultBorderBottom,
                   marginLeft: tab.id !== 1 ? '-1px' : 'unset',
+                  px: 2,
+                  boxShadow: 'none'
                 }}
                 onClick={(e) => handleSelected(e, tab.id)}
                 onKeyDown={(e) => handleKeyDown(e, tab.id)}
@@ -91,16 +100,29 @@ export const Tabs: React.FC<Props> = ({
                     setSelected((prev) => (prev === tab.id ? null : tab.id))
                   }
                   sx={{
+                    '&:focus': {
+                      outline: 'none !important',
+                      boxShadow: "none",
+                      borderBottom:
+                        selected === tab.id ? customStyle?.borderBottom : customStyle?.defaultBorderBottom,
+                    },
+                    '&:hover': {
+                      background:
+                        selected === tab.id ? customStyle?.background : 'default',
+                        boxShadow: "none"
+                    },
+                    width: '100%',
                     background:
                       selected === tab.id ? customStyle?.background : 'default',
+                    border: 'none',
                     color:
                       selected === tab.id
                         ? customStyle?.selectedColor
                         : customStyle?.defaultColor || 'default',
-                    width: '100%',
-                    textAlign: 'center',
-                    mb: 2,
-                    py: 5,
+                    borderBottom:
+                      selected === tab.id ? customStyle?.borderBottom : "none",
+                    mb: 4,
+                    boxShadow: 'none'
                   }}
                 >
                   {tab.title}
@@ -133,6 +155,14 @@ export const Tabs: React.FC<Props> = ({
     e?.preventDefault();
     setSelected(id);
     tabsRef?.current[id]?.focus();
+
+    const sectionId = tabsRef.current[id]?.getAttribute('data-href')?.substring(1);
+    if (sectionId) {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent, id: number) {
