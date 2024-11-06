@@ -3,7 +3,7 @@ import { useAuthSessionIdleTimer } from "../../../contexts/auth/hooks/useAuthSes
 import { renderHook } from "../../common";
 
 jest.mock("../../../config", () => ({
-  config: { value: jest.fn() },
+  config: { value: { BASEAPP: "webc_app" } },
 }));
 
 jest.mock("../../../contexts/auth/hooks", () => ({
@@ -39,6 +39,9 @@ describe("useAuthSessionIdleTimer", () => {
   });
 
   it("should call useIdleTimer with correct configuration", () => {
+    jest.mock("../../../config", () => ({
+      config: { value: { BASEAPP: "webc_app" } },
+    }));
     jest.mocked(useIdleTimer).mockImplementation(mockUseIdleTimer);
 
     renderHook(() =>
@@ -46,7 +49,7 @@ describe("useAuthSessionIdleTimer", () => {
         onSessionExpired: mockOnSessionExpired,
       })
     );
-
+    expect(mockUseIdleTimer).toHaveBeenCalled();
     const config = mockUseIdleTimer.mock.calls[0][0];
     expect(config).toMatchObject({
       onIdle: expect.any(Function),
@@ -60,5 +63,24 @@ describe("useAuthSessionIdleTimer", () => {
       onMessage: expect.any(Function),
       name: undefined,
     });
+  });
+
+  it("should not initialize useIdleTimer when app is not match", () => {
+    jest.resetModules();
+    jest.doMock("../../../config", () => ({
+      config: { value: { BASEAPP: "webdev_app" } },
+    }));
+
+    const {
+      useAuthSessionIdleTimer,
+    } = require("../../../contexts/auth/hooks/useAuthSessionIdleTimer");
+
+    renderHook(() =>
+      useAuthSessionIdleTimer({
+        onSessionExpired: mockOnSessionExpired,
+      })
+    );
+
+    expect(mockUseIdleTimer).not.toHaveBeenCalled();
   });
 });
