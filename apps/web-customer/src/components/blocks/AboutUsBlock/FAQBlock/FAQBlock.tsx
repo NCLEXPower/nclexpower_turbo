@@ -10,7 +10,7 @@ export const FAQBlock = () => {
   const faqTabs: TabsItem[] = [
     {
       id: 1,
-      title: "NCLEXPower and the CORE-Zigma System",
+      title: "The CORE-Zigma System",
       content: <FAQItemBlock topic="About NCLEX" />,
     },
     {
@@ -34,7 +34,8 @@ export const FAQBlock = () => {
     background: "transparent",
     selectedColor: "#0F2A71",
     defaultColor: "#000000",
-    borderBottom: "2px solid #0F2A71"
+    borderBottom: "2px solid #0F2A71",
+    defaultBorderBottom: "2px solid #000000"
   };
 
   const FAQHeader = () => (
