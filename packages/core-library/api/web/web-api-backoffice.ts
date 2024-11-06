@@ -27,7 +27,6 @@ import {
   GetAllInclusionResponse,
   GetAllInternalAccount,
   GetDefaultReviewerResponse,
-  GetInternalInclusionsType,
   PricingListResponse,
   ProductListResponse,
   ProductSetStatusParams,
@@ -311,7 +310,7 @@ export class WebApiBackOffice {
   }
 
   public async getAllInclusionLists() {
-    return await this.axios.get<GetInternalInclusionsType[]>(
+    return await this.axios.get<GetAllInclusionResponse[]>(
       `/api/v1/Product/internal-all-inclusions`
     )
   }
