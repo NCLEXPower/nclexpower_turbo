@@ -1,5 +1,5 @@
 import React from "react";
-import { WatchVideosBlock } from "../../../../components/blocks/HubBlocks/ProgramListBlock/WatchVideosBlock/WatchVideosBlock";
+import { WatchVideosBlock } from "../../../../../components/blocks/HubBlocks/ProgramListBlock/WatchVideosBlock/WatchVideosBlock";
 
 const WatchVideoPage: React.FC = () => {
   return <WatchVideosBlock />;

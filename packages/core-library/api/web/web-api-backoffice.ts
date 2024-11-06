@@ -17,11 +17,14 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
   DefaultReviewerParams,
   DiscrepanciesResponse,
+  EditInclusionParams,
   FileUploadParams,
+  GetAllInclusionResponse,
   GetAllInternalAccount,
   GetDefaultReviewerResponse,
   GetInternalInclusionsType,
@@ -30,13 +33,14 @@ import {
   ProductSetStatusParams,
   RegularQuestionTypeParams,
   WebGetContentsParams,
+  SubsequentOptionType,
 } from "../types";
 
 export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -268,6 +272,38 @@ export class WebApiBackOffice {
     );
   }
 
+  public async getAllInclusions() {
+    return await this.axios.get<GetAllInclusionResponse[]>(
+      `/api/v1/product/internal-all-inclusions`)
+  }
+
+  public async delete_route(MenuId: string) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
+    );
+  }
+
+  public async createInclusions(params: CreateInclusionParams) {
+    return await this.axios.post(
+      `/api/v1/product/internal-add-inclusions`, params)
+  }
+
+  public async deleteInclusion(InclusionId: string) {
+    return await this.axios.delete(
+      `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
+    )
+  }
+
+  public async editInclusion(params: EditInclusionParams) {
+    return await this.axios.put(
+      `/api/v1/product/internal-update-inclusion`, params)
+  }
+  public async web_create_subsequent(params: SubsequentOptionType){
+    return await this.axios.post<SubsequentOptionType>(
+      `/v1/api/Chatbot/create-subsequent-options`,
+      params
+    )
+  }
   public async getSelectedApprover() {
     return await this.axios.get<GetDefaultReviewerResponse[]>(
       `/api/v2/content/BaseContent/get-selected-approvers`
