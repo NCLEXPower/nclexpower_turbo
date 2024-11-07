@@ -17,7 +17,6 @@ import {
 type ChartOptions = {
   colors?: string[];
   maxRevenue?: number;
-
   xAxisTitle?: string;
   yAxisTitle?: string;
   yAxisMin?: number;
@@ -28,7 +27,6 @@ type ChartOptions = {
   grid?: BarChartProps["grid"];
   scaleType?: AxisConfig["scaleType"];
   borderRadius?: number;
-
   lineSeries?: Array<{
     dataKey: string;
     label: string;
@@ -37,7 +35,6 @@ type ChartOptions = {
   gaugeSegments?: Array<{ label: string; value: number }>;
   gaugeTotal?: number;
   gaugeCenterLabel?: string;
-
   startAngle?: number;
   endAngle?: number;
   innerRadius?: number;

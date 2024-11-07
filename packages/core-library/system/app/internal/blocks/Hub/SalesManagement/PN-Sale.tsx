@@ -39,7 +39,7 @@ export const PNSale: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         fontFamily: 'PT Sans Narrow", sans-serif',
-        p: { xs: 2, sm: 4, md: 0 },
+        p: { xs: 4, sm: 4, md: 0 },
       }}
     >
       <Box
