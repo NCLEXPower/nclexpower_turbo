@@ -28,3 +28,4 @@ export * from "./useDeviceInfo";
 export * from "./useAuthInterceptor";
 export * from "./hidden/useDesignVisibility";
 export * from "./hidden/useIsDesignVisible";
+export * from "./useAuthRedirect";
