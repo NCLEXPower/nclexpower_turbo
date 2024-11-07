@@ -10,7 +10,7 @@ import {
   Button,
   PhoneField,
   TextAreaField,
-  GenericSelectField,
+  ControlledSelectField,
 } from "core-library/components";
 import { ContactFormType } from "./validation";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
@@ -22,7 +22,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
-import { ControlledSelectField } from "core-library/components/Textfield/SelectTextfield";
 
 interface FormValues {
   control: Control<ContactFormType>;
