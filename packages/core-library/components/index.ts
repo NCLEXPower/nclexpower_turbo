@@ -51,6 +51,7 @@ export * from "./PageLoader";
 export * from "./Badge/CustomBadge";
 export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
+export * from "./Popover/Popover"
 // rows
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";

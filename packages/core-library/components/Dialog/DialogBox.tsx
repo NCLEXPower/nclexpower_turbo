@@ -48,7 +48,7 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
       onClose={handleClose}
       sx={{
         overflowY: overflowContent,
-        zIndex: 1301,
+        zIndex: 1,
         "& .MuiDialog-paper": {
           height: ContentHeight,
           maxHeight: "550px",

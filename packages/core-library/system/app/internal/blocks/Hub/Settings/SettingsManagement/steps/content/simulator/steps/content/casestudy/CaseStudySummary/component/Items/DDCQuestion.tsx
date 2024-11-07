@@ -24,7 +24,7 @@ export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
       const answer = answers.find(
         (ans: DDCAnswerOptionType) => ans.optionName === optionName
       );
-      if (!answer) return optionName;
+      if (!answer) return;
 
       const defaultSelectedOption = answer.options?.find(
         (option) => option.answerKey === true

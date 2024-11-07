@@ -1,11 +1,11 @@
 import React from "react";
-import { ApprovalListView } from "../../content/regular/ApprovalListView";
 import { WizardFormMap } from "../../../../../../../../../../hooks";
 import ContentReviewerBlock from "../../../blocks/rqc/ContentReviewer/ContentReviewerBlock";
+import { ApprovalListViewBlock } from "../../content/regular/ApprovalListViewBlock";
 
 export type ApprovalSelectionSettingsSteps =
   | "InitialViewList"
-  | "ContentReviewerBlock"
+  | "ContentReviewerBlock";
 
 export interface ApprovalSelectionStepProps {
   isLoading: boolean;
@@ -13,7 +13,7 @@ export interface ApprovalSelectionStepProps {
 
 export const ApprovalSelectionTypeStep = {
   InitialViewList: {
-    content: (props) => <ApprovalListView {...props} />,
+    content: (props) => <ApprovalListViewBlock {...props} />,
     nextStep: "ContentReviewerBlock",
   },
   ContentReviewerBlock: {
