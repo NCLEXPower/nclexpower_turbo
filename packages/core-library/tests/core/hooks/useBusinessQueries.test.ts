@@ -18,6 +18,8 @@ import {
   useCreateSubsequentOptions,
   useCreateReportIssue,
   useGetSelectedApprovers,
+  useGetAllInternalInclusions,
+  useSelectAllCategories,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -38,6 +40,7 @@ import {
   ReportIssueType,
   SubsequentOptionType,
 } from "../../../api/types";
+import { CategoryListResponse } from "../../../types/category-response";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -1541,4 +1544,121 @@ describe("useGetSelectedApprovers", () => {
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();
   });
+  describe("useGetAllInternalInclusions", () => {
+    const mockExecute = jest.fn();
+  
+    it("should return a list of inclusion lists", async () => {
+      const mockData: GetAllInclusionResponse[] = [
+        {
+          id: "test-id",
+          option: "test-option", 
+        }
+      ];
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: mockData,
+          isLoading: false,
+          error: null,
+        };
+      });
+  
+      const { result } = renderHook(() =>
+        useGetAllInternalInclusions(["getAllInternalInclusions"])
+      );
+  
+      expect(useQuery).toHaveBeenCalledWith(["getAllInternalInclusions"], expect.any(Function), {
+        staleTime: Infinity,
+      });
+  
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+  
+    it("should handle loading state", () => {
+      (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+      expect(result.current.isLoading).toBe(true);
+      expect(result.current.data).toBeUndefined();
+    });
+  
+    it("should handle error state", async () => {
+      const mockError = new Error("Failed to fetch data");
+      mockExecute.mockRejectedValue(mockError);
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: undefined,
+          isLoading: false,
+          error: mockError,
+        };
+      });
+  
+      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+  
+      expect(result.current.error).toEqual(mockError);
+      expect(result.current.data).toBeUndefined();
+    });
+  })
+
+  describe("useSelectAllCategories", () => {
+    const mockExecute = jest.fn();
+  
+    it("should return a list of all categories", async () => {
+      const mockData: CategoryListResponse[] = [
+        {
+          id: 'test-id',
+          categoryName: "test-category-name",
+          categoryDescription: 'test-category-description',
+          categoryType: 0,
+          createdAt: 'test-created-at',
+          updatedAt: 'test-updated-at'
+        }
+      ];
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: mockData,
+          isLoading: false,
+          error: null,
+        };
+      });
+  
+      const { result } = renderHook(() =>
+        useSelectAllCategories(["selectAllPricing"])
+      );
+  
+      expect(useQuery).toHaveBeenCalledWith(["selectAllPricing"], expect.any(Function), {
+        staleTime: Infinity,
+      });
+  
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+  
+    it("should handle loading state", () => {
+      (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+      const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
+      expect(result.current.isLoading).toBe(true);
+      expect(result.current.data).toBeUndefined();
+    });
+  
+    it("should handle error state", async () => {
+      const mockError = new Error("Failed to fetch data");
+      mockExecute.mockRejectedValue(mockError);
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: undefined,
+          isLoading: false,
+          error: mockError,
+        };
+      });
+  
+      const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
+  
+      expect(result.current.error).toEqual(mockError);
+      expect(result.current.data).toBeUndefined();
+    });
+  })
 });

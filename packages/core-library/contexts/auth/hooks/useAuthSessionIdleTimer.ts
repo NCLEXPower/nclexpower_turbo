@@ -2,6 +2,7 @@ import { addMinutes, parseISO } from "date-fns";
 import { useIdleTimer } from "react-idle-timer";
 import { useApiCallback } from "../../../hooks";
 import { useAuthSession } from "../hooks";
+import { config } from "../../../config";
 
 export type AliveCheck = { lastRequest: string } | undefined;
 
@@ -17,6 +18,10 @@ export const useAuthSessionIdleTimer = ({
   onSessionExpired,
   sessionId,
 }: Props) => {
+  if (config.value.BASEAPP !== "webc_app") {
+    return { start: () => {}, stop: () => {} };
+  }
+
   const sessionCb = useApiCallback(
     async (api, sessionId: string) => await api.auth.session(sessionId)
   );
