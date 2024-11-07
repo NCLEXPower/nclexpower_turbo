@@ -71,6 +71,7 @@ jobs:
         run: |
           DATE=$(date +"%Y%m%d")
           BUILD_FILE=".github/build_number.txt"
+          mkdir -p .github
 
           if test -f "$BUILD_FILE"; then
             LAST_BUILD=$(cat $BUILD_FILE)
