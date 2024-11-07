@@ -33,6 +33,7 @@ import {
   SubsequentOptionType,
   GetDefaultReviewerResponse,
   DefaultReviewerDto,
+  GetSubsequentLists,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -630,6 +631,23 @@ export const useGetAllInternalInclusions = (
     queryKey,
     async () => {
       const result = await getInternalInclusions.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetSubsequentList = (
+  queryKey: string[]
+): UseQueryResult<GetSubsequentLists[] | undefined, any> => {
+  const getSubsequentLists = useApi((api) =>
+    api.webbackoffice.getSubsequentLists()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSubsequentLists.execute();
       return result.data;
     },
     { staleTime: Infinity }

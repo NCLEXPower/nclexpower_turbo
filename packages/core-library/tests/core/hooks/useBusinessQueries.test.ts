@@ -20,6 +20,7 @@ import {
   useGetSelectedApprovers,
   useGetAllInternalInclusions,
   useSelectAllCategories,
+  useGetSubsequentList,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -39,6 +40,7 @@ import {
   PricingListResponse,
   ReportIssueType,
   SubsequentOptionType,
+  GetSubsequentLists,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
 
@@ -1661,4 +1663,63 @@ describe("useGetSelectedApprovers", () => {
       expect(result.current.data).toBeUndefined();
     });
   })
+
+  describe("useGetSubsequentLists", () => {
+    const mockExecute = jest.fn();
+  
+    it("should return a list of subsequent lists", async () => {
+      const mockData: GetSubsequentLists[] = [
+        {
+          id: "test-id",
+          optionText: "test-option-text", 
+          optionKey: "test-key"
+        }
+      ];
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: mockData,
+          isLoading: false,
+          error: null,
+        };
+      });
+  
+      const { result } = renderHook(() =>
+        useGetSubsequentList(["subsequentLists"])
+      );
+  
+      expect(useQuery).toHaveBeenCalledWith(["subsequentLists"], expect.any(Function), {
+        staleTime: Infinity,
+      });
+  
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+  
+    it("should handle loading state", () => {
+      (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+      expect(result.current.isLoading).toBe(true);
+      expect(result.current.data).toBeUndefined();
+    });
+  
+    it("should handle error state", async () => {
+      const mockError = new Error("Failed to fetch data");
+      mockExecute.mockRejectedValue(mockError);
+  
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: undefined,
+          isLoading: false,
+          error: mockError,
+        };
+      });
+  
+      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+  
+      expect(result.current.error).toEqual(mockError);
+      expect(result.current.data).toBeUndefined();
+    });
+  })
+
 });
