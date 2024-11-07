@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { MenuItems } from "../../../../api/types";
 
 export const list = [
@@ -185,6 +190,8 @@ export const settings = {
     speed: 2000,
     autoplaySpeed: 8000,
     cssEase: "ease-in-out",
+    dots: true,
+    dotsClass: 'slick-dots'
 };
 
 export const FastTrackList = [

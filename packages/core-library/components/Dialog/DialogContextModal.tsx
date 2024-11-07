@@ -6,6 +6,7 @@ import {
   ApprovalDialogBlock,
 } from "./DialogFormBlocks";
 import { ExcelRowRegularQuestion } from "../../core";
+import { InclusionEditForm } from "./DialogFormBlocks/inclusion/InclusionEditForm";
 
 interface Props {
   dialogFormType: string;
@@ -23,9 +24,11 @@ export const DialogContextModal: React.FC<Props> = ({
       return <ProductDialogBlock />;
     case "automation-db-comparison":
       return <AutomationDBComparisonFormBlock csvData={csvData ?? []} />;
-    default:
     case "approval":
       return <ApprovalDialogBlock />;
+    case "inclusion-edit-form":
+      return <InclusionEditForm />;
+    default:
       return null;
   }
 };

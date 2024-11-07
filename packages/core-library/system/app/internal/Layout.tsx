@@ -9,7 +9,6 @@ import {
 import {
   DialogContextProvider,
   ToastProvider,
-  ExpirationContextProvider,
   TabsContextProvider,
 } from "../../../contexts";
 import { ContentLoader } from "../../../router";
@@ -43,27 +42,25 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({
           <ThemeProvider theme={theme()}>
             <CssBaseline />
             <TabsContextProvider>
-              <ExpirationContextProvider logout={logout}>
-                <DialogContextProvider>
-                  <DrawerLayout
-                    menu={mockMenu}
-                    isAuthenticated={isAuthenticated && tokenValidated}
-                    onLogout={logout}
-                  >
-                    <ContentLoader loading={loading}>
-                      <PageContainer stickOut={false}>
-                        <ToastProvider>
-                          <ControlledToast
-                            autoClose={5000}
-                            hideProgressBar={false}
-                          />
-                          {children}
-                        </ToastProvider>
-                      </PageContainer>
-                    </ContentLoader>
-                  </DrawerLayout>
-                </DialogContextProvider>
-              </ExpirationContextProvider>
+              <DialogContextProvider>
+                <DrawerLayout
+                  menu={mockMenu}
+                  isAuthenticated={isAuthenticated && tokenValidated}
+                  onLogout={logout}
+                >
+                  <ContentLoader loading={loading}>
+                    <PageContainer stickOut={false}>
+                      <ToastProvider>
+                        <ControlledToast
+                          autoClose={5000}
+                          hideProgressBar={false}
+                        />
+                        {children}
+                      </ToastProvider>
+                    </PageContainer>
+                  </ContentLoader>
+                </DrawerLayout>
+              </DialogContextProvider>
             </TabsContextProvider>
           </ThemeProvider>
         </AccountSetupContextProvider>
