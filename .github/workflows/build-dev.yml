@@ -69,24 +69,36 @@ jobs:
       - name: Set up date and build number
         id: build_info
         run: |
-          DATE=$(date +"%Y%m%d")
-          BUILD_FILE=".github/build_number.txt"
+          if [[ "${GITHUB_REF}" == "refs/heads/mdev" ]]; then
+            # Only generate build number for merges to `mdev`
+            DATE=$(date +"%Y%m%d")
+            BUILD_FILE=".github/build_number.txt"
+            NEW_BUILD_NUMBER="${DATE}-1000" # Default build number if none exists
 
-          if test -f "$BUILD_FILE"; then
-            LAST_BUILD=$(cat $BUILD_FILE)
-            if [[ $LAST_BUILD != $DATE-* ]]; then
-              BUILD_NUMBER="$DATE-1000"
+            if test -f "$BUILD_FILE"; then
+              # If build_number.txt exists, check the latest build number and increment
+              LAST_BUILD=$(cat $BUILD_FILE)
+              if [[ $LAST_BUILD != $DATE-* ]]; then
+                BUILD_NUMBER="$NEW_BUILD_NUMBER"
+              else
+                BUILD_SEQ=${LAST_BUILD##*-}
+                BUILD_NUMBER="$DATE-$((BUILD_SEQ + 1))"
+              fi
             else
-              BUILD_SEQ=${LAST_BUILD##*-}
-              BUILD_NUMBER="$DATE-$((BUILD_SEQ + 1))"
+              BUILD_NUMBER="$NEW_BUILD_NUMBER"
             fi
-          else
-            BUILD_NUMBER="$DATE-1000"
-          fi
 
-          echo "$BUILD_NUMBER" > $BUILD_FILE
-          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-          echo "::set-output name=BUILD_NUMBER::$BUILD_NUMBER"
+            # Check if the build number already exists
+            while test -f ".github/build_number_$BUILD_NUMBER.txt"; do
+              BUILD_SEQ=${BUILD_NUMBER##*-}
+              BUILD_NUMBER="$DATE-$((BUILD_SEQ + 1))"
+            done
+
+            # Create a file for the build number to ensure uniqueness
+            echo "$BUILD_NUMBER" > $BUILD_FILE
+            echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+            echo "::set-output name=BUILD_NUMBER::$BUILD_NUMBER"
+          fi
 
       - name: Commit and Tag the Build
         env:
