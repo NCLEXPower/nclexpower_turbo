@@ -32,7 +32,7 @@ import {
   EditInclusionParams,
   SubsequentOptionType,
   GetDefaultReviewerResponse,
-  DefaultReviewerDto
+  DefaultReviewerDto,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -613,6 +613,23 @@ export const useGetSelectedApprovers = (
     queryKey,
     async () => {
       const result = await getSelectedApprover.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetAllInternalInclusions = (
+  queryKey: string[]
+): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
+  const getInternalInclusions = useApi((api) =>
+    api.webbackoffice.getAllInclusionLists()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getInternalInclusions.execute();
       return result.data;
     },
     { staleTime: Infinity }
