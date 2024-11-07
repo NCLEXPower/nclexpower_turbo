@@ -52,6 +52,7 @@
         "@mui/icons-material": "^5.14.3",
         "@mui/lab": "^5.0.0-alpha.62",
         "@mui/material": "^5.14.5",
+        "@mui/x-charts": "^7.22.0",
         "@mui/x-data-grid": "^7.6.2",
         "@mui/x-date-pickers": "^7.5.1",
         "@reactour/tour": "^3.7.0",
