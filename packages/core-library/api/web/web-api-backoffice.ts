@@ -309,4 +309,10 @@ export class WebApiBackOffice {
     )
   }
 
+  public async getAllInclusionLists() {
+    return await this.axios.get<GetAllInclusionResponse[]>(
+      `/api/v1/Product/internal-all-inclusions`
+    )
+  }
+
 }
