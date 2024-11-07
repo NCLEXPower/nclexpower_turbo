@@ -31,9 +31,6 @@ export const PricingForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   const { control, handleSubmit, clearErrors, setFocus, formState } = form;
   useFormFocusOnError<PricingFormType>(formState.errors, setFocus);
 
-  const sample = formState.errors;
-  console.log("has error message", sample);
-
   return (
     <Grid container direction="column" rowSpacing={4} gap={2}>
       <Grid item md={6} lg={4}>
