@@ -1,7 +1,6 @@
 import { useRouter } from "../core";
 import { useEffect, useState } from "react";
 import { useValidateToken } from "./useValidateToken";
-import { config } from "../config";
 import { useAccessToken } from "../contexts/auth/hooks";
 
 export const useAuthRedirect = (isAuthenticated: boolean) => {
@@ -16,7 +15,7 @@ export const useAuthRedirect = (isAuthenticated: boolean) => {
     const currentPath = router.pathname;
 
     if (!isAuthenticated || !tokenValidated || !accessToken) {
-      if (currentPath.startsWith(config.value.BASEHUB)) {
+      if (currentPath.startsWith("/hub")) {
         router.push((route) => route.login);
       } else {
         setIsValidating(false);
