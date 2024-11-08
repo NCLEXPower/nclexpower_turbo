@@ -1,6 +1,5 @@
-import { DeviceInfo, useSessionStorage } from "../../hooks";
+import { useSessionStorage } from "../../hooks";
 import { IntentValueType } from "../../types/global";
-import { AliveCheck } from "./hooks/useAuthSessionIdleTimer";
 
 export const useAccessToken = () =>
   useSessionStorage<string | undefined>("accessToken", undefined);
@@ -31,18 +30,3 @@ export const useAccountId = () =>
 
 export const useAccessLevel = () =>
   useSessionStorage<number | undefined>("al", undefined);
-
-export const useSession = () =>
-  useSessionStorage<string | undefined>("sessionId", undefined);
-
-export const useAuthSession = () =>
-  useSessionStorage<AliveCheck>("auth_session", undefined);
-
-export const useDeviceSessionInfo = () =>
-  useSessionStorage<DeviceInfo | null>("dinfo", null);
-
-export const useDeviceNotRecognized = () =>
-  useSessionStorage<boolean | undefined>("not_recognized", undefined);
-
-export const useDeviceSession = () =>
-  useSessionStorage<DeviceInfo | null>("dinfo", null);

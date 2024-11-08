@@ -22,13 +22,13 @@ import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirec
 import { HideHeader } from "../../core/constant/HideHeader";
 import { useWebSidebarStyles } from "@/pages/contents/useWebSidebarStyles";
 
-interface Props {}
+interface Props { }
 
 const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
   const queryClient = new QueryClient();
   const theme = useTheme();
   const { publishableKey } = useStripeConfig();
-  const { isAuthenticated, logout, loading } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useWebSidebarStyles();
@@ -48,6 +48,7 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
                   isAuthenticated={isAuthenticated}
                   headerStyles={headerStyles}
                   sidebarStyles={sidebarStyles}
+                  hiddenHeaderPathnames={HideHeader}
                   onLogout={logout}
                 >
                   {children}

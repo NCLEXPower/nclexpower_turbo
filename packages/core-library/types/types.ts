@@ -1,4 +1,4 @@
-import { credentialsType } from "./../api/types";
+import { credentialsType } from './../api/types';
 import { useCallback, useReducer } from "react";
 import { DataTableHeader } from "../components";
 import { DataTableColumn } from "./page";
@@ -61,7 +61,7 @@ export interface PaginationData {
   hasPreviousPage: boolean;
 }
 
-export interface internalAccountType {
+export interface internalAccountType{
   firstname: string;
   middlename: string;
   lastname: string;
@@ -73,24 +73,10 @@ export interface internalAccountType {
   routers: RouteType[];
 }
 
-export interface EnrollDeviceType {
-  deviceName: string;
-  deviceType: string;
-  ipAddress: string;
-  deviceFingerprint: string;
-  accountId: string;
-}
-
-export interface EnrollDeviceResponseType {
-  responseCode: number;
-  message: string;
-  deviceId?: string | undefined;
-}
-
 export type RouteType = {
   label: string;
   value: string;
-};
+}
 
 export type DataTableRow = Record<string, string>;
 

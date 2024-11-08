@@ -1,33 +1,35 @@
-/**
- * Property of the NCLEX Power.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
-
 import Image from "next/image";
 import { NCLEXYellowLogo } from "../../assets";
 import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import { useIsDesignVisible } from "../../hooks";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useRouteBasedVisibility } from "../../hooks";
+import { HideFooter } from "./HideFooter";
+import { useRouter } from "../../core";
 
 export const Footer: React.FC<FooterProps> = (props) => {
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
+  const router = useRouter();
 
-  const isHidden = useIsDesignVisible();
+  const updatedHideFooter =
+    HideFooter.includes(router.pathname) || router.pathname?.startsWith("/hub")
+      ? [...HideFooter, router.pathname]
+      : HideFooter;
+
+  const { isHidden } = useRouteBasedVisibility(updatedHideFooter);
 
   return (
     !isHidden && (
       <Box
         width={1}
         sx={{
+          padding: " 2.5rem",
           color: "white",
           backgroundColor: "#040814",
+          paddingY: 5,
           fontFamily: "PT Sans",
           flexGrow: 1,
-          paddingX: { xs: "1.5rem", sm: "2.5rem", md: "3rem" },
-          paddingY: { xs: "2.5rem", md: "4rem" },
         }}
       >
         <Grid
@@ -71,7 +73,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
               flexDirection: { xs: "column", sm: "row" },
               alignItems: "start",
               width: "100%",
-              gap: { xs: 2, md: 4 },
             }}
           >
             <Grid
@@ -87,27 +88,22 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 textAlign: { xs: "center", sm: "start" },
               }}
             >
-              <Typography
-                sx={{
-                  marginBottom: { xs: 5, sm: 6, md: 10 },
-                  fontSize: { xs: "14px", sm: "15px", md: "16px", lg: "17px" },
-                }}
-              >
+              <Typography sx={{ marginBottom: 5 }}>
                 {props.info.address}
               </Typography>
               <Grid
                 sx={{
-                  marginBottom: { xs: 2, md: 6 },
-                  gap: 3,
-                  width: "100%",
+                  marginBottom: { xs: 5, md: 10 },
+                  gap: 2,
+                  width: "70%",
                   display: "flex",
-                  justifyContent: { xs: "space-evenly", sm: "space-between" },
+                  justifyContent: "space-between",
                   flexDirection: { xs: "row", sm: "column" },
                 }}
               >
                 <Typography
                   sx={{
-                    fontSize: { xs: "12px", sm: "13px", md: "14px" },
+                    fontSize: "12px",
                     width: "fit-content",
                     borderBottom: 2,
                     borderBlockColor: "#f5c206",
@@ -117,7 +113,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: { xs: "12px", sm: "13px", md: "14px" },
+                    fontSize: "12px",
                     width: "fit-content",
                     borderBottom: 2,
                     borderBlockColor: "#f5c206",
@@ -147,15 +143,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                       {props.list.length > 0 &&
                         list.items.map((item, index) => (
                           <li key={index}>
-                            <a
-                              href={item.path}
-                              className="text-white "
-                              style={{
-                                fontSize: `clamp(0.75rem, 1vw + 0.3rem, 1.1rem)`,
-                              }}
-                            >
-                              {item.label}
-                            </a>
+                            <a href={item.path}>{item.label}</a>
                           </li>
                         ))}
                     </ul>
@@ -164,13 +152,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <div
-          className="text-xs "
-          style={{
-            fontSize: `clamp(0.5rem, 1vw + 0.2rem, 0.8rem)`,
-            marginTop: 10,
-          }}
-        >
+        <div className="text-xs">
           <p className="w-full text-center pt-4">
             NCLEX-RN® and NCLEX-PN® are registered trademarks of the National
             Council of State Boards of Nursing, Inc (NCSBN®)
