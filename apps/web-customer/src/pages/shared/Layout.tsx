@@ -48,7 +48,6 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
                   isAuthenticated={isAuthenticated}
                   headerStyles={headerStyles}
                   sidebarStyles={sidebarStyles}
-                  hiddenHeaderPathnames={HideHeader}
                   onLogout={logout}
                 >
                   {children}
