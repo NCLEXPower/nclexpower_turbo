@@ -33,6 +33,7 @@ import {
   RegularQuestionTypeParams,
   WebGetContentsParams,
   SubsequentOptionType,
+  GetSubsequentLists,
 } from "../types";
 
 export class WebApiBackOffice {
@@ -315,4 +316,9 @@ export class WebApiBackOffice {
     )
   }
 
+  public async getSubsequentLists() {
+    return await this.axios.get<GetSubsequentLists[]>(
+     `/v1/api/Chatbot/get-subsequent-list`
+    )
+  }
 }
