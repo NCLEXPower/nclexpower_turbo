@@ -56,11 +56,3 @@ export const useSingleCookie = (): [
 ] => {
   return useCookie<string>(config.value.SCOOKIE);
 };
-
-export const useDeviceId = (): [
-  string | null,
-  (value: string | null, options?: CookieSetOptions) => void,
-  VoidFunction,
-] => {
-  return useCookie<string>("devid");
-};

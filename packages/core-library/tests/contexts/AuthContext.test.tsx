@@ -5,7 +5,7 @@ import { useApiCallback } from "../../hooks/useApi";
 import { renderHook, waitFor } from "../common";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { clearSession } from "../../hooks";
-import { exec } from "child_process";
+import { useClearCookies } from "../../hooks/useClearCookies";
 
 jest.mock("../../config", () => ({
   config: { value: { BASEAPP: "mockAppName" } },
@@ -15,13 +15,6 @@ jest.mock("../../contexts/auth/hooks", () => ({
   useRefreshToken: jest.fn().mockReturnValue(["token", jest.fn(), jest.fn()]),
   useAccountId: jest.fn().mockReturnValue(["uid", jest.fn(), jest.fn()]),
   useAccessLevel: jest.fn().mockReturnValue(["al", jest.fn(), jest.fn()]),
-  useSession: jest.fn().mockReturnValue(["sessionId", jest.fn(), jest.fn()]),
-  useDeviceNotRecognized: jest
-    .fn()
-    .mockReturnValue(["not_recognized", jest.fn(), jest.fn()]),
-  useAuthSession: jest
-    .fn()
-    .mockReturnValue(["auth_session", jest.fn(), jest.fn()]),
 }));
 jest.mock("../../hooks/useSessionStorage");
 jest.mock("../../hooks/useApi", () => ({
@@ -37,7 +30,9 @@ jest.mock("../../core/router", () => ({
 
 jest.mock("../../hooks/useCookie", () => ({
   useSingleCookie: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
-  useDeviceId: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
+}));
+jest.mock("../../hooks/useClearCookies", () => ({
+  useClearCookies: jest.fn().mockReturnValue([jest.fn()]),
 }));
 
 jest.mock("../../hooks/useSensitiveInformation", () => ({
@@ -45,13 +40,6 @@ jest.mock("../../hooks/useSensitiveInformation", () => ({
     internal: { email: "internal@example.com" },
     customer: { email: "customer@example.com" },
     loading: false,
-  }),
-}));
-
-jest.mock("../../contexts/auth/hooks/useAuthSessionIdleTimer", () => ({
-  useAuthSessionIdleTimer: jest.fn().mockReturnValue({
-    start: jest.fn(),
-    stop: jest.fn(),
   }),
 }));
 
@@ -77,8 +65,6 @@ describe("useAuthContext", () => {
       setRefreshToken: expect.any(Function),
       setSingleCookie: expect.any(Function),
       softLogout: expect.any(Function),
-      integrateDeviceInUseUpdater: expect.any(Function),
-      loginFromSso: expect.any(Function),
     });
   });
 
@@ -102,13 +88,18 @@ describe("useAuthContext", () => {
     });
 
     const mockClearSession = jest.mocked(clearSession);
+    const mockClearCookies = jest.mocked(useClearCookies);
     const mockRouterPush = useRouter().push;
 
-    jest.mocked(useSensitiveInformation).mockReturnValue({
+    jest.mock("../../hooks/useSensitiveInformation", () => ({
+      useSensitiveInformation: jest.fn(),
+    }));
+
+    (useSensitiveInformation as jest.Mock).mockReturnValue({
       internal: { email: "internal@example.com" },
       customer: { email: "customer@example.com" },
       loading: false,
-    } as any);
+    });
 
     const { result } = renderHook(() => useAuthContext(), {
       wrapper: ({ children }: React.PropsWithChildren<{}>) => (
@@ -120,6 +111,8 @@ describe("useAuthContext", () => {
       await result.current.logout();
     });
 
+    jest.runAllTimers();
+
     expect(mockRevokeCb).toHaveBeenCalledWith({
       accessToken: "token",
       refreshToken: "token",
@@ -127,11 +120,13 @@ describe("useAuthContext", () => {
       email: "internal@example.com",
     });
 
+    expect(mockClearCookies).toHaveBeenCalled();
     expect(mockClearSession).toHaveBeenCalled();
     expect(mockRouterPush).toHaveBeenCalledWith(expect.any(Function));
   });
 
   it("should not redirect to login and not trigger logout if revoke callback is not called", async () => {
+    const mockClearCookies = jest.fn();
     const mockClearSession = jest.fn();
     const mockRouterPush = jest.fn();
 
@@ -145,6 +140,7 @@ describe("useAuthContext", () => {
       await result.current.logout();
     });
 
+    expect(mockClearCookies).not.toHaveBeenCalled();
     expect(mockClearSession).not.toHaveBeenCalled();
     expect(mockRouterPush).not.toHaveBeenCalled();
   });
