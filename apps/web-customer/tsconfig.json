@@ -20,10 +20,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "tailwind.config.ts",
+    "tailwind.ts",
     "../../packages/core-library/cms-initialization.ts",
     "../../packages/core-library/global.d.ts",
     "../../packages/core-library/theme.d.ts",
+    "../../packages/core-library/eva-icons.d.ts",
     "../../packages/core-library/config"
   ],
   "exclude": ["node_modules"]

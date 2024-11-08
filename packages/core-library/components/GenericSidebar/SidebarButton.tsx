@@ -19,11 +19,8 @@ export interface SidebarButtonProps extends Partial<WebSidebarStylesType> {
 export const SidebarButton: React.FC<SidebarButtonProps> = ({
   navigation,
   pathname,
-  listItemIconSx,
   isAuthenticated,
-  paddingSx,
-  activeSx,
-  hoverSx,
+  listStyles,
 }) => {
   const router = useRouter();
   const path = router?.pathname;
@@ -37,15 +34,15 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
   };
 
   return (
-    <Box width="100%" p={1} sx={isAuthenticated ? paddingSx : null}>
-      <Box overflow="hidden" borderRadius={3} sx={hoverSx}>
+    <Box width="100%" p={1} sx={isAuthenticated ? listStyles?.paddingSx : null}>
+      <Box overflow="hidden" borderRadius={3} sx={listStyles?.hovericonSx}>
         <ListItemButton
           disabled={navigation.path === path}
           component="a"
           onClick={handleNavigate}
-          sx={isAuthenticated && isActive ? activeSx : {}}
+          sx={isAuthenticated && isActive ? listStyles?.activeSx : {}}
         >
-          <ListItemIcon sx={isAuthenticated ? listItemIconSx : null} >
+          <ListItemIcon sx={isAuthenticated ? listStyles?.listItemIconSx : null} >
             {IconComponent(navigation.icon, false)}
           </ListItemIcon>
           <ListItemText>

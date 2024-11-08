@@ -22,4 +22,10 @@ export * from "./useEmotionCache";
 export * from "./useSensitiveInformation";
 export * from "./useGoogleSignIn";
 export * from "./usePreventDuplicateSession";
-export * from './useMappedErrors'
+export * from "./useMappedErrors";
+export * from "./useStyles";
+export * from "./useDeviceInfo";
+export * from "./useAuthInterceptor";
+export * from "./hidden/useDesignVisibility";
+export * from "./hidden/useIsDesignVisible";
+export * from "./useAuthRedirect";

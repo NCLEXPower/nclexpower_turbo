@@ -1,3 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import { Close } from "@mui/icons-material";
 import {
   Box,
@@ -17,6 +23,8 @@ interface Props extends DialogProps {
   hideCloseButton?: boolean;
   maxWidth?: DialogProps["maxWidth"];
   borderRadius?: string;
+  overflowContent?: string;
+  ContentHeight?: string;
 }
 
 export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
@@ -28,6 +36,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
   hideCloseButton,
   maxWidth = "md",
   borderRadius = "0px",
+  overflowContent = "auto",
+  ContentHeight = "250px",
   ...props
 }) => {
   return (
@@ -37,10 +47,13 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
       open={open}
       onClose={handleClose}
       sx={{
+        overflowY: overflowContent,
         zIndex: 1301,
         "& .MuiDialog-paper": {
-          height: 'auto',
+          height: ContentHeight,
+          maxHeight: "550px",
           borderRadius: borderRadius,
+          overflowY: overflowContent,
         },
       }}
       {...props}
@@ -81,7 +94,14 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
           {header}
         </Typography>
       </DialogTitle>
-      <DialogContent sx={{ px: { xs: 6, sm: 12 }, pb: { xs: 6, sm: 12 }}}>
+      <DialogContent
+        sx={{
+          px: { xs: 6, sm: 12 },
+          pb: { xs: 6, sm: 12 },
+          overflowY: overflowContent,
+          height: "500px",
+        }}
+      >
         {children}
       </DialogContent>
     </Dialog>

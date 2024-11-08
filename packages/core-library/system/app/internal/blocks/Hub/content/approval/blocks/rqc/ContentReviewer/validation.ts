@@ -1,8 +1,15 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import * as yup from 'yup';
 
 export const crbSchema = yup.object({
   comment: yup.string().optional(),
-  option: yup.string().required("Select at least one option."),
+  option: yup.number().required("Select at least one option."),
+  date: yup.date().required("Date is required.")
+  .min(new Date(new Date().setHours(0, 0, 0, 0)), "Date cannot be before today"),
 });
 
 export const approverSchema = yup.object({

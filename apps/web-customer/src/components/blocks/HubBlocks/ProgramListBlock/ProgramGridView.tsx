@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import React, { useState } from "react";
 import Image from "next/image";
 import { Box } from "@mui/material";
@@ -6,7 +11,7 @@ import {
   InProgressWhiteIcon,
   CompletedWhiteIcon,
 } from "core-library/assets";
-import { StandardProgramListType } from "../../../../core/types/programList";
+import { StandardProgramListType } from "core-library/types/wc/programList";
 import useCalculateProgramProgress from "../../../../core/hooks/useCalculateProgramProgress";
 import { ProgressCircle } from "../../../../components/ProgressCircle/ProgressCircle";
 import { DialogBox } from "core-library/components/Dialog/DialogBox";
@@ -34,7 +39,7 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
   };
 
   const selectedProgram = program.find(
-    (program) => program.programId === selectedProgramId
+    (program) => program.id === selectedProgramId
   );
 
   return (
@@ -51,18 +56,18 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
           </>
         ) : (
           program.map((item) => {
-            const { programId, title, programStatus, programImage, sections } =
+            const { id, title, programStatus, programImage, sections } =
               item;
             return (
               <>
                 <Box
-                  key={programId}
+                  key={id}
                   className={`h-auto w-full lg:w-[254px] bg-gradient-to-r from-mainBlue to-[#181E2F] rounded-[16px] border border-slate-400 overflow-hidden ${
                     programStatus === "unavailable"
                       ? "opacity-50 pointer-events-none"
                       : "opacity-100 cursor-pointer"
                   }`}
-                  onClick={() => handleModalOpen(programId)}
+                  onClick={() => handleModalOpen(id)}
                 >
                   <div className="flex flex-col">
                     <Image
@@ -127,7 +132,7 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
                 sections={selectedProgram.sections || []}
                 title={selectedProgram.title}
                 closeModal={handleModalClose}
-                programId={selectedProgram.programId}
+                programId={selectedProgram.id}
               />
             }
             maxWidth="xs"

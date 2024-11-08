@@ -13,6 +13,7 @@
     "test:watch": "turbo run test:watch"
   },
   "devDependencies": {
+    "@types/node": "^22.7.5",
     "eslint-config": "*",
     "prettier": "^3.2.5",
     "turbo": "^2.0.6",

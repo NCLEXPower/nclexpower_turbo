@@ -22,6 +22,7 @@
     "**/*.tsx",
     "../../packages/core-library/global.d.ts",
     "../../packages/core-library/theme.d.ts",
+    "../../packages/core-library/eva-icons.d.ts",
     "../../packages/core-library/core/utils/routeUtils.ts",
     "../../packages/core-library/config",
     "../../packages/core-library/types/editor-type.ts",

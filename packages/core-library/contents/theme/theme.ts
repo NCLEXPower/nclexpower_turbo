@@ -9,13 +9,14 @@ export const DEFAULT_LOGO = {
 };
 
 const themeConfigFromTenant = (tenant?: CmsTenant | null) => ({
-  primaryColor: tenant?.primaryColor.value ?? "#8E2ADD",
+  primaryColor: tenant?.primaryColor.value ?? "#0c225c",
 });
 
 export const appColorsFromPrimary = (primaryColor: string) => {
   const color = new ColorGenerator(primaryColor);
   return {
     primary: color.primary,
+    purple: "#6900b7",
     secondary: {
       light: color.lightenColor(20),
       dark: color.darkenColor(20),
@@ -79,6 +80,7 @@ export const theme = (tenant?: CmsTenant | null) => {
   const info = "#0018CC";
   const infoColors = new ColorGenerator(info);
   const primaryColors = new ColorGenerator(appColors.primary);
+  const purple = "#560bad";
 
   return createTheme({
     spacing: 4,
@@ -94,6 +96,7 @@ export const theme = (tenant?: CmsTenant | null) => {
     },
     palette: {
       appColors,
+      purple: appColors.purple,
       primary: {
         light: primaryColors.lightenColor(80, 20),
         main: appColors.primary,
@@ -239,10 +242,10 @@ export const theme = (tenant?: CmsTenant | null) => {
           "& a": {
             color: appColors.primary,
             "&:focus:not(.MuiButton-root, .MuiListItem-root &, .MuiListItemButton-root &)":
-            {
-              backgroundColor: appColors.ui_rag["Amber.400"],
-              outline: "none!important",
-            },
+              {
+                backgroundColor: appColors.ui_rag["Amber.400"],
+                outline: "none!important",
+              },
           },
           "& button:focus, a.MuiButton-root:focus": {
             border: "none",

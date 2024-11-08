@@ -75,7 +75,7 @@ export const DateFieldComponent = <T extends object>({
   const value =
     typeof field?.value === "string"
       ? startOfDay(parseDate(field?.value, defaultDatePickerFormat)!)
-      : field?.value;
+      : field?.value ?? null;
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
@@ -109,7 +109,7 @@ export const DateFieldComponent = <T extends object>({
               returnRawValue ? [day, month, year].join("-") : val
             );
           }}
-          value={value as Date | undefined}
+          value={value as Date || null}
           data-testid={props["data-testid"] || `${field?.name}-field`}
           inputProps={{
             error: !!fieldState?.error?.message,

@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Box, Typography, Grid } from "@mui/material";
-import { Alert, Card, DataGrid, Button } from "core-library/components";
 import { PricingFormBlock } from "./pricing/PricingFormBlock";
-import { useColumns } from "core-library/hooks";
-import { useBusinessQueryContext } from "core-library/contexts";
+import { useBusinessQueryContext } from '../../../../../../contexts';
+import { Alert, Card, DataGrid } from '../../../../../../components';
+import { useColumns } from '../../../../../../hooks';
 
 export const CreatePricingBlock: React.FC = () => {
   const { businessQueryGetAllPricing } = useBusinessQueryContext();

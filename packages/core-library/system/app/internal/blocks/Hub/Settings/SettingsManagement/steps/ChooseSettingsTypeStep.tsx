@@ -1,8 +1,14 @@
-import { WizardFormMap } from "core-library/hooks";
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SettingsManagement } from "./content/SettingsManagement";
 import { SettingsSelectionType } from "../types";
 import { QuestionManagementFormSteps } from "./QuestionManagementSettingsTypeStep";
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
+import { ImageManagement } from "./ImageManagement/ImageManagement";
+import { WizardFormMap } from '../../../../../../../../hooks';
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -11,6 +17,7 @@ export type SettingsManagementSteps =
   | SettingsManagementFormSteps
   | QuestionManagementFormSteps
   | "ReviewerSettings"
+  | "ResourceManagement"
   | "RouterSettings";
 
 export interface SettingsManagementStepProps {
@@ -28,6 +35,8 @@ export const ChooseSettingsTypeStep = {
         return "SelectQuestionType";
       if (values.chosen === "CMS" && values.selection === "DEFAULTREVIEWER")
         return "ReviewerSettings";
+      if (values.chosen === "CMS" && values.selection === "RESOURCEMANAGEMENT")
+        return "ResourceManagement";
       if (values.chosen === "ROUTER" && values.selection === "IARM")
         return "RouterSettings";
     },
@@ -40,6 +49,10 @@ export const ChooseSettingsTypeStep = {
   RouterSettings: {
     previousStep: "InitialSettingsSelection",
     content: (props) => <InAppRouterManagement {...props} />,
+  },
+  ResourceManagement: {
+    previousStep: "InitialSettingsSelection",
+    content: (props) => <ImageManagement {...props} />,
   },
 } as WizardFormMap<
   Partial<SettingsManagementSteps>,

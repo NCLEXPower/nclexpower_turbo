@@ -1,3 +1,8 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import React from "react";
 import { ContactForm } from "./ContactForm";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,7 +19,7 @@ export function ContactFormBlock() {
     defaultValues: contactSchema.getDefault(),
   });
 
-  const { handleSubmit, control, reset } = form;
+  const { handleSubmit, control, reset, setValue , watch } = form;
 
   const onSubmit = (values: ContactFormType) => {
     console.log(values);
@@ -27,11 +32,17 @@ export function ContactFormBlock() {
     reset();
   };
 
+  const handleSetCountryCode = (code: string) => {
+    setValue("countryCode", code);
+  };
+
   return (
     <ContactForm
       control={control}
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
+      handleSetCountryCode={handleSetCountryCode}
+      countryCode={watch("countryCode")}
     />
   );
 }

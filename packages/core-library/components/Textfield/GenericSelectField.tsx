@@ -16,7 +16,7 @@ export type SingleOption = {
   branchKey?: string;
   price?: number;
   currency?: string;
-  id?: string;
+  id?: string | number;
   categoryName?: string;
 };
 

@@ -4,6 +4,7 @@ import {
   CreateRegularQuestion,
   QuestionTypeSelection,
   QuestionSummary,
+  CaseStudySummary,
 } from "./steps/content";
 import { SuccessPage } from "./steps/content/regular/SuccessPage";
 import { CaseNameSelection } from "./steps/content/casestudy/CaseNameSelection";
@@ -18,6 +19,7 @@ export type QuestionTypeFormSteps =
 export type CaseStudyQuestionTypeFormSteps =
   | "InitialCaseNameSelection"
   | "CaseStudyQuestionCreation"
+  | "CaseStudySummary"
   | "SuccessPage";
 
 export type CreationType = "Regular" | "CaseStudy";
@@ -65,8 +67,13 @@ export const ChooseCaseStudyQuestionType = {
   },
   CaseStudyQuestionCreation: {
     previousStep: "InitialCaseNameSelection",
-    nextStep: "CaseStudyQuestionCreation",
+    nextStep: "CaseStudySummary",
     content: (props) => <CreateCaseStudyQuestion {...props} />,
+  },
+  CaseStudySummary: {
+    previousStep: "CaseStudyQuestionCreation",
+    nextStep: "SuccessPage",
+    content: (props) => <CaseStudySummary {...props} />,
   },
   SuccessPage: {
     nextStep: "InitialCaseNameSelection",

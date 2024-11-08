@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 @font-face {
   font-family: "Inter";
   src: url(./fonts/Inter-Bold.ttf) format("truetype");
@@ -128,4 +133,13 @@
 .tiptap.resize-cursor {
   cursor: ew-resize;
   cursor: col-resize;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  cursor: pointer;
 }

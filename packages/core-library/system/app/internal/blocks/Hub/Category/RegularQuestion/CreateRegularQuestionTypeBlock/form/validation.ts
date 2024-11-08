@@ -1,5 +1,5 @@
-import { STRING_REGEX } from "core-library";
 import * as yup from "yup";
+import { STRING_REGEX } from '../../../../../../../../../utils';
 
 export const regularQuestionTypeFormSchema = yup.object({
   questionType: yup.string().required("question type is required.").matches(STRING_REGEX, "Special characters not allowed"),

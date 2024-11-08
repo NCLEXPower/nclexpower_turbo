@@ -3,7 +3,11 @@ import {
   pathExists,
   prepareMenus,
 } from "../components/GenericDrawerLayout/MockMenus";
-import { useValidateToken } from "../hooks";
+import {
+  useAuthInterceptor,
+  usePreventDuplicateSession,
+  useValidateToken,
+} from "../hooks";
 import { useAuthContext } from "../contexts";
 import { InternalPageEntryPoint } from "./app/internal/Page";
 import { QueryClient } from "react-query";
@@ -32,13 +36,17 @@ export const Page: React.FC<React.PropsWithChildren<Props>> = ({
   });
   const queryClient = new QueryClient();
 
+  const { duplicate } = usePreventDuplicateSession();
+
+  useAuthInterceptor();
+
   const isValid =
     (routes.length > 0 && pathExists(routes, router.asPath)) ||
     unauthorizeRoute.includes(router.asPath);
 
   switch (appName) {
     case "webdev_app":
-      if (!isValid) {
+      if (!isValid && !duplicate) {
         return (
           <ErrorBox label="Page not found. Please try again or contact administrator" />
         );

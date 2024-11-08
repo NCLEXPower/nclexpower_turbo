@@ -9,6 +9,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { config } from "../../config";
 import { useRouter } from "../../core";
+import { useResolution } from "../../hooks";
 interface Props {
   label: string;
   icon?: React.ReactNode;
@@ -41,6 +42,8 @@ export const AccountMenu: React.FC<Props> = ({
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const isInWebcHub = isInHub && appName.includes("c");
 
+  const { isMobile } = useResolution();
+
   return (
     <Box>
       <Button
@@ -63,9 +66,19 @@ export const AccountMenu: React.FC<Props> = ({
           {label}
         </Typography>
         {openMenu ? (
-          <KeyboardArrowUpIcon sx={isInWebcHub && { color: "white" }} />
+          <KeyboardArrowUpIcon
+            sx={[
+              isInWebcHub && { color: "white" },
+              isMobile && { display: "none" },
+            ]}
+          />
         ) : (
-          <KeyboardArrowDownIcon sx={isInWebcHub && { color: "white" }} />
+          <KeyboardArrowDownIcon
+            sx={[
+              isInWebcHub && { color: "white" },
+              isMobile && { display: "none" },
+            ]}
+          />
         )}
       </Button>
       <Popper
@@ -139,7 +152,7 @@ export const AccountMenu: React.FC<Props> = ({
                             }
                       }
                     >
-                      {subMenu.icon}{" "}
+                      {subMenu.icon}
                       <Typography variant="button">{subMenu.label}</Typography>
                     </Button>
                   ))}
@@ -168,7 +181,7 @@ export const AccountMenu: React.FC<Props> = ({
             }
             data-testid="logout-button"
           >
-            <LogoutIcon fontSize="small" />{" "}
+            <LogoutIcon fontSize="small" />
             <Typography variant="button"> Logout</Typography>
           </Button>
         </Box>

@@ -1,300 +1,324 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Rajdhani:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+html {
+  scroll-behavior: smooth;
 }
 
-.form-font{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+.form-font {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
 }
 
 .pt-sans-narrow-regular {
-    font-family: 'PT Sans Narrow', sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "PT Sans Narrow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .pt-sans-narrow-bold {
-    font-family: 'PT Sans Narrow', sans-serif;
-    font-weight: 700;
-    font-style: normal;
+  font-family: "PT Sans Narrow", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 .pt-sans-regular {
-    font-family: 'PT Sans', sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .pt-sans-bold {
-    font-family: 'PT Sans', sans-serif;
-    font-weight: 700;
-    font-style: normal;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 .pt-sans-narrow-semibold {
-    font-family: 'PT Sans Narrow', sans-serif;
-    font-weight: 600;
-    font-style: normal;
+  font-family: "PT Sans Narrow", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
 .pt-sans-caption-regular {
-    font-family: 'PT Sans Caption', sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "PT Sans Caption", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .pt-sans-caption-bold {
-    font-family: 'PT Sans Caption', sans-serif;
-    font-weight: 700;
-    font-style: normal;
+  font-family: "PT Sans Caption", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 .custom-shape-divider-top-1677508034 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
 }
 /* signin button */
 .button-black Button {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 .button-black:hover Button {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 .button-white Button {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 .button-white:hover Button {
-    background-color: black;
-    color: white;
+  background-color: black;
+  color: white;
 }
 /* links  */
 .link {
-    transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
 }
 .link:hover {
-    color: red;
+  color: red;
 }
 
 /* social icons  */
 .social-icons {
-    transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
 }
 .social-icons:hover {
-    color: red;
+  color: red;
 }
 
 .text-stroke {
-    -webkit-text-stroke: 2px black;
+  -webkit-text-stroke: 2px black;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .curve {
-    position: absolute;
-    height: 200px;
-    width: 100%;
-    bottom: 0;
-    text-align: center;
-    z-index: 1;
+  position: absolute;
+  height: 200px;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  z-index: 1;
 }
 
 .curve::before {
-    content: '';
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 55%;
-    height: 100%;
-    transform: translate(85%, 60%);
-    background-color: #051e34;
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 100% 50%;
+  width: 55%;
+  height: 100%;
+  transform: translate(85%, 60%);
+  background-color: #051e34;
 }
 
 .curve::after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 55%;
-    height: 100%;
-    background-color: #ffffff;
-    transform: translate(-4%, 40%);
-    z-index: -1;
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 100% 50%;
+  width: 55%;
+  height: 100%;
+  background-color: #ffffff;
+  transform: translate(-4%, 40%);
+  z-index: -1;
 }
 
 .blur {
-    position: absolute;
-    width: 10rem;
-    height: 14rem;
-    border-radius: 50%;
-    filter: blur(90px);
-    background: #a6ddf0;
+  position: absolute;
+  width: 10rem;
+  height: 14rem;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: #a6ddf0;
 }
 
 .bounce {
-    animation: bounce 5s infinite;
+  animation: bounce 5s infinite;
 }
 @keyframes bounce {
-    0%,
-    100% {
-        transform: translateY(2%);
-        animation-timing-function: cubic-bezier(0, 0, 2, 0);
-    }
-    50% {
-        transform: translateY(0);
-        animation-timing-function: cubic-bezier(0, 0, 0.2, 0);
-    }
+  0%,
+  100% {
+    transform: translateY(2%);
+    animation-timing-function: cubic-bezier(0, 0, 2, 0);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 0);
+  }
 }
 
 .fadeIn {
-    animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Flip Card */
 
 .flip-card {
-    background-color: transparent;
-    width: 220px;
-    height: 400px;
-    perspective: 1000px;
+  background-color: transparent;
+  width: 220px;
+  height: 400px;
+  perspective: 1000px;
 }
 
 .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
 }
 
 @media (min-width: 768px) {
-    .flip-card:hover .flip-card-inner {
-        transform: rotateY(180deg);
-    }
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
 }
 
 .flipped .flip-card-inner {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .flip-card-front,
 .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .flip-card-back {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 /* CAROUSEL */
 
 .carousel-cell {
-    width: 100%;
-    height: auto;
-    margin-right: 10px;
-    /* center images in cells with flexbox */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: auto;
+  margin-right: 10px;
+  /* center images in cells with flexbox */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-cell-image {
-    display: block;
-    max-height: 100%;
+  display: block;
+  max-height: 100%;
 }
 
 /* smaller, dark, rounded square */
 .flickity-prev-next-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
 }
 .flickity-prev-next-button:hover {
-    background: #f90;
+  background: #f90;
 }
 /* arrow color */
 .flickity-prev-next-button .arrow {
-    fill: white;
+  fill: white;
 }
 .flickity-prev-next-button.no-svg {
-    color: white;
+  color: white;
 }
 
 @layer base {
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply text-black font-primary;
-    }
-    .section {
-        @apply py-12 lg:py-32;
-    }
-    .section-title {
-        @apply text-3xl lg:text-4xl font-medium lg:font-extrabold mb-5;
-    }
-    .subtitle {
-        @apply text-base text-paragraph mb-16 italic lg:mb-24 max-w-[520px];
-    }
-    .btn {
-        @apply py-4 px-7 font-medium text-white flex items-center justify-center rounded-sm transition-all;
-    }
-    .btn-lg {
-        @apply h-[54px];
-    }
-    .btn-md {
-        @apply h-[48px];
-    }
-    .input {
-        @apply text-paragraph h-[60px] border-2 pl-6 w-full font-body text-[15px] rounded-sm focus:outline focus:outline-1 focus:outline-accent;
-    }
-    .textarea {
-        @apply resize-none w-full border-2 dark:outline-none p-6 rounded-sm h-[200px] focus:outline focus:outline-1 focus:outline-accent;
-    }
-    .active {
-        @apply text-accent;
-    }
-    .errorTextInput {
-        @apply mt-2 text-error;
-    }
-    .errorTextArea {
-        @apply text-error;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-black font-primary;
+  }
+  .section {
+    @apply py-12 lg:py-32;
+  }
+  .section-title {
+    @apply text-3xl lg:text-4xl font-medium lg:font-extrabold mb-5;
+  }
+  .subtitle {
+    @apply text-base text-paragraph mb-16 italic lg:mb-24 max-w-[520px];
+  }
+  .btn {
+    @apply py-4 px-7 font-medium text-white flex items-center justify-center rounded-sm transition-all;
+  }
+  .btn-lg {
+    @apply h-[54px];
+  }
+  .btn-md {
+    @apply h-[48px];
+  }
+  .input {
+    @apply text-paragraph h-[60px] border-2 pl-6 w-full font-body text-[15px] rounded-sm focus:outline focus:outline-1 focus:outline-accent;
+  }
+  .textarea {
+    @apply resize-none w-full border-2 dark:outline-none p-6 rounded-sm h-[200px] focus:outline focus:outline-1 focus:outline-accent;
+  }
+  .active {
+    @apply text-accent;
+  }
+  .errorTextInput {
+    @apply mt-2 text-error;
+  }
+  .errorTextArea {
+    @apply text-error;
+  }
+}
+
+.slick-dots {
+  z-index: 1000;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 45px;
+  font-size: 20px;
+  
+}
+.slick-dots li {
+  margin: 0 10px;
+}
+
+.slick-dots li button:before {
+  color: #fff;
+  font-size: 20px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #F4C501;
 }

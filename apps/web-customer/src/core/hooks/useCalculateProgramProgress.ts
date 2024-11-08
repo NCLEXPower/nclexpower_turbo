@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import { StandardProgramListType } from "../types/programList";
+import { StandardProgramListType } from "core-library/types/wc/programList";
 
 const useCalculateProgramProgress = (program: StandardProgramListType[]) => {
     const [progress, setProgress] = useState<number>(0);

@@ -1,4 +1,9 @@
-import { SectionVideosType } from "../../../../../core/types/programList";
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
+import { SectionVideosType } from "core-library/types/wc/programList";
 import Image from "next/image";
 
 interface VideoWatchListProps {

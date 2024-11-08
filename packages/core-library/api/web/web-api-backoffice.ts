@@ -17,11 +17,14 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
   DefaultReviewerParams,
   DiscrepanciesResponse,
+  EditInclusionParams,
   FileUploadParams,
+  GetAllInclusionResponse,
   GetAllInternalAccount,
   GetDefaultReviewerResponse,
   PricingListResponse,
@@ -29,13 +32,15 @@ import {
   ProductSetStatusParams,
   RegularQuestionTypeParams,
   WebGetContentsParams,
+  SubsequentOptionType,
+  GetSubsequentLists,
 } from "../types";
 
 export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -112,8 +117,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-              contentAccessKey: "",
-            })}`
+            contentAccessKey: "",
+          })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -265,5 +270,55 @@ export class WebApiBackOffice {
     return await this.axios.post<AuthorizedContentsResponseType[]>(
       `/api/v2/content/BaseContent/authorized-contents?${qs.stringify({ ...params })}`
     );
+  }
+
+  public async getAllInclusions() {
+    return await this.axios.get<GetAllInclusionResponse[]>(
+      `/api/v1/product/internal-all-inclusions`)
+  }
+
+  public async delete_route(MenuId: string) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/inapp-route-delete?${qs.stringify({ MenuId })}`
+    );
+  }
+
+  public async createInclusions(params: CreateInclusionParams) {
+    return await this.axios.post(
+      `/api/v1/product/internal-add-inclusions`, params)
+  }
+
+  public async deleteInclusion(InclusionId: string) {
+    return await this.axios.delete(
+      `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
+    )
+  }
+
+  public async editInclusion(params: EditInclusionParams) {
+    return await this.axios.put(
+      `/api/v1/product/internal-update-inclusion`, params)
+  }
+  public async web_create_subsequent(params: SubsequentOptionType){
+    return await this.axios.post<SubsequentOptionType>(
+      `/v1/api/Chatbot/create-subsequent-options`,
+      params
+    )
+  }
+  public async getSelectedApprover() {
+    return await this.axios.get<GetDefaultReviewerResponse[]>(
+      `/api/v2/content/BaseContent/get-selected-approvers`
+    )
+  }
+
+  public async getAllInclusionLists() {
+    return await this.axios.get<GetAllInclusionResponse[]>(
+      `/api/v1/Product/internal-all-inclusions`
+    )
+  }
+
+  public async getSubsequentLists() {
+    return await this.axios.get<GetSubsequentLists[]>(
+     `/v1/api/Chatbot/get-subsequent-list`
+    )
   }
 }

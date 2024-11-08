@@ -9,6 +9,7 @@ import {
   Chip,
   InputAdornment,
 } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export type SelectOption = {
   label: string;
@@ -92,8 +93,9 @@ export function MultipleSelect({
                     variant="filled"
                     size="medium"
                     color="info"
-                    // onDelete={(event) => handleDelete(val, event)} //has bug please fix.
-                    // deleteIcon={<CancelIcon />}
+                    onDelete={(event) => handleDelete(val, event)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    deleteIcon={<CancelIcon aria-label="delete" />}
                     sx={{ borderRadius: 0, border: "1px solid #ccc" }}
                   />
                 ))}

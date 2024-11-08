@@ -11,7 +11,7 @@ export const ContactMock: Props[] = [
   {
     icon: ContactLocation,
     title: "Location",
-    subTitle: "1700 Eureka Rd Ste 155 Roseville, California 95661"
+    subTitle: "1700 Eureka Rd Ste 155 <br/> Roseville, California 95661"
   },
   {
     icon: ContactPhone,

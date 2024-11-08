@@ -11,10 +11,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { setDefaultReviewerSchema } from "../../validation";
 import {
   MultipleSelectField,
-  DateFieldComponent,
 } from "../../../../../../../../../components";
 import { useApi, useApiCallback } from "../../../../../../../../../hooks";
 import { DefaultReviewerParams } from "../../../../../../../../../api/types";
+import { useBusinessQueryContext } from '../../../../../../../../../contexts';
 
 interface Props {
   nextStep(values: Partial<{}>): void;
@@ -22,12 +22,18 @@ interface Props {
 }
 
 const ContentManagementReviewers = ({ nextStep }: Props) => {
+  const { businessQuerySelectedApprovers } = useBusinessQueryContext()
+  const { data, refetch } = businessQuerySelectedApprovers(["SelectedApproversApi"])
+
   const form = useForm<SetDefaultReviewerType>({
     resolver: yupResolver(setDefaultReviewerSchema),
     criteriaMode: "all",
     reValidateMode: "onChange",
     mode: "onChange",
-    defaultValues: { ...setDefaultReviewerSchema.getDefault() },
+    defaultValues: {
+      ...setDefaultReviewerSchema.getDefault()
+    },
+    values: { defaultReviewers: data && data.map((item) => item.accountId) }
   });
 
   const defaultReviewer = useApi((api) =>
@@ -60,6 +66,7 @@ const ContentManagementReviewers = ({ nextStep }: Props) => {
       })),
     } as DefaultReviewerParams;
     await createDefaultReviewerCb.execute({ ...payload });
+    refetch()
   }
 
   return (

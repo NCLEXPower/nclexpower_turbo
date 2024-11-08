@@ -27,7 +27,7 @@ export const CustomPopover: React.FC<React.PropsWithChildren<Props>> = ({ label,
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
+    <div className='z-1'>
       {withIcon ? <IconButton onClick={handleClick}>
         {iconButton}
       </IconButton>
@@ -44,6 +44,7 @@ export const CustomPopover: React.FC<React.PropsWithChildren<Props>> = ({ label,
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        sx={{ zIndex: 1 }}
       >
         {children}
       </Popover>

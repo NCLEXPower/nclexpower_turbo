@@ -188,3 +188,14 @@ export type NavigationItemType = {
 };
 
 export type IntentValueType = string | undefined | null;
+
+export type MaintenanceModeType = {
+  id: string;
+  maintenanceModeType: number;
+  createdDate: string;
+  updatedDate: string;
+};
+
+export type SsrTypes = {
+  loadMaintenanceMode?: MaintenanceModeType | undefined;
+};

@@ -1,4 +1,9 @@
-import { SectionVideosType } from "../../../../../core/types/programList";
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
+import { SectionVideosType } from "core-library/types/wc/programList";
 import Image from "next/image";
 
 interface VideoDetailsProps {
@@ -23,10 +28,10 @@ export const VideoDetails: React.FC<VideoDetailsProps> = ({
           <div className="flex items-center gap-2">
             <Image src={selectedVid.secVidAuthorImg} alt="author-pic" />
             <div className="flex flex-col">
-              <p className="font-ptSans text-black font-bold text-[14px]">
+              <h4 className="font-ptSans text-black font-bold text-[14px]">
                 {selectedVid.secVidAuthor}
-              </p>
-              <p className="italic text-darkGray text-[14px]">Author</p>
+              </h4>
+              <h4 className="font-ptSans italic text-darkGray text-[14px]">Author</h4>
             </div>
           </div>
           <h4 className="text-black font-ptSans text-[14px] font-regular px-4 lg:px-0">

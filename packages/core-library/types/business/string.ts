@@ -15,3 +15,12 @@ export function isJSON(value: string) {
     return false;
   }
 }
+
+/**
+ * Extracts inner text from html string
+ * @param input "\<p>Hello\</p>"
+ * @returns "Hello"
+ */
+export function textInHtml(input: string): string {
+  return input.replace(/<[^>]*>?/gm, "").trim();
+}

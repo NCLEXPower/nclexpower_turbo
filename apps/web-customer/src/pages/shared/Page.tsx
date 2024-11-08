@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React from "react";
 import {
   AuthProvider,
@@ -5,23 +10,43 @@ import {
   ToastProvider,
 } from "core-library/contexts";
 import Layout from "./Layout";
-import { ControlledToast } from "core-library/components";
+import { ControlledToast, ErrorBox } from "core-library/components";
 import { ClientSecretKeyContextProvider } from "core-library/contexts";
-import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
+import { SsrTypes } from "core-library/types/global";
+import CSPHead from "core-library/components/CSPHead";
+import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
 
-const Page: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+interface Props {
+  data?: SsrTypes;
+  generatedNonce?: string;
+  error?: any;
+}
+
+const Page: React.FC<React.PropsWithChildren<Props>> = ({
+  children,
+  data,
+  generatedNonce,
+  error,
+}) => {
+  if (error) {
+    return <ErrorBox label={error.message} />;
+  }
+
+  if (data?.loadMaintenanceMode?.maintenanceModeType === 1) {
+    return <MaintenanceBlock />;
+  }
+
   return (
     <React.Fragment>
+      <CSPHead nonce={generatedNonce ?? "no-nonce"} />
       <BusinessQueryContextProvider>
         <AuthProvider>
-          <PageLoaderContextProvider loading={false}>
-            <ToastProvider>
-              <ClientSecretKeyContextProvider>
-                <ControlledToast autoClose={5000} hideProgressBar={false} />
-                <Layout children={children} />
-              </ClientSecretKeyContextProvider>
-            </ToastProvider>
-          </PageLoaderContextProvider>
+          <ToastProvider>
+            <ClientSecretKeyContextProvider>
+              <ControlledToast autoClose={5000} hideProgressBar={false} />
+              <Layout children={children} />
+            </ClientSecretKeyContextProvider>
+          </ToastProvider>
         </AuthProvider>
       </BusinessQueryContextProvider>
     </React.Fragment>

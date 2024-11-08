@@ -1,5 +1,10 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
-import { settings } from '@/core/constant/HompageMockData'
+import { settings } from 'core-library/core/utils/contants/wc/HomePageData'
 import { CarouselOne, CarouselTwo, CarouselThree } from 'core-library/assets'
 import Image from 'next/image'
 
@@ -38,7 +43,7 @@ export const RevolutionBannerBlock: React.FC<Props> = () => {
                             <span className='text-[#f4c501]'>8-days </span> Fast Track program, and start<br /> your path to success
                             <span className='text-[#f4c501]'> now!</span></p>
                     </div>
-                    <Image className='h-screen object-cover object-top' loading='lazy' src={CarouselThree} alt="ImageThree" />
+                    <Image className='h-screen object-cover lg:object-top object-[85%]' loading='lazy' src={CarouselThree} alt="ImageThree" />
                 </div>
             </ImageCarousel>
         </div>

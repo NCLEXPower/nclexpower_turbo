@@ -1,4 +1,4 @@
-import { parse, format } from "date-fns";
+import { parse, format, parseISO } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 
 export const parseDate = (dateString: string, dateFormat = "dd MM yyyy") => {
@@ -41,5 +41,21 @@ export const rawDateFromISOString = (isoString: string) => {
     );
     const dayString = day.toString().padStart(2, "0");
     return `${dayString} ${monthName} ${year}`;
+  }
+};
+
+export const formatTime = (
+  date: string | number | Date,
+  timeFormat = "HH:mm"
+) => {
+  try {
+    const isDateISOString =
+      typeof date === "string" && date.match(/\d{4}-\d{2}-\d{2}T/);
+    return format(
+      isDateISOString ? parseISO(date) : new Date(date),
+      timeFormat
+    );
+  } catch (error) {
+    return date.toString();
   }
 };

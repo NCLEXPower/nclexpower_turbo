@@ -1,10 +1,9 @@
 import { Box } from "@mui/material";
 import { forgotPasswordSchema, ForgotPasswordType } from "./validation";
-import { Alert, TextField, Button, Link } from "../../../../../../components";
+import { Alert, TextField, Button, Link, LottieAnimation } from "../../../../../../components";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ForgotPasswordImage } from "../../../../../../assets";
-import { LottieAnimation } from "../PasswordChange/components/LottieAnimation/LottieAnimation";
 
 interface Props {
   onSubmit: (values: ForgotPasswordType) => void;

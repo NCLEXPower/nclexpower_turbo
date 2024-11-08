@@ -3,6 +3,7 @@ import { nonce } from "../types";
 import { config } from "../config";
 import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
+import { getMaintenanceMode } from "../ssr";
 
 export const generateCSP = (generatedNonce: string): string =>
   `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com ` +
@@ -30,30 +31,41 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
 
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
-    const generatedNonce = nonce();
-    const csp = generateCSP(generatedNonce);
+    try {
+      const generatedNonce = nonce();
+      const csp = generateCSP(generatedNonce);
+      const loadMaintenanceMode = await getMaintenanceMode();
 
-    setCSPHeader(context.res as ServerResponse, csp);
+      setCSPHeader(context.res as ServerResponse, csp);
 
-    if (getServerSidePropsFn) {
-      const result = await getServerSidePropsFn(context);
-      if ("props" in result) {
-        return {
-          ...result,
-          props: {
-            ...result.props,
-            generatedNonce,
-          },
-        };
+      if (getServerSidePropsFn) {
+        const result = await getServerSidePropsFn(context);
+        if ("props" in result) {
+          return {
+            ...result,
+            props: {
+              ...result.props,
+              generatedNonce,
+              data: { loadMaintenanceMode },
+            },
+          };
+        }
+
+        return result;
       }
 
-      return result;
+      return {
+        props: {
+          generatedNonce,
+          data: {
+            loadMaintenanceMode,
+          },
+        },
+      };
+    } catch (error: any) {
+      return {
+        props: { error: { message: error.message || "An error occurred." } },
+      };
     }
-
-    return {
-      props: {
-        generatedNonce,
-      },
-    };
   };
 };

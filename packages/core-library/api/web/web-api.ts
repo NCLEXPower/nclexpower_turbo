@@ -21,6 +21,7 @@ import {
   VerifyCodeParams,
 } from "../types";
 import { Encryption } from "../../utils";
+import { ChatBotOptionResponse } from "../../types/chatbot";
 export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
@@ -152,5 +153,16 @@ export class WebApi {
         CategoryType: type,
       },
     });
+  }
+
+  public async web_chatbot_question_nodes(optionKey?: string) {
+    //this can be placed as SSR. We can also add content access key for security purposes.
+    try {
+      return await this.axios.get<ChatBotOptionResponse>(
+        `/v1/api/Chatbot/selected-chat-option?${qs.stringify({ optionKey })}`
+      );
+    } catch (err: any) {
+      throw err;
+    }
   }
 }

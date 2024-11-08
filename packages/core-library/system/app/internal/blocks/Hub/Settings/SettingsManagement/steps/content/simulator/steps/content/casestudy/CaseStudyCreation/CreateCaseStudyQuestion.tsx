@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { useEffect, useState } from "react";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import {
@@ -13,8 +18,9 @@ import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { BackgroundInfoTab } from "./components/BackgroundInfoTab";
 import { caseStudyQuestionnaires } from "../../../../../../../constants/constants";
-import { atom } from "jotai";
-import { ErrorMapping } from '../../../../../../../../../../../../../../components';
+import { atom, useAtom } from "jotai";
+import { ErrorMapping } from "../../../../../../../../../../../../../../components";
+import { CreateCaseStudyAtom } from "../../../../useAtomic";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -40,6 +46,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   previous,
   reset,
 }) => {
+  const [caseStudyAtom, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const form = useForm<ContainedCaseStudyQuestionType>({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
@@ -66,10 +73,13 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
       ...getValues(),
     });
   };
-  const { errors } = formState
+  const { errors } = formState;
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
     console.log(values);
+    setCaseStudyAtom(values);
+    nextStep({ ...values });
+    next();
   };
 
   const handlePrevious = () => {
@@ -194,7 +204,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
           </Box>
         </Box>
       </FormProvider>
-      <Box width="100%" display="flex" justifyContent="end">
+      <Box width="fit-content" display="flex" justifyContent="end" sx={{ position: 'fixed', top: '150px', right: '50px' }}>
         <Box width="fit-content">
           <ErrorMapping errors={errors} />
         </Box>

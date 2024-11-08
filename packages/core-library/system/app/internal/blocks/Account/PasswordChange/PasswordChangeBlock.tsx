@@ -6,9 +6,9 @@ import {
   Header,
 } from "./index";
 import { Box } from "@mui/material";
-import { LottieAnimation } from "./components/LottieAnimation/LottieAnimation";
 import { ChangePasswordImage } from "../../../../../../assets";
 import usePasswordChange from "./usePasswordChange";
+import { LottieAnimation } from "../../../../../../components";
 
 export function PasswordChangeBlock() {
   const {

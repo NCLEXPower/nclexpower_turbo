@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { createContext, useContext, useEffect, useState } from "react";
 import { PageLoader } from "../components";
 import React from "react";
@@ -14,6 +19,7 @@ const context = createContext<{
 
 interface Props {
   loading?: boolean;
+  isAuthenticated?: boolean;
 }
 
 export const usePageLoaderContext = () => {
@@ -25,7 +31,7 @@ export const usePageLoaderContext = () => {
 
 export const PageLoaderContextProvider: React.FC<
   React.PropsWithChildren<Props>
-> = ({ children, loading }) => {
+> = ({ children, loading, isAuthenticated }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCalculationsLoaded, setIsCalculationsLoaded] = useState(true);
   const [contentLoader, setContentLoader] = useState(true);
@@ -50,7 +56,7 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {isPageLoading ? <PageLoader /> : <>{children}</>}
+      {!isAuthenticated && isPageLoading ? <PageLoader /> : <>{children}</>}
     </context.Provider>
   );
 };

@@ -1,3 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import * as yup from "yup";
 import {
   uploadFormSchema,
@@ -17,6 +23,7 @@ export type SettingsSelectionOptions =
   | "DBEXCEL"
   | "QM"
   | "DEFAULTREVIEWER"
+  | "RESOURCEMANAGEMENT"
   | "IARM";
 export type QuestionSelectionOptions = "Regular" | "Case Study";
 export type RegularQuestionSelectionOptions = "MCQ" | "SATA";

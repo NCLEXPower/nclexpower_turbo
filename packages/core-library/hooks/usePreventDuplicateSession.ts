@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../contexts";
 import { useRouter } from "../core";
 
@@ -12,6 +12,7 @@ import { useRouter } from "../core";
 export function usePreventDuplicateSession() {
   const router = useRouter();
   const { isAuthenticated, softLogout } = useAuthContext();
+  const [duplicate, setDuplicate] = useState<boolean>(false);
 
   useEffect(() => {
     const broadcast = new BroadcastChannel("preventDuplicate");
@@ -38,6 +39,7 @@ export function usePreventDuplicateSession() {
 
       if (receivedData.type === "duplicate") {
         handleDuplicateSession();
+        setDuplicate(receivedData.type === "duplicate");
       }
     };
 
@@ -45,4 +47,8 @@ export function usePreventDuplicateSession() {
       broadcast.close();
     };
   }, []);
+
+  return {
+    duplicate,
+  };
 }
