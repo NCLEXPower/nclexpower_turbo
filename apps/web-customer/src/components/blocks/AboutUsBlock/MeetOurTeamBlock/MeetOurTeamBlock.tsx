@@ -41,6 +41,7 @@ export const MeetOurTeamBlock = () => {
     selectedColor: '#F4C501',
     defaultColor: '#ffffff',
     borderBottom: '2px solid #F4C501',
+    defaultBorderBottom: "2px solid #ffffff"
   };
 
   return (
