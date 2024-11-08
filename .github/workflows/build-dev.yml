@@ -57,6 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_and_test_core_library]
 
+    outputs:
+      BUILD_NUMBER: ${{ steps.build_info.outputs.BUILD_NUMBER }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -68,6 +71,7 @@ jobs:
         run: |
           DATE=$(date +"%Y%m%d")
           BUILD_FILE=".github/build_number.txt"
+          mkdir -p .github
 
           if test -f "$BUILD_FILE"; then
             LAST_BUILD=$(cat $BUILD_FILE)
@@ -95,7 +99,7 @@ jobs:
           git add .github/build_number.txt
           git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
 
-          # Generate a unique tag based on the branch name and build number
+          # Generate unique tag using date and time (to the minute)
           BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/\//-/g')
           TAG="${BRANCH_NAME}-${BUILD_NUMBER}"
 
