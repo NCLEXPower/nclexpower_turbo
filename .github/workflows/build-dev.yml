@@ -57,9 +57,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_and_test_core_library]
 
-    outputs:
-      BUILD_NUMBER: ${{ steps.build_info.outputs.BUILD_NUMBER }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -98,18 +95,11 @@ jobs:
           git add .github/build_number.txt
           git commit -m "Update build number to ${{ steps.build_info.outputs.BUILD_NUMBER }}" || echo "No changes to commit"
 
-          # Generate unique tag using date and time (to the minute)
-          DATE=$(date +"%Y%m%d")
-          TIME=$(date +"%H%M") # Hour and minute
-          TAG="${DATE}-${TIME}"
+          # Generate a unique tag based on the branch name and build number
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/\//-/g')
+          TAG="${BRANCH_NAME}-${BUILD_NUMBER}"
 
-          # Check if the tag already exists remotely
-          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}"; then
-            # If tag exists, add a unique suffix based on the commit hash (shortened)
-            TAG="${TAG}-$(git rev-parse --short HEAD)"
-          fi
-
-          # Create and push the tag
+          # Tag the current branch with a unique build tag
           git tag "$TAG"
           git remote set-url origin https://x-access-token:${GH_PAT}@github.com/NCLEXPower/nclexpower_turbo.git
           git push origin "$TAG"
