@@ -3,18 +3,12 @@ import { LoginFormBlock } from "../components/blocks/LoginFormBlock/LoginFormBlo
 import CSPHead from "core-library/components/CSPHead";
 import { GetServerSideProps } from "next";
 import { withCSP } from "core-library";
+import { useDesignVisibility } from "core-library/hooks";
 
-interface Props {
-  generatedNonce: string;
-}
+const LoginPage: React.FC = () => {
+  useDesignVisibility();
 
-const LoginPage: React.FC<Props> = ({ generatedNonce }) => {
-  return (
-    <>
-      <CSPHead nonce={generatedNonce} />
-      <LoginFormBlock />
-    </>
-  );
+  return <LoginFormBlock />;
 };
 
 export const getServerSideProps: GetServerSideProps = withCSP();

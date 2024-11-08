@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { NextRouter, useRouter as useNextRouter } from "next/router";
 import qs, { ParsedQuery } from "query-string";
 import { useEffect, useMemo, useState } from "react";
@@ -12,7 +17,10 @@ type StaticRoutes = Record<
   | "account_forgot_password"
   | "reset_link_success" //we can register all our static routes here.
   | "about"
-  | "second_tab_redirect",
+  | "second_tab_redirect"
+  | "order_summary"
+  | "account_registration"
+  | "device_not_recognized",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -35,6 +43,9 @@ export const STATIC_ROUTES: StaticRoutes = {
   reset_link_success: "/account/reset-link",
   about: "/about",
   second_tab_redirect: "/duplicate-session", //duplicate session page currently does not exist. remove this comment once created.
+  order_summary: "/order-summary",
+  device_not_recognized: "/device-enrollment",
+  account_registration: "",
 };
 
 const routeTitles: Record<string, string> = {
