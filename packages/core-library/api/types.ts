@@ -570,3 +570,9 @@ export type EditInclusionParams = GetAllInclusionResponse;
 export type SubsequentOptionType = {
   optionText: string;
 };
+
+export type GetSubsequentLists =  {
+  id: string;
+  optionText: string;
+  optionKey: string;
+}
