@@ -3,33 +3,24 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
+import { Box, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  Typography,
-  Checkbox,
-} from "@mui/material";
-import { DynamicChart } from "../../../../../../components";
-import { useState } from "react";
-import { PNSalesMockData } from "./SalesManagementData";
-
-type PeriodType = keyof typeof PNSalesMockData;
+  PNSalesMockData,
+  RepeatsalesGaugeOptions,
+  PNbarChartOptions,
+  PNlineChartOptions,
+} from "./SalesManagementData";
+import { Chart, Checkbox } from "../../../../../../components";
+import { usePeriodTime, useResolution } from "../../../../../../hooks";
 
 export const PNSale: React.FC = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState("all");
-  const [data, setData] = useState(PNSalesMockData.all);
+  const { selectedPeriod, data, handlePeriodChange, formatRevenue } =
+    usePeriodTime({
+      Data: PNSalesMockData,
+      defaultPeriod: "all",
+    });
 
-  const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const period = event.target.value as PeriodType;
-    setSelectedPeriod(period);
-    setData(PNSalesMockData[period]);
-  };
-
-  const formatRevenue = (value: number) => {
-    const kValue = value / 1000;
-    return `$${kValue.toFixed(0)}k`;
-  };
+  const { isMobile } = useResolution();
 
   return (
     <Box
@@ -65,6 +56,7 @@ export const PNSale: React.FC = () => {
                 />
               }
               label={period}
+              sx={{ paddingLeft: 5 }}
             />
           ))}
         </FormGroup>
@@ -214,6 +206,7 @@ export const PNSale: React.FC = () => {
               justifyContent: "space-evenly",
               alignItems: "center",
               flexDirection: { xs: "column", sm: "row" },
+              mt: { xs: 5 },
             }}
           >
             <Box
@@ -222,6 +215,7 @@ export const PNSale: React.FC = () => {
                 flexDirection: "column",
                 height: "30%",
                 justifyContent: "space-around",
+                mb: { xs: 4 },
               }}
             >
               {data.ProductsDuration.map((item, index) => (
@@ -248,31 +242,14 @@ export const PNSale: React.FC = () => {
                 background: "white",
                 borderRadius: "20px 20px 10px 10px",
                 height: "auto",
-                width: "auto",
               }}
             >
-              <DynamicChart
+              <Chart
                 type="Line"
                 dataSet={data.lineData}
-                width={500}
                 height={300}
-                options={{
-                  xDataKey: "month",
-                  yAxisMin: 0,
-                  yAxisMax: 100000,
-                  lineSeries: [
-                    {
-                      dataKey: "standard",
-                      label: "",
-                      color: "#103436",
-                    },
-                    {
-                      dataKey: "fastTrack",
-                      label: "",
-                      color: "#13565A",
-                    },
-                  ],
-                }}
+                options={PNlineChartOptions}
+                width={isMobile ? 400 : 500}
               />
             </Box>
           </Box>
@@ -326,18 +303,12 @@ export const PNSale: React.FC = () => {
               ))}
             </Box>
             <Box>
-              <DynamicChart
+              <Chart
                 type="Gauge"
                 width={200}
                 height={220}
                 dataSet={data.RepeatSales}
-                options={{
-                  gaugeSegments: data.RepeatSales,
-                  colors: ["#1EA537", "#C12C2F", "#e0e0e0"],
-                  gaugeTotal: 100,
-                  innerRadius: 70,
-                  outerRadius: 100,
-                }}
+                options={RepeatsalesGaugeOptions}
               />
             </Box>
           </Box>
@@ -352,7 +323,7 @@ export const PNSale: React.FC = () => {
           borderRadius: "12px",
           boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.2)",
           padding: 10,
-          gap: 3,
+          gap: 15,
           flexDirection: { xs: "column", md: "row" },
         }}
       >
@@ -439,24 +410,17 @@ export const PNSale: React.FC = () => {
         </Box>
         <Box
           sx={{
-            width: { xs: "100%" },
+            width: { xs: "100%", md: "auto" },
             display: "flex",
             justifyContent: "center",
           }}
         >
-          <DynamicChart
+          <Chart
             type="Bar"
             dataSet={data.barData}
-            width={800}
-            height={450}
-            options={{
-              xDataKey: "country",
-              yDataKey: "TotalRevenue",
-              maxRevenue: 100000,
-              yAxisMax: 100,
-              colors: ["#0C8087"],
-              borderRadius: 6,
-            }}
+            width={isMobile ? 400 : 800}
+            height={isMobile ? 300 : 450}
+            options={PNbarChartOptions}
           />
         </Box>
       </Box>

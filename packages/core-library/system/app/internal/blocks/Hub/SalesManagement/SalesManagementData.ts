@@ -1,3 +1,158 @@
+import {
+  BarChartOptions,
+  LineChartOptions,
+} from "../../../../../../components/Charts/generic/Type";
+
+export const AllbarChartOptions: BarChartOptions = {
+  series: [
+    {
+      dataKey: "TotalRevenue",
+      label: "Total Sales Percentage",
+      color: "#0F2A71",
+    },
+  ],
+  xAxis: [
+    {
+      scaleType: "band",
+      dataKey: "country",
+    },
+  ],
+  yAxis: [
+    {
+      scaleType: "linear",
+      min: 0,
+      max: 100000,
+    },
+  ],
+  grid: { horizontal: true },
+  layout: "vertical",
+  borderRadius: 5,
+};
+
+export const AllgaugeChartOptions = {
+  colors: ["#2A61AC", "#181E2F", "#e0e0e0"],
+  startAngle: 0,
+  endAngle: 360,
+  innerRadius: "70%",
+  outerRadius: "100%",
+};
+
+export const RNbarChartOptions: BarChartOptions = {
+  series: [
+    {
+      dataKey: "TotalRevenue",
+      label: "Total Sales Percentage",
+      color: "#2A61AC",
+    },
+  ],
+  xAxis: [
+    {
+      scaleType: "band",
+      dataKey: "country",
+    },
+  ],
+  yAxis: [
+    {
+      scaleType: "linear",
+      min: 0,
+      max: 100000,
+    },
+  ],
+  grid: { horizontal: true },
+  layout: "vertical",
+  borderRadius: 5,
+};
+
+export const PNbarChartOptions: BarChartOptions = {
+  series: [
+    {
+      dataKey: "TotalRevenue",
+      label: "Total Sales Percentage",
+      color: "#0C8087",
+    },
+  ],
+  xAxis: [
+    {
+      scaleType: "band",
+      dataKey: "country",
+    },
+  ],
+  yAxis: [
+    {
+      scaleType: "linear",
+      min: 0,
+      max: 100000,
+    },
+  ],
+  grid: { horizontal: true },
+  layout: "vertical",
+  borderRadius: 5,
+};
+
+export const RepeatsalesGaugeOptions = {
+  colors: ["#1EA537", "#C12C2F", "#e0e0e0"],
+  startAngle: 0,
+  endAngle: 360,
+  innerRadius: "70%",
+  outerRadius: "100%",
+};
+
+export const PNlineChartOptions: LineChartOptions = {
+  xAxis: [
+    {
+      scaleType: "band",
+      dataKey: "month",
+    },
+  ],
+  yAxis: [
+    {
+      scaleType: "linear",
+      min: 0,
+      max: 100000,
+    },
+  ],
+  series: [
+    {
+      dataKey: "standard",
+      color: "#103436",
+      curve: "linear",
+    },
+    {
+      dataKey: "fastTrack",
+      color: "#13565A",
+      curve: "linear",
+    },
+  ],
+  grid: { horizontal: true },
+};
+
+export const RNlineChartOptions: LineChartOptions = {
+  xAxis: [
+    {
+      scaleType: "band",
+      dataKey: "month",
+    },
+  ],
+  yAxis: [
+    {
+      scaleType: "linear",
+      min: 0,
+      max: 100000,
+    },
+  ],
+  series: [
+    {
+      dataKey: "standard",
+      color: "#181E2F",
+    },
+    {
+      dataKey: "fastTrack",
+      color: "#2A61AC",
+    },
+  ],
+  grid: { horizontal: true },
+};
+
 export const AllSalesMockData = {
   all: {
     ProductTotalSales: 50,

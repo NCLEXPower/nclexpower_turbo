@@ -3,34 +3,23 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
+import { Box, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  Typography,
-  Checkbox,
-} from "@mui/material";
-import { DynamicChart } from "../../../../../../components";
-import { useState } from "react";
-import { AllSalesMockData } from "./SalesManagementData";
-
-type PeriodType = keyof typeof AllSalesMockData;
+  AllSalesMockData,
+  AllbarChartOptions,
+  RepeatsalesGaugeOptions,
+  AllgaugeChartOptions,
+} from "./SalesManagementData";
+import { Chart, Checkbox } from "../../../../../../components";
+import { usePeriodTime, useResolution } from "../../../../../../hooks";
 
 export const AllSale: React.FC = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState("all");
-  const [data, setData] = useState(AllSalesMockData.all);
-
-  const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const period = event.target.value as PeriodType;
-    setSelectedPeriod(period);
-    setData(AllSalesMockData[period]);
-  };
-
-  const formatRevenue = (value: number) => {
-    const kValue = value / 1000;
-    return `$${kValue.toFixed(0)}k`;
-  };
-
+  const { selectedPeriod, data, handlePeriodChange, formatRevenue } =
+    usePeriodTime({
+      Data: AllSalesMockData,
+      defaultPeriod: "all",
+    });
+  const { isMobile } = useResolution();
   return (
     <Box
       sx={{
@@ -66,6 +55,7 @@ export const AllSale: React.FC = () => {
                 />
               }
               label={period}
+              sx={{ paddingLeft: 5 }}
             />
           ))}
         </FormGroup>
@@ -246,18 +236,12 @@ export const AllSale: React.FC = () => {
               ))}
             </Box>
             <Box>
-              <DynamicChart
+              <Chart
                 type="Gauge"
                 width={200}
                 height={220}
                 dataSet={data.ProductsDuration}
-                options={{
-                  gaugeSegments: data.ProductsDuration,
-                  colors: ["#2A61AC", "#181E2F", "#e0e0e0"],
-                  gaugeTotal: 100,
-                  innerRadius: 70,
-                  outerRadius: 100,
-                }}
+                options={AllgaugeChartOptions}
               />
             </Box>
           </Box>
@@ -316,18 +300,12 @@ export const AllSale: React.FC = () => {
               ))}
             </Box>
             <Box>
-              <DynamicChart
+              <Chart
                 type="Gauge"
                 width={200}
                 height={220}
                 dataSet={data.RepeatSales}
-                options={{
-                  gaugeSegments: data.RepeatSales,
-                  colors: ["#1EA537", "#C12C2F", "#e0e0e0"],
-                  gaugeTotal: 100,
-                  innerRadius: 70,
-                  outerRadius: 100,
-                }}
+                options={RepeatsalesGaugeOptions}
               />
             </Box>
           </Box>
@@ -343,7 +321,7 @@ export const AllSale: React.FC = () => {
           borderRadius: "12px",
           boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.2)",
           padding: 10,
-          gap: 3,
+          gap: 15,
         }}
       >
         <Box
@@ -429,24 +407,17 @@ export const AllSale: React.FC = () => {
         </Box>
         <Box
           sx={{
-            width: { xs: "100%" },
             display: "flex",
             justifyContent: "center",
+            mt: { xs: 4, md: 0 },
           }}
         >
-          <DynamicChart
+          <Chart
             type="Bar"
             dataSet={data.barData}
-            width={800}
-            height={450}
-            options={{
-              xDataKey: "country",
-              yDataKey: "TotalRevenue",
-              maxRevenue: 100000,
-              yAxisMax: 100,
-              colors: ["#0F2A71"],
-              borderRadius: 6,
-            }}
+            width={isMobile ? 400 : 800}
+            height={isMobile ? 300 : 450}
+            options={AllbarChartOptions}
           />
         </Box>
       </Box>
