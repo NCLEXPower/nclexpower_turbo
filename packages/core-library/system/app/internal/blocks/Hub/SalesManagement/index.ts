@@ -1,3 +1,3 @@
-export * from "./All-Sale";
-export * from "./PN-Sale";
-export * from "./RN-Sale";
+export * from "./AllSaleBlock";
+export * from "./PNSaleBlock";
+export * from "./RNSaleBlock";

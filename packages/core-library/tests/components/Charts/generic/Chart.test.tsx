@@ -1,11 +1,11 @@
 import { render } from "../../../common";
 import { Chart } from "../../../../components";
 import {
-  Barchart,
-  Gaugechart,
-  Linechart,
-} from "../../../../components/Charts/generic";
-import { ChartOptions } from "../../../../components/Charts/generic/Type";
+  BarChart,
+  GaugeChart,
+  LineChart,
+} from "../../../../components/Charts/generic/charts";
+import { ChartOptions } from "../../../../components/Charts/generic/charts/type";
 
 jest.mock("../../../../config", () => ({
   config: { value: jest.fn() },
@@ -15,10 +15,10 @@ jest.mock("../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../../../../components/Charts/generic", () => ({
-  Barchart: jest.fn(() => <div>Bar Chart</div>),
-  Linechart: jest.fn(() => <div>Line Chart</div>),
-  Gaugechart: jest.fn(() => <div>Gauge Chart</div>),
+jest.mock("../../../../components/Charts/generic/charts", () => ({
+  BarChart: jest.fn(() => <div>Bar Chart</div>),
+  LineChart: jest.fn(() => <div>Line Chart</div>),
+  GaugeChart: jest.fn(() => <div>Gauge Chart</div>),
 }));
 
 describe("Chart Component", () => {
@@ -33,7 +33,7 @@ describe("Chart Component", () => {
       <Chart type="Bar" dataSet={mockDataSet} options={mockOptions} />
     );
     expect(getByText("Bar Chart")).toBeInTheDocument();
-    expect(Barchart).toHaveBeenCalledWith(
+    expect(BarChart).toHaveBeenCalledWith(
       expect.objectContaining({ dataSet: mockDataSet }),
       {}
     );
@@ -44,7 +44,7 @@ describe("Chart Component", () => {
       <Chart type="Line" dataSet={mockDataSet} options={mockOptions} />
     );
     expect(getByText("Line Chart")).toBeInTheDocument();
-    expect(Linechart).toHaveBeenCalledWith(
+    expect(LineChart).toHaveBeenCalledWith(
       expect.objectContaining({ dataSet: mockDataSet }),
       {}
     );
@@ -55,7 +55,7 @@ describe("Chart Component", () => {
       <Chart type="Gauge" dataSet={mockDataSet} options={mockOptions} />
     );
     expect(getByText("Gauge Chart")).toBeInTheDocument();
-    expect(Gaugechart).toHaveBeenCalledWith(
+    expect(GaugeChart).toHaveBeenCalledWith(
       expect.objectContaining({ dataSet: mockDataSet }),
       {}
     );

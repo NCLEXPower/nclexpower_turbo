@@ -5,7 +5,7 @@
  */
 import { SxProps } from "@mui/material";
 import { BarChart as MuiBarChart } from "@mui/x-charts";
-import { BarChartOptions } from "../Type";
+import { BarChartOptions } from "./type";
 
 interface BarchartProps {
   options: BarChartOptions;
@@ -15,7 +15,7 @@ interface BarchartProps {
   sx?: SxProps;
 }
 
-export const Barchart: React.FC<BarchartProps> = ({
+export const BarChart: React.FC<BarchartProps> = ({
   options,
   Height,
   Width,

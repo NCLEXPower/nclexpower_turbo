@@ -23,7 +23,7 @@ export interface GaugeChartOptions extends GaugeProps {
   outerRadius?: GaugeProps["outerRadius"];
 }
 
-export const getGaugeStyles = (options: GaugeChartOptions, theme: Theme) => {
+export const useGaugeStyles = (options: GaugeChartOptions, theme: Theme) => {
   const totalValue = options.endAngle
     ? options.endAngle - (options.startAngle ?? 0)
     : 100;

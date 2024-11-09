@@ -5,7 +5,7 @@
  */
 import { SxProps } from "@mui/material";
 import { LineChart as MuiLineChart } from "@mui/x-charts";
-import { LineChartOptions } from "../Type";
+import { LineChartOptions } from "./type";
 
 interface LineChartProps {
   options: LineChartOptions;
@@ -15,7 +15,7 @@ interface LineChartProps {
   sx?: SxProps;
 }
 
-export const Linechart: React.FC<LineChartProps> = ({
+export const LineChart: React.FC<LineChartProps> = ({
   options,
   height,
   width,

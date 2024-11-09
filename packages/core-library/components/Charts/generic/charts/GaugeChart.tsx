@@ -4,10 +4,10 @@
  * Created by the Software Strategy & Development Division
  */
 import { Gauge } from "@mui/x-charts";
-import { GaugeChartOptions, getGaugeStyles } from "../Type";
+import { GaugeChartOptions, useGaugeStyles } from "./type";
 import { SxProps } from "@mui/material";
 
-interface GaugeChartRendererProps {
+interface GaugeChartProps {
   dataSet: { [key: string]: any }[];
   width: number;
   height: number;
@@ -15,7 +15,7 @@ interface GaugeChartRendererProps {
   sx?: SxProps;
 }
 
-export const Gaugechart: React.FC<GaugeChartRendererProps> = ({
+export const GaugeChart: React.FC<GaugeChartProps> = ({
   dataSet,
   width,
   height,
@@ -29,7 +29,7 @@ export const Gaugechart: React.FC<GaugeChartRendererProps> = ({
       value={percentage}
       sx={(theme) => ({
         ...sx,
-        ...getGaugeStyles(options, theme),
+        ...useGaugeStyles(options, theme),
       })}
       text={({ value, valueMax }) => {
         const validValue = value ?? 0;

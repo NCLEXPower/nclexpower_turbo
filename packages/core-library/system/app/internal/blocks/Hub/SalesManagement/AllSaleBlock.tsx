@@ -6,14 +6,14 @@
 import { Box, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import {
   AllSalesMockData,
-  AllbarChartOptions,
-  RepeatsalesGaugeOptions,
-  AllgaugeChartOptions,
-} from "./SalesManagementData";
+  AllSaleBarChartOptions,
+  RepeatSalesGaugeOptions,
+  AllSaleGaugeChartOptions,
+} from "./SalesMockData";
 import { Chart, Checkbox } from "../../../../../../components";
 import { usePeriodTime, useResolution } from "../../../../../../hooks";
 
-export const AllSale: React.FC = () => {
+export const AllSaleBlock: React.FC = () => {
   const { selectedPeriod, data, handlePeriodChange, formatRevenue } =
     usePeriodTime({
       Data: AllSalesMockData,
@@ -241,7 +241,7 @@ export const AllSale: React.FC = () => {
                 width={200}
                 height={220}
                 dataSet={data.ProductsDuration}
-                options={AllgaugeChartOptions}
+                options={AllSaleGaugeChartOptions}
               />
             </Box>
           </Box>
@@ -305,7 +305,7 @@ export const AllSale: React.FC = () => {
                 width={200}
                 height={220}
                 dataSet={data.RepeatSales}
-                options={RepeatsalesGaugeOptions}
+                options={RepeatSalesGaugeOptions}
               />
             </Box>
           </Box>
@@ -417,7 +417,7 @@ export const AllSale: React.FC = () => {
             dataSet={data.barData}
             width={isMobile ? 400 : 800}
             height={isMobile ? 300 : 450}
-            options={AllbarChartOptions}
+            options={AllSaleBarChartOptions}
           />
         </Box>
       </Box>

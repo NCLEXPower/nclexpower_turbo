@@ -1,9 +1,9 @@
 import {
   BarChartOptions,
   LineChartOptions,
-} from "../../../../../../components/Charts/generic/Type";
+} from "../../../../../../components/Charts/generic/charts/type";
 
-export const AllbarChartOptions: BarChartOptions = {
+export const AllSaleBarChartOptions: BarChartOptions = {
   series: [
     {
       dataKey: "TotalRevenue",
@@ -29,7 +29,7 @@ export const AllbarChartOptions: BarChartOptions = {
   borderRadius: 5,
 };
 
-export const AllgaugeChartOptions = {
+export const AllSaleGaugeChartOptions = {
   colors: ["#2A61AC", "#181E2F", "#e0e0e0"],
   startAngle: 0,
   endAngle: 360,
@@ -37,7 +37,7 @@ export const AllgaugeChartOptions = {
   outerRadius: "100%",
 };
 
-export const RNbarChartOptions: BarChartOptions = {
+export const RNSaleBarChartOptions: BarChartOptions = {
   series: [
     {
       dataKey: "TotalRevenue",
@@ -63,7 +63,7 @@ export const RNbarChartOptions: BarChartOptions = {
   borderRadius: 5,
 };
 
-export const PNbarChartOptions: BarChartOptions = {
+export const PNSaleBarChartOptions: BarChartOptions = {
   series: [
     {
       dataKey: "TotalRevenue",
@@ -89,7 +89,7 @@ export const PNbarChartOptions: BarChartOptions = {
   borderRadius: 5,
 };
 
-export const RepeatsalesGaugeOptions = {
+export const RepeatSalesGaugeOptions = {
   colors: ["#1EA537", "#C12C2F", "#e0e0e0"],
   startAngle: 0,
   endAngle: 360,
@@ -97,7 +97,7 @@ export const RepeatsalesGaugeOptions = {
   outerRadius: "100%",
 };
 
-export const PNlineChartOptions: LineChartOptions = {
+export const PNSaleLineChartOptions: LineChartOptions = {
   xAxis: [
     {
       scaleType: "band",
@@ -126,7 +126,7 @@ export const PNlineChartOptions: LineChartOptions = {
   grid: { horizontal: true },
 };
 
-export const RNlineChartOptions: LineChartOptions = {
+export const RNSaleLineChartOptions: LineChartOptions = {
   xAxis: [
     {
       scaleType: "band",

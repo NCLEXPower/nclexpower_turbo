@@ -5,23 +5,22 @@
  */
 import { Box, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import {
-  PNSalesMockData,
-  RepeatsalesGaugeOptions,
-  PNbarChartOptions,
-  PNlineChartOptions,
-} from "./SalesManagementData";
+  RepeatSalesGaugeOptions,
+  RNSaleBarChartOptions,
+  RNSalesMockData,
+  RNSaleLineChartOptions,
+} from "./SalesMockData";
 import { Chart, Checkbox } from "../../../../../../components";
 import { usePeriodTime, useResolution } from "../../../../../../hooks";
 
-export const PNSale: React.FC = () => {
+export const RNSaleBlock: React.FC = () => {
   const { selectedPeriod, data, handlePeriodChange, formatRevenue } =
     usePeriodTime({
-      Data: PNSalesMockData,
+      Data: RNSalesMockData,
       defaultPeriod: "all",
     });
 
   const { isMobile } = useResolution();
-
   return (
     <Box
       sx={{
@@ -41,6 +40,7 @@ export const PNSale: React.FC = () => {
           alignItems: "center",
           columnGap: { xs: 2, sm: 5 },
           fontFamily: 'PT Sans Narrow", sans-serif',
+          flexWrap: "wrap",
         }}
       >
         <Typography sx={{ color: "#9A9A9A" }}>Time Period:</Typography>
@@ -74,7 +74,7 @@ export const PNSale: React.FC = () => {
       >
         <Box
           sx={{
-            backgroundColor: "#0C8087",
+            backgroundColor: "#2A61AC",
             color: "white",
             borderRadius: "20px 20px 10px 10px",
             height: "100%",
@@ -89,7 +89,7 @@ export const PNSale: React.FC = () => {
               fontFamily: 'PT Sans Narrow", sans-serif',
             }}
           >
-            PN Total Sales
+            RN Total Sales
           </Typography>
 
           <Typography
@@ -101,18 +101,17 @@ export const PNSale: React.FC = () => {
               fontFamily: 'PT Sans Narrow", sans-serif',
             }}
           >
-            {`$${data.PNTotalSales}k`}
+            {`$${data.RNTotalSales}k`}
           </Typography>
         </Box>
 
         <Box
           sx={{
-            backgroundColor: "#103436",
+            backgroundColor: "#00173F",
             color: "white",
             borderRadius: "20px 20px 10px 10px",
             height: "100%",
             width: { xs: "100%", sm: "100%", md: "33%" },
-
             mb: { xs: 2, sm: 2 },
             padding: 5,
           }}
@@ -140,7 +139,7 @@ export const PNSale: React.FC = () => {
         </Box>
         <Box
           sx={{
-            backgroundColor: "#13565A",
+            backgroundColor: "#0F2A71",
             color: "white",
             borderRadius: "20px 20px 10px 10px",
             height: "100%",
@@ -242,13 +241,16 @@ export const PNSale: React.FC = () => {
                 background: "white",
                 borderRadius: "20px 20px 10px 10px",
                 height: "auto",
+                width: { xs: "100%", md: "auto" },
+                display: "flex",
+                justifyContent: "center",
               }}
             >
               <Chart
                 type="Line"
                 dataSet={data.lineData}
                 height={300}
-                options={PNlineChartOptions}
+                options={RNSaleLineChartOptions}
                 width={isMobile ? 400 : 500}
               />
             </Box>
@@ -308,7 +310,7 @@ export const PNSale: React.FC = () => {
                 width={200}
                 height={220}
                 dataSet={data.RepeatSales}
-                options={RepeatsalesGaugeOptions}
+                options={RepeatSalesGaugeOptions}
               />
             </Box>
           </Box>
@@ -420,7 +422,7 @@ export const PNSale: React.FC = () => {
             dataSet={data.barData}
             width={isMobile ? 400 : 800}
             height={isMobile ? 300 : 450}
-            options={PNbarChartOptions}
+            options={RNSaleBarChartOptions}
           />
         </Box>
       </Box>

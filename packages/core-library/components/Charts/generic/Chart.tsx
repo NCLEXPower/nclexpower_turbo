@@ -9,8 +9,8 @@ import {
   ChartOptions,
   GaugeChartOptions,
   LineChartOptions,
-} from "./Type";
-import { Barchart, Gaugechart, Linechart } from "./index";
+} from "./charts/type";
+import { BarChart, GaugeChart, LineChart } from "./charts";
 import { SxProps } from "@mui/material";
 
 interface ChartOption {
@@ -33,7 +33,7 @@ export const Chart: React.FC<ChartOption> = ({
   switch (type) {
     case "Bar":
       return (
-        <Barchart
+        <BarChart
           dataSet={dataSet}
           Width={width}
           Height={height}
@@ -43,7 +43,7 @@ export const Chart: React.FC<ChartOption> = ({
       );
     case "Line":
       return (
-        <Linechart
+        <LineChart
           dataSet={dataSet}
           width={width}
           height={height}
@@ -53,7 +53,7 @@ export const Chart: React.FC<ChartOption> = ({
       );
     case "Gauge":
       return (
-        <Gaugechart
+        <GaugeChart
           dataSet={dataSet}
           width={width}
           height={height}

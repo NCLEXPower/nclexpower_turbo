@@ -6,22 +6,22 @@
 import React, { useMemo } from "react";
 import { Box } from "@mui/material";
 import { TabOption, TabPanel, TabsDesktop } from "../../../../../../components";
-import { PNSale, AllSale, RNSale } from "./index";
+import { AllSaleBlock, PNSaleBlock, RNSaleBlock } from "../SalesManagement";
 
 export const SalesManagementBlock: React.FC = ({}) => {
   const tabs = useMemo<Array<TabOption>>(
     () => [
       {
         key: "All",
-        content: <AllSale />,
+        content: <AllSaleBlock />,
       },
       {
         key: "RN",
-        content: <RNSale />,
+        content: <RNSaleBlock />,
       },
       {
         key: "PN",
-        content: <PNSale />,
+        content: <PNSaleBlock />,
       },
     ],
     []
