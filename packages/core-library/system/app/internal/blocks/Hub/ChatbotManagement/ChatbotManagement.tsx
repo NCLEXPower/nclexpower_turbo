@@ -16,6 +16,7 @@ import { ChatbotOptionType, ChatbotOptionSchema } from './validation'
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { useModal } from "../../../../../../hooks";
+import { useBusinessQueryContext } from "../../../../../../contexts";
 
 type Props = {
   onSubmit: (data: ChatbotOptionType) => void;
@@ -25,6 +26,10 @@ export const ChatbotManagement: React.FC<Props> = ({ onSubmit }) => {
 
   const subsequentDialog = useModal();
   const endConversationDialog = useModal();
+
+  const { businessQueryGetSubsequentList } = useBusinessQueryContext();
+
+  const { data: subsequentDataLists } = businessQueryGetSubsequentList(['subsequentLists']);
 
   const form = useForm({
     mode: "all",
@@ -138,9 +143,9 @@ export const ChatbotManagement: React.FC<Props> = ({ onSubmit }) => {
           <Box sx={{ width: "100%", height: "100%", backgroundColor: 'rgba(59, 0, 134, 0.05)' }}>
             <Typography sx={{ color: '#3B0086', fontWeight: 'bold', padding: 4 }}>Subsequent Lists:</Typography>
             <hr />
-            {ChatbotParent.map((item, index) => (
+            {subsequentDataLists && subsequentDataLists.length > 0 ? subsequentDataLists?.map((item) => (
               <Box
-                key={index}
+                key={item.id}
                 sx={{
                   marginBottom: 2,
                   width: "100%",
@@ -152,10 +157,12 @@ export const ChatbotManagement: React.FC<Props> = ({ onSubmit }) => {
                   justifyContent: "space-between"
                 }}
               >
-                {item.parent}
+                {item.optionText}
                 <EvaIcon name="plus-circle-outline" fill="#3B0086" width={20} height={20} />
               </Box>
-            ))}
+            ))
+              : <Typography sx={{ color: '#3B0086', padding: 4, }}>No subsequent lists available</Typography>
+            }
             <Box sx={{ marginTop: 4, paddingX: 4 }}>
               <EndConversationDialog
                 open={endConversationDialog.props.isOpen}

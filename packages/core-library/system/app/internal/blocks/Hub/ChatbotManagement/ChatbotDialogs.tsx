@@ -141,7 +141,7 @@ export const EndConversationDialog: React.FC<Props> = ({
 }) => {
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen}
+      <Button onClick={handleClickOpen} data-testid='end-conversation-button'
         sx={{
           color: '#3B0086',
           width: "100%",
