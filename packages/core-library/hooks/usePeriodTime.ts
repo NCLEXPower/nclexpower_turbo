@@ -1,4 +1,12 @@
 import { useState } from "react";
+
+type PeriodType = "all" | "today" | "weekly" | "monthly" | "ytd";
+
+interface UsePeriodDataProps<T> {
+  Data: Record<PeriodType, T>;
+  defaultPeriod?: PeriodType;
+}
+
 /**
  * Custom hook for managing period-based data and formatting revenue.
  * @param Data An object containing data for each period type (e.g., 'all', 'today', 'weekly', etc.).
@@ -14,13 +22,6 @@ import { useState } from "react";
  *   defaultPeriod: 'all',
  * });
  */
-
-type PeriodType = "all" | "today" | "weekly" | "monthly" | "ytd";
-
-interface UsePeriodDataProps<T> {
-  Data: Record<PeriodType, T>;
-  defaultPeriod?: PeriodType;
-}
 
 export const usePeriodTime = <T>({
   Data,
