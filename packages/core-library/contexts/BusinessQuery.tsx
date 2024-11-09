@@ -40,7 +40,8 @@ import {
   useCreateInclusion,
   useDeleteInclusion,
   useUpdateInclusion,
-  useCreateSubsequentOptions
+  useCreateSubsequentOptions,
+  useGetSubsequentList
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -70,6 +71,7 @@ import {
   CreateInclusionParams,
   EditInclusionParams,
   SubsequentOptionType,
+  GetSubsequentLists,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -277,6 +279,10 @@ interface BusinessQueryContextValue {
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
     any, GetAllInclusionResponse, unknown>
+
+  businessQueryGetSubsequentList: (
+    queryKey: string[]
+  ) => UseQueryResult<GetSubsequentLists[] | undefined, any>
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -324,6 +330,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryDeleteInclusion = useDeleteInclusion;
   const businessQueryUpdateInclusion = useUpdateInclusion;
   const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
+  const businessQueryGetSubsequentList = useGetSubsequentList;
 
   return (
     <BusinessQueryContext.Provider
@@ -363,6 +370,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryDeleteInclusion,
         businessQueryUpdateInclusion,
         businessQueryCreateSubsequentOptions,
+        businessQueryGetSubsequentList,
       }}
     >
       {children}
