@@ -34,6 +34,9 @@ import {
   WebGetContentsParams,
   SubsequentOptionType,
   GetSubsequentLists,
+  CreateAuthorizedMenusParams,
+  AuthorizedMenuResponse,
+  GetMenuByIdParams,
 } from "../types";
 
 export class WebApiBackOffice {
@@ -298,7 +301,7 @@ export class WebApiBackOffice {
     return await this.axios.put(
       `/api/v1/product/internal-update-inclusion`, params)
   }
-  public async web_create_subsequent(params: SubsequentOptionType){
+  public async web_create_subsequent(params: SubsequentOptionType) {
     return await this.axios.post<SubsequentOptionType>(
       `/v1/api/Chatbot/create-subsequent-options`,
       params
@@ -318,7 +321,29 @@ export class WebApiBackOffice {
 
   public async getSubsequentLists() {
     return await this.axios.get<GetSubsequentLists[]>(
-     `/v1/api/Chatbot/get-subsequent-list`
+      `/v1/api/Chatbot/get-subsequent-list`
     )
+  }
+  public async createAuthorizedMenus(params: CreateAuthorizedMenusParams) {
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/create-authorized-menus`,
+      params
+    )
+  }
+
+  public async getAllMenus() {
+    return await this.axios.get<AuthorizedMenuResponse[]>(
+      `/api/v2/content/BaseContent/get-all-menus`
+    )
+  }
+
+  public async getMenuById(params: GetMenuByIdParams) {
+    return await this.axios.get<AuthorizedMenuResponse>(
+      `/api/v2/content/BaseContent/get-menu?${qs.stringify({ ...params })}`
+    )
+  }
+
+  public async updateMenuItem(params: any) {
+    return await this.axios.post(`/api/v2/content/BaseContent/update-menu-item`, params)
   }
 }

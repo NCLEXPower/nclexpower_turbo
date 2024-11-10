@@ -32,39 +32,56 @@ export const subMenu = yup.object({
   path: yup.string().required("Path is required"),
 });
 
+export const MenuItemsSchema = yup.object({
+  type: yup.string().oneOf(["Main", "SubMenu"]),
+  icon: yup.string(),
+  label: yup.string().when("type", {
+    is: (val: string) => val === "Main" || val === "SubMenu",
+    then: (schema) => schema.required("Menu Label is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  path: yup.string().default(''),
+  children: yup.array().when("type", {
+    is: "SubMenu",
+    then: (schema) =>
+      schema
+        .of(
+          yup.object().shape({
+            label: yup.string().required("Sub menu label is required"),
+            path: yup.string().required("Sub menu path is required"),
+          })
+        )
+        .min(1, "At least one submenu is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+})
+
+export const EditMenuItemsSchema = yup.object({
+  id: yup.string().notRequired(),
+  icon: yup.string().required().default(''),
+  menuId: yup.string().notRequired(),
+  parentId: yup.string().notRequired(),
+  label: yup.string().required("Menu Label is required").default(''),
+  path: yup.string().default(''),
+  children: yup.array()
+    .of(
+      yup.object().shape({
+        id: yup.string().notRequired(),
+        icon: yup.string().required().default(''),
+        menuId: yup.string().notRequired(),
+        parentId: yup.string().notRequired(),
+        label: yup.string().required("Menu Label is required").default(''),
+        path: yup.string().nullable().default(null),
+      })
+    ).optional(),
+})
+
 export const RouteMenuCreation = yup.object({
   systemMenus: yup.number().required("System Menus is required"),
   accountLevel: yup.number().required("Account Level is required"),
   menuEnvironments: yup.number().required("Menu Environments is required"),
-  MenuItems: yup.array().of(
-    yup.object().shape({
-      type: yup.string().oneOf(["Main", "SubMenu"]),
-      icon: yup.string(),
-      label: yup.string().when("type", {
-        is: (val: string) => val === "Main" || val === "SubMenu",
-        then: (schema) => schema.required("Menu Label is required"),
-        otherwise: (schema) => schema.notRequired(),
-      }),
-      path: yup.string().when("type", {
-        is: "Main",
-        then: (schema) => schema.required("Path is required"),
-        otherwise: (schema) => schema.notRequired(),
-      }),
-      children: yup.array().when("type", {
-        is: "SubMenu",
-        then: (schema) =>
-          schema
-            .of(
-              yup.object().shape({
-                label: yup.string().required("Sub menu label is required"),
-                path: yup.string().required("Sub menu path is required"),
-              })
-            )
-            .min(1, "At least one submenu is required"),
-        otherwise: (schema) => schema.notRequired(),
-      }),
-    })
-  ),
+  menuItems: yup.array().of(EditMenuItemsSchema)
 });
 
 export type RouteManagementSchema = yup.InferType<typeof RouteMenuCreation>;
+export type MenuItemType = yup.InferType<typeof EditMenuItemsSchema>

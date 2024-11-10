@@ -432,6 +432,25 @@ export type AuthorizedMenu = {
   menuItems: Array<MenuItems>;
 }[];
 
+export interface AuthorizedMenuResponse {
+  id: string;
+  systemMenus: number;
+  accountLevel: number;
+  menuEnvironments: number;
+  menuItems: Array<MenuItems>;
+}
+
+export type GetMenuByIdParams = {
+  menuId: string
+}
+
+export type CreateAuthorizedMenusParams = {
+  systemMenus: number;
+  accountLevel: number;
+  menuEnvironments: number;
+  menuItems: Array<MenuItems>;
+}
+
 export type MenuItems = MenuItemsChildren;
 
 export type MenuItemsChildren = {
@@ -477,9 +496,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
