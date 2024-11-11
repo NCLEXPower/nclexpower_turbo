@@ -114,7 +114,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
         >
           <Image style={{ width: 150 }} src={NCLEXBlueLogo} alt="NCLEXLogo" />
           <Box position="absolute" right={5}>
-            <IconButton onClick={setOpen} className="outline-none">
+            <IconButton onClick={setOpen} ariaLabel="toggle-sidebar">
               <EvaIcon
                 id="back-icon"
                 name="arrow-ios-back-outline"
