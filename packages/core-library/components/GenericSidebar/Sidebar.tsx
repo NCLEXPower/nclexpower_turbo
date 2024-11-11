@@ -12,7 +12,7 @@ import { NCLEXBlueLogo } from "../../assets";
 import Image from "next/image";
 import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
-import useGetProgramList from "../../hooks/useGetProgramList";
+import { useGetProgramList, useUniqueById } from "../../hooks";
 import { IconButton, EvaIcon } from "../../components";
 
 interface SideBarPropsType extends Partial<WebSidebarStylesType> {
@@ -32,13 +32,13 @@ interface RenderMenuItemsProps extends Partial<WebSidebarStylesType>{
 }
 
 const RenderMenuItems: React.FC<RenderMenuItemsProps> = ({ menu, pathname, isAuthenticated, listStyles }) => {
+  const uniqueMenu = useUniqueById(menu);
+
   return (
-    menu.length > 0 &&
-    menu
-      .filter((item, index, self) => self.findIndex((m) => m.id === item.id) === index)
-      .map((navigation, index) => (
-        <Box key={index}>
-          {navigation.children && navigation.children.length > 0 ? (
+    uniqueMenu.length > 0 &&
+    uniqueMenu.map((navigation) => (
+        <Box key={navigation.id}>
+          {navigation.children && navigation.children?.length > 0 ? (
             <SidebarListButton
               navigation={navigation}
               pathname={pathname}
@@ -70,11 +70,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
   const pathname = usePathname();
   const { programList } = useGetProgramList();
 
-  const updatedMenu = menu
-  .filter(
-    (menus, index, self) =>
-      self.findIndex((m) => m.id === menus.id) === index
-  )
+  const updatedMenu = useUniqueById(menu)
   .map((navigation, index) => {
     if (programList && programList.length === 10 && index === 1) {
       return { ...navigation, hide: true };

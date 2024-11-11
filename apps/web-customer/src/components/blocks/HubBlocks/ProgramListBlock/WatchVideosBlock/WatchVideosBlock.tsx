@@ -11,7 +11,7 @@ import { SectionVideosType } from "core-library/types/wc/programList";
 import { VideoDetails } from "./VideoDetails";
 import { VideoWatchList } from "./VideoWatchList";
 import { VideoPlayer } from "./VideoPlayer";
-import useGetProgramList from "core-library/hooks/useGetProgramList";
+import { useGetProgramList } from "core-library/hooks";
 
 export function WatchVideosBlock() {
   const router = useRouter();
