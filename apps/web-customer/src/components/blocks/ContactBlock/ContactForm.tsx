@@ -10,12 +10,14 @@ import {
   Button,
   PhoneField,
   TextAreaField,
+  ControlledSelectField,
 } from "core-library/components";
 import { ContactFormType } from "./validation";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
 import {
   ContactMock,
   SocialMediaMock,
+  CategoryData,
 } from "../../../core/constant/ContactPageMock";
 import Image from "next/image";
 import Link from "next/link";
@@ -90,6 +92,26 @@ export const ContactForm: React.FC<FormValues> = ({
                 data-testid="email-input"
               />
             </Grid>
+            <Grid item sx={{ marginTop: 3 }}>
+              <ControlledSelectField
+                name="concernCategory"
+                options={CategoryData}
+                control={control}
+                label="Concern Category"
+                sx={{
+                  width: "100%",
+                  borderRadius: "5px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "5px",
+                  },
+                  "& .MuiInputBase-input": {
+                    borderRadius: "5px",
+                    padding: "15px",
+                  },
+                }}
+                data-testid="concernCategory-select"
+              />
+            </Grid>
             <Grid item xs={12} sx={{ marginY: 1, display: "flex", gap: 1 }}>
               <PhoneField
                 name="phone"
@@ -106,7 +128,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} sx={{ marginY: 2 }}>
+            <Grid item xs={12} sx={{ marginY: 3 }}>
               <TextAreaField
                 control={control}
                 name="message"
@@ -187,4 +209,3 @@ export const ContactForm: React.FC<FormValues> = ({
     </section>
   );
 };
-
