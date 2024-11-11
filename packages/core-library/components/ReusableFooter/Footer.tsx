@@ -26,8 +26,14 @@ export const Footer: React.FC<FooterProps> = (props) => {
           backgroundColor: "#040814",
           fontFamily: "PT Sans",
           flexGrow: 1,
-          paddingX: { xs: "1.5rem", sm: "2.5rem", md: "3rem" },
-          paddingY: { xs: "2.5rem", md: "4rem" },
+          paddingX: {
+            xs: "1.5rem",
+            sm: "6rem",
+            md: "5rem",
+            lg: "10rem",
+            xl: "15rem",
+          },
+          paddingY: { xs: "2rem", md: "4rem" },
         }}
       >
         <Grid
@@ -97,7 +103,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               </Typography>
               <Grid
                 sx={{
-                  marginBottom: { xs: 2, md: 6 },
+                  marginBottom: { xs: "1px", md: 6 },
                   gap: 3,
                   width: "100%",
                   display: "flex",
@@ -109,8 +115,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
                   sx={{
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
-                    borderBottom: 2,
-                    borderBlockColor: "#f5c206",
                   }}
                 >
                   {props.info.phone}
@@ -119,8 +123,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
                   sx={{
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
-                    borderBottom: 2,
-                    borderBlockColor: "#f5c206",
                   }}
                 >
                   {props.info.website}
@@ -137,7 +139,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 display: "flex",
                 justifyContent: "space-evenly",
                 alignItems: "start",
-                marginBottom: 2,
+                marginBottom: { xs: "0rem", md: 2 },
               }}
             >
               {props.list.length > 0 &&
