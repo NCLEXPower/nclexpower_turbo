@@ -1,8 +1,8 @@
- /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import withAuth from "../../../core/utils/withAuth";
 import {
   HubBlock,
@@ -23,6 +23,7 @@ import {
   DuplicateSessionBlock,
   ChatbotManagementBlock,
   ContactUsManagementBlock,
+  SalesManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -68,6 +69,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <ChatbotManagementBlock />;
     case "ContactUsManagementBlock":
       return <ContactUsManagementBlock />;
+    case "SalesManagement":
+      return <SalesManagementBlock />;
     default:
       return null;
   }
