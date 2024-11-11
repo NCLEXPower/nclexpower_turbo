@@ -6,7 +6,7 @@ import { ServerResponse } from "http";
 import { getMaintenanceMode } from "../ssr";
 
 export const generateCSP = (generatedNonce: string): string =>
-  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com ` +
+  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live ` +
   config.value.STRIPE_URL_JS +
   " " +
   `; form-action 'self'; base-uri 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; connect-src ` +
@@ -15,7 +15,7 @@ export const generateCSP = (generatedNonce: string): string =>
   config.value.LOCAL_API_URL +
   " " +
   config.value.VERCELURL +
-  " *.vercel.app *.herokuapp.com https://js.stripe.com " +
+  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org " +
   config.value.STRIPE_URL_JS +
   ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com ` +
   " " +
