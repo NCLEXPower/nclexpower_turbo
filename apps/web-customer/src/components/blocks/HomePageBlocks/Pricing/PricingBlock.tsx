@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { useEffect, useState } from "react";
 import PricingCard from "./PricingComponent/PricingCard";
 import { useBusinessQueryContext } from "core-library/contexts";
@@ -7,7 +12,7 @@ import { Encryption } from "core-library/utils/Encryption";
 import { config } from "core-library/config";
 import { useEncryptItem } from "core-library/contexts/auth/hooks";
 
-interface Props { }
+interface Props {}
 
 export const PricingBlock: React.FC<Props> = (props) => {
   const [nurseType, setNurseType] = useState<number>(1);
@@ -44,13 +49,15 @@ export const PricingBlock: React.FC<Props> = (props) => {
     <div className="pt-10 pb-40 h-fit bg-[#fafafa] flex items-center justify-center">
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col gap-4 items-center px-10 text-center">
-          <p className="text-4xl font-bold text-[#0f2a71]">Pricing</p>
+          <p className="lg:text-4xl text-3xl font-bold text-darkBlue">
+            Pricing
+          </p>
           <p className="font-bold">
             For RNs and PNs, choose between our 8-day (Fast Track) or 23-day
             (Standard) program.
           </p>
           <p className="font-ptSansNarrow">
-            Both programs allow up to 6 months access to the system.{" "}
+            Both programs allow up to 6 months access to the system.
           </p>
         </div>
         <div className="pt-10">
@@ -60,7 +67,7 @@ export const PricingBlock: React.FC<Props> = (props) => {
               onClick={() => filterItems(0)}
             >
               <p className="font-bold text-3xl">
-                RN <span className="font-normal">|</span>{" "}
+                RN <span className="font-normal">|</span>
               </p>
               <p>Registered Nurse</p>
             </button>
@@ -69,7 +76,7 @@ export const PricingBlock: React.FC<Props> = (props) => {
               onClick={() => filterItems(1)}
             >
               <p className="font-bold text-3xl">
-                PN <span className="font-normal">|</span>{" "}
+                PN <span className="font-normal">|</span>
               </p>
               <p>Practical Nurse</p>
             </button>

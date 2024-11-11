@@ -47,6 +47,7 @@ const config: Config = {
         sideBarTab: "#122c44", // light gray
         sideBarTabHover: "#253d53", // white gray
         blue: "#1a73e8", // blue
+        softGrayBlue: "#f0f2f8", // Light Grayish Blue
         darkBlue: "#0F2A71;", // login blue
         mainBlue: "#102973",
         yellow: "#F4C501", // yellow
