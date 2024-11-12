@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import { Button, Card, ConfirmationModal, EvaIcon, GenericSelectField, IconButton, TextField } from '../../../../../../../../../../../components'
 import { Box, ListItemIcon, Typography } from '@mui/material'
 import { EditMenuItemsSchema, MenuItemType, } from '../../../../validation'
@@ -55,6 +55,7 @@ export const RouterEditForm: React.FC<RouterEditFormType> = ({ selectedMenuItem,
 
     return (
         <Card
+            data-testid="router-edit-block"
             elevation={5}
             sx={{
                 width: 1,
@@ -63,8 +64,7 @@ export const RouterEditForm: React.FC<RouterEditFormType> = ({ selectedMenuItem,
             }}>
 
             {selectedMenuItem ?
-                <Box width={1}>
-
+                <Box data-testid="router-edit-form" width={1}>
                     <Box gap={5} width="100%" >
                         <Card
                             sx={{

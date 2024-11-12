@@ -22,6 +22,7 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
 
   return (
     <Card
+      data-testid="route-creation-sidebar"
       elevation={5}
       sx={{
         width: "40%",
@@ -52,7 +53,7 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
                 <ListItemButton
                   onClick={() => onEditMenu(navigation)}
                 >
-                  <Box key={index} width={1}>
+                  <Box key={navigation.id} width={1}>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <Box display="flex" alignItems="center" gap={2} >
                         {IconComponent(navigation.icon, false, "primary")}
@@ -63,7 +64,7 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
                     </Box>
                     {navigation.children && navigation.children.length > 0 &&
                       navigation.children.map((subMenu, index) => (
-                        <Box display="flex" alignItems="center" gap={2} >
+                        <Box key={index} display="flex" alignItems="center" gap={2} >
                           {IconComponent(subMenu.icon, false, "primary")}
                           <Typography key={index} sx={{ fontSize: "14px" }}>
                             {subMenu.label}

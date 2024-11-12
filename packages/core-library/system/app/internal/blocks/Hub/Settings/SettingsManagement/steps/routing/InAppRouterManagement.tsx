@@ -43,7 +43,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
   previous,
   reset,
 }) => {
-  const { businessQueryCreateAuthorizedMenus, businessQueryGetAllMenus, businessQueryGetMenuById } = useBusinessQueryContext();
+  const { businessQueryCreateAuthorizedMenus, businessQueryGetAllMenus } = useBusinessQueryContext();
   const { mutateAsync: createRoutes } = businessQueryCreateAuthorizedMenus();
   const { data, isLoading: menuLoading, refetch } = businessQueryGetAllMenus(["getAllMenus"]);
   const [view, setView] = useState<boolean>(false);
@@ -101,7 +101,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
         const menu = params.row.original
         return (
           <Box display="flex" alignItems="center" height={1}>
-            <CustomPopover open withIcon={true} label='Actions' iconButton={<GridMoreVertIcon fontSize="small" />}>
+            <CustomPopover data-testid="popover-dropdown" open withIcon={true} label='Actions' iconButton={<GridMoreVertIcon fontSize="small" />}>
               <ListItemButton
                 onClick={() => handleSelectMenu(menu)}
                 sx={{ color: 'black' }}
@@ -183,7 +183,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
           </Box>
         ) : (
           <Card>
-            <ReactTable<AuthorizedMenuResponse> isLoading={menuLoading} columns={columns} data={data ?? []} />
+            <ReactTable<AuthorizedMenuResponse> data-testid="in-app-route-table" isLoading={menuLoading} columns={columns} data={data ?? []} />
           </Card>
         )}
       </Box>

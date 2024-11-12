@@ -1,8 +1,6 @@
 import { InAppRouterManagement } from '../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/InAppRouterManagement';
 import { fireEvent, render, screen } from '../../../../common';
 
-
-
 jest.mock("../../../../../config", () => ({
     getConfig: jest
         .fn()
@@ -32,13 +30,11 @@ jest.mock("../../../../../hooks/useApi", () => ({
     }),
 }));
 
-
 describe('inAppRouterManagement', () => {
     const nextStep = jest.fn()
     const previous = jest.fn()
     const previousStep = jest.fn()
     const reset = jest.fn()
-
 
     beforeEach(() => {
         jest.clearAllMocks()
