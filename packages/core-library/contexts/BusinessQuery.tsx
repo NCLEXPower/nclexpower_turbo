@@ -78,6 +78,7 @@ import {
   AuthorizedMenuResponse,
   CreateAuthorizedMenusParams,
   GetMenuByIdParams,
+  UpdateMenuItemParams,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -303,7 +304,7 @@ interface BusinessQueryContextValue {
   ) => UseQueryResult<AuthorizedMenuResponse | undefined, any>
   businessQueryUpdateMenuItem: (opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
-    any,
+    UpdateMenuItemParams,
     any,
     unknown>
 }

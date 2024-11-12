@@ -6,7 +6,7 @@
 import React, { useState } from 'react'
 import { RouteCreationSidebar } from './RouteCreationSidebar'
 import { AuthorizedMenuResponse, MenuItems } from '../../../../../../../../../../api/types'
-import { useBusinessQueryContext } from '../../../../../../../../../../contexts'
+import { useBusinessQueryContext, useExecuteToast } from '../../../../../../../../../../contexts'
 import { Box } from '@mui/material'
 import { EditMenuItemsSchema, MenuItemType, RouteManagementSchema } from '../../../validation'
 import { RouterEditForm } from './forms/RouterEditForm'
@@ -23,6 +23,7 @@ export const RouterCreation: React.FC<RouterCreationType> = ({ selectedMenus, on
     const [menuItem, setMenuItem] = useState<MenuItemType>()
     const { mutateAsync } = businessQueryUpdateMenuItem()
     const [newMenuCreation, setNewMenuCreation] = useState<Boolean>(false)
+    const { executeToast } = useExecuteToast()
 
     const handleEditMenu = (menuItem: MenuItems) => {
         setMenuItem({ ...menuItem })
@@ -44,14 +45,27 @@ export const RouterCreation: React.FC<RouterCreationType> = ({ selectedMenus, on
     </>
 
     async function onSubmitEdit(value: MenuItemType) {
-        if (menus) {
-            newMenuCreation ? onSubmitNewMenu({ ...menus, menuItems: [value] }) : await mutateAsync(value)
+        try {
+            if (menus && newMenuCreation) {
+                onSubmitNewMenu({ ...menus, menuItems: [value] })
+            }
+            else {
+                await mutateAsync(value)
+                executeToast(`Successfully updated`, "top-right", true, { type: "success" })
+            }
+            refetch()
+        } catch {
+            executeToast(`Something went wrong. Please try again later.`, "top-right", true, { type: "error" })
         }
-        refetch()
     }
 
     async function deleteCategory(MenuId: string) {
-        await deleteRoutes(MenuId);
-        refetch()
+        try {
+            await deleteRoutes(MenuId);
+            refetch()
+            executeToast(`Menu item successfully deleted`, "top-right", true, { type: "success" })
+        } catch {
+            executeToast(`Something went wrong. Please try again later.`, "top-right", true, { type: "error" })
+        }
     }
 }

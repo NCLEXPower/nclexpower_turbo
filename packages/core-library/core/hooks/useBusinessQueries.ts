@@ -38,6 +38,7 @@ import {
   AuthorizedMenu,
   AuthorizedMenuResponse,
   GetMenuByIdParams,
+  UpdateMenuItemParams,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -712,10 +713,10 @@ export const useUpdateMenuItem = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
 ) => {
   const updateMenuItem = useApiCallback(
-    async (api, args: any) =>
+    async (api, args: UpdateMenuItemParams) =>
       await api.webbackoffice.updateMenuItem(args)
   );
-  return useAppMutation<AxiosResponse<number, AxiosError>, CreateAuthorizedMenusParams>(
+  return useAppMutation<AxiosResponse<number, AxiosError>, UpdateMenuItemParams>(
     async (data) => {
       const result = await updateMenuItem.execute({ ...data });
       return result;

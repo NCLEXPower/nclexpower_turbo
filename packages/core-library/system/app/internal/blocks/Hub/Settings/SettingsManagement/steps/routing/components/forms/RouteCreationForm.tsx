@@ -28,6 +28,7 @@ export const RouteCreationForm: React.FC<RouteCreationFormPropsType> = ({ onSubm
 
   return (
     <Box
+      data-testid="router-creation-form"
       sx={{
         display: "flex",
         flexDirection: "column",

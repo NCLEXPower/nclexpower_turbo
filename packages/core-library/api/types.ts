@@ -451,6 +451,8 @@ export type CreateAuthorizedMenusParams = {
   menuItems: Array<MenuItems>;
 }
 
+export type UpdateMenuItemParams = MenuItems
+
 export type MenuItems = MenuItemsChildren;
 
 export type MenuItemsChildren = {
@@ -590,7 +592,7 @@ export type SubsequentOptionType = {
   optionText: string;
 };
 
-export type GetSubsequentLists =  {
+export type GetSubsequentLists = {
   id: string;
   optionText: string;
   optionKey: string;

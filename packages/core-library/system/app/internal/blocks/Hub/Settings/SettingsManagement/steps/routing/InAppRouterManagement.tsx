@@ -13,6 +13,7 @@ import {
 } from "../../../../../../../../../components";
 import {
   useBusinessQueryContext,
+  useExecuteToast,
 } from "../../../../../../../../../contexts";
 import React, { useState } from "react";
 import { RouteCreationForm } from "./components/forms/RouteCreationForm";
@@ -49,6 +50,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
   const [selectedMenus, setSelectedMenus] = useState<AuthorizedMenuResponse>()
   const [IsNewMenuCreated, setIsNewMenuCreated] = useState<boolean>(false);
   const queryClient = useQueryClient()
+  const { executeToast } = useExecuteToast()
 
   const form = useForm<RouteManagementSchema>({
     mode: "all",
@@ -139,7 +141,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
           Back
         </Button>
 
-        <Box display="flex" gap="10px" width={1}>
+        <Box display="flex" gap="10px" width={1} data-testid="in-app-router">
           {IsNewMenuCreated ? (
             <Button
               sx={{ borderRadius: "10px", marginBottom: "10px" }}
@@ -189,9 +191,15 @@ export const InAppRouterManagement: React.FC<Props> = ({
   );
 
   async function createMenus(values: RouteManagementSchema) {
-    await createRoutes(values as CreateAuthorizedMenusParams)
-    queryClient.invalidateQueries("GetMenuById")
-    setIsNewMenuCreated(false)
-    refetch()
+    try {
+      await createRoutes(values as CreateAuthorizedMenusParams)
+      queryClient.invalidateQueries("GetMenuById")
+      setIsNewMenuCreated(false)
+      refetch()
+      executeToast("Successfully Created", "top-right", true, { type: "success" })
+    } catch {
+      executeToast(`Something went wrong. Please try again later.`, "top-right", true, { type: "error" })
+    }
+
   }
 };

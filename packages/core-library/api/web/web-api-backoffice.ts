@@ -37,6 +37,7 @@ import {
   CreateAuthorizedMenusParams,
   AuthorizedMenuResponse,
   GetMenuByIdParams,
+  UpdateMenuItemParams,
 } from "../types";
 
 export class WebApiBackOffice {
@@ -343,7 +344,7 @@ export class WebApiBackOffice {
     )
   }
 
-  public async updateMenuItem(params: any) {
+  public async updateMenuItem(params: UpdateMenuItemParams) {
     return await this.axios.post(`/api/v2/content/BaseContent/update-menu-item`, params)
   }
 }
