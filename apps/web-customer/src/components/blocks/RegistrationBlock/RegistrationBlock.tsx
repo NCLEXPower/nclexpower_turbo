@@ -8,20 +8,26 @@ import { RegistrationFormType } from 'core-library/system';
 import { useRouter } from "core-library/core/router";
 import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
 import { useOrderNumber } from "core-library/contexts/auth/hooks";
-import {AccountCreationData} from "core-library/types/types";
+import { AccountCreationData } from "core-library/types/types";
 import { useExecuteToast } from 'core-library/contexts';
 import { SelectedProductType } from 'core-library/types/global';
+import { useDesignVisibility } from "core-library/hooks";
+import { create as createCustomer } from 'core-library';
+import { useState } from 'react';
 
 export const RegistrationBlock = () => {
+    useDesignVisibility();
+
     const router = useRouter();
     const { showToast } = useExecuteToast();
-
     const orderDetail = useDecryptOrder() as SelectedProductType;
-
     const [orderNumber, setOrderNumber] = useOrderNumber();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     async function handleSubmit(values: RegistrationFormType) {
       const { productId, amount } = orderDetail;
+
+      setIsLoading(true);
 
       if(!orderNumber || !productId || !amount) return;
 
@@ -37,10 +43,12 @@ export const RegistrationBlock = () => {
       };
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await createCustomer(filteredValues);
         showToast("Account has been successfully created.", "success");
       } catch (err) {
         showToast("Something went wrong. Please try again.", "error");
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -49,6 +57,6 @@ export const RegistrationBlock = () => {
       };
 
     return (
-        <RegistrationForm onSubmit={handleSubmit} handleBack={handleBack}/>
+        <RegistrationForm onSubmit={handleSubmit} handleBack={handleBack} submitLoading={isLoading}/>
     )
   }
