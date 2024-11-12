@@ -1,6 +1,6 @@
 import React from "react";
 import { ProgramListBlock } from "../../../../components/blocks/HubBlocks/ProgramListBlock/ProgramListBlock";
-import useGetProgramList from "core-library/hooks/useGetProgramList";
+import { useGetProgramList } from "core-library/hooks";
 
 const ProgramListPage: React.FC = () => {
   const { programList } = useGetProgramList();
