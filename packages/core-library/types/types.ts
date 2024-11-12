@@ -115,7 +115,7 @@ export type UseDataTableParamsResult = {
 
 export interface AccountCreationData {
   firstname: string;
-  middlename: string | undefined | null;
+  middlename: string | null;
   lastname: string;
   email: string;
   password: string;
