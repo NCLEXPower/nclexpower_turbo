@@ -12,8 +12,7 @@ import { AccountCreationData } from "core-library/types/types";
 import { useExecuteToast } from 'core-library/contexts';
 import { SelectedProductType } from 'core-library/types/global';
 import { useDesignVisibility } from "core-library/hooks";
-import { create as createCustomer } from 'core-library';
-import { useState } from 'react';
+import { useCustomerCreation } from '../../../core/hooks/useCustomerCreation';
 
 export const RegistrationBlock = () => {
     useDesignVisibility();
@@ -22,12 +21,11 @@ export const RegistrationBlock = () => {
     const { showToast } = useExecuteToast();
     const orderDetail = useDecryptOrder() as SelectedProductType;
     const [orderNumber, setOrderNumber] = useOrderNumber();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const { createCustomerAsync, isLoading } = useCustomerCreation();
 
     async function handleSubmit(values: RegistrationFormType) {
       const { productId, amount } = orderDetail;
-
-      setIsLoading(true);
 
       if(!orderNumber || !productId || !amount) return;
 
@@ -43,12 +41,10 @@ export const RegistrationBlock = () => {
       };
 
       try {
-        await createCustomer(filteredValues);
+        await createCustomerAsync(filteredValues);
         showToast("Account has been successfully created.", "success");
       } catch (err) {
         showToast("Something went wrong. Please try again.", "error");
-      } finally {
-        setIsLoading(false);
       }
     }
 
