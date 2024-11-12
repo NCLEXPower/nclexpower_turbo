@@ -1,15 +1,15 @@
-name: NCLEXPower Dev CI/CD Build
+name: NCLEXPower UAT CI/CD Build
 
 on:
   push:
     branches:
-      - mdev
+      - uat
       - "feature/*"
       - "hotfix/*"
       - "release/*"
   pull_request:
     branches:
-      - mdev
+      - uat
       - "feature/*"
       - "hotfix/*"
       - "release/*"
@@ -62,19 +62,19 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy simulator to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
+        if: github.ref == 'refs/heads/uat'
         run: |
           cd apps/simulator
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
 
       - name: Deploy web-customer to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
+        if: github.ref == 'refs/heads/uat'
         run: |
           cd apps/web-customer
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpowerdev
 
       - name: Deploy web-backoffice-generic to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
+        if: github.ref == 'refs/heads/uat'
         run: |
           cd apps/web-backoffice-generic
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officedev
