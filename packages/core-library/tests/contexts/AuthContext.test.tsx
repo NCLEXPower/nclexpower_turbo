@@ -264,7 +264,7 @@ describe("useAuthContext", () => {
     });
 
     expect(mockClearSession).toHaveBeenCalled();
-    expect(mockRouterPush).toHaveBeenCalledWith(expect.any(Function));
+    expect(mockRouterPush).toHaveBeenCalledWith(expect.any(String));
   });
 
   it("should not redirect to login and not trigger logout if revoke callback is not called", async () => {
