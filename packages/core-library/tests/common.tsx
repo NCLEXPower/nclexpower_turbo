@@ -37,23 +37,21 @@ export const render = (
   rtlRender(ui, {
     wrapper: ({ children }) => (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <PageLoaderContextProvider>
-          <BusinessQueryContextProvider>
-            <DndProvider backend={HTML5Backend}>
-              <QueryClientProvider client={new QueryClient()}>
-                <StripeContextProvider publishableKey="">
-                  <ThemeProvider theme={theme()}>
-                    <HeaderTitleContextProvider>
-                      <FormSubmissionContextProvider>
-                        {children}
-                      </FormSubmissionContextProvider>
-                    </HeaderTitleContextProvider>
-                  </ThemeProvider>
-                </StripeContextProvider>
-              </QueryClientProvider>
-            </DndProvider>
-          </BusinessQueryContextProvider>
-        </PageLoaderContextProvider>
+        <BusinessQueryContextProvider>
+          <DndProvider backend={HTML5Backend}>
+            <QueryClientProvider client={new QueryClient()}>
+              <StripeContextProvider publishableKey="">
+                <ThemeProvider theme={theme()}>
+                  <HeaderTitleContextProvider>
+                    <FormSubmissionContextProvider>
+                      {children}
+                    </FormSubmissionContextProvider>
+                  </HeaderTitleContextProvider>
+                </ThemeProvider>
+              </StripeContextProvider>
+            </QueryClientProvider>
+          </DndProvider>
+        </BusinessQueryContextProvider>
       </LocalizationProvider>
     ),
     ...options,
