@@ -22,9 +22,7 @@ const withAuth = <P extends object>(
         if (isLoggedIn && unauthorizeRoute.includes(url)) {
           router.replace("/hub");
         } else if (!isLoggedIn && url === "/hub") {
-          const loginRoute =
-            config.value.BASEAPP === "webc_app" ? "/login" : "/";
-          router.replace(loginRoute);
+          router.replace("/login");
         }
       };
 
