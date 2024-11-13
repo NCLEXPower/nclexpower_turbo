@@ -1,22 +1,12 @@
-import { screen, render } from "../common";
-import { usePageLoader } from "../../hooks";
-import {
-  PageLoaderContextProvider,
-  usePageLoaderContext,
-} from "../../contexts/PageLoaderContext";
-import { useEffect } from "react";
+import { render, screen } from "../common";
+import { PageLoaderContextProvider } from "../../contexts/PageLoaderContext";
 
 jest.mock("../../config", () => ({
-  config: { value: jest.fn() },
+  config: { value: { BASEAPP: "mockAppName" } },
 }));
 
-jest.mock("../../hooks/usePageLoader", () => ({
-  usePageLoader: jest.fn(),
-}));
-
-jest.mock("../../hooks/useApi", () => ({
-  useApi: jest.fn().mockReturnValue({ loading: false }),
-  useApiCallback: jest.fn(),
+jest.mock("../../components", () => ({
+  PageLoader: () => <div data-testid="page-loader">Loading...</div>,
 }));
 
 jest.mock("../../core/router", () => ({
@@ -24,36 +14,13 @@ jest.mock("../../core/router", () => ({
 }));
 
 describe("PageLoaderContextProvider", () => {
-  it("should provide the context values correctly", () => {
-    (usePageLoader as jest.Mock).mockReturnValue({ isPageLoading: false });
-
-    const TestComponent = () => {
-      const {
-        isLoading,
-        isCalculationsLoaded,
-        setIsLoading,
-        setIsCalculationsLoaded,
-      } = usePageLoaderContext();
-      useEffect(() => {
-        setIsLoading(false);
-        setIsCalculationsLoaded(false);
-      }, [setIsLoading, setIsCalculationsLoaded]);
-
-      return (
-        <div>
-          <div>isLoading: {isLoading.toString()}</div>
-          <div>isCalculationsLoaded: {isCalculationsLoaded.toString()}</div>
-        </div>
-      );
-    };
-
+  it("renders PageLoader while loading and isAuthenticated is false", () => {
     render(
-      <PageLoaderContextProvider>
-        <TestComponent />
+      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
+        <div>Test Component</div>
       </PageLoaderContextProvider>
     );
 
-    expect(screen.getByText("isLoading: false")).toBeInTheDocument();
-    expect(screen.getByText("isCalculationsLoaded: false")).toBeInTheDocument();
+    expect(screen.getByTestId("page-loader")).toBeInTheDocument();
   });
 });
