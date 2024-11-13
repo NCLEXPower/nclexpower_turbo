@@ -41,7 +41,11 @@ import {
   useDeleteInclusion,
   useUpdateInclusion,
   useCreateSubsequentOptions,
-  useGetSubsequentList
+  useGetSubsequentList,
+  useCreateAuthorizedMenus,
+  useGetAllMenus,
+  useGetMenuById,
+  useUpdateMenuItem
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -69,9 +73,12 @@ import {
   DefaultReviewerDto,
   GetAllInclusionResponse,
   CreateInclusionParams,
-  EditInclusionParams,
   SubsequentOptionType,
   GetSubsequentLists,
+  AuthorizedMenuResponse,
+  CreateAuthorizedMenusParams,
+  GetMenuByIdParams,
+  UpdateMenuItemParams,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -283,6 +290,23 @@ interface BusinessQueryContextValue {
   businessQueryGetSubsequentList: (
     queryKey: string[]
   ) => UseQueryResult<GetSubsequentLists[] | undefined, any>
+  businessQueryCreateAuthorizedMenus: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    CreateAuthorizedMenusParams,
+    unknown>
+  businessQueryGetAllMenus: (
+    queryKey: string[]
+  ) => UseQueryResult<AuthorizedMenuResponse[] | undefined, any>
+  businessQueryGetMenuById: (
+    queryKey: string[], params: GetMenuByIdParams
+  ) => UseQueryResult<AuthorizedMenuResponse | undefined, any>
+  businessQueryUpdateMenuItem: (opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
+    UpdateMenuItemParams,
+    any,
+    unknown>
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -331,6 +355,10 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryUpdateInclusion = useUpdateInclusion;
   const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
   const businessQueryGetSubsequentList = useGetSubsequentList;
+  const businessQueryCreateAuthorizedMenus = useCreateAuthorizedMenus;
+  const businessQueryGetAllMenus = useGetAllMenus
+  const businessQueryGetMenuById = useGetMenuById
+  const businessQueryUpdateMenuItem = useUpdateMenuItem
 
   return (
     <BusinessQueryContext.Provider
@@ -371,6 +399,10 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryUpdateInclusion,
         businessQueryCreateSubsequentOptions,
         businessQueryGetSubsequentList,
+        businessQueryCreateAuthorizedMenus,
+        businessQueryGetAllMenus,
+        businessQueryGetMenuById,
+        businessQueryUpdateMenuItem
       }}
     >
       {children}

@@ -181,6 +181,16 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
         </ListItemButton>
       )
 
+    case "SaveChanges":
+      return (
+        <Button
+          onClick={onClickFn}
+          disabled={disabled}
+          sx={{ borderRadius: "10px", marginBottom: "10px" }}>
+          Save Changes
+        </Button>
+      )
+
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>

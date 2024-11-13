@@ -18,17 +18,12 @@ export const addSubMenuItem = {
   children: [{ label: "", path: "" }],
 };
 
-const SystemMenu: SelectOption[] = [
+export const SystemMenu: SelectOption[] = [
   {
     label: "Web Backoffice",
     value: 0,
     xvalue: 0,
-  },
-  {
-    label: "Web Customer",
-    value: 1,
-    xvalue: 1,
-  },
+  }
 ];
 
 const AccountLevel = [
@@ -49,7 +44,7 @@ const AccountLevel = [
   },
 ];
 
-const MenuEnvironments = [
+export const MenuEnvironments = [
   {
     id: 1,
     label: "Dev",
