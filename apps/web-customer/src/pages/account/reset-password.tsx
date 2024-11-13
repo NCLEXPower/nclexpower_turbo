@@ -1,4 +1,9 @@
-import { useApiCallback } from "core-library/hooks";
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import { useApiCallback, useDesignVisibility } from "core-library/hooks";
 import { ChangePasswordBlock } from "../../components/blocks/ForgotPasswordBlock/ChangePasswordBlock/ChangePasswordBlock";
 import {
   ResetPasswordParams,
@@ -18,11 +23,12 @@ interface QueryParams {
   auth?: string;
 }
 
-interface Props{
+interface Props {
   generatedNonce: string;
 }
 
-const ResetPasswordPage:React.FC<Props> = ({generatedNonce}) => {
+const ResetPasswordPage: React.FC<Props> = ({ generatedNonce }) => {
+  useDesignVisibility();
   const resetPasswordCb = useApiCallback(
     async (api, args: ResetPasswordParams) =>
       await api.web.web_reset_password(args)
@@ -60,9 +66,9 @@ const ResetPasswordPage:React.FC<Props> = ({generatedNonce}) => {
 
   return (
     <>
-    <CSPHead nonce={generatedNonce} />
-  <ChangePasswordBlock onSubmit={handleSubmit} />
-  </>
+      <CSPHead nonce={generatedNonce} />
+      <ChangePasswordBlock onSubmit={handleSubmit} />
+    </>
   );
 
   async function handleSubmit(values: ChangePasswordType) {
@@ -109,7 +115,7 @@ const ResetPasswordPage:React.FC<Props> = ({generatedNonce}) => {
       return;
     }
   }
-}
+};
 
 export const getServerSideProps: GetServerSideProps = withCSP();
 
