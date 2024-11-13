@@ -17,24 +17,20 @@ const withAuth = <P extends object>(
       setIsAuthenticated(isLoggedIn);
       setIsLoading(false);
 
-      async function authorizationDetection(url: string) {
-        if (tokenValidated) {
-          if (isLoggedIn && unauthorizeRoute.some((route) => url === route)) {
-            router.replace("/hub");
-          } else if (isLoggedIn && url === "/404") {
-            router.replace("/hub");
-          }
+      const handleRouteChange = (url: string) => {
+        if (isLoggedIn && unauthorizeRoute.includes(url)) {
+          router.replace("/hub");
+        } else if (!isLoggedIn && url === "/hub") {
+          router.replace("/login");
         }
-      }
+      };
 
-      authorizationDetection(router.asPath);
+      handleRouteChange(router.asPath);
 
-      router.events.on("routeChangeStart", authorizationDetection);
-      router.events.on("routeChangeComplete", authorizationDetection);
+      router.events.on("routeChangeStart", handleRouteChange);
 
       return () => {
-        router.events.off("routeChangeStart", authorizationDetection);
-        router.events.off("routeChangeComplete", authorizationDetection);
+        router.events.off("routeChangeStart", handleRouteChange);
       };
     }, [router, tokenValidated]);
 
@@ -42,11 +38,7 @@ const withAuth = <P extends object>(
       return;
     }
 
-    return (isAuthenticated &&
-      !unauthorizeRoute.some((route) => router.pathname === route)) ||
-      !isAuthenticated ? (
-      <WrappedComponent {...props} />
-    ) : null;
+    return <WrappedComponent {...props} />;
   };
 
   return Wrapper;
