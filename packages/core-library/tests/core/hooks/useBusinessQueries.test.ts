@@ -20,6 +20,10 @@ import {
   useGetSelectedApprovers,
   useGetAllInternalInclusions,
   useSelectAllCategories,
+  useGetSubsequentList,
+  useGetAllMenus,
+  useGetMenuById,
+  useUpdateMenuItem,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -39,8 +43,14 @@ import {
   PricingListResponse,
   ReportIssueType,
   SubsequentOptionType,
+  GetSubsequentLists,
+  AuthorizedMenuResponse,
+  UpdateMenuItemParams,
+  MenuItems,
+  GetMenuByIdParams,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
+import { EditMenuItemsType } from '../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types';
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -1204,11 +1214,11 @@ describe("useGetContents", () => {
       headers: new AxiosHeaders(),
       config: { headers: new AxiosHeaders() },
     };
-  
+
     const mockSubsequentOption: SubsequentOptionType = {
       optionText: "some-text"
     };
-  
+
     beforeEach(() => {
       jest.clearAllMocks();
       (useApiCallback as jest.Mock).mockReturnValue({
@@ -1223,11 +1233,11 @@ describe("useGetContents", () => {
       const opt = { onSuccess: jest.fn() };
       mockExecute.mockResolvedValue({ data: mockData });
       const { result } = renderHook(() => useCreateSubsequentOptions(opt));
-  
+
       await act(async () => {
         await result.current?.mutateAsync?.(mockSubsequentOption);
       });
-  
+
       expect(mockMutate).toHaveBeenCalled();
       expect(result.current.isLoading).toBe(false);
     });
@@ -1248,14 +1258,14 @@ describe("useGetContents", () => {
       headers: new AxiosHeaders(),
       config: { headers: new AxiosHeaders() },
     };
-  
+
     const mockReportIssue: ReportIssueType = {
       email: "some@gmail.com",
       categoryId: "some-text",
       description: "some-text",
       systemProduct: 0,
     };
-  
+
     beforeEach(() => {
       jest.clearAllMocks();
       (useApiCallback as jest.Mock).mockReturnValue({
@@ -1270,11 +1280,11 @@ describe("useGetContents", () => {
       const opt = { onSuccess: jest.fn() };
       mockExecute.mockResolvedValue({ data: mockData });
       const { result } = renderHook(() => useCreateReportIssue(opt));
-  
+
       await act(async () => {
         await result.current?.mutateAsync?.(mockReportIssue);
       });
-  
+
       expect(mockMutate).toHaveBeenCalled();
       expect(result.current.isLoading).toBe(false);
     });
@@ -1546,15 +1556,15 @@ describe("useGetSelectedApprovers", () => {
   });
   describe("useGetAllInternalInclusions", () => {
     const mockExecute = jest.fn();
-  
+
     it("should return a list of inclusion lists", async () => {
       const mockData: GetAllInclusionResponse[] = [
         {
           id: "test-id",
-          option: "test-option", 
+          option: "test-option",
         }
       ];
-  
+
       (useQuery as jest.Mock).mockImplementation(() => {
         return {
           data: mockData,
@@ -1562,30 +1572,30 @@ describe("useGetSelectedApprovers", () => {
           error: null,
         };
       });
-  
+
       const { result } = renderHook(() =>
         useGetAllInternalInclusions(["getAllInternalInclusions"])
       );
-  
+
       expect(useQuery).toHaveBeenCalledWith(["getAllInternalInclusions"], expect.any(Function), {
         staleTime: Infinity,
       });
-  
+
       expect(result.current.data).toEqual(mockData);
       expect(result.current.isLoading).toBe(false);
     });
-  
+
     it("should handle loading state", () => {
       (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
       const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined();
     });
-  
+
     it("should handle error state", async () => {
       const mockError = new Error("Failed to fetch data");
       mockExecute.mockRejectedValue(mockError);
-  
+
       (useQuery as jest.Mock).mockImplementation(() => {
         return {
           data: undefined,
@@ -1593,9 +1603,9 @@ describe("useGetSelectedApprovers", () => {
           error: mockError,
         };
       });
-  
+
       const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
-  
+
       expect(result.current.error).toEqual(mockError);
       expect(result.current.data).toBeUndefined();
     });
@@ -1603,7 +1613,7 @@ describe("useGetSelectedApprovers", () => {
 
   describe("useSelectAllCategories", () => {
     const mockExecute = jest.fn();
-  
+
     it("should return a list of all categories", async () => {
       const mockData: CategoryListResponse[] = [
         {
@@ -1615,7 +1625,7 @@ describe("useGetSelectedApprovers", () => {
           updatedAt: 'test-updated-at'
         }
       ];
-  
+
       (useQuery as jest.Mock).mockImplementation(() => {
         return {
           data: mockData,
@@ -1623,30 +1633,30 @@ describe("useGetSelectedApprovers", () => {
           error: null,
         };
       });
-  
+
       const { result } = renderHook(() =>
         useSelectAllCategories(["selectAllPricing"])
       );
-  
+
       expect(useQuery).toHaveBeenCalledWith(["selectAllPricing"], expect.any(Function), {
         staleTime: Infinity,
       });
-  
+
       expect(result.current.data).toEqual(mockData);
       expect(result.current.isLoading).toBe(false);
     });
-  
+
     it("should handle loading state", () => {
       (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
       const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined();
     });
-  
+
     it("should handle error state", async () => {
       const mockError = new Error("Failed to fetch data");
       mockExecute.mockRejectedValue(mockError);
-  
+
       (useQuery as jest.Mock).mockImplementation(() => {
         return {
           data: undefined,
@@ -1654,11 +1664,150 @@ describe("useGetSelectedApprovers", () => {
           error: mockError,
         };
       });
-  
+
       const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
-  
+
       expect(result.current.error).toEqual(mockError);
       expect(result.current.data).toBeUndefined();
     });
   })
+
+  describe("useGetSubsequentLists", () => {
+    const mockExecute = jest.fn();
+
+    it("should return a list of subsequent lists", async () => {
+      const mockData: GetSubsequentLists[] = [
+        {
+          id: "test-id",
+          optionText: "test-option-text",
+          optionKey: "test-key"
+        }
+      ];
+
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: mockData,
+          isLoading: false,
+          error: null,
+        };
+      });
+
+      const { result } = renderHook(() =>
+        useGetSubsequentList(["subsequentLists"])
+      );
+
+      expect(useQuery).toHaveBeenCalledWith(["subsequentLists"], expect.any(Function), {
+        staleTime: Infinity,
+      });
+
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it("should handle loading state", () => {
+      (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+      expect(result.current.isLoading).toBe(true);
+      expect(result.current.data).toBeUndefined();
+    });
+
+    it("should handle error state", async () => {
+      const mockError = new Error("Failed to fetch data");
+      mockExecute.mockRejectedValue(mockError);
+
+      (useQuery as jest.Mock).mockImplementation(() => {
+        return {
+          data: undefined,
+          isLoading: false,
+          error: mockError,
+        };
+      });
+
+      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+
+      expect(result.current.error).toEqual(mockError);
+      expect(result.current.data).toBeUndefined();
+    });
+  })
+
 });
+
+describe("useGetAllMenus", () => {
+  const mockExecute = jest.fn();
+
+  it("should return a list of all menus", async () => {
+    const mockData: AuthorizedMenuResponse[] = [
+      {
+        accountLevel: 0,
+        id: "test-id",
+        menuEnvironments: 0,
+        menuItems: [],
+        systemMenus: 1
+      }
+    ];
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() =>
+      useGetAllMenus(["getAllMenus"])
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(["getAllMenus"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+})
+
+describe("useUpdateMenuItem", () => {
+  const mockExecute = jest.fn();
+  const mockMutate = jest.fn();
+  const mockData: AxiosResponse<number, AxiosError> = {
+    data: 200,
+    status: 200,
+    statusText: "OK",
+    headers: new AxiosHeaders(),
+    config: { headers: new AxiosHeaders() },
+  };
+  const mockMenuItem: UpdateMenuItemParams = {
+    id: 'test-id',
+    children: [],
+    icon: 'test-icon',
+    label: 'test-label',
+    menuId: 'test-menu-id',
+    parentId: 'test-parent-id',
+    path: 'test-path',
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: mockMutate,
+      isLoading: false,
+    });
+  });
+
+  it("should update menu successfully", async () => {
+    const opt = { onSuccess: jest.fn() };
+    mockExecute.mockResolvedValue({ data: mockData });
+    const { result } = renderHook(() => useUpdateMenuItem(opt));
+
+    await act(async () => {
+      await result.current?.mutateAsync?.(mockMenuItem);
+    });
+
+    expect(mockMutate).toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
+  });
+})

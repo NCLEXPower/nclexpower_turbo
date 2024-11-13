@@ -33,6 +33,12 @@ import {
   SubsequentOptionType,
   GetDefaultReviewerResponse,
   DefaultReviewerDto,
+  GetSubsequentLists,
+  CreateAuthorizedMenusParams,
+  AuthorizedMenu,
+  AuthorizedMenuResponse,
+  GetMenuByIdParams,
+  UpdateMenuItemParams,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -635,3 +641,86 @@ export const useGetAllInternalInclusions = (
     { staleTime: Infinity }
   );
 }
+
+export const useGetSubsequentList = (
+  queryKey: string[]
+): UseQueryResult<GetSubsequentLists[] | undefined, any> => {
+  const getSubsequentLists = useApi((api) =>
+    api.webbackoffice.getSubsequentLists()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSubsequentLists.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useCreateAuthorizedMenus = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const createAuthorizedMenus = useApiCallback(
+    async (api, args: CreateAuthorizedMenusParams) =>
+      await api.webbackoffice.createAuthorizedMenus(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, CreateAuthorizedMenusParams>(
+    async (data) => {
+      const result = await createAuthorizedMenus.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
+
+export const useGetAllMenus = (
+  queryKey: string[]
+): UseQueryResult<AuthorizedMenuResponse[] | undefined, any> => {
+  const getAllMenus = useApi((api) =>
+    api.webbackoffice.getAllMenus()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllMenus.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetMenuById = (
+  queryKey: string[], menuId: GetMenuByIdParams
+): UseQueryResult<AuthorizedMenuResponse | undefined, any> => {
+  const getMenuById = useApi((api) =>
+    api.webbackoffice.getMenuById(menuId)
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getMenuById.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useUpdateMenuItem = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const updateMenuItem = useApiCallback(
+    async (api, args: UpdateMenuItemParams) =>
+      await api.webbackoffice.updateMenuItem(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, UpdateMenuItemParams>(
+    async (data) => {
+      const result = await updateMenuItem.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};

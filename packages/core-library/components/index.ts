@@ -82,3 +82,4 @@ export * from "./Popover/Popover";
 export * from "./Popover/ActionsPopover";
 export * from "./Button/IconButton";
 export * from "./PasswordToggleAdornment";
+export * from "./Charts/generic/Chart";

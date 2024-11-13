@@ -1,7 +1,6 @@
 import { renderHook } from "../../common";
-import useGetProgramList from "../../../hooks/useGetProgramList";
 import { standardProgramList } from "../../../core/utils/contants/wc/programs/ProgramListData";
-import { useSessionStorage } from "../../../hooks";
+import { useSessionStorage, useGetProgramList } from "../../../hooks";
 
 jest.mock("../../../config", () => ({
     config: { value: jest.fn() },

@@ -1,0 +1,80 @@
+name: NCLEXPower UAT CI/CD Build
+
+on:
+  push:
+    branches:
+      - uat
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
+  pull_request:
+    branches:
+      - uat
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
+
+jobs:
+  build_and_test_core_library:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Remove local dependencies from package.json
+        run: |
+          cd packages/core-library
+          jq 'del(.devDependencies["@repo/eslint-config"]) | del(.devDependencies["@repo/typescript-config"])' package.json > temp.json && mv temp.json package.json
+
+      - name: Install dependencies for core-library
+        run: |
+          cd packages/core-library
+          npm install
+
+      - name: Run tests with coverage for core-library
+        run: |
+          cd packages/core-library
+          npm run test -- --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./packages/core-library/coverage/**/coverage-final.json
+          flags: unittests
+          name: codecov-core-library
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build_and_test_core_library]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy simulator to Vercel (Dev)
+        if: github.ref == 'refs/heads/uat'
+        run: |
+          cd apps/simulator
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
+
+      - name: Deploy web-customer to Vercel (Dev)
+        if: github.ref == 'refs/heads/uat'
+        run: |
+          cd apps/web-customer
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpowerdev
+
+      - name: Deploy web-backoffice-generic to Vercel (Dev)
+        if: github.ref == 'refs/heads/uat'
+        run: |
+          cd apps/web-backoffice-generic
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officedev
