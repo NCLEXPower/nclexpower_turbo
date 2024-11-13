@@ -3,22 +3,22 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-
 import Image from "next/image";
 import { NCLEXYellowLogo } from "../../assets";
 import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { useIsDesignVisible } from "../../hooks";
+import { useAuthContext } from "../../contexts";
 
 export const Footer: React.FC<FooterProps> = (props) => {
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
-
+  const { isAuthenticated } = useAuthContext();
   const isHidden = useIsDesignVisible();
 
   return (
-    !isHidden && (
+    isHidden || !isAuthenticated && (
       <Box
         width={1}
         sx={{

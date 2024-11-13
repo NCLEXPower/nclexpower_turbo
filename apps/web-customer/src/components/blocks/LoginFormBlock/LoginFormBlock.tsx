@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { useCallback, useEffect, useState } from "react";
 import { LoginParams } from "core-library/types/types";
 import { LoginForm } from "./LoginForm";
@@ -5,13 +10,11 @@ import { config } from "core-library/config";
 import { Encryption } from "core-library/utils/Encryption";
 import { Decryption } from "core-library/utils/Decryption";
 import {
-  useDeviceInfo,
   useGoogleSignIn,
   useLocalStorage,
 } from "core-library/hooks";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
-import { useDeviceSession } from "core-library/contexts/auth/hooks";
 
 export interface SavedDataProps {
   email: string;
@@ -20,7 +23,7 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loading } = useAuthContext();
+  const { login, loading, isAuthenticated } = useAuthContext();
   const { signInWithGoogle } = useGoogleSignIn();
   const { setItem, getItem, removeItem } = useLocalStorage("rm");
   const [rememberMe, setRememberMe] = useState(false);
@@ -106,7 +109,7 @@ export function LoginFormBlock() {
     }
   }, [getItem]);
 
-  return (
+  return !isAuthenticated ? (
     <LoginForm
       onSubmit={handleSubmit}
       submitLoading={loading}
@@ -116,5 +119,5 @@ export function LoginFormBlock() {
       handleBack={handleBack}
       signInWithGoogle={signInWithGoogle}
     />
-  );
+  ) : null;
 }
