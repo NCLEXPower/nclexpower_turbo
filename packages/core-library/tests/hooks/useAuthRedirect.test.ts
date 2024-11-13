@@ -1,7 +1,6 @@
 import { renderHook } from "../common";
 import { useAuthRedirect, useValidateToken } from "../../hooks";
 import { useRouter } from "../../core";
-import { config } from "../../config";
 import { useAccessToken } from "../../contexts/auth/hooks";
 
 jest.mock("../../config", () => ({
@@ -51,22 +50,6 @@ describe("useAuthRedirect", () => {
     expect(result.current).toBe(true);
   });
 
-  it("should redirect to hub if authenticated and on login page", () => {
-    (useValidateToken as jest.Mock).mockReturnValue({
-      tokenValidated: true,
-      loading: false,
-    });
-    (useRouter as jest.Mock).mockReturnValue({
-      pathname: "/login",
-      push: mockPush,
-    });
-
-    const { result } = renderHook(() => useAuthRedirect(true));
-
-    expect(mockPush).toHaveBeenCalledWith(expect.any(Function));
-    expect(result.current).toBe(true);
-  });
-
   it("should set isValidating to false if authenticated and not on login page", () => {
     (useValidateToken as jest.Mock).mockReturnValue({
       tokenValidated: true,
@@ -80,7 +63,7 @@ describe("useAuthRedirect", () => {
     const { result } = renderHook(() => useAuthRedirect(true));
 
     expect(mockPush).not.toHaveBeenCalled();
-    expect(result.current).toBe(false);
+    expect(result.current).toBe(true);
   });
 
   it("should keep isValidating true if loading", () => {

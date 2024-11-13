@@ -15,6 +15,7 @@ import { ClientSecretKeyContextProvider } from "core-library/contexts";
 import { SsrTypes } from "core-library/types/global";
 import CSPHead from "core-library/components/CSPHead";
 import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
+import withAuth from "core-library/core/utils/withAuth";
 
 interface Props {
   data?: SsrTypes;
@@ -53,4 +54,4 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   );
 };
 
-export default Page;
+export default withAuth(Page);
