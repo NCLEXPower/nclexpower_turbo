@@ -53,7 +53,7 @@ export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
 export * from "./Popover/Popover"
-// rows
+
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
 export * from "./Tabs/Tab";

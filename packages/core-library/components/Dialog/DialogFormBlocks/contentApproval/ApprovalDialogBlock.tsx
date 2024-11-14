@@ -17,19 +17,15 @@ export const ApprovalDialogBlock = () => {
   const { contentLoader, setContentLoader } = usePageLoaderContext();
   const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
 
-  const toast = useExecuteToast();
+  const { showToast } = useExecuteToast();
 
   const onSubmit = async (values: ContentDateType) => {
     try {
-      console.log("onSubmit", values);
-      toast.executeToast("Successfully submitted..", "top-right", false, {
-        toastId: 1,
-        type: "success",
-      });
-    } catch (err) {
-      console.error("Something wrong", err);
-    } finally {
+      showToast("Successfully submitted.", "success");
       setContentLoader(true);
+    } catch (err) {
+      showToast("Something wrong", "error");
+    } finally {
       closeDialog();
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setContentLoader(false);
