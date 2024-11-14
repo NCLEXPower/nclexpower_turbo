@@ -60,7 +60,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box sx={{ display: "flex", width: "100%" }}>
+      <Box data-testid='answer-case-study' sx={{ display: "flex", width: "100%" }}>
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
@@ -92,7 +92,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         </Box>
       </Box>
       <Box sx={{ width: "100%" }} mt={3}>
-        {currentSequence  > 1  && (
+        {currentSequence > 1 && (
           <Box mt={3}>
             <ControlledTextField
               label="Transition Header : "

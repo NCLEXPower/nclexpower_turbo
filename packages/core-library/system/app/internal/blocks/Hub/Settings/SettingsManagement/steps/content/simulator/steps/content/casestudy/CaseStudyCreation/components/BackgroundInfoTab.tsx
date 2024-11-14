@@ -34,6 +34,7 @@ export const BackgroundInfoTab = ({ type }: Props) => {
 
   return (
     <Box
+      data-testid="background-info-tab"
       sx={{
         position: "relative",
         maxHeight: "800px",

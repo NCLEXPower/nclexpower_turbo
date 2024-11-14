@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import {
   Button,
@@ -17,7 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { BackgroundInfoTab } from "./components/BackgroundInfoTab";
-import { caseStudyQuestionnaires } from "../../../../../../../constants/constants";
+import { caseStudyQuestionnaires, initCaseStudyQuestionnaires } from "../../../../../../../constants/constants";
 import { atom, useAtom } from "jotai";
 import { ErrorMapping } from "../../../../../../../../../../../../../../components";
 import { CreateCaseStudyAtom } from "../../../../useAtomic";
@@ -51,27 +51,17 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const form = useForm<ContainedCaseStudyQuestionType>({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
-    defaultValues: caseStudyAtom ?? { 
-      questionnaires: Array.from({ length: 6 }, (_, index) => ({
-        ...caseStudyQuestionnaires,
-        itemNum: index + 1,
-      }))},
+    defaultValues: { ...initCaseStudyQuestionnaires, ...values },
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const {
     getValues,
-    control,
     reset: formReset,
     formState,
     handleSubmit,
   } = form;
 
-  const updateValues = () => {
-    formReset({
-      ...getValues(),
-    });
-  };
   const { errors } = formState;
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
@@ -83,7 +73,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const handlePrevious = () => {
     previousStep();
     previous();
-    reset();
+    reset()
   };
 
   const generateInfoTabs = () => {
@@ -103,11 +93,14 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    updateValues();
-  }, [selectedIndex, control]);
+    formReset({
+      ...getValues(),
+    });
+  }, [selectedIndex]);
 
-  const BGInfoTabs = generateInfoTabs();
-  const TabsItemQuestion = generateTabsItemQuestion(6);
+
+  const BGInfoTabs = useMemo(() => generateInfoTabs(), []);
+  const TabsItemQuestion = useMemo(() => generateTabsItemQuestion(6), []);
 
   return (
     <Box>
@@ -174,7 +167,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 overflowY: "auto",
                 position: "relative",
                 borderRadius: "10px",
-                borderColor:'#0B225C',
+                borderColor: '#0B225C',
                 border: 1,
               }}
             >

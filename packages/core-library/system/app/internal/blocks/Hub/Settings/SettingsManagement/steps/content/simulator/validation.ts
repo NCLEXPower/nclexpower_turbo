@@ -136,7 +136,7 @@ const caseStudyAnswerFormSchema = yup.object({
             } else if (questionType.includes("MRSN")) {
               return yup
                 .array(answerSchema)
-                .when(["maxAnswer", "itemNum","maxPoints"], ([maxAnswer, itemNum,maxPoints], schema) =>
+                .when(["maxAnswer", "itemNum", "maxPoints"], ([maxAnswer, itemNum, maxPoints], schema) =>
                   schema.test(
                     "answerKey-test",
                     `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer must be selected.`,
@@ -174,6 +174,5 @@ export const containedCaseStudyQuestionSchema = yup
       .array()
       .min(1, "Please select atleast 1 case name")
       .required("Select atleast 1 case name")
-      .default([]),
   })
   .concat(caseStudyQuestionsFormSchema);
