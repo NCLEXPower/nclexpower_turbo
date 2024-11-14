@@ -1,14 +1,19 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useRouter } from "core-library/core/router";
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { ForgotPasswordAtom } from "@/core";
 import { NotFoundBlock } from "../../NotFoundBlock/NotFoundBlock";
-import { resetLink } from "core-library/assets";
-import CoreZigma from "../../../images/CoreZigma.png";
-import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { CoreZigmaLogo, resetLink } from "core-library/assets";
+import { EvaIcon } from "core-library/components";
 
-export const ResetLinkBlock: React.FC = () => {
+interface Props {}
+
+export const ResetLinkBlock: React.FC<Props> = () => {
   const [email] = useAtom(ForgotPasswordAtom);
   const router = useRouter();
 
@@ -21,19 +26,19 @@ export const ResetLinkBlock: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center justify-between fixed w-full h-screen ">
-      <div className="w-full hidden lg:block ml-20">
+    <div className="flex items-center justify-between w-full min-h-screen h-fit">
+      <div className="w-full hidden items-center justify-center lg:p-28 lg:flex ml-20">
         <Image
           src={resetLink}
-          style={{ width: "850px", height: "auto" }}
+          style={{ width: "80%", height: "auto" }}
           alt="resetLink"
         />
       </div>
-      <div className="flex flex-col text-center gap-7 justify-center h-screen bg-[#f3f4f8] md:px-10 w-35%">
+      <div className="flex flex-col text-center gap-7 justify-center min-h-screen h-fit pt-28 bg-[#f3f4f8] md:px-10 w-35%">
         <div className="px-10 lg:p-20 md:space-y-5">
           <div className="flex flex-col items-center justify-center">
             <Image
-              src={CoreZigma}
+              src={CoreZigmaLogo}
               alt="CoreZigma"
               style={{ width: "100px", height: "auto" }}
             />
@@ -60,7 +65,14 @@ export const ResetLinkBlock: React.FC = () => {
           </div>
           <div className="py-7">
             <div className="w-full px-4 py-1 flex items-center bg-[#D9D9D966] rounded-lg gap-4">
-              <HelpOutlineRoundedIcon className=" text-[#0F2A71] gap-4" />
+              <EvaIcon
+                id="back-icon"
+                name="question-mark-circle-outline"
+                fill="#0F2A71"
+                width={60}
+                height={60}
+                ariaHidden
+              />
               <div className="text-start">
                 <p className="text-[18px] pt-sans-narrow-bold text-[#0F2A71]">
                   Need Help?
@@ -75,12 +87,17 @@ export const ResetLinkBlock: React.FC = () => {
                 className="flex items-center justify-end cursor-pointer text-darkBlue mt-5"
                 onClick={handleBack}
               >
-                <div>
-                  <ArrowBackIosNewIcon fontSize="medium" />
-                  <span className="text-[18px] pt-sans-narrow-regular ml-1 underline underline-offset-1 pt-sans-narrow-bold">
-                    Return to login
-                  </span>
-                </div>
+                <EvaIcon
+                  id="back-icon"
+                  name="arrow-ios-back-outline"
+                  fill="#0F2A71"
+                  width={25}
+                  height={25}
+                  ariaHidden
+                />
+                <span className="text-[18px] pt-sans-narrow-regular ml-1 underline underline-offset-1 pt-sans-narrow-bold">
+                  Return to login
+                </span>
               </div>
             </div>
           </div>

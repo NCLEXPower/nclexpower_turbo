@@ -20,13 +20,14 @@ export const useAuthRedirect = (isAuthenticated: boolean) => {
       } else {
         setIsValidating(false);
       }
-    } else {
-      if (currentPath === "/login") {
-        router.push((route) => route.hub);
-      } else {
-        setIsValidating(false);
-      }
     }
+    // else {
+    //   if (currentPath === "/login") {
+    //     router.push((route) => route.hub);
+    //   } else {
+    //     setIsValidating(false);
+    //   }
+    // }
   }, [isAuthenticated, tokenValidated, loading, router, accessToken]);
 
   return isValidating;

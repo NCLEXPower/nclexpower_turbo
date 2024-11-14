@@ -48,15 +48,14 @@ export const Header: React.FC<Props> = ({
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
 
-  const handleNavigate = (path?: string) => {
-    router.push({ pathname: path || "/login" });
+  const handleNavigate = (path: string) => {
+    router.push({ pathname: path });
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (onLogout) {
       onLogout();
     }
-    handleNavigate("/login");
   };
 
   return (

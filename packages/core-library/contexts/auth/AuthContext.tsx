@@ -175,7 +175,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
-      await router.push((route) => route.login);
+      console.log("called");
+      await router.push("/login");
     }
   }, [
     refreshToken,
