@@ -1,3 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import { Box, Typography } from "@mui/material";
 import {
   Button,
@@ -10,6 +16,7 @@ import {
   tabsSequence,
 } from "../../../../../../../../constants/constants";
 import { GenericSelectField } from "../../../../../../../../../../../../../../../components/Textfield/GenericSelectField";
+import { useMemo } from "react";
 
 interface Props {
   type: string;
@@ -17,12 +24,13 @@ interface Props {
 
 export const BackgroundInfoTab = ({ type }: Props) => {
   type bgInfoType = Record<string, { seqNum: number; seqContent: string }[]>;
-  const { control, getValues, setValue, reset } = useFormContext<bgInfoType>();
+  const { control, getValues } = useFormContext<bgInfoType>();
   const { append } = useFieldArray({
     control,
     name: type,
   });
-  const valueArray = getValues(`${type}`);
+  const value = getValues(`${type}`);
+  const valueArray = useMemo(() => value, [value]);
 
   return (
     <Box
@@ -66,6 +74,7 @@ export const BackgroundInfoTab = ({ type }: Props) => {
                 Sequence No. :
               </Typography>
               <GenericSelectField
+                control={control}
                 name={`${type}.${index}.seqNum`}
                 options={tabsSequence ?? []}
                 width="20%"

@@ -21,6 +21,7 @@ import { caseStudyQuestionnaires } from "../../../../../../../constants/constant
 import { atom, useAtom } from "jotai";
 import { ErrorMapping } from "../../../../../../../../../../../../../../components";
 import { CreateCaseStudyAtom } from "../../../../useAtomic";
+import { InfoTabs } from "./constant/constant";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -50,13 +51,11 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const form = useForm<ContainedCaseStudyQuestionType>({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
-    defaultValues: {
+    defaultValues: caseStudyAtom ?? { 
       questionnaires: Array.from({ length: 6 }, (_, index) => ({
         ...caseStudyQuestionnaires,
         itemNum: index + 1,
-      })),
-      caseName: values.caseName,
-    },
+      }))},
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
@@ -76,7 +75,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const { errors } = formState;
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
-    console.log(values);
     setCaseStudyAtom(values);
     nextStep({ ...values });
     next();
@@ -87,25 +85,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     previous();
     reset();
   };
-
-  const InfoTabs = [
-    {
-      title: "Nurse Notes",
-      type: "nurseNotes",
-    },
-    {
-      title: "HxPhy",
-      type: "hxPhy",
-    },
-    {
-      title: "Labs",
-      type: "labs",
-    },
-    {
-      title: "Orders",
-      type: "orders",
-    },
-  ];
 
   const generateInfoTabs = () => {
     return InfoTabs.map((tab, index) => ({
@@ -169,7 +148,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 position: "relative",
                 borderRadius: "10px",
                 border: 1,
-                borderColor: "#8E2ADD",
+                borderColor: "#0B225C",
               }}
             >
               <Tabs
@@ -195,8 +174,8 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 overflowY: "auto",
                 position: "relative",
                 borderRadius: "10px",
+                borderColor:'#0B225C',
                 border: 1,
-                borderColor: "#8E2ADD",
               }}
             >
               <Tabs width="fit-content" tabsItem={TabsItemQuestion} />

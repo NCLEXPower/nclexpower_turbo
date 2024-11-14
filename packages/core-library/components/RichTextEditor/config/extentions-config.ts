@@ -38,7 +38,7 @@ export const extensions: (Extension<StarterKitOptions, any> | Extension<Placehol
     Table.configure({
         resizable: true,
         HTMLAttributes: {
-            class: 'border border-collapse table-fixed max-w-full',
+            class: 'tiptap',
         },
     }),
     Underline,

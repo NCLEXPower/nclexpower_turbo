@@ -81,6 +81,14 @@
   width: 100%;
 }
 
+.tiptap p {
+  margin: 0;
+}
+
+.tiptap-field {
+  margin: 10px;
+}
+
 .tiptap td,
 .tiptap th {
   border: 1px solid #b4a6a6;
@@ -91,9 +99,14 @@
   vertical-align: top;
 }
 
+.tiptap h2 > * {
+  font-weight: bold;
+  margin: 2;
+}
+
 .tiptap td > *,
 .tiptap th > * {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .tiptap th {
