@@ -17,7 +17,7 @@ describe("PageLoaderContextProvider", () => {
   it("renders PageLoader while loading and isAuthenticated is false", () => {
     render(
       <PageLoaderContextProvider loading={true} isAuthenticated={false}>
-        <div>Test Component</div>
+        <div data-testid="page-loader">Test Component</div>
       </PageLoaderContextProvider>
     );
 
