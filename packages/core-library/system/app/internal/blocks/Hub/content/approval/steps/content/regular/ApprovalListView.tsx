@@ -38,7 +38,7 @@ export const ApprovalListView: React.FC<ApprovalBlockProps> = ({
   handleSelectedRows,
 }) => {
   return (
-    <Box>
+    <Box data-testid="approval-list-view">
       <Container>
         <Alert
           severity="info"
@@ -56,7 +56,11 @@ export const ApprovalListView: React.FC<ApprovalBlockProps> = ({
               Multiple Selection
             </Box>
             <Box paddingY={4}>
-              <CustomBadge badgeContent={selectedRows} color="primary">
+              <CustomBadge
+                data-testId="custom-badge"
+                badgeContent={selectedRows}
+                color="primary"
+              >
                 <CustomPopover
                   open
                   withIcon
@@ -95,6 +99,7 @@ export const ApprovalListView: React.FC<ApprovalBlockProps> = ({
             </Box>
           </Box>
           <ReactTable<AuthorizedContentsResponseType>
+            data-testId="react-table"
             rightPinnedIds={["action"]}
             checkBoxSelection={multiple}
             columns={columns}

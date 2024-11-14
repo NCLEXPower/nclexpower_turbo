@@ -32,8 +32,6 @@ export interface ApprovalProps {
   nextStep(values: ContentDateType): void;
 }
 
-type ToastType = "info" | "success" | "error" | "warning";
-
 export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   nextStep,
 }) => {
@@ -61,14 +59,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   ) => {
     setMultiple(event.target.checked);
   };
-  const toast = useExecuteToast();
-
-  const showToast = (message: string, type: ToastType) => {
-    toast.executeToast(message, "top-right", false, {
-      toastId: 0,
-      type: type,
-    });
-  };
+  const { showToast } = useExecuteToast();
 
   const handleSelectedRows = (
     selectedRowModel: RowModel<AuthorizedContentsResponseType>
@@ -132,6 +123,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
         <CustomTooltip title={tooltipTitle} key={btn.action}>
           <span>
             <ListItemButton
+              data-testid="Approval-View-Reject"
               onClick={() =>
                 handleSelection(btn.action, contentId, contentAuthorId)
               }
