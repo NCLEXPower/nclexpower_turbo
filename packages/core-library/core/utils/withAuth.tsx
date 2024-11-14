@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { authorizedRoute, unauthorizeRoute } from "./contants/route";
 import { useValidateToken } from "../../hooks";
 import { useRouter } from "../router";
+import { config } from "../../config";
 
 const withAuth = <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -21,7 +22,9 @@ const withAuth = <P extends object>(
         if (isLoggedIn && unauthorizeRoute.includes(url)) {
           router.replace("/hub");
         } else if (!isLoggedIn && url === "/hub") {
-          router.replace("/login");
+          const loginRoute =
+            config.value.BASEAPP === "webc_app" ? "/login" : "/";
+          router.replace(loginRoute);
         }
       };
 
