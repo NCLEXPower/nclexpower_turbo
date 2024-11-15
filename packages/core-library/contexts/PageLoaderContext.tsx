@@ -6,6 +6,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { PageLoader } from "../components";
 import React from "react";
+import { config } from "../config";
 
 const context = createContext<{
   isLoading: boolean;
@@ -53,7 +54,8 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {(!isAuthenticated && isLoading) || isCalculationsLoaded ? (
+      {((!isAuthenticated && isLoading) || isCalculationsLoaded) &&
+      config.value.BASEAPP === "webc_app" ? (
         <PageLoader />
       ) : (
         <>{children}</>

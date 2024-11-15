@@ -76,4 +76,4 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
   }
 };
 
-export default withAuth(ParseBlocks);
+export default ParseBlocks;
