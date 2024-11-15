@@ -39,6 +39,7 @@ export const ApprovalDialogBlock = () => {
 
   return (
     <ApprovalDialogForm
+      data-testId="approval-form"
       onSubmit={onSubmit}
       values={approvalAtom ?? defaultValues}
     />
