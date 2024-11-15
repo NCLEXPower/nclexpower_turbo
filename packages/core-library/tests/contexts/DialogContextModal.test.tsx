@@ -1,19 +1,11 @@
 import React from "react";
 import { render, screen } from "../common";
-import "@testing-library/jest-dom";
 import { DialogContextModal } from "../../components/Dialog/DialogContextModal";
 import {
   useDialogContext,
   useExecuteToast,
   usePageLoaderContext,
 } from "../../contexts";
-import {
-  CategoryDialogFormBlock,
-  ProductDialogBlock,
-  AutomationDBComparisonFormBlock,
-  ApprovalDialogBlock,
-} from "../../components";
-import { InclusionEditForm } from "../../components/Dialog/DialogFormBlocks/inclusion/InclusionEditForm";
 import { ExcelRowRegularQuestion } from "../../core";
 import { useAtom } from "jotai";
 
@@ -40,6 +32,24 @@ jest.mock("jotai", () => ({
   ...jest.requireActual("jotai"),
   useAtom: jest.fn(),
 }));
+
+jest.mock("../../hooks/useApi", () => ({
+  useApiCallback: jest.fn().mockReturnValue({
+    loading: false,
+    result: {
+      data: {},
+    },
+    error: undefined,
+  }),
+  useApi: jest.fn().mockReturnValue({
+    loading: false,
+    result: {
+      data: {},
+    },
+    error: undefined,
+  }),
+}));
+
 jest.mock("../../components", () => ({
   CategoryDialogFormBlock: jest.fn(),
   ProductDialogBlock: jest.fn(),
