@@ -7,5 +7,9 @@ interface Props {
 }
 
 export function AutomationDBComparisonFormBlock(props: Props) {
-  return <AutomationDBComparisonForm {...props} />;
+  return (
+    <div data-testId="automation-db-comparison">
+      <AutomationDBComparisonForm {...props} />
+    </div>
+  );
 }
