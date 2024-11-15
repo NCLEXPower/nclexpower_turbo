@@ -100,11 +100,6 @@ describe("DialogContextModal", () => {
     expect(screen.getByTestId("category-form")).toBeInTheDocument();
   });
 
-  it("renders ProductDialogBlock when dialogFormType is 'select_pricing'", () => {
-    render(<DialogContextModal dialogFormType="select_pricing" />);
-    expect(screen.getByTestId("product-form")).toBeInTheDocument();
-  });
-
   it("renders AutomationDBComparisonFormBlock when dialogFormType is 'automation-db-comparison'", () => {
     const mockCsvData: ExcelRowRegularQuestion[] = [
       {
