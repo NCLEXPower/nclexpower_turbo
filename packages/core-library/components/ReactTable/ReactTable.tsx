@@ -28,6 +28,7 @@ import {
   RowModel,
   getExpandedRowModel,
   getFilteredRowModel,
+  RowData,
 } from '@tanstack/react-table';
 import { getCommonPinningStyles } from './content/CommonPinningStyle';
 import { TablePaginationActions } from './TablePaginationActions';
@@ -48,7 +49,7 @@ interface Props<T> {
   searchFilter?: boolean;
 }
 
-export const ReactTable = <T extends { children?: T[] }>({
+export const ReactTable = <T extends unknown>({
   columns,
   data,
   searchFilter = false,
@@ -87,7 +88,6 @@ export const ReactTable = <T extends { children?: T[] }>({
       expanded: expanded,
       globalFilter,
     },
-    getSubRows: (row) => ('children' in row ? row.children : []),
     onExpandedChange: setExpanded,
     enableRowSelection: checkBoxSelection,
     columns: dataColumns ?? [],
@@ -152,9 +152,9 @@ export const ReactTable = <T extends { children?: T[] }>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableCell>
                   );
                 })}
@@ -164,11 +164,11 @@ export const ReactTable = <T extends { children?: T[] }>({
           <TableBody>
             {(rowsPerPage > 0
               ? table
-                  .getRowModel()
-                  .rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
+                .getRowModel()
+                .rows.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : table.getRowModel().rows
             ).map((row, index) => (
               <StyledTableRow key={index}>
@@ -194,9 +194,9 @@ export const ReactTable = <T extends { children?: T[] }>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
                   </TableCell>
                 ))}
               </TableRow>

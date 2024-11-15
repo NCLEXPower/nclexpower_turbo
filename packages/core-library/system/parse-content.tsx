@@ -2,7 +2,7 @@ import React from "react";
 import { AuthProvider, ToastProvider } from "../contexts";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Page } from "./Page";
+import Page from "./Page";
 
 export type SystemTypes = "webc_app" | "webdev_app";
 interface Props {

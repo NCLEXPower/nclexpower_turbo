@@ -25,11 +25,7 @@ import { useWebHeaderStyles } from "@/pages/contents/useWebHeaderStyles";
 import { useConfirmedIntent } from "core-library/contexts/auth/hooks";
 import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
 import { theme } from "core-library/contents/theme/theme";
-import {
-  useAuthInterceptor,
-  useStyle,
-  useAuthRedirect,
-} from "core-library/hooks";
+import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
@@ -42,17 +38,6 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [confirmValue] = useConfirmedIntent();
   usePaymentSuccessRedirect(confirmValue);
   useAuthInterceptor();
-  /**
-   * useAuthRedirect soon to deprecate and can be improved using an API or FE improvements
-   * needs to resolve before go-live
-   * status: observation
-   * other: This is replication security from wb without refactoring the code.
-   */
-  const isValidating = useAuthRedirect(isAuthenticated);
-
-  if (isValidating) {
-    return null;
-  }
 
   return (
     <PageLoaderContextProvider

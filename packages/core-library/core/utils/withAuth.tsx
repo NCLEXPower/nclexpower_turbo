@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { authorizedRoute, unauthorizeRoute } from "./contants/route";
 import { useValidateToken } from "../../hooks";
 import { useRouter } from "../router";
+import { config } from "../../config";
 
 const withAuth = <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -17,24 +18,22 @@ const withAuth = <P extends object>(
       setIsAuthenticated(isLoggedIn);
       setIsLoading(false);
 
-      async function authorizationDetection(url: string) {
-        if (tokenValidated) {
-          if (isLoggedIn && unauthorizeRoute.some((route) => url === route)) {
-            router.replace("/hub");
-          } else if (isLoggedIn && url === "/404") {
-            router.replace("/hub");
-          }
+      const handleRouteChange = (url: string) => {
+        if (isLoggedIn && unauthorizeRoute.includes(url)) {
+          router.replace("/hub");
+        } else if (!isLoggedIn && url === "/hub") {
+          const loginRoute =
+            config.value.BASEAPP === "webc_app" ? "/login" : "/";
+          router.replace(loginRoute);
         }
-      }
+      };
 
-      authorizationDetection(router.asPath);
+      handleRouteChange(router.asPath);
 
-      router.events.on("routeChangeStart", authorizationDetection);
-      router.events.on("routeChangeComplete", authorizationDetection);
+      router.events.on("routeChangeStart", handleRouteChange);
 
       return () => {
-        router.events.off("routeChangeStart", authorizationDetection);
-        router.events.off("routeChangeComplete", authorizationDetection);
+        router.events.off("routeChangeStart", handleRouteChange);
       };
     }, [router, tokenValidated]);
 
@@ -42,11 +41,7 @@ const withAuth = <P extends object>(
       return;
     }
 
-    return (isAuthenticated &&
-      !unauthorizeRoute.some((route) => router.pathname === route)) ||
-      !isAuthenticated ? (
-      <WrappedComponent {...props} />
-    ) : null;
+    return <WrappedComponent {...props} />;
   };
 
   return Wrapper;
