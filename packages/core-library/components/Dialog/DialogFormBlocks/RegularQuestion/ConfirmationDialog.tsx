@@ -111,7 +111,15 @@ const ConfirmationModal = ({
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => setOpen(true);
+
   const handleClose = () => setOpen(false);
+
+  const handleModalSubmission = () => {
+    handleSubmit()
+    if (!isLoading) {
+      handleClose()
+    }
+  }
 
   return (
     <>
@@ -133,7 +141,7 @@ const ConfirmationModal = ({
         <ContinueModalContent
           dialogContent={dialogContent}
           onClick={handleClose}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleModalSubmission}
           confirmButtonText={confirmButtonText}
           isLoading={isLoading}
         />

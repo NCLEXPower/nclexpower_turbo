@@ -10,6 +10,7 @@ import { useBusinessQueryContext, useExecuteToast } from '../../../../../../../.
 import { Box } from '@mui/material'
 import { EditMenuItemsSchema, MenuItemType, RouteManagementSchema } from '../../../validation'
 import { RouterEditForm } from './forms/RouterEditForm'
+import { ComponentLoader } from '../../../../../../../../../../components'
 
 type RouterCreationType = {
     selectedMenus: AuthorizedMenuResponse
@@ -36,7 +37,15 @@ export const RouterCreation: React.FC<RouterCreationType> = ({ selectedMenus, on
     }
 
     if (isLoading) {
-        return <Box>Loading</Box>
+        return <Box
+            flex={1}
+            height="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <ComponentLoader disableMarginBottom />
+        </Box>
     }
 
     return menus && <>
