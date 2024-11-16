@@ -122,7 +122,6 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                 <h1 className='text-[#60AEF0] text-2xl sm:text-3xl font-bold font-ptSans mb-2.5'>
                   Watch Videos
                 </h1>
-
                 <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -131,13 +130,11 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                   irure dolor in reprehenderit in voluptate velit esse cillum
                   dolore eu fugiat nulla pariatur.
                 </p>
-
                 <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                   Excepteur sint occaecat cupidatat non proident, sunt in culpa
                   qui officia deserunt mollit anim id est laborum.
                 </p>
               </div>
-
               <div className='w-full sm:w-1/2 h-1/2 sm:h-full relative'>
                 <div
                   style={{
@@ -158,7 +155,6 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
               </div>
             </div>
           )}
-
           {openModal === 'Study' && (
             <div className='absolute top-0 left-0 overflow-hidden bg-[#181818] w-full h-full flex flex-col sm:flex-row'>
               <div className='w-full sm:w-1/2  h-[33.33vh] sm:h-full relative'>
@@ -192,13 +188,11 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                   />
                 </ImageCarousel>
               </div>
-
               <div className='w-full sm:w-1/2 h-[66.67vh] sm:h-[20vh] p-6 sm:p-8 flex flex-col justify-start'>
                 <div>
                   <h1 className='text-[#60AEF0] text-2xl sm:text-[32px] font-bold font-ptSans sm:mb-5 md:mb-10 mb-5'>
                     Study Cards
                   </h1>
-
                   <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -207,7 +201,6 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                     Duis aute irure dolor in reprehenderit in voluptate velit
                     esse cillum dolore eu fugiat nulla pariatur.
                   </p>
-
                   <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                     Excepteur sint occaecat cupidatat non proident, sunt in
                     culpa qui officia deserunt mollit anim id est laborum.
@@ -222,7 +215,6 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
               </div>
             </div>
           )}
-
           {openModal === 'Practice' && (
             <div className='absolute top-0 left-0 overflow-hidden bg-[#181818] w-full h-full flex flex-col sm:flex-row'>
               <Image
@@ -231,12 +223,10 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                 className='absolute right-0 top-0 mr-5 mt-5 w-[30px] h-[30px] cursor-pointer z-10'
                 onClick={handleCloseModal}
               />
-
               <div className='w-full sm:w-1/2 h-[66.67vh]  sm:h-full p-6  sm:p-8 flex flex-col justify-start'>
                 <h1 className='text-[#60AEF0] text-2xl sm:text-[32px] font-bold font-ptSans sm:mb-5 md:mb-10 mb-3'>
                   Practice Test
                 </h1>
-
                 <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -245,13 +235,11 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
                   irure dolor in reprehenderit in voluptate velit esse cillum
                   dolore eu fugiat nulla pariatur.
                 </p>
-
                 <p className='text-sm sm:text-base md:text-lg leading-4 sm:leading-6 md:leading-7 font-ptSans indent-12'>
                   Excepteur sint occaecat cupidatat non proident, sunt in culpa
                   qui officia deserunt mollit anim id est laborum.
                 </p>
               </div>
-
               <div className='w-full sm:w-1/2   h-[33.33vh] sm:h-full relative'>
                 <div
                   style={{
