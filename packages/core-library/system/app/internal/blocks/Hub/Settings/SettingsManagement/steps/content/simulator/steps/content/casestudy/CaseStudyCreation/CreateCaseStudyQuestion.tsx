@@ -52,7 +52,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
     context: { step: 2 },
-    defaultValues: { ...initCaseStudyQuestionnaires, ...values },
+    defaultValues: { ...values },
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();

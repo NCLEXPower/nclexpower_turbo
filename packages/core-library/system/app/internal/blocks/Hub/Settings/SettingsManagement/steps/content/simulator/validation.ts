@@ -4,7 +4,7 @@ import {
   QuestionSelectionOptions,
   RegularQuestionSelectionOptions,
 } from "../../../types";
-import { initAnswerValues, questionnairesDefaultValue } from "../../../constants/constants";
+import { initAnswerValues } from "../../../constants/constants";
 import { DDCAnswerOptionType, SATAAnswerOptionType } from "./types";
 
 /**
@@ -173,7 +173,5 @@ export const containedCaseStudyQuestionSchema = yup
       .array()
       .min(1, "Please select atleast 1 case name")
       .required("Select atleast 1 case name")
-  }).when('$step', {
-    is: 2,
-    then: (schema) => schema.concat(caseStudyQuestionsFormSchema)
   })
+  .concat(caseStudyQuestionsFormSchema);
