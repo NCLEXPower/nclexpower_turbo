@@ -47,10 +47,11 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   previous,
   reset,
 }) => {
-  const [caseStudyAtom, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
+  const [, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const form = useForm<ContainedCaseStudyQuestionType>({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
+    context: { step: 2 },
     defaultValues: { ...initCaseStudyQuestionnaires, ...values },
   });
 
@@ -98,9 +99,8 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     });
   }, [selectedIndex]);
 
-
-  const BGInfoTabs = useMemo(() => generateInfoTabs(), []);
-  const TabsItemQuestion = useMemo(() => generateTabsItemQuestion(6), []);
+  const BGInfoTabs = useMemo(() => generateInfoTabs(), [values]);
+  const TabsItemQuestion = useMemo(() => generateTabsItemQuestion(6), [values]);
 
   return (
     <Box>

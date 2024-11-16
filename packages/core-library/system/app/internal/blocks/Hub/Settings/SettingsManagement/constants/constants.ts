@@ -39,11 +39,13 @@ export const caseStudyQuestionnaires = {
   transitionHeader: "",
 };
 
+export const questionnairesDefaultValue = Array.from({ length: 6 }, (_, index) => ({
+  ...caseStudyQuestionnaires,
+  itemNum: index + 1,
+}))
+
 export const initCaseStudyQuestionnaires = {
-  questionnaires: Array.from({ length: 6 }, (_, index) => ({
-    ...caseStudyQuestionnaires,
-    itemNum: index + 1,
-  })),
+  questionnaires: questionnairesDefaultValue,
 }
 
 export const initQuestionsValues = (
