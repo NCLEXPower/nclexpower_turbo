@@ -8,14 +8,13 @@ import { Box, Typography } from "@mui/material";
 import {
   Button,
   Card,
-  ControlledRichTextEditor,
+  ControlledRichTextEditor, GenericSelectField
 } from "../../../../../../../../../../../../../../../components";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
   initBgValues,
   tabsSequence,
 } from "../../../../../../../../constants/constants";
-import { GenericSelectField } from "../../../../../../../../../../../../../../../components/Textfield/GenericSelectField";
 import { useMemo } from "react";
 
 interface Props {
