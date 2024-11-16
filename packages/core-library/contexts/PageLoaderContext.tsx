@@ -6,7 +6,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { PageLoader } from "../components";
 import React from "react";
-import { usePageLoader } from "../hooks";
+import { config } from "../config";
 
 const context = createContext<{
   isLoading: boolean;
@@ -35,16 +35,14 @@ export const PageLoaderContextProvider: React.FC<
   const [isLoading, setIsLoading] = useState(true);
   const [isCalculationsLoaded, setIsCalculationsLoaded] = useState(true);
   const [contentLoader, setContentLoader] = useState(true);
-  const { isPageLoading } = usePageLoader();
+
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setContentLoader(false);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsCalculationsLoaded(false);
     }, 3000);
-    return () => {
-      clearTimeout(timeout);
-      setContentLoader(true);
-    };
-  }, []);
+  }, [isLoading, isCalculationsLoaded]);
+
   return (
     <context.Provider
       value={{
@@ -56,7 +54,12 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {!isAuthenticated && isPageLoading ? <PageLoader /> : <>{children}</>}
+      {((!isAuthenticated && isLoading) || isCalculationsLoaded) &&
+      config.value.BASEAPP === "webc_app" ? (
+        <PageLoader />
+      ) : (
+        <>{children}</>
+      )}
     </context.Provider>
   );
 };

@@ -3,30 +3,32 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { Box } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import { SettingsSelectionType } from "../../types";
 import {
   Button,
   Card,
-  EvaIcon,
+  CustomPopover,
   ReactTable,
 } from "../../../../../../../../../components";
-import { useMenu } from "../../../../../../../../../components/GenericDrawerLayout/hooks/useMenu";
-import { prepareMenus } from "../../../../../../../../../components/GenericDrawerLayout/MockMenus";
 import {
-  useAuthContext,
   useBusinessQueryContext,
+  useExecuteToast,
 } from "../../../../../../../../../contexts";
-import { useValidateToken } from "../../../../../../../../../hooks";
 import React, { useState } from "react";
-import { RouteCreationForm } from "./components/RouteCreationForm";
-import { RouteCreationSidebar } from "./components/RouteCreationSidebar";
+import { RouteCreationForm } from "./components/forms/RouteCreationForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { RouteManagementSchema, RouteMenuCreation } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { MenuItems } from "../../../../../../../../../api/types";
-import { ColumnDef, Row, Table } from "@tanstack/react-table";
-import ActionsPopover from "../../../../../../../../../components/Popover/ActionsPopover";
+import { AuthorizedMenuResponse, CreateAuthorizedMenusParams } from "../../../../../../../../../api/types";
+import { ColumnDef } from '@tanstack/react-table';
+import { GridMoreVertIcon } from '@mui/x-data-grid';
+import { ListItemButton } from '@mui/material';
+import { AccountLevel } from '../../../../core/constant/accountLevel';
+import { MenuEnvironments, SystemMenu } from './constant/constant';
+import { getLabel } from './utils/getLabel';
+import { RouterCreation } from './components/RouterCreation';
+import { useQueryClient } from 'react-query';
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -41,97 +43,82 @@ export const InAppRouterManagement: React.FC<Props> = ({
   previous,
   reset,
 }) => {
-  const { businessQueryDeleteRoute } = useBusinessQueryContext();
-  const { mutateAsync } = businessQueryDeleteRoute();
+  const { businessQueryCreateAuthorizedMenus, businessQueryGetAllMenus } = useBusinessQueryContext();
+  const { mutateAsync: createRoutes } = businessQueryCreateAuthorizedMenus();
+  const { data, isLoading: menuLoading, refetch } = businessQueryGetAllMenus(["getAllMenus"]);
   const [view, setView] = useState<boolean>(false);
+  const [selectedMenus, setSelectedMenus] = useState<AuthorizedMenuResponse>()
   const [IsNewMenuCreated, setIsNewMenuCreated] = useState<boolean>(false);
-  const { isAuthenticated } = useAuthContext();
-  const { tokenValidated } = useValidateToken();
-
-  const columns: ColumnDef<MenuItems>[] = [
-    {
-      accessorKey: "label",
-      header: ({ table }: { table: Table<MenuItems> }) => (
-        <Box sx={{ display: "flex" }}>
-          <Box
-            onClick={table.getToggleAllRowsExpandedHandler()}
-            sx={{ cursor: "pointer", display: "flex" }}
-          >
-            <Box
-              sx={{
-                transform: table.getIsAllRowsExpanded()
-                  ? "rotate(90deg)"
-                  : "rotate(0deg)",
-                transition: "transform 0.3s ease",
-                display: "inline-block",
-              }}
-            >
-              <EvaIcon
-                name="chevron-right-outline"
-                width={22}
-                height={22}
-                aria-hidden
-              />
-            </Box>
-          </Box>
-          Label
-        </Box>
-      ),
-      cell: ({ row }: { row: Row<MenuItems> }) => (
-        <Box style={{ paddingLeft: `${row.depth * 2}rem` }}>
-          <Box>
-            {row.getCanExpand() ? (
-              <Box
-                onClick={row.getToggleExpandedHandler()}
-                sx={{ cursor: "pointer", display: "inline-block" }}
-              >
-                <Box
-                  sx={{
-                    transform: row.getIsExpanded()
-                      ? "rotate(0deg)"
-                      : "rotate(-90deg)",
-                    transition: "transform 0.3s ease",
-                  }}
-                >
-                  <EvaIcon
-                    name="chevron-down-outline"
-                    width={22}
-                    height={22}
-                    aria-hidden
-                  />
-                </Box>
-              </Box>
-            ) : (
-              " "
-            )}
-            {row.original.label}
-          </Box>
-        </Box>
-      ),
-    },
-    {
-      accessorKey: "path",
-      header: "Path",
-    },
-    {
-      header: "Actions",
-      cell: ({ row }: { row: Row<MenuItems> }) => (
-        <ActionsPopover row={row} handleDelete={deleteCategory} />
-      ),
-    },
-  ];
+  const queryClient = useQueryClient()
+  const { executeToast } = useExecuteToast()
 
   const form = useForm<RouteManagementSchema>({
     mode: "all",
     resolver: yupResolver(RouteMenuCreation),
+    defaultValues: { menuItems: [] }
   });
 
-  const { menus, loading: menuLoading } = useMenu();
-  const mockMenu = prepareMenus({
-    isAuthenticated: isAuthenticated && tokenValidated,
-    loading: menuLoading,
-    menus: menus,
-  });
+  const columns: ColumnDef<AuthorizedMenuResponse>[] = [
+    {
+      accessorKey: "accountLevel",
+      header: "Account Level",
+      cell: (params) => {
+        const value = params.getValue()
+        const label = AccountLevel.find((x) => x.value == value);
+        return label?.label
+      }
+    },
+    {
+      id: "menuEnvironments",
+      accessorKey: "menuEnvironments",
+      header: "Menus Environments",
+      cell: (params) => {
+        const value = params.getValue()
+        const environment = getLabel(value, MenuEnvironments)
+        return <Chip
+          label={environment?.label}
+          variant='outlined'
+          color='secondary'
+        />
+      }
+    },
+    {
+      accessorKey: "systemMenus",
+      header: "System Menu",
+      cell: (params) => {
+        const value = params.getValue()
+        const system = getLabel(value, SystemMenu)
+        return <Chip
+          label={system?.label}
+          variant='outlined'
+          color='warning'
+        />;
+      }
+    },
+    {
+      id: "action",
+      cell: (params) => {
+        const menu = params.row.original
+        return (
+          <Box display="flex" alignItems="center" height={1}>
+            <CustomPopover data-testid="popover-dropdown" open withIcon={true} label='Actions' iconButton={<GridMoreVertIcon fontSize="small" />}>
+              <ListItemButton
+                onClick={() => handleSelectMenu(menu)}
+                sx={{ color: 'black' }}
+              >
+                Edit
+              </ListItemButton>
+            </CustomPopover>
+          </Box>
+        )
+      }
+    },
+  ];
+
+  const handleSelectMenu = (menu: AuthorizedMenuResponse) => {
+    setSelectedMenus(menu)
+    setView(!view)
+  }
 
   return (
     <FormProvider {...form}>
@@ -145,7 +132,16 @@ export const InAppRouterManagement: React.FC<Props> = ({
           gap: 5,
         }}
       >
-        <Box display="flex" gap="10px">
+        <Button
+          onClick={previousStep}
+          variant="text"
+          size="small"
+          sx={{ mb: 5 }}
+        >
+          Back
+        </Button>
+
+        <Box display="flex" gap="10px" width={1} data-testid="in-app-router">
           {IsNewMenuCreated ? (
             <Button
               sx={{ borderRadius: "10px", marginBottom: "10px" }}
@@ -154,20 +150,21 @@ export const InAppRouterManagement: React.FC<Props> = ({
               Back
             </Button>
           ) : (
-            <>
-              <Button
+            <Box display="flex" justifyContent="space-between" alignItems="center" width={1}>
+              {view ? <Button
                 sx={{ borderRadius: "10px" }}
                 onClick={() => setView(!view)}
               >
-                View
-              </Button>
-              <Button
-                sx={{ borderRadius: "10px" }}
-                onClick={() => setIsNewMenuCreated(true)}
-              >
-                Add New Menus
-              </Button>
-            </>
+                Back
+              </Button> :
+                <Button
+                  sx={{ borderRadius: "10px" }}
+                  onClick={() => setIsNewMenuCreated(true)}
+                >
+                  Add New Menu
+                </Button>
+              }
+            </Box>
           )}
         </Box>
         {IsNewMenuCreated ? (
@@ -175,33 +172,34 @@ export const InAppRouterManagement: React.FC<Props> = ({
             sx={{
               width: "100%",
               gap: "10px",
-            }}
-          >
-            <RouteCreationForm />
+            }}>
+            <RouteCreationForm onSubmit={createMenus} />
           </Box>
         ) : view ? (
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <Card
-              elevation={5}
-              sx={{
-                width: "30%",
-                height: "100%",
-                borderRadius: "10px",
-              }}
-            >
-              {menuLoading ? "Loading" : <RouteCreationSidebar menus={menus} />}
-            </Card>
+          <Box sx={{ display: "flex", gap: "10px", height: 1 }}>
+            {selectedMenus &&
+              <RouterCreation onSubmitNewMenu={createMenus} selectedMenus={selectedMenus} />
+            }
           </Box>
         ) : (
           <Card>
-            <ReactTable expandable columns={columns} data={mockMenu} />
+            <ReactTable<AuthorizedMenuResponse> data-testid="in-app-route-table" isLoading={menuLoading} columns={columns} data={data ?? []} />
           </Card>
         )}
       </Box>
-    </FormProvider>
+    </FormProvider >
   );
 
-  async function deleteCategory(MenuId: string) {
-    await mutateAsync(MenuId);
+  async function createMenus(values: RouteManagementSchema) {
+    try {
+      await createRoutes(values as CreateAuthorizedMenusParams)
+      queryClient.invalidateQueries("GetMenuById")
+      setIsNewMenuCreated(false)
+      refetch()
+      executeToast("Successfully Created", "top-right", true, { type: "success" })
+    } catch {
+      executeToast(`Something went wrong. Please try again later.`, "top-right", true, { type: "error" })
+    }
+
   }
 };
