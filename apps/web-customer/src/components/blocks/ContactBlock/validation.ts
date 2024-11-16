@@ -18,7 +18,7 @@ export const contactSchema = yup.object({
     .string()
     .required("Country Code is required")
     .default(DEFAULT_PHONE_COUNTRY_CODE),
-    concernCategory: yup
+  categoryId: yup
     .string()
     .required("Concern Category is required")
     .default(""),

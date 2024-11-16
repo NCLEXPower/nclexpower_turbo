@@ -17,19 +17,23 @@ import { Control, UseFormHandleSubmit } from "react-hook-form";
 import {
   ContactMock,
   SocialMediaMock,
-  CategoryData,
 } from "../../../core/constant/ContactPageMock";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
 
+type CategoryDataType = {
+  label: string;
+  value: string | number;
+};
 interface FormValues {
   control: Control<ContactFormType>;
   handleSubmit: UseFormHandleSubmit<ContactFormType>;
   onSubmit: (data: ContactFormType) => void;
   handleSetCountryCode: (data: string) => void;
   countryCode: string;
+  data: CategoryDataType[];
 }
 
 export const ContactForm: React.FC<FormValues> = ({
@@ -38,6 +42,7 @@ export const ContactForm: React.FC<FormValues> = ({
   onSubmit,
   handleSetCountryCode,
   countryCode,
+  data,
 }) => {
   const { purifyInputs } = useSanitizedInputs({});
 
@@ -94,8 +99,8 @@ export const ContactForm: React.FC<FormValues> = ({
             </Grid>
             <Grid item sx={{ marginTop: 3 }}>
               <ControlledSelectField
-                name="concernCategory"
-                options={CategoryData}
+                name="categoryId"
+                options={data}
                 control={control}
                 label="Concern Category"
                 sx={{

@@ -5,12 +5,6 @@ interface Props {
   subTitle: string;
 }
 
-type SelectOption = {
-  label: string;
-  value: string | number;
-  xvalue?: number;
-};
-
 import { ContactLocation, ContactMail, ContactPhone } from "core-library/assets";
 
 export const ContactMock: Props[] = [
@@ -30,22 +24,3 @@ export const ContactMock: Props[] = [
     subTitle: "info@nclexpower.com",
   },
 ]
-
-
-export const CategoryData: SelectOption[] = [
-  {
-    label: "sample1",
-    value: "sample1",
-    xvalue: 0,
-  },
-  {
-    label: "sample2",
-    value: "sample2",
-    xvalue: 1,
-  },
-  {
-    label: "sample3",
-    value: "sample3",
-    xvalue: 2,
-  },
-];
