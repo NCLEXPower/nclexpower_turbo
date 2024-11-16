@@ -176,7 +176,7 @@ export const InAppRouterManagement: React.FC<Props> = ({
             <RouteCreationForm onSubmit={createMenus} />
           </Box>
         ) : view ? (
-          <Box sx={{ display: "flex", gap: "10px" }}>
+          <Box sx={{ display: "flex", gap: "10px", height: 1 }}>
             {selectedMenus &&
               <RouterCreation onSubmitNewMenu={createMenus} selectedMenus={selectedMenus} />
             }

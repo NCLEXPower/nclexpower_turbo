@@ -25,6 +25,7 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
       data-testid="route-creation-sidebar"
       elevation={5}
       sx={{
+        overflow: 'auto',
         width: "40%",
         height: "100%",
         borderRadius: "10px",
