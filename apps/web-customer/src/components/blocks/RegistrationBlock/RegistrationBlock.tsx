@@ -8,11 +8,11 @@ import { RegistrationFormType } from 'core-library/system';
 import { useRouter } from "core-library/core/router";
 import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
 import { useOrderNumber } from "core-library/contexts/auth/hooks";
-import { AccountCreationData } from "core-library/types/types";
 import { useExecuteToast } from 'core-library/contexts';
 import { SelectedProductType } from 'core-library/types/global';
 import { useDesignVisibility } from "core-library/hooks";
 import { useCustomerCreation } from '../../../core/hooks/useCustomerCreation';
+import { CreateCustomerParams } from 'core-library/api/types';
 
 export const RegistrationBlock = () => {
     useDesignVisibility();
@@ -29,7 +29,7 @@ export const RegistrationBlock = () => {
 
       if(!orderNumber || !productId || !amount) return;
 
-      const filteredValues: AccountCreationData = {
+      const filteredValues: CreateCustomerParams = {
         firstname: values.firstname,
         middlename: values.middlename,
         lastname: values.lastname,
