@@ -16,7 +16,7 @@ export const extensions: (Extension<StarterKitOptions, any> | Extension<Placehol
     StarterKit.configure({
         heading: {
             HTMLAttributes: {
-                class: 'text-xl font-bold font-primary'
+                class: 'tiptap-heading text-xl font-bold font-primary'
             }
         },
         listItem: false,
@@ -26,35 +26,35 @@ export const extensions: (Extension<StarterKitOptions, any> | Extension<Placehol
     BulletList.configure({
         keepMarks: true,
         HTMLAttributes: {
-            class: 'list-disc mx-6'
+            class: 'list-disc mx-6 tiptap-list'
         }
     }),
     OrderedList.configure({
         keepMarks: true,
         HTMLAttributes: {
-            class: 'list-decimal mx-6 '
+            class: 'list-decimal mx-6 tiptap-decimal'
         }
     }),
+    Underline,
     Table.configure({
         resizable: true,
         HTMLAttributes: {
-            class: 'border border-collapse table-fixed max-w-full',
+            class: 'tiptap-table',
         },
     }),
-    Underline,
     TableRow.configure({
         HTMLAttributes: {
-            class: 'border  px-3 py-8'
+            class: 'tiptap-row'
         }
     }),
     TableHeader.configure({
         HTMLAttributes: {
-            class: 'border border-black/40 bg-black/10 relative font-bold text-start p-2'
+            class: 'tiptap-th'
         }
     }),
     TableCell.configure({
         HTMLAttributes: {
-            class: ' border border-black/40 relative align-top  p-2'
+            class: 'tiptap-cell'
         }
     }),
 ]
