@@ -192,6 +192,7 @@ export interface CreateCustomerParams {
   middlename: string | null;
   lastname: string;
   email: string;
+  password: string;
   orderNumber: string;
   productId: string;
   totalAmount: number;

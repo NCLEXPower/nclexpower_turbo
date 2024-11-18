@@ -12,6 +12,7 @@ import {
 } from "../../../../../../../../../../../../../components";
 import { useAtom } from "jotai";
 import { CreateCaseStudyAtom } from "../../../useAtomic";
+import { initCaseStudyQuestionnaires } from '../../../../../../constants/constants';
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -86,8 +87,9 @@ export const CaseNameSelection: React.FC<Props> = ({
   );
 
   async function handleContinue(values: ContainedCaseStudyQuestionType) {
-    setCaseName(values);
-    nextStep({ ...values });
+    const submissionValues = ({ ...values, ...initCaseStudyQuestionnaires })
+    setCaseName(submissionValues);
+    nextStep(submissionValues);
     next();
   }
 };
