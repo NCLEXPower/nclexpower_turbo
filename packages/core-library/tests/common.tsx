@@ -7,6 +7,7 @@ import {
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
   StripeContextProvider,
+  AuthProvider,
 } from "../contexts";
 import { theme } from "../contents/theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -37,21 +38,23 @@ export const render = (
   rtlRender(ui, {
     wrapper: ({ children }) => (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <BusinessQueryContextProvider>
-          <DndProvider backend={HTML5Backend}>
-            <QueryClientProvider client={new QueryClient()}>
-              <StripeContextProvider publishableKey="">
-                <ThemeProvider theme={theme()}>
-                  <HeaderTitleContextProvider>
-                    <FormSubmissionContextProvider>
-                      {children}
-                    </FormSubmissionContextProvider>
-                  </HeaderTitleContextProvider>
-                </ThemeProvider>
-              </StripeContextProvider>
-            </QueryClientProvider>
-          </DndProvider>
-        </BusinessQueryContextProvider>
+        <AuthProvider>
+          <BusinessQueryContextProvider>
+            <DndProvider backend={HTML5Backend}>
+              <QueryClientProvider client={new QueryClient()}>
+                <StripeContextProvider publishableKey="">
+                  <ThemeProvider theme={theme()}>
+                    <HeaderTitleContextProvider>
+                      <FormSubmissionContextProvider>
+                        {children}
+                      </FormSubmissionContextProvider>
+                    </HeaderTitleContextProvider>
+                  </ThemeProvider>
+                </StripeContextProvider>
+              </QueryClientProvider>
+            </DndProvider>
+          </BusinessQueryContextProvider>
+        </AuthProvider>
       </LocalizationProvider>
     ),
     ...options,
