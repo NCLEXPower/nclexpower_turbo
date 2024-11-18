@@ -18,9 +18,6 @@ export const useValidateToken = () => {
     try {
       return await validateTokenCb.execute({ ...params });
     } catch (error) {
-      toast.executeToast("Unauthorized access", "top-right", false, {
-        type: "error",
-      });
       clearAccessToken();
       return;
     }

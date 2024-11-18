@@ -46,3 +46,6 @@ export const useDeviceNotRecognized = () =>
 
 export const useDeviceSession = () =>
   useSessionStorage<DeviceInfo | null>("dinfo", null);
+
+export const useNewAccount = () =>
+  useSessionStorage<boolean>("new_account", false);

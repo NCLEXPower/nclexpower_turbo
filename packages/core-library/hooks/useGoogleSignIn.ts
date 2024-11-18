@@ -104,10 +104,11 @@ export const useGoogleSignIn = () => {
   }
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     if (status === "authenticated" && session.user?.email) {
       checkEmailCb(session.user.email);
     }
-  }, [session, status]);
+  }, [session, status, isAuthenticated]);
 
   const signInWithGoogle = () => {
     signIn("google");
