@@ -97,6 +97,45 @@ describe("useAuthContext", () => {
     jest.useRealTimers();
   });
 
+  it("should handle error scenarios during logout", async () => {
+    const mockRevokeCb = jest
+      .fn()
+      .mockRejectedValue(new Error("Revoke failed"));
+    jest.mocked(useApiCallback).mockReturnValue({
+      loading: false,
+      execute: mockRevokeCb,
+    } as any);
+
+    const mockClearSession = jest.mocked(clearSession);
+    const mockRouterPush = jest.fn();
+
+    jest.mocked(useRouter).mockReturnValue({ push: mockRouterPush } as any);
+
+    const { result } = renderHook(() => useAuthContext(), {
+      wrapper: ({ children }: React.PropsWithChildren<{}>) => (
+        <AuthProvider>{children}</AuthProvider>
+      ),
+    });
+
+    await waitFor(async () => {
+      try {
+        await result.current.logout();
+      } catch (error) {
+        expect(error).toEqual(new Error("Revoke failed"));
+      }
+    });
+
+    expect(mockRevokeCb).toHaveBeenCalledWith({
+      accessToken: "token",
+      refreshToken: "token",
+      appName: "mockAppName",
+      email: "internal@example.com",
+    });
+
+    expect(mockClearSession).not.toHaveBeenCalled();
+    expect(mockRouterPush).not.toHaveBeenCalled();
+  });
+
   it("should revoke tokens when RevokeCb is called, clear cookies, and redirect to login", async () => {
     const mockRevokeCb = jest.fn().mockResolvedValue({});
     (useApiCallback as jest.Mock).mockReturnValue({
