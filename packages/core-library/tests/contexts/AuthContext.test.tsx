@@ -5,7 +5,7 @@ import { useApiCallback } from "../../hooks/useApi";
 import { renderHook, waitFor } from "../common";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { clearSession } from "../../hooks";
-import { exec } from "child_process";
+import { useNewAccount } from "../../contexts/auth/hooks";
 
 jest.mock("../../config", () => ({
   config: { value: { BASEAPP: "mockAppName" } },
@@ -22,6 +22,9 @@ jest.mock("../../contexts/auth/hooks", () => ({
   useAuthSession: jest
     .fn()
     .mockReturnValue(["auth_session", jest.fn(), jest.fn()]),
+  useNewAccount: jest
+    .fn()
+    .mockReturnValue(["new_account", jest.fn(), jest.fn()]),
 }));
 jest.mock("../../hooks/useSessionStorage");
 jest.mock("../../hooks/useApi", () => ({
@@ -128,7 +131,7 @@ describe("useAuthContext", () => {
     });
 
     expect(mockClearSession).toHaveBeenCalled();
-    expect(mockRouterPush).toHaveBeenCalledWith(expect.any(String));
+    expect(mockRouterPush).toHaveBeenCalledWith(expect.any(Function));
   });
 
   it("should not redirect to login and not trigger logout if revoke callback is not called", async () => {
