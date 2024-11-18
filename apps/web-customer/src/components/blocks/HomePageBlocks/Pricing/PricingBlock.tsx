@@ -46,7 +46,7 @@ export const PricingBlock: React.FC<Props> = (props) => {
   }, [ProductData]);
 
   return (
-    <div className="pt-10 pb-40 h-fit bg-[#fafafa] flex items-center justify-center">
+    <div id="pricing" className="pt-10 pb-40 h-fit bg-[#fafafa] flex items-center justify-center">
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col gap-4 items-center px-10 text-center">
           <p className="lg:text-4xl text-3xl font-bold text-darkBlue">
