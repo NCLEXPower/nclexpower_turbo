@@ -7,7 +7,6 @@ import {
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
   StripeContextProvider,
-  AuthProvider,
 } from "../contexts";
 import { theme } from "../contents/theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -16,7 +15,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "@testing-library/jest-dom";
-import { PageLoaderContextProvider } from "../contexts/PageLoaderContext";
 
 export * from "@testing-library/react";
 
@@ -38,23 +36,21 @@ export const render = (
   rtlRender(ui, {
     wrapper: ({ children }) => (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
-          <BusinessQueryContextProvider>
-            <DndProvider backend={HTML5Backend}>
-              <QueryClientProvider client={new QueryClient()}>
-                <StripeContextProvider publishableKey="">
-                  <ThemeProvider theme={theme()}>
-                    <HeaderTitleContextProvider>
-                      <FormSubmissionContextProvider>
-                        {children}
-                      </FormSubmissionContextProvider>
-                    </HeaderTitleContextProvider>
-                  </ThemeProvider>
-                </StripeContextProvider>
-              </QueryClientProvider>
-            </DndProvider>
-          </BusinessQueryContextProvider>
-        </AuthProvider>
+        <BusinessQueryContextProvider>
+          <DndProvider backend={HTML5Backend}>
+            <QueryClientProvider client={new QueryClient()}>
+              <StripeContextProvider publishableKey="">
+                <ThemeProvider theme={theme()}>
+                  <HeaderTitleContextProvider>
+                    <FormSubmissionContextProvider>
+                      {children}
+                    </FormSubmissionContextProvider>
+                  </HeaderTitleContextProvider>
+                </ThemeProvider>
+              </StripeContextProvider>
+            </QueryClientProvider>
+          </DndProvider>
+        </BusinessQueryContextProvider>
       </LocalizationProvider>
     ),
     ...options,
