@@ -42,7 +42,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={false}
+      loading={loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>

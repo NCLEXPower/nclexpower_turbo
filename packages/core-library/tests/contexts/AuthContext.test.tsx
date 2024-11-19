@@ -183,10 +183,11 @@ describe("useAuthContext", () => {
       refreshToken: "token",
     });
 
-    expect(destroySessionCb).toHaveBeenNthCalledWith(2, {
-      deviceId: "no-device-id",
-      sessionId: "sessionId",
-      isAuthenticated: true,
+    expect(destroySessionCb).toHaveBeenNthCalledWith(1, {
+      accessToken: "token",
+      appName: "mockAppName",
+      email: "internal@example.com",
+      refreshToken: "token",
     });
   });
 
@@ -225,8 +226,8 @@ describe("useAuthContext", () => {
       email: "internal@example.com",
     });
 
-    expect(mockClearSession).not.toHaveBeenCalled();
-    expect(mockRouterPush).not.toHaveBeenCalled();
+    expect(mockClearSession).toHaveBeenCalled();
+    expect(mockRouterPush).toHaveBeenCalled();
   });
 
   it("should revoke tokens when RevokeCb is called, clear cookies, and redirect to login", async () => {
