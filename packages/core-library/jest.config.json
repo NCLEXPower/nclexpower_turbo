@@ -1,17 +1,20 @@
 {
   "testEnvironment": "jsdom",
   "transform": {
-   "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
     "^.+\\.(js|jsx)$": "babel-jest"
   },
   "transformIgnorePatterns": [
     "/node_modules/(?!(@babel|react-dnd|dnd-core|react-dnd-html5-backend|@react-dnd)/)"
   ],
   "moduleNameMapper": {
-    ".+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$": "jest-transform-stub"
+    ".+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2|gif)$": "jest-transform-stub"
   },
   "testPathIgnorePatterns": [],
   "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"],
-  "testMatch": ["<rootDir>/tests/**/*.test.ts", "<rootDir>/tests/**/*.test.tsx"],
+  "testMatch": [
+    "<rootDir>/tests/**/*.test.ts",
+    "<rootDir>/tests/**/*.test.tsx"
+  ],
   "testTimeout": 20000
 }
