@@ -157,20 +157,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const logout = useCallback(async () => {
     try {
-      if (
-        typeof internal?.email === "undefined" ||
-        typeof customer?.email === "undefined"
-      ) {
-        if (typeof accountId !== "undefined") {
-          await integrateDeviceInUseUpdater(accountId, false);
-        }
-        setIsAuthenticated(false);
-        clearSession();
-        authSessionIdleTimer.stop();
-        await router.push((route) => route.login);
-        return;
-      }
-
       if (refreshToken && accessToken && accountId && session) {
         await revokeCb.execute({
           accessToken: accessToken,
@@ -182,10 +168,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } catch (e) {
       console.error(e);
     } finally {
-      if (typeof accountId !== "undefined") {
-        await integrateDeviceInUseUpdater(accountId, false);
-      }
-      await cleanseAuthSession();
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
@@ -235,11 +217,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }
 
   const softLogout = useCallback(async () => {
-    if (typeof accountId !== "undefined") {
-      await integrateDeviceInUseUpdater(accountId, false);
-    }
     setIsAuthenticated(false);
     clearSession();
+    authSessionIdleTimer.stop();
     await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
