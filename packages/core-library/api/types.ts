@@ -51,7 +51,8 @@ export interface LoginResponse {
   accountId: string;
   accessLevel: number;
   sessionId: string;
-  fingerprint: string;
+  fingerprint: string; //deprecated
+  isNewAccount: boolean;
 }
 
 export interface RefreshTokenResponse {
@@ -442,17 +443,17 @@ export interface AuthorizedMenuResponse {
 }
 
 export type GetMenuByIdParams = {
-  menuId: string
-}
+  menuId: string;
+};
 
 export type CreateAuthorizedMenusParams = {
   systemMenus: number;
   accountLevel: number;
   menuEnvironments: number;
   menuItems: Array<MenuItems>;
-}
+};
 
-export type UpdateMenuItemParams = MenuItems
+export type UpdateMenuItemParams = MenuItems;
 
 export type MenuItems = MenuItemsChildren;
 
@@ -499,9 +500,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User { }
+export interface Approver extends User {}
 
-export interface Author extends User { }
+export interface Author extends User {}
 
 export interface User {
   id: string;
@@ -597,4 +598,4 @@ export type GetSubsequentLists = {
   id: string;
   optionText: string;
   optionKey: string;
-}
+};
