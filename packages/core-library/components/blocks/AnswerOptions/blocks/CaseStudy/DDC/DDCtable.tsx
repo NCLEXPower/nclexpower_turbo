@@ -74,7 +74,7 @@ export const DDCTable: React.FC<DDCTablePropsype> = ({
           borderRadius: "10px",
           overflow: "hidden",
           border: "1px solid #ddd",
-          bgcolor: "#8E2ADD",
+          bgcolor: "#0C225C",
         }}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
