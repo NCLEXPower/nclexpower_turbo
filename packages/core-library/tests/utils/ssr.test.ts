@@ -45,6 +45,7 @@ describe("SSR Functions", () => {
     orderNumber: "nclex-123",
     productId: "test-productId",
     totalAmount: 100,
+    password: "securePassword123"
   };
 
   beforeEach(() => {
