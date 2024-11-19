@@ -1,3 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import { Box, Typography } from "@mui/material";
 import {
   AnswerOptions,
@@ -21,11 +27,12 @@ interface Props {
 }
 
 export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
-  const { getValues, setValue, resetField } =
+  const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
-  const questionType = questionnaires[index].questionType;
+  const questionType = watch(`questionnaires.${index}.questionType`);
+  const currentSequence = watch(`questionnaires.${index}.seqNum`)
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -53,7 +60,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box sx={{ display: "flex", width: "100%" }}>
+      <Box data-testid='answer-case-study' sx={{ display: "flex", width: "100%" }}>
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
@@ -85,7 +92,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         </Box>
       </Box>
       <Box sx={{ width: "100%" }} mt={3}>
-        {index !== 0 && (
+        {currentSequence > 1 && (
           <Box mt={3}>
             <ControlledTextField
               label="Transition Header : "
@@ -104,8 +111,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
           <Box
             width={1}
             borderRadius={"5px"}
-            border={1}
-            borderColor="#8E2ADD"
+            boxShadow={2}
             p={4}
             overflow={"hidden"}
           >
@@ -123,11 +129,10 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               Answer Options :
             </Typography>
             <Box
+              boxShadow={2}
               sx={{
                 borderRadius: "5px",
-                border: 1,
                 overflow: "hidden",
-                borderColor: "#8E2ADD",
               }}
             >
               <AnswerOptions
