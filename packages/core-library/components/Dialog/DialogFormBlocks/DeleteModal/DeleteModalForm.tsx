@@ -3,9 +3,9 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import { useForm, useWatch } from "react-hook-form";
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { EvaIcon } from "../../../EvaIcon";
 import { DeleteConfirmationSchema, DeleteConfirmationType } from "./validation";
@@ -23,15 +23,14 @@ export const DeleteConfirmationForm: React.FC<Props> = ({
   const form = useForm({
     mode: "all",
     resolver: yupResolver(DeleteConfirmationSchema),
+    defaultValues: {
+      id: data.id,
+      text: data.text,
+    },
   });
 
-  const { control, setValue, formState } = form;
-
+  const { control, formState } = form;
   const { isValid } = formState;
-  useEffect(() => {
-    setValue("id", data.id);
-    setValue("text", data.text);
-  }, []);
 
   return (
     <Box
@@ -43,54 +42,38 @@ export const DeleteConfirmationForm: React.FC<Props> = ({
       alignItems="center"
       gap="24px"
     >
-      <Box>
-        <EvaIcon
-          name="alert-triangle-outline"
-          width={75}
-          height={75}
-          ariaHidden
-          fill="#D44333"
-        />
-      </Box>
+      <EvaIcon
+        name="alert-triangle-outline"
+        width={75}
+        height={75}
+        ariaHidden
+        fill="#D44333"
+      />
       <Typography data-testId="text-content">
         This will permanently delete the <b>{data.text}</b>
       </Typography>
       <Box width="50%">
         <Typography
           data-testId="render-text"
-          sx={{
-            userSelect: "none",
-          }}
+          sx={{ userSelect: "none", mb: 1 }}
         >
-          Type text below to delete
-        </Typography>
-        <Typography
-          data-testId="render-test-text"
-          sx={{
-            userSelect: "none",
-          }}
-        >
-          "<b>{data.text}</b>"
+          Type text below to delete <br />"<b>{data.text}</b>"
         </Typography>
         <TextField
           control={control}
           name="inputText"
           inputProps={{ "data-testid": "delete-input" }}
-          sx={{
-            width: "100%",
-          }}
+          sx={{ width: "100%" }}
         />
       </Box>
-      <Box
-        display="flex"
+      <Button
+        onClick={handleDelete}
         width="50%"
-        justifyContent="space-between"
-        alignItems="center"
+        disabled={!isValid}
+        sx={{ mt: 2 }}
       >
-        <Button onClick={handleDelete} width="100%" disabled={!isValid}>
-          Confirm
-        </Button>
-      </Box>
+        Confirm
+      </Button>
     </Box>
   );
 };

@@ -78,10 +78,7 @@ describe("DeleteConfirmationDialog", () => {
       "This will permanently delete the Test Item"
     );
     expect(screen.getByTestId("render-text")).toHaveTextContent(
-      "Type text below to delete"
-    );
-    expect(screen.getByTestId("render-test-text")).toHaveTextContent(
-      "Test Item"
+      'Type text below to delete "Test Item"'
     );
   });
 
