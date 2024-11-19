@@ -8,7 +8,7 @@ interface Props {
   values: {};
 }
 
-const BasicInformation: React.FC<Props> = ({ nextStep }) => {
+export const BasicInformation: React.FC<Props> = ({ nextStep }) => {
   return (
     <Box>
       <Box
@@ -32,5 +32,3 @@ const BasicInformation: React.FC<Props> = ({ nextStep }) => {
     </Box>
   );
 };
-
-export default BasicInformation;

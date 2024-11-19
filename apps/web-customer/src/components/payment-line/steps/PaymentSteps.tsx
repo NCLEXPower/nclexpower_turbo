@@ -1,5 +1,5 @@
 import { WizardFormMap } from "core-library/hooks";
-import { BasicInformation } from "./content";
+import { BasicInformation } from "./content/BasicInformation";
 
 export type PaymentFormSteps = "BasicInformation";
 
