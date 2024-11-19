@@ -69,7 +69,7 @@ export const TextareaComponent = <T extends object>({
             fontSize: theme.typography.body1.fontSize,
             padding: "12px 16px",
             fontFamily: theme.typography.fontFamily,
-            color: theme.palette.appColors.essential["800"],
+            color: theme.palette.appColors.incidental["075"],
             borderRadius: "5px",
             resize: "none",
           }}
@@ -80,3 +80,4 @@ export const TextareaComponent = <T extends object>({
     </Grid>
   );
 };
+

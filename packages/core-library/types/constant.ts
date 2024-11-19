@@ -2174,4 +2174,4 @@ export const COUNTRY_LIST: Array<{ name: string; code: string }> = [
 
 export const PHONE_REGEX = /^(\+)?(\(?\d+\)?)(([\s-]+)?(\d+)){0,30}$/;
 
-export const DEFAULT_PHONE_COUNTRY_CODE = "US";
+export const DEFAULT_PHONE_COUNTRY_CODE = "PH"; //we can change this to united states default phone cc
