@@ -6,7 +6,7 @@
 import { PracticeTest, StudyCards, WatchVideos } from 'core-library/assets';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { DialogBox } from 'core-library/components/Dialog/DialogBox';
+import { DialogBox } from 'core-library/components';
 import { ModalContent } from './ModalComponent/ModalContent';
 import { modalContent, sliderConfig } from './ModalComponent/modalData';
 
