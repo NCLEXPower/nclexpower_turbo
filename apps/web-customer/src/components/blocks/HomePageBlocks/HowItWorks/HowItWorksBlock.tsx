@@ -7,28 +7,41 @@ import { PracticeTest, StudyCards, WatchVideos } from 'core-library/assets';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { DialogBox } from 'core-library/components/Dialog/DialogBox';
-import { ModalContent } from './ModalContent';
-import { modalContent, sliderConfig } from './modalData';
+import { ModalContent } from './ModalComponent/ModalContent';
+import { modalContent, sliderConfig } from './ModalComponent/modalData';
 
 interface Props {}
 
 type ModalType = 'WatchVideos' | 'Study' | 'Practice';
 
-export const HowItWorksBlock: React.FC<Props> = (props) => {
-  const [openModal, setOpenModal] = useState<ModalType | null>(null);
+const dialogStyles = {
+  '& .MuiDialog-paper': {
+    width: '90%',
+    maxWidth: '1050px',
+    height: 'auto',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    color: '#FFFFFF',
+    borderRadius: '6px',
+    padding: '1rem',
+  },
+};
 
-  const handleOpenModal = (modalType: string) => {
+export const HowItWorksBlock: React.FC<Props> = (props) => {
+  const [isOpenModal, setIsOpenModal] = useState<ModalType | null>(null);
+
+  const openModal = (modalType: ModalType) => {
     if (
       modalType === 'WatchVideos' ||
       modalType === 'Study' ||
       modalType === 'Practice'
     ) {
-      setOpenModal(modalType);
+      setIsOpenModal(modalType);
     }
   };
 
-  const handleCloseModal = () => {
-    setOpenModal(null);
+  const closeModal = () => {
+    setIsOpenModal(null);
   };
 
   return (
@@ -50,7 +63,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
         <div className='w-4/6 flex items-center justify-center py-10 flex-wrap gap-5 lg:gap-0 sm:w-[100%]'>
           <div
             className='w-auto min-w-[200px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => handleOpenModal('WatchVideos')}
+            onClick={() => openModal('WatchVideos')}
           >
             <Image src={WatchVideos} alt='WatchVideos' />
             <p>
@@ -60,7 +73,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           </div>
           <div
             className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => handleOpenModal('Study')}
+            onClick={() => openModal('Study')}
           >
             <Image src={StudyCards} alt='StudyCards' />
             <p>
@@ -70,7 +83,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           </div>
           <div
             className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => handleOpenModal('Practice')}
+            onClick={() => openModal('Practice')}
           >
             <Image src={PracticeTest} alt='PracticeTest' />
             <p>
@@ -79,28 +92,17 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           </div>
         </div>
         <DialogBox
-          open={!!openModal}
-          handleClose={handleCloseModal}
+          open={!!isOpenModal}
+          handleClose={closeModal}
           hideCloseButton
-          sx={{
-            '& .MuiDialog-paper': {
-              width: '90%',
-              maxWidth: '1050px',
-              height: 'auto',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              color: '#FFFFFF',
-              borderRadius: '6px',
-              padding: '1rem',
-            },
-          }}
+          sx={dialogStyles}
         >
-          {openModal && (
+          {isOpenModal && modalContent[isOpenModal] && (
             <ModalContent
-              type={openModal}
-              content={modalContent[openModal]}
+              type={isOpenModal}
+              content={modalContent[isOpenModal]}
               sliderConfig={sliderConfig}
-              onClose={handleCloseModal}
+              onClose={closeModal}
             />
           )}
         </DialogBox>

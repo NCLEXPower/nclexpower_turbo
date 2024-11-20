@@ -18,19 +18,19 @@ export const modalContent: {
     title: string;
     paragraphOne: string;
     paragraphTwo: string;
-    image: any;
+    image: string;
   };
   Study: {
     title: string;
     paragraphOne: string;
     paragraphTwo: string;
-    carouselImages: any[];
+    carouselImages: string[];
   };
   Practice: {
     title: string;
     paragraphOne: string;
     paragraphTwo: string;
-    carouselImages: any[];
+    carouselImages: string[];
   };
 } = {
   WatchVideos: {
