@@ -15,7 +15,7 @@ import {
 import { GetCategoryType } from "core-library/api/types";
 
 export function ContactFormBlock() {
-  const toast = useExecuteToast();
+  const { showToast } = useExecuteToast();
 
   const { businessQueryGetReportCategories, businessQueryCreateContactUs } = useBusinessQueryContext();
   const { data } = businessQueryGetReportCategories(["concern-category"], 5);
@@ -37,21 +37,10 @@ export function ContactFormBlock() {
   async function onSubmit(params: ContactFormType) {
     try {
       await mutateAsync({ ...params });
-      toast.executeToast(
-        "Your message has been received. Thank you",
-        "top-right",
-        false,
-        { type: "success" }
-      );
+      showToast("Your message has been sent. Please check your email for your reference number", "success")
       reset();
     } catch (error) {
-      console.error("Error submitting contact form:", error);
-      toast.executeToast(
-        `There was an error submitting your message: ${(error as Error).message}`,
-        "top-right",
-        true,
-        { type: "error" }
-      );
+      showToast("Something went wrong. Please try again later.", "error")
     }
   }
 
