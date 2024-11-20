@@ -28,20 +28,23 @@ const dialogStyles = {
 };
 
 export const HowItWorksBlock: React.FC<Props> = (props) => {
-  const [isOpenModal, setIsOpenModal] = useState<ModalType | null>(null);
+  const [isOpenModal, setIsOpenModal] = useState<{
+    modalType: ModalType;
+    isOpen: boolean;
+  }>({
+    modalType: 'WatchVideos',
+    isOpen: false,
+  });
 
   const openModal = (modalType: ModalType) => {
-    if (
-      modalType === 'WatchVideos' ||
-      modalType === 'Study' ||
-      modalType === 'Practice'
-    ) {
-      setIsOpenModal(modalType);
-    }
+    setIsOpenModal({ modalType, isOpen: true });
   };
 
   const closeModal = () => {
-    setIsOpenModal(null);
+    setIsOpenModal((prevState) => ({
+      ...prevState,
+      isOpen: false,
+    }));
   };
 
   return (
@@ -92,15 +95,15 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           </div>
         </div>
         <DialogBox
-          open={!!isOpenModal}
+          open={isOpenModal.isOpen}
           handleClose={closeModal}
           hideCloseButton
           sx={dialogStyles}
         >
-          {isOpenModal && modalContent[isOpenModal] && (
+          {isOpenModal.isOpen && modalContent[isOpenModal.modalType] && (
             <ModalContent
-              type={isOpenModal}
-              content={modalContent[isOpenModal]}
+              type={isOpenModal.modalType}
+              content={modalContent[isOpenModal.modalType]}
               sliderConfig={sliderConfig}
               onClose={closeModal}
             />
