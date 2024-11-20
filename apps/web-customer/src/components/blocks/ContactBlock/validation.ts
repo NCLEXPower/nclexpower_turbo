@@ -18,10 +18,6 @@ export const contactSchema = yup.object({
     .string()
     .required("Country Code is required")
     .default(DEFAULT_PHONE_COUNTRY_CODE),
-  categoryId: yup
-    .string()
-    .required("Concern Category is required")
-    .default(""),
   email: yup
     .string()
     .email("Invalid email")
