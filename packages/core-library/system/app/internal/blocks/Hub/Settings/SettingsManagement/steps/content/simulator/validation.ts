@@ -77,7 +77,7 @@ export const containedRegularQuestionSchema = yup
  * Case Study Questions Schemas
  */
 const bgInfoContent = yup.object({
-  seqNum: yup.number().transform((value) => parseInt(value)),
+  seqNum: yup.number().transform((value) => parseInt(value)).default(1),
   seqContent: yup.string(),
 });
 
@@ -136,7 +136,7 @@ const caseStudyAnswerFormSchema = yup.object({
             } else if (questionType.includes("MRSN")) {
               return yup
                 .array(answerSchema)
-                .when(["maxAnswer", "itemNum"], ([maxAnswer, itemNum], schema) =>
+                .when(["maxAnswer", "itemNum", "maxPoints"], ([maxAnswer, itemNum, maxPoints], schema) =>
                   schema.test(
                     "answerKey-test",
                     `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer must be selected.`,
@@ -148,15 +148,14 @@ const caseStudyAnswerFormSchema = yup.object({
                         return correctAnswersCount == maxAnswer;
                       }
                     }
-                  )
+                  ).length(maxPoints, `Question No. ${itemNum} must have ${maxPoints ?? ""} options only`)
                 );
             }
             return schema;
           })
           .optional(),
       })
-    )
-    .default([]),
+    ).default([]),
 });
 
 export const caseStudyQuestionsFormSchema = yup
@@ -174,6 +173,5 @@ export const containedCaseStudyQuestionSchema = yup
       .array()
       .min(1, "Please select atleast 1 case name")
       .required("Select atleast 1 case name")
-      .default([]),
   })
   .concat(caseStudyQuestionsFormSchema);

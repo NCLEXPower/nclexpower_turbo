@@ -23,6 +23,7 @@ import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
 import { CategoryDataType } from "./type"
+import { ParsedHtml } from "core-library/components";
 
 interface FormValues {
   control: Control<ContactFormType>;
@@ -175,12 +176,7 @@ export const ContactForm: React.FC<FormValues> = ({
                   width={24}
                   height={32}
                 />
-                <div
-                  className="text-sm sm:text-md lg:text-xl text-white font-normal break-normal"
-                  dangerouslySetInnerHTML={{
-                    __html: purifyInputs(item.subTitle) as TrustedHTML,
-                  }}
-                />
+                <ParsedHtml color="white" html={item.subTitle} />
               </div>
             ))}
           </div>

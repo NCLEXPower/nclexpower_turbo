@@ -163,6 +163,7 @@ export const RouterEditForm: React.FC<RouterEditFormType> = ({ selectedMenuItem,
                         <Box display="flex" justifyContent="flex-end" width={1}>
                             <ConfirmationModal
                                 customButton={'SaveChanges'}
+                                confirmButtonText={'Confirm'}
                                 dialogContent="Confirm changes in this menu?"
                                 isLoading={false}
                                 handleSubmit={handleSubmit(onSubmit)}

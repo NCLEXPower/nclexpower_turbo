@@ -44,6 +44,7 @@ export const ErrorMapping: React.FC<ErrorMappingPropsType> = ({ errors, parentPa
                     <Box width="100%" sx={{ gap: 2, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
                         {Object.keys(errorMap).map((key, index) => (
                             <Grow
+                            key={index}
                                 in={displayErrorList}
                                 style={{ transformOrigin: '2 0 0' }}
                                 {...(displayErrorList ? { timeout: 1000 } : {})}

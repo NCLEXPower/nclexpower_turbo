@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, IconButton, Typography } from "@mui/material";
 import { useFieldArray, useFormContext } from "react-hook-form";
@@ -33,6 +33,8 @@ export const SATA: React.FC<SATAPropsType> = ({
     ContainedRegularQuestionType | ContainedCaseStudyQuestionType
   >();
   const answerFields = getValues(`questionnaires.${questionIndex}.answers`);
+  const maxPoint = getValues(`questionnaires.${questionIndex}.maxPoints`);
+  const MAX_LENGTH = maxPoint || 8
 
   const handleAppendFields = () => {
     appendAnswer({ answer: "", answerKey: false });
@@ -94,8 +96,14 @@ export const SATA: React.FC<SATAPropsType> = ({
       </StyledBox>
       <Button
         data-testid="answer-option-append"
-        sx={{ marginTop: 4 }}
-        disabled={answerFields.length >= 8}
+        sx={{
+          height: "45px",
+          borderRadius: "10px",
+          marginTop: "10px",
+          width: "100%",
+          textTransform: "none",
+        }}
+        disabled={answerFields.length >= MAX_LENGTH}
         onClick={handleAppendFields}
         className="w-full h-10 flex rounded-md text-sm items-center px-5 bg-[#d7f2f4] border-[#37BEC7] border justify-center text-[#37BEC7] font-semibold hover:bg-[#2a98a0] transition-colors duration-150 hover:text-white disabled:saturate-0"
       >
