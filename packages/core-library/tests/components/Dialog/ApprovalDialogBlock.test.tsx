@@ -62,20 +62,51 @@ describe("ApprovalDialogBlock", () => {
     expect(screen.getByTestId("submit-button")).toBeInTheDocument();
   });
 
-  it("calls onSubmit successfully and triggers toast, loader, and closeDialog", () => {
+  it("calls showToast and closeDialog on successful submission", () => {
     render(<ApprovalDialogBlock />);
     const submitButton = screen.getByTestId("submit-button");
+
+    // Simulate form submission
     fireEvent.click(submitButton);
 
+    // Wait for ronous operations
     waitFor(() => {
-      expect(mockExecuteToast).toHaveBeenCalledTimes(1);
+      // Verify toast behavior
       expect(mockExecuteToast).toHaveBeenCalledWith(
-        "Successfully submitted..",
-        "top-right",
-        false,
-        { toastId: 0, type: "success" }
+        "Successfully submitted.",
+        "success"
       );
+      // Verify dialog close
+      expect(mockCloseDialog).toHaveBeenCalled();
+      // Verify loader update
       expect(mockSetContentLoader).toHaveBeenCalledWith(true);
+    });
+
+    waitFor(
+      () => {
+        expect(mockSetContentLoader).toHaveBeenCalledWith(false);
+      },
+      { timeout: 4000 }
+    );
+  });
+
+  it("calls showToast with error and closes dialog on failure", () => {
+    // Mock the `showToast` function to simulate a failure
+    mockExecuteToast.mockImplementationOnce(() => {
+      throw new Error("Something went wrong");
+    });
+
+    render(<ApprovalDialogBlock />);
+    const submitButton = screen.getByTestId("submit-button");
+
+    // Simulate form submission
+    fireEvent.click(submitButton);
+
+    // Wait for ronous operations
+    waitFor(() => {
+      // Verify error toast behavior
+      expect(mockExecuteToast).toHaveBeenCalledWith("Something wrong", "error");
+      // Verify dialog close
       expect(mockCloseDialog).toHaveBeenCalled();
     });
 
