@@ -112,3 +112,19 @@ export type UseDataTableParamsResult = {
   rows: DataTableRow[];
   loading: boolean;
 };
+
+export interface AccountCreationData {
+  firstname: string;
+  middlename: string | null;
+  lastname: string;
+  email: string;
+  password: string;
+  orderNumber: string;
+  productId: string;
+  totalAmount: number;
+};
+
+export type Deletetype = {
+  id: number;
+  text: string;
+};
