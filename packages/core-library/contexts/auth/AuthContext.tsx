@@ -14,6 +14,7 @@ import {
   useRefreshToken,
   useSession,
   useDeviceNotRecognized,
+  useNewAccount,
 } from "./hooks";
 import {
   useApiCallback,
@@ -82,9 +83,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accessLevel, setAccessLevel] = useAccessLevel();
   const [, setSingleCookie, clearSingleCookie] = useSingleCookie();
   const [refreshToken, setRefreshToken] = useRefreshToken();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!accessToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!accessToken || false
+  );
   const [deviceNotRecognized, setDeviceNotRecognized] =
     useDeviceNotRecognized();
+  const [, setIsNewAccount] = useNewAccount();
   const { getDeviceDetails } = useDeviceInfo();
   const [accessDeviceId] = useDeviceId();
   const {
@@ -147,18 +151,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }, [accessToken]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    if (isAuthenticated) authSessionIdleTimer.start();
-    return authSessionIdleTimer.stop;
-  }, [isAuthenticated]);
+    if (!isAuthenticated || !session) return authSessionIdleTimer.stop;
+    return authSessionIdleTimer.start();
+  }, [isAuthenticated, session]);
 
   const logout = useCallback(async () => {
     try {
       if (refreshToken && accessToken && accountId && session) {
-        await cleanseAuthSession();
         await revokeCb.execute({
           accessToken: accessToken,
           refreshToken: refreshToken,
@@ -169,25 +168,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } catch (e) {
       console.error(e);
     } finally {
-      if (typeof accountId !== "undefined") {
-        await integrateDeviceInUseUpdater(accountId, false);
-      }
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
-      console.log("called");
-      await router.push("/login");
+      await router.push((route) => route.login);
     }
-  }, [
-    refreshToken,
-    accessToken,
-    accountId,
-    loading,
-    customer,
-    internal,
-    session,
-    isAuthenticated,
-  ]);
+  }, [refreshToken, accessToken]);
 
   const integrateDeviceInUseUpdater = useCallback(
     async (accountId: string, inUse: boolean = true) => {
@@ -231,20 +217,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }
 
   const softLogout = useCallback(async () => {
-    try {
-      await cleanseAuthSession();
-    } catch {
-      console.error("Something went wrong during soft logout.");
-    } finally {
-      if (typeof accountId !== "undefined") {
-        await integrateDeviceInUseUpdater(accountId, false);
-      }
-      await cleanseOpenSession();
-      setIsAuthenticated(false);
-      clearSession();
-      await router.push((route) => route.login);
-    }
-  }, [refreshToken, accessToken, isAuthenticated, session, loading]);
+    setIsAuthenticated(false);
+    clearSession();
+    authSessionIdleTimer.stop();
+    await router.push((route) => route.login);
+  }, [refreshToken, accessToken]);
 
   return (
     <context.Provider
@@ -262,13 +239,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
                   ? "no-device-id"
                   : accessDeviceId,
             });
-            if (result.data.responseCode === 304) {
-              setDeviceNotRecognized(true);
-              setSession(result.data.sessionId);
-              setAccountId(result.data.accountId);
-              await router.push((route) => route.device_not_recognized);
-              return;
-            }
+            // if (result.data.responseCode === 304) {
+            //   setDeviceNotRecognized(true);
+            //   setSession(result.data.sessionId);
+            //   setAccountId(result.data.accountId);
+            //   await router.push((route) => route.device_not_recognized);
+            //   return;
+            // }
             if (result.data.is2FaEnabled) {
               const prepareVerification = {
                 email: email,
@@ -292,6 +269,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               );
               return;
             }
+            setIsNewAccount(result.data.isNewAccount);
             setAccountId(result.data.accountId);
             setAccessLevel(result.data.accessLevel);
             setAccessToken(result.data.accessTokenResponse.accessToken);

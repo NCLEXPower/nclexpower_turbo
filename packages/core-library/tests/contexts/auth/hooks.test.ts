@@ -7,6 +7,8 @@ import {
   useSecretClient,
   useOrderNumber,
   usePaymentIntentId,
+  useNewAccount,
+  useDeviceSession,
 } from "../../../contexts/auth/hooks";
 import { renderHook } from "../../common";
 
@@ -81,5 +83,15 @@ describe("Custom session storage hooks", () => {
   it("should call useSessionStorage for usePaymentIntentId with correct arguments", () => {
     renderHook(() => usePaymentIntentId());
     expect(mockUseSessionStorage).toHaveBeenCalledWith("pi", undefined);
+  });
+
+  it("should call useSessionStorage for useNewAccount with correct arguments", () => {
+    renderHook(() => useNewAccount());
+    expect(mockUseSessionStorage).toHaveBeenCalledWith("new_account", false);
+  });
+
+  it("should call useSessionStorage for useDeviceSession with correct arguments", () => {
+    renderHook(() => useDeviceSession());
+    expect(mockUseSessionStorage).toHaveBeenCalledWith("dinfo", null);
   });
 });
