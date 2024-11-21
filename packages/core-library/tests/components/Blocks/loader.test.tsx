@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../common";
 import {
   QuestionTypeSelectionLoader,
   CreateQuestionLoader,
@@ -7,7 +7,6 @@ import {
   CasenameSelectionLoader,
   CaseStudyLoader,
 } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/loader";
-import { AnimatedBoxSkeleton } from "../../../components";
 
 jest.mock("../../../config", () => ({
   getConfig: jest.fn().mockReturnValue({
