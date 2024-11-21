@@ -45,7 +45,8 @@ import {
   useCreateAuthorizedMenus,
   useGetAllMenus,
   useGetMenuById,
-  useUpdateMenuItem
+  useUpdateMenuItem,
+  useCreateContactUs
 } from "../core/hooks/useBusinessQueries";
 import { MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -79,6 +80,7 @@ import {
   CreateAuthorizedMenusParams,
   GetMenuByIdParams,
   UpdateMenuItemParams,
+  ContactFormType,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 
@@ -307,6 +309,14 @@ interface BusinessQueryContextValue {
     UpdateMenuItemParams,
     any,
     unknown>
+  businessQueryCreateContactUs: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    ContactFormType,
+    unknown
+  >;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -359,6 +369,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllMenus = useGetAllMenus
   const businessQueryGetMenuById = useGetMenuById
   const businessQueryUpdateMenuItem = useUpdateMenuItem
+  const businessQueryCreateContactUs = useCreateContactUs
 
   return (
     <BusinessQueryContext.Provider
@@ -402,7 +413,8 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryCreateAuthorizedMenus,
         businessQueryGetAllMenus,
         businessQueryGetMenuById,
-        businessQueryUpdateMenuItem
+        businessQueryUpdateMenuItem,
+        businessQueryCreateContactUs
       }}
     >
       {children}

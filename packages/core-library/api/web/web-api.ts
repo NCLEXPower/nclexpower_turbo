@@ -7,6 +7,7 @@ import {
   CheckoutSessionResponse,
   ConfirmPaymentParams,
   ConfirmPaymentResponse,
+  ContactFormType,
   CreateCustomerDumpParams,
   CreateCustomerParams,
   CreatePaymentIntentParams,
@@ -26,7 +27,7 @@ export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
 
   /* This api should be in web-api-backoffice */
   public web_account_setup(params: RegisterParams) {
@@ -164,5 +165,9 @@ export class WebApi {
     } catch (err: any) {
       throw err;
     }
+  }
+
+  public web_create_contact_us(params: ContactFormType) {
+    return this.axios.post(`/api/v1/Customer/create-contact-us`, params);
   }
 }

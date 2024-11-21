@@ -22,8 +22,8 @@ import {
   useSelectAllCategories,
   useGetSubsequentList,
   useGetAllMenus,
-  useGetMenuById,
   useUpdateMenuItem,
+  useCreateContactUs,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -48,6 +48,7 @@ import {
   UpdateMenuItemParams,
   MenuItems,
   GetMenuByIdParams,
+  ContactFormType,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
 import { EditMenuItemsType } from '../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types';
@@ -1811,3 +1812,92 @@ describe("useUpdateMenuItem", () => {
     expect(result.current.isLoading).toBe(false);
   });
 })
+
+describe("useCreateContactUs", () => {
+  const mockExecute = jest.fn();
+  const mockApi = {
+    web: {
+      web_create_contact_us: jest.fn(),
+    },
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+
+    (useMutation as jest.Mock).mockReturnValue({
+      mutateAsync: async (data: any) => {
+        let isLoading = true;
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        const result = await mockExecute(data);
+        isLoading = false;
+        return result;
+      },
+      isLoading: false,
+    });
+
+    mockExecute.mockImplementation(async (args) => {
+      return await mockApi.web.web_create_contact_us(args);
+    });
+  });
+
+  it("should create a contact us request successfully", async () => {
+    const mockData: ContactFormType = {
+      name: "Jane Doe",
+      email: "jane.doe@example.com",
+      phone: "987-654-3210",
+      categoryId: 'test-id',
+      countryCode: "+US",
+      message: "This is another test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockApi.web.web_create_contact_us.mockResolvedValue(mockResult);
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      const response = await result.current.mutateAsync(mockData);
+      expect(response).toEqual(mockResult);
+    });
+
+    expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should indicate loading state correctly", async () => {
+    const mockData: ContactFormType = {
+      name: "Jane Doe",
+      email: "jane.doe@example.com",
+      phone: "987-654-3210",
+      categoryId: 'test-id',
+      countryCode: "+US",
+      message: "This is another test message",
+    };
+
+    const mockResult = { data: 200 };
+    mockApi.web.web_create_contact_us.mockResolvedValue(mockResult);
+
+    const opt = { onSuccess: jest.fn() };
+    const { result } = renderHook(() => useCreateContactUs(opt));
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      const promise = result.current.mutateAsync(mockData);
+      expect(result.current.isLoading).toBe(false);
+
+      const response = await promise;
+      expect(response).toEqual(mockResult);
+    });
+
+    expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+});

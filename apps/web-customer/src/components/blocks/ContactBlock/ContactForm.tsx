@@ -22,12 +22,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
+import { CategoryDataType } from "./type"
 import { ParsedHtml } from "core-library/components";
 
-type CategoryDataType = {
-  label: string;
-  value: string | number;
-};
 interface FormValues {
   control: Control<ContactFormType>;
   handleSubmit: UseFormHandleSubmit<ContactFormType>;
@@ -210,3 +207,4 @@ export const ContactForm: React.FC<FormValues> = ({
     </section>
   );
 };
+
