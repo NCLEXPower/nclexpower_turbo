@@ -6,8 +6,8 @@ import {
   useExecuteToast,
   usePageLoaderContext,
 } from "../../contexts";
-import { ExcelRowRegularQuestion } from "../../core";
 import { useAtom } from "jotai";
+import { ExcelRowRegularQuestion } from "../../core";
 
 jest.mock("../../config", () => ({
   getConfig: jest
@@ -18,7 +18,6 @@ jest.mock("../../config", () => ({
 jest.mock("../../core/router", () => ({
   useRouter: jest.fn(),
 }));
-
 jest.mock("../../contexts/DialogContext", () => ({
   useDialogContext: jest.fn(),
 }));
@@ -32,6 +31,23 @@ jest.mock("jotai", () => ({
   ...jest.requireActual("jotai"),
   useAtom: jest.fn(),
 }));
+
+jest.mock("../../components", () => ({
+  CategoryDialogFormBlock: jest.fn(() => <div data-testid="category-form" />),
+  ProductDialogBlock: jest.fn(() => <div data-testid="product-form" />),
+  AutomationDBComparisonFormBlock: jest.fn(() => (
+    <div data-testid="automation-db-comparison" />
+  )),
+  ApprovalDialogBlock: jest.fn(() => <div data-testid="approval-form" />),
+  DeleteConfirmationBlock: jest.fn(() => <div data-testid="delete-modal" />),
+}));
+
+jest.mock(
+  "../../components/Dialog/DialogFormBlocks/inclusion/InclusionEditForm",
+  () => ({
+    InclusionEditForm: jest.fn(() => <div data-testid="inclusion-edit-form" />),
+  })
+);
 
 jest.mock("../../hooks/useApi", () => ({
   useApiCallback: jest.fn().mockReturnValue({
@@ -50,21 +66,6 @@ jest.mock("../../hooks/useApi", () => ({
   }),
 }));
 
-jest.mock("../../components", () => ({
-  CategoryDialogFormBlock: jest.fn(),
-  ProductDialogBlock: jest.fn(),
-  AutomationDBComparisonFormBlock: jest.fn(() => (
-    <div data-testid="automation-db-comparison" />
-  )),
-  ApprovalDialogBlock: jest.fn(),
-}));
-
-jest.mock(
-  "../../components/Dialog/DialogFormBlocks/inclusion/InclusionEditForm",
-  () => ({
-    InclusionEditForm: jest.fn(() => <div data-testid="inclusion-edit-form" />),
-  })
-);
 jest.mock("@mui/x-data-grid", () => {
   const actualModule = jest.requireActual("@mui/x-data-grid");
   return {
@@ -92,6 +93,23 @@ jest.mock("@mui/x-data-grid", () => {
   };
 });
 
+jest.mock("../../components", () => ({
+  CategoryDialogFormBlock: jest.fn(() => <div data-testid="category-form" />),
+  ProductDialogBlock: jest.fn(() => <div data-testid="product-form" />),
+  AutomationDBComparisonFormBlock: jest.fn(() => (
+    <div data-testid="automation-db-comparison" />
+  )),
+  ApprovalDialogBlock: jest.fn(() => <div data-testid="approval-block" />),
+  DeleteConfirmationBlock: jest.fn(() => <div data-testid="delete-modal" />),
+}));
+
+jest.mock(
+  "../../components/Dialog/DialogFormBlocks/inclusion/InclusionEditForm",
+  () => ({
+    InclusionEditForm: jest.fn(() => <div data-testid="inclusion-edit-form" />),
+  })
+);
+
 describe("DialogContextModal", () => {
   const mockCloseDialog = jest.fn();
   const mockApprovalData = {
@@ -101,7 +119,6 @@ describe("DialogContextModal", () => {
   const mockSetApprovalAtom = jest.fn();
   const mockSetContentLoader = jest.fn();
   const mockExecuteToast = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
     (useDialogContext as jest.Mock).mockReturnValue({
@@ -124,6 +141,11 @@ describe("DialogContextModal", () => {
   it("renders CategoryDialogFormBlock when dialogFormType is 'category_form'", () => {
     render(<DialogContextModal dialogFormType="category_form" />);
     expect(screen.getByTestId("category-form")).toBeInTheDocument();
+  });
+
+  it("renders ProductDialogBlock when dialogFormType is 'select_pricing'", () => {
+    render(<DialogContextModal dialogFormType="select_pricing" />);
+    expect(screen.getByTestId("product-form")).toBeInTheDocument();
   });
 
   it("renders AutomationDBComparisonFormBlock when dialogFormType is 'automation-db-comparison'", () => {
