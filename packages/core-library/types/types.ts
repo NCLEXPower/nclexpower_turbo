@@ -123,3 +123,8 @@ export interface AccountCreationData {
   productId: string;
   totalAmount: number;
 };
+
+export type Deletetype = {
+  id: number;
+  text: string;
+};

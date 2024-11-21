@@ -6,8 +6,8 @@ import {
   NumberValue,
   SelectionValue,
   StringValue,
-} from "./common";
-import { PanelListItem } from "./page";
+} from './common';
+import { PanelListItem } from './page';
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
@@ -16,13 +16,13 @@ export interface CmsGlobals {
   errors?: ErrorsEntity[] | null;
   messages?: MessagesEntity[] | null;
   modals?: ModalsEntity[] | null;
-  dialogs?: DialogElement["value"][] | null;
+  dialogs?: DialogElement['value'][] | null;
   contentHtmlBlocks?: ContentBlockEntity[] | null;
   classifiers?: ClassifierEntity[] | null;
   icons?: IconsEntity[] | null;
 }
 
-export type PreloadedGlobals = Pick<CmsGlobals, "labels">;
+export type PreloadedGlobals = Pick<CmsGlobals, 'labels'>;
 interface ClassifierEntity {
   elements: {
     classifierKey?: StringValue;
@@ -36,7 +36,7 @@ interface ClassifierEntity {
       }[];
     };
   };
-  type: "Classifier";
+  type: 'Classifier';
 }
 
 interface ModalsEntity {
@@ -146,6 +146,8 @@ export interface SliderConfigType {
     speed: number;
     autoplaySpeed: number;
     cssEase: string;
+    fade?: boolean;
+    arrows?: boolean;
   };
 }
 

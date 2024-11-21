@@ -10,6 +10,7 @@ import {
   Button,
   PhoneField,
   TextAreaField,
+  ControlledSelectField,
 } from "core-library/components";
 import { ContactFormType } from "./validation";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
@@ -21,6 +22,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
+import { CategoryDataType } from "./type"
+import { ParsedHtml } from "core-library/components";
 
 interface FormValues {
   control: Control<ContactFormType>;
@@ -28,6 +31,7 @@ interface FormValues {
   onSubmit: (data: ContactFormType) => void;
   handleSetCountryCode: (data: string) => void;
   countryCode: string;
+  data: CategoryDataType[];
 }
 
 export const ContactForm: React.FC<FormValues> = ({
@@ -36,6 +40,7 @@ export const ContactForm: React.FC<FormValues> = ({
   onSubmit,
   handleSetCountryCode,
   countryCode,
+  data,
 }) => {
   const { purifyInputs } = useSanitizedInputs({});
 
@@ -90,6 +95,26 @@ export const ContactForm: React.FC<FormValues> = ({
                 data-testid="email-input"
               />
             </Grid>
+            <Grid item sx={{ marginTop: 3 }}>
+              <ControlledSelectField
+                name="categoryId"
+                options={data}
+                control={control}
+                label="Concern Category"
+                sx={{
+                  width: "100%",
+                  borderRadius: "5px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "5px",
+                  },
+                  "& .MuiInputBase-input": {
+                    borderRadius: "5px",
+                    padding: "15px",
+                  },
+                }}
+                data-testid="concernCategory-select"
+              />
+            </Grid>
             <Grid item xs={12} sx={{ marginY: 1, display: "flex", gap: 1 }}>
               <PhoneField
                 name="phone"
@@ -106,7 +131,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} sx={{ marginY: 2 }}>
+            <Grid item xs={12} sx={{ marginY: 3 }}>
               <TextAreaField
                 control={control}
                 name="message"
@@ -151,12 +176,7 @@ export const ContactForm: React.FC<FormValues> = ({
                   width={24}
                   height={32}
                 />
-                <div
-                  className="text-sm sm:text-md lg:text-xl text-white font-normal break-normal"
-                  dangerouslySetInnerHTML={{
-                    __html: purifyInputs(item.subTitle) as TrustedHTML,
-                  }}
-                />
+                <ParsedHtml color="white" html={item.subTitle} />
               </div>
             ))}
           </div>

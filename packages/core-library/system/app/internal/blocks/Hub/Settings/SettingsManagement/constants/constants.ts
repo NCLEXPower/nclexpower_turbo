@@ -1,4 +1,5 @@
 import { SelectOption } from "../../../../../../../../components";
+import { ContainedCaseStudyQuestionType } from '../steps/content/simulator/types';
 import { RegularQuestionSelectionOptions } from "../types";
 
 const createNumberList = (length: number) => {
@@ -26,7 +27,7 @@ export const maxPoints: SelectOption[] = createNumberList(25);
 
 export const maxAnswer: SelectOption[] = createNumberList(5);
 
-export const initBgValues = { seqNum: 0, seqContent: "" };
+export const initBgValues = { seqNum: 1, seqContent: "" };
 
 export const initAnswerValues = { answer: "", answerKey: false };
 
@@ -37,6 +38,15 @@ export const caseStudyQuestionnaires = {
   itemStem: "",
   transitionHeader: "",
 };
+
+export const questionnairesDefaultValue = Array.from({ length: 6 }, (_, index) => ({
+  ...caseStudyQuestionnaires,
+  itemNum: index + 1,
+}))
+
+export const initCaseStudyQuestionnaires = {
+  questionnaires: questionnairesDefaultValue,
+}
 
 export const initQuestionsValues = (
   questionnaireType: RegularQuestionSelectionOptions | undefined

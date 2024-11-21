@@ -9,6 +9,23 @@ import { RegistrationBlock } from "../../../components/blocks/RegistrationBlock/
 
  const RegistrationPage:React.FC = () => <RegistrationBlock/>
 
-export const getServerSideProps: GetServerSideProps = withCSP();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const referer = context.req.headers.referer || "";
+
+    if (!referer || !referer.includes(context.req.headers.host || "")) {
+        return {
+            redirect: {
+                destination: "/404",
+                permanent: false
+            }
+        }
+    }
+
+    const cspProps = await withCSP()(context);
+
+    return {
+        ...cspProps
+    }
+}
 
 export default RegistrationPage;
