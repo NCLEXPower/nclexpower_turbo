@@ -598,4 +598,13 @@ export type GetSubsequentLists = {
   id: string;
   optionText: string;
   optionKey: string;
-};
+}
+
+export type ContactFormType = {
+  message: string;
+  name: string;
+  phone: string;
+  countryCode: string;
+  categoryId: string;
+  email: string;
+}
