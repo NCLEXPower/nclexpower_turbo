@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
 
@@ -15,7 +20,12 @@ export type Blocks =
   | "QuestionManagementPageBlock"
   | "ReportedIssuesBlock"
   | "CreateRegularQuestionTypeBlock"
-  | "CreateCategoryBlock";
+  | "CreateCategoryBlock"
+  | "InclusionBlock"
+  | "DuplicateSessionBlock"
+  | "ChatbotManagement"
+  | "ContactUsManagementBlock"
+  | "SalesManagement";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -32,12 +42,16 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
+  InclusionBlock: {};
+  DuplicateSessionBlock: {};
+  ChatbotManagement: {};
+  ContactUsManagementBlock: {};
+  SalesManagement: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
   blocks: B;
 } & BlockProps[B];
-
 
 export interface SectionContent {
   seqNum: number;
@@ -75,14 +89,13 @@ export type QuestionnaireItem = {
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[] ;
+  answers: DDCAnswerOption[];
 };
 
-
 export type CaseStudyDataType = {
-  nurseNotes: SectionContent[],
-  hxPhy: SectionContent[],
-  labs: SectionContent[],
-  orders: SectionContent[],
-  questionnaires: QuestionnaireItem[]
-}
+  nurseNotes: SectionContent[];
+  hxPhy: SectionContent[];
+  labs: SectionContent[];
+  orders: SectionContent[];
+  questionnaires: QuestionnaireItem[];
+};

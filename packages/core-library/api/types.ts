@@ -18,6 +18,7 @@ export interface LoginParams {
   email: string;
   password: string;
   appName: string;
+  deviceId: string;
 }
 
 export interface SsoLoginParams {
@@ -49,6 +50,9 @@ export interface LoginResponse {
   twoFactorCodeExpiryTime: string;
   accountId: string;
   accessLevel: number;
+  sessionId: string;
+  fingerprint: string; //deprecated
+  isNewAccount: boolean;
 }
 
 export interface RefreshTokenResponse {
@@ -87,6 +91,8 @@ export type PricingListResponse = {
   id: string;
   price: number;
   currency: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export interface ProductListResponse {
@@ -187,6 +193,7 @@ export interface CreateCustomerParams {
   middlename: string | null;
   lastname: string;
   email: string;
+  password: string;
   orderNumber: string;
   productId: string;
   totalAmount: number;
@@ -394,6 +401,13 @@ export type RevokeParams = {
   email: string;
 };
 
+export interface EnrolledDeviceUpdaterParams {
+  deviceId: string;
+  accountId: string;
+  deviceType: string;
+  inUse: boolean;
+}
+
 export type OTPPreparation = {
   email: string;
   password: string;
@@ -419,6 +433,27 @@ export type AuthorizedMenu = {
   menuEnvironments: number;
   menuItems: Array<MenuItems>;
 }[];
+
+export interface AuthorizedMenuResponse {
+  id: string;
+  systemMenus: number;
+  accountLevel: number;
+  menuEnvironments: number;
+  menuItems: Array<MenuItems>;
+}
+
+export type GetMenuByIdParams = {
+  menuId: string;
+};
+
+export type CreateAuthorizedMenusParams = {
+  systemMenus: number;
+  accountLevel: number;
+  menuEnvironments: number;
+  menuItems: Array<MenuItems>;
+};
+
+export type UpdateMenuItemParams = MenuItems;
 
 export type MenuItems = MenuItemsChildren;
 
@@ -465,9 +500,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User { }
+export interface Approver extends User {}
 
-export interface Author extends User { }
+export interface Author extends User {}
 
 export interface User {
   id: string;
@@ -544,3 +579,32 @@ export type DefaultReviewerParams = {
 export type DefaultReviewerDto = {
   accountId: string;
 };
+
+export type GetAllInclusionResponse = {
+  id: string;
+  option: string;
+};
+
+export type CreateInclusionParams = {
+  option: string;
+};
+
+export type EditInclusionParams = GetAllInclusionResponse;
+export type SubsequentOptionType = {
+  optionText: string;
+};
+
+export type GetSubsequentLists = {
+  id: string;
+  optionText: string;
+  optionKey: string;
+}
+
+export type ContactFormType = {
+  message: string;
+  name: string;
+  phone: string;
+  countryCode: string;
+  categoryId: string;
+  email: string;
+}

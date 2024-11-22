@@ -24,6 +24,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { LoginBG } from "core-library/assets";
 import { useKeyDown } from "core-library/hooks/useKeyDown";
+import { useResolution } from "core-library/hooks";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
@@ -67,6 +68,8 @@ export const LoginForm: React.FC<Props> = ({
       handleSubmit(onSubmit)();
     }
   };
+
+  const {isMobile} = useResolution();
 
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
@@ -116,8 +119,14 @@ export const LoginForm: React.FC<Props> = ({
           <div className="flex items-center justify-center">
             <Image
               src={CoreZigma}
+              className="smaller-screen"
               alt="CoreZigma"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
+              style={{
+                width: "150px",
+                height: "150px",
+                objectFit: "cover",
+                display: isMobile ? "none" : "flex",
+              }}
             />
           </div>
           <div className="">
@@ -134,7 +143,7 @@ export const LoginForm: React.FC<Props> = ({
                   control={control}
                   placeholder="Email"
                   sx={{ borderRadius: "10px" }}
-                  inputProps={{ style: { padding: 20, borderRadius: "10px" } }}
+                  inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
                 />
               </Grid>
               <Grid
@@ -153,9 +162,6 @@ export const LoginForm: React.FC<Props> = ({
                     name="password"
                     placeholder="Password"
                     sx={{ borderRadius: "10px", width: "100%" }}
-                    inputProps={{
-                      style: { padding: 20, borderRadius: "10px" },
-                    }}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
                       <IconButton
@@ -166,6 +172,11 @@ export const LoginForm: React.FC<Props> = ({
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     }
+                    inputProps={{
+                      style: {
+                        boxShadow: "none",
+                      },
+                    }}
                   />
                 </Box>
               </Grid>
@@ -213,7 +224,12 @@ export const LoginForm: React.FC<Props> = ({
               </div>
               <div className="flex items-center justify-center w-full">
                 <Button
-                  sx={{ paddingY: 1.5, borderRadius: "10px", boxShadow: 2, borderColor: "#1976D2" }}
+                  sx={{
+                    paddingY: 1.5,
+                    borderRadius: "10px",
+                    boxShadow: 2,
+                    borderColor: "darkGray",
+                  }}
                   fullWidth
                   variant="outlined"
                   onClick={signInWithGoogle}
@@ -240,3 +256,4 @@ export const LoginForm: React.FC<Props> = ({
     </div>
   );
 };
+

@@ -1,9 +1,15 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
+
 import { useState, useEffect } from "react";
 import { StandardProgramListType } from "../types/wc/programList";
 import { standardProgramList, fastrackProgramList } from "../core/utils/contants/wc/programs/ProgramListData";
 import { useSessionStorage } from "./useSessionStorage";
 
-const useGetProgramList = () => {
+export const useGetProgramList = () => {
   const [programList, setProgramList] = useState<StandardProgramListType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,5 +51,3 @@ const useGetProgramList = () => {
 
   return { programList, loading, error };
 };
-
-export default useGetProgramList;

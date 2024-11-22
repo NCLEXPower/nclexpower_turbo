@@ -38,7 +38,8 @@ const client = (
     headers: {
       "x-api-key": config.value.XAPIKEY,
       "Content-Type": "application/json",
-      "X-Environment": config.value.SYSENV,
+      "X-Environment":
+        process.env.NODE_ENV === "development" ? "local" : config.value.SYSENV,
       "X-Time-Zone": getTimeZone(), // we should create a middleware to get the timezone dynamically.
     },
     onError: (error) =>

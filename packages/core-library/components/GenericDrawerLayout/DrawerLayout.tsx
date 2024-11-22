@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import { Header } from "../GenericHeader/Header";
 import { Sidebar } from "../";
 import {
+  useIsDesignVisible,
   useIsMounted,
   useResolution,
   useRouteBasedVisibility,
@@ -14,6 +15,7 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useRouter } from "../../core";
 import { config } from "../../config";
+import { useNewAccount } from "../../contexts/auth/hooks";
 
 type DrawerLayoutType = {
   menu: Array<MenuItems>;
@@ -22,7 +24,6 @@ type DrawerLayoutType = {
   loading?: boolean;
   headerStyles?: WebHeaderStylesType;
   sidebarStyles?: WebSidebarStylesType;
-  hiddenHeaderPathnames?: string[];
 };
 
 export const DrawerLayout: React.FC<
@@ -34,12 +35,12 @@ export const DrawerLayout: React.FC<
   onLogout,
   headerStyles,
   sidebarStyles,
-  hiddenHeaderPathnames,
 }) => {
+  const [isNewAccount] = useNewAccount();
+  const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
-  const { isHidden } = useRouteBasedVisibility(hiddenHeaderPathnames ?? []);
 
   const router = useRouter();
 
@@ -68,7 +69,7 @@ export const DrawerLayout: React.FC<
 
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && (
+      {menu.length > 0 && (isAuthenticated || isMobile) && !isNewAccount && (
         <Sidebar
           {...sidebarStyles}
           isMobile={isMobile}

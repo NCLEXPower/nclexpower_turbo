@@ -1,6 +1,6 @@
-import { WizardFormMap } from "core-library/hooks";
 import { RegularQuestionsSteps, RegularQuestionStepProps } from "./types";
 import { RegularQuestionFormType } from "../types";
+import { WizardFormMap } from '../../../../../../../hooks';
 
 export type CreateNewRegularQuestionsFormSteps =
   | "CreateNewRegularQuestionMCQ"

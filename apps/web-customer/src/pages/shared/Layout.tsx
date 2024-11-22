@@ -5,7 +5,7 @@
  */
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ThemeProvider, CssBaseline, useTheme } from "@mui/material";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import { LoadablePageContent } from "@/components/LoadablePageContent";
 import {
   StripeContextProvider,
@@ -24,27 +24,25 @@ import { ChatBotWidget, DrawerLayout } from "core-library/components";
 import { useWebHeaderStyles } from "@/pages/contents/useWebHeaderStyles";
 import { useConfirmedIntent } from "core-library/contexts/auth/hooks";
 import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
-import { HideHeader } from "../../core/constant/HideHeader";
 import { theme } from "core-library/contents/theme/theme";
-import { useStyle } from "core-library/hooks";
+import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 
-interface Props {}
-
-const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
+const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const queryClient = new QueryClient();
   const { publishableKey } = useStripeConfig();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, loading } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useStyle();
   const [confirmValue] = useConfirmedIntent();
   usePaymentSuccessRedirect(confirmValue);
+  useAuthInterceptor();
 
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={false}
+      loading={loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>
@@ -52,13 +50,12 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
               <StripeContextProvider publishableKey={publishableKey}>
-                <LoadablePageContent>
+                <LoadablePageContent loading={loading}>
                   <DrawerLayout
                     menu={headerMenu}
                     isAuthenticated={isAuthenticated}
                     headerStyles={headerStyles}
                     sidebarStyles={sidebarStyles}
-                    hiddenHeaderPathnames={HideHeader}
                     onLogout={logout}
                   >
                     {children}

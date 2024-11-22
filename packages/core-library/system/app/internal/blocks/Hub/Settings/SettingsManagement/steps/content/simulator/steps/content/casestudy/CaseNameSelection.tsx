@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ContainedCaseStudyQuestionType } from "../../../types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,9 @@ import {
 } from "../../../../../../../../../../../../../components";
 import { useAtom } from "jotai";
 import { CreateCaseStudyAtom } from "../../../useAtomic";
+import { initCaseStudyQuestionnaires } from "../../../../../../constants/constants";
+import { CasenameSelectionLoader } from "../loader";
+import { usePageLoaderContext } from "../../../../../../../../../../../../../contexts/PageLoaderContext";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -32,6 +35,15 @@ export const CaseNameSelection: React.FC<Props> = ({
     criteriaMode: "all",
   });
 
+  const { contentLoader, setContentLoader } = usePageLoaderContext();
+
+  useEffect(() => {
+    setContentLoader(true);
+    setTimeout(() => {
+      setContentLoader(false);
+    }, 3000);
+  }, []);
+
   //mock case name
   const caseNameOptions: SelectOption[] = [
     {
@@ -43,6 +55,10 @@ export const CaseNameSelection: React.FC<Props> = ({
       value: "Appendicitis",
     },
   ];
+
+  if (contentLoader) {
+    return <CasenameSelectionLoader />;
+  }
 
   return (
     <Box>
@@ -86,8 +102,9 @@ export const CaseNameSelection: React.FC<Props> = ({
   );
 
   async function handleContinue(values: ContainedCaseStudyQuestionType) {
-    setCaseName(values);
-    nextStep({ ...values });
+    const submissionValues = { ...values, ...initCaseStudyQuestionnaires };
+    setCaseName(submissionValues);
+    nextStep(submissionValues);
     next();
   }
 };

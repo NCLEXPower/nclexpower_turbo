@@ -10,12 +10,36 @@ import {
   ToastProvider,
 } from "core-library/contexts";
 import Layout from "./Layout";
-import { ControlledToast } from "core-library/components";
+import { ControlledToast, ErrorBox } from "core-library/components";
 import { ClientSecretKeyContextProvider } from "core-library/contexts";
+import { SsrTypes } from "core-library/types/global";
+import CSPHead from "core-library/components/CSPHead";
+import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
+import withAuth from "core-library/core/utils/withAuth";
 
-const Page: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+interface Props {
+  data?: SsrTypes;
+  generatedNonce?: string;
+  error?: any;
+}
+
+const Page: React.FC<React.PropsWithChildren<Props>> = ({
+  children,
+  data,
+  generatedNonce,
+  error,
+}) => {
+  if (error) {
+    return <ErrorBox label={error.message} />;
+  }
+
+  if (data?.loadMaintenanceMode?.maintenanceModeType === 1) {
+    return <MaintenanceBlock />;
+  }
+
   return (
     <React.Fragment>
+      <CSPHead nonce={generatedNonce ?? "no-nonce"} />
       <BusinessQueryContextProvider>
         <AuthProvider>
           <ToastProvider>
@@ -30,4 +54,4 @@ const Page: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   );
 };
 
-export default Page;
+export default withAuth(Page);

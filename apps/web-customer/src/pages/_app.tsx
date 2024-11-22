@@ -18,6 +18,7 @@ import "core-library/styles/nprogress.css";
 import { useEmotionCache } from "core-library/hooks";
 import { CacheProvider } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
+import { SsrTypes } from "core-library/types/global";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -38,7 +39,11 @@ export default function App({
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        <Page>
+        <Page
+          data={pageProps?.data as SsrTypes}
+          generatedNonce={pageProps?.generatedNonce as string}
+          error={pageProps?.error}
+        >
           <Suspense>
             <Component {...pageProps} />
           </Suspense>

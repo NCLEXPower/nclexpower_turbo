@@ -1,7 +1,7 @@
-import { WizardFormMap } from "core-library/hooks";
 import { QuestionManagement } from "./content/simulator/QuestionManagement";
 import { SettingsSelectionType } from "../types";
 import { SettingsManagementSteps } from "./ChooseSettingsTypeStep";
+import { WizardFormMap } from '../../../../../../../../hooks';
 
 export type QuestionManagementFormSteps = "SelectQuestionType";
 

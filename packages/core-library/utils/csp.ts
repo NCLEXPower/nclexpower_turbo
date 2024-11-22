@@ -3,9 +3,10 @@ import { nonce } from "../types";
 import { config } from "../config";
 import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
+import { getMaintenanceMode } from "../ssr";
 
 export const generateCSP = (generatedNonce: string): string =>
-  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com ` +
+  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live ` +
   config.value.STRIPE_URL_JS +
   " " +
   `; form-action 'self'; base-uri 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; connect-src ` +
@@ -14,7 +15,7 @@ export const generateCSP = (generatedNonce: string): string =>
   config.value.LOCAL_API_URL +
   " " +
   config.value.VERCELURL +
-  " *.vercel.app *.herokuapp.com https://js.stripe.com " +
+  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org " +
   config.value.STRIPE_URL_JS +
   ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com ` +
   " " +
@@ -30,30 +31,41 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
 
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
-    const generatedNonce = nonce();
-    const csp = generateCSP(generatedNonce);
+    try {
+      const generatedNonce = nonce();
+      const csp = generateCSP(generatedNonce);
+      const loadMaintenanceMode = await getMaintenanceMode();
 
-    setCSPHeader(context.res as ServerResponse, csp);
+      setCSPHeader(context.res as ServerResponse, csp);
 
-    if (getServerSidePropsFn) {
-      const result = await getServerSidePropsFn(context);
-      if ("props" in result) {
-        return {
-          ...result,
-          props: {
-            ...result.props,
-            generatedNonce,
-          },
-        };
+      if (getServerSidePropsFn) {
+        const result = await getServerSidePropsFn(context);
+        if ("props" in result) {
+          return {
+            ...result,
+            props: {
+              ...result.props,
+              generatedNonce,
+              data: { loadMaintenanceMode },
+            },
+          };
+        }
+
+        return result;
       }
 
-      return result;
+      return {
+        props: {
+          generatedNonce,
+          data: {
+            loadMaintenanceMode,
+          },
+        },
+      };
+    } catch (error: any) {
+      return {
+        props: { error: { message: error.message || "An error occurred." } },
+      };
     }
-
-    return {
-      props: {
-        generatedNonce,
-      },
-    };
   };
 };

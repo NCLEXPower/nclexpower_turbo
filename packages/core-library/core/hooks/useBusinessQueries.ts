@@ -5,7 +5,6 @@ import {
   CalcItemSelectResponseItem,
   ItemSelectTypes,
   RegularAnswer,
-
 } from "../../types";
 import { AxiosError, AxiosResponse } from "axios";
 import { CategoryListResponse } from "../../types/category-response";
@@ -27,7 +26,20 @@ import {
   GetAllInternalAccount,
   CreateRegularType,
   AuthorizedContentsResponseType,
-  WebGetContentsParams
+  WebGetContentsParams,
+  GetAllInclusionResponse,
+  CreateInclusionParams,
+  EditInclusionParams,
+  SubsequentOptionType,
+  GetDefaultReviewerResponse,
+  DefaultReviewerDto,
+  GetSubsequentLists,
+  CreateAuthorizedMenusParams,
+  AuthorizedMenu,
+  AuthorizedMenuResponse,
+  GetMenuByIdParams,
+  UpdateMenuItemParams,
+  ContactFormType,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -409,21 +421,20 @@ export const useCreateReportIssue = (
     async (api, args: ReportIssueType) =>
       await api.web.web_create_report_issue(args)
   );
-  return useAppMutation<
-    AxiosResponse<number, AxiosError>,
-    ReportIssueType
-  >(async (data) => {
-    const result = await submissionCreateReportIssueCb.execute({ ...data });
-    return result;
-  }, opt);
+  return useAppMutation<AxiosResponse<number, AxiosError>, ReportIssueType>(
+    async (data) => {
+      const result = await submissionCreateReportIssueCb.execute({ ...data });
+      return result;
+    },
+    opt
+  );
 };
 
 export const useGetCategoryByType = (
-  queryKey: string[], type: number
+  queryKey: string[],
+  type: number
 ): UseQueryResult<any | undefined, any> => {
-  const getCategoryByType = useApi((api) =>
-    api.web.get_category_by_type(type)
-  );
+  const getCategoryByType = useApi((api) => api.web.get_category_by_type(type));
 
   return useQuery<ApiServiceErr>(
     queryKey,
@@ -435,9 +446,9 @@ export const useGetCategoryByType = (
   );
 };
 
-
 export const useGetRegularQuestionDDCategory = (
-  queryKey: string[], type: number
+  queryKey: string[],
+  type: number
 ): UseQueryResult<any | undefined, any> => {
   const getClientNeeds = useApi((api) =>
     api.webbackoffice.getRegularQuestionDDCategory(type)
@@ -468,7 +479,7 @@ export const useGetAllInternalAccounts = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useCreateRegularQuestion = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -477,17 +488,18 @@ export const useCreateRegularQuestion = (
     async (api, args: CreateRegularType) =>
       await api.webbackoffice.createRegularQuestion(args)
   );
-  return useAppMutation<
-    AxiosResponse<number, AxiosError>,
-    CreateRegularType
-  >(async (data) => {
-    const result = await CreateRegularQuestionCb.execute({ ...data });
-    return result;
-  }, opt);
-}
+  return useAppMutation<AxiosResponse<number, AxiosError>, CreateRegularType>(
+    async (data) => {
+      const result = await CreateRegularQuestionCb.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
 
 export const useGetContents = (
-  queryKey: string[], args: WebGetContentsParams
+  queryKey: string[],
+  args: WebGetContentsParams
 ): UseQueryResult<AuthorizedContentsResponseType[] | undefined, any> => {
   const getRegularQuestions = useApi((api) =>
     api.webbackoffice.web_get_regular_question(args)
@@ -502,3 +514,230 @@ export const useGetContents = (
     { staleTime: Infinity }
   );
 }
+
+export const useGetAllInclusion = (
+  queryKey: string[]
+): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
+  const getAllInclusion = useApi((api) =>
+    api.webbackoffice.getAllInclusions()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllInclusion.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useDeleteRoute = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const deleteCategoryCb = useApiCallback(
+    async (api, args: string) => await api.webbackoffice.delete_route(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, string>(
+    async (id) => {
+      const result = await deleteCategoryCb.execute(id);
+      return result;
+    },
+    opt
+  );
+};
+
+export const useCreateInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const createInclusionCB = useApiCallback(
+    async (api, args: CreateInclusionParams) =>
+      await api.webbackoffice.createInclusions(args)
+  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    CreateInclusionParams
+  >(async (data) => {
+    const result = await createInclusionCB.execute({ ...data });
+    return result;
+  }, opt);
+}
+
+export const useDeleteInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const deleteInclusionCB = useApiCallback(
+    async (api, args: string) =>
+      await api.webbackoffice.deleteInclusion(args)
+  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    string
+  >(async (data) => {
+    const result = await deleteInclusionCB.execute(data);
+    return result;
+  }, opt);
+}
+
+export const useUpdateInclusion = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const updateInclusionCB = useApiCallback(
+    async (api, args: EditInclusionParams) =>
+      await api.webbackoffice.editInclusion(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, EditInclusionParams>(
+    async (data) => {
+      const result = await updateInclusionCB.execute({ ...data });
+      return result;
+    }, opt);
+}
+
+export const useCreateSubsequentOptions = (
+  opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
+) => {
+  const createSubsequentOption = useApiCallback(
+    async (api, args: SubsequentOptionType) =>
+      await api.webbackoffice.web_create_subsequent(args)
+  );
+  return useAppMutation<AxiosResponse<SubsequentOptionType, AxiosError>, SubsequentOptionType>(
+    async (data) => {
+      const result = await createSubsequentOption.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
+
+export const useGetSelectedApprovers = (
+  queryKey: string[]
+): UseQueryResult<DefaultReviewerDto[] | undefined, any> => {
+  const getSelectedApprover = useApi((api) =>
+    api.webbackoffice.getSelectedApprover()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSelectedApprover.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetAllInternalInclusions = (
+  queryKey: string[]
+): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
+  const getInternalInclusions = useApi((api) =>
+    api.webbackoffice.getAllInclusionLists()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getInternalInclusions.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetSubsequentList = (
+  queryKey: string[]
+): UseQueryResult<GetSubsequentLists[] | undefined, any> => {
+  const getSubsequentLists = useApi((api) =>
+    api.webbackoffice.getSubsequentLists()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSubsequentLists.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useCreateAuthorizedMenus = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const createAuthorizedMenus = useApiCallback(
+    async (api, args: CreateAuthorizedMenusParams) =>
+      await api.webbackoffice.createAuthorizedMenus(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, CreateAuthorizedMenusParams>(
+    async (data) => {
+      const result = await createAuthorizedMenus.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
+
+export const useGetAllMenus = (
+  queryKey: string[]
+): UseQueryResult<AuthorizedMenuResponse[] | undefined, any> => {
+  const getAllMenus = useApi((api) =>
+    api.webbackoffice.getAllMenus()
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllMenus.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useGetMenuById = (
+  queryKey: string[], menuId: GetMenuByIdParams
+): UseQueryResult<AuthorizedMenuResponse | undefined, any> => {
+  const getMenuById = useApi((api) =>
+    api.webbackoffice.getMenuById(menuId)
+  );
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getMenuById.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+}
+
+export const useUpdateMenuItem = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const updateMenuItem = useApiCallback(
+    async (api, args: UpdateMenuItemParams) =>
+      await api.webbackoffice.updateMenuItem(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, UpdateMenuItemParams>(
+    async (data) => {
+      const result = await updateMenuItem.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
+
+export const useCreateContactUs = (
+  opt?: MutOpt<AxiosResponse<number, AxiosError>>
+) => {
+  const contactUsSubmission = useApiCallback(
+    async (api, args: ContactFormType) =>
+      await api.web.web_create_contact_us(args)
+  );
+  return useAppMutation<AxiosResponse<number, AxiosError>, ContactFormType>(
+    async (data) => {
+      const result = await contactUsSubmission.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};

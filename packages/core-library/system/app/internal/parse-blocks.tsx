@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import withAuth from "../../../core/utils/withAuth";
 import {
   HubBlock,
@@ -14,6 +19,11 @@ import {
   ReportedIssuesBlock,
   CreateCategoryBlock,
   CreateRegularQuestionTypeBlock,
+  InclusionBlock,
+  DuplicateSessionBlock,
+  ChatbotManagementBlock,
+  ContactUsManagementBlock,
+  SalesManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -51,9 +61,19 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <CreateRegularQuestionTypeBlock />;
     case "CreateCategoryBlock":
       return <CreateCategoryBlock />;
+    case "InclusionBlock":
+      return <InclusionBlock />;
+    case "DuplicateSessionBlock":
+      return <DuplicateSessionBlock />;
+    case "ChatbotManagement":
+      return <ChatbotManagementBlock />;
+    case "ContactUsManagementBlock":
+      return <ContactUsManagementBlock />;
+    case "SalesManagement":
+      return <SalesManagementBlock />;
     default:
       return null;
   }
 };
 
-export default withAuth(ParseBlocks);
+export default ParseBlocks;

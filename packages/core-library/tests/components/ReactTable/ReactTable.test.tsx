@@ -1,69 +1,70 @@
-import { render, screen } from "../../common";
-import { ReactTable } from "../../../components";
-import { ColumnDef, useReactTable } from "@tanstack/react-table";
+import { render, screen } from '../../common';
+import { ReactTable } from '../../../components';
+import { ColumnDef, useReactTable } from '@tanstack/react-table';
 
-jest.mock("../../../config", () => ({
+jest.mock('../../../config', () => ({
   config: { value: jest.fn() },
 }));
 
-jest.mock("../../../core/router", () => ({
+jest.mock('../../../core/router', () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../../../components/ReactTable/TablePaginationActions", () => ({
+jest.mock('../../../components/ReactTable/TablePaginationActions', () => ({
   TablePaginationActions: jest.fn(() => <div>TablePaginationActions</div>),
 }));
 
-jest.mock("@tanstack/react-table", () => ({
+jest.mock('@tanstack/react-table', () => ({
   useReactTable: jest.fn(),
   flexRender: jest.fn((value: any) => value),
   getCoreRowModel: jest.fn(),
   getExpandedRowModel: jest.fn(),
+  getFilteredRowModel: jest.fn(),
 }));
 
 const mockData = [
-  { id: "mock-id-1", contentId: "Item 1" },
-  { id: "mock-id-2", contentId: "Item 2" },
-  { id: "mock-id-3", contentId: "Item 3" },
+  { id: 'mock-id-1', contentId: 'Item 1' },
+  { id: 'mock-id-2', contentId: 'Item 2' },
+  { id: 'mock-id-3', contentId: 'Item 3' },
 ];
 
 const mockColumns: ColumnDef<any>[] = [
   {
-    id: "id",
-    header: "ID",
-    accessorKey: "id",
+    id: 'id',
+    header: 'ID',
+    accessorKey: 'id',
     enablePinning: true,
   },
   {
-    id: "contentId",
-    header: "ContentID",
-    accessorKey: "contentId",
+    id: 'contentId',
+    header: 'ContentID',
+    accessorKey: 'contentId',
   },
 ];
 
-describe("ReactTable", () => {
+describe('ReactTable', () => {
   let tableMock: any;
 
   beforeEach(() => {
     tableMock = {
       getHeaderGroups: jest.fn(() => [
         {
-          id: "headerGroup-1",
+          id: 'headerGroup-1',
           headers: [
             {
-              id: "id",
+              id: 'id',
               isPlaceholder: false,
               column: {
-                columnDef: { header: "ID" },
+                columnDef: { header: 'ID' },
                 getIsPinned: jest.fn(() => false),
               },
-              getContext: jest.fn().mockReturnValue,
+              getContext: jest.fn(),
             },
             {
-              id: "contentId",
+              id: 'contentId',
               isPlaceholder: false,
               column: {
-                columnDef: { header: "ContentID" },
+                columnDef: { header: 'ContentID' },
                 getIsPinned: jest.fn(() => false),
               },
               getContext: jest.fn(),
@@ -94,21 +95,22 @@ describe("ReactTable", () => {
         })),
       })),
       getSelectedRowModel: jest.fn(() => ({ rows: [] })),
+      getFilteredRowModel: jest.fn(() => ({ rows: [] })),
     };
 
     (useReactTable as jest.Mock).mockReturnValue(tableMock);
   });
 
-  it("Should render the table", () => {
+  it('Should render the table', () => {
     render(<ReactTable columns={mockColumns} data={mockData} />);
 
-    expect(screen.getByTestId("react-table")).toBeInTheDocument();
+    expect(screen.getByTestId('react-table')).toBeInTheDocument();
   });
 
-  it("renders table with correct headers and data", () => {
+  it('renders table with correct headers and data', () => {
     render(<ReactTable columns={mockColumns} data={mockData} />);
 
-    expect(screen.getByText("ContentID")).toBeInTheDocument();
-    expect(screen.getByText("ID")).toBeInTheDocument();
+    expect(screen.getByText('ContentID')).toBeInTheDocument();
+    expect(screen.getByText('ID')).toBeInTheDocument();
   });
 });

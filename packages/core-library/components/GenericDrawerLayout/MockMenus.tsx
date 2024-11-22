@@ -8,6 +8,7 @@ import {
   Settings as SettingsIcon,
   Source as SourceIcon,
   AccountCircle as AccountCircleIcon,
+  ContactPhone as ContactPhoneIcon,
 } from "@mui/icons-material";
 import { NavigationType } from "../../types/navigation";
 import { useAuthNavigation } from "../../core/hooks/useAuthNavigation";
@@ -112,6 +113,12 @@ const AuthenticatedMenu: NavigationType[] = [
         path: "/mu/view-users",
       },
     ],
+  },
+  {
+    id: 7,
+    label: "Contact Us Management",
+    icon: <ContactPhoneIcon color="primary" fontSize="small" />,
+    path: "/contactus/contact-us-view",
   },
   {
     id: 9,

@@ -1,4 +1,9 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import {
   Table,
   TableContainer,
@@ -10,7 +15,8 @@ import {
   TablePagination,
   Box,
   Checkbox,
-} from "@mui/material";
+  Switch,
+} from '@mui/material';
 import {
   getCoreRowModel,
   useReactTable,
@@ -21,12 +27,14 @@ import {
   RowSelectionState,
   RowModel,
   getExpandedRowModel,
-} from "@tanstack/react-table";
-import { getCommonPinningStyles } from "./content/CommonPinningStyle";
-import { TablePaginationActions } from "./TablePaginationActions";
-import { StyledTableRow } from "./content/StyledTableRow";
-import { CheckBoxColumn } from "./constant/CheckBoxColumn";
-import { AuthorizedContentsResponseType } from "../../api/types";
+  getFilteredRowModel,
+  RowData,
+} from '@tanstack/react-table';
+import { getCommonPinningStyles } from './content/CommonPinningStyle';
+import { TablePaginationActions } from './TablePaginationActions';
+import { StyledTableRow } from './content/StyledTableRow';
+import { CheckBoxColumn } from './constant/CheckBoxColumn';
+import { AuthorizedContentsResponseType } from '../../api/types';
 
 interface Props<T> {
   columns: ColumnDef<T>[];
@@ -38,11 +46,13 @@ interface Props<T> {
   initPageSize?: number;
   isLoading?: boolean;
   expandable?: boolean;
+  searchFilter?: boolean;
 }
 
-export const ReactTable = <T extends { children?: T[] }>({
+export const ReactTable = <T extends unknown>({
   columns,
   data,
+  searchFilter = false,
   ...rest
 }: Props<T>) => {
   const {
@@ -55,11 +65,12 @@ export const ReactTable = <T extends { children?: T[] }>({
     initPageSize,
   } = rest;
 
-  const [filtering, setFiltering] = useState<string>("");
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rowSelection, setRowSelection] = useState({});
   const [expanded, setExpanded] = useState({});
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const combinedColumns = [...CheckBoxColumn<T>(), ...columns];
   const dataColumns = useMemo(
     () => (!checkBoxSelection ? columns : combinedColumns),
@@ -75,8 +86,8 @@ export const ReactTable = <T extends { children?: T[] }>({
       },
       rowSelection,
       expanded: expanded,
+      globalFilter,
     },
-    getSubRows: (row) => ("children" in row ? row.children : []),
     onExpandedChange: setExpanded,
     enableRowSelection: checkBoxSelection,
     columns: dataColumns ?? [],
@@ -84,7 +95,8 @@ export const ReactTable = <T extends { children?: T[] }>({
     data: data ?? [],
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    onGlobalFilterChange: setFiltering,
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   useEffect(() => {
@@ -101,9 +113,31 @@ export const ReactTable = <T extends { children?: T[] }>({
   };
 
   return (
-    <Box data-testid="react-table">
+    <Box data-testid='react-table' sx={{ position: 'relative' }}>
+      {searchFilter && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -65,
+            left: '60%',
+            transform: 'translateX(-50%)',
+            mb: 2,
+          }}
+        >
+          <input
+            value={globalFilter}
+            onChange={(e) => {
+              setGlobalFilter(e.target.value);
+              table.setGlobalFilter(e.target.value);
+            }}
+            placeholder='Search...'
+            style={{ padding: '8px', width: '300px' }}
+          />
+        </Box>
+      )}
+
       <TableContainer>
-        <Table sx={{ minWidth: 650, width: "100%", overflow: "auto" }}>
+        <Table sx={{ minWidth: 650, width: '100%', overflow: 'auto' }}>
           <TableHead>
             {table.getHeaderGroups().map((headerGroup) => (
               <StyledTableRow key={headerGroup.id}>
@@ -118,9 +152,9 @@ export const ReactTable = <T extends { children?: T[] }>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableCell>
                   );
                 })}
@@ -130,20 +164,20 @@ export const ReactTable = <T extends { children?: T[] }>({
           <TableBody>
             {(rowsPerPage > 0
               ? table
-                  .getRowModel()
-                  .rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
+                .getRowModel()
+                .rows.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : table.getRowModel().rows
             ).map((row, index) => (
               <StyledTableRow key={index}>
                 {row.getVisibleCells().map((cell, index) => (
                   <TableCell
                     key={index}
-                    sx={{ border: "1px" }}
-                    component="th"
-                    scope="row"
+                    sx={{ border: '1px' }}
+                    component='th'
+                    scope='row'
                     style={{ ...getCommonPinningStyles(cell.column) }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -156,13 +190,13 @@ export const ReactTable = <T extends { children?: T[] }>({
             {table.getFooterGroups().map((footerGroup) => (
               <TableRow key={footerGroup.id}>
                 {footerGroup.headers.map((header) => (
-                  <TableCell variant="head" key={header.id}>
+                  <TableCell variant='head' key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -172,15 +206,15 @@ export const ReactTable = <T extends { children?: T[] }>({
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+        count={table.getFilteredRowModel().rows.length}
         colSpan={3}
-        count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
         slotProps={{
           select: {
             inputProps: {
-              "aria-label": "rows per page",
+              'aria-label': 'rows per page',
             },
             native: true,
           },

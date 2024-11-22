@@ -6,34 +6,44 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useClearCookies } from "../../hooks/useClearCookies";
 import { parseTokenId } from "./access-token";
 import {
   useAccessLevel,
   useAccessToken,
   useAccountId,
   useRefreshToken,
+  useSession,
+  useDeviceNotRecognized,
+  useNewAccount,
 } from "./hooks";
 import {
   useApiCallback,
   useSensitiveInformation,
   clearSession,
+  useDeviceInfo,
 } from "../../hooks";
+import { internalAccountType, RegisterParams } from "../../types/types";
 import {
-  internalAccountType,
-  LoginParams,
-  RegisterParams,
-} from "../../types/types";
-import { CookieSetOptions, useSingleCookie } from "../../hooks/useCookie";
+  CookieSetOptions,
+  useDeviceId,
+  useSingleCookie,
+} from "../../hooks/useCookie";
 import { config } from "../../config";
 import { useRouter } from "../../core";
 import { useExecuteToast } from "../ToastContext";
-import { OTPPreparation, RevokeParams } from "../../api/types";
+import {
+  EnrolledDeviceUpdaterParams,
+  LoginParams,
+  OTPPreparation,
+  RevokeParams,
+} from "../../api/types";
+import { useAuthSessionIdleTimer } from "./hooks/useAuthSessionIdleTimer";
 
 const context = createContext<{
   loading: boolean;
   isAuthenticated: boolean;
   login(email: string, password: string): Promise<void>;
+  loginFromSso(): Promise<void>;
   register(data: RegisterParams): Promise<number>;
   createInternal(data: internalAccountType): Promise<number>;
   logout(): Promise<void>;
@@ -54,6 +64,10 @@ const context = createContext<{
       | undefined
   ) => void;
   setSingleCookie: (value: string | null, options?: CookieSetOptions) => void;
+  integrateDeviceInUseUpdater: (
+    accountId: string,
+    inUse?: boolean
+  ) => Promise<void>;
 }>(undefined as any);
 
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -63,13 +77,20 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const toast = useExecuteToast();
   const [verificationPreparation, setVerificationPreparation] =
     useState<OTPPreparation>({} as OTPPreparation);
-  const [clearCookies] = useClearCookies();
   const [accessToken, setAccessToken] = useAccessToken();
+  const [session, setSession] = useSession();
   const [accountId, setAccountId] = useAccountId();
   const [accessLevel, setAccessLevel] = useAccessLevel();
   const [, setSingleCookie, clearSingleCookie] = useSingleCookie();
   const [refreshToken, setRefreshToken] = useRefreshToken();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!accessToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!accessToken || false
+  );
+  const [deviceNotRecognized, setDeviceNotRecognized] =
+    useDeviceNotRecognized();
+  const [, setIsNewAccount] = useNewAccount();
+  const { getDeviceDetails } = useDeviceInfo();
+  const [accessDeviceId] = useDeviceId();
   const {
     customer,
     internal,
@@ -79,6 +100,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const loginCb = useApiCallback((api, data: LoginParams) =>
     api.auth.login(data)
   );
+
+  const loginSessionCb = useApiCallback((api, sessionId: string) =>
+    api.auth.loginFromSession(sessionId)
+  );
+
   const registerCb = useApiCallback((api, data: RegisterParams) =>
     api.web.web_account_setup(data)
   );
@@ -86,6 +112,26 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const revokeCb = useApiCallback((api, data: RevokeParams) =>
     api.auth.revokeToken(data)
   );
+
+  const destroySessionCb = useApiCallback(
+    async (
+      api,
+      args: { sessionId: string; deviceId: string; isAuthenticated: boolean }
+    ) => await api.auth.destroySession(args)
+  );
+
+  const enrolledDeviceUpdaterCb = useApiCallback(
+    async (api, args: EnrolledDeviceUpdaterParams) =>
+      await api.auth.enrolledDeviceUpdater(args)
+  );
+
+  const authSessionIdleTimer = useAuthSessionIdleTimer({
+    onSessionExpired: async () => {
+      await softLogout();
+      await goToExpiredSessionPage();
+    },
+    sessionId: session,
+  });
 
   const internalAccountCb = useApiCallback(
     async (api, args: internalAccountType) =>
@@ -95,6 +141,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     loginCb.loading ||
     registerCb.loading ||
     internalAccountCb.loading ||
+    destroySessionCb.loading ||
+    revokeCb.loading ||
+    enrolledDeviceUpdaterCb.loading ||
     dataloading;
 
   useEffect(() => {
@@ -102,35 +151,76 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }, [accessToken]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-  }, [isAuthenticated]);
+    if (!isAuthenticated || !session) return authSessionIdleTimer.stop;
+    return authSessionIdleTimer.start();
+  }, [isAuthenticated, session]);
 
   const logout = useCallback(async () => {
-    if (typeof internal === "undefined" || typeof customer === "undefined")
-      return;
-
     try {
-      if (refreshToken && accessToken && accountId) {
+      if (refreshToken && accessToken && accountId && session) {
         await revokeCb.execute({
           accessToken: accessToken,
           refreshToken: refreshToken,
           appName: config.value.BASEAPP,
-          email: internal.email || customer.email || "",
+          email: internal?.email || customer?.email || "",
         });
       }
     } catch (e) {
       console.error(e);
     } finally {
       setIsAuthenticated(false);
-      clearCookies();
-      clearSingleCookie();
       clearSession();
+      authSessionIdleTimer.stop();
       await router.push((route) => route.login);
     }
-  }, [refreshToken, accessToken, accountId, loading, customer, internal]);
+  }, [refreshToken, accessToken]);
+
+  const integrateDeviceInUseUpdater = useCallback(
+    async (accountId: string, inUse: boolean = true) => {
+      const { deviceType } = getDeviceDetails;
+      if (!accessToken && !refreshToken && !deviceType) return;
+      try {
+        if (accessDeviceId !== null && typeof accessDeviceId !== "undefined") {
+          await enrolledDeviceUpdaterCb.execute({
+            accountId: accountId,
+            deviceId: accessDeviceId,
+            deviceType: deviceType ?? "desktop",
+            inUse: inUse,
+          });
+        }
+      } catch (e) {
+        console.error(
+          `Something went wrong during integration of inuse updater`,
+          e
+        );
+      }
+    },
+    [accessDeviceId, getDeviceDetails, accessToken, refreshToken]
+  );
+
+  async function cleanseSession(condition: boolean | undefined) {
+    if (condition && session) {
+      await destroySessionCb.execute({
+        sessionId: session,
+        deviceId: accessDeviceId ?? "no-device-id",
+        isAuthenticated,
+      });
+    }
+  }
+
+  async function cleanseOpenSession() {
+    await cleanseSession(!isAuthenticated && deviceNotRecognized);
+  }
+
+  async function cleanseAuthSession() {
+    await cleanseSession(Boolean(accessToken && refreshToken));
+  }
 
   const softLogout = useCallback(async () => {
+    setIsAuthenticated(false);
     clearSession();
+    authSessionIdleTimer.stop();
+    await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
   return (
@@ -144,8 +234,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               email,
               password,
               appName: config.value.BASEAPP,
+              deviceId:
+                accessDeviceId === null || typeof accessDeviceId === "undefined"
+                  ? "no-device-id"
+                  : accessDeviceId,
             });
-
+            // if (result.data.responseCode === 304) {
+            //   setDeviceNotRecognized(true);
+            //   setSession(result.data.sessionId);
+            //   setAccountId(result.data.accountId);
+            //   await router.push((route) => route.device_not_recognized);
+            //   return;
+            // }
             if (result.data.is2FaEnabled) {
               const prepareVerification = {
                 email: email,
@@ -169,8 +269,42 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               );
               return;
             }
+            setIsNewAccount(result.data.isNewAccount);
             setAccountId(result.data.accountId);
             setAccessLevel(result.data.accessLevel);
+            setAccessToken(result.data.accessTokenResponse.accessToken);
+            setRefreshToken(result.data.accessTokenResponse.refreshToken);
+            setSession(result.data.sessionId);
+            setSingleCookie(
+              parseTokenId(result.data.accessTokenResponse.accessToken),
+              {
+                path: "/",
+                sameSite: "strict",
+                secure: process.env.NODE_ENV === "production",
+                domain: `.${window.location.hostname}`,
+              }
+            );
+            setIsAuthenticated(true);
+            await integrateDeviceInUseUpdater(result.data.accountId);
+            await router.push((route) => route.hub);
+          },
+          loginFromSso: async () => {
+            const result = await loginSessionCb.execute(session);
+            if (result.data.is2FaEnabled) {
+            } //need extensive dev in backend for sso. current prob -> sso doesn't have email and password.
+            if (result.data.responseCode === 404) {
+              toast.executeToast(
+                "Invalid email or password. Please try again.",
+                "top-right",
+                false,
+                {
+                  toastId: 0,
+                  type: "error",
+                }
+              );
+              return;
+            }
+            setAccountId(result.data.accountId);
             setAccessToken(result.data.accessTokenResponse.accessToken);
             setRefreshToken(result.data.accessTokenResponse.refreshToken);
             setSingleCookie(
@@ -183,6 +317,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               }
             );
             setIsAuthenticated(true);
+            await integrateDeviceInUseUpdater(result.data.accountId);
             await router.push((route) => route.hub);
           },
           register: async (data: RegisterParams) => {
@@ -206,6 +341,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           setRefreshToken,
           setSingleCookie,
           softLogout,
+          integrateDeviceInUseUpdater,
         }),
         [
           isAuthenticated,
@@ -213,12 +349,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           refreshToken,
           verificationPreparation,
           loading,
+          getDeviceDetails,
         ]
       )}
     >
       {children}
     </context.Provider>
   );
+
+  async function goToExpiredSessionPage() {
+    await router.push((route) => route.login);
+    return;
+  }
 };
 
 export const useAuthContext = () => {

@@ -52,7 +52,7 @@ export function SelectField({
         {...rest}
       >
         {options.map((option) => (
-          <MenuItem key={option.xvalue} value={option.xvalue}>
+          <MenuItem key={option.xvalue ?? option.value} value={option.xvalue ?? option.value}>
             {option.label}
           </MenuItem>
         ))}

@@ -9,15 +9,19 @@ import * as yup from "yup";
 
 export const contactSchema = yup.object({
   name: yup.string().required("Name is required").default("").matches(STRING_REGEX, "Special characters not allowed"),
-  phone: yup  
+  phone: yup
     .string()
     .matches(/^\d*$/, "Phone number must be a valid number")
     .required("Phone number is required")
     .default(""),
-  countryCode: yup  
+  countryCode: yup
     .string()
     .required("Country Code is required")
     .default(DEFAULT_PHONE_COUNTRY_CODE),
+  categoryId: yup
+    .string()
+    .required("Concern Category is required")
+    .default(""),
   email: yup
     .string()
     .email("Invalid email")
