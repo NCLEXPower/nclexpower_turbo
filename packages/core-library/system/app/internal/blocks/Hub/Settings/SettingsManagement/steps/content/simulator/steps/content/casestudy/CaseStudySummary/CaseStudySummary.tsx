@@ -5,7 +5,7 @@
  */
 
 import { Box, Grid, Typography, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 
 import { TableView } from "./component/TableView";
@@ -18,6 +18,8 @@ import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import { Button } from "../../../../../../../../../../../../../../components";
 import { ItemContent } from "./component/Items/ItemContent";
 import { BackgroundInfoContent } from "./component/BackgroundInfo/BackgroundInfoContent";
+import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
+import { CaseStudyLoader } from "../../loader";
 
 interface CaseStudySummaryProps {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -69,6 +71,14 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
 }) => {
   const [isTableView, setIsTableView] = useState<boolean>(false);
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
+  const { contentLoader, setContentLoader } = usePageLoaderContext();
+
+  useEffect(() => {
+    setContentLoader(true);
+    setTimeout(() => {
+      setContentLoader(false);
+    }, 6000);
+  }, []);
 
   const handleClick = () => {
     setIsTableView((prev) => !prev);
@@ -83,6 +93,10 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     previousStep();
     previous();
   };
+
+  if (contentLoader) {
+    return <CaseStudyLoader />;
+  }
 
   return (
     <Box>

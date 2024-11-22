@@ -17,11 +17,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { BackgroundInfoTab } from "./components/BackgroundInfoTab";
-import { caseStudyQuestionnaires, initCaseStudyQuestionnaires } from "../../../../../../../constants/constants";
+import {
+  caseStudyQuestionnaires,
+  initCaseStudyQuestionnaires,
+} from "../../../../../../../constants/constants";
 import { atom, useAtom } from "jotai";
 import { ErrorMapping } from "../../../../../../../../../../../../../../components";
 import { CreateCaseStudyAtom } from "../../../../useAtomic";
 import { InfoTabs } from "./constant/constant";
+import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
+import { CaseStudyLoader } from "../../loader";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -48,6 +53,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   reset,
 }) => {
   const [, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
+  const { contentLoader, setContentLoader } = usePageLoaderContext();
   const form = useForm<ContainedCaseStudyQuestionType>({
     mode: "all",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
@@ -56,13 +62,20 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
-  const {
-    getValues,
-    reset: formReset,
-    formState,
-    handleSubmit,
-  } = form;
+  const { getValues, reset: formReset, formState, handleSubmit } = form;
 
+  useEffect(() => {
+    setContentLoader(true);
+    setTimeout(() => {
+      setContentLoader(false);
+    }, 6000);
+  }, []);
+
+  const updateValues = () => {
+    formReset({
+      ...getValues(),
+    });
+  };
   const { errors } = formState;
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
@@ -74,7 +87,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const handlePrevious = () => {
     previousStep();
     previous();
-    reset()
+    reset();
   };
 
   const generateInfoTabs = () => {
@@ -102,6 +115,9 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const BGInfoTabs = useMemo(() => generateInfoTabs(), [values]);
   const TabsItemQuestion = useMemo(() => generateTabsItemQuestion(6), [values]);
 
+  if (contentLoader) {
+    return <CaseStudyLoader />;
+  }
   return (
     <Box>
       <FormProvider {...form}>
@@ -167,7 +183,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 overflowY: "auto",
                 position: "relative",
                 borderRadius: "10px",
-                borderColor: '#0B225C',
+                borderColor: "#0B225C",
                 border: 1,
               }}
             >
@@ -176,7 +192,12 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
           </Box>
         </Box>
       </FormProvider>
-      <Box width="fit-content" display="flex" justifyContent="end" sx={{ position: 'fixed', top: '150px', right: '50px' }}>
+      <Box
+        width="fit-content"
+        display="flex"
+        justifyContent="end"
+        sx={{ position: "fixed", top: "150px", right: "50px" }}
+      >
         <Box width="fit-content">
           <ErrorMapping errors={errors} />
         </Box>
