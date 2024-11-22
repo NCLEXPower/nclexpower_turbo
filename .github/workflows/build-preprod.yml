@@ -1,16 +1,14 @@
-name: NCLEXPower UAT CI/CD Build
+name: NCLEXPower Pre-production CI/CD Build
 
 on:
   push:
     branches:
-      - uat
-      - "feature/*"
+      - preprod
       - "hotfix/*"
       - "release/*"
   pull_request:
     branches:
-      - uat
-      - "feature/*"
+      - preprod
       - "hotfix/*"
       - "release/*"
 
@@ -61,14 +59,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Deploy web-customer to Vercel (UAT)
-        if: github.ref == 'refs/heads/uat'
+      - name: Deploy web-customer to Vercel (Dev)
+        if: github.ref == 'refs/heads/preprod'
         run: |
           cd apps/web-customer
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-uat
-
-      - name: Deploy web-backoffice-generic to Vercel (UAT)
-        if: github.ref == 'refs/heads/uat'
-        run: |
-          cd apps/web-backoffice-generic
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officeuat
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-sandbox
