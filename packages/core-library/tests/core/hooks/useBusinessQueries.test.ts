@@ -1904,7 +1904,6 @@ describe("useCreateContactUs", () => {
   });
 });
 
-
 describe("useGetAllCategories", () => {
   const mockExecute = jest.fn();
 

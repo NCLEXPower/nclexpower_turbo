@@ -35,7 +35,7 @@ export const CategoryForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   useFormFocusOnError<CategoryFormType>(formState.errors, setFocus);
 
   return (
-    <Grid container direction="column" rowSpacing={4} gap={2}>
+    <Grid data-testid="category-dialog-form" container direction="column" rowSpacing={4} gap={2}>
       <Grid item md={6} lg={4}>
         <TextField<CategoryFormType>
           name="categoryName"
