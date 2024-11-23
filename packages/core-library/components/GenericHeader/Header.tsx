@@ -7,18 +7,16 @@ Created by the Software Strategy & Development Division
 
 import {
   Box,
-  Button,
   Grid,
   Avatar,
   InputBase,
-  InputAdornment,
   Container,
   IconButton,
 } from "@mui/material";
 import { useResolution } from "../../hooks";
 import { HeaderLogo } from "./HeaderLogo";
 import { useRouter } from "../../core";
-import { AccountMenu, BreadCrumbs } from "../index";
+import { AccountMenu, BreadCrumbs, Button } from "../index";
 import { WebHeaderStylesType } from "../../types/web-header-style";
 import { AccountMenuItem } from ".";
 import { MenuItems } from "../../api/types";
