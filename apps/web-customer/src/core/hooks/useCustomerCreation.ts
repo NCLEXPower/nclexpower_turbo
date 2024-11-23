@@ -16,22 +16,20 @@ export const useCustomerCreation = () => {
 
       if (result.data === 1012) {
         toast.showToast("Email account already exist. Please try again.", "error");
-        return;
       } 
       
       if (result.data === 200) {
         await router.push((route) => route.login);
         toast.showToast("Account has been created successfully", "success");
-        return
       }
 
       else {
         toast.showToast("An unexpected error occurred. Please try again.", "error");
-        return;
       }
 
+      return;
     } catch (error) {
-      console.error(`Something went wrong: ${error}`);
+      toast.showToast(`Something went wrong: ${error}`, "error");
     }
   }
 
