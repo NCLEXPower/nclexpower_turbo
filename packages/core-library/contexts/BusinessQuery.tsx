@@ -46,9 +46,10 @@ import {
   useGetAllMenus,
   useGetMenuById,
   useUpdateMenuItem,
-  useCreateContactUs
+  useCreateContactUs,
+  useGetAllCategories
 } from "../core/hooks/useBusinessQueries";
-import { MutOpt } from "../core/hooks/types";
+import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
 import { CategoryListResponse } from "../types/category-response";
 import {
@@ -317,6 +318,9 @@ interface BusinessQueryContextValue {
     ContactFormType,
     unknown
   >;
+  businessQueryGetAllCategory: (
+    queryKey: string[]
+  ) => UseQueryResult<CategoryResponseType[] | undefined, any>
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -370,6 +374,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetMenuById = useGetMenuById
   const businessQueryUpdateMenuItem = useUpdateMenuItem
   const businessQueryCreateContactUs = useCreateContactUs
+  const businessQueryGetAllCategory = useGetAllCategories
 
   return (
     <BusinessQueryContext.Provider
@@ -414,7 +419,8 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllMenus,
         businessQueryGetMenuById,
         businessQueryUpdateMenuItem,
-        businessQueryCreateContactUs
+        businessQueryCreateContactUs,
+        businessQueryGetAllCategory
       }}
     >
       {children}
