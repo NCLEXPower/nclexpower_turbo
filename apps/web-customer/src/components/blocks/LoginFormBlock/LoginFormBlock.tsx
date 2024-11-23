@@ -56,7 +56,7 @@ export function LoginFormBlock() {
         removeItem();
       }
 
-      if (savedData && rememberMe) {
+      if (savedData) {
         const decryptedPassword = Decryption(
           savedData.password,
           key ?? "no-secret-key"
