@@ -113,7 +113,7 @@ export const ReactTable = <T extends unknown>({
   };
 
   return (
-    <Box data-testid='react-table' sx={{ position: 'relative' }}>
+    <Box data-testid='react-table' sx={{ position: 'relative', border: "0.25px solid #0F2A71", boxShadow: "0px 10px 60px 0px rgba(226, 236, 249, 0.50)", borderRadius: '8px' }}>
       {searchFilter && (
         <Box
           sx={{
@@ -145,8 +145,26 @@ export const ReactTable = <T extends unknown>({
                   const { column } = header;
                   return (
                     <TableCell
-                      style={{ ...getCommonPinningStyles(column) }}
-                      sx={{ fontWeight: 700 }}
+                      // style={{ ...getCommonPinningStyles(column) }}
+                      style={{
+                        ...getCommonPinningStyles(column),
+                        // position: 'sticky',
+                        // top: 0,
+                        backgroundColor: '#242839',
+                      }}
+                      // sx={{ fontWeight: 700 }}
+                      sx={{
+                        fontWeight: 700,
+                        // padding: '12px 16px',
+                        textTransform: 'uppercase',
+                        fontSize: '14px',
+                        color: '#fff',
+                        zIndex: 10,
+                        '&:hover': {
+                          cursor: 'pointer',
+                          backgroundColor: '#333d4c',
+                        },
+                      }}
                       key={header.id}
                     >
                       {header.isPlaceholder
