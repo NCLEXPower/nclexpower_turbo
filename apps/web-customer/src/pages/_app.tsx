@@ -47,7 +47,7 @@ export default function App({
         >
           <Suspense>
             <Component {...pageProps} />
-            <CookieConsentDialog />
+            {process.env.NODE_ENV !== "development" && <CookieConsentDialog />}
           </Suspense>
         </Page>
       </SessionProvider>
