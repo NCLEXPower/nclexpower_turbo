@@ -2,7 +2,6 @@ import { useRouter } from "core-library";
 import { CreateCustomerParams } from "core-library/api/types";
 import { useExecuteToast } from "core-library/contexts";
 import { useApiCallback } from "core-library/hooks";
-import React from "react";
 
 export const useCustomerCreation = () => {
   const createCb = useApiCallback(
@@ -14,10 +13,23 @@ export const useCustomerCreation = () => {
   async function createCustomerAsync(params: CreateCustomerParams) {
     try {
       const result = await createCb.execute({ ...params });
-      if (result.status === 200) {
+
+      if (result.data === 1012) {
+        toast.showToast("Email account already exist. Please try again.", "error");
+        return;
+      } 
+      
+      if (result.data === 200) {
         await router.push((route) => route.login);
         toast.showToast("Account has been created successfully", "success");
+        return
       }
+
+      else {
+        toast.showToast("An unexpected error occurred. Please try again.", "error");
+        return;
+      }
+
     } catch (error) {
       console.error(`Something went wrong: ${error}`);
     }
