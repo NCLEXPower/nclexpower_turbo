@@ -191,37 +191,35 @@ export const Header: React.FC<Props> = ({
                 </IconButton>
                 <Box
                   sx={{
-                    width: showSearch ? "100%" : "0%",
+                    width: showSearch ? "100%" : ("0%" as string),
                     overflow: "hidden",
                     transition: "width 0.5s ease",
                   }}
                 >
-                  {showSearch && (
-                    <InputBase
-                      placeholder="Search"
-                      sx={{
-                        bgcolor: "white",
-                        color: "black",
-                        borderRadius: "7px",
+                  <InputBase
+                    placeholder="Search"
+                    sx={{
+                      bgcolor: "white",
+                      color: "black",
+                      borderRadius: "7px",
+                      padding: "5px",
+                      width: "100%",
+                      border: "1px solid #ccc",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      "& .MuiInputBase-input": {
                         padding: "5px",
-                        width: "100%",
-                        border: "1px solid #ccc",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        "& .MuiInputBase-input": {
-                          padding: "5px",
-                          borderRadius: "7px",
-                          backgroundColor: "white",
+                        borderRadius: "7px",
+                        backgroundColor: "white",
 
-                          "&::placeholder": {
-                            marginLeft: "10px",
-                            color: "#888",
-                          },
+                        "&::placeholder": {
+                          marginLeft: "10px",
+                          color: "#888",
                         },
-                      }}
-                    />
-                  )}
+                      },
+                    }}
+                  />
                 </Box>
               </Container>
             </Grid>
