@@ -194,12 +194,12 @@ export const LoginForm: React.FC<Props> = ({
                     },
                   }}
                 />
-                <span
+                <p
                   onClick={handleForgotPasswordClick}
                   className="ml-1 pt-sans-narrow-regular underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
                 >
                   Forgot Password?
-                </span>
+                </p>
               </div>
               <div className="gap-4 flex items-center">
                 <Button
