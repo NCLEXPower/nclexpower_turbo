@@ -69,7 +69,7 @@ export const LoginForm: React.FC<Props> = ({
     }
   };
 
-  const {isMobile} = useResolution();
+  const { isMobile } = useResolution();
 
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
@@ -107,7 +107,7 @@ export const LoginForm: React.FC<Props> = ({
           </div>
         </Box>
       </div>
-      <div className="w-full lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24">
+      <div className="w-full h-full lg:h-auto lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24">
         <div
           className="flex items-center justify-end cursor-pointer text-darkBlue"
           onClick={handleBack}
@@ -119,13 +119,12 @@ export const LoginForm: React.FC<Props> = ({
           <div className="flex items-center justify-center">
             <Image
               src={CoreZigma}
-              className="smaller-screen"
+              className=""
               alt="CoreZigma"
               style={{
                 width: "150px",
                 height: "150px",
                 objectFit: "cover",
-                display: isMobile ? "none" : "flex",
               }}
             />
           </div>
@@ -180,20 +179,27 @@ export const LoginForm: React.FC<Props> = ({
                   />
                 </Box>
               </Grid>
-              <div className="my-4 flex items-center justify-between">
+              <div className="my-4 flex items-center justify-between ">
                 <Checkbox
                   checked={rememberMe}
                   onChange={handleChangeRememberMe}
                   label="Remember me"
-                  sx={{ borderRadius: 4 }}
+                  sx={{
+                    borderRadius: 4,
+                    "@media (max-width: 400px)": {
+                      fontSize: "12px",
+                    },
+                    "@media (min-width: 500px)": {
+                      fontSize: "16px",
+                    },
+                  }}
                 />
-                <Typography
+                <p
                   onClick={handleForgotPasswordClick}
-                  className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer"
-                  component="span"
+                  className="ml-1 pt-sans-narrow-regular underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
                 >
                   Forgot Password?
-                </Typography>
+                </p>
               </div>
               <div className="gap-4 flex items-center">
                 <Button

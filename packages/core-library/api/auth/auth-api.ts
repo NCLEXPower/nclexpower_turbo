@@ -124,6 +124,13 @@ export class AuthApi {
     );
   }
 
+  public verifyRecaptcha(props: { token: string }) {
+    return this.axios.post(
+      `/api/v2/internal/baseInternal/verify-captcha`,
+      props
+    );
+  }
+
   /**
    * This API can be transferred in SSR
    * @param sessionId
