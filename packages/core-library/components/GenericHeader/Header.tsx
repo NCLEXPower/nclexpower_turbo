@@ -7,21 +7,22 @@ Created by the Software Strategy & Development Division
 
 import {
   Box,
-  Button,
   Grid,
   Avatar,
   InputBase,
-  InputAdornment,
+  Container,
+  IconButton,
 } from "@mui/material";
 import { useResolution } from "../../hooks";
 import { HeaderLogo } from "./HeaderLogo";
 import { useRouter } from "../../core";
-import { AccountMenu, BreadCrumbs } from "../index";
+import { AccountMenu, BreadCrumbs, Button } from "../index";
 import { WebHeaderStylesType } from "../../types/web-header-style";
 import { AccountMenuItem } from ".";
 import { MenuItems } from "../../api/types";
 import SearchIcon from "@mui/icons-material/Search";
 import { config } from "../../config";
+import { useState } from "react";
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -30,6 +31,27 @@ export interface Props extends Partial<WebHeaderStylesType> {
   onLogout?: () => void;
   hidden: boolean;
 }
+
+const inputBaseStyles = {
+  bgcolor: "white",
+  color: "black",
+  borderRadius: "7px",
+  padding: "5px",
+  width: "100%",
+  border: "1px solid #ccc",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  "& .MuiInputBase-input": {
+    padding: "5px",
+    borderRadius: "7px",
+    backgroundColor: "white",
+    "&::placeholder": {
+      marginLeft: "10px",
+      color: "#888",
+    },
+  },
+};
 
 export const Header: React.FC<Props> = ({
   menu,
@@ -47,6 +69,12 @@ export const Header: React.FC<Props> = ({
   const appName = config.value.BASEAPP;
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
+
+  const [showSearch, setShowSearch] = useState(false);
+
+  const toggleSearchField = () => {
+    setShowSearch((prev) => !prev);
+  };
 
   const handleNavigate = (path: string) => {
     router.push({ pathname: path });
@@ -167,32 +195,45 @@ export const Header: React.FC<Props> = ({
               sx={{
                 display: { xs: "none", sm: "block" },
                 alignSelf: "center",
-                marginRight: 20,
               }}
             >
-              <InputBase
-                placeholder="Search"
+              <Container
                 sx={{
-                  bgcolor: "white",
-                  color: "black",
-                  borderRadius: 1,
-                  padding: "0 10px",
-                  width: "100%",
-                  border: "1px solid #ccc",
+                  display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "flex-end",
+                  gap: "10px",
                 }}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "black", float: "right" }} />
-                  </InputAdornment>
-                }
-              />
+              >
+                <IconButton onClick={toggleSearchField}>
+                  <SearchIcon fontSize="large" sx={{ color: "white" }} />
+                </IconButton>
+                <Box
+                  sx={{
+                    width: showSearch ? "100%" : "0%",
+                    overflow: "hidden",
+                    transition: "width 0.5s ease",
+                  }}
+                >
+                  <InputBase placeholder="Search" sx={inputBaseStyles} />
+                </Box>
+              </Container>
             </Grid>
           )}
 
           {isAuthenticated && (
-            <Grid item xs={3.5} sm={1.5} md={2} lg={2} xl={1}>
+            <Grid
+              item
+              xs={3.5}
+              sm={1.5}
+              md={2}
+              lg={2}
+              xl={1}
+              sx={{
+                display: { xs: "none", sm: "block" },
+                alignSelf: "center",
+              }}
+            >
               <AccountMenu
                 icon={<Avatar src="/path-to-user-image.jpg" />}
                 label={isMobile ? "" : "User"}
