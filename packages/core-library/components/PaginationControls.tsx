@@ -40,11 +40,41 @@ export function PaginationControls<T extends Record<string, unknown>>({
   }
 
   return (
-    <Grid
-      container
-      justifyContent="flex-end"
-      alignItems="center"
-      wrap="nowrap"
-    ></Grid>
+    <Grid container justifyContent="flex-end" alignItems="center" wrap="nowrap">
+      <Grid item pt={1}>
+        <Typography variant="body2">{`${currentPage} of ${pagesCount}`}</Typography>
+      </Grid>
+      <Grid item>
+        <IconButton
+          onClick={handlePreviousPageClick}
+          disabled={!hasPreviousPage}
+        >
+          <ChevronLeft
+            fontSize="medium"
+            sx={{ color: hasPreviousPage ? "#000" : undefined }}
+          />
+        </IconButton>
+      </Grid>
+      <Grid item>
+        <IconButton onClick={handleNextPageClick} disabled={!hasNextPage}>
+          <ChevronRight
+            fontSize="medium"
+            sx={{ color: hasNextPage ? "#000" : undefined }}
+          />
+        </IconButton>
+      </Grid>
+    </Grid>
   );
+
+  function handlePreviousPageClick() {
+    paginationData && onChangePage
+      ? onChangePage(paginationData.pageNumber - 1)
+      : previousPage();
+  }
+
+  function handleNextPageClick() {
+    paginationData && onChangePage
+      ? onChangePage(paginationData.pageNumber + 1)
+      : nextPage();
+  }
 }
