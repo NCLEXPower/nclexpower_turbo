@@ -6,7 +6,7 @@ import { ServerResponse } from "http";
 import { getMaintenanceMode } from "../ssr";
 
 export const generateCSP = (generatedNonce: string): string =>
-  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live https://www.google.com https://www.gstatic.com` +
+  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
   config.value.STRIPE_URL_JS +
   " " +
   `; form-action 'self'; base-uri 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; connect-src ` +
