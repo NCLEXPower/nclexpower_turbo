@@ -12,11 +12,12 @@ import {
   InputBase,
   Container,
   IconButton,
+  Button,
 } from "@mui/material";
 import { useResolution } from "../../hooks";
 import { HeaderLogo } from "./HeaderLogo";
 import { useRouter } from "../../core";
-import { AccountMenu, BreadCrumbs, Button } from "../index";
+import { AccountMenu, BreadCrumbs } from "../index";
 import { WebHeaderStylesType } from "../../types/web-header-style";
 import { AccountMenuItem } from ".";
 import { MenuItems } from "../../api/types";
