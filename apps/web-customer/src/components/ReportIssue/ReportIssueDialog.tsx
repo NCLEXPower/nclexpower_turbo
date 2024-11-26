@@ -1,16 +1,10 @@
-/**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import { DialogBox } from 'core-library/components/Dialog/DialogBox';
 import { useBusinessQueryContext } from 'core-library/contexts';
 import { ReportIssueType } from 'core-library/api/types';
+import ReportIcon from '@mui/icons-material/Report';
 import ReportIssueForm from './ReportIssueForm';
-import { EvaIcon } from 'core-library/components';
 
 export default function ReportIssueDialog() {
   const [open, setOpen] = useState(false);
@@ -28,13 +22,7 @@ export default function ReportIssueDialog() {
   return (
     <React.Fragment>
       <Button onClick={handleClickOpen} sx={{ color: '#F3F3F3' }}>
-            <EvaIcon
-                name="alert-circle"
-                fill="#F3F3F3"
-                width={40}
-                height={40}
-                ariaHidden
-              />
+        <ReportIcon fontSize="large" />
         Report Issue
       </Button>
       <DialogBox

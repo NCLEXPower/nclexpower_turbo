@@ -39,7 +39,6 @@ import {
   GetMenuByIdParams,
   UpdateMenuItemParams,
 } from "../types";
-import { CategoryResponseType } from '../../core/hooks/types';
 
 export class WebApiBackOffice {
   constructor(
@@ -347,9 +346,5 @@ export class WebApiBackOffice {
 
   public async updateMenuItem(params: UpdateMenuItemParams) {
     return await this.axios.post(`/api/v2/content/BaseContent/update-menu-item`, params)
-  }
-
-  public async getAllCategory() {
-    return await this.axios.get<CategoryResponseType[]>('/api/v1/Category/fetch-all-category-type')
   }
 }

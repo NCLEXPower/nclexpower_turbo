@@ -27,7 +27,6 @@ export const config = {
       GCID: processEnv.NEXT_PRIVATE_GOOGLE_CLIENT_ID!,
       GCS: processEnv.NEXT_PRIVATE_GOOGLE_CLIENT_SECRET!,
       NXTAUTH: processEnv.NEXT_PRIVATE_NEXTAUTH_SECRET!,
-      SITEKEY: processEnv.NEXT_PRIVATE_RECAPTCHA_SITE_KEY!,
     };
   },
 };

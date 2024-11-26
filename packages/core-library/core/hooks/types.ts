@@ -19,10 +19,3 @@ export interface ParamOptions {
   page: number;
   sortBy: string;
 }
-
-export interface CategoryResponseType {
-  id: string
-  categoryTypeName: string
-  categoryTypeValue: number
-}
-

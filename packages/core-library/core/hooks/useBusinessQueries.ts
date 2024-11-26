@@ -1,5 +1,5 @@
 import { useMutation, useQuery, UseQueryResult } from "react-query";
-import { MutOpt, ApiServiceErr, CategoryResponseType } from "./types";
+import { MutOpt, ApiServiceErr } from "./types";
 import { useApi, useApiCallback } from "../../hooks";
 import {
   CalcItemSelectResponseItem,
@@ -741,20 +741,3 @@ export const useCreateContactUs = (
     opt
   );
 };
-
-export const useGetAllCategories = (
-  queryKey: string[]
-): UseQueryResult<CategoryResponseType[] | undefined, any> => {
-  const getAllCategories = useApi((api) =>
-    api.webbackoffice.getAllCategory()
-  );
-
-  return useQuery<ApiServiceErr>(
-    queryKey,
-    async () => {
-      const result = await getAllCategories.execute();
-      return result.data;
-    },
-    { staleTime: Infinity }
-  );
-}

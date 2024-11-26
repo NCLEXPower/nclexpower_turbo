@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { TextField } from "../../../forms/TextField";
 import { Button } from "../../../Button/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,7 +7,6 @@ import { CategoryFormType, categorySchema } from "./validation";
 import { useFormFocusOnError } from "../../../../hooks";
 import { Box, Grid } from "@mui/material";
 import { GenericSelectField } from "../../../Textfield/GenericSelectField";
-import { useBusinessQueryContext } from '../../../../contexts';
 
 interface Props {
   onSubmit: (values: CategoryFormType) => void;
@@ -15,16 +14,6 @@ interface Props {
 }
 
 export const CategoryForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
-  const { businessQueryGetAllCategory } = useBusinessQueryContext()
-  const { data } = businessQueryGetAllCategory(["GetAllCategoryApi"])
-
-  const categoryList = useMemo(() => data ? data?.map((value) => ({
-    label: value.categoryTypeName,
-    value: value.categoryTypeName
-  })) : []
-    , [data])
-
-
   const { control, handleSubmit, clearErrors, setFocus, formState } =
     useForm<CategoryFormType>({
       mode: "all",
@@ -35,7 +24,7 @@ export const CategoryForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   useFormFocusOnError<CategoryFormType>(formState.errors, setFocus);
 
   return (
-    <Grid data-testid="category-dialog-form" container direction="column" rowSpacing={4} gap={2}>
+    <Grid container direction="column" rowSpacing={4} gap={2}>
       <Grid item md={6} lg={4}>
         <TextField<CategoryFormType>
           name="categoryName"
@@ -58,7 +47,13 @@ export const CategoryForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
         <GenericSelectField
           control={control}
           name="categoryType"
-          options={categoryList}
+          options={[
+            { label: "PRICING", value: 0 },
+            { label: "REPORT ISSUE", value: 1 },
+            { label: "CLIENT NEEDS", value: 2 },
+            { label: "CONTENT AREA", value: 3 },
+            { label: "COGNITIVE LEVEL", value: 4 },
+          ]}
           label="Select Category type"
         />
       </Grid>

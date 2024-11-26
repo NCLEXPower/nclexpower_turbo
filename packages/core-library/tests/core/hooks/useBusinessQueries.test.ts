@@ -24,7 +24,6 @@ import {
   useGetAllMenus,
   useUpdateMenuItem,
   useCreateContactUs,
-  useGetAllCategories,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -53,7 +52,6 @@ import {
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
 import { EditMenuItemsType } from '../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types';
-import { CategoryResponseType } from '../../../core/hooks/types';
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -1903,36 +1901,3 @@ describe("useCreateContactUs", () => {
     expect(result.current.isLoading).toBe(false);
   });
 });
-
-describe("useGetAllCategories", () => {
-  const mockExecute = jest.fn();
-
-  it("should return a list of categories", async () => {
-    const mockData: CategoryResponseType[] = [
-      {
-        id: "test-id",
-        categoryTypeName: "test-name",
-        categoryTypeValue: 0
-      }
-    ];
-
-    (useQuery as jest.Mock).mockImplementation(() => {
-      return {
-        data: mockData,
-        isLoading: false,
-        error: null,
-      };
-    });
-
-    const { result } = renderHook(() =>
-      useGetAllCategories(["getAllCategories"])
-    );
-
-    expect(useQuery).toHaveBeenCalledWith(["getAllCategories"], expect.any(Function), {
-      staleTime: Infinity,
-    });
-
-    expect(result.current.data).toEqual(mockData);
-    expect(result.current.isLoading).toBe(false);
-  });
-})
