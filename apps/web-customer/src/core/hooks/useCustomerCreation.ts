@@ -14,10 +14,22 @@ export const useCustomerCreation = () => {
   async function createCustomerAsync(params: CreateCustomerParams) {
     try {
       const result = await createCb.execute({ ...params });
-      if (result.status === 200) {
+
+      if (result.data === 200) {
         await router.push((route) => route.login);
         toast.showToast("Account has been created successfully", "success");
       }
+
+      if (result.data === 1012) {
+        toast.showToast("Email account already exist. Please try again.", "error");
+      }
+
+      else {
+        toast.showToast("An unexpected error occurred. Please try again.", "error");
+      }
+
+      return;
+
     } catch (error) {
       console.error(`Something went wrong: ${error}`);
     }
