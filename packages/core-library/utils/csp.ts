@@ -17,7 +17,7 @@ export const generateCSP = (generatedNonce: string): string =>
   config.value.VERCELURL +
   " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com" +
   config.value.STRIPE_URL_JS +
-  ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live ` +
+  ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
   " " +
   config.value.STRIPE_URL_JS +
   ";";
