@@ -1,8 +1,12 @@
+/**
+* Property of the NCLEX Power.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { useRouter } from "core-library";
 import { CreateCustomerParams } from "core-library/api/types";
 import { useExecuteToast } from "core-library/contexts";
 import { useApiCallback } from "core-library/hooks";
-import React from "react";
 
 export const useCustomerCreation = () => {
   const createCb = useApiCallback(
