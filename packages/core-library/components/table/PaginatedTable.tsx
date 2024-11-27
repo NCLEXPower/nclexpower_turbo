@@ -29,18 +29,18 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import { PaginationData } from "../types/types";
-import { useResolution } from "../hooks";
-import { AdditionalFiltersMenu } from "./table/AdditionalFiltersMenu";
-import { CheckboxCell } from "./Checkbox/CheckboxCell";
-import { DefaultColumnFilter } from "./table/filters/DefaultColumnFilter";
+import { PaginationData } from "../../types/types";
+import { useResolution } from "../../hooks";
+import { AdditionalFiltersMenu } from "./AdditionalFiltersMenu";
+import { CheckboxCell } from "../Checkbox/CheckboxCell";
+import { DefaultColumnFilter } from "./filters/DefaultColumnFilter";
 import { PaginationControls } from "./PaginationControls";
 import { TableContent } from "./TableContent";
 import {
   TableContentMobile,
   TableContentMobileFiltersConfig,
-} from "./table/TableContentMobile";
-import { FilterLabel, SortByValue } from "./table/types";
+} from "./TableContentMobile";
+import { FilterLabel, SortByValue } from "./types";
 import React from "react";
 
 export interface TableProperties<T extends Record<string, unknown>>
@@ -166,7 +166,7 @@ export function PaginatedTable<T extends Record<string, unknown>>(
       defaultColumn: defaultColumn as Partial<Column<T>>,
       initialState: {
         hiddenColumns: [...hiddenColumns, additionalFilterColumn],
-        filters: [...filters, ...additionalFilter],
+        filters: [...(filters ?? []), ...additionalFilter],
         sortBy: sortBy || [],
       },
     },
@@ -258,9 +258,9 @@ export function PaginatedTable<T extends Record<string, unknown>>(
   }, [onRowSelect, tableInstance.selectedFlatRows]);
 
   useEffect(() => {
-    if (!filters.length) {
+    if (!filters?.length) {
     }
-  }, [filters.length]);
+  }, [filters?.length]);
 
   return (
     <>

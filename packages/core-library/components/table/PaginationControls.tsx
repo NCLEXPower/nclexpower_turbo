@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Grid, IconButton, Typography } from "@mui/material";
 import { PropsWithChildren, ReactElement } from "react";
 import { TableInstance } from "react-table";
-import { PaginationData } from "../types/types";
+import { PaginationData } from "../../types/types";
 
 export function PaginationControls<T extends Record<string, unknown>>({
   instance,

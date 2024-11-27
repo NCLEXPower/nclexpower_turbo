@@ -12,13 +12,13 @@ import {
 } from "@mui/material";
 import { useReducer } from "react";
 import { FilterValue, Row, TableInstance } from "react-table";
-import { ListLoader } from "./table/ListLoader";
-import { formatDate, isValidDate } from "../core";
-import { PrimaryButton } from "./Button/PrimaryButton";
-import { SecondaryButton } from "./Button/SecondaryButton";
-import { ErrorBox } from "./Alert/ErrorBox";
-import { DownloadIcon } from "./Icons/DownloadIcon";
-import { FilterLabel } from "./table/types";
+import { FilterLabel } from "./types";
+import { PrimaryButton } from "../Button/PrimaryButton";
+import { SecondaryButton } from "../Button/SecondaryButton";
+import { ListLoader } from "./ListLoader";
+import { ErrorBox } from "../Alert/ErrorBox";
+import { formatDate, isValidDate } from "../../core";
+import { DownloadIcon } from "../Icons/DownloadIcon";
 
 interface Props<T extends Record<string, unknown>> {
   noDataText: string;
@@ -199,7 +199,7 @@ export const TableContent = <T extends Record<string, unknown>>({
               <TableCell colSpan={tableInstance.visibleColumns.length}>
                 <ErrorBox
                   mb={0}
-                  label={filters.length ? noDataFoundText : noDataText}
+                  label={filters?.length ? noDataFoundText : noDataText}
                 />
               </TableCell>
             </TableRow>

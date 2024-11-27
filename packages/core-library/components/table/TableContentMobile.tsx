@@ -21,7 +21,7 @@ import { PaginationData } from "../../types/types";
 import { TextButton } from "../Button/TextButton";
 import { CheckboxCell } from "../Checkbox/CheckboxCell";
 import { FiltersMenuMobile } from "./FiltersMenuMobile";
-import { PaginationControls } from "../PaginationControls";
+import { PaginationControls } from "./PaginationControls";
 import { FilterLabel } from "./types";
 
 export type TableContentMobileFiltersConfig<T> = {
