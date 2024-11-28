@@ -11,14 +11,12 @@ import {
 } from "core-library/contexts";
 import Layout from "./Layout";
 import { ControlledToast, ErrorBox } from "core-library/components";
-import {
-  ClientSecretKeyContextProvider,
-  ContentDataContextProvider,
-} from "core-library/contexts";
+import { ClientSecretKeyContextProvider } from "core-library/contexts";
 import { SsrTypes } from "core-library/types/global";
 import CSPHead from "core-library/components/CSPHead";
 import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
 import withAuth from "core-library/core/utils/withAuth";
+import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 
 interface Props {
   slug?: string;
