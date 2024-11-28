@@ -159,7 +159,7 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
   switch (type) {
     case "Continue":
       return (
-        <Button disabled={disabled} onClick={onClickFn}>
+        <Button disabled={disabled} onClick={onClickFn} sx={{ mt: 5 }}>
           Continue
         </Button>
       );

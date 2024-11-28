@@ -252,7 +252,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
                 Write your review
               </Typography>
               <hr />
-              <Typography sx={{ marginTop: 4 }}>
+              <Typography sx={{ marginY: 4 }}>
                 Select a date for this content to take effect in simulator.
               </Typography>
               <DateField<crbType>
