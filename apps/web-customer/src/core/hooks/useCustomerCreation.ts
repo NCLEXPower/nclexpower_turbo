@@ -35,7 +35,7 @@ export const useCustomerCreation = () => {
       return;
 
     } catch (error) {
-      console.error(`Something went wrong: ${error}`);
+      toast.showToast(`Something went wrong: ${error}.`, "error");
     }
   }
 
