@@ -12,6 +12,7 @@ import {
   useAuthContext,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
+  useContentDataContext,
 } from "core-library/contexts";
 import { useStripeConfig } from "core-library/core/hooks/stripe/useStripeConfig";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
@@ -29,6 +30,7 @@ import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const contentData = useContentDataContext();
   const queryClient = new QueryClient();
   const { publishableKey } = useStripeConfig();
   const { isAuthenticated, logout, loading } = useAuthContext();
@@ -42,7 +44,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={loading}
+      loading={loading || contentData.loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>
@@ -50,7 +52,10 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
               <StripeContextProvider publishableKey={publishableKey}>
-                <LoadablePageContent loading={loading}>
+                <LoadablePageContent
+                  loading={loading || contentData.loading}
+                  pages={contentData.pages}
+                >
                   <DrawerLayout
                     menu={headerMenu}
                     isAuthenticated={isAuthenticated}
