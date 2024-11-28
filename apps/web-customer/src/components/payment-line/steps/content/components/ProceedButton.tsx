@@ -14,6 +14,7 @@ export const ProceedButton: React.FC<Props> = ({ onClick, disabled, btnTitle = "
       <Button
         onClick={onClick}
         disabled={disabled}
+        data-testid="proceed-button"
         sx={{
           display: 'flex',
           alignItems: 'center',

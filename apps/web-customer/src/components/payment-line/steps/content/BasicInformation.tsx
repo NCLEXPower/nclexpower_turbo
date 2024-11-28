@@ -9,7 +9,6 @@ import { BasicInformationLoader } from "core-library/system/app/internal/blocks/
 
 interface Props {
   nextStep({ }): void;
-  values: {};
   next: () => void;
 }
 
