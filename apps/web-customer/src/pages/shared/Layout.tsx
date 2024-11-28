@@ -12,7 +12,6 @@ import {
   useAuthContext,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
-  useContentDataContext,
 } from "core-library/contexts";
 import { useStripeConfig } from "core-library/core/hooks/stripe/useStripeConfig";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
@@ -28,6 +27,7 @@ import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirec
 import { theme } from "core-library/contents/theme/theme";
 import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
+import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const contentData = useContentDataContext();
