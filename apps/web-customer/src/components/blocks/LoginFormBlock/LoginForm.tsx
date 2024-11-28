@@ -129,7 +129,7 @@ export const LoginForm: React.FC<Props> = ({
               }}
             />
           </div>
-          <div className="">
+          <div>
             <h5 className="pt-sans-bold text-4xl pt-sans-regular mb-2">
               Login
             </h5>
