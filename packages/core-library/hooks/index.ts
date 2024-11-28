@@ -32,3 +32,4 @@ export * from "./useAuthRedirect";
 export * from "./usePeriodTime";
 export * from "./useGetProgramList";
 export * from "./useUniqueById";
+export * from "./useRecaptcha";
