@@ -18,14 +18,25 @@ export type SettingsSelectionType = yup.InferType<
 export type SetDefaultReviewerType = yup.InferType<
   typeof setDefaultReviewerSchema
 >;
-export type ChooseSettingsOptions = "CONFIG" | "AUTOMATION" | "CMS" | "ROUTER";
+export type ChooseSettingsOptions =
+  | "CONFIG"
+  | "AUTOMATION"
+  | "CMS"
+  | "ROUTER"
+  | "MAINTENANCE";
 export type SettingsSelectionOptions =
   | "DBEXCEL"
   | "QM"
   | "DEFAULTREVIEWER"
   | "RESOURCEMANAGEMENT"
-  | "IARM";
+  | "IARM"
+  | "WEB_C";
 export type QuestionSelectionOptions = "Regular" | "Case Study";
 export type RegularQuestionSelectionOptions = "MCQ" | "SATA";
 export type MenuType = "Main" | "SubMenu" | null;
 export type CaseStudyQuestionSelectionOptions = "DDC" | "DND" | "SATA" | "MRSN";
+
+export type EnvironmentItem = {
+  id: number;
+  label: string;
+};

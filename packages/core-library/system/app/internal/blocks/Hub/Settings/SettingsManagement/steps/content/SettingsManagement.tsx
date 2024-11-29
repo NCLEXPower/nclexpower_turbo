@@ -13,7 +13,7 @@ import {
   SettingsSelectionType,
   ChooseSettingsOptions,
 } from "../../types";
-import { Card, InformationTitle } from '../../../../../../../../../components';
+import { Card, InformationTitle } from "../../../../../../../../../components";
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -24,11 +24,11 @@ interface Props {
 const chooseSettingsStepFormSchema = yup.object({
   selection: yup
     .mixed<SettingsSelectionOptions>()
-    .oneOf(["DBEXCEL", "QM", "IARM"])
+    .oneOf(["DBEXCEL", "QM", "IARM", "WEB_C"])
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
-    .oneOf(["CONFIG", "AUTOMATION", "ROUTER"])
+    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE"])
     .required(),
 });
 
@@ -279,6 +279,62 @@ export const InAppManagement = (props: {
     </Box>
   );
 };
+export const MaintenanceMode = (props: {
+  nextStep(values: Partial<SettingsSelectionType>): void;
+  values: Partial<SettingsSelectionType>;
+}) => {
+  const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
+    resolver: yupResolver(chooseSettingsStepFormSchema),
+    mode: "all",
+    criteriaMode: "all",
+  });
+
+  useEffect(() => {
+    reset({
+      selection: props.values.selection,
+      chosen: props.values.chosen,
+    });
+  }, [props.values.selection, props.values.chosen]);
+
+  const handleSelection = (values: ChooseSettingsStepFormType) => {
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
+    props.nextStep({ chosen: values.chosen, selection: values.selection });
+  };
+
+  return (
+    <Box>
+      <InformationTitle
+        text="Product Maintenance"
+        lineWidth={6}
+        lineHeight={35}
+        lineColor="#6A5ACD"
+        borderRadius={2}
+        containerProps={{ mb: 5 }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
+      />
+      <Grid
+        justifyContent="center"
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      >
+        <Grid item xs={4}>
+          <Card
+            hoverEffect
+            onClick={() =>
+              handleSelection({ chosen: "MAINTENANCE", selection: "WEB_C" })
+            }
+            elevation={5}
+            text="Web Customer"
+          />
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+      </Grid>
+    </Box>
+  );
+};
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   return (
@@ -290,6 +346,8 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
       <ContentManagementSystemSettings nextStep={nextStep} values={values} />
       <Divider>In App Routing</Divider>
       <InAppManagement nextStep={nextStep} values={values} />
+      <Divider>Maintenance Mode</Divider>
+      <MaintenanceMode nextStep={nextStep} values={values} />
     </Card>
   );
 };

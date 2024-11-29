@@ -13,7 +13,6 @@ import {
   CreateCustomerParams,
 } from "../../api/types";
 import { CmsTenant, TenantResponse } from "../../types/tenant";
-import { CmsGlobals, MaintenanceModeType } from "../../types/global";
 import qs from "query-string";
 import { getTimeZone } from "../../utils";
 
@@ -45,7 +44,7 @@ describe("SSR Functions", () => {
     orderNumber: "nclex-123",
     productId: "test-productId",
     totalAmount: 100,
-    password: "securePassword123"
+    password: "securePassword123",
   };
 
   beforeEach(() => {
@@ -153,12 +152,7 @@ describe("SSR Functions", () => {
   });
 
   it("should get maintenance mode", async () => {
-    const mockMaintenanceMode: MaintenanceModeType = {
-      id: "1",
-      maintenanceModeType: 1,
-      createdDate: "2024-01-01T00:00:00Z",
-      updatedDate: "2024-01-02T00:00:00Z",
-    };
+    const mockMaintenanceMode: boolean = true;
 
     (fetch as jest.Mock).mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockMaintenanceMode),

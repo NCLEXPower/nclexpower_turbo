@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { GetServerSidePropsContext, NextApiResponse } from "next";
 import { nonce } from "../types";
 import { config } from "../config";
@@ -34,7 +39,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
     try {
       const generatedNonce = nonce();
       const csp = generateCSP(generatedNonce);
-      const loadMaintenanceMode = await getMaintenanceMode();
+      const MaintenanceStatus = await getMaintenanceMode();
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -46,7 +51,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             props: {
               ...result.props,
               generatedNonce,
-              data: { loadMaintenanceMode },
+              data: MaintenanceStatus,
             },
           };
         }
@@ -57,9 +62,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       return {
         props: {
           generatedNonce,
-          data: {
-            loadMaintenanceMode,
-          },
+          data: MaintenanceStatus,
         },
       };
     } catch (error: any) {

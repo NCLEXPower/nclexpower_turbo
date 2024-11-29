@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { AxiosInstance } from "axios";
 import {
   AccessKey,
@@ -39,13 +44,13 @@ import {
   GetMenuByIdParams,
   UpdateMenuItemParams,
 } from "../types";
-import { CategoryResponseType } from '../../core/hooks/types';
+import { CategoryResponseType } from "../../core/hooks/types";
 
 export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -122,8 +127,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-            contentAccessKey: "",
-          })}`
+              contentAccessKey: "",
+            })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -279,7 +284,8 @@ export class WebApiBackOffice {
 
   public async getAllInclusions() {
     return await this.axios.get<GetAllInclusionResponse[]>(
-      `/api/v1/product/internal-all-inclusions`)
+      `/api/v1/product/internal-all-inclusions`
+    );
   }
 
   public async delete_route(MenuId: string) {
@@ -290,66 +296,81 @@ export class WebApiBackOffice {
 
   public async createInclusions(params: CreateInclusionParams) {
     return await this.axios.post(
-      `/api/v1/product/internal-add-inclusions`, params)
+      `/api/v1/product/internal-add-inclusions`,
+      params
+    );
   }
 
   public async deleteInclusion(InclusionId: string) {
     return await this.axios.delete(
       `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
-    )
+    );
   }
 
   public async editInclusion(params: EditInclusionParams) {
     return await this.axios.put(
-      `/api/v1/product/internal-update-inclusion`, params)
+      `/api/v1/product/internal-update-inclusion`,
+      params
+    );
   }
   public async web_create_subsequent(params: SubsequentOptionType) {
     return await this.axios.post<SubsequentOptionType>(
       `/v1/api/Chatbot/create-subsequent-options`,
       params
-    )
+    );
   }
   public async getSelectedApprover() {
     return await this.axios.get<GetDefaultReviewerResponse[]>(
       `/api/v2/content/BaseContent/get-selected-approvers`
-    )
+    );
   }
 
   public async getAllInclusionLists() {
     return await this.axios.get<GetAllInclusionResponse[]>(
       `/api/v1/Product/internal-all-inclusions`
-    )
+    );
   }
 
   public async getSubsequentLists() {
     return await this.axios.get<GetSubsequentLists[]>(
       `/v1/api/Chatbot/get-subsequent-list`
-    )
+    );
   }
   public async createAuthorizedMenus(params: CreateAuthorizedMenusParams) {
     return await this.axios.post(
       `/api/v2/content/BaseContent/create-authorized-menus`,
       params
-    )
+    );
   }
 
   public async getAllMenus() {
     return await this.axios.get<AuthorizedMenuResponse[]>(
       `/api/v2/content/BaseContent/get-all-menus`
-    )
+    );
   }
 
   public async getMenuById(params: GetMenuByIdParams) {
     return await this.axios.get<AuthorizedMenuResponse>(
       `/api/v2/content/BaseContent/get-menu?${qs.stringify({ ...params })}`
-    )
+    );
   }
 
   public async updateMenuItem(params: UpdateMenuItemParams) {
-    return await this.axios.post(`/api/v2/content/BaseContent/update-menu-item`, params)
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/update-menu-item`,
+      params
+    );
   }
 
   public async getAllCategory() {
-    return await this.axios.get<CategoryResponseType[]>('/api/v1/Category/fetch-all-category-type')
+    return await this.axios.get<CategoryResponseType[]>(
+      "/api/v1/Category/fetch-all-category-type"
+    );
+  }
+
+  public async commenceEnvMaintenanceMode(params: string[]) {
+    return await this.axios.post("/api/v1/Customer/commence-maintenance-mode", {
+      environments: params,
+    });
   }
 }

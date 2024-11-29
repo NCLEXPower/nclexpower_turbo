@@ -3,7 +3,6 @@ import { ServerResponse } from "http";
 import { withCSP, generateCSP, setCSPHeader } from "../../utils";
 import { getMaintenanceMode } from "../../ssr";
 import { nonce } from "../../types";
-import { MaintenanceModeType } from "../../types/global";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -25,12 +24,7 @@ describe("withCSP", () => {
   let mockRes: Partial<ServerResponse>;
   let mockContext: Partial<GetServerSidePropsContext>;
 
-  const maintenanceModeMock: MaintenanceModeType = {
-    id: "12345",
-    maintenanceModeType: 1,
-    createdDate: "2024-10-21T10:00:00Z",
-    updatedDate: "2024-10-21T10:00:00Z",
-  };
+  const maintenanceModeMock: boolean = true;
 
   beforeEach(() => {
     mockRes = {
