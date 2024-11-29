@@ -14,6 +14,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ContentDataContextProvider } from "../contexts/content/ContentDataContext";
 import "@testing-library/jest-dom";
 
 export * from "@testing-library/react";
@@ -36,21 +37,23 @@ export const render = (
   rtlRender(ui, {
     wrapper: ({ children }) => (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <BusinessQueryContextProvider>
-          <DndProvider backend={HTML5Backend}>
-            <QueryClientProvider client={new QueryClient()}>
-              <StripeContextProvider publishableKey="">
-                <ThemeProvider theme={theme()}>
-                  <HeaderTitleContextProvider>
-                    <FormSubmissionContextProvider>
-                      {children}
-                    </FormSubmissionContextProvider>
-                  </HeaderTitleContextProvider>
-                </ThemeProvider>
-              </StripeContextProvider>
-            </QueryClientProvider>
-          </DndProvider>
-        </BusinessQueryContextProvider>
+        <ContentDataContextProvider slug="">
+          <BusinessQueryContextProvider>
+            <DndProvider backend={HTML5Backend}>
+              <QueryClientProvider client={new QueryClient()}>
+                <StripeContextProvider publishableKey="">
+                  <ThemeProvider theme={theme()}>
+                    <HeaderTitleContextProvider>
+                      <FormSubmissionContextProvider>
+                        {children}
+                      </FormSubmissionContextProvider>
+                    </HeaderTitleContextProvider>
+                  </ThemeProvider>
+                </StripeContextProvider>
+              </QueryClientProvider>
+            </DndProvider>
+          </BusinessQueryContextProvider>
+        </ContentDataContextProvider>
       </LocalizationProvider>
     ),
     ...options,
