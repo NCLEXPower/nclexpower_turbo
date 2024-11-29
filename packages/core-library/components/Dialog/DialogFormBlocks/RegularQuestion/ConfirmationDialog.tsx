@@ -115,21 +115,20 @@ const ConfirmationModal = ({
   const handleClose = () => setOpen(false);
 
   const handleModalSubmission = () => {
-    handleSubmit()
+    handleSubmit();
     if (!isLoading) {
-      handleClose()
+      handleClose();
     }
-  }
+  };
 
   return (
     <>
-      <Box data-testid="confirm-modal" onClick={handleClickOpen} role="button">
-        <ButtonSelector
-          type={customButton}
-          disabled={disabled}
-          onClickFn={onClickFn}
-        />
-      </Box>
+      <ButtonSelector
+        type={customButton}
+        disabled={disabled}
+        onClickFn={handleClickOpen}
+      />
+
       <DialogBox
         handleClose={handleClose}
         loading={false}
@@ -160,7 +159,7 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
   switch (type) {
     case "Continue":
       return (
-        <Button disabled={disabled} onClick={onClickFn}>
+        <Button disabled={disabled} onClick={onClickFn} sx={{ mt: 5 }}>
           Continue
         </Button>
       );
@@ -182,22 +181,21 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
 
     case "ListDeleteButton":
       return (
-        <ListItemButton
-          disabled={disabled}
-          onClick={onClickFn}>
+        <ListItemButton disabled={disabled} onClick={onClickFn}>
           Delete
         </ListItemButton>
-      )
+      );
 
     case "SaveChanges":
       return (
         <Button
           onClick={onClickFn}
           disabled={disabled}
-          sx={{ borderRadius: "10px", marginBottom: "10px" }}>
+          sx={{ borderRadius: "10px", marginBottom: "10px" }}
+        >
           Save Changes
         </Button>
-      )
+      );
 
     default:
       return (
