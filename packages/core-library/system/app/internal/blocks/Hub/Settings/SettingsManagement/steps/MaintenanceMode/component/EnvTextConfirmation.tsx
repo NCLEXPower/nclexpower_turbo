@@ -40,7 +40,7 @@ export const EnvTextConfirmation = ({ Env, onSubmit }: Props) => {
         disabled={watchedValue !== textToType}
         sx={{
           fontSize: "12px",
-          lineHeight: "14px",
+          lineHeight: "15px",
           minHeight: "30px",
           height: "45px",
           paddingY: 0,
