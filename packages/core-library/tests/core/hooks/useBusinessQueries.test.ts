@@ -1939,6 +1939,60 @@ describe("useCreateContactUs", () => {
   });
 });
 
+describe("useCommenceEnvMaintenanceMode", () => {
+  const mockExecute = jest.fn();
+  const mockMutateAsync = jest.fn();
+  const mockOnSuccess = jest.fn();
+
+  const mockApi = {
+    webbackoffice: {
+      commenceEnvMaintenanceMode: jest.fn(),
+    },
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+
+    (useAppMutation as jest.Mock).mockImplementation((mutationFn, options) => ({
+      mutateAsync: mockMutateAsync,
+      isLoading: false,
+      ...options,
+    }));
+
+    mockExecute.mockImplementation(async (data: string[]) => {
+      return await mockApi.webbackoffice.commenceEnvMaintenanceMode(data);
+    });
+  });
+
+  it("handles mutation and success callback correctly", async () => {
+    const mockData: string[] = ["dev"];
+    const mockResult = { data: 200 };
+
+    mockApi.webbackoffice.commenceEnvMaintenanceMode.mockResolvedValue(
+      mockResult
+    );
+    mockMutateAsync.mockResolvedValue(mockResult);
+
+    const { result } = renderHook(() =>
+      useCommenceEnvMaintenanceMode({ onSuccess: mockOnSuccess })
+    );
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      const response = await result.current.mutateAsync(mockData);
+
+      expect(response).toEqual(mockResult);
+    });
+
+    expect(result.current.isLoading).toBe(false);
+  });
+});
+
 describe("useGetAllCategories", () => {
   const mockExecute = jest.fn();
 
