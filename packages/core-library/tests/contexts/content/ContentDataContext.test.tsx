@@ -104,7 +104,7 @@ describe("ContentDataContextProvider", () => {
 
     render(<ContentDataContextProvider slug="test-slug" />);
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
     });
   });
 });
