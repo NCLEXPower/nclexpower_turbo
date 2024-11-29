@@ -9,9 +9,10 @@ import {
   EvaIcon,
   IconButton,
   PasswordToggleAdornment,
+  RecaptchaComponent,
   TextField,
 } from "core-library/components";
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect, useState } from "react";
 import { RegistrationFormType, registrationSchema } from "core-library/system";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,18 +22,24 @@ import Link from "next/link";
 import { useShowPassword } from "../ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
 import { usePreviousValue } from "core-library/hooks";
 import { RegisterBG } from "core-library/assets";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface RegistrationFormProps {
-  onSubmit: (values: RegistrationFormType) => void;
+  onSubmit: (values: RegistrationFormType, token: string) => void;
   submitLoading?: boolean;
   handleBack: () => void;
+  recaptchaRef: RefObject<ReCAPTCHA>;
+  siteKey: string;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onSubmit,
   submitLoading,
   handleBack,
+  recaptchaRef,
+  siteKey,
 }) => {
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const form = useForm<RegistrationFormType>({
     mode: "onSubmit",
     resolver: yupResolver(registrationSchema),
@@ -55,6 +62,15 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     handleClickShowPassword,
     handleClickShowconfirmPassword,
   } = useShowPassword();
+
+  async function onFormSubmit(values: RegistrationFormType) {
+    if (!captchaToken) {
+      console.error("reCAPTCHA verification failed.");
+      return;
+    }
+
+    await onSubmit(values, captchaToken);
+  }
 
   return (
     <React.Fragment>
@@ -226,7 +242,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </Box>
 
                 <Button
-                  disabled={!isDirty || !isValid || submitLoading}
+                  disabled={
+                    !isDirty || !isValid || submitLoading || !captchaToken
+                  }
                   loading={submitLoading}
                   variant="contained"
                   fullWidth
@@ -240,11 +258,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     },
                     marginY: "10px",
                   }}
-                  onClick={handleSubmit(onSubmit)}
+                  onClick={handleSubmit(onFormSubmit)}
                 >
                   <span className="font-ptSans font-bold">Create Account</span>
                 </Button>
               </Box>
+              <RecaptchaComponent
+                recaptchaRef={recaptchaRef}
+                siteKey={siteKey}
+                onVerify={(token) => {
+                  setCaptchaToken(token);
+                }}
+              />
             </FormProvider>
           </Box>
         </Box>
