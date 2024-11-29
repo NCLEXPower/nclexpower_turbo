@@ -3,6 +3,7 @@ import { ServerResponse } from "http";
 import { withCSP, generateCSP, setCSPHeader } from "../../utils";
 import { getMaintenanceMode } from "../../ssr";
 import { nonce } from "../../types";
+import { MaintenanceSsr } from "../../types/global";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -24,7 +25,14 @@ describe("withCSP", () => {
   let mockRes: Partial<ServerResponse>;
   let mockContext: Partial<GetServerSidePropsContext>;
 
-  const maintenanceModeMock: boolean = true;
+  const mockMaintenanceStatus = {
+    id: "79a6d3d7-b30a-4eae-a689-0919ddd0d5bd",
+    currentMaintenanceMode: ["dev", "uat"],
+    createdDate: "2024-11-28T23:29:28.2473075",
+    updatedDate: "2024-11-29T03:10:22.5355995",
+  };
+
+  const maintenanceModeMock: MaintenanceSsr = mockMaintenanceStatus;
 
   beforeEach(() => {
     mockRes = {
@@ -58,7 +66,7 @@ describe("withCSP", () => {
       props: {
         test: "test value",
         generatedNonce: "test-nonce",
-        data: { loadMaintenanceMode: maintenanceModeMock },
+        data: maintenanceModeMock,
       },
     });
   });
@@ -68,7 +76,7 @@ describe("withCSP", () => {
     expect(result).toEqual({
       props: {
         generatedNonce: "test-nonce",
-        data: { loadMaintenanceMode: maintenanceModeMock },
+        data: maintenanceModeMock,
       },
     });
   });
