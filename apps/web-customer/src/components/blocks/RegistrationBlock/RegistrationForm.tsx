@@ -61,16 +61,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     () => validatePassword(newPassword),
     [newPassword]
   );
-  
+
   const isPasswordMatching = useMemo(
     () => newPassword === confirmPassword && newPassword !== "",
     [newPassword, confirmPassword]
   );
 
   const passwordCriteria = useMemo(
-    () => [
-      { isValid: isPasswordMatching, message: "Password match" },
-    ],
+    () => [{ isValid: isPasswordMatching, message: "Password match" }],
     [validationChecks, isPasswordMatching]
   );
 
@@ -204,25 +202,25 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
                   <Box className="flex flex-col lg:flex-row gap-2 w-full">
                     <Box className="w-full">
-                    <TextField
-                      label="Password"
-                      control={control}
-                      name="password"
-                      sx={{ borderRadius: "10px", width: "100%" }}
-                      type={showPassword ? "text" : "password"}
-                      IsRegister
-                      endAdornment={
-                        <PasswordToggleAdornment
-                          showPassword={showPassword}
-                          onClick={handleClickShowPassword}
-                        />
-                      }
-                      inputProps={{
-                        style: {
-                          boxShadow: "none",
-                        },
-                      }}
-                    />
+                      <TextField
+                        label="Password"
+                        control={control}
+                        name="password"
+                        sx={{ borderRadius: "10px", width: "100%" }}
+                        type={showPassword ? "text" : "password"}
+                        IsRegister
+                        endAdornment={
+                          <PasswordToggleAdornment
+                            showPassword={showPassword}
+                            onClick={handleClickShowPassword}
+                          />
+                        }
+                        inputProps={{
+                          style: {
+                            boxShadow: "none",
+                          },
+                        }}
+                      />
                     </Box>
 
                     <Box className="w-full">
@@ -244,14 +242,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           />
                         }
                       />
-                    {confirmPassword && (
-                      <ValidationIndicators
-                        criteria={passwordCriteria}
-                        iconSize="small"
-                        invalidColor="red"
-                        validColor="green"
-                      />
-                    )}
+                      {confirmPassword && (
+                        <ValidationIndicators
+                          criteria={passwordCriteria}
+                          iconSize="small"
+                          invalidColor="red"
+                          validColor="green"
+                        />
+                      )}
                     </Box>
                   </Box>
                 </Box>
