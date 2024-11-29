@@ -174,7 +174,7 @@ export const AuthorizedHeader: MenuItems[] = [
     {
         id: '12',
         label: 'Billing Summary',
-        path: '/',
+        path: '/hub/billing-summary',
         icon: 'TRDSquare',
         menuId: 'menu12',
         parentId: '',
