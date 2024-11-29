@@ -40,7 +40,10 @@ export const EnvironmentSelection = ({
   return isLoading ? (
     "Loading Environment Status"
   ) : (
-    <Card sx={{ borderRadius: "10px", bgcolor: "#dedeec" }}>
+    <Card
+      data-testid="env-selection"
+      sx={{ borderRadius: "10px", bgcolor: "#dedeec" }}
+    >
       <Typography variant="sublabel" fontSize=".8em">
         Warning : This page handles the Maintenance Mode of Web Customer
       </Typography>
