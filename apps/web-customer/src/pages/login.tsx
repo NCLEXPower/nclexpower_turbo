@@ -10,9 +10,6 @@ const LoginPage: React.FC = () => {
   return <LoginFormBlock />;
 };
 
-export const getServerSideProps: GetServerSideProps = withCSP(
-  undefined,
-  "/login"
-);
+export const getServerSideProps: GetServerSideProps = withCSP();
 
 export default LoginPage;
