@@ -43,7 +43,8 @@ export const EnvTextConfirmation = ({ Env, onSubmit }: Props) => {
           lineHeight: "14px",
           minHeight: "30px",
           height: "45px",
-          padding: 0,
+          paddingY: 0,
+          paddingX: 5,
           borderRadius: "10px",
         }}
       >
