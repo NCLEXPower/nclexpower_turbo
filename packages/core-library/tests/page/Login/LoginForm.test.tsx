@@ -31,6 +31,16 @@ describe("LoginForm", () => {
     expect(screen.getByTestId("signin")).toBeInTheDocument();
   });
 
+  it("should prevent space key in email input", () => {
+    render(<LoginForm onSubmit={mockOnSubmit} submitLoading={false}/>);
+
+    const emailInput = screen.getByTestId("email-input") as HTMLInputElement;
+
+    fireEvent.keyPress(emailInput, { key: " ", code: "Space", charCode: 32 });
+
+    expect(emailInput.value).not.toContain(" ");
+  });
+
   it("should toggle show password when clicked", () => {
     render(<LoginForm onSubmit={mockOnSubmit} submitLoading={false} />);
 
@@ -69,15 +79,5 @@ describe("LoginForm", () => {
     fireEvent.click(signInButton);
 
     expect(mockOnSubmit);
-  });
-
-  it("should prevent space key in email input", () => {
-    render(<LoginForm onSubmit={mockOnSubmit} />);
-
-    const emailInput = screen.getByTestId("email-input") as HTMLInputElement;
-
-    fireEvent.keyPress(emailInput, { key: " ", code: "Space", charCode: 32 });
-
-    expect(emailInput.value).not.toContain(" ");
   });
 });
