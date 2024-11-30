@@ -16,8 +16,10 @@ import { SsrTypes } from "core-library/types/global";
 import CSPHead from "core-library/components/CSPHead";
 import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
 import withAuth from "core-library/core/utils/withAuth";
+import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 
 interface Props {
+  slug?: string;
   data?: SsrTypes;
   generatedNonce?: string;
   error?: any;
@@ -28,6 +30,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   data,
   generatedNonce,
   error,
+  slug,
 }) => {
   if (error) {
     return <ErrorBox label={error.message} />;
@@ -39,19 +42,21 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <React.Fragment>
-      <CSPHead nonce={generatedNonce ?? "no-nonce"} />
-      <BusinessQueryContextProvider>
-        <AuthProvider>
-          <ToastProvider>
-            <ClientSecretKeyContextProvider>
-              <ControlledToast autoClose={5000} hideProgressBar={false} />
-              <Layout children={children} />
-            </ClientSecretKeyContextProvider>
-          </ToastProvider>
-        </AuthProvider>
-      </BusinessQueryContextProvider>
+      <ContentDataContextProvider slug={slug ?? "/"}>
+        <CSPHead nonce={generatedNonce ?? "no-nonce"} />
+        <BusinessQueryContextProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <ClientSecretKeyContextProvider>
+                <ControlledToast autoClose={5000} hideProgressBar={false} />
+                <Layout children={children} />
+              </ClientSecretKeyContextProvider>
+            </ToastProvider>
+          </AuthProvider>
+        </BusinessQueryContextProvider>
+      </ContentDataContextProvider>
     </React.Fragment>
   );
 };
 
-export default withAuth(Page);
+export default Page;
