@@ -383,12 +383,9 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
       {hasAccess("InAppManagement") && (
         <InAppManagement nextStep={nextStep} values={values} />
       )}
-      {hasAccess("MaintenanceMode") && (
-        <>
-          <Divider>Maintenance Mode</Divider>
-          <MaintenanceMode nextStep={nextStep} values={values} />
-        </>
-      )}
+
+      <Divider>Maintenance Mode</Divider>
+      <MaintenanceMode nextStep={nextStep} values={values} />
     </Card>
   );
 };
