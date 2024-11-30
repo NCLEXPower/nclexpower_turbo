@@ -6,29 +6,27 @@
 import * as yup from "yup";
 
 export const createEnvironmentSchema = (
-  environmentList: { id: number; label: string }[],
-  activeField: string | undefined
+  environmentList: string[],
+  activeField: string | undefined | null
 ) => {
   const fields = environmentList.reduce(
     (schema, env) => {
-      const requiredText = `Type ${env.label.toUpperCase()} Environment`;
+      const requiredText = `Type ${env.toUpperCase()} Environment`;
 
-      schema[`confirmationText_${env.id}`] = yup
+      schema[`confirmationText_${env}`] = yup
         .string()
         .test(
           "conditional-validation",
           "This field is required",
           function (value) {
-            return activeField === `confirmationText_${env.id}`
-              ? !!value
-              : true;
+            return activeField === `confirmationText_${env}` ? !!value : true;
           }
         )
         .test(
           "match-validation",
           `Text must match: "${requiredText}"`,
           function (value) {
-            return activeField === `confirmationText_${env.id}`
+            return activeField === `confirmationText_${env}`
               ? value === requiredText
               : true;
           }

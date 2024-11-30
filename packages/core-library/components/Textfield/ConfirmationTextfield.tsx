@@ -4,38 +4,35 @@
  * Created by the Software Strategy & Development Division
  */
 import { Box } from "@mui/material";
-import {
-  Button,
-  ControlledTextField,
-} from "../../../../../../../../../../components";
-import { EnvironmentItem } from "../../../types";
+import { Button, TextField } from "..";
 import { useFormContext } from "react-hook-form";
 
 interface Props {
-  Env: EnvironmentItem;
+  item: string;
   onSubmit: (value: any) => void;
+  loading?: boolean;
 }
 export type EnvironmentFormType = {
   [key: string]: string;
 };
 
-export const EnvTextConfirmation = ({ Env, onSubmit }: Props) => {
-  const textToType = `${Env.label.toUpperCase()} Environment`;
+export const ConfirmationTextfield = ({ item, onSubmit, loading }: Props) => {
+  const textToType = `${item.toUpperCase()}`;
   const { control, handleSubmit, watch } =
     useFormContext<EnvironmentFormType>();
 
-  const watchedValue = watch(`confirmationText_${Env.id}`);
+  const watchedValue = watch(`confirmationText_${item}`);
 
   return (
     <Box sx={{ display: "flex", width: "100%", alignItems: "center", gap: 2 }}>
-      <ControlledTextField
-        name={`confirmationText_${Env.id}`}
+      <TextField
+        name={`confirmationText_${item}`}
         control={control}
         placeholder={`Type ${textToType}`}
-        className="shadow-sm shadow-zinc-200"
         sx={{ borderRadius: "10px", height: "45px" }}
       />
       <Button
+        loading={loading}
         onClick={handleSubmit(onSubmit)}
         disabled={watchedValue !== textToType}
         sx={{
@@ -48,7 +45,7 @@ export const EnvTextConfirmation = ({ Env, onSubmit }: Props) => {
           borderRadius: "10px",
         }}
       >
-        Commence Maintenance
+        Commence
       </Button>
     </Box>
   );

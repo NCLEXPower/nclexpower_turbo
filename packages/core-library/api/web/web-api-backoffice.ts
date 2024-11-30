@@ -368,7 +368,7 @@ export class WebApiBackOffice {
     );
   }
 
-  public async commenceEnvMaintenanceMode(params: string[]) {
+  public async maintenaceModeByEnv(params: string[]) {
     return await this.axios.post("/api/v1/Customer/commence-maintenance-mode", {
       environments: params,
     });

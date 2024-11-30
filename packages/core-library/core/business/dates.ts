@@ -63,3 +63,15 @@ export const formatTime = (
 export function isValidDate(date?: Date): boolean {
   return (date && !isNaN(date.getTime())) || false;
 }
+
+export function dateFormatter(date: Date) {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "Asia/Singapore",
+  };
+
+  return date.toLocaleString("en-US", options).replace(",", " -");
+}

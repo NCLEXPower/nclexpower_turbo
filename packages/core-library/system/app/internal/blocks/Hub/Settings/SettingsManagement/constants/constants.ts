@@ -4,7 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { SelectOption } from "../../../../../../../../components";
-import { EnvironmentItem, RegularQuestionSelectionOptions } from "../types";
+import { RegularQuestionSelectionOptions } from "../types";
 
 const createNumberList = (length: number) => {
   return Array.from({ length: length }, (_, index) => ({
@@ -74,21 +74,4 @@ export const initQuestionsValues = (
   };
 };
 
-export const EnvironmentList: EnvironmentItem[] = [
-  {
-    id: 0,
-    label: "dev",
-  },
-  {
-    id: 1,
-    label: "uat",
-  },
-  {
-    id: 2,
-    label: "preprod",
-  },
-  {
-    id: 3,
-    label: "prod",
-  },
-];
+export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];

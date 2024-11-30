@@ -763,7 +763,7 @@ export const useCommenceEnvMaintenanceMode = (
 ) => {
   const commenceEnvMaintenanceMode = useApiCallback(
     async (api, args: string[]) =>
-      await api.webbackoffice.commenceEnvMaintenanceMode(args)
+      await api.webbackoffice.maintenaceModeByEnv(args)
   );
   return useAppMutation<AxiosResponse<string[], AxiosError>, string[]>(
     async (data) => {

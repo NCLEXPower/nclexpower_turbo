@@ -24,7 +24,7 @@ interface Props {
 const chooseSettingsStepFormSchema = yup.object({
   selection: yup
     .mixed<SettingsSelectionOptions>()
-    .oneOf(["DBEXCEL", "QM", "IARM", "WEB_C"])
+    .oneOf(["DBEXCEL", "QM", "IARM", "WEBCUSTOMER"])
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
@@ -323,7 +323,10 @@ export const MaintenanceMode = (props: {
           <Card
             hoverEffect
             onClick={() =>
-              handleSelection({ chosen: "MAINTENANCE", selection: "WEB_C" })
+              handleSelection({
+                chosen: "MAINTENANCE",
+                selection: "WEBCUSTOMER",
+              })
             }
             elevation={5}
             text="Web Customer"

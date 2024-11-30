@@ -9,7 +9,7 @@ import { QuestionManagementFormSteps } from "./QuestionManagementSettingsTypeSte
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
 import { WizardFormMap } from "../../../../../../../../hooks";
-import { WCMaintenanceMode } from "./MaintenanceMode/WCMaintenanceMode";
+import { MaintenanceMode } from "./MaintenanceMode/MaintenanceMode";
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -20,7 +20,7 @@ export type SettingsManagementSteps =
   | "ReviewerSettings"
   | "ResourceManagement"
   | "RouterSettings"
-  | "WEBCMaintenanceMode";
+  | "MaintenanceMode";
 
 export interface SettingsManagementStepProps {
   isLoading: boolean;
@@ -41,8 +41,8 @@ export const ChooseSettingsTypeStep = {
         return "ResourceManagement";
       if (values.chosen === "ROUTER" && values.selection === "IARM")
         return "RouterSettings";
-      if (values.chosen === "MAINTENANCE" && values.selection === "WEB_C")
-        return "WEBCMaintenanceMode";
+      if (values.chosen === "MAINTENANCE" && values.selection === "WEBCUSTOMER")
+        return "MaintenanceMode";
     },
     previousStep: "InitialSettingsSelection",
     content: (props) => <SettingsManagement {...props} />,
@@ -54,9 +54,9 @@ export const ChooseSettingsTypeStep = {
     previousStep: "InitialSettingsSelection",
     content: (props) => <InAppRouterManagement {...props} />,
   },
-  WEBCMaintenanceMode: {
+  MaintenanceMode: {
     previousStep: "InitialSettingsSelection",
-    content: (props) => <WCMaintenanceMode {...props} />,
+    content: (props) => <MaintenanceMode {...props} />,
   },
   ResourceManagement: {
     previousStep: "InitialSettingsSelection",
