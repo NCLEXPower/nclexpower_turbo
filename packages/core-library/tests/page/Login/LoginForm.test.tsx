@@ -70,4 +70,14 @@ describe("LoginForm", () => {
 
     expect(mockOnSubmit);
   });
+
+  it("should prevent space key in email input", () => {
+    render(<LoginForm onSubmit={mockOnSubmit} />);
+
+    const emailInput = screen.getByTestId("email-input") as HTMLInputElement;
+
+    fireEvent.keyPress(emailInput, { key: " ", code: "Space", charCode: 32 });
+
+    expect(emailInput.value).not.toContain(" ");
+  });
 });
