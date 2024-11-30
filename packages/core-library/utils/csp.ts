@@ -43,6 +43,8 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
 
       setCSPHeader(context.res as ServerResponse, csp);
 
+      const slug = context.resolvedUrl;
+
       if (getServerSidePropsFn) {
         const result = await getServerSidePropsFn(context);
         if ("props" in result) {
@@ -50,6 +52,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             ...result,
             props: {
               ...result.props,
+              slug,
               generatedNonce,
               data: MaintenanceStatus,
             },
@@ -61,6 +64,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
 
       return {
         props: {
+          slug,
           generatedNonce,
           data: MaintenanceStatus,
         },

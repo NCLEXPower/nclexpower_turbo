@@ -44,6 +44,7 @@ export default function App({
           data={pageProps?.data as SsrTypes}
           generatedNonce={pageProps?.generatedNonce as string}
           error={pageProps?.error}
+          slug={pageProps?.slug as string}
         >
           <Suspense>
             <Component {...pageProps} />

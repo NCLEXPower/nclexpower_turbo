@@ -43,6 +43,8 @@ import {
   AuthorizedMenuResponse,
   GetMenuByIdParams,
   UpdateMenuItemParams,
+  LoginResponse,
+  OpenPagesResponse,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -78,6 +80,22 @@ export class WebApiBackOffice {
       if (err.response?.status === 404) {
         return { data: null };
       }
+      throw err;
+    }
+  }
+
+  public async openPage(slug: string, contentAccessKey: string | null) {
+    try {
+      const endpoint = contentAccessKey
+        ? `/api/v2/content/BaseContent/authorized-open-pages`
+        : `/api/v2/content/BaseContent/unauthorized-open-pages`;
+
+      const response = await this.axios.get<OpenPagesResponse>(endpoint, {
+        params: { pageRoute: slug },
+      });
+
+      return response.data;
+    } catch (err: any) {
       throw err;
     }
   }
@@ -147,7 +165,14 @@ export class WebApiBackOffice {
   }
 
   public accessKey(tenantUrl: string) {
-    return this.axios.get<AccessKey>(``); //no current access key for content.
+    return this.axios.post<AccessKey>(``); //no current access key for content.
+  }
+
+  public contentAccessKey(params: { accountId?: string; appName: string }) {
+    return this.axios.post<LoginResponse>(
+      `/api/v2/internal/baseInternal/content-access-key`,
+      params
+    ); //no current access key for content.
   }
 
   public async footer(tenantUrl: string, contentAccessKey?: string) {
