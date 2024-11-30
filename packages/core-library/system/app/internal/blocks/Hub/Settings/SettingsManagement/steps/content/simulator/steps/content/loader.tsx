@@ -193,3 +193,146 @@ export const CaseStudyLoader: React.FC = () => (
     </Box>
   </Box>
 );
+
+
+export const BasicInformationLoader: React.FC = () => (
+  <Box
+    sx={{
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+    }}
+  >
+    <div className="w-full lg:w-[800px] p-2 lg:p-0">
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 3,
+        }}
+      >
+        <SkeletonBox width="145px" height={50} />
+        <SkeletonBox width="145px" height={50} />
+      </Box>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          "@media (min-width: 701px)": {
+            width: "800px",
+            padding: "25px",
+          },
+          "@media (max-width: 700px)": {
+            width: "100%",
+            padding: "10px",
+          },
+        }}
+        elevation={4}
+      >
+        <Box width="100%" marginBottom={3}>
+          <SkeletonBox width="200px" height={30} />
+        </Box>
+        <SkeletonBox height={200} />
+        <Box width="100%" display="flex" justifyContent="space-between" marginTop={3}>
+          <SkeletonBox width="30%" height={30} />
+          <SkeletonBox width="30%" height={30} />
+          <SkeletonBox width="30%" height={30} />
+        </Box>
+        <Box width="100%" marginTop={3}>
+          <SkeletonBox width="100%" height={20} />
+        </Box>
+      </Card>
+      <Box width="100%" display="flex" justifyContent="end" marginY={4}>
+        <SkeletonBox width="200px" height={50} />
+      </Box>
+    </div>
+  </Box>
+);
+
+export const ProductInformationLoader: React.FC = () => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        paddingX: "1rem",
+        boxSizing: "border-box",
+        marginTop: "1rem,"
+      }}
+    >
+      <div className="w-full" style={{ maxWidth: "800px" }}>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 3,
+            flexWrap: "wrap",
+            gap: "1rem",
+          }}
+        >
+          <SkeletonBox width="145px" height={50} />
+          <SkeletonBox width="145px" height={50} />
+        </Box>
+
+        <Box width="100%" display="flex" justifyContent="center">
+          <Card
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: "10px",
+              padding: "1rem",
+              width: "100%",
+              "@media (min-width: 700px)": {
+                padding: "25px",
+                maxWidth: "800px",
+              },
+            }}
+          >
+            <Box width="100%" display="flex" justifyContent="start">
+              <SkeletonBox width="200px" height={25} />
+            </Box>
+            <SkeletonBox height={300} width="100%" />
+          </Card>
+        </Box>
+
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="end"
+          marginY={4}
+          sx={{
+            "@media (max-width: 700px)": {
+              justifyContent: "center",
+            },
+          }}
+        >
+          <SkeletonBox width="200px" height={50} />
+        </Box>
+      </div>
+
+      <SkeletonBox
+        width="100%"
+        height={100}
+        sx={{
+          maxWidth: "800px",
+          marginTop: "2rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      />
+    </Box>
+  );
+};
