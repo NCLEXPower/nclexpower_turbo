@@ -49,11 +49,12 @@ export const MaintenanceMode: React.FC<Props> = ({
   };
 
   if (loading) {
-    return <div>Loading Contents</div>;
+    return <Box data-testid="fetch-loading">Loading Contents</Box>;
   }
 
   return (
     <Box
+      data-testid="maintenance-mode-id"
       sx={{
         width: "100%",
         height: "fit-content",

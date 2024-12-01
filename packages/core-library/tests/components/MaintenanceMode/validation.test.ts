@@ -1,39 +1,34 @@
 import { createEnvironmentSchema } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/MaintenanceMode/validation";
 
 describe("createEnvironmentSchema", () => {
-  let environmentList: { id: number; label: string }[];
-  let activeField: string | undefined;
+  let environmentList: string[];
+  let activeField: string | undefined | null;
 
   beforeEach(() => {
-    environmentList = [
-      { id: 1, label: "dev" },
-      { id: 2, label: "uat" },
-      { id: 3, label: "preprod" },
-      { id: 4, label: "prod" },
-    ];
+    environmentList = ["dev", "uat", "preprod", "prod"];
   });
 
   it("should generate the schema with correct fields based on the environment list", () => {
     const schema = createEnvironmentSchema(environmentList, undefined);
 
-    expect(schema.fields).toHaveProperty("confirmationText_1");
-    expect(schema.fields).toHaveProperty("confirmationText_2");
-    expect(schema.fields).toHaveProperty("confirmationText_3");
-    expect(schema.fields).toHaveProperty("confirmationText_4");
+    expect(schema.fields).toHaveProperty("confirmationText_dev");
+    expect(schema.fields).toHaveProperty("confirmationText_uat");
+    expect(schema.fields).toHaveProperty("confirmationText_preprod");
+    expect(schema.fields).toHaveProperty("confirmationText_prod");
   });
 
   it("should validate the active field correctly with conditional validation", async () => {
-    activeField = "confirmationText_1";
+    activeField = "confirmationText_dev";
     const schema = createEnvironmentSchema(environmentList, activeField);
 
     const validValue = "Type DEV Environment";
     await expect(
-      schema.validate({ confirmationText_1: validValue })
-    ).resolves.toEqual({ confirmationText_1: validValue });
+      schema.validate({ confirmationText_dev: validValue })
+    ).resolves.toEqual({ confirmationText_dev: validValue });
 
-    const invalidValue = "Some other value"; // Incorrect format
+    const invalidValue = "Some other value";
     await expect(
-      schema.validate({ confirmationText_1: invalidValue })
+      schema.validate({ confirmationText_dev: invalidValue })
     ).rejects.toThrowError('Text must match: "Type DEV Environment"');
   });
 });
