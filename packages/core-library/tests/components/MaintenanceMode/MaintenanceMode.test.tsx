@@ -1,4 +1,4 @@
-import useMaintenanceMode from "../../../hooks/useMaintenanceMode";
+import { useMaintenanceMode } from "../../../hooks";
 import { MaintenanceMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/MaintenanceMode/MaintenanceMode";
 import { render, renderHook, screen } from "../../common";
 
@@ -10,7 +10,7 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../../../hooks/useMaintenanceMode");
+jest.mock("../../../hooks");
 
 describe("MaintenanceMode", () => {
   const nextStep = jest.fn();
