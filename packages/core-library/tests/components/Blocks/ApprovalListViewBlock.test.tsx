@@ -1,6 +1,5 @@
 import React from "react";
-import { screen, fireEvent, waitFor } from "../../common";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "../../common";
 import { ApprovalListViewBlock } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
 import {
   useBusinessQueryContext,
