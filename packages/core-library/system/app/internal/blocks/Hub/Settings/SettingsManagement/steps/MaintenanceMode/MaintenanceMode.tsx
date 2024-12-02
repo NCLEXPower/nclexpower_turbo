@@ -4,7 +4,11 @@
  * Created by the Software Strategy & Development Division
  */
 import { Box, Typography } from "@mui/material";
-import { Button, EvaIcon } from "../../../../../../../../../components";
+import {
+  Button,
+  EvaIcon,
+  PageLoader,
+} from "../../../../../../../../../components";
 import { SettingsSelectionType } from "../../types";
 import {
   useBusinessQueryContext,
@@ -49,7 +53,11 @@ export const MaintenanceMode: React.FC<Props> = ({
   };
 
   if (loading) {
-    return <Box data-testid="fetch-loading">Loading Contents</Box>;
+    return (
+      <Box data-testid="fetch-loading">
+        <PageLoader />
+      </Box>
+    );
   }
 
   return (
