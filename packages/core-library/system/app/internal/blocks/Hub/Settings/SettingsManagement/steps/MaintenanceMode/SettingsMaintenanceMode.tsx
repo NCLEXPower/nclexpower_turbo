@@ -3,21 +3,23 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
+//
+
+import { useSetAtom } from "jotai";
+import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
+import { useMaintenanceMode } from "../../../../../../../../../hooks";
+import { SettingsSelectionType } from "../../types";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../../../contexts";
 import { Box, Typography } from "@mui/material";
 import {
   Button,
   EvaIcon,
   PageLoader,
 } from "../../../../../../../../../components";
-import { SettingsSelectionType } from "../../types";
-import {
-  useBusinessQueryContext,
-  useExecuteToast,
-} from "../../../../../../../../../contexts";
-import { useMaintenanceMode } from "../../../../../../../../../hooks";
 import { EnvironmentSelection } from "./EnvironmentSelection";
-import { useAtom } from "jotai";
-import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -26,13 +28,13 @@ interface Props {
   previous: () => void;
   reset: () => void;
 }
-export const MaintenanceMode: React.FC<Props> = ({
+export const SettingsMaintenanceMode: React.FC<Props> = ({
   previousStep,
   previous,
   reset,
 }) => {
   const { data, loading, dateCommenced, refetch } = useMaintenanceMode();
-  const [, setStatus] = useAtom(SelectedConfirmationObj);
+  const setStatus = useSetAtom(SelectedConfirmationObj);
   const { businessQueryCommenceEnvMaintenanceMode } = useBusinessQueryContext();
   const { mutateAsync, isLoading } = businessQueryCommenceEnvMaintenanceMode();
   const { showToast } = useExecuteToast();

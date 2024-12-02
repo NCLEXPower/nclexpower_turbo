@@ -9,7 +9,7 @@ import { QuestionManagementFormSteps } from "./QuestionManagementSettingsTypeSte
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
 import { WizardFormMap } from "../../../../../../../../hooks";
-import { MaintenanceMode } from "./MaintenanceMode/MaintenanceMode";
+import { SettingsMaintenanceMode } from "./MaintenanceMode/SettingsMaintenanceMode";
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -56,7 +56,7 @@ export const ChooseSettingsTypeStep = {
   },
   MaintenanceMode: {
     previousStep: "InitialSettingsSelection",
-    content: (props) => <MaintenanceMode {...props} />,
+    content: (props) => <SettingsMaintenanceMode {...props} />,
   },
   ResourceManagement: {
     previousStep: "InitialSettingsSelection",

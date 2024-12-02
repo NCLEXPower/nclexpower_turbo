@@ -1,26 +1,33 @@
-import { useMaintenanceMode } from "../../../hooks";
-import { MaintenanceMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/MaintenanceMode/MaintenanceMode";
-import { render, renderHook, screen } from "../../common";
+import { useMaintenanceMode } from "../../../hooks/index";
+import { render } from "../../common";
+import { SettingsMaintenanceMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/MaintenanceMode/SettingsMaintenanceMode";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
 }));
-
 jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("../../../contexts/auth/hooks", () => ({
+  useCheckoutIntent: jest.fn(() => [null, jest.fn()]),
+}));
+
+jest.mock("../../../contexts", () => ({
+  useBusinessQueryContext: jest.fn(),
+}));
+
+jest.mock("../../../hooks", () => ({
+  useMaintenanceMode: jest.fn(),
+}));
+
 jest.mock("../../../hooks");
 
-describe("MaintenanceMode", () => {
+describe("SettingsMaintenanceMode", () => {
   const nextStep = jest.fn();
   const previous = jest.fn();
   const previousStep = jest.fn();
   const reset = jest.fn();
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -34,7 +41,7 @@ describe("MaintenanceMode", () => {
       refetch: jest.fn(),
     });
     const { queryByTestId } = render(
-      <MaintenanceMode
+      <SettingsMaintenanceMode
         nextStep={nextStep}
         previous={previous}
         previousStep={previousStep}
@@ -53,8 +60,8 @@ describe("MaintenanceMode", () => {
       refetch: jest.fn(),
     });
 
-    render(
-      <MaintenanceMode
+    const { queryByTestId } = render(
+      <SettingsMaintenanceMode
         nextStep={nextStep}
         previous={previous}
         previousStep={previousStep}
@@ -63,6 +70,6 @@ describe("MaintenanceMode", () => {
       />
     );
 
-    expect(screen.queryByTestId("fetch-loading")).toBeInTheDocument();
+    expect(queryByTestId("fetch-loading")).toBeInTheDocument();
   });
 });
