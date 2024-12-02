@@ -1,17 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { SelectedConfirmationObj } from "../Dialog/DialogFormBlocks/inclusion/useAtomic";
-import {
-  ConfirmationTextfield,
-  EnvironmentFormType,
-} from "../Textfield/ConfirmationTextfield";
+import { ConfirmationTextfield } from "../Textfield/ConfirmationTextfield";
 import { Button } from "./Button";
 import { EvaIcon } from "../EvaIcon";
 import { IconButton } from "./IconButton";
 import { useFormContext } from "react-hook-form";
+import { EnvironmentFormType } from "../../system/app/internal/types";
 
 interface StatusButtonProps {
-  onSubmit: (value: string) => void;
+  onSubmit: (value: EnvironmentFormType) => void;
   data: string[] | undefined;
   Item: string;
   loading: boolean;

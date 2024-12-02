@@ -8,7 +8,7 @@ import { getMaintenanceMode } from "../ssr";
 import { MaintenanceSsr } from "../types/global";
 import { dateFormatter } from "../core";
 
-function useMaintenanceMode() {
+export function useMaintenanceMode() {
   const [data, setData] = useState<MaintenanceSsr | undefined>();
   const [loading, setLoading] = useState(true);
   const fetchMaintenanceMode = async () => {
@@ -32,5 +32,3 @@ function useMaintenanceMode() {
 
   return { data, loading, dateCommenced, refetch: fetchMaintenanceMode };
 }
-
-export default useMaintenanceMode;

@@ -13,7 +13,7 @@ import { EnvironmentList } from "../../constants/constants";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createEnvironmentSchema } from "./validation";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
 
 interface Props {
@@ -27,7 +27,7 @@ export const EnvironmentSelection = ({
   currentMaintenance,
   isLoading,
 }: Props) => {
-  const [, setStatus] = useAtom(SelectedConfirmationObj);
+  const setStatus = useSetAtom(SelectedConfirmationObj);
   const activeField = useAtomValue<string | undefined | null>(
     SelectedConfirmationObj
   );

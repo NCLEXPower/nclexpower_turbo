@@ -6,18 +6,16 @@
 import { Box } from "@mui/material";
 import { Button, TextField } from "..";
 import { useFormContext } from "react-hook-form";
+import { EnvironmentFormType } from "../../system/app/internal/types";
 
 interface Props {
   item: string;
-  onSubmit: (value: any) => void;
+  onSubmit: (value: EnvironmentFormType) => void;
   loading?: boolean;
 }
-export type EnvironmentFormType = {
-  [key: string]: string;
-};
 
 export const ConfirmationTextfield = ({ item, onSubmit, loading }: Props) => {
-  const textToType = `${item.toUpperCase()}`;
+  const textToType = item.toUpperCase();
   const { control, handleSubmit, watch } =
     useFormContext<EnvironmentFormType>();
 
