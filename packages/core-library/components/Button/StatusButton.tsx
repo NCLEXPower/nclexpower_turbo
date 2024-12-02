@@ -55,6 +55,7 @@ export const StatusButton = ({
     <Button
       variant="text"
       onClick={() => handleTrigger(Item)}
+      disabled={loading}
       sx={{
         width: "50%",
         fontSize: "12px",

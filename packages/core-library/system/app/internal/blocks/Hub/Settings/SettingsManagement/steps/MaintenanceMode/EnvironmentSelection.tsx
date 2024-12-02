@@ -3,9 +3,11 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import GppMaybeOutlinedIcon from "@mui/icons-material/GppMaybeOutlined";
-import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
-import { Card } from "../../../../../../../../../components";
+import {
+  GppMaybeOutlined as GppOutlineIcon,
+  TaskAltOutlined as TaskOutlinedIcon,
+} from "@mui/icons-material";
+import { Card, StatusButton } from "../../../../../../../../../components";
 import { Box, Typography } from "@mui/material";
 import { EnvironmentList } from "../../constants/constants";
 import { FormProvider, useForm } from "react-hook-form";
@@ -13,7 +15,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { createEnvironmentSchema } from "./validation";
 import { useAtom, useAtomValue } from "jotai";
 import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
-import { StatusButton } from "../../../../../../../../../components/Button/StatusButton";
 
 interface Props {
   onSubmit: (value: string) => void;
@@ -92,9 +93,9 @@ export const EnvironmentSelection = ({
                   }}
                 >
                   {status ? (
-                    <GppMaybeOutlinedIcon sx={{ color: "#968200" }} />
+                    <GppOutlineIcon sx={{ color: "#968200" }} />
                   ) : (
-                    <TaskAltOutlinedIcon sx={{ color: "#5CB85C" }} />
+                    <TaskOutlinedIcon sx={{ color: "#5CB85C" }} />
                   )}
 
                   <Typography

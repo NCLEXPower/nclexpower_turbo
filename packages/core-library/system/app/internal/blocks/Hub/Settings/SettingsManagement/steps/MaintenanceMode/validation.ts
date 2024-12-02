@@ -7,7 +7,7 @@ import * as yup from "yup";
 
 export const createEnvironmentSchema = (
   environmentList: string[],
-  activeField: string | undefined | null
+  activeField?: string | null
 ) => {
   const fields = environmentList.reduce(
     (schema, env) => {
