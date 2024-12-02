@@ -87,7 +87,7 @@ export const ApprovalListView: React.FC<ApprovalBlockProps> = ({
                   >
                     Approve
                   </ListItemButton>
-                  <Tooltip title={"Reject action will be on view"}>
+                  <Tooltip title={"Reject action will be on page viewer"}>
                     <ListItemButton
                       onClick={() => handleSelection("multipleSelectRejection")}
                     >
