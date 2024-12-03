@@ -53,8 +53,9 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     }
   );
 
-  console.log(accountId);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
+  const { showToast } = useExecuteToast();
+  const { openDialog } = useDialogContext();
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,13 +63,11 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     }, 3000);
   }, [setContentLoader]);
 
-  const { openDialog } = useDialogContext();
   const handleMultipleSelection = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setMultiple(event.target.checked);
   };
-  const { showToast } = useExecuteToast();
 
   const handleSelectedRows = (
     selectedRowModel: RowModel<AuthorizedContentsResponseType>
@@ -194,18 +193,24 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   ];
 
   if (contentLoader) {
-    return <ComponentLoader />;
+    return (
+      <div data-testId="component-loader">
+        <ComponentLoader />
+      </div>
+    );
   }
 
   return (
-    <ApprovalListView
-      multiple={multiple}
-      handleMultipleSelection={handleMultipleSelection}
-      selectedRows={selectedRows ?? 0}
-      handleSelection={handleSelection}
-      columns={columns}
-      data={mockData ?? []}
-      handleSelectedRows={handleSelectedRows}
-    />
+    <div data-testId="approvalist">
+      <ApprovalListView
+        multiple={multiple}
+        handleMultipleSelection={handleMultipleSelection}
+        selectedRows={selectedRows ?? 0}
+        handleSelection={handleSelection}
+        columns={columns}
+        data={mockData ?? []}
+        handleSelectedRows={handleSelectedRows}
+      />
+    </div>
   );
 };

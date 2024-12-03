@@ -134,7 +134,7 @@ describe("ApprovalListView", () => {
     },
   ];
 
-  const defaultProps: ApprovalBlockProps = {
+  const DEFAULTPROPS: ApprovalBlockProps = {
     columns,
     data,
     multiple: false,
@@ -149,14 +149,14 @@ describe("ApprovalListView", () => {
   });
 
   it("renders component correctly", () => {
-    render(<ApprovalListView {...defaultProps} />);
+    render(<ApprovalListView {...DEFAULTPROPS} />);
 
     expect(screen.getByText("Manage Approvals")).toBeInTheDocument();
     expect(screen.getByText("Multiple Selection")).toBeInTheDocument();
   });
 
   it("calls handleMultipleSelection on Switch toggle", () => {
-    render(<ApprovalListView {...defaultProps} />);
+    render(<ApprovalListView {...DEFAULTPROPS} />);
     const switchInput = screen.getByRole("checkbox");
 
     fireEvent.click(switchInput);

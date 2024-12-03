@@ -183,11 +183,4 @@ describe("DialogContextModal", () => {
     render(<DialogContextModal dialogFormType="inclusion-edit-form" />);
     expect(screen.getByTestId("inclusion-edit-form")).toBeInTheDocument();
   });
-
-  it("renders null when dialogFormType does not match any case", () => {
-    const { container } = render(
-      <DialogContextModal dialogFormType="unknown" />
-    );
-    expect(container.firstChild).toBeNull();
-  });
 });

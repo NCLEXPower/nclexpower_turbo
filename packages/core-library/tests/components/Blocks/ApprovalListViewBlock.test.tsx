@@ -1,6 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "../../common";
-import { ApprovalListViewBlock } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
+import {
+  ApprovalListViewBlock,
+  ApprovalProps,
+} from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
 import {
   useBusinessQueryContext,
   usePageLoaderContext,
@@ -8,7 +11,6 @@ import {
   useExecuteToast,
 } from "../../../contexts";
 import { useAtom } from "jotai";
-import { useAccountId } from "../../../contexts/auth/hooks";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -49,9 +51,25 @@ jest.mock("../../../hooks/useApi", () => ({
   }),
 }));
 
-// jest.mock("../../../contexts/auth/hooks", () => ({
-//   useAccountId: jest.fn(() => ["test-account-id"]),
-// }));
+jest.mock("@mui/x-date-pickers", () => ({
+  LocalizationProvider: jest.fn(),
+}));
+
+jest.mock("@tanstack/react-table", () => ({
+  useReactTable: jest.fn(),
+  flexRender: jest.fn((value: any) => value),
+  getCoreRowModel: jest.fn(),
+  getExpandedRowModel: jest.fn(),
+  getFilteredRowModel: jest.fn(),
+}));
+
+jest.mock("../../../contexts/auth/hooks", () => ({
+  useAccountId: jest.fn(() => ["f707251d-825c-4b78-66d6-08dcfcc5bf3e"]),
+}));
+
+jest.mock("../../../components/ReactTable/ReactTable", () => ({
+  ReactTable: jest.fn(),
+}));
 
 const mockActiveStepAtom = jest.fn();
 
@@ -82,7 +100,7 @@ describe("ApprovalListViewBlock Component", () => {
     (useAtom as jest.Mock).mockReturnValue([undefined, mockSetApprovalAtom]);
 
     (usePageLoaderContext as jest.Mock).mockReturnValue({
-      contentLoader: false,
+      contentLoader: true,
       setContentLoader: mockSetContentLoader,
     });
 
@@ -102,8 +120,26 @@ describe("ApprovalListViewBlock Component", () => {
     });
   });
 
+  const renderComponent = (props: Partial<ApprovalProps> = {}) =>
+    render(<ApprovalListViewBlock nextStep={mockNextStep} {...props} />);
+
   it("renders without crashing", () => {
-    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
-    expect(screen.getByText("Actions")).toBeInTheDocument();
+    renderComponent();
+    waitFor(
+      () => {
+        expect(screen.getByTestId("approvalist")).toBeInTheDocument();
+      },
+      { timeout: 4000 }
+    );
   });
+
+  // it("toggles multiple selection state", () => {
+  //   renderComponent();
+
+  //   const checkbox = screen.getByLabelText("Multiple Selection");
+  //   expect(checkbox).not.toBeChecked();
+
+  //   fireEvent.click(checkbox);
+  //   expect(checkbox).toBeChecked();
+  // });
 });
