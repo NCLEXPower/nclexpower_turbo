@@ -3,8 +3,6 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-//
-
 import { useSetAtom } from "jotai";
 import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
 import { useMaintenanceMode } from "../../../../../../../../../hooks";
@@ -28,7 +26,8 @@ interface Props {
   previous: () => void;
   reset: () => void;
 }
-export const SettingsMaintenanceMode: React.FC<Props> = ({
+
+export const MaintenanceMode: React.FC<Props> = ({
   previousStep,
   previous,
   reset,
