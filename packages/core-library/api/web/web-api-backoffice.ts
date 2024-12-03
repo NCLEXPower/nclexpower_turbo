@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { AxiosInstance } from "axios";
 import {
   AccessKey,
@@ -41,7 +46,7 @@ import {
   LoginResponse,
   OpenPagesResponse,
 } from "../types";
-import { CategoryResponseType } from '../../core/hooks/types';
+import { CategoryResponseType } from "../../core/hooks/types";
 
 export class WebApiBackOffice {
   constructor(
@@ -383,6 +388,14 @@ export class WebApiBackOffice {
   }
 
   public async getAllCategory() {
-    return await this.axios.get<CategoryResponseType[]>('/api/v1/Category/fetch-all-category-type')
+    return await this.axios.get<CategoryResponseType[]>(
+      "/api/v1/Category/fetch-all-category-type"
+    );
+  }
+
+  public async maintenaceModeByEnv(params: string[]) {
+    return await this.axios.post("/api/v1/Customer/commence-maintenance-mode", {
+      environments: params,
+    });
   }
 }

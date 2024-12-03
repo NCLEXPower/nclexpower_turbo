@@ -99,3 +99,7 @@ export type CaseStudyDataType = {
   orders: SectionContent[];
   questionnaires: QuestionnaireItem[];
 };
+
+export type EnvironmentFormType = {
+  [key: string]: string;
+};
