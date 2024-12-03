@@ -14,6 +14,11 @@ export type AccessKeyType = {
   appName: string;
 };
 
+export interface OpenPagesResponse {
+  pageRoute: string;
+  pageAuthorization: number;
+}
+
 export interface LoginParams {
   email: string;
   password: string;
@@ -598,7 +603,7 @@ export type GetSubsequentLists = {
   id: string;
   optionText: string;
   optionKey: string;
-}
+};
 
 export type ContactFormType = {
   message: string;
@@ -607,4 +612,4 @@ export type ContactFormType = {
   countryCode: string;
   categoryId: string;
   email: string;
-}
+};

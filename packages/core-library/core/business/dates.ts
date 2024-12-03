@@ -59,3 +59,7 @@ export const formatTime = (
     return date.toString();
   }
 };
+
+export function isValidDate(date?: Date): boolean {
+  return (date && !isNaN(date.getTime())) || false;
+}

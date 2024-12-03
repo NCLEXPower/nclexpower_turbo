@@ -7,8 +7,8 @@ Created by the Software Strategy & Development Division
 
 import { FastTrackList, StandardList } from 'core-library/core/utils/contants/wc/HomePageData';
 import { ProductCardType, SelectedProductType } from 'core-library/types/global'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import React from 'react'
+import { EvaIcon } from 'core-library/components';
 
 interface CardProps {
     cardData: ProductCardType
@@ -46,7 +46,15 @@ const PricingCard: React.FC<CardProps> = ({ cardData, handleSelectProduct }) => 
             <div className="w-full flex  justify-start items-center py-5">
                 <div className="text-xs flex flex-col ">{InclusionsList.length > 0 && InclusionsList.map((list, index) => (
                     <div key={index} className='flex items-center gap-2'>
-                        <span><CheckCircleOutlineIcon sx={{ fontSize: 20 }} /></span>
+                        <span>
+                        <EvaIcon
+                            id='check-icon'
+                            name='checkmark-circle-2-outline'
+                            fill='#4B4B4B'
+                            width={20}
+                            height={20}
+                        />
+                        </span>
                         <p className='m-2'>{list}</p>
                     </div>
                 ))}</div>
