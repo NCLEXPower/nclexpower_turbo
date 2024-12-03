@@ -109,5 +109,7 @@ export async function getEndpointResources() {
       headers: headers,
     }
   );
-  return ((await response.json()) as string[]) ?? null;
+  return (
+    ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
+  );
 }
