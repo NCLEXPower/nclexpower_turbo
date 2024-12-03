@@ -27,11 +27,11 @@ interface Props {
 const chooseSettingsStepFormSchema = yup.object({
   selection: yup
     .mixed<SettingsSelectionOptions>()
-    .oneOf(["DBEXCEL", "QM", "IARM"])
+    .oneOf(["DBEXCEL", "QM", "IARM", "WEBCUSTOMER"])
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
-    .oneOf(["CONFIG", "AUTOMATION", "ROUTER"])
+    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE"])
     .required(),
 });
 
@@ -295,6 +295,65 @@ export const InAppManagement = (props: {
     </Box>
   );
 };
+export const MaintenanceMode = (props: {
+  nextStep(values: Partial<SettingsSelectionType>): void;
+  values: Partial<SettingsSelectionType>;
+}) => {
+  const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
+    resolver: yupResolver(chooseSettingsStepFormSchema),
+    mode: "all",
+    criteriaMode: "all",
+  });
+
+  useEffect(() => {
+    reset({
+      selection: props.values.selection,
+      chosen: props.values.chosen,
+    });
+  }, [props.values.selection, props.values.chosen]);
+
+  const handleSelection = (values: ChooseSettingsStepFormType) => {
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
+    props.nextStep({ chosen: values.chosen, selection: values.selection });
+  };
+
+  return (
+    <Box>
+      <InformationTitle
+        text="Product Maintenance"
+        lineWidth={6}
+        lineHeight={35}
+        lineColor="#6A5ACD"
+        borderRadius={2}
+        containerProps={{ mb: 5 }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
+      />
+      <Grid
+        justifyContent="center"
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      >
+        <Grid item xs={4}>
+          <Card
+            hoverEffect
+            onClick={() =>
+              handleSelection({
+                chosen: "MAINTENANCE",
+                selection: "WEBCUSTOMER",
+              })
+            }
+            elevation={5}
+            text="Web Customer"
+          />
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+      </Grid>
+    </Box>
+  );
+};
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   const { hasAccess } = useAccessControl();
@@ -323,6 +382,12 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
 
       {hasAccess("InAppManagement") && (
         <InAppManagement nextStep={nextStep} values={values} />
+      )}
+      {hasAccess("MaintenanceMode") && (
+        <>
+          <Divider>Maintenance Mode</Divider>
+          <MaintenanceMode nextStep={nextStep} values={values} />
+        </>
       )}
     </Card>
   );
