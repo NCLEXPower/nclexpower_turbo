@@ -1,5 +1,6 @@
 import { parse, format, parseISO } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
+import { getTimeZone } from "../../utils";
 
 export const parseDate = (dateString: string, dateFormat = "dd MM yyyy") => {
   try {
@@ -62,4 +63,17 @@ export const formatTime = (
 
 export function isValidDate(date?: Date): boolean {
   return (date && !isNaN(date.getTime())) || false;
+}
+
+export function dateFormatter(date: Date) {
+  const timeZone = getTimeZone();
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: timeZone,
+  };
+
+  return date.toLocaleString("en-US", options).replace(",", " -");
 }

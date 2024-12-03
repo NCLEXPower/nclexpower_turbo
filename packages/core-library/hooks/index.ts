@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 export * from "./useResolution";
 export * from "./useApi";
 export * from "./usePreviousValue";
@@ -35,3 +40,4 @@ export * from "./useUniqueById";
 export * from "./useRecaptcha";
 export * from "./useDataSource";
 export * from "./useEndpointByKey";
+export * from "./useMaintenanceMode";

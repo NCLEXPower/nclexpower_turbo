@@ -16,6 +16,7 @@ import { SsrTypes } from "core-library/types/global";
 import CSPHead from "core-library/components/CSPHead";
 import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
 import withAuth from "core-library/core/utils/withAuth";
+import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 
 interface Props {
@@ -36,7 +37,10 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     return <ErrorBox label={error.message} />;
   }
 
-  if (data?.loadMaintenanceMode?.maintenanceModeType === 1) {
+  if (
+    data?.currentMaintenanceMode &&
+    data?.currentMaintenanceMode.includes(config.value.SYSENV)
+  ) {
     return <MaintenanceBlock />;
   }
 

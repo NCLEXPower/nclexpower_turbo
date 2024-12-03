@@ -5,12 +5,17 @@ export const AccessLevels = {
 };
 
 export const accessControl = {
-  [AccessLevels.DEVELOPER]: ["InAppManagement", "OtherConfigurations"],
+  [AccessLevels.DEVELOPER]: [
+    "InAppManagement",
+    "OtherConfigurations",
+    "MaintenanceMode",
+  ],
   [AccessLevels.ADMIN]: [
     "ChooseProductsConfigurations",
     "OtherConfigurations",
     "ContentManagementSystemSettings",
     "InAppManagement",
+    "MaintenanceMode",
   ],
   [AccessLevels.ENCODER]: ["ChooseProductsConfigurations"],
 };

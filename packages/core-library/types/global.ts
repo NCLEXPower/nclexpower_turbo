@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import {
   BooleanValue,
   ButtonElements,
@@ -191,14 +196,14 @@ export type NavigationItemType = {
 
 export type IntentValueType = string | undefined | null;
 
-export type MaintenanceModeType = {
+export type MaintenanceSsr = {
   id: string;
-  maintenanceModeType: number;
+  currentMaintenanceMode: string[];
   createdDate: string;
   updatedDate: string;
 };
 
 export type SsrTypes = {
-  loadMaintenanceMode?: MaintenanceModeType | undefined;
+  currentMaintenanceMode: string[] | undefined;
   endpoints?: { endpoint: string; keyUrl: string }[];
 };
