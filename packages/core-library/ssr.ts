@@ -100,3 +100,16 @@ export async function getMaintenanceMode() {
   );
   return ((await response.json()) as MaintenanceSsr) ?? null;
 }
+
+export async function getEndpointResources() {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/get-all-endpoints`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return (
+    ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
+  );
+}

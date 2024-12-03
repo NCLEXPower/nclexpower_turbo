@@ -6,22 +6,28 @@
 import React, { useEffect, useState } from "react";
 import PricingCard from "./PricingComponent/PricingCard";
 import { useBusinessQueryContext } from "core-library/contexts";
-import { SelectedProductType } from "core-library/types/global";
+import { SelectedProductType, SsrTypes } from "core-library/types/global";
 import { useRouter } from "core-library/core";
 import { Encryption } from "core-library/utils/Encryption";
 import { config } from "core-library/config";
 import { useEncryptItem } from "core-library/contexts/auth/hooks";
+import { useDataSource } from "core-library/hooks";
+import { ProductListResponse } from "core-library/api/types";
 
-interface Props {}
+interface Props {
+  url?: string;
+}
 
-export const PricingBlock: React.FC<Props> = (props) => {
+export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number>(1);
-  const [filteredItems, setFilteredItems] = useState<[]>();
+  const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { businessQueryGetAllProducts } = useBusinessQueryContext();
-  const { data: ProductData } = businessQueryGetAllProducts(["PricingList"]);
+  const { dataSource } = useDataSource({ url });
+  const products: ProductListResponse[] =
+    dataSource.result?.data && isProductList(dataSource.result?.data)
+      ? dataSource.result.data
+      : [];
   const router = useRouter();
-
   const handleSelectProduct = (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
@@ -37,16 +43,18 @@ export const PricingBlock: React.FC<Props> = (props) => {
   const filterItems = (keyword: number) => {
     setNurseType(keyword);
     const filtered =
-      ProductData &&
-      ProductData.filter((item: any) => item.programTitle === keyword);
+      products && products.filter((item: any) => item.programTitle === keyword);
     setFilteredItems(filtered);
   };
   useEffect(() => {
     filterItems(0);
-  }, [ProductData]);
+  }, []);
 
   return (
-    <div id="pricing" className="pt-10 pb-40 h-fit bg-[#fafafa] flex items-center justify-center">
+    <div
+      id="pricing"
+      className="pt-10 pb-40 h-fit bg-[#fafafa] flex items-center justify-center"
+    >
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col gap-4 items-center px-10 text-center">
           <p className="lg:text-4xl text-3xl font-bold text-darkBlue">
@@ -91,7 +99,7 @@ export const PricingBlock: React.FC<Props> = (props) => {
                   key={index}
                 >
                   <PricingCard
-                    cardData={item}
+                    cardData={item as any}
                     handleSelectProduct={handleSelectProduct}
                   />
                 </div>
@@ -109,3 +117,12 @@ export const PricingBlock: React.FC<Props> = (props) => {
     </div>
   );
 };
+
+function isProductList(
+  data: Record<string, any>
+): data is ProductListResponse[] {
+  return (
+    Array.isArray(data) &&
+    data.every((item) => item && typeof item.id === "string")
+  );
+}
