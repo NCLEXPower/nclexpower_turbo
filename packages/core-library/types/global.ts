@@ -209,5 +209,3 @@ export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
 };
-
-//Retrigger Code Cov
