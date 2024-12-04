@@ -33,7 +33,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   error,
   slug,
 }) => {
-  const MaintenanceMode = data && data.MaintenanceStatus.currentMaintenanceMode;
+  const MaintenanceMode =
+    data && data.MaintenanceStatus?.currentMaintenanceMode;
 
   if (error) {
     return <ErrorBox label={error.message} />;
