@@ -18,7 +18,6 @@ import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/Maintenan
 import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
-import { config } from "core-library/config";
 
 interface Props {
   slug?: string;

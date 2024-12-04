@@ -13,8 +13,6 @@ import {
   StringValue,
 } from "./common";
 import { PanelListItem } from "./page";
-} from "./common";
-import { PanelListItem } from "./page";
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
