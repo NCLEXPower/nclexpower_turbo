@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import {
   BooleanValue,
   ButtonElements,
@@ -6,6 +11,8 @@ import {
   NumberValue,
   SelectionValue,
   StringValue,
+} from "./common";
+import { PanelListItem } from "./page";
 } from "./common";
 import { PanelListItem } from "./page";
 
@@ -191,9 +198,9 @@ export type NavigationItemType = {
 
 export type IntentValueType = string | undefined | null;
 
-export type MaintenanceModeType = {
+export type MaintenanceSsr = {
   id: string;
-  maintenanceModeType: number;
+  currentMaintenanceMode: string[];
   createdDate: string;
   updatedDate: string;
 };
