@@ -203,7 +203,11 @@ export type MaintenanceSsr = {
   updatedDate: string;
 };
 
+type MaintenanceMode = string[] | undefined;
+
 export type SsrTypes = {
-  currentMaintenanceMode: string[] | undefined;
+  MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
 };
+
+//Retrigger Code Cov
