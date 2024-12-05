@@ -29,11 +29,7 @@ describe("OtpField", () => {
 
   it("should not move focus for non-digit input", () => {
     const { getAllByTestId } = render(
-      <OtpField
-        value="1"
-        onChange={onChange}
-        data-testid="otp-input"
-      />
+      <OtpField value="1" onChange={onChange} data-testid="otp-input" />
     );
 
     const inputs = getAllByTestId("otp-input");
@@ -44,32 +40,35 @@ describe("OtpField", () => {
     expect(refs[1].current?.focus).not.toHaveBeenCalled();
   });
 
-  const createEvent = (value: string): ChangeEvent<HTMLInputElement> => ({
-    target: { value },
-    preventDefault: jest.fn(),
-  } as unknown as ChangeEvent<HTMLInputElement>);
+  const createEvent = (value: string): ChangeEvent<HTMLInputElement> =>
+    ({
+      target: { value },
+      preventDefault: jest.fn(),
+    }) as unknown as ChangeEvent<HTMLInputElement>;
 
   it("should update pin with numeric input and call onChange", () => {
     const index = 0;
     const mockEvent = createEvent("5");
 
-    const handleChange = (index: number): ChangeEventHandler<HTMLInputElement> => (event: ChangeEvent<HTMLInputElement>) => {
-      const text = event.target.value;
-      const isNumberOrEmpty = isSingleDigitNumber(text) || text === "";
+    const handleChange =
+      (index: number): ChangeEventHandler<HTMLInputElement> =>
+      (event: ChangeEvent<HTMLInputElement>) => {
+        const text = event.target.value;
+        const isNumberOrEmpty = isSingleDigitNumber(text) || text === "";
 
-      if (!isNumberOrEmpty) {
-        return event.preventDefault();
-      }
+        if (!isNumberOrEmpty) {
+          return event.preventDefault();
+        }
 
-      setPin((prevPin: string[]) => {
-        const newValue = prevPin.map((val: string, i: number) => {
-          if (index === i) return text;
-          return val;
+        setPin((prevPin: string[]) => {
+          const newValue = prevPin.map((val: string, i: number) => {
+            if (index === i) return text;
+            return val;
+          });
+          onChange?.(newValue.join(""));
+          return newValue;
         });
-        onChange?.(newValue.join(""));
-        return newValue;
-      });
-    };
+      };
 
     const prevPin = ["", "", "", "", "", ""];
     setPin.mockImplementation((callback) => callback(prevPin));
@@ -88,23 +87,25 @@ describe("OtpField", () => {
     const index = 0;
     const mockEvent = createEvent("a");
 
-    const handleChange = (index: number): ChangeEventHandler<HTMLInputElement> => (event: ChangeEvent<HTMLInputElement>) => {
-      const text = event.target.value;
-      const isNumberOrEmpty = isSingleDigitNumber(text) || text === "";
+    const handleChange =
+      (index: number): ChangeEventHandler<HTMLInputElement> =>
+      (event: ChangeEvent<HTMLInputElement>) => {
+        const text = event.target.value;
+        const isNumberOrEmpty = isSingleDigitNumber(text) || text === "";
 
-      if (!isNumberOrEmpty) {
-        return event.preventDefault();
-      }
+        if (!isNumberOrEmpty) {
+          return event.preventDefault();
+        }
 
-      setPin((prevPin: string[]) => {
-        const newValue = prevPin.map((val: string, i: number) => {
-          if (index === i) return text;
-          return val;
+        setPin((prevPin: string[]) => {
+          const newValue = prevPin.map((val: string, i: number) => {
+            if (index === i) return text;
+            return val;
+          });
+          onChange?.(newValue.join(""));
+          return newValue;
         });
-        onChange?.(newValue.join(""));
-        return newValue;
-      });
-    };
+      };
 
     handleChange(index)(mockEvent);
 

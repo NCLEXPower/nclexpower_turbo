@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from "next";
 import { ServerResponse } from "http";
 import { withCSP, generateCSP, setCSPHeader } from "../../utils";
-import { getMaintenanceMode } from "../../ssr";
+import { getEndpointResources, getMaintenanceMode } from "../../ssr";
 import { nonce } from "../../types";
-import { MaintenanceModeType } from "../../types/global";
+import { MaintenanceSsr } from "../../types/global";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -15,6 +15,7 @@ jest.mock("../../core/router", () => ({
 
 jest.mock("../../ssr", () => ({
   getMaintenanceMode: jest.fn(),
+  getEndpointResources: jest.fn(),
 }));
 
 jest.mock("../../types", () => ({
@@ -25,12 +26,21 @@ describe("withCSP", () => {
   let mockRes: Partial<ServerResponse>;
   let mockContext: Partial<GetServerSidePropsContext>;
 
-  const maintenanceModeMock: MaintenanceModeType = {
-    id: "12345",
-    maintenanceModeType: 1,
-    createdDate: "2024-10-21T10:00:00Z",
-    updatedDate: "2024-10-21T10:00:00Z",
+  const mockMaintenanceStatus = {
+    id: "79a6d3d7-b30a-4eae-a689-0919ddd0d5bd",
+    currentMaintenanceMode: ["dev", "uat"],
+    createdDate: "2024-11-28T23:29:28.2473075",
+    updatedDate: "2024-11-29T03:10:22.5355995",
   };
+
+  const mockEndpointResources = [
+    {
+      endpoint: "/api/test",
+      keyUrl: "test",
+    },
+  ] as { endpoint: string; keyUrl: string }[];
+
+  const maintenanceModeMock: MaintenanceSsr = mockMaintenanceStatus;
 
   beforeEach(() => {
     mockRes = {
@@ -44,6 +54,9 @@ describe("withCSP", () => {
 
     (nonce as jest.Mock).mockReturnValue("test-nonce");
     (getMaintenanceMode as jest.Mock).mockResolvedValue(maintenanceModeMock);
+    (getEndpointResources as jest.Mock).mockResolvedValue(
+      mockEndpointResources
+    );
   });
   it("should generate and set the CSP header", async () => {
     const mockGetServerSideProps = jest
@@ -64,7 +77,10 @@ describe("withCSP", () => {
       props: {
         test: "test value",
         generatedNonce: "test-nonce",
-        data: { loadMaintenanceMode: maintenanceModeMock },
+        data: {
+          MaintenanceStatus: mockMaintenanceStatus,
+          endpoints: mockEndpointResources,
+        },
       },
     });
   });
@@ -74,7 +90,10 @@ describe("withCSP", () => {
     expect(result).toEqual({
       props: {
         generatedNonce: "test-nonce",
-        data: { loadMaintenanceMode: maintenanceModeMock },
+        data: {
+          MaintenanceStatus: mockMaintenanceStatus,
+          endpoints: mockEndpointResources,
+        },
       },
     });
   });
@@ -83,6 +102,9 @@ describe("withCSP", () => {
     (getMaintenanceMode as jest.Mock).mockRejectedValueOnce(
       new Error("Test error")
     );
+    jest
+      .mocked(getEndpointResources)
+      .mockRejectedValueOnce(new Error("Test error"));
     const result = await withCSP()(mockContext as GetServerSidePropsContext);
 
     expect(result).toEqual({

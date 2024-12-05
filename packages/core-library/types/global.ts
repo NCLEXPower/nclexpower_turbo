@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import {
   BooleanValue,
   ButtonElements,
@@ -6,8 +11,8 @@ import {
   NumberValue,
   SelectionValue,
   StringValue,
-} from './common';
-import { PanelListItem } from './page';
+} from "./common";
+import { PanelListItem } from "./page";
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
@@ -16,13 +21,13 @@ export interface CmsGlobals {
   errors?: ErrorsEntity[] | null;
   messages?: MessagesEntity[] | null;
   modals?: ModalsEntity[] | null;
-  dialogs?: DialogElement['value'][] | null;
+  dialogs?: DialogElement["value"][] | null;
   contentHtmlBlocks?: ContentBlockEntity[] | null;
   classifiers?: ClassifierEntity[] | null;
   icons?: IconsEntity[] | null;
 }
 
-export type PreloadedGlobals = Pick<CmsGlobals, 'labels'>;
+export type PreloadedGlobals = Pick<CmsGlobals, "labels">;
 interface ClassifierEntity {
   elements: {
     classifierKey?: StringValue;
@@ -36,7 +41,7 @@ interface ClassifierEntity {
       }[];
     };
   };
-  type: 'Classifier';
+  type: "Classifier";
 }
 
 interface ModalsEntity {
@@ -191,13 +196,14 @@ export type NavigationItemType = {
 
 export type IntentValueType = string | undefined | null;
 
-export type MaintenanceModeType = {
+export type MaintenanceSsr = {
   id: string;
-  maintenanceModeType: number;
+  currentMaintenanceMode: string[];
   createdDate: string;
   updatedDate: string;
 };
 
 export type SsrTypes = {
-  loadMaintenanceMode?: MaintenanceModeType | undefined;
+  currentMaintenanceMode: string[] | undefined;
+  endpoints?: { endpoint: string; keyUrl: string }[];
 };
