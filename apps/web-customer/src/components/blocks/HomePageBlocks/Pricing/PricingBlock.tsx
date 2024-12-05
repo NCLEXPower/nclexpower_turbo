@@ -71,7 +71,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         </div>
         <div className="pt-10">
           <div className="flex lg:gap-5 gap-2 flex-wrap justify-center px-20">
-            {PriceButtonDetails &&
+            {PriceButtonDetails.length > 0 &&
               PriceButtonDetails.map((nurseItem, index) => (
                 <button
                   key={index}
