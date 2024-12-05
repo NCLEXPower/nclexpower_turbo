@@ -1,112 +1,59 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "../../common";
-import {
-  ApprovalListViewBlock,
-  ApprovalProps,
-} from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
-import {
-  useBusinessQueryContext,
-  usePageLoaderContext,
-  useDialogContext,
-  useExecuteToast,
-} from "../../../contexts";
+import { screen, fireEvent, waitFor } from "../../common";
+import { render } from "@testing-library/react";
+import { ApprovalDialogBlock } from "../../../components";
 import { useAtom } from "jotai";
+import {
+  usePageLoaderContext,
+  useBusinessQueryContext,
+  useExecuteToast,
+  useDialogContext,
+} from "../../../contexts";
+import { ApprovalListViewBlock } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
+import { mockData } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/mockData";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
 jest.mock("../../../core", () => ({
-  useScroll: jest.fn(() => ({
-    scrollTop: jest.fn(),
-  })),
-  useRouter: jest.fn(),
-}));
-
-jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
 jest.mock("../../../contexts", () => ({
-  useBusinessQueryContext: jest.fn(),
   usePageLoaderContext: jest.fn(),
-  useDialogContext: jest.fn(),
+  useBusinessQueryContext: jest.fn(),
   useExecuteToast: jest.fn(),
+  useDialogContext: jest.fn(),
 }));
-
-jest.mock("../../../hooks/useApi", () => ({
-  useApiCallback: jest.fn().mockReturnValue({
-    loading: false,
-    result: {
-      data: {},
-    },
-    error: undefined,
-  }),
-  useApi: jest.fn().mockReturnValue({
-    loading: false,
-    result: {
-      data: {},
-    },
-    error: undefined,
-  }),
-}));
-
-jest.mock("@mui/x-date-pickers", () => ({
-  LocalizationProvider: jest.fn(),
-}));
-
-jest.mock("@tanstack/react-table", () => ({
-  useReactTable: jest.fn(),
-  flexRender: jest.fn((value: any) => value),
-  getCoreRowModel: jest.fn(),
-  getExpandedRowModel: jest.fn(),
-  getFilteredRowModel: jest.fn(),
-}));
-
-jest.mock("../../../contexts/auth/hooks", () => ({
-  useAccountId: jest.fn(() => ["f707251d-825c-4b78-66d6-08dcfcc5bf3e"]),
-}));
-
-jest.mock("../../../components/ReactTable/ReactTable", () => ({
-  ReactTable: jest.fn(),
-}));
-
 const mockActiveStepAtom = jest.fn();
-
 jest.mock("jotai", () => ({
-  useAtom: jest.fn(),
   atom: jest.fn(() => mockActiveStepAtom),
+  useAtom: jest.fn(),
 }));
 
-jest.mock(
-  "../../../system/app/internal/blocks/Hub/QuestionManagement/steps/useSteps",
-  () => ({
-    useRegularQuestionWizardSteps: jest.fn(() => ({
-      render: jest.fn(),
-    })),
-  })
-);
-
-describe("ApprovalListViewBlock Component", () => {
-  const mockSetApprovalAtom = jest.fn();
+describe("ApprovalListViewBlock", () => {
   const mockSetContentLoader = jest.fn();
-  const mockOpenDialog = jest.fn();
   const mockShowToast = jest.fn();
+  const mockOpenDialog = jest.fn();
   const mockNextStep = jest.fn();
+  const mockSetApprovalAtom = jest.fn();
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.resetAllMocks(), jest.useFakeTimers();
+    (usePageLoaderContext as jest.Mock).mockReturnValue({
+      contentLoader: false,
+      setContentLoader: mockSetContentLoader,
+    });
 
     (useAtom as jest.Mock).mockReturnValue([undefined, mockSetApprovalAtom]);
-
-    (usePageLoaderContext as jest.Mock).mockReturnValue({
-      contentLoader: true,
-      setContentLoader: mockSetContentLoader,
+    (useExecuteToast as jest.Mock).mockReturnValue({
+      showToast: mockShowToast,
     });
 
     (useBusinessQueryContext as jest.Mock).mockReturnValue({
       businessQueryGetContents: jest.fn().mockReturnValue({
-        data: [],
+        data: mockData,
         isLoading: false,
       }),
     });
@@ -114,32 +61,41 @@ describe("ApprovalListViewBlock Component", () => {
     (useDialogContext as jest.Mock).mockReturnValue({
       openDialog: mockOpenDialog,
     });
-
-    (useExecuteToast as jest.Mock).mockReturnValue({
-      showToast: mockShowToast,
-    });
   });
 
-  const renderComponent = (props: Partial<ApprovalProps> = {}) =>
-    render(<ApprovalListViewBlock nextStep={mockNextStep} {...props} />);
-
-  it("renders without crashing", () => {
-    renderComponent();
-    waitFor(
-      () => {
-        expect(screen.getByTestId("approvalist")).toBeInTheDocument();
-      },
-      { timeout: 4000 }
-    );
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.clearAllMocks();
   });
 
-  // it("toggles multiple selection state", () => {
-  //   renderComponent();
+  it("should render ApprovalListViewBlock", () => {
+    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
 
-  //   const checkbox = screen.getByLabelText("Multiple Selection");
-  //   expect(checkbox).not.toBeChecked();
+    expect(screen.getByTestId("approval-list-view"));
+  });
 
-  //   fireEvent.click(checkbox);
-  //   expect(checkbox).toBeChecked();
-  // });
+  it("should call setContentLoader with false after 3 seconds", () => {
+    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+    jest.advanceTimersByTime(3000);
+
+    expect(mockSetContentLoader).toHaveBeenCalledWith(false);
+    expect(mockSetContentLoader).toHaveBeenCalledTimes(1);
+  });
+
+  it("handles multiple selection toggle", () => {
+    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+
+    const checkbox = screen.getByRole("checkbox");
+
+    fireEvent.click(checkbox);
+
+    expect(checkbox).toBeChecked();
+  });
+
+  it("renders the approval list view when data is available", () => {
+    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+
+    expect(screen.getByText("ID")).toBeInTheDocument();
+    expect(screen.getByText("ContentID")).toBeInTheDocument();
+  });
 });

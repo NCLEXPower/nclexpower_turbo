@@ -133,7 +133,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
         <CustomTooltip title={tooltipTitle} key={btn.action}>
           <span>
             <ListItemButton
-              data-testid="Approval-View-Reject"
+              data-testid="approvalAction"
               onClick={() =>
                 handleSelection(btn.action, contentId, contentAuthorId)
               }
@@ -194,23 +194,21 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
 
   if (contentLoader) {
     return (
-      <div data-testId="component-loader">
+      <div data-testid="component-loader">
         <ComponentLoader />
       </div>
     );
   }
 
   return (
-    <div data-testId="approvalist">
-      <ApprovalListView
-        multiple={multiple}
-        handleMultipleSelection={handleMultipleSelection}
-        selectedRows={selectedRows ?? 0}
-        handleSelection={handleSelection}
-        columns={columns}
-        data={mockData ?? []}
-        handleSelectedRows={handleSelectedRows}
-      />
-    </div>
+    <ApprovalListView
+      multiple={multiple}
+      handleMultipleSelection={handleMultipleSelection}
+      selectedRows={selectedRows ?? 0}
+      handleSelection={handleSelection}
+      columns={columns}
+      data={mockData ?? []}
+      handleSelectedRows={handleSelectedRows}
+    />
   );
 };
