@@ -196,13 +196,16 @@ export type NavigationItemType = {
 
 export type IntentValueType = string | undefined | null;
 
-export type SsrTypes = {
-  currentMaintenanceMode: string[] | undefined;
-};
-
 export type MaintenanceSsr = {
   id: string;
   currentMaintenanceMode: string[];
   createdDate: string;
   updatedDate: string;
+};
+
+type MaintenanceMode = string[] | undefined;
+
+export type SsrTypes = {
+  MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
+  endpoints?: { endpoint: string; keyUrl: string }[];
 };
