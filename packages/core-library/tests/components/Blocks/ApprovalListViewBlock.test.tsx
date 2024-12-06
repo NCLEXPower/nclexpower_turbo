@@ -1,7 +1,6 @@
 import React from "react";
-import { screen, fireEvent, waitFor } from "../../common";
+import { screen, fireEvent } from "../../common";
 import { render } from "@testing-library/react";
-import { ApprovalDialogBlock } from "../../../components";
 import { useAtom } from "jotai";
 import {
   usePageLoaderContext,

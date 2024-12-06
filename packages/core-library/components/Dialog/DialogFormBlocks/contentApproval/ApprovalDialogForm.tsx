@@ -24,10 +24,12 @@ export const ApprovalDialogForm: React.FC<props> = ({ onSubmit, values }) => {
   const { control, handleSubmit, setValue } = form;
 
   useEffect(() => {
-    values?.approval?.forEach((item, index) => {
-      setValue(`approval.${index}.contentId`, item.contentId);
-      setValue(`approval.${index}.contentAuthorId`, item.contentAuthorId);
-    });
+    if (Array.isArray(values?.approval)) {
+      values.approval.forEach((item, index) => {
+        setValue(`approval.${index}.contentId`, item.contentId);
+        setValue(`approval.${index}.contentAuthorId`, item.contentAuthorId);
+      });
+    }
   }, [values, setValue]);
 
   return (

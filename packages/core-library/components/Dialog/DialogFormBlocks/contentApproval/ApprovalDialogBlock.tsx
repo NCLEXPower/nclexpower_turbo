@@ -11,6 +11,7 @@ import {
 } from "../../../../contexts";
 import { ApprovalDialogForm } from "./ApprovalDialogForm";
 import { useAtom } from "jotai";
+import { defaultValues } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
 
 export const ApprovalDialogBlock = () => {
   const { closeDialog } = useDialogContext();
@@ -30,11 +31,6 @@ export const ApprovalDialogBlock = () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setContentLoader(false);
     }
-  };
-
-  const defaultValues: ContentDateType = {
-    approval: [],
-    implementationSchedule: new Date(),
   };
 
   return (

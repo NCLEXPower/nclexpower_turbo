@@ -27,7 +27,6 @@ import {
 } from "../../../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 import { useEffect, useState } from "react";
 import { ApprovalListView } from "./ApprovalListView";
-import { mockData } from "./mockData";
 
 export interface ApprovalProps {
   nextStep(values: ContentDateType): void;
@@ -123,11 +122,11 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   };
 
   const renderActionButtons = (contentId: string, contentAuthorId: string) =>
+    actionButtons.length > 0 &&
     actionButtons.map((btn) => {
-      const isReject = btn.action === "reject";
-      const tooltipTitle = isReject
-        ? "Reject action will be on page viewer"
-        : "";
+      const disabled = selectedRows ? true : btn.action == "reject";
+      const tooltipTitle =
+        btn.action == "reject" ? "Reject action will be on page viewer" : "";
 
       return (
         <CustomTooltip title={tooltipTitle} key={btn.action}>
@@ -138,7 +137,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
                 handleSelection(btn.action, contentId, contentAuthorId)
               }
               sx={{ bgcolor: "white", color: "black" }}
-              disabled={isReject}
+              disabled={disabled}
             >
               {btn.label}
             </ListItemButton>
@@ -207,7 +206,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
       selectedRows={selectedRows ?? 0}
       handleSelection={handleSelection}
       columns={columns}
-      data={mockData ?? []}
+      data={data ?? []}
       handleSelectedRows={handleSelectedRows}
     />
   );

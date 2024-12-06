@@ -4,6 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { SelectOption } from "../../../../../../../../components";
+import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 import { RegularQuestionSelectionOptions } from "../types";
 
 const createNumberList = (length: number) => {
@@ -79,4 +80,10 @@ export const actionButtons = [
   { action: "approval", label: "Approve" },
   { action: "reject", label: "Reject" },
 ];
+
 export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
+
+export const defaultValues: ContentDateType = {
+  approval: [],
+  implementationSchedule: new Date(),
+};
