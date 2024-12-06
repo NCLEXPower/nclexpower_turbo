@@ -33,14 +33,14 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   error,
   slug,
 }) => {
+  const MaintenanceMode =
+    data && data.MaintenanceStatus?.currentMaintenanceMode;
+
   if (error) {
     return <ErrorBox label={error.message} />;
   }
 
-  if (
-    data?.currentMaintenanceMode &&
-    data?.currentMaintenanceMode.includes(config.value.SYSENV)
-  ) {
+  if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
   }
 
