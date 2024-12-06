@@ -6,3 +6,7 @@ export interface ServerProps {
   preloadedGlobals: PreloadedGlobals;
   slug: string;
 }
+
+export interface ServerSlug {
+  slug: string;
+}

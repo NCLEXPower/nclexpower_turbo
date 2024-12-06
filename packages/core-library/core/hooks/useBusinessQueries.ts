@@ -1,5 +1,10 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useMutation, useQuery, UseQueryResult } from "react-query";
-import { MutOpt, ApiServiceErr } from "./types";
+import { MutOpt, ApiServiceErr, CategoryResponseType } from "./types";
 import { useApi, useApiCallback } from "../../hooks";
 import {
   CalcItemSelectResponseItem,
@@ -513,14 +518,12 @@ export const useGetContents = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useGetAllInclusion = (
   queryKey: string[]
 ): UseQueryResult<GetAllInclusionResponse[] | undefined, any> => {
-  const getAllInclusion = useApi((api) =>
-    api.webbackoffice.getAllInclusions()
-  );
+  const getAllInclusion = useApi((api) => api.webbackoffice.getAllInclusions());
 
   return useQuery<ApiServiceErr>(
     queryKey,
@@ -530,7 +533,7 @@ export const useGetAllInclusion = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useDeleteRoute = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -561,23 +564,22 @@ export const useCreateInclusion = (
     const result = await createInclusionCB.execute({ ...data });
     return result;
   }, opt);
-}
+};
 
 export const useDeleteInclusion = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
 ) => {
   const deleteInclusionCB = useApiCallback(
-    async (api, args: string) =>
-      await api.webbackoffice.deleteInclusion(args)
+    async (api, args: string) => await api.webbackoffice.deleteInclusion(args)
   );
-  return useAppMutation<
-    AxiosResponse<number, AxiosError>,
-    string
-  >(async (data) => {
-    const result = await deleteInclusionCB.execute(data);
-    return result;
-  }, opt);
-}
+  return useAppMutation<AxiosResponse<number, AxiosError>, string>(
+    async (data) => {
+      const result = await deleteInclusionCB.execute(data);
+      return result;
+    },
+    opt
+  );
+};
 
 export const useUpdateInclusion = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -590,8 +592,10 @@ export const useUpdateInclusion = (
     async (data) => {
       const result = await updateInclusionCB.execute({ ...data });
       return result;
-    }, opt);
-}
+    },
+    opt
+  );
+};
 
 export const useCreateSubsequentOptions = (
   opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
@@ -600,13 +604,13 @@ export const useCreateSubsequentOptions = (
     async (api, args: SubsequentOptionType) =>
       await api.webbackoffice.web_create_subsequent(args)
   );
-  return useAppMutation<AxiosResponse<SubsequentOptionType, AxiosError>, SubsequentOptionType>(
-    async (data) => {
-      const result = await createSubsequentOption.execute({ ...data });
-      return result;
-    },
-    opt
-  );
+  return useAppMutation<
+    AxiosResponse<SubsequentOptionType, AxiosError>,
+    SubsequentOptionType
+  >(async (data) => {
+    const result = await createSubsequentOption.execute({ ...data });
+    return result;
+  }, opt);
 };
 
 export const useGetSelectedApprovers = (
@@ -624,7 +628,7 @@ export const useGetSelectedApprovers = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useGetAllInternalInclusions = (
   queryKey: string[]
@@ -641,7 +645,7 @@ export const useGetAllInternalInclusions = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useGetSubsequentList = (
   queryKey: string[]
@@ -658,7 +662,7 @@ export const useGetSubsequentList = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useCreateAuthorizedMenus = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -667,21 +671,19 @@ export const useCreateAuthorizedMenus = (
     async (api, args: CreateAuthorizedMenusParams) =>
       await api.webbackoffice.createAuthorizedMenus(args)
   );
-  return useAppMutation<AxiosResponse<number, AxiosError>, CreateAuthorizedMenusParams>(
-    async (data) => {
-      const result = await createAuthorizedMenus.execute({ ...data });
-      return result;
-    },
-    opt
-  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    CreateAuthorizedMenusParams
+  >(async (data) => {
+    const result = await createAuthorizedMenus.execute({ ...data });
+    return result;
+  }, opt);
 };
 
 export const useGetAllMenus = (
   queryKey: string[]
 ): UseQueryResult<AuthorizedMenuResponse[] | undefined, any> => {
-  const getAllMenus = useApi((api) =>
-    api.webbackoffice.getAllMenus()
-  );
+  const getAllMenus = useApi((api) => api.webbackoffice.getAllMenus());
 
   return useQuery<ApiServiceErr>(
     queryKey,
@@ -691,14 +693,13 @@ export const useGetAllMenus = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useGetMenuById = (
-  queryKey: string[], menuId: GetMenuByIdParams
+  queryKey: string[],
+  menuId: GetMenuByIdParams
 ): UseQueryResult<AuthorizedMenuResponse | undefined, any> => {
-  const getMenuById = useApi((api) =>
-    api.webbackoffice.getMenuById(menuId)
-  );
+  const getMenuById = useApi((api) => api.webbackoffice.getMenuById(menuId));
 
   return useQuery<ApiServiceErr>(
     queryKey,
@@ -708,7 +709,7 @@ export const useGetMenuById = (
     },
     { staleTime: Infinity }
   );
-}
+};
 
 export const useUpdateMenuItem = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -717,13 +718,13 @@ export const useUpdateMenuItem = (
     async (api, args: UpdateMenuItemParams) =>
       await api.webbackoffice.updateMenuItem(args)
   );
-  return useAppMutation<AxiosResponse<number, AxiosError>, UpdateMenuItemParams>(
-    async (data) => {
-      const result = await updateMenuItem.execute({ ...data });
-      return result;
-    },
-    opt
-  );
+  return useAppMutation<
+    AxiosResponse<number, AxiosError>,
+    UpdateMenuItemParams
+  >(async (data) => {
+    const result = await updateMenuItem.execute({ ...data });
+    return result;
+  }, opt);
 };
 
 export const useCreateContactUs = (
@@ -736,6 +737,37 @@ export const useCreateContactUs = (
   return useAppMutation<AxiosResponse<number, AxiosError>, ContactFormType>(
     async (data) => {
       const result = await contactUsSubmission.execute({ ...data });
+      return result;
+    },
+    opt
+  );
+};
+
+export const useGetAllCategories = (
+  queryKey: string[]
+): UseQueryResult<CategoryResponseType[] | undefined, any> => {
+  const getAllCategories = useApi((api) => api.webbackoffice.getAllCategory());
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllCategories.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+};
+
+export const useCommenceEnvMaintenanceMode = (
+  opt?: MutOpt<AxiosResponse<string[], AxiosError>>
+) => {
+  const commenceEnvMaintenanceMode = useApiCallback(
+    async (api, args: string[]) =>
+      await api.webbackoffice.maintenaceModeByEnv(args)
+  );
+  return useAppMutation<AxiosResponse<string[], AxiosError>, string[]>(
+    async (data) => {
+      const result = await commenceEnvMaintenanceMode.execute(data);
       return result;
     },
     opt

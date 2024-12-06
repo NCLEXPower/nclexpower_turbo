@@ -27,8 +27,10 @@ import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirec
 import { theme } from "core-library/contents/theme/theme";
 import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
+import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const contentData = useContentDataContext();
   const queryClient = new QueryClient();
   const { publishableKey } = useStripeConfig();
   const { isAuthenticated, logout, loading } = useAuthContext();
@@ -42,7 +44,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={loading}
+      loading={loading || contentData.loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>
@@ -50,7 +52,10 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
               <StripeContextProvider publishableKey={publishableKey}>
-                <LoadablePageContent loading={loading}>
+                <LoadablePageContent
+                  loading={loading || contentData.loading}
+                  pages={contentData.pages}
+                >
                   <DrawerLayout
                     menu={headerMenu}
                     isAuthenticated={isAuthenticated}
