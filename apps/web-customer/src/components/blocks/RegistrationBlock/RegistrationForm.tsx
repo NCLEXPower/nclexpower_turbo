@@ -68,7 +68,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   );
 
   const passwordCriteria = useMemo(
-    () => [{ isValid: isPasswordMatching, message: "Password match" }],
+    () => [
+      {
+        isValid: isPasswordMatching,
+        message: isPasswordMatching
+          ? "Passwords match"
+          : "Passwords do not match",
+      },
+    ],
     [validationChecks, isPasswordMatching]
   );
 
@@ -208,7 +215,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         name="password"
                         sx={{ borderRadius: "10px", width: "100%" }}
                         type={showPassword ? "text" : "password"}
-                        IsRegister
+                        isRegister
                         endAdornment={
                           <PasswordToggleAdornment
                             showPassword={showPassword}

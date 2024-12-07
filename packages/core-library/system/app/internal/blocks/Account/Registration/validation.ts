@@ -24,7 +24,10 @@ export const registrationSchema = yup.object({
   lastname: yup.string().required("Last Name is required").default(""),
   email: yup
     .string()
-    .email("Please provide a valid email")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Please provide a valid email"
+    )
     .required("Email is required")
     .default(""),
   password: yup.string().required("Password is required").default(""),
