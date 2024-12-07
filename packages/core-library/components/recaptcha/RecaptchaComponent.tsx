@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import ReCAPTCHA, { ReCAPTCHAProps } from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface Props {
   siteKey: string;
@@ -10,8 +10,14 @@ export const RecaptchaComponent = forwardRef<ReCAPTCHA, Props>(
   ({ siteKey, onVerify }, ref) => {
     return (
       <div style={{ marginTop: "10px" }}>
-        <ReCAPTCHA sitekey={siteKey} ref={ref as React.Ref<ReCAPTCHA>} onChange={onVerify} />
+        <ReCAPTCHA
+          sitekey={siteKey}
+          ref={ref as React.MutableRefObject<ReCAPTCHA | null>}
+          onChange={onVerify}
+        />
       </div>
     );
   }
 );
+
+(RecaptchaComponent as React.FC).displayName = "RecaptchaComponent";
