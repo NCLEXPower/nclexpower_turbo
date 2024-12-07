@@ -9,8 +9,8 @@ import {
   EvaIcon,
   IconButton,
   PasswordToggleAdornment,
-  RecaptchaComponent,
   TextField,
+  RecaptchaComponent
 } from "core-library/components";
 import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { RegistrationFormType, registrationSchema } from "core-library/system";
@@ -293,7 +293,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
               <RecaptchaComponent
                 ref={recaptchaRef}
                 siteKey={siteKey}
-                onVerify={(token) => {
+                onVerify={(token: any) => {
                   setCaptchaToken(token);
                 }}
               />
