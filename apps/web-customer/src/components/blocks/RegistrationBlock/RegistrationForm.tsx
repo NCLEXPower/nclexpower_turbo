@@ -291,9 +291,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </Button>
               </Box>
               <RecaptchaComponent
-                ref={recaptchaRef}
-                sitekey={siteKey}
-                onChange={(token: string | null) => {
+                recaptchaRef={recaptchaRef}
+                siteKey={siteKey}
+                onVerify={(token) => {
                   setCaptchaToken(token);
                 }}
               />
