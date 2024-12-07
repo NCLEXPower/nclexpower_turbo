@@ -6,15 +6,21 @@ interface RecaptchaProps {
   onVerify: (token: string | null) => void;
 }
 
+type ReCAPTCHARef = InstanceType<typeof ReCAPTCHA>;
+
 function RecaptchaComponent(
   { siteKey, onVerify }: RecaptchaProps,
-  ref: React.Ref<ReCAPTCHA>
+  ref: React.Ref<ReCAPTCHARef>
 ) {
   return (
     <div style={{ marginTop: "10px" }}>
-      <ReCAPTCHA ref={ref as React.Ref<any>} sitekey={siteKey} onChange={onVerify} />
+      <ReCAPTCHA
+        ref={ref}
+        sitekey={siteKey}
+        onChange={onVerify}
+      />
     </div>
   );
 }
 
-export default forwardRef<ReCAPTCHA, RecaptchaProps>(RecaptchaComponent);
+export default forwardRef<ReCAPTCHARef, RecaptchaProps>(RecaptchaComponent);
