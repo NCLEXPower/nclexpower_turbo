@@ -1,21 +1,20 @@
-import React, { forwardRef } from "react";
+import React, { RefObject } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
-interface Props {
-  recaptchaRef: React.RefObject<ReCAPTCHA>;
+interface RecaptchaComponentProps {
   siteKey: string;
   onVerify: (token: string | null) => void;
+  recaptchaRef?: RefObject<ReCAPTCHA>;
 }
 
-function RecaptchaComponentInner(
-  { siteKey, onVerify }: Props,
-  ref: React.Ref<ReCAPTCHA>
-) {
+export const RecaptchaComponent: React.FC<RecaptchaComponentProps> = ({
+  recaptchaRef,
+  siteKey,
+  onVerify,
+}) => {
   return (
     <div style={{ marginTop: "10px" }}>
-      <ReCAPTCHA sitekey={siteKey} ref={ref as any} onChange={onVerify} />
+      <ReCAPTCHA ref={recaptchaRef} sitekey={siteKey} onChange={onVerify} />
     </div>
   );
-}
-
-export const RecaptchaComponent = forwardRef<ReCAPTCHA, Props>(RecaptchaComponentInner);
+};
