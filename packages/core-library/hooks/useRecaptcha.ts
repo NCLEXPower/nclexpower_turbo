@@ -1,16 +1,15 @@
 import React, { useRef } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import { parseBase64toJSON } from "../types";
 import { config } from "../config";
 
 interface RecaptchReturn {
   reset: () => void;
-  recaptchaRef: React.RefObject<ReCAPTCHA>;
+  recaptchaRef: React.RefObject<any>;
   siteKey: string;
 }
 
 export const useRecaptcha = (): RecaptchReturn => {
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const recaptchaRef = useRef<any>(null);
 
   const parsedSiteKey = getKey(config.value.SITEKEY, ["SITEKEY"]);
 
