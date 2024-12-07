@@ -70,7 +70,7 @@ export const sliderConfig = {
   autoplay: true,
   autoplaySpeed: 500,
   fade: true,
-  speed: 700,
+  speed: 3000,
   cssEase: 'linear',
   arrows: false,
 };

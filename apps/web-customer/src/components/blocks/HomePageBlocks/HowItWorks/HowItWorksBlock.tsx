@@ -88,7 +88,11 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
             className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
             onClick={() => openModal('Practice')}
           >
-            <Image src={PracticeTest} alt='PracticeTest' />
+            <Image
+              src={PracticeTest}
+              alt='PracticeTest'
+              className='md:h-[460px]'
+            />
             <p>
               Step 3 :<span className='text-darkBlue font-bold'>By Doing</span>
             </p>
