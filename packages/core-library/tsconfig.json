@@ -5,7 +5,9 @@
     "module": "commonjs",
     "paths": {
       "@mui/icons-material/*": ["../../node_modules/@mui/icons-material/*"]
-    }
+    },
+    "jsx": "react-jsx",
+    "strict": true
   },
   "include": [
     ".",

@@ -6,7 +6,7 @@ interface RecaptchaProps {
   onVerify: (token: string | null) => void;
 }
 
-type ReCAPTCHARef = InstanceType<typeof ReCAPTCHA>;
+type ReCAPTCHARef = ReCAPTCHA;
 
 function RecaptchaComponent(
   { siteKey, onVerify }: RecaptchaProps,
