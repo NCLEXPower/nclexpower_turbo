@@ -8,7 +8,8 @@ import { SettingsSelectionType } from "../types";
 import { QuestionManagementFormSteps } from "./QuestionManagementSettingsTypeStep";
 import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
-import { WizardFormMap } from '../../../../../../../../hooks';
+import { WizardFormMap } from "../../../../../../../../hooks";
+import { MaintenanceMode } from "./MaintenanceMode/MaintenanceMode";
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -18,7 +19,8 @@ export type SettingsManagementSteps =
   | QuestionManagementFormSteps
   | "ReviewerSettings"
   | "ResourceManagement"
-  | "RouterSettings";
+  | "RouterSettings"
+  | "MaintenanceMode";
 
 export interface SettingsManagementStepProps {
   isLoading: boolean;
@@ -39,6 +41,8 @@ export const ChooseSettingsTypeStep = {
         return "ResourceManagement";
       if (values.chosen === "ROUTER" && values.selection === "IARM")
         return "RouterSettings";
+      if (values.chosen === "MAINTENANCE" && values.selection === "WEBCUSTOMER")
+        return "MaintenanceMode";
     },
     previousStep: "InitialSettingsSelection",
     content: (props) => <SettingsManagement {...props} />,
@@ -49,6 +53,10 @@ export const ChooseSettingsTypeStep = {
   RouterSettings: {
     previousStep: "InitialSettingsSelection",
     content: (props) => <InAppRouterManagement {...props} />,
+  },
+  MaintenanceMode: {
+    previousStep: "InitialSettingsSelection",
+    content: (props) => <MaintenanceMode {...props} />,
   },
   ResourceManagement: {
     previousStep: "InitialSettingsSelection",

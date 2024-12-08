@@ -3,13 +3,11 @@ import { usePaymentWizardSteps } from "./steps/useSteps";
 import { Container } from "@mui/material";
 
 export const PaymentWalkthroughForm = () => {
-  const { renderStep: render } = usePaymentWizardSteps();
+  const { render } = usePaymentWizardSteps();
 
   return (
     <Container>
-      {render({
-        isLoading: false,
-      })}
+      {render}
     </Container>
   );
 };

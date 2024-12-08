@@ -95,7 +95,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             >
               <Typography
                 sx={{
-                  marginBottom: { xs: 5, sm: 6, md: 10 },
+                  marginBottom: { xs: 5, sm: 3, md: 2.5 },
                   fontSize: { xs: "14px", sm: "15px", md: "16px", lg: "17px" },
                 }}
               >
@@ -113,6 +113,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               >
                 <Typography
                   sx={{
+                    lineHeight: 1,
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
                   }}
@@ -121,6 +122,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 </Typography>
                 <Typography
                   sx={{
+                    lineHeight: 1,
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
                   }}

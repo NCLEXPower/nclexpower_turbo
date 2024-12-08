@@ -26,7 +26,7 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
 
   return (
     <div className="h-screen flex flex-col lg:flex-row justify-center items-center px-4 sm:px-10 overflow-hidden lg:px-16 xl:px-20 pb-10">
-      <div className="w-full sm:w-[950px] flex justify-center sm:justify-end md:w-[700px] lg:w-4/5 xl:w-[55%] lg:flex-none lg:order-2 ">
+      <div className="w-full sm:w-[950px] hidden lg:flex justify-center sm:justify-end md:w-[700px] lg:w-4/5 xl:w-[55%] lg:flex-none lg:order-2 ">
         <Image
           src={UnderMaintenance}
           alt="UnderMaintenance"
@@ -36,31 +36,33 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
 
       <div className="flex flex-col gap-y-6 w-full sm:w-1/2 md:w-4/5 xl:w-1/2 lg:order-1 text-center lg:text-left lg:items-start">
         <div className="w-full">
-          <h1 className="text-[#0f2a71] text-[32px] sm:text-[48px] lg:text-[55px] font-bold font-Rajdhani text-center lg:text-left ">
+          <h1 className="text-[#0f2a71] text-[32px] sm:text-[48px] lg:text-[55px] font-bold font-Rajdhani text-center lg:text-left leading-[1]">
             Application Under Development
           </h1>
+          <div className='w-full flex justify-center items-center lg:hidden'>
+            <Image
+              src={UnderMaintenance}
+              alt="UnderMaintenance"
+              className="w-2/3 "
+            />
+          </div>
           <p className="text-[16px] sm:text-[18px] lg:text-[20px] text-[#9A9A9A] font-ptSans text-center lg:text-left px-4 sm:px-0 lg:w-4/5">
             Our application is currently under development and is not yet
-            online. We’re working to bring it to life. Please click the "Notify
+            online. We&apos;re working to bring it to life. Please click the "Notify
             Me" button and provide your email address to stay informed.
           </p>
         </div>
 
         <div className="w-full flex justify-center lg:justify-start">
-          <div className="flex-1">
-            <FormProvider {...form}>
+          <FormProvider {...form}>
+            <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-5 ">
               <TextField
                 control={control}
-                label="Email"
                 name="email"
+                placeholder='Email'
                 sx={{
                   borderRadius: "10px",
-                  width: {
-                    xs: "100%",
-                    sm: "100%",
-                    md: "100%",
-                    lg: "80%",
-                  },
+                  flexGrow: 1,
                   fontSize: {
                     xs: "12px",
                     sm: "14px",
@@ -71,32 +73,6 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
                     lg: "46px",
                   },
                 }}
-                endAdornment={
-                  <Button
-                    onClick={handleSubmit(onSubmit)}
-                    sx={{
-                      bgcolor: "#0F2A71",
-                      borderRadius: "10px",
-                      fontFamily: "'PT Sans', sans-serif",
-                      fontWeight: "bold",
-                      left: 15,
-                      zIndex: 1,
-                      padding: {
-                        xs: "6px 12px",
-                        lg: "8px 16px",
-                      },
-                      fontSize: {
-                        xs: "14px",
-                        lg: "16px",
-                      },
-                      "&:hover": {
-                        backgroundColor: "#00173F",
-                      },
-                    }}
-                  >
-                    Notify Me
-                  </Button>
-                }
                 inputProps={{
                   style: {
                     borderRadius: "10px",
@@ -104,8 +80,35 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
                   },
                 }}
               />
-            </FormProvider>
-          </div>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                sx={{
+                  bgcolor: "#0F2A71",
+                  borderRadius: "10px",
+                  fontFamily: "'PT Sans', sans-serif",
+                  alignSelf: {
+                    lg: 'end'
+                  },
+                  flexGrow: 1,
+                  fontWeight: "bold",
+                  zIndex: 1,
+                  padding: {
+                    xs: "6px 12px",
+                    lg: "8px 16px",
+                  },
+                  fontSize: {
+                    xs: "14px",
+                    lg: "16px",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#00173F",
+                  },
+                }}
+              >
+                Notify Me
+              </Button>
+            </div>
+          </FormProvider>
         </div>
       </div>
     </div>

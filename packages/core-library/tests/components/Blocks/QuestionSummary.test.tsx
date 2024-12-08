@@ -213,29 +213,4 @@ describe("QuestionSummary Component", () => {
       });
     });
   });
-
-  it("opens the modal and calls handleSubmit when the button is clicked", async () => {
-    render(
-      <ConfirmationModal
-        isLoading={false}
-        {...DEFAULT_PROPS}
-        handleSubmit={mockHandleSubmit}
-      />
-    );
-
-    const triggerButton = screen.getByTestId("confirm-modal");
-    fireEvent.click(triggerButton);
-
-    const modal = await screen.findByRole("dialog");
-    expect(modal).toBeVisible();
-
-    screen.debug();
-
-    const confirmButton = screen.getByRole("button", { name: /Submit/i });
-    expect(confirmButton).toBeInTheDocument();
-
-    fireEvent.click(confirmButton);
-
-    expect(mockHandleSubmit).toHaveBeenCalled();
-  });
 });

@@ -24,6 +24,9 @@ import {
   useGetAllMenus,
   useUpdateMenuItem,
   useCreateContactUs,
+  useGetAllCategories,
+  useCommenceEnvMaintenanceMode,
+  useAppMutation,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -51,7 +54,9 @@ import {
   ContactFormType,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
-import { EditMenuItemsType } from '../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types';
+import { EditMenuItemsType } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types";
+import { CategoryResponseType } from "../../../core/hooks/types";
+import { MaintenanceSsr } from "../../../types/global";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -1217,7 +1222,7 @@ describe("useGetContents", () => {
     };
 
     const mockSubsequentOption: SubsequentOptionType = {
-      optionText: "some-text"
+      optionText: "some-text",
     };
 
     beforeEach(() => {
@@ -1293,7 +1298,6 @@ describe("useGetContents", () => {
 });
 
 describe("useGetAllInclusion", () => {
-
   const mockExecute = jest.fn();
 
   beforeEach(() => {
@@ -1306,8 +1310,8 @@ describe("useGetAllInclusion", () => {
   it("should fetch and return questions data", async () => {
     const mockData: GetAllInclusionResponse[] = [
       {
-        id: 'test-id',
-        option: 'test-inclusion'
+        id: "test-id",
+        option: "test-inclusion",
       },
     ];
     mockExecute.mockResolvedValue({ data: mockData });
@@ -1324,15 +1328,18 @@ describe("useGetAllInclusion", () => {
       useGetAllInclusion(["getInclusionApi"])
     );
 
-    expect(useQuery).toHaveBeenCalledWith(["getInclusionApi"], expect.any(Function), {
-      staleTime: Infinity,
-    });
+    expect(useQuery).toHaveBeenCalledWith(
+      ["getInclusionApi"],
+      expect.any(Function),
+      {
+        staleTime: Infinity,
+      }
+    );
 
     expect(result.current.data).toEqual(mockData);
     expect(result.current.isLoading).toBe(false);
   });
-
-})
+});
 
 describe("useCreateInclusion", () => {
   const mockExecute = jest.fn();
@@ -1345,7 +1352,7 @@ describe("useCreateInclusion", () => {
     config: { headers: new AxiosHeaders() },
   };
   const mockInclusionOption: CreateInclusionParams = {
-    option: "test-inclusion"
+    option: "test-inclusion",
   };
 
   beforeEach(() => {
@@ -1377,9 +1384,7 @@ describe("useCreateInclusion", () => {
       isLoading: true,
     });
 
-    const { result } = renderHook(() =>
-      useCreateInclusion()
-    );
+    const { result } = renderHook(() => useCreateInclusion());
 
     await act(async () => {
       await result.current?.mutateAsync?.(mockInclusionOption);
@@ -1411,7 +1416,7 @@ describe("useCreateInclusion", () => {
     expect(result.current.data).toBeUndefined();
   });
 
-  it('should pass options to useMutation', () => {
+  it("should pass options to useMutation", () => {
     const mockOptions = {
       onSuccess: jest.fn(),
       onError: jest.fn(),
@@ -1421,8 +1426,7 @@ describe("useCreateInclusion", () => {
 
     expect(useMutation).toHaveBeenCalledWith(expect.any(Function), mockOptions);
   });
-
-})
+});
 
 describe("useDeleteInclusion", () => {
   const mockExecute = jest.fn();
@@ -1459,7 +1463,7 @@ describe("useDeleteInclusion", () => {
     expect(mockMutate).toHaveBeenCalled();
     expect(result.current.isLoading).toBe(false);
   });
-})
+});
 
 describe("useUpdateInclusion", () => {
   const mockExecute = jest.fn();
@@ -1472,8 +1476,8 @@ describe("useUpdateInclusion", () => {
     config: { headers: new AxiosHeaders() },
   };
   const mockInclusion: EditInclusionParams = {
-    id: 'test-id',
-    option: 'mock-option'
+    id: "test-id",
+    option: "mock-option",
   };
 
   beforeEach(() => {
@@ -1499,7 +1503,7 @@ describe("useUpdateInclusion", () => {
     expect(mockMutate).toHaveBeenCalled();
     expect(result.current.isLoading).toBe(false);
   });
-})
+});
 
 describe("useGetSelectedApprovers", () => {
   const mockExecute = jest.fn();
@@ -1507,8 +1511,8 @@ describe("useGetSelectedApprovers", () => {
   it("should return a list of account ID", async () => {
     const mockData: DefaultReviewerDto[] = [
       {
-        accountId: "test-account-account"
-      }
+        accountId: "test-account-account",
+      },
     ];
 
     (useQuery as jest.Mock).mockImplementation(() => {
@@ -1523,9 +1527,13 @@ describe("useGetSelectedApprovers", () => {
       useGetSelectedApprovers(["selectedApprovers"])
     );
 
-    expect(useQuery).toHaveBeenCalledWith(["selectedApprovers"], expect.any(Function), {
-      staleTime: Infinity,
-    });
+    expect(useQuery).toHaveBeenCalledWith(
+      ["selectedApprovers"],
+      expect.any(Function),
+      {
+        staleTime: Infinity,
+      }
+    );
 
     expect(result.current.data).toEqual(mockData);
     expect(result.current.isLoading).toBe(false);
@@ -1533,7 +1541,9 @@ describe("useGetSelectedApprovers", () => {
 
   it("should handle loading state", () => {
     (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
-    const { result } = renderHook(() => useGetSelectedApprovers(["selectedApprovers"]));
+    const { result } = renderHook(() =>
+      useGetSelectedApprovers(["selectedApprovers"])
+    );
     expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
   });
@@ -1550,7 +1560,9 @@ describe("useGetSelectedApprovers", () => {
       };
     });
 
-    const { result } = renderHook(() => useGetSelectedApprovers(["selectedApprovers"]));
+    const { result } = renderHook(() =>
+      useGetSelectedApprovers(["selectedApprovers"])
+    );
 
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();
@@ -1563,7 +1575,7 @@ describe("useGetSelectedApprovers", () => {
         {
           id: "test-id",
           option: "test-option",
-        }
+        },
       ];
 
       (useQuery as jest.Mock).mockImplementation(() => {
@@ -1578,9 +1590,13 @@ describe("useGetSelectedApprovers", () => {
         useGetAllInternalInclusions(["getAllInternalInclusions"])
       );
 
-      expect(useQuery).toHaveBeenCalledWith(["getAllInternalInclusions"], expect.any(Function), {
-        staleTime: Infinity,
-      });
+      expect(useQuery).toHaveBeenCalledWith(
+        ["getAllInternalInclusions"],
+        expect.any(Function),
+        {
+          staleTime: Infinity,
+        }
+      );
 
       expect(result.current.data).toEqual(mockData);
       expect(result.current.isLoading).toBe(false);
@@ -1588,7 +1604,9 @@ describe("useGetSelectedApprovers", () => {
 
     it("should handle loading state", () => {
       (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
-      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+      const { result } = renderHook(() =>
+        useGetAllInternalInclusions(["getAllInternalInclusions"])
+      );
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined();
     });
@@ -1605,12 +1623,14 @@ describe("useGetSelectedApprovers", () => {
         };
       });
 
-      const { result } = renderHook(() => useGetAllInternalInclusions(["getAllInternalInclusions"]));
+      const { result } = renderHook(() =>
+        useGetAllInternalInclusions(["getAllInternalInclusions"])
+      );
 
       expect(result.current.error).toEqual(mockError);
       expect(result.current.data).toBeUndefined();
     });
-  })
+  });
 
   describe("useSelectAllCategories", () => {
     const mockExecute = jest.fn();
@@ -1618,13 +1638,13 @@ describe("useGetSelectedApprovers", () => {
     it("should return a list of all categories", async () => {
       const mockData: CategoryListResponse[] = [
         {
-          id: 'test-id',
+          id: "test-id",
           categoryName: "test-category-name",
-          categoryDescription: 'test-category-description',
+          categoryDescription: "test-category-description",
           categoryType: 0,
-          createdAt: 'test-created-at',
-          updatedAt: 'test-updated-at'
-        }
+          createdAt: "test-created-at",
+          updatedAt: "test-updated-at",
+        },
       ];
 
       (useQuery as jest.Mock).mockImplementation(() => {
@@ -1639,9 +1659,13 @@ describe("useGetSelectedApprovers", () => {
         useSelectAllCategories(["selectAllPricing"])
       );
 
-      expect(useQuery).toHaveBeenCalledWith(["selectAllPricing"], expect.any(Function), {
-        staleTime: Infinity,
-      });
+      expect(useQuery).toHaveBeenCalledWith(
+        ["selectAllPricing"],
+        expect.any(Function),
+        {
+          staleTime: Infinity,
+        }
+      );
 
       expect(result.current.data).toEqual(mockData);
       expect(result.current.isLoading).toBe(false);
@@ -1649,7 +1673,9 @@ describe("useGetSelectedApprovers", () => {
 
     it("should handle loading state", () => {
       (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
-      const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
+      const { result } = renderHook(() =>
+        useSelectAllCategories(["selectAllPricing"])
+      );
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined();
     });
@@ -1666,12 +1692,14 @@ describe("useGetSelectedApprovers", () => {
         };
       });
 
-      const { result } = renderHook(() => useSelectAllCategories(["selectAllPricing"]));
+      const { result } = renderHook(() =>
+        useSelectAllCategories(["selectAllPricing"])
+      );
 
       expect(result.current.error).toEqual(mockError);
       expect(result.current.data).toBeUndefined();
     });
-  })
+  });
 
   describe("useGetSubsequentLists", () => {
     const mockExecute = jest.fn();
@@ -1681,8 +1709,8 @@ describe("useGetSelectedApprovers", () => {
         {
           id: "test-id",
           optionText: "test-option-text",
-          optionKey: "test-key"
-        }
+          optionKey: "test-key",
+        },
       ];
 
       (useQuery as jest.Mock).mockImplementation(() => {
@@ -1697,9 +1725,13 @@ describe("useGetSelectedApprovers", () => {
         useGetSubsequentList(["subsequentLists"])
       );
 
-      expect(useQuery).toHaveBeenCalledWith(["subsequentLists"], expect.any(Function), {
-        staleTime: Infinity,
-      });
+      expect(useQuery).toHaveBeenCalledWith(
+        ["subsequentLists"],
+        expect.any(Function),
+        {
+          staleTime: Infinity,
+        }
+      );
 
       expect(result.current.data).toEqual(mockData);
       expect(result.current.isLoading).toBe(false);
@@ -1707,7 +1739,9 @@ describe("useGetSelectedApprovers", () => {
 
     it("should handle loading state", () => {
       (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
-      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+      const { result } = renderHook(() =>
+        useGetSubsequentList(["subsequentLists"])
+      );
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined();
     });
@@ -1724,13 +1758,14 @@ describe("useGetSelectedApprovers", () => {
         };
       });
 
-      const { result } = renderHook(() => useGetSubsequentList(["subsequentLists"]));
+      const { result } = renderHook(() =>
+        useGetSubsequentList(["subsequentLists"])
+      );
 
       expect(result.current.error).toEqual(mockError);
       expect(result.current.data).toBeUndefined();
     });
-  })
-
+  });
 });
 
 describe("useGetAllMenus", () => {
@@ -1743,8 +1778,8 @@ describe("useGetAllMenus", () => {
         id: "test-id",
         menuEnvironments: 0,
         menuItems: [],
-        systemMenus: 1
-      }
+        systemMenus: 1,
+      },
     ];
 
     (useQuery as jest.Mock).mockImplementation(() => {
@@ -1755,18 +1790,20 @@ describe("useGetAllMenus", () => {
       };
     });
 
-    const { result } = renderHook(() =>
-      useGetAllMenus(["getAllMenus"])
-    );
+    const { result } = renderHook(() => useGetAllMenus(["getAllMenus"]));
 
-    expect(useQuery).toHaveBeenCalledWith(["getAllMenus"], expect.any(Function), {
-      staleTime: Infinity,
-    });
+    expect(useQuery).toHaveBeenCalledWith(
+      ["getAllMenus"],
+      expect.any(Function),
+      {
+        staleTime: Infinity,
+      }
+    );
 
     expect(result.current.data).toEqual(mockData);
     expect(result.current.isLoading).toBe(false);
   });
-})
+});
 
 describe("useUpdateMenuItem", () => {
   const mockExecute = jest.fn();
@@ -1779,13 +1816,13 @@ describe("useUpdateMenuItem", () => {
     config: { headers: new AxiosHeaders() },
   };
   const mockMenuItem: UpdateMenuItemParams = {
-    id: 'test-id',
+    id: "test-id",
     children: [],
-    icon: 'test-icon',
-    label: 'test-label',
-    menuId: 'test-menu-id',
-    parentId: 'test-parent-id',
-    path: 'test-path',
+    icon: "test-icon",
+    label: "test-label",
+    menuId: "test-menu-id",
+    parentId: "test-parent-id",
+    path: "test-path",
   };
 
   beforeEach(() => {
@@ -1811,7 +1848,7 @@ describe("useUpdateMenuItem", () => {
     expect(mockMutate).toHaveBeenCalled();
     expect(result.current.isLoading).toBe(false);
   });
-})
+});
 
 describe("useCreateContactUs", () => {
   const mockExecute = jest.fn();
@@ -1849,7 +1886,7 @@ describe("useCreateContactUs", () => {
       name: "Jane Doe",
       email: "jane.doe@example.com",
       phone: "987-654-3210",
-      categoryId: 'test-id',
+      categoryId: "test-id",
       countryCode: "+US",
       message: "This is another test message",
     };
@@ -1876,7 +1913,7 @@ describe("useCreateContactUs", () => {
       name: "Jane Doe",
       email: "jane.doe@example.com",
       phone: "987-654-3210",
-      categoryId: 'test-id',
+      categoryId: "test-id",
       countryCode: "+US",
       message: "This is another test message",
     };
@@ -1898,6 +1935,97 @@ describe("useCreateContactUs", () => {
     });
 
     expect(mockApi.web.web_create_contact_us).toHaveBeenCalledWith(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+});
+
+describe("useCommenceEnvMaintenanceMode", () => {
+  const mockExecute = jest.fn();
+  const mockMutateAsync = jest.fn();
+  const mockOnSuccess = jest.fn();
+
+  const mockApi = {
+    webbackoffice: {
+      commenceEnvMaintenanceMode: jest.fn(),
+    },
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+
+    (useAppMutation as jest.Mock).mockImplementation((mutationFn, options) => ({
+      mutateAsync: mockMutateAsync,
+      isLoading: false,
+      ...options,
+    }));
+
+    mockExecute.mockImplementation(async (data: string[]) => {
+      return await mockApi.webbackoffice.commenceEnvMaintenanceMode(data);
+    });
+  });
+
+  it("handles mutation and success callback correctly", async () => {
+    const mockData: string[] = ["dev"];
+    const mockResult = { data: 200 };
+
+    mockApi.webbackoffice.commenceEnvMaintenanceMode.mockResolvedValue(
+      mockResult
+    );
+    mockMutateAsync.mockResolvedValue(mockResult);
+
+    const { result } = renderHook(() =>
+      useCommenceEnvMaintenanceMode({ onSuccess: mockOnSuccess })
+    );
+
+    expect(result.current.isLoading).toBe(false);
+
+    await act(async () => {
+      const response = await result.current.mutateAsync(mockData);
+
+      expect(response).toEqual(mockResult);
+    });
+
+    expect(result.current.isLoading).toBe(false);
+  });
+});
+
+describe("useGetAllCategories", () => {
+  const mockExecute = jest.fn();
+
+  it("should return a list of categories", async () => {
+    const mockData: CategoryResponseType[] = [
+      {
+        id: "test-id",
+        categoryTypeName: "test-name",
+        categoryTypeValue: 0,
+      },
+    ];
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() =>
+      useGetAllCategories(["getAllCategories"])
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(
+      ["getAllCategories"],
+      expect.any(Function),
+      {
+        staleTime: Infinity,
+      }
+    );
+
+    expect(result.current.data).toEqual(mockData);
     expect(result.current.isLoading).toBe(false);
   });
 });

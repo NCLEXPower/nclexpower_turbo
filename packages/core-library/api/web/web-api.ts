@@ -27,7 +27,7 @@ export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
 
   /* This api should be in web-api-backoffice */
   public web_account_setup(params: RegisterParams) {
@@ -169,5 +169,12 @@ export class WebApi {
 
   public web_create_contact_us(params: ContactFormType) {
     return this.axios.post(`/api/v1/Customer/create-contact-us`, params);
+  }
+
+  public dataSummary<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.get<T>(`/${url}?${qs.stringify(params)}`);
   }
 }
