@@ -80,7 +80,7 @@
         "@types/formidable": "^3.4.5",
         "@types/jsonwebtoken": "^9.0.6",
         "@types/qs": "^6.9.15",
-        "@types/react-google-recaptcha": "2.1.9",
+        "@types/react-google-recaptcha": "^2.1.9",
         "@types/react-table": "7.7.16",
         "@zxcvbn-ts/core": "^3.0.4",
         "@zxcvbn-ts/language-common": "^3.0.4",
