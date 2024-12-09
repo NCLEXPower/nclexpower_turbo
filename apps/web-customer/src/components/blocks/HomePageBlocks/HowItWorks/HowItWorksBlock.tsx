@@ -65,7 +65,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
         </div>
         <div className='w-4/6 flex items-center justify-center py-10 flex-wrap gap-5 lg:gap-0 sm:w-[100%]'>
           <div
-            className='w-auto min-w-[200px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
+            className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
             onClick={() => openModal('WatchVideos')}
           >
             <Image src={WatchVideos} alt='WatchVideos' />
