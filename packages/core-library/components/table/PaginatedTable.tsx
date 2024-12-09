@@ -61,6 +61,7 @@ export interface TableProperties<T extends Record<string, unknown>>
   paginationData?: PaginationData;
   mobileFiltersConfig: TableContentMobileFiltersConfig<T>;
   downloadLabel?: string;
+  disableCheckbox?: boolean;
   downloadHidden?: boolean;
   downloadLoading?: boolean;
   downloadDisabled?: boolean;
@@ -111,6 +112,7 @@ export function PaginatedTable<T extends Record<string, unknown>>(
     isLoading,
     paginationData,
     noDataText,
+    disableCheckbox = false,
     downloadLabel,
     downloadHidden,
     downloadLoading,
@@ -172,77 +174,78 @@ export function PaginatedTable<T extends Record<string, unknown>>(
     },
     ...hooks,
     (hooks: Hooks<T>) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "_selector",
-          disableResizing: true,
-          disableGroupBy: true,
-          Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <Grid container alignItems="center" wrap="nowrap">
-              <Grid item>
-                <CheckboxCell
-                  {...getToggleAllPageRowsSelectedProps()}
-                  name="document_toggle"
-                  title={`${
-                    getToggleAllPageRowsSelectedProps().checked
-                      ? "Unselect"
-                      : "Select"
-                  } all document on this page`}
-                />
-              </Grid>
-              {!!additionalFilterValues?.length && (
+      !disableCheckbox &&
+        hooks.visibleColumns.push((columns) => [
+          {
+            id: "_selector",
+            disableResizing: true,
+            disableGroupBy: true,
+            Header: ({ getToggleAllPageRowsSelectedProps }) => (
+              <Grid container alignItems="center" wrap="nowrap">
                 <Grid item>
-                  <IconButton
-                    onClick={() => {}}
-                    ref={additionalFilterMenuButtonRef}
-                    data-testid="additional-filter-button"
-                    title="Filter list"
-                  >
-                    <KeyboardArrowDown
-                      fontSize="medium"
-                      sx={{ color: "common.black" }}
-                    />
-                  </IconButton>
+                  <CheckboxCell
+                    {...getToggleAllPageRowsSelectedProps()}
+                    name="document_toggle"
+                    title={`${
+                      getToggleAllPageRowsSelectedProps().checked
+                        ? "Unselect"
+                        : "Select"
+                    } all document on this page`}
+                  />
                 </Grid>
-              )}
-            </Grid>
-          ),
-          Cell: ({ row }: CellProps<T>) => {
-            return (
-              <CheckboxCell
-                {...row.getToggleRowSelectedProps()}
-                name="document_toggle"
-                title={`${row.getToggleRowSelectedProps().checked ? "Unselect" : "Select"}`}
-              />
-            );
+                {!!additionalFilterValues?.length && (
+                  <Grid item>
+                    <IconButton
+                      onClick={() => {}}
+                      ref={additionalFilterMenuButtonRef}
+                      data-testid="additional-filter-button"
+                      title="Filter list"
+                    >
+                      <KeyboardArrowDown
+                        fontSize="medium"
+                        sx={{ color: "common.black" }}
+                      />
+                    </IconButton>
+                  </Grid>
+                )}
+              </Grid>
+            ),
+            Cell: ({ row }: CellProps<T>) => {
+              return (
+                <CheckboxCell
+                  {...row.getToggleRowSelectedProps()}
+                  name="document_toggle"
+                  title={`${row.getToggleRowSelectedProps().checked ? "Unselect" : "Select"}`}
+                />
+              );
+            },
+            minWidth: 73,
+            width: 73,
+            maxWidth: 73,
           },
-          minWidth: 73,
-          width: 73,
-          maxWidth: 73,
-        },
-        ...columns,
-        {
-          id: "_actions",
-          disableResizing: true,
-          disableGroupBy: true,
-          Header: () => (
-            <Box width={400} display="flex" justifyContent="flex-end">
-              <PaginationControls<T>
-                instance={tableInstance}
-                labelPrefix={labelPrefix}
-                paginationData={paginationData}
-                onChangePage={onPageChange}
-              />
-            </Box>
-          ),
-          Cell: ({ row }: CellProps<T>) => (
-            <div>{row.original.actions as ReactNode}</div>
-          ),
-          minWidth: 300,
-          width: 400,
-          maxWidth: 450,
-        },
-      ]);
+          ...columns,
+          {
+            id: "_actions",
+            disableResizing: true,
+            disableGroupBy: true,
+            Header: () => (
+              <Box width={400} display="flex" justifyContent="flex-end">
+                <PaginationControls<T>
+                  instance={tableInstance}
+                  labelPrefix={labelPrefix}
+                  paginationData={paginationData}
+                  onChangePage={onPageChange}
+                />
+              </Box>
+            ),
+            Cell: ({ row }: CellProps<T>) => (
+              <div>{row.original.actions as ReactNode}</div>
+            ),
+            minWidth: 300,
+            width: 400,
+            maxWidth: 450,
+          },
+        ]);
       hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
         const selectionGroupHeader = headerGroups[0].headers[0];
         selectionGroupHeader.canResize = false;

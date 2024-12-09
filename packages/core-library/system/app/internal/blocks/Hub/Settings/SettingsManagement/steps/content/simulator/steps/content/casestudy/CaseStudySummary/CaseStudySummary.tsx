@@ -97,6 +97,44 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   if (contentLoader) {
     return <CaseStudyLoader />;
   }
+  type TableRow = {
+    itemNum: number;
+    seqNum: number;
+    questionType: string;
+    maxPoints: number | string;
+  };
+  const mockRowData: TableRow[] = [
+    {
+      itemNum: 1,
+      seqNum: 101,
+      questionType: "Multiple Choice",
+      maxPoints: "2021-01-02T14:30:00Z",
+    },
+    {
+      itemNum: 2,
+      seqNum: 102,
+      questionType: "True or False",
+      maxPoints: 0,
+    },
+    {
+      itemNum: 3,
+      seqNum: 103,
+      questionType: "Short Answer",
+      maxPoints: 10,
+    },
+    {
+      itemNum: 4,
+      seqNum: 104,
+      questionType: "Essay",
+      maxPoints: 20,
+    },
+    {
+      itemNum: 5,
+      seqNum: 105,
+      questionType: "Fill in the Blank",
+      maxPoints: 7,
+    },
+  ];
 
   return (
     <Box>
