@@ -38,6 +38,7 @@ export interface CreatePaymentIntentParams {
   programTitle: number;
   productId: string;
   pricingId: string;
+  accountId: string | undefined;
 }
 export interface UpdatePaymentIntentParams {
   paymentIntentId: string;
@@ -58,6 +59,7 @@ export interface LoginResponse {
   sessionId: string;
   fingerprint: string; //deprecated
   isNewAccount: boolean;
+  isPaid: boolean;
 }
 
 export interface RefreshTokenResponse {
@@ -199,9 +201,13 @@ export interface CreateCustomerParams {
   lastname: string;
   email: string;
   password: string;
-  orderNumber: string;
+  orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+}
+
+export interface CreateCustomerResponse {
+  accountId: string;
 }
 
 export interface CreateCustomerDumpParams {
@@ -265,12 +271,27 @@ export type VerifyCodeParams = {
   email: string;
 };
 
+export type OrderSummaryResponse = {
+  orderId: string;
+  orderNumber: string;
+  productName: string;
+  productDescription: string;
+  currency: string;
+  price: number;
+  categoryName: string;
+  categoryDescription: string;
+  programTitle: number;
+  programType: number;
+  pricingId: string;
+  productId: string;
+};
+
 export type ResendCodeParams = {
   email: string;
 };
 
 export type ValidateTokenParams = {
-  accessToken: string | undefined;
+  accessToken: string | undefined | null;
   appName: string;
 };
 

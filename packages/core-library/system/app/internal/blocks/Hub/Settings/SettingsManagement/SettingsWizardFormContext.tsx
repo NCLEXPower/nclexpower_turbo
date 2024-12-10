@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo } from "react";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { settingsSelectionSchema } from "./validation";
 import { SettingsSelectionType } from "./types";
-import { useSettingsFormDirtyState } from "./useSettingsFormDirtyState";
+import { useFormDirtyState } from "../../../../../../../hooks";
 
 export interface UseSettingsWizardFormContextValue {
   form: UseFormReturn<SettingsSelectionType>;
@@ -31,7 +31,7 @@ export const SettingsWizardFormContextProvider: React.FC<
     defaultValues:
       settingsSelectionSchema.getDefault() as SettingsSelectionType,
   });
-  const { isDirty, setIsDirty } = useSettingsFormDirtyState(form.formState);
+  const { isDirty, setIsDirty } = useFormDirtyState(form.formState);
 
   return (
     <FormProvider {...form}>

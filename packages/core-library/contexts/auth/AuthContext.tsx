@@ -15,6 +15,7 @@ import {
   useSession,
   useDeviceNotRecognized,
   useNewAccount,
+  usePaid,
 } from "./hooks";
 import {
   useApiCallback,
@@ -38,6 +39,7 @@ import {
   RevokeParams,
 } from "../../api/types";
 import { useAuthSessionIdleTimer } from "./hooks/useAuthSessionIdleTimer";
+import { Encryption } from "../../utils";
 
 const context = createContext<{
   loading: boolean;
@@ -89,6 +91,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [deviceNotRecognized, setDeviceNotRecognized] =
     useDeviceNotRecognized();
   const [, setIsNewAccount] = useNewAccount();
+  const [, setIsPaid] = usePaid();
   const { getDeviceDetails } = useDeviceInfo();
   const [accessDeviceId] = useDeviceId();
   const {
@@ -171,6 +174,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
+      clearSingleCookie();
       await router.push((route) => route.login);
     }
   }, [refreshToken, accessToken]);
@@ -220,6 +224,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setIsAuthenticated(false);
     clearSession();
     authSessionIdleTimer.stop();
+    clearSingleCookie();
     await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
@@ -270,20 +275,26 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               return;
             }
             setIsNewAccount(result.data.isNewAccount);
-            setAccountId(result.data.accountId);
+            setIsPaid(result.data.isPaid);
+            const encryptedValue = await Encryption(
+              result.data.accountId,
+              config.value.SECRET_KEY
+            );
+            setAccountId(
+              config.value.BASEAPP === "webc_app"
+                ? encryptedValue
+                : result.data.accountId
+            );
             setAccessLevel(result.data.accessLevel);
             setAccessToken(result.data.accessTokenResponse.accessToken);
             setRefreshToken(result.data.accessTokenResponse.refreshToken);
             setSession(result.data.sessionId);
-            setSingleCookie(
-              parseTokenId(result.data.accessTokenResponse.accessToken),
-              {
-                path: "/",
-                sameSite: "strict",
-                secure: process.env.NODE_ENV === "production",
-                domain: `.${window.location.hostname}`,
-              }
-            );
+            setSingleCookie(result.data.accessTokenResponse.accessToken, {
+              path: "/",
+              sameSite: "strict",
+              secure: process.env.NODE_ENV === "production",
+              domain: `.${window.location.hostname}`,
+            });
             setIsAuthenticated(true);
             await integrateDeviceInUseUpdater(result.data.accountId);
             await router.push((route) => route.hub);

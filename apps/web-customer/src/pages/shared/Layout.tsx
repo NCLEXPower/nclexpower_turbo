@@ -8,12 +8,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { LoadablePageContent } from "@/components/LoadablePageContent";
 import {
-  StripeContextProvider,
   useAuthContext,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
 } from "core-library/contexts";
-import { useStripeConfig } from "core-library/core/hooks/stripe/useStripeConfig";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
 import {
   CompanyInfo,
@@ -32,7 +30,6 @@ import { useContentDataContext } from "core-library/contexts/content/ContentData
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
-  const { publishableKey } = useStripeConfig();
   const { isAuthenticated, logout, loading } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
@@ -51,25 +48,23 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           <CssBaseline />
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
-              <StripeContextProvider publishableKey={publishableKey}>
-                <LoadablePageContent
-                  loading={loading || contentData.loading}
-                  pages={contentData.pages}
+              <LoadablePageContent
+                loading={loading || contentData.loading}
+                pages={contentData.pages}
+              >
+                <DrawerLayout
+                  menu={headerMenu}
+                  isAuthenticated={isAuthenticated}
+                  headerStyles={headerStyles}
+                  sidebarStyles={sidebarStyles}
+                  onLogout={logout}
                 >
-                  <DrawerLayout
-                    menu={headerMenu}
-                    isAuthenticated={isAuthenticated}
-                    headerStyles={headerStyles}
-                    sidebarStyles={sidebarStyles}
-                    onLogout={logout}
-                  >
-                    {children}
-                    <Footer info={CompanyInfo} list={list} />
-                    {/* dynamic hideHelp should be implemented here */}
-                    {true && <ChatBotWidget />}
-                  </DrawerLayout>
-                </LoadablePageContent>
-              </StripeContextProvider>
+                  {children}
+                  <Footer info={CompanyInfo} list={list} />
+                  {/* dynamic hideHelp should be implemented here */}
+                  {true && <ChatBotWidget />}
+                </DrawerLayout>
+              </LoadablePageContent>
             </FormSubmissionContextProvider>
           </HeaderTitleContextProvider>
         </ThemeProvider>
