@@ -1,0 +1,5 @@
+export * from './BasicInformation'
+export * from './ProductInformation'
+export * from './StripePaymentPage'
+export * from './TermsCondition'
+export * from './WelcomePage'

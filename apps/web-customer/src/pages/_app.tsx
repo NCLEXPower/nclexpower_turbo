@@ -19,6 +19,7 @@ import { useEmotionCache } from "core-library/hooks";
 import { CacheProvider } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
 import { SsrTypes } from "core-library/types/global";
+import { CookieConsentDialog } from "core-library/components/Dialog/CookieConsentDialog";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -43,9 +44,11 @@ export default function App({
           data={pageProps?.data as SsrTypes}
           generatedNonce={pageProps?.generatedNonce as string}
           error={pageProps?.error}
+          slug={pageProps?.slug as string}
         >
           <Suspense>
             <Component {...pageProps} />
+            {process.env.NODE_ENV !== "development" && <CookieConsentDialog />}
           </Suspense>
         </Page>
       </SessionProvider>

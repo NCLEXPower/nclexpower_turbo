@@ -10,10 +10,21 @@ import NorthIcon from "@mui/icons-material/North";
 import React from "react";
 import useWebHeaderStyles from "@/pages/contents/useWebHeaderStyles";
 import { IconButton } from "@mui/material";
+import { SsrTypes } from "core-library/types/global";
+import { useEndpointByKey } from "core-library/hooks";
 
-const Home: React.FC = () => {
+interface Props {
+  data?: SsrTypes;
+}
+
+const Home: React.FC<Props> = ({ data }) => {
   const { scrollTop } = useScroll();
   const { ToTopButtonSx } = useWebHeaderStyles();
+
+  const url = useEndpointByKey({
+    data: data?.endpoints,
+    key: "pricing-section",
+  });
 
   return (
     <React.Fragment>
@@ -41,7 +52,7 @@ const Home: React.FC = () => {
           <HowItWorksBlock />
         </div>
         <div className="w-full h-fit" id="pricing">
-          <PricingBlock />
+          <PricingBlock url={url} />
         </div>
       </div>
     </React.Fragment>

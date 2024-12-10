@@ -1,6 +1,11 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { CreateCustomerDumpParams, CreateCustomerParams } from "./api/types";
 import { config } from "./config";
-import { CmsGlobals, MaintenanceModeType } from "./types/global";
+import { CmsGlobals, MaintenanceSsr } from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
@@ -93,5 +98,18 @@ export async function getMaintenanceMode() {
       headers: headers,
     }
   );
-  return ((await response.json()) as MaintenanceModeType) ?? null;
+  return ((await response.json()) as MaintenanceSsr) ?? null;
+}
+
+export async function getEndpointResources() {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/get-all-endpoints`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return (
+    ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
+  );
 }
