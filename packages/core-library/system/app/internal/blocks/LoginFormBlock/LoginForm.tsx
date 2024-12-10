@@ -74,6 +74,11 @@ export const LoginForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
         }}
         inputProps={{
           style: { borderRadius: "10px" },
+          onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === " ") {
+              e.preventDefault();
+            }
+          },
         }}
         data-testid="email-input"
       />
