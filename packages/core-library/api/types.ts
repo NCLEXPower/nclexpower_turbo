@@ -613,3 +613,9 @@ export type ContactFormType = {
   categoryId: string;
   email: string;
 };
+
+export type PriceButtonType = {
+  acronym: "PN" | "RN";
+  label: "Practical Nurse" | "Registered Nurse";
+  value: 0 | 1;
+};

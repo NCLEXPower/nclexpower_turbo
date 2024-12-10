@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { UseMutationOptions, UseQueryOptions } from "react-query";
 
 export type ApiServiceErr = any;
@@ -21,8 +26,13 @@ export interface ParamOptions {
 }
 
 export interface CategoryResponseType {
-  id: string
-  categoryTypeName: string
-  categoryTypeValue: number
+  id: string;
+  categoryTypeName: string;
+  categoryTypeValue: number;
 }
-
+export interface EnvironmentStatus {
+  id: string;
+  currentMaintenanceMode: number;
+  createdDate: string;
+  updatedDate: string;
+}

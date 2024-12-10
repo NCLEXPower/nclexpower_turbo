@@ -1,5 +1,9 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SelectOption } from "../../../../../../../../components";
-import { ContainedCaseStudyQuestionType } from '../steps/content/simulator/types';
 import { RegularQuestionSelectionOptions } from "../types";
 
 const createNumberList = (length: number) => {
@@ -39,14 +43,17 @@ export const caseStudyQuestionnaires = {
   transitionHeader: "",
 };
 
-export const questionnairesDefaultValue = Array.from({ length: 6 }, (_, index) => ({
-  ...caseStudyQuestionnaires,
-  itemNum: index + 1,
-}))
+export const questionnairesDefaultValue = Array.from(
+  { length: 6 },
+  (_, index) => ({
+    ...caseStudyQuestionnaires,
+    itemNum: index + 1,
+  })
+);
 
 export const initCaseStudyQuestionnaires = {
   questionnaires: questionnairesDefaultValue,
-}
+};
 
 export const initQuestionsValues = (
   questionnaireType: RegularQuestionSelectionOptions | undefined
@@ -66,3 +73,5 @@ export const initQuestionsValues = (
     answers,
   };
 };
+
+export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
