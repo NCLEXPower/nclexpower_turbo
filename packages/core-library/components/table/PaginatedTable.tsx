@@ -268,45 +268,55 @@ export function PaginatedTable<T extends Record<string, unknown>>(
   return (
     <>
       {isMobile && renderMobileRow ? (
-        <TableContentMobile
-          noDataText={noDataText}
-          noDataFoundText={noDataFoundText}
-          tableInstance={tableInstance}
-          filterLabels={filterLabels}
-          filters={filters}
-          labelPrefix={labelPrefix}
-          isLoading={isLoading}
-          onRowClicked={onRowClick}
-          onSearchClicked={handleSearchClick}
-          renderRow={renderMobileRow}
-          filtersConfig={mobileFiltersConfig}
-          onFiltersCleared={handleClearFilters}
-          downloadLabel={downloadLabel}
-          downloadHidden={downloadHidden}
-          downloadLoading={downloadLoading}
-          downloadDisabled={downloadDisabled}
-          onDownloadClicked={onDownloadClicked}
-          paginationData={paginationData}
-          onPageChange={onPageChange}
-        />
+        <div
+          style={{ width: "100%", height: "100%" }}
+          data-testid="mobile-table-id"
+        >
+          <TableContentMobile
+            noDataText={noDataText}
+            noDataFoundText={noDataFoundText}
+            tableInstance={tableInstance}
+            filterLabels={filterLabels}
+            filters={filters}
+            labelPrefix={labelPrefix}
+            isLoading={isLoading}
+            onRowClicked={onRowClick}
+            onSearchClicked={handleSearchClick}
+            renderRow={renderMobileRow}
+            filtersConfig={mobileFiltersConfig}
+            onFiltersCleared={handleClearFilters}
+            downloadLabel={downloadLabel}
+            downloadHidden={downloadHidden}
+            downloadLoading={downloadLoading}
+            downloadDisabled={downloadDisabled}
+            onDownloadClicked={onDownloadClicked}
+            paginationData={paginationData}
+            onPageChange={onPageChange}
+          />
+        </div>
       ) : (
-        <TableContent
-          noDataText={noDataText}
-          noDataFoundText={noDataFoundText}
-          tableInstance={tableInstance}
-          filterLabels={filterLabels}
-          filters={filters}
-          labelPrefix={labelPrefix}
-          isLoading={isLoading}
-          downloadLabel={downloadLabel}
-          downloadHidden={downloadHidden}
-          downloadLoading={downloadLoading}
-          downloadDisabled={downloadDisabled}
-          onFiltersCleared={handleClearFilters}
-          onDownloadClicked={onDownloadClicked}
-          onRowClicked={onRowClick}
-          onSearchClicked={handleSearchClick}
-        />
+        <div
+          style={{ width: "100%", height: "100%" }}
+          data-testid="web-table-id"
+        >
+          <TableContent
+            noDataText={noDataText}
+            noDataFoundText={noDataFoundText}
+            tableInstance={tableInstance}
+            filterLabels={filterLabels}
+            filters={filters}
+            labelPrefix={labelPrefix}
+            isLoading={isLoading}
+            downloadLabel={downloadLabel}
+            downloadHidden={downloadHidden}
+            downloadLoading={downloadLoading}
+            downloadDisabled={downloadDisabled}
+            onFiltersCleared={handleClearFilters}
+            onDownloadClicked={onDownloadClicked}
+            onRowClicked={onRowClick}
+            onSearchClicked={handleSearchClick}
+          />
+        </div>
       )}
       {additionalFilterColumn && (
         <AdditionalFiltersMenu
