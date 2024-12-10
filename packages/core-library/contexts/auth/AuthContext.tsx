@@ -276,7 +276,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
             }
             setIsNewAccount(result.data.isNewAccount);
             setIsPaid(result.data.isPaid);
-            const encryptedValue = await Encryption(
+            const encryptedValue = Encryption(
               result.data.accountId,
               config.value.SECRET_KEY
             );
