@@ -411,10 +411,10 @@ export class WebApiBackOffice {
   }
 
   public async getDndOptionList(params: DndOptionParams) {
-    return await this.axios.get<DndOptionsResponseType[]>(`/api/v2/content/BaseContent/get-all-dnd-options?${qs.stringify({ ...params })}`)
+    return await this.axios.post<DndOptionsResponseType[]>(`/api/v2/content/BaseContent/get-all-dnd-options`, { ...params })
   }
 
   public async deleteDndOption(optionId: string) {
-    return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ optionId })}`)
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`);
   }
 }
