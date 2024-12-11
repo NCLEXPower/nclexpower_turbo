@@ -8,7 +8,6 @@ import { OpenPagesResponse } from "../../api/types";
 
 const context = createContext<{
   loading: boolean;
-  IsAuthorized: boolean;
   pages: OpenPagesResponse | undefined | null;
 }>(undefined as any);
 
@@ -22,8 +21,6 @@ export const useContentDataContext = () => {
 export const ContentDataContextProvider: React.FC<
   React.PropsWithChildren<ServerSlug>
 > = ({ children, slug }) => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
   const accessKey = useCachedAccessKey();
 
   const contentData = useApiContent(
@@ -34,7 +31,6 @@ export const ContentDataContextProvider: React.FC<
         return result;
       } catch (err: any) {
         console.error("Error loading page content:", err);
-        setError(err);
         return null;
       }
     },
@@ -53,7 +49,6 @@ export const ContentDataContextProvider: React.FC<
   const value = useMemo(
     () => ({
       loading: contentData.loading,
-      IsAuthorized: isAuthorized,
       pages: contentData.result,
     }),
     [contentData.loading]

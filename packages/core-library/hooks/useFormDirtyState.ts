@@ -10,7 +10,7 @@ import { FormState } from "react-hook-form";
  * setIsDirty(true);
  * console.log(isDirty); // true
  */
-export const useSettingsFormDirtyState = (formState: FormState<{}>) => {
+export const useFormDirtyState = (formState: FormState<{}>) => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
