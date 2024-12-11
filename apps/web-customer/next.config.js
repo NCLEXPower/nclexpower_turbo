@@ -2,7 +2,7 @@
 
 module.exports = {
   reactStrictMode: true,
-  transpilePackages: ["core-library"],
+  transpilePackages: ["core-library", "web-customer"],
   basePath: "",
   productionBrowserSourceMaps: process.env.NODE_ENV === "development",
   poweredByHeader: false,

@@ -1,13 +1,13 @@
 import { withCSP } from "core-library";
-import { useNewAccount } from "core-library/contexts/auth/hooks";
+import { usePaid } from "core-library/contexts/auth/hooks";
 import { GetServerSideProps } from "next";
 import React from "react";
 import { PaymentWalkthroughBlock } from "../../components/payment-line/PaymentWalkthroughBlock";
 
 const HubOverview: React.FC = () => {
-  const [isNewAccount] = useNewAccount();
+  const [isPaid] = usePaid();
 
-  if (isNewAccount) {
+  if (!isPaid) {
     return <PaymentWalkthroughBlock />;
   }
 

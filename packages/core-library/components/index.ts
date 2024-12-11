@@ -40,7 +40,6 @@ export * from "./ReactTable/ReactTable";
 export * from "./SelectField/SingleSelectField";
 export * from "./Textfield/SelectField/PlainSelectField";
 export * from "./Textfield/OtpField";
-export * from "./Button/CheckoutButton";
 export * from "./GenericDropDown/AccountMenu";
 export * from "./Stepper/Stepper";
 export * from "./Info/InformationTitle";

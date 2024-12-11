@@ -10,7 +10,9 @@ import {
   ContactFormType,
   CreateCustomerDumpParams,
   CreateCustomerParams,
+  CreateCustomerResponse,
   CreatePaymentIntentParams,
+  OrderSummaryResponse,
   PaymentIntentResponse,
   ReportIssueType,
   ResendCodeParams,
@@ -125,7 +127,10 @@ export class WebApi {
   }
 
   public web_ssr_create_customer(params: CreateCustomerParams) {
-    return this.ssrAxios.post<number>(`/api/customer/create`, params);
+    return this.ssrAxios.post<CreateCustomerResponse>(
+      `/api/customer/create`,
+      params
+    );
   }
 
   public web_create_customer_dump(params: CreateCustomerDumpParams) {
@@ -176,5 +181,29 @@ export class WebApi {
     params: Record<string, any>
   ) {
     return this.axios.get<T>(`/${url}?${qs.stringify(params)}`);
+  }
+
+  public async create_order_summary(props: {
+    orderNumber: string | undefined;
+    productId: string;
+    accountId: string | undefined;
+    pricingId: string | undefined;
+  }) {
+    return await this.axios.post<string>(
+      `/api/v1/Order/create-order-summary`,
+      props
+    );
+  }
+
+  public async getOrderSummary(accountId: string | undefined) {
+    return await this.axios.get<OrderSummaryResponse>(
+      `/api/v1/Order/get-order-summary?${qs.stringify({ accountId })}`
+    );
+  }
+
+  public async changePaymentStatus(accountId: string | undefined) {
+    return await this.axios.put(
+      `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`
+    );
   }
 }
