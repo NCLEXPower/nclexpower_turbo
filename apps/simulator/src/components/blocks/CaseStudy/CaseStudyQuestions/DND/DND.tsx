@@ -9,6 +9,7 @@ import { useForm, useFormState } from 'react-hook-form';
 import { useFormSubmissionBindingHooks } from 'core-library/hooks/useFormSubmissionBindingHooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 type Props = CaseStudyProps & {
   dndAtom: DNDValidationType | undefined;
@@ -73,7 +74,7 @@ export const DND: React.FC<Props> = ({ questionaire, dndAtom, handleSubmit }) =>
                 questionaire.map((questionItem, questionIndex: number) => (
                   <div key={questionIndex} className="w-full text-sm mb-4 pr-5">
                     <p className="flex">
-                      <div dangerouslySetInnerHTML={{ __html: questionItem.question }} />
+                      <ParsedHtml html={questionItem.question} />
                     </p>
                   </div>
                 ))}
@@ -129,10 +130,7 @@ export const DND: React.FC<Props> = ({ questionaire, dndAtom, handleSubmit }) =>
                         </p>
                         <p className="flex leading-5 my-2">
                           <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pt-2 " />
-                          <div
-                            style={textZoomStyle}
-                            dangerouslySetInnerHTML={{ __html: answerItem.answerInstruction }}
-                          />
+                          <ParsedHtml html={answerItem.answerInstruction} style={textZoomStyle} />
                         </p>
 
                         <div className="w-full flex flex-wrap gap-2" style={textZoomStyle}>
