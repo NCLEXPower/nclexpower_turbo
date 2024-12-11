@@ -27,7 +27,7 @@ export function ForgotPasswordFormBlock() {
   return (
     <ForgotPasswordForm
       onSubmit={handleSubmit}
-      submitLoading={emailCb.loading || resetLinkCb.loading}
+      submitLoading={emailCb.loading || resetLinkCb.loading || router.loading}
       isExpired={isExpired}
       showAlert={showAlert}
       resetTime={resetTime}

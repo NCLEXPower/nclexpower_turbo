@@ -8,7 +8,13 @@ import { clearSession } from "../../hooks";
 import { useAuthSessionIdleTimer } from "../../contexts/auth/hooks/useAuthSessionIdleTimer";
 
 jest.mock("../../config", () => ({
-  config: { value: { BASEAPP: "mockAppName" } },
+  config: {
+    value: {
+      BASEAPP: "mockAppName",
+      SECRET_KEY:
+        "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", // Example hex key
+    },
+  },
 }));
 jest.mock("../../contexts/auth/hooks", () => ({
   useAccessToken: jest.fn().mockReturnValue(["token", jest.fn(), jest.fn()]),
@@ -25,6 +31,7 @@ jest.mock("../../contexts/auth/hooks", () => ({
   useNewAccount: jest
     .fn()
     .mockReturnValue(["new_account", jest.fn(), jest.fn()]),
+  usePaid: jest.fn().mockReturnValue(["ispaid", jest.fn(), jest.fn()]),
 }));
 jest.mock("../../hooks/useSessionStorage");
 jest.mock("../../hooks/useApi", () => ({
@@ -95,6 +102,8 @@ describe("useAuthContext", () => {
         sessionId: "newSessionId",
         accountId: "newAccountId",
         accessLevel: "admin",
+        isPaid: true,
+        isNewAccount: false,
       },
     });
 

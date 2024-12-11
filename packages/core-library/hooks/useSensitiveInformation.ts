@@ -42,10 +42,13 @@ export const useSensitiveInformation = () => {
   }, [accountId, accessToken, accountId]);
 
   return {
-    ...useMemo(() => ({
-      internal: internalInfo,
-      customer: customerInfo,
-    }), [internalInfo, customerInfo]),
+    ...useMemo(
+      () => ({
+        internal: internalInfo,
+        customer: customerInfo,
+      }),
+      [internalInfo, customerInfo]
+    ),
     error,
     loading: validateTokenizeCb.loading,
   };
