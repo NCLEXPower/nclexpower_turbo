@@ -3,12 +3,16 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { CreateCustomerDumpParams, CreateCustomerParams } from "./api/types";
-import { config } from "./config";
+import {
+  CreateCustomerDumpParams,
+  CreateCustomerParams,
+  ValidateTokenParams,
+} from "./api/types";
 import { CmsGlobals, MaintenanceSsr } from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
+import { config } from "./config";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
@@ -112,4 +116,16 @@ export async function getEndpointResources() {
   return (
     ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
   );
+}
+
+export async function validateTokenSsr(params: ValidateTokenParams) {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/validate-token`,
+    {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(params),
+    }
+  );
+  return ((await response.json()) as number) ?? null;
 }
