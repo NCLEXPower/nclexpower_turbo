@@ -152,13 +152,13 @@ export const useCreateCustomer = (
     async (api, args: CreateCustomerParams) =>
       await api.web.web_ssr_create_customer(args)
   );
-  return useAppMutation<
-    AxiosResponse<number, AxiosError>,
-    CreateCustomerParams
-  >(async (data) => {
-    const result = await createCustomerSubmissionCb.execute({ ...data });
-    return result;
-  }, opt);
+  return useAppMutation<AxiosResponse<any, AxiosError>, CreateCustomerParams>(
+    async (data) => {
+      const result = await createCustomerSubmissionCb.execute({ ...data });
+      return result;
+    },
+    opt
+  );
 };
 
 export const useDeleteCategory = (
