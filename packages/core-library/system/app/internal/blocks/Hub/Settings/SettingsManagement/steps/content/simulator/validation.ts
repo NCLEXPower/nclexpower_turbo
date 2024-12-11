@@ -190,7 +190,7 @@ const caseStudyQuestionnaireSchema = yup.object({
           questionType: yup
             .mixed<CaseStudyQuestionSelectionOptions>()
             .transform((v) => (!v ? undefined : v))
-            .required(({ path }) => generateQuestionErrorMessage(path, "Question type is required")),
+            .when("itemNum", (itemNum, schema) => schema.required(({ path }) => generateQuestionErrorMessage(path, "Question type is required"))),
 
           itemNum: yup
             .number()

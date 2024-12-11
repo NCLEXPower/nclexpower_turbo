@@ -57,7 +57,7 @@ export const questionnairesDefaultValue = Array.from(
 );
 
 export const initCaseStudyQuestionnaires = {
-  questionnaires: questionnairesDefaultValue,
+  questionnaires: questionnairesDefaultValue
 };
 
 export const initQuestionsValues = (
