@@ -8,7 +8,7 @@ Created by the Software Strategy & Development Division
 import { Button } from "core-library/components";
 import React from "react";
 import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
-import { useStripeContext } from "core-library/contexts";
+import { useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library";
 
 type Props = {};
@@ -16,11 +16,12 @@ type Props = {};
 export const OrderSummaryBlock: React.FC<Props> = () => {
   const router = useRouter();
   const orderDetail = useDecryptOrder();
+  const toast = useExecuteToast();
   const ProgramTitle = orderDetail?.programTitle;
-  const { createPaymentIntentWithClientSecret, getOrderNumber } =
-    useStripeContext();
+  const loading = router.loading;
 
   if (!orderDetail) {
+    /* can cause flicker */
     router.replace("/");
     return;
   }
@@ -83,7 +84,8 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
         <div className="pt-2">
           <Button
             onClick={handleProceedCheckout}
-            disabled={false}
+            disabled={loading}
+            loading={loading}
             sx={{
               mb: 2,
               p: 2,
@@ -94,8 +96,8 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
               borderRadius: "4px",
               fontWeight: 600,
               ":focus": {
-                outline: "0 !important"
-              }
+                outline: "0 !important",
+              },
             }}
           >
             PROCEED
@@ -109,17 +111,10 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
   ) : null;
 
   async function handleProceedCheckout() {
-    if (!orderDetail) return;
-    await getOrderNumber();
-    await createPaymentIntentWithClientSecret({
-      amount: orderDetail.amount,
-      currency: orderDetail.currency,
-      productDescription: orderDetail.productDescription,
-      productName: orderDetail.productName,
-      programTitle: orderDetail.programTitle,
-      productId: orderDetail.productId,
-      pricingId: orderDetail.pricingId,
-    });
+    if (!orderDetail) {
+      toast.showToast("Something went wrong. Please try again", "error");
+      return;
+    }
     await router.push((route) => route.account_registration);
   }
 };
