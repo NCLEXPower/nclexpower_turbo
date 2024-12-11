@@ -11,7 +11,7 @@ type Props = {
 
 export const DNDOptionList: React.FC<Props> = ({ optionList, deleteDndOption }) => {
     return (
-        <Box gap={2} overflow="auto" height={1}>
+        <Box data-testid="dnd-option-list" gap={2} overflow="auto" height={1}>
             {optionList.length > 0 && optionList.map((option, index) =>
                 <Box sx={{
                     boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.3)',

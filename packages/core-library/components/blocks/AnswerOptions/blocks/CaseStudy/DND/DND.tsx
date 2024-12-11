@@ -47,7 +47,7 @@ export const DND: React.FC<DNDPropsType> = ({ questionIndex }) => {
     })
 
     return (
-        <Box>
+        <Box data-testid="dnd-form">
             <Box sx={{ p: 5 }}>
                 <Typography variant='body2' fontWeight={600} color={"#525252"}>Answer Fields : </Typography>
                 {extractedValue.length > 0 && extractedValue.map((value, index) => (
