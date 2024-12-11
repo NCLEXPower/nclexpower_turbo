@@ -16,3 +16,41 @@ export const billlingSummaryMockData: BillingSummaryType[] = [
     { id: "3", orderId: 'RN23-7854862', dateTime: '08-15-2024 09:04:33', payment: 'Credit', receiptNumber: '854578654823', purchase: '23-Days standard Program (PN)', amount: '$330.00 USD', validity: '180 days (6 months) usage', promo: 'n/a' },
     { id: "4", orderId: 'RN23-7854861', dateTime: '08-15-2024 09:04:34', payment: 'Debit', receiptNumber: '854578654824', purchase: '8-Days standard Program (PN)', amount: '$430.00 USD', validity: '90 days (3 months) usage', promo: 'n/a' },
   ];
+
+export const billingSummaryColumns = [
+  {
+    field: "orderId",
+    sortable: false,
+    headerName: "Order ID",
+    flex: 1,
+    maxWidth: 450,
+  },
+  {
+    field: "dateTime",
+    sortable: false,
+    headerName: "Date/Time",
+    flex: 1,
+    maxWidth: 450,
+  },
+  {
+    field: "payment",
+    sortable: false,
+    headerName: "Payment",
+    flex: 1,
+    maxWidth: 450,
+  },
+  {
+    field: "purchase",
+    sortable: false,
+    headerName: "Purchase",
+    flex: 1,
+    maxWidth: 450,
+  },
+];
+
+export const orderDetailTitles = ["dateTime", "payment", "receiptNumber", "purchase", "amount", "validity", "promo"];
+
+export const billingOwner = {
+    name: "Albert Rivera",
+    email: "arjon9397@gmail.com"
+}

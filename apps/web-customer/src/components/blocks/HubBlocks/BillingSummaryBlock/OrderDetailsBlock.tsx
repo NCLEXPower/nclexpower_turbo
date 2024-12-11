@@ -1,11 +1,10 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { orderDetailTitles } from "../../../../core/constant/BillingSummaryMock/BillingSummaryMock";
 
 interface OrderDetailsProps {
     selectedRow: Record<string, any> | null
 };
-
-const orderDetailTitles = ["dateTime", "payment", "receiptNumber", "purchase", "amount", "validity", "promo"];
 
 export const OrderDetailsBlock: React.FC<OrderDetailsProps> = ({ selectedRow }) => (
     <Box className="w-full p-6 flex flex-col bg-white rounded-[16px] drop-shadow-md">
