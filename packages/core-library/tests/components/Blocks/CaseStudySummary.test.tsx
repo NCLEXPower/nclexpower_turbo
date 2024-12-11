@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "../../common";
+import { render, screen, act, fireEvent, userEvent } from "../../common";
 import { CaseStudySummary } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content";
 import { TableView } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/TableView";
 import { usePageLoaderContext } from "../../../contexts";
@@ -106,6 +106,23 @@ describe("CaseStudySummary Component", () => {
     });
 
     (useAtom as jest.Mock).mockReturnValue([{}]);
+  });
+
+  it("should render the Case Study Summary", () => {
+    (usePageLoaderContext as jest.Mock).mockReturnValue({
+      contentLoader: true,
+      setContentLoader: mockSetContentLoader,
+    });
+    render(
+      <CaseStudySummary
+        nextStep={mockNextStep}
+        previousStep={mockPreviousStep}
+        values={{}}
+        next={mockNext}
+        previous={mockPrevious}
+        reset={jest.fn()}
+      />
+    );
   });
 
   it("renders loader when contentLoader is true", () => {
