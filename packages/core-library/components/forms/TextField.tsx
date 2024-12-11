@@ -46,7 +46,7 @@ interface Props<T extends object> {
   disabled?: boolean;
   multiline?: boolean;
   rows?: number;
-  isRegister?: boolean;
+  isregister?: boolean;
   sx?: DialogProps["sx"];
   inputProps?: OutlinedInputProps["inputProps"];
   endAdornment?: OutlinedInputProps["endAdornment"];
@@ -94,7 +94,7 @@ export const TextFieldComponent = <T extends object>({
     fieldState?.error?.types &&
     Object.keys(fieldState.error.types).length > 1;
 
-  const result = props.isRegister
+  const result = props.isregister
     ? zxcvbn(field.value == undefined ? "" : field.value)
     : zxcvbn("");
 
@@ -128,7 +128,7 @@ export const TextFieldComponent = <T extends object>({
                 value={field?.value ?? ""}
                 onKeyDown={(e) => e.key === "Enter" && onEnter && onEnter()}
               />
-              {props.isRegister && <PasswordStrengthMeter result={result} />}
+              {props.isregister && <PasswordStrengthMeter result={result} />}
             </React.Fragment>
           )}
         </ErrorTooltip>

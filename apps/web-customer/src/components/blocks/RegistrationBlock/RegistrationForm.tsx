@@ -215,7 +215,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         name="password"
                         sx={{ borderRadius: "10px", width: "100%" }}
                         type={showPassword ? "text" : "password"}
-                        isRegister
+                        isregister
                         endAdornment={
                           <PasswordToggleAdornment
                             showPassword={showPassword}
