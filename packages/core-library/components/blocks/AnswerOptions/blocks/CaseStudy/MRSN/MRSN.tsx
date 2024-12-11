@@ -15,7 +15,6 @@ type MrsnPropsType = {
 export const MRSN: React.FC<MrsnPropsType> = ({ questionIndex }) => {
   const deletionLimit = 0;
 
-
   return (
     <Card>
       <Box sx={{ display: "flex", justifyContent: "end", p: 2 }}>

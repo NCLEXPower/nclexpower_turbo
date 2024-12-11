@@ -45,6 +45,9 @@ import {
   UpdateMenuItemParams,
   LoginResponse,
   OpenPagesResponse,
+  CreateDndOptionsParams,
+  DndOptionParams,
+  DndOptionsResponseType,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -52,7 +55,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -145,8 +148,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-              contentAccessKey: "",
-            })}`
+            contentAccessKey: "",
+          })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -397,5 +400,21 @@ export class WebApiBackOffice {
     return await this.axios.post("/api/v1/Customer/commence-maintenance-mode", {
       environments: params,
     });
+  }
+
+  public async getFormId() {
+    return await this.axios.get("/api/v2/content/BaseContent/get-form-id")
+  }
+
+  public async createDndOptions(params: CreateDndOptionsParams) {
+    return await this.axios.post("/api/v2/content/BaseContent/create-dnd-option", params)
+  }
+
+  public async getDndOptionList(params: DndOptionParams) {
+    return await this.axios.get<DndOptionsResponseType[]>(`/api/v2/content/BaseContent/get-all-dnd-options?${qs.stringify({ ...params })}`)
+  }
+
+  public async deleteDndOption(optionId: string) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ optionId })}`)
   }
 }

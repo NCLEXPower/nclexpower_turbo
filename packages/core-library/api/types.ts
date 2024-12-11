@@ -545,9 +545,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -659,3 +659,22 @@ export type PriceButtonType = {
   label: "Practical Nurse" | "Registered Nurse";
   value: 0 | 1;
 };
+
+export type CreateDndOptionsParams = {
+  option: string,
+  formId: string,
+  accountId: string,
+  itemNo: number
+}
+
+export type DndOptionParams = {
+  formId: string,
+  accountId: string,
+  itemNo: number,
+}
+
+export type DndOptionsResponseType = {
+  id: string,
+  label: string,
+  value: string
+}
