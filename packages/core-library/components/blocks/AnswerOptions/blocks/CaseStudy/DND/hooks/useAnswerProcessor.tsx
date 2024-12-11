@@ -19,13 +19,10 @@ export const useAnswerProcessor = ({ extractedValue, questionIndex, dndAnswer, o
             setValue(`questionnaires.${questionIndex}.dndAnswer.${index}.fieldKey`, item)
             setValue(`questionnaires.${questionIndex}.dndAnswer.${index}.indexPos`, index)
         });
-    }, [extractedValue]);
 
-    useEffect(() => {
         if (extractedValue.length !== dndAnswer.length) {
             remove(dndAnswer.length - 1)
         }
-        console.log(extractedValue.length !== dndAnswer.length)
     }, [extractedValue]);
 
     useEffect(() => {
