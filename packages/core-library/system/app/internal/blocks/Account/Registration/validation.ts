@@ -4,6 +4,7 @@
 * Created by the Software Strategy & Development Division
 */
 import * as yup from "yup";
+import { EMAIL_REGEX } from "../../../../../../utils";
 
 export const registrationSchema = yup.object({
   hasNoMiddleName: yup.boolean().default(false),
@@ -24,7 +25,8 @@ export const registrationSchema = yup.object({
   lastname: yup.string().required("Last Name is required").default(""),
   email: yup
     .string()
-    .email("Please provide a valid email")
+    .email()
+    .matches(EMAIL_REGEX, "Please provide a valid email")
     .required("Email is required")
     .default(""),
   password: yup.string().required("Password is required").default(""),
