@@ -88,7 +88,7 @@ export const ddcAnswerOptionsSchema = yup
   })
   .required();
 
-const caseStudyAnswerFormSchema = yup.object({
+export const caseStudyAnswerFormSchema = yup.object({
   questionnaires: yup
     .array(
       yup.object({
@@ -167,11 +167,18 @@ export const caseStudyQuestionsFormSchema = yup
   })
   .concat(caseStudyAnswerFormSchema);
 
-export const containedCaseStudyQuestionSchema = yup
+  export const containedCaseStudySchema = yup.object({
+    type: yup.mixed<CaseStudyQuestionSelectionOptions>().optional(),
+    main_type: yup.mixed<QuestionSelectionOptions>().default("Case Study"),
+  })
+  .required()
+
+  export const containedCaseStudyQuestionSchema = yup
   .object({
     caseName: yup
       .array()
       .min(1, "Please select atleast 1 case name")
-      .required("Select atleast 1 case name")
+      .required("Select atleast 1 case name"),
   })
-  .concat(caseStudyQuestionsFormSchema);
+  .concat(caseStudyQuestionsFormSchema)
+  .concat(containedCaseStudySchema);

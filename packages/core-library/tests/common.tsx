@@ -6,7 +6,6 @@ import {
   BusinessQueryContextProvider,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
-  StripeContextProvider,
 } from "../contexts";
 import { theme } from "../contents/theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -39,15 +38,13 @@ export const render = (
         <BusinessQueryContextProvider>
           <DndProvider backend={HTML5Backend}>
             <QueryClientProvider client={new QueryClient()}>
-              <StripeContextProvider publishableKey="">
-                <ThemeProvider theme={theme()}>
-                  <HeaderTitleContextProvider>
-                    <FormSubmissionContextProvider>
-                      {children}
-                    </FormSubmissionContextProvider>
-                  </HeaderTitleContextProvider>
-                </ThemeProvider>
-              </StripeContextProvider>
+              <ThemeProvider theme={theme()}>
+                <HeaderTitleContextProvider>
+                  <FormSubmissionContextProvider>
+                    {children}
+                  </FormSubmissionContextProvider>
+                </HeaderTitleContextProvider>
+              </ThemeProvider>
             </QueryClientProvider>
           </DndProvider>
         </BusinessQueryContextProvider>

@@ -44,7 +44,7 @@ export function LoginFormBlock() {
       if (rememberMe) {
         const encryptedPassword = isEncrypted(data.password)
           ? data.password
-          : Encryption(data.password, key ?? "no-secret-key");
+          : await Encryption(data.password, key ?? "no-secret-key");
 
         const obj: SavedDataProps = {
           email: data.email,
