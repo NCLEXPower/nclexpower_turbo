@@ -2,7 +2,7 @@ import { QuestionaireProps, AnswerProps, FieldsType } from '@/core/types/ssrData
 import React from 'react';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { TableComponent } from './Table';
-import { ControlledSelectField } from 'core-library/components';
+import { ControlledSelectField, ParsedHtml } from 'core-library/components';
 import { DDTableSchema, DDTableValidationType } from '@/core/schema/ddtable/validation';
 import { useForm, useFormState } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -96,11 +96,7 @@ export const DDTable: React.FC<DDTProps> = ({ questionaire, answer, ddtAtom, han
                   <div className="w-full text-sm mb-4 pr-5 pt-4">
                     <p className="flex" style={textZoomStyle}>
                       <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" />
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: answerItem.answerInstruction,
-                        }}
-                      />
+                      <ParsedHtml html={answerItem.answerInstruction} />
                     </p>
                   </div>
                   <TableComponent

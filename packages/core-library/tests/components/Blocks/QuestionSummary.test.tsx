@@ -4,6 +4,8 @@ import { QuestionSummary } from "../../../system/app/internal/blocks/Hub/Setting
 import { SummaryAccordion } from "../../../components";
 import ConfirmationModal from "../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { usePageLoaderContext } from "../../../contexts/PageLoaderContext";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "../../../contents/theme/theme";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -156,7 +158,11 @@ describe("QuestionSummary Component", () => {
 
   it("renders each accordion with the correct question", () => {
     mockData.forEach((item, index) => {
-      render(<SummaryAccordion item={item} type={mockType} index={index} />);
+      render(
+        <ThemeProvider theme={theme()}>
+          <SummaryAccordion item={item} type={mockType} index={index} />
+        </ThemeProvider>
+      );
       const questionElement = screen.getByText(`Sample Question ${index + 1}`, {
         selector: "p",
       });
@@ -167,14 +173,16 @@ describe("QuestionSummary Component", () => {
   it("expands and collapses the accordion", () => {
     render(
       <>
-        {mockData.map((item, index) => (
-          <SummaryAccordion
-            item={item}
-            type={mockType}
-            index={index}
-            key={index}
-          />
-        ))}
+        <ThemeProvider theme={theme()}>
+          {mockData.map((item, index) => (
+            <SummaryAccordion
+              item={item}
+              type={mockType}
+              index={index}
+              key={index}
+            />
+          ))}
+        </ThemeProvider>
       </>
     );
 
@@ -197,7 +205,11 @@ describe("QuestionSummary Component", () => {
 
   it("renders the correct content in the accordion details", () => {
     mockData.forEach((item, index) => {
-      render(<SummaryAccordion item={item} type={mockType} index={index} />);
+      render(
+        <ThemeProvider theme={theme()}>
+          <SummaryAccordion item={item} type={mockType} index={index} />
+        </ThemeProvider>
+      );
       const summaryElement = screen.getByRole("button", {
         name: `Sample Question ${index + 1}`,
       });

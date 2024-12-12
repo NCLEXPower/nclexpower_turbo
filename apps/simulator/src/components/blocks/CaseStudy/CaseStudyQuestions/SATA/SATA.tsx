@@ -11,6 +11,7 @@ import { FormProvider, useFieldArray, useForm, useFormState } from 'react-hook-f
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 type Props = {
   questionaire: QuestionaireProps[];
@@ -54,7 +55,7 @@ export const SATA: React.FC<Props> = ({ questionaire, handleSubmit, csSataAtom }
   });
 
   return (
-    <div className=" h-full">
+    <div className=" h-full ">
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={12} sm={6} md={6}>
           <div className="w-full h-full p-5">
@@ -63,11 +64,7 @@ export const SATA: React.FC<Props> = ({ questionaire, handleSubmit, csSataAtom }
                 questionaire.map((questionItem: QuestionaireProps, index: number) => (
                   <div key={index} className="w-full text-sm mb-4 pr-5">
                     <p className="flex">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: questionItem.question,
-                        }}
-                      />
+                      <ParsedHtml html={questionItem.question} />
                     </p>
                   </div>
                 ))}
@@ -127,11 +124,7 @@ export const SATA: React.FC<Props> = ({ questionaire, handleSubmit, csSataAtom }
                           <div className="w-full text-sm mb-4 pr-5">
                             <p className="flex" key={answerIndex} style={textZoomStyle}>
                               <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" style={textZoomStyle} />
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: answerItem.answerInstruction,
-                                }}
-                              />
+                              <ParsedHtml html={answerItem.answerInstruction} />
                             </p>
                           </div>
                         ))}

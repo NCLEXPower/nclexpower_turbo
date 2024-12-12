@@ -25,6 +25,8 @@ export const DeleteConfirmationBlock: React.FC<Props> = () => {
     closeDialog();
   };
   return (
-    <DeleteConfirmationForm handleDelete={handleDelete} data={deleteAtom} />
+    <div date-testId="delete-modal">
+      <DeleteConfirmationForm handleDelete={handleDelete} data={deleteAtom} />
+    </div>
   );
 };

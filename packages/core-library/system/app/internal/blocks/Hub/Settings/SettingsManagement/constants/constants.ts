@@ -4,6 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { SelectOption } from "../../../../../../../../components";
+import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 import { RegularQuestionSelectionOptions } from "../types";
 
 const createNumberList = (length: number) => {
@@ -17,6 +18,11 @@ export const questionType = [
   { value: "SATA", label: "SATA" },
   { value: "MRSN", label: "MRSN" },
   { value: "DDC", label: "DDC" },
+  { value: "DND", label: "DND" },
+  { value: "HCP", label: "HCP" },
+  { value: "MCQ", label: "MCQ(No Group)" },
+  { value: "MCQ", label: "MCQ(Group)" },
+
 ];
 
 export const tabsSequence: SelectOption[] = Array.from(
@@ -52,7 +58,7 @@ export const questionnairesDefaultValue = Array.from(
 );
 
 export const initCaseStudyQuestionnaires = {
-  questionnaires: questionnairesDefaultValue,
+  questionnaires: questionnairesDefaultValue
 };
 
 export const initQuestionsValues = (
@@ -74,4 +80,15 @@ export const initQuestionsValues = (
   };
 };
 
+export const actionButtons = [
+  { action: "view", label: "View" },
+  { action: "approval", label: "Approve" },
+  { action: "reject", label: "Reject" },
+];
+
 export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
+
+export const defaultValues: ContentDateType = {
+  approval: [],
+  implementationSchedule: new Date(),
+};
