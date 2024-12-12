@@ -136,6 +136,38 @@ describe("useAuthContext", () => {
     expect(result.current.isAuthenticated).toBe(false);
   });
 
+  test("should integrate device updater when conditions are met", async () => {
+    const enrolledDeviceUpdaterCb = jest.fn().mockResolvedValue({});
+    jest.mocked(useApiCallback).mockReturnValue({
+      loading: false,
+      execute: enrolledDeviceUpdaterCb,
+    } as any);
+
+    const { result } = renderHook(() => useAuthContext(), { wrapper });
+
+    await act(async () => {
+      await result.current.integrateDeviceInUseUpdater("testAccountId", true);
+    });
+
+    expect(enrolledDeviceUpdaterCb).not.toHaveBeenCalled();
+  });
+
+  test("should not call device updater when accessDeviceId is null", async () => {
+    const enrolledDeviceUpdaterCb = jest.fn();
+    jest.mocked(useApiCallback).mockReturnValue({
+      loading: false,
+      execute: enrolledDeviceUpdaterCb,
+    } as any);
+
+    const { result } = renderHook(() => useAuthContext(), { wrapper });
+
+    await act(async () => {
+      await result.current.integrateDeviceInUseUpdater("testAccountId");
+    });
+
+    expect(enrolledDeviceUpdaterCb).not.toHaveBeenCalled();
+  });
+
   test("should handle softLogout", async () => {
     const router = useRouter();
 
