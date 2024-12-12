@@ -51,7 +51,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   };
   useEffect(() => {
     filterItems(0);
-  }, []);
+  }, [products]);
 
   return (
     <div
