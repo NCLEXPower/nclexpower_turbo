@@ -274,17 +274,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               );
               return;
             }
-            setIsNewAccount(result.data.isNewAccount);
-            setIsPaid(result.data.isPaid);
-            const encryptedValue = Encryption(
-              result.data.accountId,
-              config.value.SECRET_KEY
-            );
-            setAccountId(
+            if (config.value.BASEAPP === "webc_app") {
+              setIsPaid(result.data.isPaid);
+              setIsNewAccount(result.data.isNewAccount);
+            }
+            const parsedAccountId =
               config.value.BASEAPP === "webc_app"
-                ? encryptedValue
-                : result.data.accountId
-            );
+                ? Encryption(result.data.accountId, config.value.SECRET_KEY)
+                : result.data.accountId;
+            setAccountId(parsedAccountId);
             setAccessLevel(result.data.accessLevel);
             setAccessToken(result.data.accessTokenResponse.accessToken);
             setRefreshToken(result.data.accessTokenResponse.refreshToken);
@@ -296,7 +294,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               domain: `.${window.location.hostname}`,
             });
             setIsAuthenticated(true);
-            await integrateDeviceInUseUpdater(result.data.accountId);
             await router.push((route) => route.hub);
           },
           loginFromSso: async () => {
