@@ -21,6 +21,7 @@ import {
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import { useEffect, useState } from "react";
+import { Instruction } from './components/Instruction';
 
 interface Props {
   index: number;
@@ -121,6 +122,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               name={`questionnaires.${index}.itemStem`}
             />
           </Box>
+          <Instruction questionType={questionType} />
         </Box>
 
         {questionType && (

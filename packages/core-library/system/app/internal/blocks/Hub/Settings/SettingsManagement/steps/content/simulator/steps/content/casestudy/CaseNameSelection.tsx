@@ -15,6 +15,7 @@ import { CreateCaseStudyAtom } from "../../../useAtomic";
 import { initCaseStudyQuestionnaires } from "../../../../../../constants/constants";
 import { CasenameSelectionLoader } from "../loader";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../contexts/PageLoaderContext";
+import { useApi } from '../../../../../../../../../../../../../hooks';
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -34,6 +35,8 @@ export const CaseNameSelection: React.FC<Props> = ({
     mode: "all",
     criteriaMode: "all",
   });
+
+  const { result } = useApi(api => api.webbackoffice.getFormId())
 
   const { contentLoader, setContentLoader } = usePageLoaderContext();
 
@@ -102,7 +105,7 @@ export const CaseNameSelection: React.FC<Props> = ({
   );
 
   async function handleContinue(values: ContainedCaseStudyQuestionType) {
-    const submissionValues = { ...values, ...initCaseStudyQuestionnaires };
+    const submissionValues = ({ ...values, ...initCaseStudyQuestionnaires, formId: result?.data ?? "" })
     setCaseName(submissionValues);
     nextStep(submissionValues);
     next();
