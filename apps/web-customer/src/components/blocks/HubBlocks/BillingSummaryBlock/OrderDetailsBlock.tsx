@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { orderDetailTitles } from "../../../../core/constant/BillingSummaryMock/BillingSummaryMock";
-
+import { BillingSummaryType } from "../../../../core/constant/BillingSummaryMock/BillingSummaryMock";
 interface OrderDetailsProps {
-    selectedRow: Record<string, any> | null
+    selectedRow: BillingSummaryType[] | any 
 };
 
 export const OrderDetailsBlock: React.FC<OrderDetailsProps> = ({ selectedRow }) => (

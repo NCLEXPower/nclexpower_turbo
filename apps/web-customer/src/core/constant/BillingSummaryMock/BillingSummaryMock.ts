@@ -1,4 +1,4 @@
-interface BillingSummaryType {
+export interface BillingSummaryType {
     id: string;
     orderId: string;
     dateTime: string;

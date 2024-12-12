@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { billlingSummaryMockData as data } from "../../core/constant/BillingSummaryMock/BillingSummaryMock";
+import { BillingSummaryType } from "../../core/constant/BillingSummaryMock/BillingSummaryMock";
 
 export const useGetBillingSummary = () => {
   // Use standard api call instead of using react query once api is ready
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedData, setSelectedData] = useState<Record<string, any> | null>(
+  const [selectedData, setSelectedData] = useState<BillingSummaryType | null>(
     null
   );
 
