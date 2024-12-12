@@ -4,11 +4,6 @@ Property of the NCLEX Power.
 Reuse as a whole or in part is prohibited without permission.
 Created by the Software Strategy & Development Division
 */
-
-import {
-  FastTrackList,
-  StandardList,
-} from "core-library/core/utils/contants/wc/HomePageData";
 import {
   ProductCardType,
   SelectedProductType,
@@ -45,25 +40,23 @@ const PricingCard: React.FC<CardProps> = ({
   return (
     <div
       onClick={handleProductDetails}
-      className=" transition-all duration-300 h-full border border-darkGray bg-white w-[350px] px-12 py-5 rounded-md shadow-md"
+      className=" transition-all duration-300 h-full border border-darkGray bg-white w-[350px] px-12 py-5 rounded-md shadow-md flex flex-col"
     >
-      <div className="w-full flex h-fit py-2 items-center justify-center  rounded-md">
-        <p className="text-2xl">
-          {cardData.programType == 0
-            ? "23 Days (Standard)"
-            : "8 Days (Fast Track)"}
-        </p>
-      </div>
-      <div className="w-full flex gap-5 pb-5 pt-3 justify-center items-center px-5 border-b">
+      <p className="text-2xl w-full text-center">
+        {cardData.programType == 0
+          ? "23 Days (Standard)"
+          : "8 Days (Fast Track)"}
+      </p>
+      <div className="w-full flex pb-5 justify-center items-center px-5 border-b -mt-3">
         <div className="w-1/2 text-center">
-          <p className="text-4xl font-semibold">
-            {cardData.pricing.price}{" "}
-            <span className="text-sm">{cardData.pricing.currency}</span>
-          </p>
+          <div className="text-4xl font-Poppins font-bold">
+            <p>{cardData.pricing.price} </p>
+            <p className="text-sm -mt-4">{cardData.pricing.currency}</p>
+          </div>
         </div>
       </div>
-      <div className="w-full flex  justify-start items-center py-5">
-        <div className="text-xs flex flex-col ">
+      <div className="w-full flex  justify-start items-start py-5 flex-grow">
+        <div className="text-xs flex flex-col">
           {InclusionsList.length > 0 &&
             InclusionsList.map((list, index) => (
               <div key={index} className="flex items-center gap-2">

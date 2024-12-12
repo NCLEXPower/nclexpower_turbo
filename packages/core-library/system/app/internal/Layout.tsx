@@ -37,34 +37,35 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AccountSetupContextProvider>
-        <ThemeProvider theme={theme()}>
-          <CssBaseline />
-          <TabsContextProvider>
-            <DialogContextProvider>
-              <DrawerLayout
-                menu={mockMenu}
-                isAuthenticated={isAuthenticated && tokenValidated}
-                onLogout={logout}
-              >
-                <ContentLoader loading={loading}>
-                  <PageContainer stickOut={false}>
-                    <PageLoaderContextProvider>
-                      <ToastProvider>
-                        <ControlledToast
-                          autoClose={5000}
-                          hideProgressBar={false}
-                        />
-                        {children}
-                      </ToastProvider>
-                    </PageLoaderContextProvider>
-                  </PageContainer>
-                </ContentLoader>
-              </DrawerLayout>
-            </DialogContextProvider>
-          </TabsContextProvider>
-        </ThemeProvider>
-      </AccountSetupContextProvider>
+      <PageLoaderContextProvider>
+        <AccountSetupContextProvider>
+          <ThemeProvider theme={theme()}>
+            <CssBaseline />
+            <TabsContextProvider>
+              <DialogContextProvider>
+                <DrawerLayout
+                  menu={mockMenu}
+                  isAuthenticated={isAuthenticated && tokenValidated}
+                  onLogout={logout}
+                >
+                  <ContentLoader loading={loading}>
+                    <PageContainer stickOut={false}>
+
+                        <ToastProvider>
+                          <ControlledToast
+                            autoClose={5000}
+                            hideProgressBar={false}
+                          />
+                          {children}
+                        </ToastProvider>
+                    </PageContainer>
+                  </ContentLoader>
+                </DrawerLayout>
+              </DialogContextProvider>
+            </TabsContextProvider>
+          </ThemeProvider>
+        </AccountSetupContextProvider>                            
+      </PageLoaderContextProvider>
     </QueryClientProvider>
   );
 };

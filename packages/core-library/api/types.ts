@@ -1,3 +1,4 @@
+import { ContainedCaseStudyQuestionType } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { CreateRegularAtom } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/useAtomic";
 import { QuestionSelectionOptions } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/types";
 
@@ -361,11 +362,50 @@ export type MainContentCollectionsDtos = {
 export type CreateRegularType = {
   email: string;
   contentDto: {
-    type: string;
+    type?: string;
     mainType: string;
-    mainContentCollectionsDtos: MainContentCollectionsDtos[];
+    mainContentCollectionsDtos?: MainContentCollectionsDtos[];
+    mainCaseStudyContentCollectionDtos?:  CaseStudyContentCollectionDtos[];
   };
 };
+
+export type CaseStudyContentCollectionDtos = {
+  caseName: string[];
+  hxPhy: SequenceContentType[];
+  labs: SequenceContentType[];
+  nurseNotes: SequenceContentType[];
+  orders: SequenceContentType[];
+  questionnaires: QuestionnaireType[]
+}
+
+export type SequenceContentType = {
+  seqContent?: string;
+  seqNum: number;
+}
+
+export type QuestionnaireType = {
+  itemNum: number;
+  itemStem?: string;
+  maxPoints: number;
+  questionType?: string;
+  seqNum: number;
+  transitionHeader: string;
+  maxAnswer?: number;
+  answers?: AnswerCaseStudy;
+}
+
+type Answer = {
+  answer: string;
+  answerKey: boolean;
+};
+
+type OptionWithAnswers = {
+  options?: Answer[]; 
+  optionName: string; 
+};
+
+type AnswerCaseStudy = Answer[] | OptionWithAnswers[] | undefined;
+
 export type credentialsType = {
   id: string;
   username: string;
@@ -526,9 +566,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -640,3 +680,22 @@ export type PriceButtonType = {
   label: "Practical Nurse" | "Registered Nurse";
   value: 0 | 1;
 };
+
+export type CreateDndOptionsParams = {
+  option: string,
+  formId: string,
+  accountId: string,
+  itemNo: number
+}
+
+export type DndOptionParams = {
+  formId: string,
+  accountId: string,
+  itemNo: number,
+}
+
+export type DndOptionsResponseType = {
+  id: string,
+  label: string,
+  value: string
+}

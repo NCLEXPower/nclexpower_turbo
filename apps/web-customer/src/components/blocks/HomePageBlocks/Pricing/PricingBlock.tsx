@@ -31,9 +31,9 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = async (product: SelectedProductType) => {
+  const handleSelectProduct = (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
-    const encyptedData = await Encryption(
+    const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );

@@ -5,11 +5,11 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box } from "@mui/material";
-import { useSanitizedInputs } from "../../../hooks";
 import {
   SummaryAccordionContent,
   ContentProps,
 } from "./SummaryAccordionContent";
+import { ParsedHtml } from "../../ParseHtml";
 
 interface Item extends ContentProps {
   question: string;
@@ -28,12 +28,6 @@ export const SummaryAccordion: React.FC<Props> = ({ item, type, index }) => {
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
-
-  const { purifyInputs } = useSanitizedInputs({
-    config: {
-      RETURN_TRUSTED_TYPE: true,
-    },
-  });
 
   return (
     <div>
@@ -66,10 +60,9 @@ export const SummaryAccordion: React.FC<Props> = ({ item, type, index }) => {
                 color: "#ffff",
               }}
               key={index}
-              dangerouslySetInnerHTML={{
-                __html: purifyInputs(item.question) as TrustedHTML,
-              }}
-            />
+            >
+              <ParsedHtml html={item.question} />
+            </Typography>
           </Box>
         </AccordionSummary>
         <AccordionDetails>

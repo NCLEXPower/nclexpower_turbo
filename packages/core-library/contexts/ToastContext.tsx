@@ -1,11 +1,12 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { createContext, useContext } from "react";
 import { toast, ToastOptions, ToastPosition } from "react-toastify";
 
+type ToastType = "info" | "success" | "error" | "warning";
 export interface ToastContextSetup {
   executeToast: (
     message: string,
@@ -13,7 +14,7 @@ export interface ToastContextSetup {
     hideProgressBar: boolean,
     options?: Partial<ToastOptions>
   ) => void;
-    showToast: (message: string, type: "error" | "success") => void;
+  showToast: (message: string, type: ToastType) => void;
 }
 
 export const ToastContext = createContext<ToastContextSetup>({} as any);
@@ -42,7 +43,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren> = ({
     });
   };
 
-  const showToast = (message: string, type: "error" | "success") => {
+  const showToast = (message: string, type: ToastType) => {
     executeToast(message, "top-right", false, {
       toastId: 0,
       type,
@@ -53,7 +54,7 @@ export const ToastProvider: React.FC<React.PropsWithChildren> = ({
     <ToastContext.Provider
       value={{
         executeToast,
-        showToast
+        showToast,
       }}
     >
       {children}

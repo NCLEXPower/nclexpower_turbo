@@ -7,12 +7,13 @@ import { MCQ } from "./blocks/Regular/MCQ/MCQ";
 import { SATA } from "./blocks/Regular/SATA/SATA";
 import { DDC } from "./blocks/CaseStudy/DDC/DDC";
 import { MRSN } from "./blocks/CaseStudy/MRSN/MRSN";
+import { DND } from './blocks/CaseStudy/DND/DND';
 
 export type AnswerOptionsType = {
   questionType: "regularQuestion" | "caseStudy";
   questionnaireType?:
-    | CaseStudyQuestionSelectionOptions
-    | RegularQuestionSelectionOptions;
+  | CaseStudyQuestionSelectionOptions
+  | RegularQuestionSelectionOptions;
   questionIndex: number;
 };
 
@@ -36,6 +37,8 @@ export const AnswerOptions: React.FC<AnswerOptionsType> = ({
         return <SATA questionIndex={questionIndex} />;
       case "MRSN":
         return <MRSN questionIndex={questionIndex} />;
+      case "DND":
+        return <DND questionIndex={questionIndex} />;
     }
   }
   return null;
