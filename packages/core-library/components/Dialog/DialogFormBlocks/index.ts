@@ -3,3 +3,4 @@ export * from "./products/ProductDialogBlock";
 export * from "./settings/AutomationDBComparison/AutomationDBComparisonFormBlock";
 export * from "./RegularQuestion/ConfirmationDialog"
 export * from "./DeleteModal/DeleteModalBlock";
+export * from "./contentApproval/ApprovalDialogBlock"
