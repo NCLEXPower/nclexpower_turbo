@@ -6,8 +6,8 @@ import {
   DDCAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
-import { useSanitizedInputs } from "../../../../../../../../../../../../../../../../hooks/useSanitizeInputs";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
+import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -25,10 +25,6 @@ const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
 export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
   content,
 }) => {
-  const { purifyInputs } = useSanitizedInputs({
-    config: { RETURN_TRUSTED_TYPE: true },
-  });
-
   const { wordWrap } = useStyle();
 
   const renderQuestionType = (data: QuestionnaireItem) => {
@@ -44,12 +40,9 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         );
       default:
         return (
-          <Typography
-            sx={wordWrap}
-            dangerouslySetInnerHTML={{
-              __html: purifyInputs(data.itemStem) as TrustedHTML,
-            }}
-          />
+          <Typography sx={wordWrap}>
+            <ParsedHtml html={data.itemStem} />
+          </Typography>
         );
     }
   };
@@ -88,10 +81,9 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
                       wordBreak: "break-word",
                     },
                   }}
-                  dangerouslySetInnerHTML={{
-                    __html: purifyInputs(data.transitionHeader) as TrustedHTML,
-                  }}
-                />
+                >
+                  <ParsedHtml html={data.transitionHeader} />
+                </Typography>
               )}
               <Box display="flex" gap="10px">
                 <NearMeIcon sx={{ color: "#D4AEF2", rotate: "45deg" }} />
