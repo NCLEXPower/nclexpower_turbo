@@ -58,8 +58,6 @@ export const DrawerLayout: React.FC<
 
   if (!mounted) return;
 
-  console.log("isPaid", isPaid);
-
   const customHeaderStyles = isInWebcHub
     ? {
         drawerHeader: {
@@ -69,9 +67,11 @@ export const DrawerLayout: React.FC<
       }
     : headerStyles;
 
+  const IsPaid = isPaid && appName.includes("c");
+
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && isPaid && (
+      {menu.length > 0 && (isAuthenticated || isMobile) && !IsPaid && (
         <Sidebar
           {...sidebarStyles}
           isMobile={isMobile}
