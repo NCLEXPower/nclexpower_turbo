@@ -4,6 +4,7 @@ import { useSanitizedInputs } from "../../../../../../../../../../../../../../..
 import { DDCAnswerOptionType } from "../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { PlainSelectField } from "../../../../../../../../../../../../../../../../components/Textfield/SelectField/PlainSelectField";
+import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 
 export interface DDCQuestionProps {
   ddcData: {
@@ -13,10 +14,6 @@ export interface DDCQuestionProps {
 }
 
 export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
-  const { purifyInputs } = useSanitizedInputs({
-    config: { RETURN_TRUSTED_TYPE: true },
-  });
-
   const { wordWrap } = useStyle();
 
   const renderDropdown = useCallback(
@@ -64,14 +61,11 @@ export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
         if (answers.some((ans) => ans.optionName === part)) {
           return renderDropdown(part, answers);
         }
-        const sanitizedContent = purifyInputs(part) as TrustedHTML;
 
         return (
-          <Typography
-            key={index}
-            sx={wordWrap}
-            dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-          />
+          <Typography key={index} sx={wordWrap}>
+            <ParsedHtml html={part} />
+          </Typography>
         );
       });
     },
