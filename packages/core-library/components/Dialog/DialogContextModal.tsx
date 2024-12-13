@@ -9,6 +9,7 @@ import {
   ProductDialogBlock,
   AutomationDBComparisonFormBlock,
   DeleteConfirmationBlock,
+  ApprovalDialogBlock,
 } from "./DialogFormBlocks";
 import { ExcelRowRegularQuestion } from "../../core";
 import { InclusionEditForm } from "./DialogFormBlocks/inclusion/InclusionEditForm";
@@ -34,6 +35,8 @@ export const DialogContextModal: React.FC<Props> = ({
     case "delete-modal":
       return <DeleteConfirmationBlock />;
     default:
+    case "approval":
+      return <ApprovalDialogBlock />;
       return null;
   }
 };

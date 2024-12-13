@@ -31,9 +31,9 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = async (product: SelectedProductType) => {
+  const handleSelectProduct = (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
-    const encyptedData = await Encryption(
+    const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
@@ -46,11 +46,13 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const filterItems = (keyword: number) => {
     setNurseType(keyword);
     const filtered =
-      products && products.filter((item: any) => item.programTitle === keyword);
+      products && products.filter((item) => item.programTitle === keyword);
     setFilteredItems(filtered);
   };
   useEffect(() => {
-    filterItems(0);
+    if (products.length > 0) {
+      setFilteredItems(products.filter((item) => item.programTitle === 0));
+    }
   }, [products]);
 
   return (

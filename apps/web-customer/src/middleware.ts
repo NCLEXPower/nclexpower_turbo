@@ -5,7 +5,7 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const { pathname, searchParams } = url;
 
-  const tokenId = request.cookies.get("nclex_dev");
+  const tokenId = request.cookies.get("nclex_customer");
   const proceedToHubUrl = new URL("/hub", request.url);
   const publicRoutes = [
     "/login",
