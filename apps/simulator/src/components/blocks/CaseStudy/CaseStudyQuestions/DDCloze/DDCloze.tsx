@@ -2,7 +2,7 @@ import React from 'react';
 import { Paper, Grid } from '@mui/material';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { QuestionaireProps, AnswerProps } from '@/core/types/ssrData';
-import { ControlledSelectField } from 'core-library/components';
+import { ControlledSelectField, ParsedHtml } from 'core-library/components';
 import { useForm, useFormState } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFormSubmissionBindingHooks } from 'core-library/hooks';
@@ -82,7 +82,7 @@ export const DDCloze: React.FC<DDClozeProps> = ({ questionaire, answer, handleSu
                 <div className="w-full text-sm mb-4 pr-5 pt-4">
                   <p className="flex items-center" style={textZoomStyle}>
                     <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" />
-                    <div dangerouslySetInnerHTML={{ __html: answerItem.answerInstruction }} />
+                    <ParsedHtml html={answerItem.answerInstruction} />
                   </p>
                 </div>
                 <Paper elevation={3} className="p-5 overflow-auto flex flex-col gap-5">
@@ -97,7 +97,9 @@ export const DDCloze: React.FC<DDClozeProps> = ({ questionaire, answer, handleSu
                           style={textZoomStyle}
                         >
                           {index % 2 === 0 ? (
-                            <span dangerouslySetInnerHTML={{ __html: part }} />
+                            <span>
+                              <ParsedHtml html={part} />
+                            </span>
                           ) : (
                             <>
                               <ControlledSelectField

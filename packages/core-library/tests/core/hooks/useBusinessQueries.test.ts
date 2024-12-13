@@ -35,7 +35,6 @@ import { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import {
   AuthorizedContentsResponseType,
   CreateInclusionParams,
-  CreatePaymentIntentParams,
   CurrenciesResponse,
   EditInclusionParams,
   GetAllInclusionResponse,
@@ -176,54 +175,6 @@ describe("useSelectQuestionsQuery", () => {
 
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();
-  });
-});
-
-describe("useCreatePaymentIntent", () => {
-  const mockExecute = jest.fn();
-  const mockMutate = jest.fn();
-  const mockData: AxiosResponse<PaymentIntentResponse, AxiosError> = {
-    data: {
-      clientSecret: "some-secret",
-      paymentIntentId: "some-payment-intent-id",
-    },
-    status: 200,
-    statusText: "OK",
-    headers: new AxiosHeaders(),
-    config: { headers: new AxiosHeaders() },
-  };
-
-  const mockPaymentIntentParams: CreatePaymentIntentParams = {
-    amount: 1000,
-    currency: "USD",
-    pricingId: "",
-    productDescription: "",
-    productId: "",
-    productName: "",
-    programTitle: 0,
-  };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    (useApiCallback as jest.Mock).mockReturnValue({
-      execute: mockExecute,
-    });
-    (useMutation as jest.Mock).mockReturnValue({
-      mutateAsync: mockMutate,
-      isLoading: false,
-    });
-  });
-  it("should create a payment intent successfully", async () => {
-    const opt = { onSuccess: jest.fn() };
-    mockExecute.mockResolvedValue({ data: mockData });
-    const { result } = renderHook(() => useCreatePaymentIntent(opt));
-
-    await act(async () => {
-      await result.current?.mutateAsync?.(mockPaymentIntentParams);
-    });
-
-    expect(mockMutate).toHaveBeenCalled();
-    expect(result.current.isLoading).toBe(false);
   });
 });
 

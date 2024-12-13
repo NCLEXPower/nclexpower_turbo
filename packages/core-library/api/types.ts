@@ -1,3 +1,4 @@
+import { ContainedCaseStudyQuestionType } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { CreateRegularAtom } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/useAtomic";
 import { QuestionSelectionOptions } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/types";
 
@@ -38,6 +39,7 @@ export interface CreatePaymentIntentParams {
   programTitle: number;
   productId: string;
   pricingId: string;
+  accountId: string | undefined;
 }
 export interface UpdatePaymentIntentParams {
   paymentIntentId: string;
@@ -58,6 +60,7 @@ export interface LoginResponse {
   sessionId: string;
   fingerprint: string; //deprecated
   isNewAccount: boolean;
+  isPaid: boolean;
 }
 
 export interface RefreshTokenResponse {
@@ -107,6 +110,7 @@ export interface ProductListResponse {
   categoryId: string;
   productDescription: string | null;
   programType: number;
+  programTitle: number;
 }
 
 export interface ProductSetStatusParams {
@@ -199,9 +203,13 @@ export interface CreateCustomerParams {
   lastname: string;
   email: string;
   password: string;
-  orderNumber: string;
+  orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+}
+
+export interface CreateCustomerResponse {
+  accountId: string;
 }
 
 export interface CreateCustomerDumpParams {
@@ -265,12 +273,27 @@ export type VerifyCodeParams = {
   email: string;
 };
 
+export type OrderSummaryResponse = {
+  orderId: string;
+  orderNumber: string;
+  productName: string;
+  productDescription: string;
+  currency: string;
+  price: number;
+  categoryName: string;
+  categoryDescription: string;
+  programTitle: number;
+  programType: number;
+  pricingId: string;
+  productId: string;
+};
+
 export type ResendCodeParams = {
   email: string;
 };
 
 export type ValidateTokenParams = {
-  accessToken: string | undefined;
+  accessToken: string | undefined | null;
   appName: string;
 };
 
@@ -340,11 +363,50 @@ export type MainContentCollectionsDtos = {
 export type CreateRegularType = {
   email: string;
   contentDto: {
-    type: string;
+    type?: string;
     mainType: string;
-    mainContentCollectionsDtos: MainContentCollectionsDtos[];
+    mainContentCollectionsDtos?: MainContentCollectionsDtos[];
+    mainCaseStudyContentCollectionDtos?: CaseStudyContentCollectionDtos[];
   };
 };
+
+export type CaseStudyContentCollectionDtos = {
+  caseName: string[];
+  hxPhy: SequenceContentType[];
+  labs: SequenceContentType[];
+  nurseNotes: SequenceContentType[];
+  orders: SequenceContentType[];
+  questionnaires: QuestionnaireType[];
+};
+
+export type SequenceContentType = {
+  seqContent?: string;
+  seqNum: number;
+};
+
+export type QuestionnaireType = {
+  itemNum: number;
+  itemStem?: string;
+  maxPoints: number;
+  questionType?: string;
+  seqNum: number;
+  transitionHeader: string;
+  maxAnswer?: number;
+  answers?: AnswerCaseStudy;
+};
+
+type Answer = {
+  answer: string;
+  answerKey: boolean;
+};
+
+type OptionWithAnswers = {
+  options?: Answer[];
+  optionName: string;
+};
+
+type AnswerCaseStudy = Answer[] | OptionWithAnswers[] | undefined;
+
 export type credentialsType = {
   id: string;
   username: string;
@@ -618,4 +680,23 @@ export type PriceButtonType = {
   acronym: "PN" | "RN";
   label: "Practical Nurse" | "Registered Nurse";
   value: 0 | 1;
+};
+
+export type CreateDndOptionsParams = {
+  option: string;
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
+
+export type DndOptionParams = {
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
+
+export type DndOptionsResponseType = {
+  id: string;
+  label: string;
+  value: string;
 };

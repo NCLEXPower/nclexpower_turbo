@@ -39,13 +39,10 @@ describe("ContentDataContextProvider", () => {
     } as any);
 
     const TestComponent = () => {
-      const { loading, IsAuthorized, pages } = useContentDataContext();
+      const { loading, pages } = useContentDataContext();
       return (
         <div>
           <div data-testid="loading">{loading ? "true" : "false"}</div>
-          <div data-testid="isAuthorized">
-            {IsAuthorized ? "true" : "false"}
-          </div>
           <div data-testid="pages">{pages?.pageRoute}</div>
         </div>
       );
@@ -58,7 +55,6 @@ describe("ContentDataContextProvider", () => {
     );
 
     expect(screen.getByTestId("loading").textContent).toBe("false");
-    expect(screen.getByTestId("isAuthorized").textContent).toBe("false");
   });
 
   it("renders ErrorBox when there is an error", async () => {

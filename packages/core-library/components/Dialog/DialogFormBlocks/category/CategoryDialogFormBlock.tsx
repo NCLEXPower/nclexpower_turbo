@@ -21,7 +21,7 @@ export function CategoryDialogFormBlock() {
   }
 
   return (
-    <Box>
+    <Box data-testId="category-form">
       <CategoryForm onSubmit={onSubmit} submitLoading={isLoading} />
     </Box>
   );

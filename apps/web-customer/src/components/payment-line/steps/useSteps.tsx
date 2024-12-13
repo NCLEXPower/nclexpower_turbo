@@ -2,9 +2,13 @@ import React, { useMemo } from "react";
 import {
   PaymentManagementSteps,
   PaymentMangementStepProps,
-  PaymentSettingsTypeStep,
 } from "./PaymentSteps";
-import { useActiveSteps, useResolution, useWizardForm, WizardFormMap } from "core-library/hooks";
+import {
+  useActiveSteps,
+  useResolution,
+  useWizardForm,
+  WizardFormMap,
+} from "core-library/hooks";
 import { MobileStepper, ProgressStepper } from "core-library/components";
 import {
   CreditCard as CreditCardIcon,
@@ -12,29 +16,63 @@ import {
   Troubleshoot as TroubleshootIcon,
   CheckCircleOutline as CheckCircleOutlineIcon,
   FileOpenOutlined as FileOpenOutlinedIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
+import {
+  BasicInformation,
+  ProductInformation,
+  StripePaymentPage,
+  TermsCondition,
+  WelcomePage,
+} from "./content";
+import { PaymentTerms } from "../validation";
 
-export const usePaymentWizardSteps = () => {
+export const usePaymentWizardSteps = (onSubmit: VoidFunction) => {
   const { isMobile } = useResolution();
 
   const steps = useMemo(() => {
     return {
-      ...PaymentSettingsTypeStep,
+      BasicInformation: {
+        content: (props) => <BasicInformation {...props} />,
+        nextStep: "ProductInformation",
+      },
+      ProductInformation: {
+        content: (props) => <ProductInformation {...props} />,
+        nextStep: "TermsCondition",
+        previousStep: "BasicInformation",
+      },
+      TermsCondition: {
+        content: (props) => <TermsCondition onSave={onSubmit} {...props} />,
+        nextStep: "StripePayment",
+        previousStep: "ProductInformation",
+      },
+      StripePayment: {
+        content: (props) => <StripePaymentPage {...props} />,
+        nextStep: "WelcomePage",
+        previousStep: "TermsCondition",
+      },
+      WelcomePage: {
+        content: (props) => <WelcomePage {...props} />,
+        previousStep: "StripePayment",
+      },
     } as WizardFormMap<
       Partial<PaymentManagementSteps>,
-      {},
+      PaymentTerms,
       PaymentMangementStepProps
     >;
   }, []);
 
   const formWizardValues = (
-    prev: Partial<{}> | undefined,
-    values: Partial<{}>
-  ): Partial<{}> => ({});
+    prev: Partial<PaymentTerms> | undefined,
+    values: Partial<PaymentTerms>
+  ): Partial<PaymentTerms> => ({
+    ...prev,
+    ...values,
+    IsAgree: prev?.IsAgree || values.IsAgree,
+  });
 
   const { renderStep, reset } = useWizardForm<
     PaymentManagementSteps,
-    {},
+    PaymentTerms,
     PaymentMangementStepProps
   >(steps, formWizardValues, "BasicInformation");
 
@@ -59,13 +97,9 @@ export const usePaymentWizardSteps = () => {
       case "TermsCondition":
         return <TroubleshootIcon key={index} />;
       case "StripePayment":
-        return (
-          <CreditCardIcon key={index} />
-        );
+        return <CreditCardIcon key={index} />;
       case "WelcomePage":
-        return (
-          <CheckCircleOutlineIcon key={index} />
-        );
+        return <CheckCircleOutlineIcon key={index} />;
       default:
         return null;
     }
@@ -81,12 +115,14 @@ export const usePaymentWizardSteps = () => {
             onStepChange={next}
             icons={icons}
           />
-        ) : <ProgressStepper
-          steps={stepLabels}
-          activeStep={activeStep}
-          onStepChange={next}
-          icons={icons}
-        />}
+        ) : (
+          <ProgressStepper
+            steps={stepLabels}
+            activeStep={activeStep}
+            onStepChange={next}
+            icons={icons}
+          />
+        )}
         {renderStep({ isLoading: false, next, previous, resetStep, reset })}
       </div>
     ),

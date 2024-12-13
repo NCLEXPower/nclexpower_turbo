@@ -15,10 +15,9 @@ type MrsnPropsType = {
 export const MRSN: React.FC<MrsnPropsType> = ({ questionIndex }) => {
   const deletionLimit = 0;
 
-
   return (
     <Card>
-      <Box sx={{ display: "flex", justifyContent: "end", p: 2 }}>
+      <Box data-testid="mrsn-form" sx={{ display: "flex", justifyContent: "end", p: 2 }}>
         <GenericSelectField
           name={`questionnaires.${questionIndex}.maxAnswer`}
           label="Max Correct Answer"
