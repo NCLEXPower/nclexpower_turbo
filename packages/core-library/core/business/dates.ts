@@ -1,6 +1,6 @@
 import { parse, format, parseISO } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
-import { getTimeZone } from "../../utils";
+import { getTimeZone, ISO_DATE_REGEX } from "../../utils";
 
 export const parseDate = (dateString: string, dateFormat = "dd MM yyyy") => {
   try {
@@ -61,7 +61,10 @@ export const formatTime = (
   }
 };
 
-export function isValidDate(date?: Date): boolean {
+export function isValidDate(date: Date): boolean {
+  if (typeof date == "string") {
+    return ISO_DATE_REGEX.test(date);
+  }
   return (date && !isNaN(date.getTime())) || false;
 }
 

@@ -36,8 +36,9 @@ describe("Business dates logic", () => {
   });
 
   describe("isValidDate", () => {
-    it("undefined should be invalid date", () => {
-      expect(isValidDate()).toBe(false);
+    it("undefined should be an invalid date", () => {
+      const mockDate = undefined;
+      expect(isValidDate(mockDate as unknown as Date)).toBe(false);
     });
 
     it("current Date should be valid date", () => {

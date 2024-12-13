@@ -1,71 +1,65 @@
-import React from "react";
-import { Box, Typography, TableRow, TableCell } from "@mui/material";
-import {
-  DataTable,
-  DataTableHeader,
-} from "../../../../../../../../../../../../../../../components";
+import React, { useMemo } from "react";
+import { Box, Typography } from "@mui/material";
 import { ContainedCaseStudyQuestionType } from "../../../../../types";
+import { Column, FilterProps } from "react-table";
+import {
+  DefaultColumnFilter,
+  PaginatedTable,
+  usePaginatedTable,
+} from "../../../../../../../../../../../../../../../components/table";
 
 interface Props {
   data: Partial<ContainedCaseStudyQuestionType>;
 }
 
 export const TableView: React.FC<Props> = ({ data }) => {
-  const tableHeaders: DataTableHeader[] = [
-    {
-      name: "Item Number",
-      align: "center",
-      sx: {
-        cell: { border: "1px solid #D4AEF2" },
-      },
-    },
-    {
-      name: "Sequence Number",
-      align: "center",
-      sx: {
-        cell: { border: "1px solid #D4AEF2" },
-      },
-    },
-    {
-      name: "Question Type",
-      align: "center",
-      sx: {
-        cell: { border: "1px solid #D4AEF2" },
-      },
-    },
-    {
-      name: "Max Points",
-      align: "center",
-      sx: {
-        cell: { border: "1px solid #D4AEF2" },
-      },
-    },
-  ];
+  const { updateFilters } = usePaginatedTable<
+    Partial<ContainedCaseStudyQuestionType>
+  >({ propertyName: "questionnaires" }, {});
+  const columns = useMemo(
+    () =>
+      [
+        {
+          Header: "Item Number",
+          accessor: "itemNum",
+          Filter: (props: FilterProps<{}>) =>
+            DefaultColumnFilter({
+              ...props,
+              filterValue: props.column.filterValue,
+              onChange: updateFilters,
+            }),
+          filter: "contains",
+          width: "25%",
+        },
+        {
+          Header: "Sequence Number",
+          accessor: "seqNum",
+          Filter: (props: FilterProps<{}>) =>
+            DefaultColumnFilter({
+              ...props,
+              filterValue: props.column.filterValue,
+              onChange: updateFilters,
+            }),
+          filter: "contains",
+          width: "25%",
+        },
 
-  const rows =
-    data.questionnaires?.map((content, index) => ({
-      id: index,
-      itemNum: content.itemNum,
-      seqNum: content.seqNum,
-      questionType: content.questionType,
-      maxPoints: content.maxPoints,
-    })) || [];
-
-  const renderRow = (rowData: (typeof rows)[0], index: number) => (
-    <TableRow key={index}>
-      <TableCell align="center" sx={{ border: "1px solid #D4AEF2" }}>
-        {rowData.itemNum}
-      </TableCell>
-      <TableCell align="center" sx={{ border: "1px solid #D4AEF2" }}>
-        {rowData.seqNum}
-      </TableCell>
-      <TableCell align="center" sx={{ border: "1px solid #D4AEF2" }}>
-        {rowData.questionType}
-      </TableCell>
-      <TableCell align="center" sx={{ border: "1px solid #D4AEF2" }}>
-        {rowData.maxPoints}
-      </TableCell>
-    </TableRow>
+        {
+          Header: "Question Type",
+          accessor: "questionType",
+          filter: "equals",
+          width: "25%",
+        },
+        {
+          Header: "Max Points",
+          accessor: "maxPoints",
+          filter: "equals",
+          width: "25%",
+        },
+      ] as Column<
+        Partial<ContainedCaseStudyQuestionType["questionnaires"][0]>
+      >[],
+    []
   );
 
   return (
@@ -74,20 +68,37 @@ export const TableView: React.FC<Props> = ({ data }) => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      width="100%"
+      bgcolor="Background"
     >
-      <Box margin="25px">
+      <Box sx={{ width: "100%", paddingX: "120px" }} margin="25px">
         {data.caseName && data.caseName.length > 0 && (
-          <Typography fontWeight="bold">
-            {data.caseName.join(" and ")}
+          <Typography fontSize="24px" fontWeight="bold">
+            Case Name :{" "}
+            <Typography
+              component="span"
+              sx={{ color: "#0C225C", fontSize: "24px", fontWeight: "bold" }}
+            >
+              {data.caseName.join(" and ")}
+            </Typography>
           </Typography>
         )}
       </Box>
-      <Box border="1px solid #D4AEF2" width="80%">
-        <DataTable
-          data={rows}
-          tableHeaders={tableHeaders}
-          bodyRowComponent={renderRow}
-          loading={false}
+      <Box
+        sx={{ bgcolor: "ButtonFace", overflow: "hidden", borderRadius: "7px" }}
+        border="1px solid #D4AEF2"
+        width="80%"
+      >
+        <PaginatedTable
+          columns={columns}
+          data={data.questionnaires ?? []}
+          noDataText="No data found"
+          noDataFoundText="No data found"
+          disableCheckbox
+          mobileFiltersConfig={{
+            alwaysOnFilters: ["seqNum"],
+            menuFilters: ["maxPoints"],
+          }}
         />
       </Box>
     </Box>
