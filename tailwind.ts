@@ -58,6 +58,7 @@ const config: Config = {
           hoverToWhite: "#ffffff", // white
         },
         paragraph: "#878e99",
+        hubBackground: '#e6eaf3'
       },
       backgroundImage: {
         "core-zigma": "url('../assets/CoreZigmaBG.png')",
