@@ -67,11 +67,11 @@ export const DrawerLayout: React.FC<
       }
     : headerStyles;
 
-  const IsPaid = isPaid && appName.includes("c");
+  const IsPaid = isPaid && appName === "webc_app";
 
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && !IsPaid && (
+      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && (
         <Sidebar
           {...sidebarStyles}
           isMobile={isMobile}
