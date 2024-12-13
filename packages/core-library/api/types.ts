@@ -110,6 +110,7 @@ export interface ProductListResponse {
   categoryId: string;
   productDescription: string | null;
   programType: number;
+  programTitle: number;
 }
 
 export interface ProductSetStatusParams {
@@ -365,7 +366,7 @@ export type CreateRegularType = {
     type?: string;
     mainType: string;
     mainContentCollectionsDtos?: MainContentCollectionsDtos[];
-    mainCaseStudyContentCollectionDtos?:  CaseStudyContentCollectionDtos[];
+    mainCaseStudyContentCollectionDtos?: CaseStudyContentCollectionDtos[];
   };
 };
 
@@ -375,13 +376,13 @@ export type CaseStudyContentCollectionDtos = {
   labs: SequenceContentType[];
   nurseNotes: SequenceContentType[];
   orders: SequenceContentType[];
-  questionnaires: QuestionnaireType[]
-}
+  questionnaires: QuestionnaireType[];
+};
 
 export type SequenceContentType = {
   seqContent?: string;
   seqNum: number;
-}
+};
 
 export type QuestionnaireType = {
   itemNum: number;
@@ -392,7 +393,7 @@ export type QuestionnaireType = {
   transitionHeader: string;
   maxAnswer?: number;
   answers?: AnswerCaseStudy;
-}
+};
 
 type Answer = {
   answer: string;
@@ -400,8 +401,8 @@ type Answer = {
 };
 
 type OptionWithAnswers = {
-  options?: Answer[]; 
-  optionName: string; 
+  options?: Answer[];
+  optionName: string;
 };
 
 type AnswerCaseStudy = Answer[] | OptionWithAnswers[] | undefined;
@@ -566,9 +567,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User { }
+export interface Approver extends User {}
 
-export interface Author extends User { }
+export interface Author extends User {}
 
 export interface User {
   id: string;
@@ -682,20 +683,20 @@ export type PriceButtonType = {
 };
 
 export type CreateDndOptionsParams = {
-  option: string,
-  formId: string,
-  accountId: string,
-  itemNo: number
-}
+  option: string;
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
 
 export type DndOptionParams = {
-  formId: string,
-  accountId: string,
-  itemNo: number,
-}
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
 
 export type DndOptionsResponseType = {
-  id: string,
-  label: string,
-  value: string
-}
+  id: string;
+  label: string;
+  value: string;
+};
