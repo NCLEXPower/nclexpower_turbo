@@ -165,6 +165,7 @@ export const TableContent = <T extends Record<string, unknown>>({
                     maxWidth: column.maxWidth,
                     borderColor: theme.palette.grey.A400,
                     cursor: "pointer",
+                    fontWeight: 700,
                   }}
                 >
                   <Grid container alignItems="center" wrap="nowrap">
@@ -220,34 +221,37 @@ export const TableContent = <T extends Record<string, unknown>>({
                   }}
                   data-testid="table-row"
                 >
-                  {row.cells.map((cell) => (
-                    <TableCell
-                      {...cell.getCellProps()}
-                      key={cell.getCellProps().key}
-                      onClick={() =>
-                        cell.column.id !== "_selector" &&
-                        onRowClicked?.(cell.row)
-                      }
-                      style={{
-                        color: row.isSelected
-                          ? theme.palette.primary.main
-                          : undefined,
-                        cursor: "pointer",
-                        borderColor: theme.palette.grey.A400,
-                      }}
-                      data-testid={`table-column-${cell.getCellProps().key}-data`}
-                    >
-                      <Typography
-                        color="inherit"
-                        variant="body2"
-                        fontWeight={row.original?.isBold ? "bold" : "normal"}
+                  {row.cells.map((cell) => {
+                    const content = cell?.value?.toString();
+                    return (
+                      <TableCell
+                        {...cell.getCellProps()}
+                        key={cell.getCellProps().key}
+                        onClick={() =>
+                          cell.column.id !== "_selector" &&
+                          onRowClicked?.(cell.row)
+                        }
+                        style={{
+                          color: row.isSelected
+                            ? theme.palette.primary.main
+                            : undefined,
+                          cursor: "pointer",
+                          borderColor: theme.palette.grey.A400,
+                        }}
+                        data-testid={`table-column-${cell.getCellProps().key}-data`}
                       >
-                        {isValidDate(new Date(cell.value))
-                          ? formatDate(cell.value)
-                          : cell.render("Cell")}
-                      </Typography>
-                    </TableCell>
-                  ))}
+                        <Typography
+                          color="inherit"
+                          variant="body2"
+                          fontWeight={row.original?.isBold ? "bold" : "normal"}
+                        >
+                          {isValidDate(content)
+                            ? formatDate(content)
+                            : cell.render("Cell")}
+                        </Typography>
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               );
             })}
