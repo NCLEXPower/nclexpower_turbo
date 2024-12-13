@@ -67,7 +67,7 @@ export const DrawerLayout: React.FC<
       }
     : headerStyles;
 
-  const IsPaid = isPaid && appName === "webc_app";
+  const IsPaid = appName.includes("c") ? isPaid : true;
 
   return (
     <Box display="flex">
