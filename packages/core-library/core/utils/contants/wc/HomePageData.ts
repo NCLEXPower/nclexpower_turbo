@@ -179,7 +179,16 @@ export const AuthorizedHeader: MenuItems[] = [
     menuId: 'menu12',
     parentId: '',
     children: [],
-  }
+  },
+  {
+    id: '13',
+    label: 'Settings',
+    path: '/hub/settings',
+    icon: 'TRDSquare',
+    menuId: 'menu13',
+    parentId: '',
+    children: [],
+  },
 ];
 
 export const settings = {

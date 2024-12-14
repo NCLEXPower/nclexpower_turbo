@@ -1,5 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
+import { TextField } from "core-library/components";
 
 interface SecurityProps {
   title: string;
@@ -17,13 +18,21 @@ export const SecurityBlock: React.FC<SecurityProps> = ({ title, subTitle }) => {
         </h4>
       </Box>
       {/* account block */}
-      <Box className="flex bg-[#f3f4f8]">
+      <Box className="flex">
         {/* left side */}
-        <Box className="flex flex-col rounded-[15px]">
+        <Box className="w-full flex flex-col bg-[#f3f4f8] rounded-2xl">
             <h4 className="font-ptSans text-[20px] text-black">
                 Personal Information
             </h4>
+            <hr/>
+            <Box className="flex gap-2">
+                {/* <TextField name="firstname" control={}/> */}
+            </Box>
+            <Box className="flex gap-2">
+
+            </Box>
         </Box>
+
         {/* right side */}
         <Box className="flex flex-col gap-2">
           <Box></Box>
