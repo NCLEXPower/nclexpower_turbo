@@ -3,6 +3,7 @@ import {
   CoreZigmaBlock,
   HowItWorksBlock,
   PricingBlock,
+  HelpWidgetBlock
 } from "@/components";
 import { ScrollTopIcon } from "core-library/components";
 import { useScroll, withCSP } from "core-library";
@@ -35,6 +36,9 @@ const Home: React.FC<Props> = ({ data }) => {
         </div>
         <div className="w-full h-fit">
           <HowItWorksBlock />
+        </div>
+        <div className="w-full h-fit">
+          <HelpWidgetBlock />
         </div>
         <div className="w-full h-fit" id="pricing">
           <PricingBlock url={url} />
