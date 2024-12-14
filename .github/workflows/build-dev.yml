@@ -17,66 +17,68 @@ on:
       - "release/*"
 
 jobs:
-  build_and_test_core_library:
+  determine_changed_files:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Determine Changed Files
+        id: changed_files
+        uses: actions/github-script@v6
         with:
-          node-version: 14
+          script: |
+            const changedFiles = await github.paginate(
+              github.rest.repos.compareCommits,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: github.context.payload.before,
+                head: github.context.sha,
+              },
+              (response) => response.data.files.map((file) => file.filename)
+            );
+            core.setOutput('files', JSON.stringify(changedFiles));
 
-      - name: Install jq
-        run: sudo apt-get install -y jq
-
-      - name: Remove local dependencies from package.json
-        run: |
-          cd packages/core-library
-          jq 'del(.devDependencies["@repo/eslint-config"]) | del(.devDependencies["@repo/typescript-config"])' package.json > temp.json && mv temp.json package.json
-
-      - name: Install dependencies for core-library
-        run: |
-          cd packages/core-library
-          npm install
-
-      - name: Run tests with coverage for core-library
-        run: |
-          cd packages/core-library
-          npm run test -- --coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/core-library/coverage/**/coverage-final.json
-          flags: unittests
-          name: codecov-core-library
-
-  deploy:
+  deploy_simulator:
+    needs: determine_changed_files
+    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/simulator/')
     runs-on: ubuntu-latest
-    needs: [build_and_test_core_library]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Deploy simulator to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/simulator
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
 
+  deploy_web_customer:
+    needs: determine_changed_files
+    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/web-customer/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Deploy web-customer to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/web-customer
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpowerdev
 
+  deploy_web_backoffice_generic:
+    needs: determine_changed_files
+    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/web-backoffice-generic/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Deploy web-backoffice-generic to Vercel (Dev)
-        if: github.ref == 'refs/heads/mdev'
         run: |
           cd apps/web-backoffice-generic
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officedev
