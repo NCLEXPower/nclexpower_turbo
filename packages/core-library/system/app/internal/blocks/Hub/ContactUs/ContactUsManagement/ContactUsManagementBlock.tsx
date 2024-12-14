@@ -14,7 +14,6 @@ export const ContactUsManagementBlock: React.FC = () => {
   const { getFormattedDate } = useDateFormat();
   const { businessQueryGetContactUs } = useBusinessQueryContext();
   const { data } = businessQueryGetContactUs(["get-contact-us"]);
-  //Initial Push
 
   const { columns } = useColumns({
     columns: [

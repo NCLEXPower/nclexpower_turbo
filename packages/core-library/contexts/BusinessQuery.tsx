@@ -307,14 +307,13 @@ interface BusinessQueryContextValue {
     unknown
   >;
 
-  businessQueryGetSubsequentList: (
-    queryKey: string[]
-  ) => UseQueryResult<GetSubsequentLists[] | undefined, any>;
-
   businessQueryGetContactUs: (
     queryKey: string[]
   ) => UseQueryResult<ContactDataType[] | undefined, any>;
 
+  businessQueryGetSubsequentList: (
+    queryKey: string[]
+  ) => UseQueryResult<GetSubsequentLists[] | undefined, any>;
   businessQueryCreateAuthorizedMenus: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<
@@ -414,6 +413,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllCategory = useGetAllCategories;
   const businessQueryCommenceEnvMaintenanceMode = useCommenceEnvMaintenanceMode;
   const businessQueryGetContactUs = useGetContactUs;
+
 
   return (
     <BusinessQueryContext.Provider

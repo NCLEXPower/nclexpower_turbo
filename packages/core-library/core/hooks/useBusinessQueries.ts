@@ -775,6 +775,7 @@ export const useCommenceEnvMaintenanceMode = (
   );
 };
 
+
 export const useGetContactUs = (
   queryKey: string[],
 ): UseQueryResult<ContactDataType[] | undefined, any> => {
@@ -789,4 +790,3 @@ export const useGetContactUs = (
     { staleTime: Infinity }
   );
 };
-
