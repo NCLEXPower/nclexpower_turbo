@@ -216,9 +216,9 @@ export const LottieLists = [
   { id: 35, label: "Change Password Image", image: ChangePasswordImage },
 ];
 
-export const RegisterBG = require("./register/register_bg.jpg");
-export const HelpWidget = require("./home/HelpWidget.json");
-export const VisaIcon = require("./visaIcon.svg");
-export const MasterCardIcon = require("./masterCardIcon.svg");
-export const profile = require("./settings/profile.svg");
-export const google = require("./settings/google.svg");
+export const RegisterBG = require('./register/register_bg.jpg');
+export const HelpWidget = require('./home/HelpWidget.json');
+export const VisaIcon = require('./visaIcon.svg')
+export const MasterCardIcon = require('./masterCardIcon.svg')
+export const profile = require('./settings/profile.svg');
+export const google = require('./settings/google.svg');
