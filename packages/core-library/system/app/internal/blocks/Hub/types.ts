@@ -7,3 +7,15 @@ export interface DashboardCardType {
   title: string;
   cardValue: string;
 }
+
+export type ContactDataType = {
+  id: string;
+  name: string;
+  categoryId: string;
+  refNo: string;
+  email: string;
+  phone: string;
+  message: string;
+  isArchived: boolean;
+  createdAt: string;
+};
