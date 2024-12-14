@@ -20,8 +20,8 @@ export const SettingsBlock = () => {
     {
       id: 2,
       title: "Plans",
-      content: <PlansBlock title="Your Profile"
-      subTitle="Update your photo and personal details here."/>,
+      content: <PlansBlock title="Account Plan"
+      subTitle="Update Your billing details and address."/>,
     },
     {
       id: 3,
