@@ -10,6 +10,7 @@ import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
 import { WizardFormMap } from "../../../../../../../../hooks";
 import { MaintenanceMode } from "./MaintenanceMode/MaintenanceMode";
+import { CoreTeamManagement } from './content/CoreTeam/CoreTeamManagement';
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -19,6 +20,7 @@ export type SettingsManagementSteps =
   | QuestionManagementFormSteps
   | "ReviewerSettings"
   | "ResourceManagement"
+  | "CoreTeamManagement"
   | "RouterSettings"
   | "MaintenanceMode";
 
@@ -41,6 +43,8 @@ export const ChooseSettingsTypeStep = {
         return "ResourceManagement";
       if (values.chosen === "ROUTER" && values.selection === "IARM")
         return "RouterSettings";
+      if (values.chosen === "ROUTER" && values.selection === "CORETEAM")
+        return "CoreTeamManagement";
       if (values.chosen === "MAINTENANCE" && values.selection === "WEBCUSTOMER")
         return "MaintenanceMode";
     },
@@ -53,6 +57,10 @@ export const ChooseSettingsTypeStep = {
   RouterSettings: {
     previousStep: "InitialSettingsSelection",
     content: (props) => <InAppRouterManagement {...props} />,
+  },
+  CoreTeamManagement: {
+    previousStep: "InitialSettingsSelection",
+    content: (props) => <CoreTeamManagement {...props} />,
   },
   MaintenanceMode: {
     previousStep: "InitialSettingsSelection",
