@@ -54,6 +54,7 @@ import {
   useCreateContactUs,
   useGetAllCategories,
   useCommenceEnvMaintenanceMode,
+  useGetContactUs,
 } from "../core/hooks/useBusinessQueries";
 import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -90,6 +91,7 @@ import {
   ContactFormType,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
+import { ContactDataType } from '../system/app/internal/blocks/Hub/types';
 
 interface BusinessQueryContextValue {
   businessQueryLoadPreProcess: (
@@ -305,6 +307,10 @@ interface BusinessQueryContextValue {
     unknown
   >;
 
+  businessQueryGetContactUs: (
+    queryKey: string[]
+  ) => UseQueryResult<ContactDataType[] | undefined, any>;
+
   businessQueryGetSubsequentList: (
     queryKey: string[]
   ) => UseQueryResult<GetSubsequentLists[] | undefined, any>;
@@ -406,6 +412,8 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryCreateContactUs = useCreateContactUs;
   const businessQueryGetAllCategory = useGetAllCategories;
   const businessQueryCommenceEnvMaintenanceMode = useCommenceEnvMaintenanceMode;
+  const businessQueryGetContactUs = useGetContactUs;
+
 
   return (
     <BusinessQueryContext.Provider
@@ -453,6 +461,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryCreateContactUs,
         businessQueryGetAllCategory,
         businessQueryCommenceEnvMaintenanceMode,
+        businessQueryGetContactUs
       }}
     >
       {children}

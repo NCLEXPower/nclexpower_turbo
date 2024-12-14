@@ -48,6 +48,7 @@ import {
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
+import { ContactDataType } from '../../system/app/internal/blocks/Hub/types';
 
 export const useAppMutation = <Response, TVariables = unknown>(
   mutationFn: (variables: TVariables) => Promise<Response>,
@@ -771,5 +772,21 @@ export const useCommenceEnvMaintenanceMode = (
       return result;
     },
     opt
+  );
+};
+
+
+export const useGetContactUs = (
+  queryKey: string[],
+): UseQueryResult<ContactDataType[] | undefined, any> => {
+  const getContactUs = useApi((api) => api.webbackoffice.getContactUs());
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getContactUs.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
   );
 };
