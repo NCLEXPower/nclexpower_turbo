@@ -217,3 +217,5 @@ export const LottieLists = [
 ];
 
 export const RegisterBG = require('./register/register_bg.jpg');
+export const profile = require('./settings/profile.svg');
+export const google = require('./settings/google.svg');
