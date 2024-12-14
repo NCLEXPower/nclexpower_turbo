@@ -417,7 +417,4 @@ export class WebApiBackOffice {
   public async deleteDndOption(optionId: string) {
     return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`);
   }
-  public async getContactUs() {
-    return await this.axios.get('/api/v1/Customer/get-contact-us');
-  }
 }

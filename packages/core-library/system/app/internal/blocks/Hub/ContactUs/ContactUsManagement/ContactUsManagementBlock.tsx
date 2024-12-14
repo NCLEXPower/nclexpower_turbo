@@ -1,4 +1,4 @@
-/**
+ /**
 * Property of the NCLEX Power.
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
@@ -8,7 +8,6 @@ import { Container, Box, Typography, Chip, Button } from "@mui/material";
 import { Alert, Card, DataGrid } from "../../../../../../../components";
 import { useColumns } from "../../../../../../../hooks";
 import { useDateFormat } from "../../core/hooks";
-import { useBusinessQueryContext } from '../../../../../../../contexts';
 
 export const ContactUsManagementBlock: React.FC = () => {
   const { getFormattedDate } = useDateFormat();
@@ -54,7 +53,6 @@ export const ContactUsManagementBlock: React.FC = () => {
     ],
   });
 
-
   return (
     <Box>
       <Container>
@@ -70,9 +68,9 @@ export const ContactUsManagementBlock: React.FC = () => {
             rows={data ?? []}
             isLoading={false}
             data-testid="data-grid"
-          />
-        </Card>
-      </Container>
-    </Box>
-  );
+            />
+          </Card>
+        </Container>
+      </Box>
+    );
 };
