@@ -21,8 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository with full history
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Identify Changed Files
         id: detect_changes
