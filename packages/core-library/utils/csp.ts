@@ -8,7 +8,7 @@ import { nonce } from "../types";
 import { config } from "../config";
 import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
-import { getEndpointResources, getMaintenanceMode } from "../ssr";
+import { getChatBotMode, getEndpointResources, getMaintenanceMode } from "../ssr";
 
 export const generateCSP = (generatedNonce: string): string =>
   `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
@@ -41,6 +41,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const csp = generateCSP(generatedNonce);
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
+      const ChatBotMode = await getChatBotMode()
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -55,7 +56,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
               ...result.props,
               slug,
               generatedNonce,
-              data: { MaintenanceStatus, endpoints },
+              data: { MaintenanceStatus, endpoints, ChatBotMode },
             },
           };
         }
@@ -70,6 +71,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
           data: {
             MaintenanceStatus,
             endpoints,
+            ChatBotMode
           },
         },
       };

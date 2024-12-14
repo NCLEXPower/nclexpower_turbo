@@ -27,7 +27,11 @@ import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
 
-const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+type Props = {
+  chatBotMode?: boolean
+}
+
+const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children, chatBotMode }) => {
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
   const { isAuthenticated, logout, loading } = useAuthContext();
@@ -61,8 +65,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                 >
                   {children}
                   <Footer info={CompanyInfo} list={list} />
-                  {/* dynamic hideHelp should be implemented here */}
-                  {true && <ChatBotWidget />}
+                  {chatBotMode && <ChatBotWidget />}
                 </DrawerLayout>
               </LoadablePageContent>
             </FormSubmissionContextProvider>

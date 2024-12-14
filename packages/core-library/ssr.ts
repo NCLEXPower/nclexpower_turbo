@@ -8,7 +8,7 @@ import {
   CreateCustomerParams,
   ValidateTokenParams,
 } from "./api/types";
-import { CmsGlobals, MaintenanceSsr } from "./types/global";
+import { ChatBotSsr, CmsGlobals, MaintenanceSsr } from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
@@ -128,4 +128,15 @@ export async function validateTokenSsr(params: ValidateTokenParams) {
     }
   );
   return ((await response.json()) as number) ?? null;
+}
+
+export async function getChatBotMode() {
+  const response = await fetch(
+    `${baseUrl}/api/v1/Customer/get-chatbot-mode`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return ((await response.json()) as ChatBotSsr) ?? null;
 }
