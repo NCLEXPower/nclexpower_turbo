@@ -22,7 +22,7 @@ interface ContentProp{
 const SamplePage = () => {
 
   return (
-      <DetailedPopUp>
+      <DetailedPopUp onClick={() => { }}>
           {/* <Content details={PricingDetails} />  */}
       </DetailedPopUp>
   );
