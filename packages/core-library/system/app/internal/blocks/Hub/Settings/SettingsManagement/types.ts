@@ -30,6 +30,7 @@ export type SettingsSelectionOptions =
   | "DEFAULTREVIEWER"
   | "RESOURCEMANAGEMENT"
   | "IARM"
+  | "CORETEAM"
   | "WEBCUSTOMER";
 export type QuestionSelectionOptions = "Regular" | "Case Study";
 export type RegularQuestionSelectionOptions = "MCQ" | "SATA";
