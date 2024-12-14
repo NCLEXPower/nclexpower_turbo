@@ -24,76 +24,74 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Determine Changed Files
-        id: changed_files
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const eventName = context.eventName;
-
-            let base, head;
-
-            if (eventName === 'push') {
-              base = github.context.payload.before;
-              head = github.context.payload.after;
-            } else if (eventName === 'pull_request') {
-              base = github.context.payload.pull_request.base.sha;
-              head = github.context.payload.pull_request.head.sha;
-            } else {
-              throw new Error(`Unsupported event: ${eventName}`);
-            }
-
-            const changedFiles = await github.paginate(
-              github.rest.repos.compareCommits,
-              {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                base,
-                head,
-              },
-              (response) => response.data.files.map((file) => file.filename)
-            );
-
-            core.setOutput('files', JSON.stringify(changedFiles));
-
-  deploy_simulator:
-    needs: determine_changed_files
-    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/simulator/')
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy simulator to Vercel (Dev)
+      - name: Identify Changed Files
+        id: detect_changes
         run: |
-          cd apps/simulator
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          cat changed_files.txt
+
+      - name: Set Outputs for Affected Apps
+        id: set_flags
+        run: |
+          if grep -q '^apps/web-customer/' changed_files.txt; then
+            echo "::set-output name=web_customer::true"
+          else
+            echo "::set-output name=web_customer::false"
+          fi
+          if grep -q '^apps/web-backoffice-generic/' changed_files.txt; then
+            echo "::set-output name=web_backoffice::true"
+          else
+            echo "::set-output name=web_backoffice::false"
+          fi
+          if grep -q '^apps/simulator/' changed_files.txt; then
+            echo "::set-output name=simulator::true"
+          else
+            echo "::set-output name=simulator::false"
+          fi
+
+    outputs:
+      web_customer: ${{ steps.set_flags.outputs.web_customer }}
+      web_backoffice: ${{ steps.set_flags.outputs.web_backoffice }}
+      simulator: ${{ steps.set_flags.outputs.simulator }}
 
   deploy_web_customer:
     needs: determine_changed_files
-    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/web-customer/')
+    if: needs.determine_changed_files.outputs.web_customer == 'true'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Deploy web-customer to Vercel (Dev)
+      - name: Deploy Web Customer to Vercel
         run: |
           cd apps/web-customer
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpowerdev
 
   deploy_web_backoffice_generic:
     needs: determine_changed_files
-    if: github.ref == 'refs/heads/mdev' && contains(needs.determine_changed_files.outputs.files, 'apps/web-backoffice-generic/')
+    if: needs.determine_changed_files.outputs.web_backoffice == 'true'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Deploy web-backoffice-generic to Vercel (Dev)
+      - name: Deploy Web Backoffice Generic to Vercel
         run: |
           cd apps/web-backoffice-generic
           npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officedev
+
+  deploy_simulator:
+    needs: determine_changed_files
+    if: needs.determine_changed_files.outputs.simulator == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy Simulator to Vercel
+        run: |
+          cd apps/simulator
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-simulatordev
