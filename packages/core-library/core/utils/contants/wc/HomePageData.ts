@@ -188,7 +188,7 @@ export const AuthorizedHeader: MenuItems[] = [
     menuId: "menu13",
     parentId: "",
     children: [],
-  }
+  },
 ];
 
 export const settings = {
