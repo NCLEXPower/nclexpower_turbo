@@ -179,7 +179,7 @@ export const AuthorizedHeader: MenuItems[] = [
     menuId: 'menu12',
     parentId: '',
     children: [],
-  },
+  }
 ];
 
 export const settings = {
