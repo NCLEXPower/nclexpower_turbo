@@ -120,6 +120,10 @@ export const RNBackground = require('./RNBackground.png');
 
 export const DuplicateSession = require("./duplicate_session.svg");
 
+export const AnnouncementBg =require("./AnnouncementBg.svg");
+export const AnnouncementCard1 =require("./AnnouncementCard1.svg");
+export const AnnouncementCard2 =require("./AnnouncementCard2.svg");
+
 export const ImageLists = [
   { id: 1, label: 'NCLEX Blue Logo', image: NCLEXBlueLogo },
   { id: 2, label: 'NCLEX Yellow Logo', image: NCLEXYellowLogo },
