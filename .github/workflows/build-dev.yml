@@ -29,16 +29,31 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const eventName = context.eventName;
+
+            let base, head;
+
+            if (eventName === 'push') {
+              base = github.context.payload.before;
+              head = github.context.payload.after;
+            } else if (eventName === 'pull_request') {
+              base = github.context.payload.pull_request.base.sha;
+              head = github.context.payload.pull_request.head.sha;
+            } else {
+              throw new Error(`Unsupported event: ${eventName}`);
+            }
+
             const changedFiles = await github.paginate(
               github.rest.repos.compareCommits,
               {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                base: github.context.payload.before,
-                head: github.context.sha,
+                base,
+                head,
               },
               (response) => response.data.files.map((file) => file.filename)
             );
+
             core.setOutput('files', JSON.stringify(changedFiles));
 
   deploy_simulator:
