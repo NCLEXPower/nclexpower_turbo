@@ -13,6 +13,6 @@ const ComingSoon: React.FC = () => {
   )
 };
 
-// export const getServerSideProps: GetServerSideProps = withCSP();
+export const getServerSideProps: GetServerSideProps = withCSP();
 
 export default ComingSoon;
