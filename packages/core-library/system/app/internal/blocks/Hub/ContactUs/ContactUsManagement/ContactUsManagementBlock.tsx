@@ -13,7 +13,7 @@ import { useBusinessQueryContext } from '../../../../../../../contexts';
 export const ContactUsManagementBlock: React.FC = () => {
   const { getFormattedDate } = useDateFormat();
   const { businessQueryGetContactUs } = useBusinessQueryContext();
-  const { data } = businessQueryGetContactUs(["contact-us"]);
+  const { data } = businessQueryGetContactUs(["get-contact-us"]);
 
   const { columns } = useColumns({
     columns: [
