@@ -27,7 +27,7 @@ interface Props {
 const chooseSettingsStepFormSchema = yup.object({
   selection: yup
     .mixed<SettingsSelectionOptions>()
-    .oneOf(["DBEXCEL", "QM", "IARM", "WEBCUSTOMER"])
+    .oneOf(["DBEXCEL", "QM", "IARM", "CORETEAM", "WEBCUSTOMER"])
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
@@ -94,18 +94,18 @@ export const ChooseProductsConfigurations = (props: {
         )}
         {(accessLevel === AccessLevels.ADMIN ||
           accessLevel === AccessLevels.ENCODER) && (
-          <Grid item xs={4}>
-            <Card
-              onClick={() =>
-                handleSelection({ chosen: "CONFIG", selection: "QM" })
-              }
-              hoverEffect
-              elevation={5}
-              text="Web Simulator"
-              data-testid="web-simulator-card"
-            />
-          </Grid>
-        )}
+            <Grid item xs={4}>
+              <Card
+                onClick={() =>
+                  handleSelection({ chosen: "CONFIG", selection: "QM" })
+                }
+                hoverEffect
+                elevation={5}
+                text="Web Simulator"
+                data-testid="web-simulator-card"
+              />
+            </Grid>
+          )}
       </Grid>
     </Box>
   );
@@ -264,7 +264,7 @@ export const InAppManagement = (props: {
   return (
     <Box>
       <InformationTitle
-        text="In App Router Management"
+        text="Content Management"
         lineWidth={6}
         lineHeight={35}
         lineColor="#6A5ACD"
@@ -288,13 +288,26 @@ export const InAppManagement = (props: {
             data-testid="in-app-router-card"
             text="In App Router Management"
           />
+
         </Grid>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={4}>
+          <Card
+            hoverEffect
+            onClick={() =>
+              handleSelection({ chosen: "ROUTER", selection: "CORETEAM" })
+            }
+            elevation={5}
+            data-testid="core-team-management"
+            text="Core Team Management"
+          />
+        </Grid>
         <Grid item xs={4}></Grid>
       </Grid>
     </Box>
   );
 };
+
+
 export const MaintenanceMode = (props: {
   nextStep(values: Partial<SettingsSelectionType>): void;
   values: Partial<SettingsSelectionType>;
@@ -383,6 +396,7 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
       {hasAccess("InAppManagement") && (
         <InAppManagement nextStep={nextStep} values={values} />
       )}
+
       {hasAccess("MaintenanceMode") && (
         <>
           <Divider>Maintenance Mode</Divider>
