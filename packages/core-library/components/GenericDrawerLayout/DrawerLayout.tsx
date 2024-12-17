@@ -41,6 +41,7 @@ export const DrawerLayout: React.FC<
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
+  const [scroll, setScroll] = useState(false);
 
   const router = useRouter();
 
@@ -55,6 +56,16 @@ export const DrawerLayout: React.FC<
   useEffect(() => {
     setOpen(!isMobile);
   }, [isMobile]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   if (!mounted) return;
 
@@ -97,7 +108,7 @@ export const DrawerLayout: React.FC<
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
                 >
-                  <MenuIcon />
+                  <MenuIcon sx={{ color: scroll ? "#00173F" : "white" }} />
                 </Button>
               )
             }
