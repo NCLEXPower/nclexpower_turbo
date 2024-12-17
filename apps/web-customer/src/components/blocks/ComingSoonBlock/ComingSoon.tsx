@@ -12,15 +12,10 @@ import {
   Twitter as TwitterIcon,
 } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-
-const dateData = [{
-  days: "Days",
-  hours: "Hours",
-  minutes: "Minutes",
-  seconds: "Seconds",
-}]
+import { dateData } from './ComingSoonData';
 
 export const ComingSoonPage: React.FC = () => {
+  //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
   const { timeRemaining } = useCountdown({ timeRemaining: '30:04:30:00' });
 
   return (
