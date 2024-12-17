@@ -7,7 +7,7 @@ import {
   SelectColumnFilter,
 } from "../../../../../../components/table";
 import { Column, FilterProps, FilterValue } from "react-table";
-import { formatDate } from "core-library";
+import { formatDate } from "../../../../../../core";
 
 interface TableColumns extends Record<string, unknown> {
   id: string;
