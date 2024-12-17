@@ -37,4 +37,11 @@ describe("Success Page", () => {
     );
     expect(screen.getByTestId('hidden-upload-input')).toBeInTheDocument();
   });
+
+  it('should render the TextField component', () => {
+    render(
+      <AnnouncementPage />
+    );
+    expect(screen.getByPlaceholderText('Add the content title here....')).toBeInTheDocument();
+  });
 });

@@ -11,7 +11,7 @@ import { formatDate } from "../../../../../../core";
 
 interface TableColumns extends Record<string, unknown> {
   id: string;
-  name: string;
+  title: string;
   dateReceived: string;
   type: string;
   isBold: boolean;
@@ -53,7 +53,7 @@ export const AnnouncementManagementLists: React.FC = () => {
           width: 200,
         },
         {
-          id: "dateReceived",
+          id: "title",
           Header: "Title",
           accessor: (row: TableColumns) =>
             formatDate(row.dateReceived, "yyyy-MM-dd HH:mm:ss.SSS"),
@@ -93,7 +93,7 @@ export const AnnouncementManagementLists: React.FC = () => {
       noDataFoundText="No data found"
       mobileFiltersConfig={{
         alwaysOnFilters: ["name"],
-        menuFilters: ["dateReceived", "type"],
+        menuFilters: ["title", "id"],
       }}
     />
   );
