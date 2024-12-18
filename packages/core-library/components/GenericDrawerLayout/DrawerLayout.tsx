@@ -8,6 +8,7 @@ import {
   useResolution,
   useRouteBasedVisibility,
 } from "../../hooks";
+import { useScroll } from "../../core/hooks/useScroll"; 
 import { Main } from "./content/Main";
 import MenuIcon from "@mui/icons-material/Menu";
 import { WebHeaderStylesType } from "../../types/web-header-style";
@@ -15,7 +16,7 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useRouter } from "../../core";
 import { config } from "../../config";
-import { usePaid } from "../../contexts/auth/hooks";
+import { usePaid, useNewAccount } from "../../contexts/auth/hooks"; 
 
 type DrawerLayoutType = {
   menu: Array<MenuItems>;
@@ -37,11 +38,12 @@ export const DrawerLayout: React.FC<
   sidebarStyles,
 }) => {
   const [isPaid] = usePaid();
+  const [isNewAccount] = useNewAccount(); 
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
-  const [scroll, setScroll] = useState(false);
+  const { isScrolled } = useScroll(); 
 
   const router = useRouter();
 
@@ -56,16 +58,6 @@ export const DrawerLayout: React.FC<
   useEffect(() => {
     setOpen(!isMobile);
   }, [isMobile]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScroll(window.scrollY > 0);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   if (!mounted) return;
 
@@ -82,7 +74,7 @@ export const DrawerLayout: React.FC<
 
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && (
+      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && !isNewAccount && (
         <Sidebar
           {...sidebarStyles}
           isMobile={isMobile}
@@ -108,7 +100,7 @@ export const DrawerLayout: React.FC<
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
                 >
-                  <MenuIcon sx={{ color: scroll ? "#00173F" : "white" }} />
+                  <MenuIcon sx={{ color: isScrolled ? "#00173F" : "white" }} />
                 </Button>
               )
             }
