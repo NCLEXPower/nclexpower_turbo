@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Switch, SxProps } from "@mui/material";
-import { Button, EvaIcon } from "core-library/components";
+import React, { useState } from "react";
+import { Box, SxProps } from "@mui/material";
+import { Button, EvaIcon, SwitchButton } from "core-library/components";
 
 const boxSx: SxProps = {
   bgcolor: "#0F2A710D",
@@ -60,6 +60,8 @@ export const SecurityBlock: React.FC<SecurityProps> = ({ title, subTitle }) => {
 };
 
 const SecurityAndPassword: React.FC = () => {
+  const [open, setOpen] = useState<boolean>(false);
+  const toggleSwitch = () => setOpen((prev) => !prev);
   return (
     <Box
       sx={{
@@ -100,8 +102,9 @@ const SecurityAndPassword: React.FC = () => {
           >
             <EvaIcon name="shield-off-outline" />
             <span>Two-Factor Authenticator</span>
-            <Switch
-              size="medium"
+            <SwitchButton
+              checked={open}
+              onChange={toggleSwitch}
               sx={{
                 marginLeft: "auto",
               }}
