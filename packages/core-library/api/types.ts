@@ -118,6 +118,13 @@ export interface ProductSetStatusParams {
   productStatus: number;
 }
 
+export type AnalyticsParams = Partial<{
+  accountId: string;
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  status: string;
+}>;
 export interface IrtExamLogsResponse {
   id: string;
   eventLNum: string;
