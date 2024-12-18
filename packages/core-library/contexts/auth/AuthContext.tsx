@@ -30,7 +30,12 @@ import {
   useSingleCookie,
 } from "../../hooks/useCookie";
 import { config } from "../../config";
-import { useRouter } from "../../core";
+import {
+  isMixpanelEnabled,
+  mixpanelBuildUserProfile,
+  mixpanelTrackLogin,
+  useRouter,
+} from "../../core";
 import { useExecuteToast } from "../ToastContext";
 import {
   EnrolledDeviceUpdaterParams,
@@ -99,6 +104,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     internal,
     loading: dataloading,
   } = useSensitiveInformation();
+
+  const analyticsParamsCb = useApiCallback((api, id: string) =>
+    api.web.analyticsParams(id)
+  );
 
   const loginCb = useApiCallback((api, data: LoginParams) =>
     api.auth.login(data)
@@ -228,6 +237,22 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
+  const initializeAnalyticsUser = useCallback(
+    async (accountId?: string) => {
+      if (isMixpanelEnabled()) {
+        try {
+          const analyticsParamsResult =
+            await analyticsParamsCb.execute(accountId);
+          const resultSize = Object.keys(analyticsParamsResult).length;
+          console.log(`Analytics result size: ${resultSize}`);
+          mixpanelBuildUserProfile(analyticsParamsResult.data);
+          mixpanelTrackLogin();
+        } catch (error) {}
+      }
+    },
+    [analyticsParamsCb, accessToken]
+  );
+
   return (
     <context.Provider
       value={useMemo(
@@ -294,6 +319,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               domain: `.${window.location.hostname}`,
             });
             setIsAuthenticated(true);
+            await initializeAnalyticsUser(parsedAccountId);
             await router.push((route) => route.hub);
           },
           loginFromSso: async () => {
