@@ -6,13 +6,13 @@ import {
 } from "core-library/assets";
 import Image from "next/image";
 import { useCountdown } from 'core-library/hooks/useCountdown';
-import {
-  Instagram as InstagramIcon,
-  Facebook as FacebookIcon,
-  Twitter as TwitterIcon,
-} from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { dateData } from './ComingSoonData';
+import {
+  FacebookIcon,
+  InstagramIcon,
+  TwitterIcon
+} from 'core-library/components/Icons';
 
 export const ComingSoonPage: React.FC = () => {
   //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
@@ -101,9 +101,9 @@ export const ComingSoonPage: React.FC = () => {
             Check back soon for updates—you won&apos;t want to miss this!
           </p>
           <div className="flex items-center justify-center space-x-3 text-white">
-            <FacebookIcon sx={{ fontSize: "2rem", }} />
-            <InstagramIcon sx={{ fontSize: "2rem", }} />
-            <TwitterIcon sx={{ fontSize: "2rem", }} />
+            <FacebookIcon width='2rem' />
+            <InstagramIcon width='2rem' />
+            <TwitterIcon width='2rem' />
           </div>
         </div>
       </div>
