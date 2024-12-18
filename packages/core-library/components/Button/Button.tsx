@@ -9,6 +9,7 @@ import { useCustomAction } from "../../hooks";
 import { ButtonType } from "./button-type";
 import { Box } from "@mui/material";
 import { FormHelperText } from "../Textfield/TextField";
+import { mixpanelTrackButtonClick } from "../../core";
 
 export interface ButtonProps
   extends Pick<
@@ -38,7 +39,8 @@ export interface ButtonProps
   error?: boolean;
   helperText?: string;
   "data-testid"?: string;
-  endIcon?: MuiButtonProps["endIcon"]
+  endIcon?: MuiButtonProps["endIcon"];
+  analyticsKey?: string; // can get from the backend or generic
 }
 
 const LOADER_SIZE = 20;
@@ -95,6 +97,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       buttonActionType,
       resetTime,
       endIcon,
+      analyticsKey,
       ...props
     },
     ref
@@ -135,6 +138,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           id={id}
           custom-action-key={customActionKey}
           data-testid={props["data-testid"]}
+          analytics-key={analyticsKey}
           className={[
             className,
             type,
@@ -204,6 +208,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       if (isDisabledOrLoading) {
         e.preventDefault();
         return;
+      }
+
+      if (analyticsKey) {
+        mixpanelTrackButtonClick({
+          Category: analyticsKey,
+        });
       }
 
       if (action?.execute || onClick) {
