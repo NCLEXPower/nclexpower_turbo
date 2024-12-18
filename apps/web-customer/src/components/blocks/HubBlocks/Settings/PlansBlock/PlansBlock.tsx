@@ -85,7 +85,7 @@ export const PlansBlock: React.FC<PlansProps> = ({ title, subTitle }) => {
             </Grid>
           </Box>
           <Box sx={{ borderRadius: '15px', width: 1 }} className=" bg-[#f3f4f8]">
-            <div className='border-b w-full  border-[#0F2A71] border-opacity-50'>
+            <div className='border-b w-full  border-darkBlue border-opacity-50'>
               <div className='p-2 font-extrabold px-5'>
                 Latest Payment
               </div>
