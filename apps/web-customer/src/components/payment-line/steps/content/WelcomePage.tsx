@@ -15,12 +15,14 @@ interface Props {
   values: {};
   previous: () => void;
   reset: () => void;
+  resetStep: () => void;
 }
 
 export function WelcomePage({
   previousStep,
   previous,
   reset,
+  resetStep,
 }: Props) {
   const { logout } = useAuthContext();
   const { contentLoader, setContentLoader } = usePageLoaderContext();
@@ -44,6 +46,11 @@ export function WelcomePage({
     previous();
     reset();
   };
+
+  const handleLogout = () => {
+    logout();
+    resetStep();
+  }
 
   return (
     <Box
@@ -88,7 +95,7 @@ export function WelcomePage({
               </div>
             </div>
           </Card>
-          <ProceedButton onClick={logout} btnTitle='Proceed to Login' />
+          <ProceedButton onClick={handleLogout} btnTitle='Proceed to Login' />
         </div>
         <NCLEXBanner />
       </div>
