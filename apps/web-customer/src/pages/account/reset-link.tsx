@@ -14,7 +14,7 @@ export const ResetLink: React.FC<Props> = ({ generatedNonce }) => {
   return (
     <>
       <CSPHead nonce={generatedNonce} />
-      <ResetLinkBlock />;
+      <ResetLinkBlock />
     </>
   )
 };
