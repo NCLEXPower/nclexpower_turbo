@@ -16,7 +16,7 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useRouter } from "../../core";
 import { config } from "../../config";
-import { usePaid, useNewAccount } from "../../contexts/auth/hooks"; 
+import { usePaid } from "../../contexts/auth/hooks";
 
 type DrawerLayoutType = {
   menu: Array<MenuItems>;
@@ -38,7 +38,6 @@ export const DrawerLayout: React.FC<
   sidebarStyles,
 }) => {
   const [isPaid] = usePaid();
-  const [isNewAccount] = useNewAccount(); 
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
@@ -74,7 +73,7 @@ export const DrawerLayout: React.FC<
 
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && !isNewAccount && (
+      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && (
         <Sidebar
           {...sidebarStyles}
           isMobile={isMobile}
