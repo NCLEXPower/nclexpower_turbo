@@ -3,13 +3,13 @@ import { Container, Box, Typography, Chip, Button } from "@mui/material";
 import { useRegularQuestionWizardSteps } from "./steps/useSteps";
 import { RegularQuestionsSteps, RegularQuestionStepProps } from "./steps/types";
 import { RegularQuestionFormType } from "./types";
-import { Alert } from '../../../../../../components';
-import { useModal } from '../../../../../../hooks';
+import { Alert } from "../../../../../../components";
+import { useModal } from "../../../../../../hooks";
 
 export const QuestionManagementPageBlock = () => {
   const saveConfirmationModal = useModal<unknown>();
   const { render } = useRegularQuestionWizardSteps(
-    () => { },
+    () => {},
     saveConfirmationModal
   );
 
