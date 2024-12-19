@@ -4,28 +4,14 @@ import {
   PaginatedTable,
   DateRangeColumnFilter,
   DefaultColumnFilter,
-  SelectColumnFilter,
 } from "../../../../../../components/table";
 import { Column, FilterProps, FilterValue } from "react-table";
 import { formatDate } from "../../../../../../core";
+import { mockData, TableColumns } from "./constant";
 
-interface TableColumns extends Record<string, unknown> {
-  id: string;
-  title: string;
-  dateReceived: string;
-  type: string;
-  isBold: boolean;
-  isHighlight: boolean;
-  status: string;
-}
-
-export const AnnouncementManagementLists: React.FC = () => {
+export default function AnnouncementManagementLists() {
   const {
-    pageData,
-    selectedRows,
     updateFilters,
-    additionalFilters,
-    tableProps,
   } = usePaginatedTable<TableColumns>(
     { propertyName: "id" },
     {
@@ -40,21 +26,23 @@ export const AnnouncementManagementLists: React.FC = () => {
     () =>
       [
         {
-          Header: "ID",
-          accessor: "name",
+          Header: "Title",
+          accessor: "title",
           Filter: (props: FilterProps<{}>) =>
             DefaultColumnFilter({
               ...props,
               filterValue: props.column.filterValue,
               onChange: updateFilters,
-              labelPrefix: "test",
+              labelPrefix: "Title",
             }),
           filter: "contains",
-          width: 200,
+          minWidth: 250,
+          width: 350,
+          maxWidth: 500,
         },
         {
-          id: "title",
-          Header: "Title",
+          id: "dateReceived",
+          Header: "Date Received",
           accessor: (row: TableColumns) =>
             formatDate(row.dateReceived, "yyyy-MM-dd HH:mm:ss.SSS"),
           Filter: (props: FilterProps<{}>) =>
@@ -68,19 +56,9 @@ export const AnnouncementManagementLists: React.FC = () => {
         },
         {
           Header: "Content",
-          accessor: "type",
-          Filter: (props: FilterProps<{}>) =>
-            SelectColumnFilter({
-              ...props,
-              filterValue: props.column.filterValue,
-              onChange: updateFilters,
-              labelPrefix: "",
-              options: [],
-            }),
-          filter: "equals",
+          accessor: "content",
         },
-        { Header: "Created At", accessor: "status", filter: "equals" },
-        { Header: "Actions", accessor: "id" },
+        { Header: "ID", accessor: "id" },
       ] as Column<TableColumns>[],
     []
   );
@@ -88,12 +66,12 @@ export const AnnouncementManagementLists: React.FC = () => {
   return (
     <PaginatedTable
       columns={columns}
-      data={[]}
+      data={mockData}
       noDataText="No data found"
       noDataFoundText="No data found"
       mobileFiltersConfig={{
-        alwaysOnFilters: ["name"],
-        menuFilters: ["title", "id"],
+        alwaysOnFilters: ["title"],
+        menuFilters: ["dateReceived", "content"],
       }}
     />
   );
