@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Alert, Card, TabOption, TabPanel, TabsDesktop } from "../../../../../../components";
 import { Container } from "@mui/material";
 import { AnnouncementPage } from "./AnnouncementPage";
-import { AnnouncementManagementLists } from "./AnnouncementManagementLists";
+import AnnouncementManagementLists from "./AnnouncementManagementLists";
 
 export const AnnouncementManagementBlock = () => {
 
