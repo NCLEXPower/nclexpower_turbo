@@ -7,7 +7,6 @@ import {
 import Image from "next/image";
 import { useCountdown } from 'core-library/hooks/useCountdown';
 import { Typography } from "@mui/material";
-import { dateData } from './ComingSoonData';
 import {
   FacebookIcon,
   InstagramIcon,
@@ -17,6 +16,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { comingSoonSchema, ComingSoonType } from './validation';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from 'core-library/components';
+import { dateData } from './ComingSoonBlock';
 
 
 export const ComingSoonPage: React.FC = () => {
