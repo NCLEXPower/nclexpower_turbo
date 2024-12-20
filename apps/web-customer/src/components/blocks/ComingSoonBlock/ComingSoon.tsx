@@ -13,10 +13,26 @@ import {
   InstagramIcon,
   TwitterIcon
 } from 'core-library/components/Icons';
+import { FormProvider, useForm } from 'react-hook-form';
+import { comingSoonSchema, ComingSoonType } from './validation';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, TextField } from 'core-library/components';
+
 
 export const ComingSoonPage: React.FC = () => {
   //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
   const { timeRemaining } = useCountdown({ timeRemaining: '30:04:30:00' });
+
+  const method = useForm<ComingSoonType>({
+    mode: "onSubmit",
+    resolver: yupResolver(comingSoonSchema),
+  })
+
+  const { handleSubmit, control, formState: { isValid } } = method;
+
+  const onSubmit = (values: ComingSoonType) => {
+    console.log(values);
+  }
 
   return (
     <div className="w-full h-full lg:h-screen ">
@@ -95,6 +111,64 @@ export const ComingSoonPage: React.FC = () => {
               </div>
             ))}
           </div>
+          <FormProvider {...method}>
+            <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-4 ">
+              <TextField
+                control={control}
+                name="email"
+                placeholder='Email'
+                sx={{
+                  borderRadius: "10px",
+                  flexGrow: 1,
+                  border: "1px solid #f3f3f3",
+                  color: "#f3f3f3",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "14px",
+                    lg: "16px",
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#f3f3f3',
+                  },
+                  '& .MuiInputBase-input:focus': {
+                    color: '#000',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    borderRadius: "16px",
+                    boxShadow: "none",
+                  },
+                }}
+              />
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                disabled={!isValid}
+                sx={{
+                  color: "#0F2A71",
+                  bgcolor: "#FFF",
+                  borderRadius: "10px",
+                  fontFamily: "'PT Sans', sans-serif",
+                  fontSize: "clamp(10px, 5cqw, 16px)",
+                  fontWeight: "bold",
+                  alignSelf: {
+                    lg: 'end'
+                  },
+                  flexGrow: 1,
+                  zIndex: 1,
+                  padding: {
+                    xs: "6px 12px",
+                    lg: "8px 16px",
+                  },
+                  "&:hover": {
+                    backgroundColor: "#F3f3f3",
+                  },
+                }}
+              >
+                Notify Me
+              </Button>
+            </div>
+          </FormProvider>
           <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
             Stay tuned as we prepare to unveil a brand-new experience just for you.
             Our team is working hard behind the scenes to bring something innovative and engaging.
