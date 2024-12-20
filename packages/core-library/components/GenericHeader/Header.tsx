@@ -194,7 +194,7 @@ export const Header: React.FC<Props> = ({
               lg={3}
               xl={3}
               sx={{
-                display: { xs: "block", sm: "block" },
+                display: "block",
                 alignSelf: "center",
               }}
             >
@@ -231,7 +231,7 @@ export const Header: React.FC<Props> = ({
               lg={2}
               xl={1}
               sx={{
-                display: { xs: "block", sm: "block" },
+                display: "block",
                 alignSelf: "center",
               }}
             >
