@@ -3,6 +3,7 @@ import { internalAccountType, RegisterParams } from "../../types/types";
 import qs from "query-string";
 import { config } from "../../config";
 import {
+  AnalyticsParams,
   CheckoutSessionParams,
   CheckoutSessionResponse,
   ConfirmPaymentParams,
@@ -204,6 +205,12 @@ export class WebApi {
   public async changePaymentStatus(accountId: string | undefined) {
     return await this.axios.put(
       `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`
+    );
+  }
+
+  public analyticsParams(accountId: string) {
+    return this.axios.get<AnalyticsParams>(
+      `/api/v1/Customer/analytics?${qs.stringify({ accountId })}`
     );
   }
 }
