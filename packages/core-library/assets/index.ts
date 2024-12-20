@@ -53,6 +53,8 @@ export const ContactLocation = require('./contact/location.png');
 export const ContactMail = require('./contact/mail.png');
 export const ContactPhone = require('./contact/phone.png');
 
+export const ComingSoon = require("./ComingSoon/ComingSoon.png")
+
 export const ForgotPasswordImage = require('./forgotpassword/ForgotPasswordImage.json');
 export const ChangePasswordImage = require('./forgotpassword/ChangePasswordImage.json');
 export const ChangePasswordBG = require('./ChangePasswordBG.png');
@@ -119,6 +121,7 @@ export const PNBackground = require('./PNBackground.png');
 export const RNBackground = require('./RNBackground.png');
 
 export const DuplicateSession = require("./duplicate_session.svg");
+
 
 export const ImageLists = [
   { id: 1, label: 'NCLEX Blue Logo', image: NCLEXBlueLogo },
