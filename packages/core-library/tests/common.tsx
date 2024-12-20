@@ -3,6 +3,7 @@ import { RenderOptions, render as rtlRender } from "@testing-library/react";
 import rtlEvent from "@testing-library/user-event";
 import { ReactElement } from "react";
 import {
+  AuthProvider,
   BusinessQueryContextProvider,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
@@ -36,17 +37,19 @@ export const render = (
     wrapper: ({ children }) => (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <BusinessQueryContextProvider>
-          <DndProvider backend={HTML5Backend}>
-            <QueryClientProvider client={new QueryClient()}>
-              <ThemeProvider theme={theme()}>
-                <HeaderTitleContextProvider>
-                  <FormSubmissionContextProvider>
-                    {children}
-                  </FormSubmissionContextProvider>
-                </HeaderTitleContextProvider>
-              </ThemeProvider>
-            </QueryClientProvider>
-          </DndProvider>
+          <AuthProvider>
+            <DndProvider backend={HTML5Backend}>
+              <QueryClientProvider client={new QueryClient()}>
+                <ThemeProvider theme={theme()}>
+                  <HeaderTitleContextProvider>
+                    <FormSubmissionContextProvider>
+                      {children}
+                    </FormSubmissionContextProvider>
+                  </HeaderTitleContextProvider>
+                </ThemeProvider>
+              </QueryClientProvider>
+            </DndProvider>
+          </AuthProvider>
         </BusinessQueryContextProvider>
       </LocalizationProvider>
     ),
