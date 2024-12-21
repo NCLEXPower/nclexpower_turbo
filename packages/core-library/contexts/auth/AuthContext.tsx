@@ -26,6 +26,8 @@ import {
 import { internalAccountType, RegisterParams } from "../../types/types";
 import {
   CookieSetOptions,
+  useAccountIdCookie,
+  useAnalyticsDetails,
   useDeviceId,
   useSingleCookie,
 } from "../../hooks/useCookie";
@@ -45,6 +47,7 @@ import {
 } from "../../api/types";
 import { useAuthSessionIdleTimer } from "./hooks/useAuthSessionIdleTimer";
 import { Encryption } from "../../utils";
+import { clear } from "console";
 
 const context = createContext<{
   loading: boolean;
@@ -89,14 +92,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accountId, setAccountId] = useAccountId();
   const [accessLevel, setAccessLevel] = useAccessLevel();
   const [, setSingleCookie, clearSingleCookie] = useSingleCookie();
+  const [, setAccountCookie, clearAccountCookie] = useAccountIdCookie();
+  const [, , clearAnalyticsCookie] = useAnalyticsDetails();
   const [refreshToken, setRefreshToken] = useRefreshToken();
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!accessToken || false
   );
   const [deviceNotRecognized, setDeviceNotRecognized] =
     useDeviceNotRecognized();
-  const [, setIsNewAccount] = useNewAccount();
-  const [, setIsPaid] = usePaid();
   const { getDeviceDetails } = useDeviceInfo();
   const [accessDeviceId] = useDeviceId();
   const {
@@ -163,9 +166,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }, [accessToken]);
 
   useEffect(() => {
-    if (!isAuthenticated || !session) return authSessionIdleTimer.stop;
+    if (!isAuthenticated || !session || !accessToken)
+      return authSessionIdleTimer.stop;
     return authSessionIdleTimer.start();
-  }, [isAuthenticated, session]);
+  }, [isAuthenticated, session, accessToken]);
 
   const logout = useCallback(async () => {
     try {
@@ -184,9 +188,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       clearSession();
       authSessionIdleTimer.stop();
       clearSingleCookie();
+      clearAccountCookie();
+      clearAnalyticsCookie();
       await router.push((route) => route.login);
     }
-  }, [refreshToken, accessToken]);
+  }, [refreshToken, accessToken, customer, internal]);
 
   const integrateDeviceInUseUpdater = useCallback(
     async (accountId: string, inUse: boolean = true) => {
@@ -234,6 +240,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     clearSession();
     authSessionIdleTimer.stop();
     clearSingleCookie();
+    clearAccountCookie();
     await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
@@ -299,10 +306,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               );
               return;
             }
-            if (config.value.BASEAPP === "webc_app") {
-              setIsPaid(result.data.isPaid);
-              setIsNewAccount(result.data.isNewAccount);
-            }
             const parsedAccountId =
               config.value.BASEAPP === "webc_app"
                 ? Encryption(result.data.accountId, config.value.SECRET_KEY)
@@ -318,9 +321,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               secure: process.env.NODE_ENV === "production",
               domain: `.${window.location.hostname}`,
             });
+            setAccountCookie(parsedAccountId, {
+              path: "/",
+              sameSite: "strict",
+              secure: process.env.NODE_ENV === "production",
+              domain: `.${window.location.hostname}`,
+            });
             setIsAuthenticated(true);
             await initializeAnalyticsUser(parsedAccountId);
-            await router.push((route) => route.hub);
+            await router.replace((route) => route.hub);
           },
           loginFromSso: async () => {
             const result = await loginSessionCb.execute(session);

@@ -1,5 +1,7 @@
+"use client";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -8,6 +10,7 @@ import React, {
 import {
   useApi,
   useApiCallback,
+  useCountryFromIp,
   useFormDirtyState,
   useSensitiveInformation,
   useValidateToken,
@@ -17,6 +20,7 @@ import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { PaymentTerms, paymentTermsSchema } from "./validation";
 import {
   CreatePaymentIntentParams,
+  CreateSalesParams,
   CustomerTokenizeInformations,
   OrderSummaryResponse,
 } from "core-library/api/types";
@@ -34,6 +38,9 @@ import {
 } from "core-library/contexts";
 import { loadStripe, Stripe, StripeElements } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Encryption } from "core-library";
+import { config } from "core-library/config";
+import { useAnalyticsDetails } from "core-library/hooks/useCookie";
 
 interface Props {
   publishableKey: string;
@@ -86,14 +93,18 @@ export const PaymentWizardFormContextProvider: React.FC<
   const [accountId] = useAccountId();
   const [, setCheckoutIntent] = useCheckoutIntent();
   const [clientSecret, setClientSecret] = useSecretClient();
+  const [, setAnalyticsCookie, clearAnalyticsCookie] = useAnalyticsDetails();
   const [paymentIntentId, setPaymentIntentId] = usePaymentIntentId();
-  const [, setIsPaid] = usePaid();
+  const { geoData } = useCountryFromIp(config.value.APIIPKEY);
   const { tokenValidated, loading: validateLoading } = useValidateToken();
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
   const changePaymentStatusCb = useApiCallback(
     async (api, accountId: string | undefined) =>
       await api.web.changePaymentStatus(accountId)
+  );
+  const createSalesCb = useApiCallback(
+    async (api, args: CreateSalesParams) => await api.web.createSales(args)
   );
   const toast = useExecuteToast();
   const form = useForm<PaymentTerms>({
@@ -127,6 +138,17 @@ export const PaymentWizardFormContextProvider: React.FC<
           productName: order?.productName,
           programTitle: order?.programTitle,
         } as CreatePaymentIntentParams;
+        const prepAnalytics = {
+          productId: params.productId,
+          country: geoData?.countryCode,
+          currencyId: order?.currencyId,
+          customerAccountId: accountId,
+        };
+        const encryptedAnalytics = Encryption(
+          JSON.stringify(prepAnalytics),
+          config.value.SECRET_KEY
+        );
+        setAnalyticsCookie(encryptedAnalytics);
         const result = await mutateAsync({ ...params });
         setCheckoutIntent(result.data.paymentIntentId);
         setClientSecret(result.data.clientSecret);
@@ -150,6 +172,7 @@ export const PaymentWizardFormContextProvider: React.FC<
     clientSecret,
     getOrderSummary.result?.data,
     isAuthenticated,
+    geoData,
   ]);
 
   async function executeChangePaymentStatus(params: PaymentExecutionProps) {
@@ -164,10 +187,8 @@ export const PaymentWizardFormContextProvider: React.FC<
   async function executePayment(params: PaymentExecutionProps) {
     try {
       const { stripe, elements } = params;
-      if (!stripe || !elements) return;
+      if (!stripe || !elements || !isAuthenticated) return;
       if (tokenValidated) {
-        setIsPaid(true);
-        // create another API to insert the page url in open pages with 1 authorization and [Authorized] Annotation.
         const { error } = await stripe.confirmPayment({
           elements,
           confirmParams: {
@@ -183,6 +204,7 @@ export const PaymentWizardFormContextProvider: React.FC<
 
         if (error) {
           // create another API call to count payment failed -> more than 3 then -> logout
+          clearAnalyticsCookie();
           toast.showToast("Payment failed. Please try again.", "error");
           return;
         }
