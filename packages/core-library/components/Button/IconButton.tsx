@@ -23,7 +23,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   className
 }) => {
   return (
-    <MuiIconButton aria-label={ariaLabel} size={size} onClick={onClick} edge={edge} className={className}>
+    <MuiIconButton aria-label={ariaLabel} size={size} onClick={onClick} edge={edge} className={className} sx={{ "&:focus": { outline: "none !important" } }}>
       {children}
     </MuiIconButton>
   );
