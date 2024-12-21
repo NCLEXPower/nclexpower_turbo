@@ -48,6 +48,8 @@ jest.mock("../../core/router", () => ({
 jest.mock("../../hooks/useCookie", () => ({
   useSingleCookie: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
   useDeviceId: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
+  useAccountIdCookie: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
+  useAnalyticsDetails: jest.fn().mockReturnValue([null, jest.fn(), jest.fn()]),
 }));
 
 jest.mock("../../hooks/useSensitiveInformation", () => ({

@@ -329,7 +329,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
             });
             setIsAuthenticated(true);
             await initializeAnalyticsUser(parsedAccountId);
-            await router.replace((route) => route.hub);
+            await router.push((route) => route.hub);
           },
           loginFromSso: async () => {
             const result = await loginSessionCb.execute(session);
