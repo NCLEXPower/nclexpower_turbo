@@ -1,21 +1,38 @@
 import React from "react";
-import { Container, Box, Typography, Chip, Button } from "@mui/material";
+import { Container, Box, Button } from "@mui/material";
 import { useRegularQuestionWizardSteps } from "./steps/useSteps";
-import { RegularQuestionsSteps, RegularQuestionStepProps } from "./steps/types";
-import { RegularQuestionFormType } from "./types";
-import { Alert } from '../../../../../../components';
-import { useModal } from '../../../../../../hooks';
+import { Alert } from "../../../../../../components";
+import { useModal } from "../../../../../../hooks";
+import { useDialogContext } from "../../../../../../contexts";
+import { DeleteConfirmationAtom } from "../../../../../../components/Dialog/DialogFormBlocks/DeleteModal/validation";
+import { useAtom } from "jotai";
 
 export const QuestionManagementPageBlock = () => {
   const saveConfirmationModal = useModal<unknown>();
   const { render } = useRegularQuestionWizardSteps(
-    () => { },
+    () => {},
     saveConfirmationModal
   );
 
+  const { openDialog } = useDialogContext();
+  const [deleteAtom, setDeleteAtom] = useAtom(DeleteConfirmationAtom);
+
+  const sampleData = {
+    id: "sample id",
+    text: "test text to delete",
+    inputText: "",
+  };
+
+  const handleDelete = () => {
+    openDialog("delete-modal", "");
+    setDeleteAtom(sampleData);
+  };
   return (
-    <Box>
+    <Box data-testid="question-management">
       {/* For improvements, all containers should be placed on one codebase. */}
+      <Button variant="contained" onClick={handleDelete}>
+        delete
+      </Button>
       <Container>
         <Alert
           severity="info"
