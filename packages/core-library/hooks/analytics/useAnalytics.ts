@@ -97,5 +97,5 @@ export const useAnalytics = () => {
     }
   }, [initialAnalyticsCb.result?.data, analyticsData]);
 
-  return { analyticsData, isConnected };
+  return { analyticsData, isConnected, connection };
 };
