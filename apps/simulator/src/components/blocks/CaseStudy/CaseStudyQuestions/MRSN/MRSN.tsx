@@ -9,6 +9,7 @@ import { FormProvider, useFieldArray, useForm, useFormState } from 'react-hook-f
 import { ControlledCheckbox } from '@/components/Checkbox';
 import { useErrorHandler } from '@/core/utils/useErrorhandler';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 interface Props extends SsrData {
   handleSubmit: (values: MrsnValidationType) => void;
@@ -116,11 +117,7 @@ export const MRSN: React.FC<Props> = ({ questionaire, answer, handleSubmit, mrsn
                     <div key={answerItem.answerId} className="w-full text-sm mb-4 pr-5 pt-4" style={textZoomStyle}>
                       <p className="flex">
                         <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" />
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: answerItem.answerInstruction,
-                          }}
-                        />
+                        <ParsedHtml html={answerItem.answerInstruction} />
                       </p>
                     </div>
                     <Paper elevation={3} className="p-5 overflow-auto flex flex-col gap-5">

@@ -16,6 +16,7 @@ import {
 } from '@/core/types/ssrData';
 import { useFormSubmissionBindingHooks } from 'core-library/hooks';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 export type DroppedValueType = Record<string, dndObjectValueProps[]>;
 
@@ -133,7 +134,7 @@ export const DNDBowtie: React.FC<Props> = ({ questionaire, answer, ...rest }) =>
                   <div key={answerItem.answerId} className="w-full text-sm mb-4 pr-5 pt-4">
                     <p className="flex" style={textZoomStyle}>
                       <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" />
-                      <div dangerouslySetInnerHTML={{ __html: answerItem.answerInstruction }} />
+                      <ParsedHtml html={answerItem.answerInstruction} />
                     </p>
                   </div>
                   <div className="flex gap-5 flex-col">

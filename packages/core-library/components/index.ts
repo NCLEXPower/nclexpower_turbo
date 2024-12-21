@@ -40,7 +40,6 @@ export * from "./ReactTable/ReactTable";
 export * from "./SelectField/SingleSelectField";
 export * from "./Textfield/SelectField/PlainSelectField";
 export * from "./Textfield/OtpField";
-export * from "./Button/CheckoutButton";
 export * from "./GenericDropDown/AccountMenu";
 export * from "./Stepper/Stepper";
 export * from "./Info/InformationTitle";
@@ -52,7 +51,8 @@ export * from "./Badge/CustomBadge";
 export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
-// rows
+export * from "./Popover/Popover"
+
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
 export * from "./Tabs/Tab";

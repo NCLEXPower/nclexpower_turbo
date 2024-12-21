@@ -46,12 +46,14 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const filterItems = (keyword: number) => {
     setNurseType(keyword);
     const filtered =
-      products && products.filter((item: any) => item.programTitle === keyword);
+      products && products.filter((item) => item.programTitle === keyword);
     setFilteredItems(filtered);
   };
   useEffect(() => {
-    filterItems(0);
-  }, []);
+    if (products.length > 0) {
+      setFilteredItems(products.filter((item) => item.programTitle === 0));
+    }
+  }, [products]);
 
   return (
     <div
