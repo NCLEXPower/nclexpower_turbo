@@ -1,10 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import { Button, EvaIcon } from 'core-library/components';
 import { useAuthContext } from 'core-library/contexts';
+import { useActiveSteps } from 'core-library/hooks';
 import React from 'react';
 
 export function SignOutButton() {
   const { logout } = useAuthContext();
+  const { reset } = useActiveSteps(0);
+
+  const handleLogout = () => {
+    logout();
+    reset();
+  }
 
   return (
     <Box sx={{
@@ -27,7 +34,7 @@ export function SignOutButton() {
             transition: '0.15s'
           }
         }}
-        onClick={logout}
+        onClick={handleLogout}
       >
         <EvaIcon name="log-out-outline" fill="#0F2A71" width={20} height={20} />
         <Typography sx={{ fontFamily: "PT Sans", fontWeight: "bold" }}>Sign Out</Typography>
