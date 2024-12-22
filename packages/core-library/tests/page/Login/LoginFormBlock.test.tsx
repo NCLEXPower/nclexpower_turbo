@@ -5,7 +5,8 @@ import { LoginFormBlock } from "../../../system/app/internal/blocks";
 import { SubsequentDialog } from "../../../system/app/internal/blocks/Hub/ChatbotManagement/ChatbotDialogs";
 import { LoginForm } from "../../../system/app/internal/blocks/LoginFormBlock/LoginForm";
 import { Decryption, Encryption } from "../../../utils";
-import { render, screen, fireEvent, waitFor, act } from "../../common";
+import { render, screen, fireEvent, waitFor, act, within } from "../../common";
+import { RememberMe } from "@mui/icons-material/index";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -57,5 +58,32 @@ describe("LoginFormBlock", () => {
 
     fireEvent.click(checkbox);
     expect(checkbox).not.toBeChecked();
+  });
+
+  it("should pre-fill the inputs with savedData", () => {
+    render(
+      <LoginForm
+        onSubmit={jest.fn()}
+        submitLoading={false}
+        rememberMe={true}
+        savedData={{
+          email: "test@example.com",
+          password: "password123",
+          rememberMe: true,
+        }}
+        handleChangeRememberMe={function (
+          event: React.ChangeEvent<HTMLInputElement>
+        ): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+    );
+
+    expect(screen.getByPlaceholderText("Enter your email")).toHaveValue(
+      "test@example.com"
+    );
+    expect(screen.getByPlaceholderText("Enter your password")).toHaveValue(
+      "password123"
+    );
   });
 });
