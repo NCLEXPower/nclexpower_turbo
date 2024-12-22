@@ -2,12 +2,15 @@ import { Alert, Card, ReactTable } from "../../../../../components";
 import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { DashboardCardType } from "./types";
+import { useAnalytics } from "../../../../../hooks";
 
 interface Props {
   cards: DashboardCardType[];
 }
 
 export const HubBlock: React.FC<Props> = ({ cards }) => {
+  const { analyticsData } = useAnalytics();
+  console.log("analyticsData", analyticsData);
   return (
     <div className="w-full bg-cover font-['Poppins'] bg-gradient-to-b">
       <Container>
