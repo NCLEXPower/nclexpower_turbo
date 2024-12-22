@@ -1,12 +1,7 @@
-import { FieldErrorsImpl } from "react-hook-form";
-import { useAuthContext, useExecuteToast } from "../../../contexts";
-import { useFormFocusOnError, useLocalStorage } from "../../../hooks";
+import { useAuthContext } from "../../../contexts";
 import { LoginFormBlock } from "../../../system/app/internal/blocks";
-import { SubsequentDialog } from "../../../system/app/internal/blocks/Hub/ChatbotManagement/ChatbotDialogs";
 import { LoginForm } from "../../../system/app/internal/blocks/LoginFormBlock/LoginForm";
-import { Decryption, Encryption } from "../../../utils";
-import { render, screen, fireEvent, waitFor, act, within } from "../../common";
-import { RememberMe } from "@mui/icons-material/index";
+import { render, screen, fireEvent, waitFor } from "../../common";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -25,8 +20,6 @@ jest.mock("../../../contexts/auth/AuthContext.tsx", () => ({
     loading: false,
   }),
 }));
-
-// const mockOnSubmit = jest.fn();
 
 describe("LoginFormBlock", () => {
   beforeEach(() => {
@@ -85,5 +78,28 @@ describe("LoginFormBlock", () => {
     expect(screen.getByPlaceholderText("Enter your password")).toHaveValue(
       "password123"
     );
+  });
+
+  it("should call login with correct email and password on form submit", async () => {
+    const mockLogin = jest.fn();
+
+    (useAuthContext as jest.Mock).mockReturnValue({
+      login: mockLogin,
+      loading: false,
+    });
+
+    render(<LoginFormBlock />);
+
+    const emailInput = screen.getByPlaceholderText("Enter your email");
+    const passwordInput = screen.getByPlaceholderText("Enter your password");
+    const signInButton = screen.getByTestId("signin");
+
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.click(signInButton);
+
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123");
+    });
   });
 });
