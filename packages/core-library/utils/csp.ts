@@ -10,6 +10,11 @@ import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
 import { getEndpointResources, getMaintenanceMode } from "../ssr";
 
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.NEXT_PUBLIC_LOCAL_API_URL;
+
 export const generateCSP = (generatedNonce: string): string =>
   `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
   config.value.STRIPE_URL_JS +

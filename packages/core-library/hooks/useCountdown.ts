@@ -6,16 +6,17 @@ type Props = {
     timeRemaining: string
 }
 
-const convertToTimeValue = (time: string = "00:00:00"): number => {
-    const [hours = 0, minutes = 0, seconds = 0] = time.split(':').map(Number);
-    return hours * 3600 + minutes * 60 + seconds
+const convertToTimeValue = (time: string = "00:00:00:00"): number => {
+    const [days = 0, hours = 0, minutes = 0, seconds = 0] = time.split(':').map(Number);
+    return days * 86400 + hours * 3600 + minutes * 60 + seconds;
 };
 
 const convertToTimeString = (countdown: number) => {
-    const hours = Math.floor(countdown / 3600);
+    const days = Math.floor(countdown / 86400); 
+    const hours = Math.floor((countdown % 86400) / 3600);
     const minutes = Math.floor((countdown % 3600) / 60);
     const seconds = countdown % 60;
-    return `${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+    return `${days.toString().padStart(2, '0')} : ${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
 };
 
 
