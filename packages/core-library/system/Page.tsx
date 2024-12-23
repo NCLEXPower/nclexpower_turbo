@@ -55,7 +55,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     <InternalPageEntryPoint
       mockMenu={mockMenu}
       isAuthenticated={isAuthenticated}
-      loading={loading || validateLoading}
+      loading={loading || validateLoading || router.loading}
       logout={logout}
       queryClient={queryClient}
       tokenValidated={tokenValidated}

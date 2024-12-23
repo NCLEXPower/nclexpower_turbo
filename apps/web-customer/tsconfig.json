@@ -25,7 +25,8 @@
     "../../packages/core-library/global.d.ts",
     "../../packages/core-library/theme.d.ts",
     "../../packages/core-library/eva-icons.d.ts",
-    "../../packages/core-library/config"
+    "../../packages/core-library/config",
+    "../../packages/core-library/components/table/react-table-config.d.ts"
   ],
   "exclude": ["node_modules"]
 }
