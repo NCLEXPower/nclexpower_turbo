@@ -10,7 +10,7 @@ jest.mock("../../components", () => ({
 }));
 
 jest.mock("../../core/router", () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn().mockReturnValue({ loading: true }),
 }));
 
 describe("PageLoaderContextProvider", () => {

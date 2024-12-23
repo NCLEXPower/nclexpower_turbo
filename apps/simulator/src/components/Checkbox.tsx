@@ -1,5 +1,5 @@
 import { Stack, FormControlLabel, Checkbox as MuiCheckbox, CheckboxProps, Typography } from '@mui/material';
-
+import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
 import { Controller, FieldValues } from 'react-hook-form';
 import { ControlledField } from 'core-library/types';
 import { FormHelperText } from '.';
@@ -12,6 +12,8 @@ type Props = CheckboxProps & {
 };
 
 export const Checkbox: React.FC<Props> = ({ label, helperText, error, showErrorMessage = true, ...rest }) => {
+  const { textZoomStyle } = useToolbarSettings();
+
   return (
     <Stack gap={1}>
       <FormControlLabel
@@ -19,7 +21,11 @@ export const Checkbox: React.FC<Props> = ({ label, helperText, error, showErrorM
           color: theme => (error ? theme.palette.error.main : 'CurrentColor'),
         }}
         control={<MuiCheckbox {...rest} />}
-        label={<Typography variant="caption">{label}</Typography>}
+        label={
+          <Typography variant="caption" style={textZoomStyle}>
+            {label}
+          </Typography>
+        }
       />
       {helperText && showErrorMessage && <FormHelperText error={error}>{helperText}</FormHelperText>}
     </Stack>
