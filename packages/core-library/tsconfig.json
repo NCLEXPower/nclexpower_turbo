@@ -1,20 +1,12 @@
 {
   "extends": "../typescript-config/react-library.json",
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "commonjs",
     "paths": {
-      "@mui/icons-material/*": [
-        "../../node_modules/@mui/icons-material/*"
-      ],
-      "react": [
-        "./node_modules/@types/react"
-      ]
-    },
+      "@mui/icons-material/*": ["../../node_modules/@mui/icons-material/*"],
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": [
     ".",
@@ -23,10 +15,8 @@
     "global.d.ts",
     "react.d.ts",
     "theme.d.ts",
-    "eva-icons.d.ts"
+    "eva-icons.d.ts",
+    "react-table-config.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
+  "exclude": ["node_modules", "dist"]
 }

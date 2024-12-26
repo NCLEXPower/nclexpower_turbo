@@ -11,7 +11,11 @@ import {
   AllSaleGaugeChartOptions,
 } from "./SalesMockData";
 import { Chart, Checkbox } from "../../../../../../components";
-import { usePeriodTime, useResolution } from "../../../../../../hooks";
+import {
+  useAnalytics,
+  usePeriodTime,
+  useResolution,
+} from "../../../../../../hooks";
 
 export const AllSaleBlock: React.FC = () => {
   const { selectedPeriod, data, handlePeriodChange, formatRevenue } =
@@ -20,6 +24,7 @@ export const AllSaleBlock: React.FC = () => {
       defaultPeriod: "all",
     });
   const { isMobile } = useResolution();
+
   return (
     <Box
       sx={{
