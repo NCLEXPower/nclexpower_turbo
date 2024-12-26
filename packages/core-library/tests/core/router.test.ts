@@ -254,4 +254,43 @@ describe("useRouter", () => {
     expect(result).toBe(path);
   });
 
+  it("should resolve function paths correctly in push", async () => {
+    const { result } = renderHook(() => useRouter());
+    const pushSpy = jest.spyOn(result.current, "push");
+  
+    const resolvedPath = routeUrl(STATIC_ROUTES.home);
+  
+    await act(async () => {
+      await result.current.push(resolvedPath);
+    });
+  
+    expect(pushSpy).toHaveBeenCalledWith(resolvedPath);
+  });
+  
+  it("should resolve function paths correctly in replace", async () => {
+    const { result } = renderHook(() => useRouter());
+    const replaceSpy = jest.spyOn(result.current, "replace");
+  
+    const resolvedPath = routeUrl(STATIC_ROUTES.home);
+  
+    await act(async () => {
+      await result.current.replace(resolvedPath);
+    });
+  
+    expect(replaceSpy).toHaveBeenCalledWith(resolvedPath);
+  });
+
+  it("should correctly handle paths in openInNewTab", () => {
+    const { result } = renderHook(() => useRouter());
+    const openInNewTabSpy = jest.spyOn(result.current, "openInNewTab");
+  
+    const resolvedPath = routeUrl(STATIC_ROUTES.home);
+  
+    act(() => {
+      result.current.openInNewTab(resolvedPath);
+    });
+  
+    expect(openInNewTabSpy).toHaveBeenCalledWith(resolvedPath);
+  });
+  
 });
