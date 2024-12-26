@@ -17,7 +17,7 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("../../core", () => ({
-  ...jest.requireActual('../../core'),
+  ...jest.requireActual("../../core"),
   openInNewTab: jest.fn(),
 }));
 
@@ -166,16 +166,6 @@ describe("useRouter", () => {
     expect(pushSpy).toHaveBeenCalled();
   });
 
-  it("should call push function and perform its actions", async () => {
-    const { result } = renderHook(() => useRouter());
-    const pushSpy = jest.spyOn(result.current, "push");
-
-    await act(async () => {
-      await result.current.push({ pathname: "/" });
-    });
-    expect(pushSpy).toHaveBeenCalled();
-  });
-
   it("should call replace function and perform its actions", async () => {
     const { result } = renderHook(() => useRouter());
     const replaceSpy = jest.spyOn(result.current, "replace");
@@ -197,4 +187,71 @@ describe("useRouter", () => {
 
     expect(openInNewTabSpy).toHaveBeenCalledWith(path);
   });
+
+  it("should return the path as-is for non-static routes", () => {
+    const path = "/random-path";
+    const result = routeUrl(path);
+    expect(result).toBe(path);
+  });
+
+  it("should correctly merge options with shallow: true", () => {
+    const options = { shallow: true };
+    const result = configuredRouteOptions(options);
+    expect(result).toEqual({ scroll: true, shallow: true });
+  });
+
+  it("should toggle loading state on route change", () => {
+    const { result } = renderHook(() => useRouter());
+
+    act(() => {
+      routerEvents.emit("routeChangeStart");
+    });
+    expect(result.current.loading).toBe(true);
+
+    act(() => {
+      routerEvents.emit("routeChangeComplete");
+    });
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("should return static route home path correctly", () => {
+    const homePath = STATIC_ROUTES.home;
+    const result = routeUrl(homePath);
+    expect(result).toBe(homePath);
+  });
+
+  it("should remove event listeners on unmount", () => {
+    const removeListenerSpy = jest.spyOn(routerEvents, "off");
+
+    const { unmount } = renderHook(() => useRouter());
+
+    unmount();
+
+    expect(removeListenerSpy).toHaveBeenCalledWith(
+      "routeChangeStart",
+      expect.any(Function)
+    );
+    expect(removeListenerSpy).toHaveBeenCalledWith(
+      "routeChangeComplete",
+      expect.any(Function)
+    );
+    expect(removeListenerSpy).toHaveBeenCalledWith(
+      "routeChangeError",
+      expect.any(Function)
+    );
+
+    removeListenerSpy.mockRestore();
+  });
+
+  it("should return default options when no arguments are passed", () => {
+    const result = configuredRouteOptions();
+    expect(result).toEqual({ scroll: true });
+  });
+
+  it("should handle paths with query parameters correctly", () => {
+    const path = "/path?query=example";
+    const result = routeUrl(path);
+    expect(result).toBe(path);
+  });
+
 });
