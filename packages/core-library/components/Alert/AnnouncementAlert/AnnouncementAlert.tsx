@@ -25,7 +25,7 @@ export const AnnouncementAlert: React.FC<AnnouncementProps> = ({
     <>
       {isOpen && (
         <div
-          className="w-full h-auto bg-darkBlue flex fixed justify-between flex-wrap gap-10 p-3 z-[10000]"
+          className="w-full h-auto bg-darkBlue flex fixed justify-between flex-wrap gap-10 p-3 z-50"
           style={{ backgroundColor: bgColor }}
         >
           <div>
