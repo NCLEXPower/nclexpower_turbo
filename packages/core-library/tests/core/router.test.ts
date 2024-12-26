@@ -292,5 +292,52 @@ describe("useRouter", () => {
   
     expect(openInNewTabSpy).toHaveBeenCalledWith(resolvedPath);
   });
+
+  it("should call openInNewTab with a function path correctly", () => {
+    const { result } = renderHook(() => useRouter());
+    const openInNewTabSpy = jest.spyOn(result.current, "openInNewTab");
+
+    const pathFunction = (routes: typeof STATIC_ROUTES) => routes.home;
+
+    act(() => {
+      result.current.openInNewTab(pathFunction(STATIC_ROUTES));
+    });
+
+    expect(openInNewTabSpy).toHaveBeenCalledWith(STATIC_ROUTES.home);
+  });
+
+  it("should call openInNewTab with a pathname", () => {
+    const { result } = renderHook(() => useRouter());
+    const openInNewTabSpy = jest.spyOn(result.current, "openInNewTab");
+
+    const path = { pathname: "/some-path" };
+    act(() => {
+      result.current.openInNewTab(path);
+    });
+
+    expect(openInNewTabSpy).toHaveBeenCalledWith(path);
+  });
+
+  it("should call openInNewTab with an absolute URL", () => {
+    const { result } = renderHook(() => useRouter());
+    const openInNewTabSpy = jest.spyOn(result.current, "openInNewTab");
+
+    const path = "https://example.com";
+    act(() => {
+      result.current.openInNewTab(path);
+    });
+
+    expect(openInNewTabSpy).toHaveBeenCalledWith(path);
+  });
   
+  it("should throw an error for invalid path type in openInNewTab", () => {
+    const { result } = renderHook(() => useRouter());
+  
+    const invalidPath = 123 as any;
+  
+    expect(() => {
+      result.current.openInNewTab(invalidPath);
+    }).toThrow("Invalid path type for openInNewTab");
+  });
+
 });
