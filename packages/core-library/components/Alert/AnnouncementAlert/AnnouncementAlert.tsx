@@ -2,7 +2,8 @@ import React from "react";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import { CoreZigmaLogo } from "../../../assets";
-import { EvaIcon, IconButton } from "core-library/components";
+import { EvaIcon } from "../../EvaIcon";
+import { IconButton } from "../../Button/IconButton";
 
 interface AnnouncementProps {
   title: string;
