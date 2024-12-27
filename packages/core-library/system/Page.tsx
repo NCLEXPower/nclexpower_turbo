@@ -27,7 +27,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   appName,
 }) => {
   const router = useRouter();
-  const { isAuthenticated, loading, logout } = useAuthContext();
+  const { isAuthenticated, loading, logout, isPaid } = useAuthContext();
   const { tokenValidated, loading: validateLoading } = useValidateToken();
   const { menus, loading: menuLoading, routes } = useMenu();
   const mockMenu = prepareMenus({
@@ -60,6 +60,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
       queryClient={queryClient}
       tokenValidated={tokenValidated}
       children={children}
+      isPaid={isPaid}
     />
   );
 };

@@ -43,13 +43,16 @@ export const DrawerLayout: React.FC<
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
-  const parsedIsPaid = Decryption(isPaid ?? ":", config.value.SECRET_KEY);
 
   const router = useRouter();
 
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const appName = config.value.BASEAPP;
   const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
+  const parsedIsPaid =
+    isAuthenticated && appName.includes("c")
+      ? Decryption(isPaid ?? ":", config.value.SECRET_KEY)
+      : "yes";
 
   const handleDrawer = () => {
     setOpen((prev) => !prev);
