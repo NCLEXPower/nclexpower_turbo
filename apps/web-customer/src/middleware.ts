@@ -21,6 +21,7 @@ export async function middleware(request: NextRequest) {
   const analytics = request.cookies.get("analytics");
   const proceedToHubUrl = new URL("/hub", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
+  const proceed2faUrl = new URL("/account/verification/otp", request.url);
   const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
   const publicRoutes = [
     "/login",
@@ -30,14 +31,17 @@ export async function middleware(request: NextRequest) {
   ];
   const { pathname, searchParams } = url;
 
-  if (pathname === "/hub/payment-setup") {
-    if (!tokenId) {
-      return NextResponse.redirect(proceedToLoginUrl);
-    }
-    return NextResponse.next();
-  }
+  const hasTwoFactorAuth = await HasTwoFactorAuth(
+    { accountId: accountId?.value ?? "" },
+    baseUrl
+  );
 
-  if (pathname === "/login") {
+  console.log("hasTwoFactorAuth", hasTwoFactorAuth);
+
+  if (hasTwoFactorAuth && !tokenId) {
+    if (pathname !== "/account/verification/otp") {
+      return NextResponse.redirect(proceed2faUrl);
+    }
     return NextResponse.next();
   }
 
@@ -57,6 +61,10 @@ export async function middleware(request: NextRequest) {
     headers
   );
 
+  if (!isTokenValid) {
+    return NextResponse.redirect(proceedToLoginUrl);
+  }
+
   const isPaid = await IsAccountPaid(
     {
       accountId: accountId?.value ?? "",
@@ -65,19 +73,27 @@ export async function middleware(request: NextRequest) {
     baseUrl
   );
 
-  if (!isTokenValid) {
-    return NextResponse.redirect(proceedToLoginUrl);
+  if (pathname === "/hub/payment-setup" && !isPaid) {
+    return NextResponse.next();
   }
 
-  if (typeof isPaid !== "undefined" && !isPaid) {
+  if (pathname === "/hub" && !isPaid) {
     return NextResponse.redirect(proceedPaymentSetupUrl);
   }
 
-  await userAgentValidation(request);
-  await enforceHttpToHttps(request);
-
   if (publicRoutes.includes(pathname)) {
     return NextResponse.redirect(proceedToHubUrl);
+  }
+
+  if (pathname === "/hub/payment-setup") {
+    if (!tokenId) {
+      return NextResponse.redirect(proceedToLoginUrl);
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname === "/login") {
+    return NextResponse.next();
   }
 
   if (
@@ -102,6 +118,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  await userAgentValidation(request);
+  await enforceHttpToHttps(request);
   return NextResponse.next();
 }
 
@@ -141,6 +159,46 @@ export async function IsAccountPaid(
     return response.json();
   } catch (error) {
     console.error("Error occurred while checking ispaid:", error);
+  }
+}
+
+export async function HasTwoFactorAuth(
+  params: { accountId: string },
+  publicUrl: string | undefined
+): Promise<boolean> {
+  try {
+    if (!publicUrl) {
+      throw new Error("Public URL is undefined");
+    }
+
+    const requestHeaders: HeadersInit = {
+      ...headers,
+    };
+    const response = await fetch(
+      `${publicUrl}/api/v2/internal/baseInternal/identify-two-factor-authentication`,
+      {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify(params),
+      }
+    );
+
+    console.log("response", response.json());
+
+    if (!response.ok) {
+      throw new Error(`API call failed with status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (typeof result !== "boolean") {
+      throw new Error("Unexpected response format from the API");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error in HasTwoFactorAuth:", error);
+    return false;
   }
 }
 

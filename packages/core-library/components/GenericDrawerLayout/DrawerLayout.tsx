@@ -16,6 +16,7 @@ import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useRouter } from "../../core";
 import { config } from "../../config";
 import { usePaid } from "../../contexts/auth/hooks";
+import { Decryption } from "../../utils";
 
 type DrawerLayoutType = {
   menu: Array<MenuItems>;
@@ -24,6 +25,7 @@ type DrawerLayoutType = {
   loading?: boolean;
   headerStyles?: WebHeaderStylesType;
   sidebarStyles?: WebSidebarStylesType;
+  isPaid: string | undefined;
 };
 
 export const DrawerLayout: React.FC<
@@ -35,12 +37,13 @@ export const DrawerLayout: React.FC<
   onLogout,
   headerStyles,
   sidebarStyles,
+  isPaid,
 }) => {
-  const [isPaid] = usePaid();
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
+  const parsedIsPaid = Decryption(isPaid ?? ":", config.value.SECRET_KEY);
 
   const router = useRouter();
 
@@ -67,20 +70,20 @@ export const DrawerLayout: React.FC<
       }
     : headerStyles;
 
-  const IsPaid = appName.includes("c") ? isPaid : true;
-
   return (
     <Box display="flex">
-      {menu.length > 0 && (isAuthenticated || isMobile) && IsPaid && (
-        <Sidebar
-          {...sidebarStyles}
-          isMobile={isMobile}
-          menu={menu}
-          open={open}
-          setOpen={handleDrawer}
-          isAuthenticated={isAuthenticated}
-        />
-      )}
+      {menu.length > 0 &&
+        (isAuthenticated || isMobile) &&
+        parsedIsPaid !== "no" && (
+          <Sidebar
+            {...sidebarStyles}
+            isMobile={isMobile}
+            menu={menu}
+            open={open}
+            setOpen={handleDrawer}
+            isAuthenticated={isAuthenticated}
+          />
+        )}
       <Main open={open} isMobile={isMobile}>
         <Box
           display="flex"

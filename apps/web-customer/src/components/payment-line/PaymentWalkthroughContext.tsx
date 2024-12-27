@@ -27,7 +27,6 @@ import {
 import {
   useAccountId,
   useCheckoutIntent,
-  usePaid,
   usePaymentIntentId,
   useSecretClient,
 } from "core-library/contexts/auth/hooks";
@@ -89,7 +88,7 @@ export const PaymentWizardFormContextProvider: React.FC<
   const { businessQueryCreatePaymentIntent } = useBusinessQueryContext();
   const { mutateAsync, isLoading } = businessQueryCreatePaymentIntent();
   const { customer, loading: coreload } = useSensitiveInformation();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, setIsPaid } = useAuthContext();
   const [accountId] = useAccountId();
   const [, setCheckoutIntent] = useCheckoutIntent();
   const [clientSecret, setClientSecret] = useSecretClient();
@@ -178,7 +177,15 @@ export const PaymentWizardFormContextProvider: React.FC<
   async function executeChangePaymentStatus(params: PaymentExecutionProps) {
     try {
       const result = await changePaymentStatusCb.execute(accountId);
+      const parsedIsPaid =
+        config.value.BASEAPP === "webc_app"
+          ? Encryption(
+              result.status === 200 ? "yes" : "no",
+              config.value.SECRET_KEY
+            )
+          : result.data.isPaid;
       if (result.status === 200) {
+        setIsPaid(parsedIsPaid);
         await executePayment({ ...params });
       }
     } catch (error) {}
