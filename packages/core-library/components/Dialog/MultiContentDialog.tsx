@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, DialogBox } from "core-library/components";
 import { Box, Typography } from "@mui/material";
 import Image, { StaticImageData } from "next/image";
 import ReactPlayer from "react-player";
+import { DialogBox } from "./DialogBox";
+import { Button } from "../Button/Button";
 
 type DialogContents = {
   id: number;
