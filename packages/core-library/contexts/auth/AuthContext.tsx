@@ -22,6 +22,7 @@ import {
   useSensitiveInformation,
   clearSession,
   useDeviceInfo,
+  SetValue,
 } from "../../hooks";
 import { internalAccountType, RegisterParams } from "../../types/types";
 import {
@@ -74,10 +75,17 @@ const context = createContext<{
       | undefined
   ) => void;
   setSingleCookie: (value: string | null, options?: CookieSetOptions) => void;
+  setAccountCookie: (value: string | null, options?: CookieSetOptions) => void;
   integrateDeviceInUseUpdater: (
     accountId: string,
     inUse?: boolean
   ) => Promise<void>;
+  initializeAnalyticsUser: (accountId?: string) => Promise<void>;
+  setAccountId: SetValue<string | undefined>;
+  setAccessLevel: SetValue<number | undefined>;
+  setSession: SetValue<string | undefined>;
+  isPaid: string | undefined;
+  setIsPaid: SetValue<string | undefined>;
 }>(undefined as any);
 
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -90,6 +98,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accessToken, setAccessToken] = useAccessToken();
   const [session, setSession] = useSession();
   const [accountId, setAccountId] = useAccountId();
+  const [isPaid, setIsPaid] = usePaid();
   const [accessLevel, setAccessLevel] = useAccessLevel();
   const [, setSingleCookie, clearSingleCookie] = useSingleCookie();
   const [, setAccountCookie, clearAccountCookie] = useAccountIdCookie();
@@ -276,6 +285,17 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
                   ? "no-device-id"
                   : accessDeviceId,
             });
+            const parsedAccountId =
+              config.value.BASEAPP === "webc_app"
+                ? Encryption(result.data.accountId, config.value.SECRET_KEY)
+                : result.data.accountId;
+            const parsedIsPaid =
+              config.value.BASEAPP === "webc_app"
+                ? Encryption(
+                    result.data.isPaid.toString(),
+                    config.value.SECRET_KEY
+                  )
+                : result.data.isPaid;
             // if (result.data.responseCode === 304) {
             //   setDeviceNotRecognized(true);
             //   setSession(result.data.sessionId);
@@ -291,7 +311,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
                 procedure: "non-sso",
               } as OTPPreparation;
               setVerificationPreparation(prepareVerification);
-              router.push((route) => route.account_verification_otp);
+              setAccountCookie(parsedAccountId, {
+                path: "/",
+                sameSite: "strict",
+                secure: process.env.NODE_ENV === "production",
+                domain: `.${window.location.hostname}`,
+              });
+              await router.push((route) => route.account_verification_otp);
               return;
             }
             if (result.data.responseCode === 404) {
@@ -306,10 +332,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               );
               return;
             }
-            const parsedAccountId =
-              config.value.BASEAPP === "webc_app"
-                ? Encryption(result.data.accountId, config.value.SECRET_KEY)
-                : result.data.accountId;
+            setIsPaid(parsedIsPaid);
             setAccountId(parsedAccountId);
             setAccessLevel(result.data.accessLevel);
             setAccessToken(result.data.accessTokenResponse.accessToken);
@@ -383,8 +406,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           setAccessToken,
           setRefreshToken,
           setSingleCookie,
+          setAccountCookie,
           softLogout,
           integrateDeviceInUseUpdater,
+          initializeAnalyticsUser,
+          setAccountId,
+          setAccessLevel,
+          setSession,
+          isPaid,
+          setIsPaid,
         }),
         [
           isAuthenticated,

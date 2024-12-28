@@ -22,7 +22,6 @@ import {
   ProductInformation,
   StripePaymentPage,
   TermsCondition,
-  WelcomePage,
 } from "./content";
 import { PaymentTerms } from "../validation";
 
@@ -34,6 +33,7 @@ export const usePaymentWizardSteps = (onSubmit: VoidFunction) => {
       BasicInformation: {
         content: (props) => <BasicInformation {...props} />,
         nextStep: "ProductInformation",
+        previousStep: "BasicInformation",
       },
       ProductInformation: {
         content: (props) => <ProductInformation {...props} />,
@@ -47,12 +47,7 @@ export const usePaymentWizardSteps = (onSubmit: VoidFunction) => {
       },
       StripePayment: {
         content: (props) => <StripePaymentPage {...props} />,
-        nextStep: "WelcomePage",
         previousStep: "TermsCondition",
-      },
-      WelcomePage: {
-        content: (props) => <WelcomePage {...props} />,
-        previousStep: "StripePayment",
       },
     } as WizardFormMap<
       Partial<PaymentManagementSteps>,
@@ -98,8 +93,6 @@ export const usePaymentWizardSteps = (onSubmit: VoidFunction) => {
         return <TroubleshootIcon key={index} />;
       case "StripePayment":
         return <CreditCardIcon key={index} />;
-      case "WelcomePage":
-        return <CheckCircleOutlineIcon key={index} />;
       default:
         return null;
     }

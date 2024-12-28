@@ -50,4 +50,5 @@ export const useDeviceSession = () =>
 export const useNewAccount = () =>
   useSessionStorage<boolean>("new_account", false);
 
-export const usePaid = () => useSessionStorage<boolean>("ispaid", false);
+export const usePaid = () =>
+  useSessionStorage<string | undefined>("ispaid", undefined);
