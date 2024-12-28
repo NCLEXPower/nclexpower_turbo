@@ -34,7 +34,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const router = useRouter();
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
-  const { isAuthenticated, logout, loading } = useAuthContext();
+  const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useStyle();
@@ -73,6 +73,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                       headerStyles={headerStyles}
                       sidebarStyles={sidebarStyles}
                       onLogout={logout}
+                      isPaid={isPaid}
                     >
                       {children}
                       <Footer info={CompanyInfo} list={list} />
