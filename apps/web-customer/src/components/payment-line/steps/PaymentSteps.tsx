@@ -4,8 +4,7 @@ export type PaymentManagementSteps =
   | PaymentFormSteps
   | "ProductInformation"
   | "TermsCondition"
-  | "StripePayment"
-  | "WelcomePage";
+  | "StripePayment";
 
 export interface PaymentMangementStepProps {
   isLoading: boolean;

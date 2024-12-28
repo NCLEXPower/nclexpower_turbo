@@ -27,16 +27,21 @@ Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-if (typeof window !== "undefined") {
-  initMixpanelTracker();
-}
+/**
+ * Initializes the Mixpanel tracker.
+ * Temporarily disable the initialization of Mixpanel tracker.
+ */
+
+// if (typeof window !== "undefined") {
+//   initMixpanelTracker();
+// }
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const cache = useEmotionCache();
-  useSaveTrackerParamsOnNavigation();
+  // useSaveTrackerParamsOnNavigation();
 
   return (
     <CacheProvider value={cache}>

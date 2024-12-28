@@ -59,6 +59,7 @@ export interface LoginResponse {
   accessLevel: number;
   sessionId: string;
   fingerprint: string; //deprecated
+  isPaid: string;
 }
 
 export interface RefreshTokenResponse {

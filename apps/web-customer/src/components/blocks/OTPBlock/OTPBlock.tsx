@@ -29,6 +29,7 @@ const OTPBlock: React.FC = () => {
       resendRemainingTime={waitTime}
       onResend={handleResend}
       isResendLoading={resendLoading}
+      email={verificationPreparation.email}
     />
   );
 
