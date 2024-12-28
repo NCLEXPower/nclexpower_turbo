@@ -43,7 +43,9 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   usePaymentSuccessRedirect(confirmValue);
   useAuthInterceptor();
 
-  if (isAuthenticated && isNewAccount) {
+  const showWelcomeDialog = isAuthenticated && isNewAccount && isPaid;
+
+  if (showWelcomeDialog) {
     return <MultiContentDialog content={dataContent} open={true} handleClose={close} startTour />
   }
 
