@@ -22,7 +22,9 @@ describe("useAuthInterceptor", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockLogout = jest.fn();
-    jest.mocked(useAuthContext).mockReturnValue({ logout: mockLogout } as any);
+    jest
+      .mocked(useAuthContext)
+      .mockReturnValue({ softLogout: mockLogout } as any);
   });
 
   it("should set up middleware options with error handler", async () => {
