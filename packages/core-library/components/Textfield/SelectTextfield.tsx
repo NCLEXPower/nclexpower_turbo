@@ -42,6 +42,9 @@ export function SelectField({
 }: BaseSelectFieldProps) {
   return (
     <div>
+      {helperText && (
+        <FormHelperText error={error}>{helperText}</FormHelperText>
+      )}
       <TextField
         select
         label={label}
@@ -49,6 +52,7 @@ export function SelectField({
         value={value ?? ""}
         onChange={onChange}
         placeholder={placeholder}
+        InputLabelProps={{ shrink: false, }}
         {...rest}
       >
         {options.map((option) => (
@@ -57,9 +61,6 @@ export function SelectField({
           </MenuItem>
         ))}
       </TextField>
-      {helperText && (
-        <FormHelperText error={error}>{helperText}</FormHelperText>
-      )}
     </div>
   );
 }
