@@ -3,7 +3,7 @@ import { ProgramListBlock } from "../../../../components/blocks/HubBlocks/Progra
 import { useGetProgramList } from "core-library/hooks";
 
 const ProgramListPage: React.FC = () => {
-  const { programList } = useGetProgramList();
+  const { programList, loading } = useGetProgramList();
   const bodySystemsProgramList = programList ?? [];
 
   return (
@@ -11,6 +11,7 @@ const ProgramListPage: React.FC = () => {
       program={bodySystemsProgramList}
       programTitle="Body Systems Topic (Day 1-13)"
       programSubtitle="Key body systems covered over 13 days of study."
+      isLoading={loading}
     />
   );
 };
