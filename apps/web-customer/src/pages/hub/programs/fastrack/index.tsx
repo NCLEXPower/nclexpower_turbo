@@ -3,7 +3,7 @@ import { ProgramListBlock } from "../../../../components/blocks/HubBlocks/Progra
 import { useGetProgramList } from "core-library/hooks";
 
 const ProgramListPage: React.FC = () => {
-  const { programList } = useGetProgramList();
+  const { programList, loading } = useGetProgramList();
   const fastrackProgramList = programList ?? [];
 
   return (
@@ -11,6 +11,7 @@ const ProgramListPage: React.FC = () => {
       program={fastrackProgramList}
       programTitle="Patient Units Topic (Day 1-8)"
       programSubtitle="Key patient units covered over 8 days of study."
+      isLoading={loading}
     />
   );
 };
