@@ -6,7 +6,7 @@ import {
 } from "core-library/assets";
 import Image from "next/image";
 import { useCountdown } from 'core-library/hooks/useCountdown';
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -17,11 +17,13 @@ import { comingSoonSchema, ComingSoonType } from './validation';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from 'core-library/components';
 import { dateData } from './ComingSoonBlock';
+import { useResolution } from 'core-library/hooks';
 
 
 export const ComingSoonPage: React.FC = () => {
   //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
   const { timeRemaining } = useCountdown({ timeRemaining: '30:04:30:00' });
+  const { isMobile } = useResolution();
 
   const method = useForm<ComingSoonType>({
     mode: "onSubmit",
@@ -35,27 +37,38 @@ export const ComingSoonPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full lg:h-screen ">
-      <div className="w-full flex justify-center items-center h-full flex-col">
+    <div className="w-full h-full lg:h-screen">
+      <div className="w-full flex justify-center items-center h-full flex-col ">
         <Image
           src={ComingSoon}
           alt="CoreZigma"
           style={{
             width: "100%",
-            height: "100vh",
+            height: isMobile ? "100%" : "100vh",
             position: "absolute",
             objectFit: "cover",
             zIndex: 0,
           }}
         />
-        <div className="flex items-center justify-center flex-col z-10 px-12 lg:px-80 space-y-2 lg:space-y-3">
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10,
+            gap: { xs: '8px', lg: '12px' },
+            px: { xs: 0, lg: 96 },
+          }}
+        >
           <div className="flex items-center justify-center gap-6">
             <Image
               src={CoreZigmaLogo}
               alt="CoreZigma"
               style={{
-                width: "130px",
-                height: "130px",
+                width: isMobile ? "100px" : "130px",
+                height: isMobile ? "100px" : "130px",
                 objectFit: "cover",
               }}
             />
@@ -112,12 +125,26 @@ export const ComingSoonPage: React.FC = () => {
             ))}
           </div>
           <FormProvider {...method}>
-            <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-4 ">
+            <Box
+              sx={{
+                display: 'flex',
+                width: isMobile ? "100%" : '55%',
+                gap: { xs: 2, lg: 4 },
+                px: { xs: 2, lg: 0 },
+                flexDirection: { xs: 'column', lg: 'row' },
+                justifyContent: 'center',
+                alignItems: 'center',
+                "@media (max-width: 1316px)": {
+                  flexDirection: 'column',
+                },
+              }}
+            >
               <TextField
                 control={control}
                 name="email"
                 placeholder='Email'
                 sx={{
+                  width: "100%",
                   borderRadius: "10px",
                   flexGrow: 1,
                   border: "1px solid #f3f3f3",
@@ -145,10 +172,11 @@ export const ComingSoonPage: React.FC = () => {
                 onClick={handleSubmit(onSubmit)}
                 disabled={!isValid}
                 sx={{
+                  width: isMobile ? "100%" : "fit-content",
                   color: "#0F2A71",
                   bgcolor: "#FFF",
                   borderRadius: "10px",
-                  fontFamily: "'PT Sans', sans-serif",
+                  fontFamily: "PT Sans",
                   fontSize: "clamp(10px, 5cqw, 16px)",
                   fontWeight: "bold",
                   alignSelf: {
@@ -163,13 +191,16 @@ export const ComingSoonPage: React.FC = () => {
                   "&:hover": {
                     backgroundColor: "#F3f3f3",
                   },
+                  "@media (max-width: 1316px)": {
+                    width: "100%",
+                  },
                 }}
               >
                 Notify Me
               </Button>
-            </div>
+            </Box>
           </FormProvider>
-          <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
+          <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center p-4">
             Stay tuned as we prepare to unveil a brand-new experience just for you.
             Our team is working hard behind the scenes to bring something innovative and engaging.
             Check back soon for updates—you won&apos;t want to miss this!
@@ -179,7 +210,7 @@ export const ComingSoonPage: React.FC = () => {
             <InstagramIcon width='2rem' />
             <TwitterIcon width='2rem' />
           </div>
-        </div>
+        </Box>
       </div>
     </div>
   )
