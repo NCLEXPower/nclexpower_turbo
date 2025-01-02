@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Image, { StaticImageData } from "next/image";
 import ReactPlayer from "react-player";
 import { DialogBox } from "./DialogBox";
 import { Button } from "../Button/Button";
 
-type DialogContents = {
+export type DialogContents = {
   id: number;
   title: string;
-  contentType: string;
+  contentType: "video" | "text";
   content: string;
   image?: StaticImageData | string;
 };
@@ -17,8 +17,7 @@ type Props = {
   open: boolean;
   handleClose: () => void;
   content: DialogContents[];
-  startTour?: boolean;
-  handleTour?: () => void;
+  showTour?: boolean;
 };
 
 const btnStyle = {
@@ -31,12 +30,15 @@ const btnStyle = {
   borderRadius: "6px",
 };
 
-const IndicatorDots = ({ count, activeIndex }: { count: number; activeIndex: number }) => (
+const IndicatorDots = ({ count, activeIndex }: {
+  count: number;
+  activeIndex: number
+}) => (
   <Box
     display="flex"
     justifyContent="center"
     alignItems="center"
-    my={2}
+    my={1.5}
   >
     {Array.from({ length: count }).map((_, index) => (
       <Box
@@ -55,32 +57,33 @@ const IndicatorDots = ({ count, activeIndex }: { count: number; activeIndex: num
   </Box>
 );
 
-const renderContent = (contentType: string, data: DialogContents, activeTab: number) => {
-  switch (contentType) {
-    case "video":
-      return (
-        <ReactPlayer
-          url={data.content}
-          controls
-          width="100%"
-          height="400px"
-        />
-      );
-    case "text":
-      return <>{data.content}</>;
-    default:
-      return null;
-  }
-};
-
 export const MultiContentDialog: React.FC<Props> = ({
   open,
   handleClose,
   content,
-  startTour = false,
-  handleTour,
+  showTour = false,
 }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
+
+  const renderContent = useMemo(() => {
+    const data = content[activeTab];
+
+    switch (data.contentType) {
+      case "video":
+        return (
+          <ReactPlayer
+            url={data.content}
+            controls
+            width="100%"
+            height="340px"
+          />
+        );
+      case "text":
+        return <>{data.content}</>;
+      default:
+        return null;
+    }
+  }, [content, activeTab]);
 
   const handleNext = () => {
     if (activeTab < content.length - 1) {
@@ -139,11 +142,11 @@ export const MultiContentDialog: React.FC<Props> = ({
         width: "100%",
         textAlign: "center",
         fontFamily: "PT Sans Narrow",
-        fontSize: "1.3rem",
+        fontSize: "1.2rem",
         flexDirection: "column",
         color: "#343a40",
       }}>
-        {renderContent(content[activeTab].contentType, content[activeTab], activeTab)}
+        {renderContent}
       </Box>
       <IndicatorDots count={content.length} activeIndex={activeTab} />
       <Box sx={{
@@ -158,9 +161,9 @@ export const MultiContentDialog: React.FC<Props> = ({
             Previous
           </Button>
         )}
-        {startTour ? (
+        {showTour ? (
           <Button
-            onClick={isLastIndex ? handleTour : handleNext}
+            onClick={isLastIndex ? handleClose : handleNext}
             variant="text"
             sx={btnStyle}
           >

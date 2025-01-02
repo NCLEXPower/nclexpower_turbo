@@ -39,14 +39,14 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useStyle();
   const [confirmValue] = useConfirmedIntent();
-  const [isNewAccount] = useNewAccount();
+  const [isNewAccount] = useNewAccount(); //this is a temporary implementation
   usePaymentSuccessRedirect(confirmValue);
   useAuthInterceptor();
 
-  const showWelcomeDialog = isAuthenticated && isNewAccount && isPaid === "ispaid";
+  const showWelcomeDialog = isAuthenticated && isNewAccount;
 
   if (showWelcomeDialog) {
-    return <MultiContentDialog content={dataContent} open={true} handleClose={close} startTour />
+    return <MultiContentDialog content={dataContent} open={showWelcomeDialog} handleClose={() => { }} showTour />
   }
 
   return (
