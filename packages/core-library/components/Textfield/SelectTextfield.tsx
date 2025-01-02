@@ -43,7 +43,7 @@ export function SelectField({
   return (
     <div>
       {helperText && (
-        <FormHelperText error={error}>{helperText}</FormHelperText>
+        <FormHelperText error={error} sx={{marginBottom: 2}}>{helperText}</FormHelperText>
       )}
       <TextField
         select
