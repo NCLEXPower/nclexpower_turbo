@@ -1,4 +1,4 @@
-import { MultiContentDialog } from "../../../components";
+import { DialogContents, MultiContentDialog } from "../../../components";
 import { act, render, screen } from "../../common";
 
 jest.mock("../../../config", () => ({
@@ -12,7 +12,7 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-const mockContent = [
+const mockContent: DialogContents[] = [
   {
     id: 1,
     title: "Welcome to NCLEX Power.",

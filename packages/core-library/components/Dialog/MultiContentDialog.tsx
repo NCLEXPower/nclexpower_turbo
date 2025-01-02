@@ -68,6 +68,8 @@ export const MultiContentDialog: React.FC<Props> = ({
   const renderContent = useMemo(() => {
     const data = content[activeTab];
 
+    if (!data) return null;
+
     switch (data.contentType) {
       case "video":
         return (
