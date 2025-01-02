@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { useState } from "react";
 import Image from "next/image";
 import { Box } from "@mui/material";
@@ -56,8 +56,7 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
           </>
         ) : (
           program.map((item) => {
-            const { id, title, programStatus, programImage, sections } =
-              item;
+            const { id, title, programStatus, programImage, sections } = item;
             return (
               <>
                 <Box
@@ -70,14 +69,15 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
                   onClick={() => handleModalOpen(id)}
                 >
                   <div className="flex flex-col">
-                    <Image
-                      src={programImage}
-                      alt={title}
-                      width={254}
-                      height={100}
-                      style={{ objectFit: "cover" }}
-                      className="w-full lg:w-[254px] h-auto object-cover"
-                    />
+                    <div className="w-full aspect-[422/379.8] bg-white">
+                      <Image
+                        src={programImage}
+                        alt={title}
+                        width={254}
+                        height={100}
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
                     <div className="flex flex-col items-center h-auto py-2 space-y-[10px]">
                       <h2 className="font-ptSansNarrow font-bold text-[20px] text-white">
                         {title}
