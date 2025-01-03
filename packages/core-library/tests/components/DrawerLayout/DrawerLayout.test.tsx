@@ -30,6 +30,7 @@ describe("DrawerLayout", () => {
     act(() => {
       render(
         <DrawerLayout
+          isPaid="true"
           menu={mockMenu}
           isAuthenticated={true}
           data-testid="drawer-layout"
@@ -48,6 +49,7 @@ describe("DrawerLayout", () => {
     act(() => {
       render(
         <DrawerLayout
+          isPaid="true"
           menu={mockMenu}
           isAuthenticated={true}
           data-testid="drawer-layout"
