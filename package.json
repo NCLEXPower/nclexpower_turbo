@@ -26,5 +26,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/NCLEXPower/nclexpower_turbo.git",
+  "author": "neooonn <neooonn@users.noreply.github.com>",
+  "license": "MIT"
 }
