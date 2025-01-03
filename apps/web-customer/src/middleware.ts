@@ -16,24 +16,37 @@ const headers = {
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
-  const { pathname, searchParams } = url;
-
-  if (pathname === "/login") {
-    return NextResponse.next();
-  }
-
   const tokenId = request.cookies.get("nclex_customer");
+  const accountId = request.cookies.get("nclex_account");
+  const analytics = request.cookies.get("analytics");
   const proceedToHubUrl = new URL("/hub", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
+  const proceed2faUrl = new URL("/account/verification/otp", request.url);
+  const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
   const publicRoutes = [
     "/login",
     "/about",
     "/contact",
     "/account/registration",
   ];
+  const { pathname, searchParams } = url;
+
+  const hasTwoFactorAuth = await HasTwoFactorAuth(
+    { accountId: accountId?.value ?? "" },
+    baseUrl
+  );
+
+  console.log("hasTwoFactorAuth", hasTwoFactorAuth);
+
+  if (hasTwoFactorAuth && !tokenId) {
+    if (pathname !== "/account/verification/otp") {
+      return NextResponse.redirect(proceed2faUrl);
+    }
+    return NextResponse.next();
+  }
 
   if (!tokenId) {
-    if (pathname.startsWith("/hub")) {
+    if (pathname.startsWith("/hub") || pathname === "/hub/payment-setup") {
       return NextResponse.redirect(proceedToLoginUrl);
     }
     return NextResponse.next();
@@ -49,15 +62,38 @@ export async function middleware(request: NextRequest) {
   );
 
   if (!isTokenValid) {
-    console.log("Invalid token, redirecting to login.");
     return NextResponse.redirect(proceedToLoginUrl);
   }
 
-  await userAgentValidation(request);
-  await enforceHttpToHttps(request);
+  const isPaid = await IsAccountPaid(
+    {
+      accountId: accountId?.value ?? "",
+      accessToken: tokenId.value,
+    },
+    baseUrl
+  );
+
+  if (pathname === "/hub/payment-setup" && !isPaid) {
+    return NextResponse.next();
+  }
+
+  if (pathname === "/hub" && !isPaid) {
+    return NextResponse.redirect(proceedPaymentSetupUrl);
+  }
 
   if (publicRoutes.includes(pathname)) {
     return NextResponse.redirect(proceedToHubUrl);
+  }
+
+  if (pathname === "/hub/payment-setup") {
+    if (!tokenId) {
+      return NextResponse.redirect(proceedToLoginUrl);
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname === "/login") {
+    return NextResponse.next();
   }
 
   if (
@@ -66,6 +102,13 @@ export async function middleware(request: NextRequest) {
       searchParams.has("payment_intent_client_secret") ||
       searchParams.has("redirect_status"))
   ) {
+    const params = {
+      paymentIntentId: searchParams.get("payment_intent") ?? "",
+      accountId: accountId?.value ?? "",
+      analyticsParams: analytics?.value ?? "",
+      accessToken: tokenId.value,
+    };
+    await paymentConfirmed(params, baseUrl);
     searchParams.delete("payment_intent");
     searchParams.delete("payment_intent_client_secret");
     searchParams.delete("redirect_status");
@@ -75,6 +118,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  await userAgentValidation(request);
+  await enforceHttpToHttps(request);
   return NextResponse.next();
 }
 
@@ -87,6 +132,109 @@ export const config = {
     "/account/registration",
   ],
 };
+
+/**
+ * Isolate all functions below to core-library..
+ */
+
+export async function IsAccountPaid(
+  params: { accountId: string; accessToken: string | undefined | null },
+  publicUrl: string | undefined
+) {
+  if (!params.accessToken) return;
+
+  try {
+    const requestHeaders: HeadersInit = {
+      ...headers,
+      Authorization: `Bearer ${params.accessToken}`,
+    };
+
+    const accountId = params.accountId;
+
+    const response = await fetch(`${publicUrl}/api/v1/Customer/account-paid`, {
+      method: "POST",
+      headers: requestHeaders,
+      body: JSON.stringify({ accountId }),
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error occurred while checking ispaid:", error);
+  }
+}
+
+export async function HasTwoFactorAuth(
+  params: { accountId: string },
+  publicUrl: string | undefined
+): Promise<boolean> {
+  try {
+    if (!publicUrl) {
+      throw new Error("Public URL is undefined");
+    }
+
+    const requestHeaders: HeadersInit = {
+      ...headers,
+    };
+    const response = await fetch(
+      `${publicUrl}/api/v2/internal/baseInternal/identify-two-factor-authentication`,
+      {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify(params),
+      }
+    );
+
+    console.log("response", response.json());
+
+    if (!response.ok) {
+      throw new Error(`API call failed with status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (typeof result !== "boolean") {
+      throw new Error("Unexpected response format from the API");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error in HasTwoFactorAuth:", error);
+    return false;
+  }
+}
+
+async function paymentConfirmed(
+  params: {
+    paymentIntentId: string;
+    accountId: string;
+    analyticsParams: string;
+    accessToken: string | undefined | null;
+  },
+  publicUrl: string | undefined
+) {
+  if (!params.accessToken) return;
+
+  try {
+    const requestHeaders: HeadersInit = {
+      ...headers,
+      Authorization: `Bearer ${params.accessToken}`,
+    };
+
+    const response = await fetch(
+      `${publicUrl}/api/v1/Customer/payment-confirmed`,
+      {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify(params),
+      }
+    );
+
+    if (response.ok) {
+      return true;
+    }
+  } catch (error) {
+    console.error("Error occurred while confirming payment:", error);
+  }
+}
 
 async function validateTokenSsr(
   params: ValidateTokenParams,

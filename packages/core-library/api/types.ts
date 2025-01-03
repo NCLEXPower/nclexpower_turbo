@@ -59,8 +59,7 @@ export interface LoginResponse {
   accessLevel: number;
   sessionId: string;
   fingerprint: string; //deprecated
-  isNewAccount: boolean;
-  isPaid: boolean;
+  isPaid: string;
 }
 
 export interface RefreshTokenResponse {
@@ -111,6 +110,13 @@ export interface ProductListResponse {
   productDescription: string | null;
   programType: number;
   programTitle: number;
+}
+
+export interface CreateSalesParams {
+  customerAccountId: string | undefined;
+  productId: string;
+  currencyId: string | undefined;
+  country?: string | undefined;
 }
 
 export interface ProductSetStatusParams {
@@ -293,6 +299,7 @@ export type OrderSummaryResponse = {
   programType: number;
   pricingId: string;
   productId: string;
+  currencyId: string;
 };
 
 export type ResendCodeParams = {

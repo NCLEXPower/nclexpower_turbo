@@ -26,11 +26,14 @@ import { theme } from "core-library/contents/theme/theme";
 import { useAuthInterceptor, useStyle } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
+import { ContentLoader } from "core-library/router";
+import { useRouter } from "core-library";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const router = useRouter();
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
-  const { isAuthenticated, logout, loading } = useAuthContext();
+  const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useStyle();
@@ -43,32 +46,41 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
       isAuthenticated={isAuthenticated}
       loading={loading || contentData.loading}
     >
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme()}>
-          <CssBaseline />
-          <HeaderTitleContextProvider>
-            <FormSubmissionContextProvider>
-              <LoadablePageContent
-                loading={loading || contentData.loading}
-                pages={contentData.pages}
-              >
-                <DrawerLayout
-                  menu={headerMenu}
-                  isAuthenticated={isAuthenticated}
-                  headerStyles={headerStyles}
-                  sidebarStyles={sidebarStyles}
-                  onLogout={logout}
+      {loading || contentData.loading ? (
+        <>Loading...</>
+      ) : (
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme()}>
+            <CssBaseline />
+            <HeaderTitleContextProvider>
+              <FormSubmissionContextProvider>
+                <ContentLoader
+                  loading={loading || contentData.loading || router.loading}
                 >
-                  {children}
-                  <Footer info={CompanyInfo} list={list} />
-                  {/* dynamic hideHelp should be implemented here */}
-                  {true && <ChatBotWidget />}
-                </DrawerLayout>
-              </LoadablePageContent>
-            </FormSubmissionContextProvider>
-          </HeaderTitleContextProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+                  <LoadablePageContent
+                    loading={loading || contentData.loading}
+                    pages={contentData.pages}
+                  >
+                    <DrawerLayout
+                      menu={headerMenu}
+                      isAuthenticated={isAuthenticated}
+                      headerStyles={headerStyles}
+                      sidebarStyles={sidebarStyles}
+                      onLogout={logout}
+                      isPaid={isPaid}
+                    >
+                      {children}
+                      <Footer info={CompanyInfo} list={list} />
+                      {/* dynamic hideHelp should be implemented here */}
+                      {true && <ChatBotWidget />}
+                    </DrawerLayout>
+                  </LoadablePageContent>
+                </ContentLoader>
+              </FormSubmissionContextProvider>
+            </HeaderTitleContextProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      )}
     </PageLoaderContextProvider>
   );
 };
