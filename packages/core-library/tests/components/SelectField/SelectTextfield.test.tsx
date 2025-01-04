@@ -25,6 +25,41 @@ const MockComponent = ({ helperText = "", error = false }: { helperText?: string
   </>
 );
 
+describe("FormHelperText", () => {
+
+  it("renders nothing when helperText is an empty string", () => {
+    const { container } = render(<MockComponent helperText="" error={false} />);
+    expect(container.firstChild).toBeNull(); // Ensures nothing is rendered
+  });
+
+  it("renders error text correctly when error is true and helperText is provided", () => {
+    render(<MockComponent helperText="Error text" error={true} />);
+    const helperText = screen.getByText("Error text");
+    expect(helperText).toBeInTheDocument();
+    expect(helperText).toHaveClass("Mui-error");
+  });
+
+  it("does not apply error styling when error is false", () => {
+    render(<MockComponent helperText="Helper text" error={false} />);
+    const helperText = screen.getByText("Helper text");
+    expect(helperText).toBeInTheDocument();
+    expect(helperText).not.toHaveClass("Mui-error");
+  });
+
+  it("renders correctly when error is undefined", () => {
+    render(<MockComponent helperText="No error prop" />);
+    const helperText = screen.getByText("No error prop");
+    expect(helperText).toBeInTheDocument();
+    expect(helperText).not.toHaveClass("Mui-error");
+  });
+
+  it("renders correctly when helperText and error are both undefined", () => {
+    const { container } = render(<MockComponent />);
+    expect(container.firstChild).toBeNull(); // Ensures nothing is rendered
+  });
+});
+
+
 
 describe("FormHelperText", () => {
   it("renders helper text when helperText is provided", () => {
