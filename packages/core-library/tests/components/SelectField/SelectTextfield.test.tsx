@@ -2,6 +2,14 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { FormHelperText } from "@mui/material";
 
+jest.mock("../../../config", () => ({
+  config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
+
 interface MockComponentProps {
   helperText?: string; 
   error?: boolean;     
