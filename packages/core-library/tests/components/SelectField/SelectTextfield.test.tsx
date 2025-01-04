@@ -1,38 +1,37 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { FormHelperText } from "@mui/material";
+import { render, screen } from '@testing-library/react';
+import { FormHelperText } from '@mui/material';
 
-interface MockComponentProps {
-  helperText?: string; 
-  error?: boolean;     
-}
+jest.mock("../../../config", () => ({
+  config: { value: jest.fn() },
+}));
 
-const MockComponent = ({ helperText = "", error = false }: { helperText?: string; error?: boolean }) => (
-  <>
-    {helperText && (
-      <FormHelperText error={error} sx={{ marginBottom: 2 }}>
-        {helperText}
-      </FormHelperText>
-    )}
-  </>
-);
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
 
-describe("FormHelperText", () => {
-  it("renders helper text when helperText is provided", () => {
-    render(<MockComponent helperText="This is helper text" error={false} />);
-    const helperText = screen.getByText("This is helper text");
-    expect(helperText).toBeInTheDocument();
+describe('FormHelperText component', () => {
+  it('should render helper text when helperText is provided', () => {
+    const helperText = 'This is a helper message';
+    render(<FormHelperText error={false}>{helperText}</FormHelperText>);
+    expect(screen.getByText(helperText)).toBeInTheDocument();
   });
 
-  it("applies error styling when error is true", () => {
-    render(<MockComponent helperText="Error occurred" error={true} />);
-    const helperText = screen.getByText("Error occurred");
-    expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveClass("Mui-error");
+  it('should not render helper text when helperText is not provided', () => {
+    render(<FormHelperText error={false}></FormHelperText>);
+    expect(screen.queryByText(/This is a helper message/i)).not.toBeInTheDocument();
   });
 
-  it("does not render anything if helperText is not provided", () => {
-    const { container } = render(<MockComponent />);
-    expect(container.firstChild).toBeNull();
+  it('should apply error styling when error is true', () => {
+    const helperText = 'This is an error message';
+    render(<FormHelperText error={true}>{helperText}</FormHelperText>);
+    const helperTextElement = screen.getByText(helperText);
+    expect(helperTextElement).toHaveClass('Mui-error');
+  });
+
+  it('should apply margin bottom style when helperText is provided', () => {
+    const helperText = 'This is a helper message';
+    render(<FormHelperText error={false}>{helperText}</FormHelperText>);
+    const helperTextElement = screen.getByText(helperText);
+    expect(helperTextElement).toHaveStyle('margin-bottom: 16px');
   });
 });
