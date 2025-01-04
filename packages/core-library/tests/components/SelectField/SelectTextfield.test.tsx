@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { FormHelperText } from "@mui/material";
 
@@ -26,10 +25,27 @@ const MockComponent = ({ helperText = "", error = false }: { helperText?: string
 );
 
 describe("FormHelperText", () => {
+  it("renders helper text when helperText is provided", () => {
+    render(<MockComponent helperText="This is helper text" error={false} />);
+    const helperText = screen.getByText("This is helper text");
+    expect(helperText).toBeInTheDocument();
+  });
+
+  it("applies error styling when error is true", () => {
+    render(<MockComponent helperText="Error occurred" error={true} />);
+    const helperText = screen.getByText("Error occurred");
+    expect(helperText).toBeInTheDocument();
+    expect(helperText).toHaveClass("Mui-error");
+  });
+
+  it("does not render anything if helperText is not provided", () => {
+    const { container } = render(<MockComponent error={true} />);
+    expect(container.firstChild).toBeNull();
+  });
 
   it("renders nothing when helperText is an empty string", () => {
     const { container } = render(<MockComponent helperText="" error={false} />);
-    expect(container.firstChild).toBeNull(); // Ensures nothing is rendered
+    expect(container.firstChild).toBeNull();
   });
 
   it("renders error text correctly when error is true and helperText is provided", () => {
@@ -55,28 +71,6 @@ describe("FormHelperText", () => {
 
   it("renders correctly when helperText and error are both undefined", () => {
     const { container } = render(<MockComponent />);
-    expect(container.firstChild).toBeNull(); // Ensures nothing is rendered
-  });
-});
-
-
-
-describe("FormHelperText", () => {
-  it("renders helper text when helperText is provided", () => {
-    render(<MockComponent helperText="This is helper text" error={false} />);
-    const helperText = screen.getByText("This is helper text");
-    expect(helperText).toBeInTheDocument();
-  });
-
-  it("applies error styling when error is true", () => {
-    render(<MockComponent helperText="Error occurred" error={true} />);
-    const helperText = screen.getByText("Error occurred");
-    expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveClass("Mui-error"); // MUI adds this class for errors
-  });
-
-  it("does not render anything if helperText is not provided", () => {
-    const { container } = render(<MockComponent error={true} />);
-    expect(container.firstChild).toBeNull(); // Ensures nothing is rendered
+    expect(container.firstChild).toBeNull();
   });
 });
