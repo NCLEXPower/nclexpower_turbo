@@ -5,12 +5,13 @@ Reuse as a whole or in part is prohibited without permission.
 Created by the Software Strategy & Development Division
 */
 
-import { UnderMaintenance } from "core-library/assets";
+import { ConstructionWorkerImage, MaintenanceModeBackground } from "core-library/assets";
 import Image from "next/image";
 import { NotifySchema, NotifyType } from "../../../core/Schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { TextField, Button } from "core-library/components";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Container } from "@mui/material";
 
 interface Props {
   onSubmit: (values: NotifyType) => void;
@@ -25,92 +26,112 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
   const { control, handleSubmit } = form;
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row justify-center items-center px-4 sm:px-10 overflow-hidden lg:px-16 xl:px-20 pb-10">
-      <div className="w-full sm:w-[950px] hidden lg:flex justify-center sm:justify-end md:w-[700px] lg:w-4/5 xl:w-[55%] lg:flex-none lg:order-2 ">
+    <Container className='relative' maxWidth={false} sx={{ maxWidth: '1440px' }}>
+
+      <div className="absolute z-0 right-0 bottom-0">
         <Image
-          src={UnderMaintenance}
-          alt="UnderMaintenance"
-          className="max-w-full h-auto"
+          src={MaintenanceModeBackground}
+          alt="Maintenance Background"
+          className="w-full h-[40vh] sm:h-[60vh] lg:h-[90vh] object-bottom"
         />
       </div>
 
-      <div className="flex flex-col gap-y-6 w-full sm:w-1/2 md:w-4/5 xl:w-1/2 lg:order-1 text-center lg:text-left lg:items-start">
-        <div className="w-full">
-          <h1 className="text-[#0f2a71] text-[32px] sm:text-[48px] lg:text-[55px] font-bold font-Rajdhani text-center lg:text-left leading-[1]">
-            Application Under Development
-          </h1>
-          <div className='w-full flex justify-center items-center lg:hidden'>
-            <Image
-              src={UnderMaintenance}
-              alt="UnderMaintenance"
-              className="w-2/3 "
-            />
-          </div>
-          <p className="text-[16px] sm:text-[18px] lg:text-[20px] text-[#9A9A9A] font-ptSans text-center lg:text-left px-4 sm:px-0 lg:w-4/5">
-            Our application is currently under development and is not yet
-            online. We&apos;re working to bring it to life. Please click the "Notify
-            Me" button and provide your email address to stay informed.
-          </p>
-        </div>
+      <div className="absolute z-1 right-0 bottom-0">
+        <Image
+          src={ConstructionWorkerImage}
+          alt="Under Maintenance Worker"
+          className="w-full h-[35vh] sm:h-[50vh] md:h-[60vh] lg:h-[80vh] object-bottom"
+        />
+      </div>
 
-        <div className="w-full flex justify-center lg:justify-start">
+      <div className="flex flex-col items-center justify-center min-h-screen relative overflow-hidden">
+        <div className="absolute top-[10%] left-1/2 transform -translate-x-1/2 sm:top-[18%] sm:left-10 sm:transform-none">
+
+          <h1 className="max-w-[280px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[833px] xl:max-w-[1000px] 2xl:max-w-[1200px] font-ptSans font-bold text-[3rem] lg:text-[3.3rem] xl:text-7xl 2xl:text-8xl leading-snug md:leading-tight">
+            We’re Under <span className="text-darkBlue">Maintenance</span>
+          </h1>
+
+          <p className="max-w-full sm:max-w-[300px] md:max-w-[350px] xl:max-w-[450px] 2xl:max-w-[500px] mt-4 xl:mt-6 font-ptSans font-[400] text-[14px] sm:text-[14px] md:text-[16px] lg:text-[16.4px] xl:text-[21.5px] 2xl:text-[24.5px] leading-[24px] sm:leading-[27px] lg:leading-[28px] xl:leading-[36px] 2xl:leading-[40px] text-darkGray">
+            Our site is down for improvements. Enter your email to be notified when we’re back!
+          </p>
+
           <FormProvider {...form}>
-            <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-5 ">
-              <TextField
-                control={control}
-                name="email"
-                placeholder='Email'
-                sx={{
-                  borderRadius: "10px",
-                  flexGrow: 1,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "14px",
-                    lg: "16px",
-                  },
-                  height: {
-                    xs: "35px",
-                    lg: "46px",
-                  },
-                }}
-                inputProps={{
-                  style: {
+            <div className="absolute w-full sm:max-w-[300px] md:max-w-[325px] lg:max-w-[290px] xl:max-w-[370px] 2xl:max-w-[400px] mt-6 lg:mt-8 xl:mt-10">
+              <div className="flex flex-col gap-4 items-center justify-start w-full">
+                <TextField
+                  control={control}
+                  name="email"
+                  placeholder="Enter your Email Address"
+                  sx={{
+                    width: "100%",
+                    height: "50px,",
                     borderRadius: "10px",
-                    boxShadow: "none",
-                  },
-                }}
-              />
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                sx={{
-                  bgcolor: "#0F2A71",
-                  borderRadius: "10px",
-                  fontFamily: "'PT Sans', sans-serif",
-                  alignSelf: {
-                    lg: 'end'
-                  },
-                  flexGrow: 1,
-                  fontWeight: "bold",
-                  zIndex: 1,
-                  padding: {
-                    xs: "6px 12px",
-                    lg: "8px 16px",
-                  },
-                  fontSize: {
-                    xs: "14px",
-                    lg: "16px",
-                  },
-                  "&:hover": {
-                    backgroundColor: "#00173F",
-                  },
-                }}
-              >
-                Notify Me
-              </Button>
+                    border: "1px solid #D9D9D9",
+                    gap: "10px",
+                    display: "flex",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "5px",
+                    },
+                    "& .MuiInputBase-input": {
+                      width: "100%",
+                      height: "27px",
+                      borderRadius: "10px",
+                      padding: "12px",
+                      fontFamily: '"PT Sans Narrow", sans-serif',
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      color: "#9A9A9A",
+                    },
+                  }}
+                />
+                <Button
+                  onClick={handleSubmit(onSubmit)}
+                  sx={{
+                    width: '100%',
+                    height: '50px',
+                    borderRadius: '10px',
+                    padding: '16px 8px',
+                    backgroundColor: '#0F2A71',
+                    color: '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textTransform: 'none',
+                    fontFamily: '"PT Sans Narrow", sans-serif',
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    lineHeight: '24px',
+                    letterSpacing: '-0.01em',
+                    '& span': {
+                      width: '61px',
+                      height: '22px',
+                      opacity: 0,
+                    },
+                  }}
+                >
+                  Notify Me
+                </Button>
+              </div>
             </div>
           </FormProvider>
+
+          <div className="absolute w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[500px] mt-52 lg:mt-56">
+            <p
+              className="text-[14px] xl:text-[16px] font-[400] leading-[24px] sm:leading-[27px] xl:leading-[30px] text-left"
+              style={{ fontFamily: '"PT Sans Narrow", sans-serif' }}
+            >
+              If you need immediate assistance, feel free to contact us at{' '}
+              <a
+                href="mailto:contact@nclexpower.com"
+                className="font-[700] underline text-darkBlue"
+              >
+                contact@nclexpower.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
