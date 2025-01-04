@@ -20,7 +20,8 @@ type StaticRoutes = Record<
   | "second_tab_redirect"
   | "order_summary"
   | "account_registration"
-  | "device_not_recognized",
+  | "device_not_recognized"
+  | "contact_us",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -43,9 +44,10 @@ export const STATIC_ROUTES: StaticRoutes = {
   reset_link_success: "/account/reset-link",
   account_registration: "/account/registration",
   about: "/about",
-  second_tab_redirect: "/duplicate-session", //duplicate session page currently does not exist. remove this comment once created.
+  second_tab_redirect: "/duplicate-session",
   order_summary: "/order-summary",
   device_not_recognized: "/device-enrollment",
+  contact_us: "/contact",
 };
 
 const routeTitles: Record<string, string> = {
@@ -94,6 +96,7 @@ export const useRouter = () => {
         ...router,
         push: navigate(push),
         replace: navigate(replace),
+        openInNewTab,
       }),
       [router, staticRoutes]
     ),
@@ -181,6 +184,22 @@ export const useRouter = () => {
     };
   }
 };
+
+function openInNewTab(path: string | PathFromRoutes | { pathname: string }) {
+  let resolvedPath: string;
+
+  if (typeof path === "string") {
+    resolvedPath = routeUrl(path);
+  } else if (typeof path === "function") {
+    resolvedPath = path(STATIC_ROUTES);
+  } else if (path && typeof path === 'object' && "pathname" in path) {
+    resolvedPath = routeUrl(path.pathname);
+  } else {
+    throw new Error("Invalid path type for openInNewTab");
+  }
+
+  window.open(resolvedPath, "_blank");
+}
 
 export function routeUrl(path: string) {
   return path === STATIC_ROUTES.home ||
