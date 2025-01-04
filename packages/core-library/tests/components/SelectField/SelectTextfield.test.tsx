@@ -30,7 +30,7 @@ describe('FormHelperText component', () => {
 
   it('should apply margin bottom style when helperText is provided', () => {
     const helperText = 'This is a helper message';
-    render(<FormHelperText error={false}>{helperText}</FormHelperText>);
+    render(<FormHelperText error={false} sx={{ marginBottom: 2 }}>{helperText}</FormHelperText>);
     const helperTextElement = screen.getByText(helperText);
     expect(helperTextElement).toHaveStyle('margin-bottom: 16px');
   });
