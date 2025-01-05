@@ -38,6 +38,8 @@ export const FlipCardThreeBack = require('./BackThree.png');
 export const PaymentBadge = require('./PaymentBadge.png');
 export const NotFoundPage = require('./NotFoundPage.png');
 export const UnderMaintenance = require('./UnderMaintenance.png');
+export const MaintenanceModeBackground = require('./MaintenanceModeBackground.png');
+export const ConstructionWorkerImage = require('./ConstructionWorkerImage.png');
 
 export const AboutUsBanner = require('./aboutus/aboutus-banner.svg');
 export const Arrow = require('./aboutus/arrow.svg');
@@ -212,6 +214,8 @@ export const ImageLists = [
   { id: 88, label: 'Default', image: Default },
   { id: 88, label: 'PNBackground', image: PNBackground },
   { id: 88, label: 'RNBackground', image: RNBackground },
+  { id: 89, label: 'Maintenance Mode Background', image: MaintenanceModeBackground },
+  { id: 90, label: 'Construction Worker Image', image: ConstructionWorkerImage },
 ];
 
 export const LottieLists = [

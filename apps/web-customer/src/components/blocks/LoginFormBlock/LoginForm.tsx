@@ -111,7 +111,9 @@ export const LoginForm: React.FC<Props> = ({
           onClick={handleBack}
         >
           <ArrowBackIosNewIcon fontSize="small" />
-          <span className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] ml-1 underline">Back</span>
+          <span className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] ml-1 underline">
+            Back
+          </span>
         </div>
         <div className="w-full">
           <div className="flex items-center justify-center">
@@ -245,10 +247,12 @@ export const LoginForm: React.FC<Props> = ({
                 </Button>
               </div>
               <div className="flex items-center justify-center mt-2 lg:mt-6 ">
-                <p className="text-darkGray font-ptSansNarrow font-normal text-[18px] lg:text-[20px]">Need an account?</p>
+                <p className="text-darkGray font-ptSansNarrow font-normal text-[18px] lg:text-[20px]">
+                  Need an account?
+                </p>
                 <Link
                   href="/#pricing"
-                  className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer "
+                  className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer no-background "
                 >
                   Create One
                 </Link>
@@ -260,4 +264,3 @@ export const LoginForm: React.FC<Props> = ({
     </div>
   );
 };
-
