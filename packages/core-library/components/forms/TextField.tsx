@@ -50,11 +50,13 @@ interface Props<T extends object> {
   sx?: DialogProps["sx"];
   inputProps?: OutlinedInputProps["inputProps"];
   endAdornment?: OutlinedInputProps["endAdornment"];
+  onChange?: (value: any) => void;
 }
 
 export const TextField = <T extends FieldValues>({
   name,
   control,
+  onChange,
   defaultValue,
   ...props
 }: Props<T>) => (

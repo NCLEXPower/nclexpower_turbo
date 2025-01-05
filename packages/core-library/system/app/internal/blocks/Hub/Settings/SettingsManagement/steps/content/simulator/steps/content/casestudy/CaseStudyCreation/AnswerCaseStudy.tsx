@@ -20,8 +20,9 @@ import {
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
-import { useEffect, useState } from "react";
-import { Instruction } from './components/Instruction';
+import { useEffect } from "react";
+import { Instruction } from "./components/Instruction";
+import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 
 interface Props {
   index: number;
@@ -33,7 +34,8 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
-  const currentSequence = watch(`questionnaires.${index}.seqNum`)
+  const currentSequence = watch(`questionnaires.${index}.seqNum`);
+  const isBowTie = questionType == "BOWTIE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -61,7 +63,10 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box data-testid='answer-case-study' sx={{ display: "flex", width: "100%" }}>
+      <Box
+        data-testid="answer-case-study"
+        sx={{ display: "flex", width: "100%" }}
+      >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
@@ -124,6 +129,8 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
           </Box>
           <Instruction questionType={questionType} />
         </Box>
+
+        {isBowTie && <BowtieAnswerArea questionIndex={index} />}
 
         {questionType && (
           <Box sx={{ textAlign: "start", mt: 3 }}>

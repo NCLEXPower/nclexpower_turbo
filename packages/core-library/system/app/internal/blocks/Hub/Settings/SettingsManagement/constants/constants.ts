@@ -7,11 +7,22 @@ import { SelectOption } from "../../../../../../../../components";
 import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 import { RegularQuestionSelectionOptions } from "../types";
 
+export type BowtieFieldGroupType = {
+  key: keyof typeof labelNames; // Restrict keys to the ones defined in labelNames
+  count: number;
+};
+
 const createNumberList = (length: number) => {
   return Array.from({ length: length }, (_, index) => ({
     value: index + 1,
     label: String(index + 1),
   }));
+};
+
+export const labelNames = {
+  leftSection: "leftLabelName",
+  centerSection: "centerLabelName",
+  rightSection: "rightLabelName",
 };
 
 export const questionType = [
@@ -22,7 +33,13 @@ export const questionType = [
   { value: "HCP", label: "HCP" },
   { value: "MCQ", label: "MCQ(No Group)" },
   { value: "MCQ", label: "MCQ(Group)" },
+  { value: "BOWTIE", label: "BOWTIE" },
+];
 
+export const BowtieFieldGroups: BowtieFieldGroupType[] = [
+  { key: "leftSection", count: 5 },
+  { key: "centerSection", count: 4 },
+  { key: "rightSection", count: 5 },
 ];
 
 export const tabsSequence: SelectOption[] = Array.from(
@@ -41,6 +58,12 @@ export const initBgValues = { seqNum: 1, seqContent: "" };
 
 export const initAnswerValues = { answer: "", answerKey: false };
 
+export const bowtieInitAnswerValues = {
+  value: "",
+  container: "",
+  isAnswer: false,
+};
+
 export const caseStudyQuestionnaires = {
   maxPoints: 1,
   seqNum: 1,
@@ -58,7 +81,7 @@ export const questionnairesDefaultValue = Array.from(
 );
 
 export const initCaseStudyQuestionnaires = {
-  questionnaires: questionnairesDefaultValue
+  questionnaires: questionnairesDefaultValue,
 };
 
 export const initQuestionsValues = (
