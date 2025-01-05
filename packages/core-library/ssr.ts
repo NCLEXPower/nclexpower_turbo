@@ -117,15 +117,3 @@ export async function getEndpointResources() {
     ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
   );
 }
-
-export async function validateTokenSsr(params: ValidateTokenParams) {
-  const response = await fetch(
-    `${baseUrl}/api/v2/internal/baseInternal/validate-token`,
-    {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(params),
-    }
-  );
-  return ((await response.json()) as number) ?? null;
-}

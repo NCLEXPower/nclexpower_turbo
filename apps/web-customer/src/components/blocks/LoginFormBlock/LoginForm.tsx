@@ -6,7 +6,7 @@ Created by the Software Strategy & Development Division
 */
 
 import React, { useEffect } from "react";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { LoginFormType, loginSchema } from "core-library/system";
@@ -69,12 +69,10 @@ export const LoginForm: React.FC<Props> = ({
     }
   };
 
-  const { isMobile } = useResolution();
-
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
   return (
-    <div className="flex items-center justify-between w-full h-screen">
+    <div className="flex items-center justify-between w-full h-auto md:h-screen">
       <div className="hidden xl:flex lg:flex">
         <Box
           component={Image}
@@ -107,13 +105,15 @@ export const LoginForm: React.FC<Props> = ({
           </div>
         </Box>
       </div>
-      <div className="w-full h-full lg:h-auto lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24">
+      <div className="flex flex-col justify-center w-full h-auto lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24 mt-12 md:mt-0">
         <div
           className="flex items-center justify-end cursor-pointer text-darkBlue"
           onClick={handleBack}
         >
           <ArrowBackIosNewIcon fontSize="small" />
-          <span className="pt-sans-narrow-regular ml-1 underline">Back</span>
+          <span className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] ml-1 underline">
+            Back
+          </span>
         </div>
         <div className="w-full">
           <div className="flex items-center justify-center">
@@ -122,17 +122,17 @@ export const LoginForm: React.FC<Props> = ({
               className=""
               alt="CoreZigma"
               style={{
-                width: "150px",
-                height: "150px",
+                width: "120px",
+                height: "120px",
                 objectFit: "cover",
               }}
             />
           </div>
           <div>
-            <h5 className="pt-sans-bold text-4xl pt-sans-regular mb-2">
+            <h5 className="font-ptSans font-bold text-[30px] text-[#232323] lg:text-[40px] mb-2">
               Login
             </h5>
-            <p className="pt-sans-narrow-regular font-light text-darkGray text-lg">
+            <p className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] text-darkGray">
               Please login to continue to your account.
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -179,7 +179,7 @@ export const LoginForm: React.FC<Props> = ({
                   />
                 </Box>
               </Grid>
-              <div className="my-4 flex items-center justify-between ">
+              <div className="my-2 flex items-center justify-between ">
                 <Checkbox
                   checked={rememberMe}
                   onChange={handleChangeRememberMe}
@@ -196,7 +196,7 @@ export const LoginForm: React.FC<Props> = ({
                 />
                 <p
                   onClick={handleForgotPasswordClick}
-                  className="ml-1 pt-sans-narrow-regular underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
+                  className="ml-1 font-ptSansNarrow font-normal underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
                 >
                   Forgot Password?
                 </p>
@@ -218,7 +218,7 @@ export const LoginForm: React.FC<Props> = ({
                   }}
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <span className="pt-sans-narrow-bold text-lg normal-case">
+                  <span className="font-ptSansNarrow font-bold text-[18px] lg:text-[20px] normal-case">
                     Sign In
                   </span>
                 </Button>
@@ -240,17 +240,19 @@ export const LoginForm: React.FC<Props> = ({
                   variant="outlined"
                   onClick={signInWithGoogle}
                 >
-                  <span className="mr-4 pt-sans-narrow-regular text-lg text-black normal-case ">
+                  <span className="mr-4 font-ptSansNarrow font-normal text-[18px] lg:text-[20px] text-black normal-case ">
                     Sign in with Google
                   </span>
                   <GoogleIcon />
                 </Button>
               </div>
-              <div className="flex items-center justify-center mt-6 pt-sans-narrow-regular text-xl">
-                <p className="text-darkGray">Need an account?</p>
+              <div className="flex items-center justify-center mt-2 lg:mt-6 ">
+                <p className="text-darkGray font-ptSansNarrow font-normal text-[18px] lg:text-[20px]">
+                  Need an account?
+                </p>
                 <Link
                   href="/#pricing"
-                  className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
+                  className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer no-background "
                 >
                   Create One
                 </Link>
@@ -262,4 +264,3 @@ export const LoginForm: React.FC<Props> = ({
     </div>
   );
 };
-

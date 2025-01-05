@@ -3,6 +3,7 @@ import { internalAccountType, RegisterParams } from "../../types/types";
 import qs from "query-string";
 import { config } from "../../config";
 import {
+  AnalyticsParams,
   CheckoutSessionParams,
   CheckoutSessionResponse,
   ConfirmPaymentParams,
@@ -12,6 +13,7 @@ import {
   CreateCustomerParams,
   CreateCustomerResponse,
   CreatePaymentIntentParams,
+  CreateSalesParams,
   OrderSummaryResponse,
   PaymentIntentResponse,
   ReportIssueType,
@@ -25,6 +27,7 @@ import {
 } from "../types";
 import { Encryption } from "../../utils";
 import { ChatBotOptionResponse } from "../../types/chatbot";
+import { AllSalesProps } from "../../hooks/analytics/types";
 export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
@@ -204,6 +207,21 @@ export class WebApi {
   public async changePaymentStatus(accountId: string | undefined) {
     return await this.axios.put(
       `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`
+    );
+  }
+
+  public analyticsParams(accountId: string) {
+    return this.axios.get<AnalyticsParams>(
+      `/api/v1/Customer/analytics?${qs.stringify({ accountId })}`
+    );
+  }
+  public createSales(params: CreateSalesParams) {
+    return this.axios.post(`/api/v1/nclex-analytics/create-sales`, params);
+  }
+
+  public async getInitialAnalytics() {
+    return await this.axios.get<AllSalesProps>(
+      `/api/v1/nclex-analytics/initial-analytics`
     );
   }
 }

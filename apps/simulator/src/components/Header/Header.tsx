@@ -30,7 +30,7 @@ type Props = {
 };
 
 export const Header: React.FC<Props> = ({ logout, current }) => {
-  const { timeRemaining, duration: timeDuration } = useCountdown({ timeRemaining: '04:00:00', duration: '01:00:00' });
+  const { timeRemaining, duration: timeDuration } = useCountdown({ timeRemaining: '00:04:00:00', duration: '00:01:00:00' });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { setIsOpen } = useTour();
   const { getItem, setItem } = useLocalStorage<string>('TourKey');

@@ -24,6 +24,7 @@ interface Props {
   queryClient: QueryClient;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
+  isPaid: string | undefined;
 }
 
 const Layout: React.FC<React.PropsWithChildren<Props>> = ({
@@ -34,6 +35,7 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   logout,
   isAuthenticated,
+  isPaid,
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -47,24 +49,24 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({
                   menu={mockMenu}
                   isAuthenticated={isAuthenticated && tokenValidated}
                   onLogout={logout}
+                  isPaid={isPaid}
                 >
                   <ContentLoader loading={loading}>
                     <PageContainer stickOut={false}>
-
-                        <ToastProvider>
-                          <ControlledToast
-                            autoClose={5000}
-                            hideProgressBar={false}
-                          />
-                          {children}
-                        </ToastProvider>
+                      <ToastProvider>
+                        <ControlledToast
+                          autoClose={5000}
+                          hideProgressBar={false}
+                        />
+                        {children}
+                      </ToastProvider>
                     </PageContainer>
                   </ContentLoader>
                 </DrawerLayout>
               </DialogContextProvider>
             </TabsContextProvider>
           </ThemeProvider>
-        </AccountSetupContextProvider>                            
+        </AccountSetupContextProvider>
       </PageLoaderContextProvider>
     </QueryClientProvider>
   );

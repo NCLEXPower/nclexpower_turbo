@@ -25,7 +25,8 @@ export type Blocks =
   | "DuplicateSessionBlock"
   | "ChatbotManagement"
   | "ContactUsManagementBlock"
-  | "SalesManagement";
+  | "SalesManagement"
+  | "AnnouncementManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -47,6 +48,7 @@ type BlockProps = {
   ChatbotManagement: {};
   ContactUsManagementBlock: {};
   SalesManagement: {};
+  AnnouncementManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
