@@ -85,4 +85,3 @@ export * from "./PasswordToggleAdornment";
 export * from "./Charts/generic/Chart";
 export * from "./recaptcha/RecaptchaComponent";
 export * from "./Button/StatusButton";
-export * from "./Alert/AnnouncementAlert/AnnouncementAlert";
