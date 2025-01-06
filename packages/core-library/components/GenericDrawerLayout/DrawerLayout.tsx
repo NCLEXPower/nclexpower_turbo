@@ -8,6 +8,7 @@ import {
   useResolution,
   useRouteBasedVisibility,
 } from "../../hooks";
+import { useScroll } from "../../core/hooks/useScroll"; 
 import { Main } from "./content/Main";
 import MenuIcon from "@mui/icons-material/Menu";
 import { WebHeaderStylesType } from "../../types/web-header-style";
@@ -43,6 +44,7 @@ export const DrawerLayout: React.FC<
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
+  const { isScrolled } = useScroll(); 
 
   const router = useRouter();
 
@@ -103,7 +105,7 @@ export const DrawerLayout: React.FC<
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
                 >
-                  <MenuIcon />
+                  <MenuIcon sx={{ color: isScrolled ? "#00173F" : "white" }} />
                 </Button>
               )
             }
