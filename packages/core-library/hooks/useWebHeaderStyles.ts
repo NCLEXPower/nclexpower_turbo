@@ -6,7 +6,7 @@ Created by the Software Strategy & Development Division
 */
 
 import { SxProps, Theme } from "@mui/material/styles";
-import { useScroll, useRouter } from "core-library";
+import { useRouter, useScroll } from "../core";
 
 export const useWebHeaderStyles = () => {
   const { isScrolled } = useScroll();
