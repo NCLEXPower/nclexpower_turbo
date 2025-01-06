@@ -17,7 +17,7 @@ import { Control, UseFormHandleSubmit } from "react-hook-form";
 import {
   ContactMock,
   SocialMediaMock,
-} from "../../../core/constant/ContactPageMock";
+} from "../../../../core/constant/ContactPageMock";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";

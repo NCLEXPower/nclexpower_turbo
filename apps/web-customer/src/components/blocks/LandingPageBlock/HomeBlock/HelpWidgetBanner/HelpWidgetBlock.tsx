@@ -10,7 +10,7 @@ interface Props {}
 export const HelpWidgetBlock: React.FC<Props> = ({}) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push("/")
+    router.push((route) => route.home)
   };
   return (
     <section className="w-full flex items-center justify-center container-2xl bg-white">
