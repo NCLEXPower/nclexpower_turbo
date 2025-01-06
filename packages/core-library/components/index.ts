@@ -51,7 +51,7 @@ export * from "./Badge/CustomBadge";
 export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
-export * from "./Popover/Popover"
+export * from "./Popover/Popover";
 
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
@@ -86,3 +86,4 @@ export * from "./PasswordToggleAdornment";
 export * from "./Charts/generic/Chart";
 export * from "./recaptcha/RecaptchaComponent";
 export * from "./Button/StatusButton";
+export * from "./ScrollTop/ScrollTop";
