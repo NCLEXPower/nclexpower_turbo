@@ -6,8 +6,7 @@ Created by the Software Strategy & Development Division
 */
 
 import { SxProps, Theme } from "@mui/material/styles";
-import { useScroll } from "core-library";
-import { useRouter } from "next/router";
+import { useScroll, useRouter } from "core-library";
 
 export const useWebHeaderStyles = () => {
   const { isScrolled } = useScroll();
@@ -28,12 +27,12 @@ export const useWebHeaderStyles = () => {
     fontSize: "15px",
     ":disabled": {
       color: !isScrolledOrRoute ? "white" : "black",
-      textDecoration: 'underline'
+      textDecoration: "underline",
     },
     ":focus": {
       border: "none",
-      outline: "0 !important"
-    }
+      outline: "0 !important",
+    },
   };
 
   const loginButtonSx: SxProps = {
@@ -51,22 +50,22 @@ export const useWebHeaderStyles = () => {
     },
     ":disabled": {
       color: !isScrolledOrRoute ? "#071c51" : "#cca406",
-      textDecoration: 'underline'
-    }
+      textDecoration: "underline",
+    },
   };
 
   const ToTopButtonSx: SxProps = {
-    position: 'fixed',
+    position: "fixed",
     zIndex: 10000,
-    bottom: '50px',
-    right: '50px',
+    bottom: "50px",
+    right: "50px",
     height: "45px",
     width: "45px",
-    boxShadow: '2px',
+    boxShadow: "2px",
     minWidth: "40px",
     bgcolor: "#f3c402",
     borderRadius: "50%",
-    display: isScrolled ? 'flex' : 'none',
+    display: isScrolled ? "flex" : "none",
     alignItems: "center",
     justifyContent: "center",
     "&:hover": {

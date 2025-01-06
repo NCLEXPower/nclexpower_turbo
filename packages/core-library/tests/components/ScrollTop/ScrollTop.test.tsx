@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "../../common";
 import { ScrollTop } from "../../../components";
 import { useScroll } from "../../../core";
 import { useCookie } from "../../../hooks/useCookie";
@@ -9,6 +9,9 @@ jest.mock("../../../config", () => ({
 
 jest.mock("../../../core", () => ({
   useScroll: jest.fn(),
+  useRouter: jest.fn(() => ({
+    pathname: "/some-path",
+  })),
 }));
 
 jest.mock("../../../hooks/useCookie", () => ({
@@ -47,7 +50,34 @@ describe("ScrollTop Component", () => {
     expect(button).not.toBeInTheDocument();
   });
 
-  it("applies different bottom spacing based on cookie consent", () => {
+  it("applies absolute position when forCookieConsent is set to true", () => {
+    (useScroll as jest.Mock).mockReturnValue({
+      scrollTop: jest.fn(),
+      isScrolled: true,
+    });
+
+    (useCookie as jest.Mock).mockReturnValue([null]);
+
+    render(<ScrollTop forCookieConsent />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveStyle({ position: "absolute", top: "-60px" });
+  });
+
+  it("hides the scroll button if forCookieConsent=false and useCookie is null", () => {
+    (useScroll as jest.Mock).mockReturnValue({
+      scrollTop: jest.fn(),
+      isScrolled: true,
+    });
+
+    (useCookie as jest.Mock).mockReturnValue([null]);
+
+    render(<ScrollTop />);
+    const button = screen.queryByRole("button");
+    expect(button).not.toBeInTheDocument();
+  });
+
+  it("shows scroll button if forCookieConsent=false and useCookie is not null", () => {
     (useScroll as jest.Mock).mockReturnValue({
       scrollTop: jest.fn(),
       isScrolled: true,
@@ -55,17 +85,9 @@ describe("ScrollTop Component", () => {
 
     (useCookie as jest.Mock).mockReturnValue(["accepted"]);
 
-    const { rerender } = render(<ScrollTop />);
-
-    let button = screen.getByRole("button");
-    expect(button).toHaveStyle({ bottom: "50px" });
-
-    (useCookie as jest.Mock).mockReturnValue([null]);
-
-    rerender(<ScrollTop />);
-
-    button = screen.getByRole("button");
-    expect(button).toHaveStyle({ bottom: "120px" });
+    render(<ScrollTop />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveStyle({ display: "flex" });
   });
 
   it("calls scrollTop when button is clicked", () => {

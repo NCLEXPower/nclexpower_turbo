@@ -18,12 +18,22 @@ import {
   CustomerMenus,
   list,
 } from "core-library/core/utils/contants/wc/HomePageData";
-import { ChatBotWidget, DrawerLayout, MultiContentDialog } from "core-library/components";
-import { useWebHeaderStyles } from "@/pages/contents/useWebHeaderStyles";
-import { useConfirmedIntent, useNewAccount } from "core-library/contexts/auth/hooks";
+import {
+  ChatBotWidget,
+  DrawerLayout,
+  MultiContentDialog,
+} from "core-library/components";
+import {
+  useConfirmedIntent,
+  useNewAccount,
+} from "core-library/contexts/auth/hooks";
 import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
 import { theme } from "core-library/contents/theme/theme";
-import { useAuthInterceptor, useStyle } from "core-library/hooks";
+import {
+  useAuthInterceptor,
+  useStyle,
+  useWebHeaderStyles,
+} from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
 import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
 import { ContentLoader } from "core-library/router";
@@ -46,7 +56,14 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const showWelcomeDialog = isAuthenticated && isNewAccount;
 
   if (showWelcomeDialog) {
-    return <MultiContentDialog content={dataContent} open={showWelcomeDialog} handleClose={() => { }} showTour />
+    return (
+      <MultiContentDialog
+        content={dataContent}
+        open={showWelcomeDialog}
+        handleClose={() => {}}
+        showTour
+      />
+    );
   }
 
   return (

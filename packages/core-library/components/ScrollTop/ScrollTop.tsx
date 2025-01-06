@@ -1,46 +1,39 @@
 import { useScroll } from "../../core";
-import NorthIcon from "@mui/icons-material/North";
-import { IconButton, SxProps } from "@mui/material";
+import { IconButton } from "../Button/IconButton";
 import { useCookie } from "../../hooks/useCookie";
+import { useWebHeaderStyles } from "../../hooks";
+import { EvaIcon } from "../EvaIcon";
+
+interface ScrollTopProps {
+  forCookieConsent?: boolean;
+}
 
 const COOKIE_NAME = "user_cookie_consent";
 
-export const ScrollTop = () => {
-  const { scrollTop, isScrolled } = useScroll();
+export const ScrollTop: React.FC<ScrollTopProps> = ({
+  forCookieConsent = false,
+}) => {
+  const { scrollTop } = useScroll();
   const [cookieConsent] = useCookie<string | null>(COOKIE_NAME);
-
-  const ToTopButtonSx: SxProps = {
-    position: "fixed",
-    zIndex: 10000,
-    bottom: cookieConsent ? "50px" : "120px",
-    right: "50px",
-    height: "45px",
-    width: "45px",
-    boxShadow: "2px",
-    minWidth: "40px",
-    bgcolor: "#f3c402",
-    borderRadius: "50%",
-    display: isScrolled ? "flex" : "none",
-    alignItems: "center",
-    justifyContent: "center",
-    "&:hover": {
-      bgcolor: "#f3c402",
-    },
-  };
+  const { ToTopButtonSx } = useWebHeaderStyles();
 
   return (
     <IconButton
       onClick={() => scrollTop()}
-      sx={ToTopButtonSx}
+      sx={{
+        ...ToTopButtonSx,
+        ...(!forCookieConsent &&
+          !cookieConsent && {
+            display: "none",
+          }),
+        ...(forCookieConsent && {
+          position: "absolute",
+          top: "-60px",
+        }),
+      }}
       className="fadeIn"
     >
-      <NorthIcon
-        sx={{
-          width: "25px",
-          height: "25px",
-        }}
-        className="text-[#0f2a71]"
-      />
+      <EvaIcon name="arrow-upward-outline" />
     </IconButton>
   );
 };

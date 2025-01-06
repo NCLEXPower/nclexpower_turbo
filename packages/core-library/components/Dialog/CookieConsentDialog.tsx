@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, SxProps } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
+import { Button } from "../Button/Button";
 import { useResolution } from "../../hooks";
 import { useRouter, useScroll } from "../../core";
 import { useCookie } from "../../hooks/useCookie";
+import { ScrollTop } from "../ScrollTop/ScrollTop";
 
 const COOKIE_NAME = "user_cookie_consent";
 
@@ -11,8 +13,9 @@ const buttonSx: SxProps = {
   fontFamily: "PT Sans, sans-serif",
   fontSize: "1rem",
   minHeight: "unset",
+  minWidth: "120px",
   height: "2.5rem",
-  padding: "0 16px",
+  padding: "0",
   borderRadius: "15px",
   textWrap: "nowrap",
 };
@@ -64,9 +67,11 @@ export const CookieConsentDialog: React.FC = () => {
             flexDirection: "column",
           }}
         >
+          <ScrollTop forCookieConsent />
           <Box
             sx={{
               bgcolor: !isScrolledOrRoute ? "white" : "rgba(0, 0, 0, 0.9)",
+              backdropFilter: "blur(3px)",
               color: isScrolledOrRoute ? "white" : "black",
               padding: "1rem 2rem",
               minHeight: "100px",
