@@ -11,6 +11,8 @@ import {
   VerifyCodeParams,
 } from "core-library/api/types";
 import { parseTokenId } from "core-library/contexts/auth/access-token";
+import { Encryption } from "core-library";
+import { config } from "core-library/config";
 
 interface OtpVerificationResult {
   verifyOtp: (params: VerifyCodeParams) => Promise<void>;
@@ -54,6 +56,12 @@ export const useOtpVerification = (): OtpVerificationResult => {
     setAccessToken,
     setRefreshToken,
     setSingleCookie,
+    setAccountCookie,
+    initializeAnalyticsUser,
+    setAccessLevel,
+    setAccountId,
+    setSession,
+    setIsPaid,
   } = useAuthContext();
   const { ssoDetails, setSsoDetails } = useGoogleSignIn();
 
@@ -144,6 +152,14 @@ export const useOtpVerification = (): OtpVerificationResult => {
     try {
       setSsoDetails(undefined);
       const result = await verify2faCb.execute({ ...props });
+      const parsedAccountId =
+        config.value.BASEAPP === "webc_app"
+          ? Encryption(result.data.accountId, config.value.SECRET_KEY)
+          : result.data.accountId;
+      const parsedIsPaid =
+        config.value.BASEAPP === "webc_app"
+          ? Encryption(result.data.isPaid.toString(), config.value.SECRET_KEY)
+          : result.data.isPaid;
       if (result.data.responseCode === 500) {
         toast.executeToast(
           "Invalid verification code. Please try again",
@@ -153,18 +169,26 @@ export const useOtpVerification = (): OtpVerificationResult => {
         );
         return;
       }
+      setIsPaid(parsedIsPaid);
+      setSession(result.data.sessionId);
+      setAccountId(parsedAccountId);
+      setAccessLevel(result.data.accessLevel);
       setAccessToken(result.data.accessTokenResponse.accessToken);
       setRefreshToken(result.data.accessTokenResponse.refreshToken);
-      setSingleCookie(
-        parseTokenId(result.data.accessTokenResponse.accessToken),
-        {
-          path: "/",
-          sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
-          domain: `.${window.location.hostname}`,
-        }
-      );
+      setSingleCookie(result.data.accessTokenResponse.accessToken, {
+        path: "/",
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        domain: `.${window.location.hostname}`,
+      });
+      setAccountCookie(parsedAccountId, {
+        path: "/",
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        domain: `.${window.location.hostname}`,
+      });
       setIsAuthenticated(true);
+      await initializeAnalyticsUser(parsedAccountId);
       await router.push((route) => route.hub);
     } catch (error) {
       console.error("Something went wrong", error);

@@ -12,7 +12,11 @@ import {
   SectionVideosType,
   StandardProgramListType,
 } from "core-library/types/wc/programList";
-import { ControlledAccordion, EvaIcon, IconButton } from "core-library/components";
+import {
+  ControlledAccordion,
+  EvaIcon,
+  IconButton,
+} from "core-library/components";
 import Image from "next/image";
 import { ProgressCircle } from "../../../../components/ProgressCircle/ProgressCircle";
 import useCalculateProgramProgress from "../../../../core/hooks/useCalculateProgramProgress";
@@ -22,11 +26,13 @@ import {
   getStatusIcons,
 } from "../../.../../../../utils";
 import { useRouter } from "core-library";
+import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
 
 interface ProgramListBlockProps {
   program: StandardProgramListType[];
   programTitle: string;
   programSubtitle: string;
+  isLoading: boolean;
 }
 
 interface AccordionHeaderProps {
@@ -44,6 +50,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   program,
   programTitle,
   programSubtitle,
+  isLoading,
 }) => {
   const [listView, setListView] = useState<boolean>(true);
 
@@ -51,7 +58,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   const progress = useCalculateProgramProgress(program);
 
   const router = useRouter();
-  const lastPathSegment = router.asPath.split('/').filter(Boolean).pop();
+  const lastPathSegment = router.asPath.split("/").filter(Boolean).pop();
 
   const handleShowVideos = (
     sectionVids: SectionVideosType[],
@@ -59,7 +66,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   ) => {
     const secVids = JSON.stringify(sectionVids);
     const encodedSecVids = encodeURIComponent(secVids);
-    
+
     router.push(
       `/hub/programs/${lastPathSegment}/watch?secVids=${encodedSecVids}&programId=${programId}`
     );
@@ -181,7 +188,9 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       height={16}
                     />
                     <h4
-                      onClick={() => hasVideos && handleShowVideos(sectionVideos, id)}
+                      onClick={() =>
+                        hasVideos && handleShowVideos(sectionVideos, id)
+                      }
                       className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
                       {sectionTitle}
@@ -214,7 +223,9 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
           listView={listView}
           handleClick={toggleView}
         />
-        {listView ? (
+        {isLoading ? (
+          <ProgramSkeletonLoader listView={listView} />
+        ) : listView ? (
           <div className="fadeIn">
             <ControlledAccordion
               accordionRadius="16px"
@@ -234,9 +245,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
             />
           </div>
         ) : (
-          <>
-            <ProgramGridView program={program} />
-          </>
+          <ProgramGridView program={program} />
         )}
       </Box>
     </section>
