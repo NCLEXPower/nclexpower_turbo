@@ -8,7 +8,6 @@ const COOKIE_NAME = "user_cookie_consent";
 export const ScrollTop = () => {
   const { scrollTop, isScrolled } = useScroll();
   const [cookieConsent] = useCookie<string | null>(COOKIE_NAME);
-  console.log(cookieConsent);
 
   const ToTopButtonSx: SxProps = {
     position: "fixed",
