@@ -9,7 +9,6 @@ import {
   BusinessQueryContextProvider,
   ToastProvider,
 } from "core-library/contexts";
-import { useCountdown } from "core-library/hooks";
 import Layout from "./Layout";
 import { ControlledToast, ErrorBox } from "core-library/components";
 import { ClientSecretKeyContextProvider } from "core-library/contexts";
@@ -35,7 +34,6 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   error,
   slug,
 }) => {
-  // const { countdown } = useCountdown();
   const MaintenanceMode =
     data && data.MaintenanceStatus?.currentMaintenanceMode;
 
