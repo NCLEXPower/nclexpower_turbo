@@ -9,6 +9,7 @@ import {
   BusinessQueryContextProvider,
   ToastProvider,
 } from "core-library/contexts";
+import { useCountdown } from "core-library/hooks";
 import Layout from "./Layout";
 import { ControlledToast, ErrorBox } from "core-library/components";
 import { ClientSecretKeyContextProvider } from "core-library/contexts";
@@ -18,6 +19,7 @@ import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/Maintenan
 import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
+import { GoLiveBlock } from "@/components/blocks/GoLive/GoLiveBlock";
 
 interface Props {
   slug?: string;
@@ -33,6 +35,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   error,
   slug,
 }) => {
+  // const { countdown } = useCountdown();
   const MaintenanceMode =
     data && data.MaintenanceStatus?.currentMaintenanceMode;
 
@@ -42,6 +45,10 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
+  }
+
+  if (data?.hasGoLive) {
+    return <GoLiveBlock />; //Replace with actual Go-Live UI
   }
 
   return (
