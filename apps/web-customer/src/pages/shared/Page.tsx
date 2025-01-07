@@ -18,6 +18,7 @@ import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/Maintenan
 import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
+import { GoLiveBlock } from "@/components/blocks/GoLive/GoLiveBlock";
 
 interface Props {
   slug?: string;
@@ -42,6 +43,10 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
+  }
+
+  if (data?.hasGoLive) {
+    return <GoLiveBlock />; //Replace with actual Go-Live UI
   }
 
   return (
