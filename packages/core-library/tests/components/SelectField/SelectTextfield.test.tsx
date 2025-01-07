@@ -1,6 +1,14 @@
 import { SelectField } from '../../../components/Textfield/SelectTextfield';
 import { render, screen } from '../../common';
 
+jest.mock("../../../config", () => ({
+  config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
+
 
 describe('SelectField', () => {
   it('renders FormHelperText when helperText is provided', () => {
