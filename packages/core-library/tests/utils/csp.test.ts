@@ -16,6 +16,7 @@ jest.mock("../../core/router", () => ({
 jest.mock("../../ssr", () => ({
   getMaintenanceMode: jest.fn(),
   getEndpointResources: jest.fn(),
+  getHasActiveGoLive: jest.fn(),
 }));
 
 jest.mock("../../types", () => ({
