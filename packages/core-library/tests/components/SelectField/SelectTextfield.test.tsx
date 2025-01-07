@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import { SelectField } from '../../../components/Textfield/SelectTextfield';
+import { render, screen } from '../../common';
 
 
 describe('SelectField', () => {
