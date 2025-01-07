@@ -224,4 +224,10 @@ export class WebApi {
       `/api/v1/nclex-analytics/initial-analytics`
     );
   }
+
+  public async getActiveGoLiveSchedule() {
+    return await this.axios.get(
+      `/api/v2/internal/BaseInternal/active-schedule`
+    );
+  }
 }
