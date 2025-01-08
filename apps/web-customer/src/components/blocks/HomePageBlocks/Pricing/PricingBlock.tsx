@@ -18,6 +18,8 @@ import { ProductListResponse } from "core-library/api/types";
 import { PriceButtonDetails, PricingDetails } from "@/constants/constants";
 import { DetailedPopUp } from "./PricingComponent/DetailedPopUp";
 import { EvaIcon } from "core-library/components";
+import PricingContent from "./PricingComponent/PricingContent";
+import { SelectPriceDetails } from "./PricingComponent/SelectPriceDetails";
 
 interface Props {
   url?: string;
@@ -33,6 +35,15 @@ interface ContentProp {
       label: string;
     }>;
   };
+}
+
+function isProductList(
+  data: Record<string, any>
+): data is ProductListResponse[] {
+  return (
+    Array.isArray(data) &&
+    data.every((item) => item && typeof item.id === "string")
+  );
 }
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
@@ -143,86 +154,3 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     </>
   );
 };
-
-const Content = ({ details }: ContentProp) => {
-  return (
-    <div>
-      <div className=" h-[250px] flex justify-center flex-row p-10">
-        <div className="w-full flex justify-start font-ptSans">
-          <div className="">
-            <p className="text-darkGray text-lg">Product Type</p>
-            <p className="font-bold text-3xl -mt-4 mb-8">
-              {details.productType}
-            </p>
-            <p className="text-darkGray">Product Duration</p>
-            <p className="font-bold text-3xl -mt-4">23 Days - Standard</p>
-          </div>
-        </div>
-        <div className="w-full flex justify-center items-end font-ptSans">
-          <div className="flex items-center flex-col">
-            <p className=" font-Poppins font-bold text-6xl">
-              {" "}
-              ${details.price}
-            </p>
-            <p className="text-darkGray -mt-2">Product Price</p>
-          </div>
-        </div>
-      </div>
-      <div className=" h-[450px] flex flex-col">
-        <div className="w-full flex justify-start font-ptSansNarrow px-10 text-lg">
-          <p>
-            Transform your learning experience with our comprehensive package,
-            designed specifically to help you excel in patient care and medical
-            practice.
-          </p>
-        </div>
-        <div className="px-10 ">
-          <div className="gap-5 flex justify-start items-center ">
-            <p className="text-black font-ptSansNarrow w-100">
-              {details.inclusions &&
-                details.inclusions.map((inclusion, index) => (
-                  <div className="flex">
-                    <div className=" pr-3">
-                      <EvaIcon
-                        id="checkmark-circle"
-                        name="checkmark-circle-2-outline"
-                        width={25}
-                        height={25}
-                        ariaHidden
-                        fill="#084A4E"
-                        className="mt-4"
-                      />
-                    </div>
-                    <div>
-                      <p key={index}>{inclusion.label}</p>
-                    </div>
-                  </div>
-                ))}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface SelectPriceDetailsProp {
-  onClick: () => void;
-}
-
-const SelectPriceDetails = ({ onClick }: SelectPriceDetailsProp) => {
-  return (
-    <DetailedPopUp onClick={onClick}>
-      <Content details={PricingDetails} />
-    </DetailedPopUp>
-  );
-};
-
-function isProductList(
-  data: Record<string, any>
-): data is ProductListResponse[] {
-  return (
-    Array.isArray(data) &&
-    data.every((item) => item && typeof item.id === "string")
-  );
-}

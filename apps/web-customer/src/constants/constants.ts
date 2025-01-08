@@ -18,6 +18,7 @@ export const PricingDetails = {
   currency: "Usd",
   productType: "Practical Nurse",
   duration: "23 Days - Standard",
+  description: "Transform your learning experience with our comprehensive package, designed specifically to help you excel in patient care and medical practice.",
   inclusions: [
     {
       label:
