@@ -4,7 +4,7 @@ import {
   BowtieItemType,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
-import { useOrganizeSections } from "../../../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/hooks/useOrganizeSection";
+import { useOrganizeSections } from "../../../../../../../../../../../../../../../../hooks";
 
 export const BowtieSummary = ({ data }: Partial<QuestionnaireItem>) => {
   const sections = [data.leftSection, data.centerSection, data.rightSection];
@@ -52,7 +52,7 @@ export const BowtieSummary = ({ data }: Partial<QuestionnaireItem>) => {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "start",
           justifyContent: "center",
           gap: 5,
           width: "100%",

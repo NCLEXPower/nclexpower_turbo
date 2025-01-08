@@ -348,7 +348,6 @@ const caseStudyQuestionnaireSchema = yup.object({
             .required(({ path }) =>
               generateQuestionErrorMessage(path, "Item stem is required.")
             ),
-
           transitionHeader: yup.string().optional().default(""),
         })
         .concat(answersSchema)

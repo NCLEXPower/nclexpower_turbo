@@ -23,6 +23,7 @@ import { ContainedCaseStudyQuestionType } from "../../../../types";
 import { useEffect } from "react";
 import { Instruction } from "./components/Instruction";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
+import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
 
 interface Props {
   index: number;
@@ -40,10 +41,12 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
     setValue(`questionnaires.${index}.itemNum`, index + 1);
+    setValue(`questionnaires.${index}.questionType`, questionType);
   }, [index, getValues, questionType]);
 
-  const handleReset = () => {
-    resetField(`questionnaires.${index}.answers`);
+  const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
+    resetField(`questionnaires.${index}`);
+    setValue(`questionnaires.${index}.questionType`, value);
   };
 
   useEffect(() => {
@@ -73,7 +76,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               name={`questionnaires.${index}.questionType`}
               label="Question Type:"
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
-              onChange={handleReset}
+              onChange={(value) => handleReset(value)}
               options={questionTypeOptions ?? []}
               width="60%"
             />

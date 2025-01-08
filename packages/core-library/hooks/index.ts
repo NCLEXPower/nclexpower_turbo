@@ -48,3 +48,5 @@ export * from "./analytics/useAnalytics";
 export * from "./ipCountry/useCountryFromIp";
 export * from "./golive/useCountdown";
 export * from "./useWebHeaderStyles";
+export * from "./useSyncContainer";
+export * from "./useOrganizeSection";
