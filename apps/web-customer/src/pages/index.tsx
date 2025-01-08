@@ -4,23 +4,18 @@ import {
   HowItWorksBlock,
   PricingBlock,
 } from "@/components";
-import { useScroll, withCSP } from "core-library";
+import { withCSP } from "core-library";
 import { GetServerSideProps } from "next";
-import NorthIcon from "@mui/icons-material/North";
 import React from "react";
-import useWebHeaderStyles from "@/pages/contents/useWebHeaderStyles";
-import { IconButton } from "@mui/material";
 import { SsrTypes } from "core-library/types/global";
 import { useEndpointByKey } from "core-library/hooks";
+import { ScrollTop } from "core-library/components";
 
 interface Props {
   data?: SsrTypes;
 }
 
 const Home: React.FC<Props> = ({ data }) => {
-  const { scrollTop } = useScroll();
-  const { ToTopButtonSx } = useWebHeaderStyles();
-
   const url = useEndpointByKey({
     data: data?.endpoints,
     key: "pricing-section",
@@ -29,19 +24,6 @@ const Home: React.FC<Props> = ({ data }) => {
   return (
     <React.Fragment>
       <div className="w-screen flex flex-col overflow-y-auto overflow-x-hidden font-ptSans ">
-        <IconButton
-          onClick={() => scrollTop()}
-          sx={ToTopButtonSx}
-          className="fadeIn"
-        >
-          <NorthIcon
-            sx={{
-              width: "25px",
-              height: "25px",
-            }}
-            className="text-[#0f2a71]"
-          />
-        </IconButton>
         <div className="w-full h-screen">
           <RevolutionBannerBlock />
         </div>
@@ -55,6 +37,7 @@ const Home: React.FC<Props> = ({ data }) => {
           <PricingBlock url={url} />
         </div>
       </div>
+      <ScrollTop />
     </React.Fragment>
   );
 };

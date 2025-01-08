@@ -25,6 +25,7 @@ interface Props extends DialogProps {
   borderRadius?: string;
   overflowContent?: string;
   ContentHeight?: string;
+  isOverflowing?: boolean;
 }
 
 export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
@@ -38,6 +39,7 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
   borderRadius = "0px",
   overflowContent = "auto",
   ContentHeight = "250px",
+  isOverflowing = true,
   ...props
 }) => {
   return (
@@ -47,13 +49,13 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
       open={open}
       onClose={handleClose}
       sx={{
-        overflowY: overflowContent,
+        overflowY: isOverflowing ? overflowContent : "none",
         zIndex: 1,
         "& .MuiDialog-paper": {
           height: ContentHeight,
-          maxHeight: "550px",
+          maxHeight: isOverflowing ? "550px" : "auto",
           borderRadius: borderRadius,
-          overflowY: overflowContent,
+          overflowY: isOverflowing ? overflowContent : "none",
         },
       }}
       {...props}
@@ -98,8 +100,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
         sx={{
           px: { xs: 6, sm: 12 },
           pb: { xs: 6, sm: 12 },
-          overflowY: overflowContent,
-          height: "500px",
+          overflowY: isOverflowing ? overflowContent : "none",
+          height: isOverflowing ? "500px" : "auto",
         }}
       >
         {children}

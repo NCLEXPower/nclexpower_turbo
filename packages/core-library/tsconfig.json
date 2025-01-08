@@ -5,7 +5,8 @@
     "module": "commonjs",
     "paths": {
       "@mui/icons-material/*": ["../../node_modules/@mui/icons-material/*"],
-      "react": ["./node_modules/@types/react"]
+      "react": ["./node_modules/@types/react"],
+      "react-player": ["../../node_modules/react-player/lib/index.d.ts"]
     }
   },
   "include": [
