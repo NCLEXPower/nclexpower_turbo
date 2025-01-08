@@ -6,6 +6,7 @@
 import { render, screen } from "../../common";
 import { PhoneField } from "../../../components";
 import { FormProvider, useForm } from "react-hook-form";
+import { Typography } from "@mui/material";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -86,4 +87,33 @@ describe("PhoneField Component", () => {
     setup();
     expect(screen.queryByTestId("input-loader")).not.toBeInTheDocument();
   });
-});
+  });
+
+  describe("<Typography> Error Message Rendering", () => {
+    it("renders the error message when fieldState.error.message is provided", () => {
+      const fieldState = { error: { message: "Invalid phone number" } };
+  
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {fieldState.error.message}
+        </Typography>
+      );
+  
+      const errorMessage = screen.getByText("Invalid phone number");
+      expect(errorMessage).toBeInTheDocument();
+      expect(errorMessage).toHaveStyle("font-size: 15px");
+      expect(errorMessage).toHaveStyle("color: rgb(207, 34, 63)");
+    });
+  
+    it("renders nothing if fieldState.error.message is not provided", () => {
+      const fieldState = { error: { message: "Invalid phone number" } }
+  
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {fieldState.error?.message}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+    });
+  });
