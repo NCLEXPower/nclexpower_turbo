@@ -115,7 +115,7 @@ const PhoneFieldComponent = <T extends object>({
     <Grid container spacing={2} direction="column">
       <Grid item>
         {fieldState?.error?.message && (
-          <FieldError messageKey={fieldState.error.message} />
+          <Typography sx={{fontSize: 15}} color="error">{fieldState.error.message}</Typography>
         )}
       </Grid>
 
@@ -152,6 +152,7 @@ const PhoneFieldComponent = <T extends object>({
                   data-testid="phone-field"
                   customInput={Input}
                   name={field.name}
+                  error={!!fieldState?.error?.message}
                   onChange={field.onChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
