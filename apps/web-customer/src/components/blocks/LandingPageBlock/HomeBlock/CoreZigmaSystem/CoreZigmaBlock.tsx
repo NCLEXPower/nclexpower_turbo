@@ -14,7 +14,7 @@ import {
   FlipCardTwoBack,
   TransparentCoreZigma,
 } from "core-library/assets";
-import { FlipCard } from "../../../../components/Cards/FlippableCard/FlipCard";
+import { FlipCard } from "../../../../../components/Cards/FlippableCard/FlipCard";
 
 interface Props {}
 

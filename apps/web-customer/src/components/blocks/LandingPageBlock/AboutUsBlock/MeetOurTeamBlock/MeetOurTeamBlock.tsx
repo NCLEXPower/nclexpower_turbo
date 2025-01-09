@@ -4,7 +4,7 @@ import {
   nursesMockData,
   engineersMockData,
   executivesMockData,
-} from '../../../../core/constant/AboutUsMock/MeetOurTeamMock';
+} from '../../../../../core/constant/AboutUsMock/MeetOurTeamMock';
 import { NurseIcon, EngineerIcon } from 'core-library/assets';
 import { TeamBlock } from './TeamBlock';
 import { Tabs } from 'core-library/components';
