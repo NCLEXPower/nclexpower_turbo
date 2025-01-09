@@ -14,7 +14,8 @@ import { useApiCallback } from "core-library/hooks";
 import { ResendCodeParams } from "core-library/api/types";
 import { useOtpVerification } from "@/core/hooks/useOtpVerification";
 import { useExecuteToast } from "core-library/contexts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 interface Props {}
 
@@ -23,6 +24,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
   const { openInNewTab, replace } = useRouter();
   const { setResetTime, resetTime } = useOtpVerification();
   const { showToast } = useExecuteToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const resetLinkCb = useApiCallback(
     async (api, args: ResendCodeParams) => await api.web.web_reset_link(args)
@@ -33,7 +35,9 @@ export const ResetLinkBlock: React.FC<Props> = () => {
   };
 
   const handleResendEmail = async () => {
-    if (!email?.email) return;
+    if (!email?.email || isLoading) return;
+
+    setIsLoading(true);
 
     try {
       const resetLinkResult = await resetLinkCb.execute({
@@ -55,6 +59,8 @@ export const ResetLinkBlock: React.FC<Props> = () => {
     } catch (error) {
       console.error("Error sending reset link:", error);
       showToast("An unexpected error occurred. Please try again.", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -111,13 +117,24 @@ export const ResetLinkBlock: React.FC<Props> = () => {
             <div className="flex items-center">
               <p className="text-[16px] text-[#6D7081] font-ptSansNarrow font-regular md:text-left lg:text-[18px]">
                 If you don&apos;t see the email, check other places it might be,
-                like your junk, spam, or social folder, or{" "}
+                like your junk, spam, or social folder, {isLoading ? " " : "or "}
                 <button
-                  disabled={resetTime !== 0}
+                  disabled={resetTime !== 0 || isLoading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
                 >
-                  send the email again {resetTime !== 0 && `in (${resetTime}s)`}.
+                  {isLoading ? (
+                    <CircularProgress
+                      size={20}
+                      color="inherit"
+                      id="loader"
+                      aria-live="assertive"
+                      thickness={5}
+                      sx={{ border: 'none' }}
+                    />
+                  ) : (
+                    `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ''}`
+                  )}
                 </button>
               </p>
             </div>
@@ -136,7 +153,10 @@ export const ResetLinkBlock: React.FC<Props> = () => {
               </h4>
               <h4 className="text-[14px] font-ptSansNarrow font-regular lg:text-[16px]">
                 Our customer support team is here for you.{" "}
-                <span onClick={navigateToContact} className="cursor-pointer text-[14px] lg:text-[16px] text-darkBlue font-ptSans font-bold underline">
+                <span
+                  onClick={navigateToContact}
+                  className="cursor-pointer text-[14px] lg:text-[16px] text-darkBlue font-ptSans font-bold underline"
+                >
                   Contact Support
                 </span>
               </h4>
