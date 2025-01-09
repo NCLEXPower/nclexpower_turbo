@@ -31,7 +31,7 @@ const chooseSettingsStepFormSchema = yup.object({
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
-    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE"])
+    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE", "CHATBOT"])
     .required(),
 });
 
@@ -94,18 +94,18 @@ export const ChooseProductsConfigurations = (props: {
         )}
         {(accessLevel === AccessLevels.ADMIN ||
           accessLevel === AccessLevels.ENCODER) && (
-          <Grid item xs={4}>
-            <Card
-              onClick={() =>
-                handleSelection({ chosen: "CONFIG", selection: "QM" })
-              }
-              hoverEffect
-              elevation={5}
-              text="Web Simulator"
-              data-testid="web-simulator-card"
-            />
-          </Grid>
-        )}
+            <Grid item xs={4}>
+              <Card
+                onClick={() =>
+                  handleSelection({ chosen: "CONFIG", selection: "QM" })
+                }
+                hoverEffect
+                elevation={5}
+                text="Web Simulator"
+                data-testid="web-simulator-card"
+              />
+            </Grid>
+          )}
       </Grid>
     </Box>
   );
@@ -348,12 +348,26 @@ export const MaintenanceMode = (props: {
             text="Web Customer"
           />
         </Grid>
+        <Grid item xs={4}>
+          <Card
+            hoverEffect
+            onClick={() =>
+              handleSelection({
+                chosen: "CHATBOT",
+                selection: "WEBCUSTOMER",
+              })
+            }
+            elevation={5}
+            text="Chatbot Mode"
+          />
+        </Grid>
         <Grid item xs={4}></Grid>
         <Grid item xs={4}></Grid>
       </Grid>
     </Box>
   );
 };
+
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   const { hasAccess } = useAccessControl();

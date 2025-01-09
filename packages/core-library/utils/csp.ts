@@ -12,6 +12,7 @@ import {
   getEndpointResources,
   getHasActiveGoLive,
   getMaintenanceMode,
+  getChatBotMode
 } from "../ssr";
 
 const baseUrl =
@@ -51,6 +52,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
       const hasGoLiveActive = await getHasActiveGoLive();
+      const ChatBotMode = await getChatBotMode()
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -69,6 +71,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
                 MaintenanceStatus,
                 endpoints,
                 hasGoLive: hasGoLiveActive,
+                ChatBotMode
               },
             },
           };
@@ -85,6 +88,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             MaintenanceStatus,
             endpoints,
             hasGoLive: hasGoLiveActive,
+            ChatBotMode
           },
         },
       };

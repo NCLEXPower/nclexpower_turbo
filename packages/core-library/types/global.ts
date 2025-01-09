@@ -205,8 +205,15 @@ export type MaintenanceSsr = {
 
 type MaintenanceMode = string[] | undefined;
 
+export type ChatBotSsr = {
+  mode: number,
+  createdDate: string,
+  updatedDate: string
+}
+
 export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
   hasGoLive: boolean;
+  ChatBotMode: ChatBotSsr
 };

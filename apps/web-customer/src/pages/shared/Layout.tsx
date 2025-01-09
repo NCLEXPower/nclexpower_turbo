@@ -40,7 +40,7 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 
-const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const Layout: React.FC<React.PropsWithChildren<{ chatBotMode?: boolean }>> = ({ children, chatBotMode }) => {
   const router = useRouter();
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
@@ -96,8 +96,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                     >
                       {children}
                       <Footer info={CompanyInfo} list={list} />
-                      {/* dynamic hideHelp should be implemented here */}
-                      {true && <ChatBotWidget />}
+                      {chatBotMode && <ChatBotWidget />}
                     </DrawerLayout>
                   </LoadablePageContent>
                 </ContentLoader>
