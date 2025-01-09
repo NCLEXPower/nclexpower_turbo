@@ -224,3 +224,4 @@ export const LottieLists = [
 ];
 
 export const RegisterBG = require('./register/register_bg.jpg');
+export const HelpWidget = require('./home/HelpWidget.json');
