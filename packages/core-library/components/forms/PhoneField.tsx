@@ -115,7 +115,9 @@ const PhoneFieldComponent = <T extends object>({
     <Grid container spacing={2} direction="column">
       <Grid item>
         {fieldState?.error?.message && (
-          <Typography sx={{fontSize: 15}} color="error">{fieldState.error.message}</Typography>
+          <Typography sx={{fontSize: 15}} color="error">
+            {fieldState.error.message}
+          </Typography>
         )}
       </Grid>
 

@@ -118,7 +118,7 @@ describe("PhoneField Component", () => {
     });
   
     it("renders nothing if fieldState.error.message is undefined", () => {
-      const fieldState = { error: { message: undefined } };
+      const fieldState = { error: { message: undefined }};
   
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
@@ -143,5 +143,4 @@ describe("PhoneField Component", () => {
       expect(errorMessage).toBeNull();
     });
   });
-
 });
