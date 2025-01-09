@@ -87,7 +87,6 @@ describe("PhoneField Component", () => {
     setup();
     expect(screen.queryByTestId("input-loader")).not.toBeInTheDocument();
   });
-  });
 
   describe("<Typography> Error Message Rendering", () => {
     it("renders the error message when fieldState.error.message is provided", () => {
@@ -105,8 +104,8 @@ describe("PhoneField Component", () => {
       expect(errorMessage).toHaveStyle("color: rgb(207, 34, 63)");
     });
   
-    it("renders nothing if fieldState.error.message is not provided", () => {
-      const fieldState = { error: { message: "Invalid phone number" } }
+    it("renders nothing if fieldState.error.message is an empty string", () => {
+      const fieldState = { error: { message: "" } };
   
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
@@ -115,5 +114,34 @@ describe("PhoneField Component", () => {
       );
   
       const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
+    });
+  
+    it("renders nothing if fieldState.error.message is undefined", () => {
+      const fieldState = { error: { message: undefined } };
+  
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {fieldState.error?.message}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
+    });
+  
+    it("renders nothing if fieldState.error.message is null", () => {
+      const fieldState = { error: { message: null } };
+  
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {fieldState.error?.message}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
     });
   });
+
+});
