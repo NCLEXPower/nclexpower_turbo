@@ -23,9 +23,9 @@ export const HelpWidgetBlock: React.FC<Props> = ({}) => {
                 Need Help with Your NCLEX Prep?
               </h4>
               <h4 className="text-md lg:text-lg font-medium font-Rajdhani text-white">
-                Have questions or unsure about your next steps? Reach out here{" "}
+                Have questions or unsure about your next steps? Reach out here
                 <br />
-                for personalized guidance and expert support to help you succeed{" "}
+                for personalized guidance and expert support to help you succeed
                 <br />
                 on the NCLEX!
               </h4>
