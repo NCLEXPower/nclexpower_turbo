@@ -7,13 +7,24 @@ import { ImageCarousel } from "@/components/ImageCarousel/ImageCarousel";
 import { settings } from "core-library/core/utils/contants/wc/HomePageData";
 import { CarouselOne, CarouselTwo, CarouselThree } from "core-library/assets";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface Props {}
 
 export const RevolutionBannerBlock: React.FC<Props> = () => {
+  const [carouselSettings, setCarouselSettings] = useState(settings);
+
+  useEffect(() => {
+    setCarouselSettings({
+      ...settings,
+      autoplay: true,
+      autoplaySpeed: 8000,
+    });
+  }, []);
+
   return (
     <div className="h-screen overflow-hidden">
-      <ImageCarousel sliderConfig={settings}>
+      <ImageCarousel sliderConfig={carouselSettings}>
         <div className="h-full w-full relative">
           <div className="absolute  justify-center h-full w-full flex  flex-col left-0 text-white z-10 pl-[12%] pt-[3%]">
             <p className="lg:text-6xl md:text-5xl sm:text-4xl text-3xl font-bold font-Rajdhani">
