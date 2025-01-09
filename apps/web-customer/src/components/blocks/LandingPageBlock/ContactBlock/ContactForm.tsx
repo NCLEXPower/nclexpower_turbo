@@ -95,7 +95,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 data-testid="email-input"
               />
             </Grid>
-            <Grid item sx={{ marginTop: 3 }}>
+            <Grid item sx={{ marginTop: 2 }}>
               <ControlledSelectField
                 name="categoryId"
                 options={data}
