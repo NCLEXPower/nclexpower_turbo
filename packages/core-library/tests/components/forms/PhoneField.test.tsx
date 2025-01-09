@@ -5,7 +5,8 @@
 */
 import { render, screen } from "../../common";
 import { PhoneField } from "../../../components";
-import { FormProvider, useForm } from "react-hook-form";
+import { PhoneFieldComponent } from "../../../components/forms/PhoneField";
+import { FormProvider, useForm, ControllerFieldState } from "react-hook-form";
 import { Typography } from "@mui/material";
 
 jest.mock("../../../config", () => ({
@@ -90,11 +91,9 @@ describe("PhoneField Component", () => {
 
   describe("<Typography> Error Message Rendering", () => {
     it("renders the error message when fieldState.error.message is provided", () => {
-      const fieldState = { error: { message: "Invalid phone number" } };
-  
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
-          {fieldState.error.message}
+          {"Invalid phone number"}
         </Typography>
       );
   
@@ -104,12 +103,10 @@ describe("PhoneField Component", () => {
       expect(errorMessage).toHaveStyle("color: rgb(207, 34, 63)");
     });
   
-    it("renders nothing if fieldState.error.message is an empty string", () => {
-      const fieldState = { error: { message: "" } };
-  
+    it("does not render anything when fieldState.error.message is an empty string", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
-          {fieldState.error?.message}
+          {""}
         </Typography>
       );
   
@@ -117,12 +114,10 @@ describe("PhoneField Component", () => {
       expect(errorMessage).toBeNull();
     });
   
-    it("renders nothing if fieldState.error.message is undefined", () => {
-      const fieldState = { error: { message: undefined }};
-  
+    it("does not render anything when fieldState.error.message is undefined", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
-          {fieldState.error?.message}
+          {undefined}
         </Typography>
       );
   
@@ -130,12 +125,10 @@ describe("PhoneField Component", () => {
       expect(errorMessage).toBeNull();
     });
   
-    it("renders nothing if fieldState.error.message is null", () => {
-      const fieldState = { error: { message: null } };
-  
+    it("does not render anything when fieldState.error.message is null", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
-          {fieldState.error?.message}
+          {null}
         </Typography>
       );
   

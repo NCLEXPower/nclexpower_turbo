@@ -74,7 +74,7 @@ interface ComponentProps<T extends FieldValues>
   defaultValue?: number;
 }
 
-const PhoneFieldComponent = <T extends object>({
+export const PhoneFieldComponent = <T extends object>({
   label,
   tooltip,
   field: rawField,
