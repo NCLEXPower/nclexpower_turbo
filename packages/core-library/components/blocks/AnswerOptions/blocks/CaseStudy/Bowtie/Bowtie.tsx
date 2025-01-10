@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { ControlledCheckbox } from "../../../../../Checkbox/Checkbox";
 import { ContainedCaseStudyQuestionType } from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { TextField } from "../../../../../forms/TextField";
-import useSyncSectionWithLabel from "../../../../../../hooks/useSyncContainer";
+import useSyncSectionWithLabel from "../../../../../../hooks/useSyncSectionWithLabel";
 
 type BowtiePropsType = {
   questionIndex: number;
