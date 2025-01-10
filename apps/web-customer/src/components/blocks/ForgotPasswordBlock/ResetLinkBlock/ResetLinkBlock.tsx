@@ -24,7 +24,6 @@ export const ResetLinkBlock: React.FC<Props> = () => {
   const { openInNewTab, replace } = useRouter();
   const { setResetTime, resetTime } = useOtpVerification();
   const { showToast } = useExecuteToast();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const resetLinkCb = useApiCallback(
     async (api, args: ResendCodeParams) => await api.web.web_reset_link(args)
@@ -35,9 +34,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
   };
 
   const handleResendEmail = async () => {
-    if (!email?.email || isLoading) return;
-
-    setIsLoading(true);
+    if (!email?.email || resetLinkCb.loading) return;
 
     try {
       const resetLinkResult = await resetLinkCb.execute({
@@ -59,8 +56,6 @@ export const ResetLinkBlock: React.FC<Props> = () => {
     } catch (error) {
       console.error("Error sending reset link:", error);
       showToast("An unexpected error occurred. Please try again.", "error");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -117,13 +112,13 @@ export const ResetLinkBlock: React.FC<Props> = () => {
             <div className="flex items-center">
               <p className="text-[16px] text-[#6D7081] font-ptSansNarrow font-regular md:text-left lg:text-[18px]">
                 If you don&apos;t see the email, check other places it might be,
-                like your junk, spam, or social folder, {isLoading ? " " : "or "}
+                like your junk, spam, or social folder, {resetLinkCb.loading ? " " : "or "}
                 <button
-                  disabled={resetTime !== 0 || isLoading}
+                  disabled={resetTime !== 0 || resetLinkCb.loading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
                 >
-                  {isLoading ? (
+                  {resetLinkCb.loading ? (
                     <CircularProgress
                       size={20}
                       color="inherit"
