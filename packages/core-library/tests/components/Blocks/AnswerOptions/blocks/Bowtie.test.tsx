@@ -19,7 +19,6 @@ jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
-// Mocking useFormContext and its methods
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(),
 }));
@@ -28,7 +27,7 @@ jest.mock("../../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../../../../../hooks/useSyncContainer", () => jest.fn());
+jest.mock("../../../../../hooks/useSyncSectionWithLabel", () => jest.fn());
 
 jest.mock("../../../../../components", () => ({
   ControlledCheckbox: ({ name }: { name: string }) => (
