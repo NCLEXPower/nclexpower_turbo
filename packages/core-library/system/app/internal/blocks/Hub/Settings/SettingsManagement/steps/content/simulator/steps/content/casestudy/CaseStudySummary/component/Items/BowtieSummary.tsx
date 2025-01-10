@@ -13,6 +13,7 @@ export const BowtieSummary = ({ data }: Partial<QuestionnaireItem>) => {
 
   return (
     <Box
+      data-testid="bowtie-summary-id"
       sx={{
         width: "100%",
         display: "flex",
