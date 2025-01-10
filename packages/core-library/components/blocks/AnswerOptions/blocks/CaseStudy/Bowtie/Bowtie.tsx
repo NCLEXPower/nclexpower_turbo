@@ -39,9 +39,12 @@ export const Bowtie = ({ questionIndex }: BowtiePropsType) => {
   });
 
   return (
-    <Box sx={{ display: "flex", gap: 5, padding: 5 }}>
+    <Box
+      data-testid="bowtie-section"
+      sx={{ display: "flex", gap: 5, padding: 5 }}
+    >
       {BowtieFieldGroups &&
-        BowtieFieldGroups.map((group, groupIndex) => (
+        BowtieFieldGroups.map((_, groupIndex) => (
           <Box
             key={groupIndex}
             sx={{ display: "flex", flexDirection: "column", gap: 1 }}
