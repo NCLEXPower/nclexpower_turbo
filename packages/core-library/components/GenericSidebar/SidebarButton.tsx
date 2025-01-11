@@ -26,15 +26,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 }) => {
   const router = useRouter();
   const path = router?.pathname;
-
   const isActive = navigation.path === path;
-
-  if (navigation.label === "Dashboard") {
-    console.log(isAuthenticated);
-    console.log(navigation.path);
-    console.log(isActive);
-    console.log(listStyles);
-  }
 
   const handleNavigate = () => {
     router.push({
