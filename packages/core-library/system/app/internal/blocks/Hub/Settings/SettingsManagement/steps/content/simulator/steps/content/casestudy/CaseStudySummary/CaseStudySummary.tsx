@@ -92,8 +92,6 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     setIsTableView((prev) => !prev);
   };
 
-  console.log("caseStudyAtom : ", caseStudyAtom);
-
   async function onSubmit() {
     try {
       if (caseStudyAtom) {
