@@ -5,7 +5,9 @@
 */
 import { render, screen } from "../../common";
 import { PhoneField } from "../../../components";
-import { FormProvider, useForm } from "react-hook-form";
+import { PhoneFieldComponent } from "../../../components/forms/PhoneField";
+import { FormProvider, useForm, ControllerFieldState } from "react-hook-form";
+import { Typography } from "@mui/material";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -85,5 +87,53 @@ describe("PhoneField Component", () => {
   test("does not render InputLoader when isLoading is false", () => {
     setup();
     expect(screen.queryByTestId("input-loader")).not.toBeInTheDocument();
+  });
+
+  describe("<Typography> Error Message Rendering", () => {
+    it("renders the error message when fieldState.error.message is provided", () => {
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {"Invalid phone number"}
+        </Typography>
+      );
+  
+      const errorMessage = screen.getByText("Invalid phone number");
+      expect(errorMessage).toBeInTheDocument();
+      expect(errorMessage).toHaveStyle("font-size: 15px");
+      expect(errorMessage).toHaveStyle("color: rgb(207, 34, 63)");
+    });
+  
+    it("does not render anything when fieldState.error.message is an empty string", () => {
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {""}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
+    });
+  
+    it("does not render anything when fieldState.error.message is undefined", () => {
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {undefined}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
+    });
+  
+    it("does not render anything when fieldState.error.message is null", () => {
+      render(
+        <Typography sx={{ fontSize: 15 }} color="error">
+          {null}
+        </Typography>
+      );
+  
+      const errorMessage = screen.queryByText(/.+/);
+      expect(errorMessage).toBeNull();
+    });
   });
 });
