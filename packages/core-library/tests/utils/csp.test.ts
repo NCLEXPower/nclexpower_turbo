@@ -17,6 +17,7 @@ jest.mock("../../ssr", () => ({
   getMaintenanceMode: jest.fn(),
   getEndpointResources: jest.fn(),
   getHasActiveGoLive: jest.fn(),
+  getChatBotMode: jest.fn(),
 }));
 
 jest.mock("../../types", () => ({
@@ -32,6 +33,13 @@ describe("withCSP", () => {
     currentMaintenanceMode: ["dev", "uat"],
     createdDate: "2024-11-28T23:29:28.2473075",
     updatedDate: "2024-11-29T03:10:22.5355995",
+  };
+
+  const mockChatbotMode = {
+    id: "d7c3487b-232f-4464-87ce-c0a87166d915",
+    mode: 0,
+    createdDate: "2025-01-09T07:48:01.9335557",
+    updatedDate: "2025-01-09T07:48:01.9335842",
   };
 
   const mockEndpointResources = [
