@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-
-type SectionType = "leftSection" | "centerSection" | "rightSection";
+import { SectionType } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/types";
 
 type ContainerType = {
   value: string;

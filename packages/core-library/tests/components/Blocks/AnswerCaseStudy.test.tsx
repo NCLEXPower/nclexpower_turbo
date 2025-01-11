@@ -7,16 +7,8 @@ import {
 import { ContainedCaseStudyQuestionType } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { render, screen } from "../../common";
 import { AnswerCaseStudy } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudyCreation/AnswerCaseStudy";
-
 import { AnswerOptions } from "../../../components";
-import { MCQ } from "../../../components/blocks/AnswerOptions/blocks/Regular/MCQ/MCQ";
-import { SATA } from "../../../components/blocks/AnswerOptions/blocks/Regular/SATA/SATA";
-import { DDC } from "../../../components/blocks/AnswerOptions/blocks/CaseStudy/DDC/DDC";
-import { MRSN } from "../../../components/blocks/AnswerOptions/blocks/CaseStudy/MRSN/MRSN";
-import { DND } from "../../../components/blocks/AnswerOptions/blocks/CaseStudy/DND/DND";
-import { Bowtie } from "../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/Bowtie";
 
-// Mock child components
 jest.mock(
   "../../../components/blocks/AnswerOptions/blocks/Regular/MCQ/MCQ",
   () => ({

@@ -5,10 +5,10 @@
  */
 import { SelectOption } from "../../../../../../../../components";
 import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
-import { RegularQuestionSelectionOptions } from "../types";
+import { RegularQuestionSelectionOptions, SectionType } from "../types";
 
 export type BowtieFieldGroupType = {
-  key: keyof typeof labelNames; // Restrict keys to the ones defined in labelNames
+  key: keyof typeof labelNames;
   count: number;
 };
 
@@ -41,6 +41,40 @@ export const BowtieFieldGroups: BowtieFieldGroupType[] = [
   { key: "centerSection", count: 4 },
   { key: "rightSection", count: 5 },
 ];
+
+export const labelMapping: { sectionName: SectionType; labelName: string }[] = [
+  { sectionName: "leftSection", labelName: "leftLabelName" },
+  { sectionName: "centerSection", labelName: "centerLabelName" },
+  { sectionName: "rightSection", labelName: "rightLabelName" },
+];
+
+export const groupLabels = ({
+  LeftLabel,
+  CenterLabel,
+  RightLabel,
+}: {
+  LeftLabel: string;
+  CenterLabel: string;
+  RightLabel: string;
+}) => {
+  return [
+    {
+      label: LeftLabel || "Left Label",
+      section: "leftSection",
+      count: 5,
+    },
+    {
+      label: CenterLabel || "Center Label",
+      section: "centerSection",
+      count: 4,
+    },
+    {
+      label: RightLabel || "Right Label",
+      section: "rightSection",
+      count: 5,
+    },
+  ];
+};
 
 export const tabsSequence: SelectOption[] = Array.from(
   { length: 6 },

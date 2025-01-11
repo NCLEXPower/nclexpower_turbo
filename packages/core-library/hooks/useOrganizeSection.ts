@@ -9,8 +9,8 @@ interface BowtieItemType {
 export function useOrganizeSections(sections: BowtieItemType[][]) {
   return useMemo(() => {
     return sections.map((section) => ({
-      correct: section.filter((item) => item.isAnswer === true),
-      incorrect: section.filter((item) => item.isAnswer === false),
+      correct: section.filter((item) => item.isAnswer),
+      incorrect: section.filter((item) => !item.isAnswer),
     }));
   }, [sections]);
 }

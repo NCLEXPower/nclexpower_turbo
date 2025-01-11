@@ -272,7 +272,6 @@ const answersSchema = yup.object({
   answers: yup
     .mixed<
       DDCAnswerOptionType[] | SATAAnswerOptionType[] | DNDAnswerOptionType[]
-      // | BowtieAnswerOptionType[]
     >()
     .when("questionType", (questionType, schema) => {
       const matchedSchema = Object.entries(questionOptionsSchemas).find(

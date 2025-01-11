@@ -7,8 +7,10 @@ interface BowtieAnswerAreaProps {
   questionIndex: number;
 }
 
-export const BowtieAnswerArea = ({ questionIndex }: BowtieAnswerAreaProps) => {
-  const { control, watch } = useFormContext<ContainedCaseStudyQuestionType>();
+export const BowtieAnswerArea: React.FC<BowtieAnswerAreaProps> = ({
+  questionIndex,
+}) => {
+  const { control } = useFormContext<ContainedCaseStudyQuestionType>();
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", marginTop: "10px" }}>

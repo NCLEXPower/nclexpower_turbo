@@ -11,6 +11,8 @@ import {
   setDefaultReviewerSchema,
 } from "./validation";
 
+export type SectionType = "leftSection" | "centerSection" | "rightSection";
+
 export type UploadFormType = yup.InferType<ReturnType<typeof uploadFormSchema>>;
 export type SettingsSelectionType = yup.InferType<
   typeof settingsSelectionSchema

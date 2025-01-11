@@ -18,7 +18,10 @@ import { ItemContent } from "./component/Items/ItemContent";
 import { BackgroundInfoContent } from "./component/BackgroundInfo/BackgroundInfoContent";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
 import { CaseStudyLoader } from "../../loader";
-import { useBusinessQueryContext, useExecuteToast } from "../../../../../../../../../../../../../../contexts";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../../../../../../../../contexts";
 import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
 import { useSensitiveInformation } from "../../../../../../../../../../../../../../hooks";
 
@@ -89,12 +92,12 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     setIsTableView((prev) => !prev);
   };
 
+  console.log("caseStudyAtom : ", caseStudyAtom);
+
   async function onSubmit() {
     try {
       if (caseStudyAtom) {
-        await mutateAsync(
-          convertToCreateCaseStudy(caseStudyAtom, internal)
-        );
+        await mutateAsync(convertToCreateCaseStudy(caseStudyAtom, internal));
         toast.executeToast(
           "Case Study created successfully",
           "top-right",
@@ -103,7 +106,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
             toastId: 0,
             type: "success",
           }
-        )
+        );
       }
     } catch (error) {
       toast.executeToast(
@@ -114,7 +117,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
           toastId: 0,
           type: "error",
         }
-      )
+      );
     } finally {
       nextStep({});
       next();
