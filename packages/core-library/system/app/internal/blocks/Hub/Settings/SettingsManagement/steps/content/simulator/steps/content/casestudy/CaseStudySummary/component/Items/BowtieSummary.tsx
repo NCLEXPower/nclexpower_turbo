@@ -6,10 +6,58 @@ import {
 } from "../../../../../../../../../../../../../types";
 import { useOrganizeSections } from "../../../../../../../../../../../../../../../../hooks";
 
-export const BowtieSummary = ({ data }: Partial<QuestionnaireItem>) => {
+type OptionType = {
+  center: BowtieItemType[];
+  left: BowtieItemType[];
+  right: BowtieItemType[];
+  centerCount: number;
+  leftCount: number;
+  rightCount: number;
+};
+
+export const BowtieSummary: React.FC<Partial<QuestionnaireItem>> = ({
+  data,
+}) => {
   const sections = [data.leftSection, data.centerSection, data.rightSection];
   const [leftSectionOptions, centerSectionOptions, rightSectionOptions] =
     useOrganizeSections(sections);
+
+  const renderSections = (
+    options: OptionType,
+    alignment: string,
+    borderTop?: boolean
+  ) => (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: alignment,
+        justifyContent: "center",
+        gap: 5,
+        width: "100%",
+        ...(borderTop && {
+          borderTop: 1,
+          borderColor: "#BDBDBD",
+          paddingTop: "20px",
+        }),
+      }}
+    >
+      <SectionBox
+        label={data.leftLabelName}
+        items={options.left}
+        count={options.leftCount}
+      />
+      <SectionBox
+        label={data.centerLabelName}
+        items={options.center}
+        count={options.centerCount}
+      />
+      <SectionBox
+        label={data.rightLabelName}
+        items={options.right}
+        count={options.rightCount}
+      />
+    </Box>
+  );
 
   return (
     <Box
@@ -25,59 +73,29 @@ export const BowtieSummary = ({ data }: Partial<QuestionnaireItem>) => {
         gap: 5,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 5,
-          width: "100%",
-        }}
-      >
-        <SectionBox
-          label={data.leftLabelName}
-          items={leftSectionOptions.correct}
-          count={2}
-        />
-        <SectionBox
-          label={data.centerLabelName}
-          items={centerSectionOptions.correct}
-          count={1}
-        />
-        <SectionBox
-          label={data.rightLabelName}
-          items={rightSectionOptions.correct}
-          count={2}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "start",
-          justifyContent: "center",
-          gap: 5,
-          width: "100%",
-          borderTop: 1,
-          paddingTop: "20px",
-          borderColor: "#BDBDBD",
-        }}
-      >
-        <SectionBox
-          label={data.leftLabelName}
-          items={leftSectionOptions.incorrect}
-          count={3}
-        />
-        <SectionBox
-          label={data.centerLabelName}
-          items={centerSectionOptions.incorrect}
-          count={3}
-        />
-        <SectionBox
-          label={data.rightLabelName}
-          items={rightSectionOptions.incorrect}
-          count={3}
-        />
-      </Box>
+      {renderSections(
+        {
+          left: leftSectionOptions.correct,
+          center: centerSectionOptions.correct,
+          right: rightSectionOptions.correct,
+          leftCount: 2,
+          centerCount: 1,
+          rightCount: 2,
+        },
+        "center"
+      )}
+      {renderSections(
+        {
+          left: leftSectionOptions.incorrect,
+          center: centerSectionOptions.incorrect,
+          right: rightSectionOptions.incorrect,
+          leftCount: 3,
+          centerCount: 3,
+          rightCount: 3,
+        },
+        "start",
+        true
+      )}
     </Box>
   );
 };
@@ -95,6 +113,8 @@ const SectionBox: React.FC<{
         gap: 3,
         justifyContent: "start",
         flexGrow: 1,
+        maxWidth: "200px",
+        wordBreak: "break-all",
       }}
     >
       <Typography sx={{ fontWeight: 700 }}>{label}</Typography>
@@ -102,7 +122,13 @@ const SectionBox: React.FC<{
         items.map((item, index) => (
           <Box
             key={index}
-            sx={{ padding: 5, borderRadius: "7px", boxShadow: 2 }}
+            sx={{
+              padding: 5,
+              borderRadius: "7px",
+              boxShadow: 2,
+              maxWidth: "200px",
+              wordBreak: "break-all",
+            }}
           >
             {item.value}
           </Box>

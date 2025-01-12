@@ -1,10 +1,5 @@
 import { useMemo } from "react";
-
-interface BowtieItemType {
-  isAnswer: boolean;
-  value: string;
-  container: string;
-}
+import { BowtieItemType } from "../system/app/internal/types";
 
 export function useOrganizeSections(sections: BowtieItemType[][]) {
   return useMemo(() => {
