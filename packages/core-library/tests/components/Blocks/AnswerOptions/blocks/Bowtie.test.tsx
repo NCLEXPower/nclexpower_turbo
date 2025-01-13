@@ -27,9 +27,9 @@ jest.mock("../../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("../../../../../hooks/useSynchronizeSectionWithLabel", () =>
-  jest.fn()
-);
+jest.mock("../../../../../hooks/useSynchronizeSectionWithLabel", () => ({
+  useSynchronizeSectionWithLabel: jest.fn(),
+}));
 
 jest.mock("../../../../../components", () => ({
   ControlledCheckbox: ({ name }: { name: string }) => (
