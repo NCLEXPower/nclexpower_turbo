@@ -74,7 +74,7 @@ export type AnswerOption = {
   answerKey: boolean;
 };
 
-export interface DDCAnswerOption extends AnswerOption {
+export interface DDClozeTableAnswerOption extends AnswerOption {
   optionName: string;
   options: {
     answer: string;
@@ -86,12 +86,12 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN";
+  questionType: "DDC" | "SATA" | "MRSN" | "DDT";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[];
+  answers: DDClozeTableAnswerOption[];
 };
 
 export type CaseStudyDataType = {

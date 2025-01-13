@@ -1,13 +1,14 @@
 import { Box, Checkbox, SxProps, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import { DDCquestion } from "./DDCQuestion";
+import { DDCItem } from "./DDCItem";
 import {
   AnswerOption,
-  DDCAnswerOption,
+  DDClozeTableAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { DDTItem } from "./DDTItem";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -31,9 +32,18 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
     switch (data.questionType) {
       case "DDC":
         return (
-          <DDCquestion
+          <DDCItem
             ddcData={{
-              answers: data.answers as DDCAnswerOption[],
+              answers: data.answers as DDClozeTableAnswerOption[],
+              itemStem: data.itemStem,
+            }}
+          />
+        );
+      case "DDT":
+        return (
+          <DDTItem
+            ddcData={{
+              answers: data.answers as DDClozeTableAnswerOption[],
               itemStem: data.itemStem,
             }}
           />
@@ -98,9 +108,10 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType !== "DDC" && (
-              <AnswerList answers={data.answers} />
-            )}
+            {data.questionType == "SATA" ||
+              (data.questionType == "MRSN" && (
+                <AnswerList answers={data.answers} />
+              ))}
           </Box>
         ))
       ) : (

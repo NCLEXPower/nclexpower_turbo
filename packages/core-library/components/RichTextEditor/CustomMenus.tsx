@@ -8,16 +8,30 @@ import { MenuButtons } from "./Menus";
 type CustomMenuBarPropsType = CustomMenusType & {
   content: string;
   customDependency?: string | number;
+  questionType?: string;
 };
 
-
 export const CustomMenuBar: React.FC<CustomMenuBarPropsType> = memo(
-  ({ editorFor, content }) => {
+  ({ editorFor, content, questionType }) => {
     const { editor } = useCurrentEditor();
 
     if (!editor) return null;
 
+    useEffect(() => {
+      if (questionType === "DDT" && editor) {
+        editor
+          .chain()
+          .focus()
+          .insertContent(" ")
+          .insertTable({ rows: 4, cols: 2, withHeaderRow: true })
+          .run();
+
+        editor.commands.setTextSelection(1);
+      }
+    }, [questionType, editor]);
+
     const menus = MenuButtons({ editor, editorFor });
+    const sample = menus.filter((action) => action.label === "Insert Table");
 
     useEffect(() => {
       if (!editor) return;
@@ -66,4 +80,5 @@ export const CustomMenuBar: React.FC<CustomMenuBarPropsType> = memo(
       default:
         return null;
     }
-  });
+  }
+);

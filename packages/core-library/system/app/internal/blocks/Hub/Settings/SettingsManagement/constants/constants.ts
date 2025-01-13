@@ -18,6 +18,7 @@ export const questionType = [
   { value: "SATA", label: "SATA" },
   { value: "MRSN", label: "MRSN" },
   { value: "DDC", label: "DDC" },
+  { value: "DDT", label: "DDT" },
   { value: "DND", label: "DND" },
   { value: "HCP", label: "HCP" },
   { value: "MCQ", label: "MCQ(No Group)" },

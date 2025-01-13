@@ -21,7 +21,7 @@ import {
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import { useEffect, useState } from "react";
-import { Instruction } from './components/Instruction';
+import { Instruction } from "./components/Instruction";
 
 interface Props {
   index: number;
@@ -33,7 +33,8 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
-  const currentSequence = watch(`questionnaires.${index}.seqNum`)
+
+  const currentSequence = watch(`questionnaires.${index}.seqNum`);
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -61,7 +62,10 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box data-testid='answer-case-study' sx={{ display: "flex", width: "100%" }}>
+      <Box
+        data-testid="answer-case-study"
+        sx={{ display: "flex", width: "100%" }}
+      >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
@@ -118,6 +122,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
           >
             <ControlledRichTextEditor
               editorFor="casestudy"
+              questionType={questionType}
               placeholder="Add question..."
               name={`questionnaires.${index}.itemStem`}
             />

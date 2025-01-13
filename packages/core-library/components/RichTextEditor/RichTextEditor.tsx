@@ -12,6 +12,7 @@ type RichTextEditorPropsType = CustomMenusType & {
   onChange?(html: string): void;
   editorClassName?: string;
   placeholder?: string;
+  questionType?: string;
   customDependency?: string | number;
 };
 
@@ -26,6 +27,7 @@ export function ControlledRichTextEditor<T extends FieldValues>({
   editorClassName,
   placeholder,
   customDependency,
+  questionType,
 }: ControlledRichTextEditorProps<T>) {
   const { purifyInputs } = useSanitizedInputs({});
 
@@ -46,6 +48,7 @@ export function ControlledRichTextEditor<T extends FieldValues>({
               customDependency={customDependency}
               editorFor={editorFor}
               content={value}
+              questionType={questionType}
             />
           }
           shouldRerenderOnTransaction={true}
