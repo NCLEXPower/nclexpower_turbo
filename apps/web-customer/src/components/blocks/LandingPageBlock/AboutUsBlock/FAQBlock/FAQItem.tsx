@@ -4,7 +4,7 @@
 * Created by the Software Strategy & Development Division
 */
 import React from "react";
-import { faqMockData } from "../../../../core/constant/AboutUsMock/FAQMock";
+import { faqMockData } from "../../../../../core/constant/AboutUsMock/FAQMock";
 import { ControlledAccordion, EvaIcon, IconButton } from "core-library/components";
 import { Box } from "@mui/material";
 

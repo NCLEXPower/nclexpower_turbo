@@ -3,6 +3,7 @@ import {
   CoreZigmaBlock,
   HowItWorksBlock,
   PricingBlock,
+  HelpWidgetBlock
 } from "@/components";
 import { withCSP } from "core-library";
 import { GetServerSideProps } from "next";
@@ -35,6 +36,9 @@ const Home: React.FC<Props> = ({ data }) => {
         </div>
         <div className="w-full h-fit" id="pricing">
           <PricingBlock url={url} />
+        </div>
+        <div className="w-full h-fit">
+            <HelpWidgetBlock />
         </div>
       </div>
       <ScrollTop />
