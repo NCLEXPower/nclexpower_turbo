@@ -7,7 +7,8 @@ import {
 import { useFormContext } from "react-hook-form";
 import { ControlledCheckbox } from "../../../../../Checkbox/Checkbox";
 import { TextField } from "../../../../../forms/TextField";
-import useSyncSectionWithLabel from "../../../../../../hooks/useSyncSectionWithLabel";
+import { useSynchronizeSectionWithLabel } from "../../../../../../hooks";
+import { useEffect } from "react";
 
 type BowtiePropsType = {
   questionIndex: number;
@@ -23,7 +24,7 @@ export const Bowtie: React.FC<BowtiePropsType> = ({ questionIndex }) => {
     watch(`questionnaires.${questionIndex}.rightLabelName`) ?? "";
 
   labelMapping.forEach(({ sectionName, labelName }) => {
-    useSyncSectionWithLabel({
+    useSynchronizeSectionWithLabel({
       sectionName,
       labelName,
       questionIndex,
@@ -43,6 +44,7 @@ export const Bowtie: React.FC<BowtiePropsType> = ({ questionIndex }) => {
             RightLabel,
           });
           const { label, section, count } = labelSelection[groupIndex] || {};
+          const validatedCount = typeof count === "number" ? count : 0;
           return (
             <Box
               key={groupIndex}
@@ -62,7 +64,7 @@ export const Bowtie: React.FC<BowtiePropsType> = ({ questionIndex }) => {
                   >
                     {label}
                   </Typography>
-                  {Array(count)
+                  {Array(validatedCount)
                     .fill(null)
                     .map((_, index) => (
                       <Box

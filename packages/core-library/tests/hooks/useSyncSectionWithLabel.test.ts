@@ -1,6 +1,6 @@
 import { renderHook, act } from "../common";
 import { useFormContext, useFieldArray } from "react-hook-form";
-import useSyncSectionWithLabel from "../../hooks/useSyncSectionWithLabel";
+import { useSynchronizeSectionWithLabel } from "../../hooks";
 
 jest.mock("../../config", () => ({
   config: {
@@ -15,7 +15,7 @@ jest.mock("react-hook-form", () => ({
   useFieldArray: jest.fn(),
 }));
 
-describe("useSyncSectionWithLabel", () => {
+describe("useSynchronizeSectionWithLabel", () => {
   const mockSetValue = jest.fn();
   const mockWatch = jest.fn();
   const mockFields = [{ id: "1" }, { id: "2" }];
@@ -52,7 +52,7 @@ describe("useSyncSectionWithLabel", () => {
     });
 
     renderHook(() =>
-      useSyncSectionWithLabel({ sectionName, labelName, questionIndex })
+      useSynchronizeSectionWithLabel({ sectionName, labelName, questionIndex })
     );
 
     expect(mockSetValue).toHaveBeenCalledTimes(2);
@@ -85,7 +85,7 @@ describe("useSyncSectionWithLabel", () => {
     });
 
     renderHook(() =>
-      useSyncSectionWithLabel({ sectionName, labelName, questionIndex })
+      useSynchronizeSectionWithLabel({ sectionName, labelName, questionIndex })
     );
 
     expect(mockSetValue).not.toHaveBeenCalled();
@@ -107,7 +107,7 @@ describe("useSyncSectionWithLabel", () => {
     });
 
     renderHook(() =>
-      useSyncSectionWithLabel({ sectionName, labelName, questionIndex })
+      useSynchronizeSectionWithLabel({ sectionName, labelName, questionIndex })
     );
 
     expect(mockSetValue).not.toHaveBeenCalled();

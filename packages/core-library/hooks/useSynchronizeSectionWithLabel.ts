@@ -7,7 +7,7 @@ type ContainerType = {
   container: string;
 };
 
-const useSyncSectionWithLabel = ({
+export const useSynchronizeSectionWithLabel = ({
   sectionName,
   labelName,
   questionIndex,
@@ -18,6 +18,8 @@ const useSyncSectionWithLabel = ({
 }) => {
   const { control, watch, setValue } = useFormContext();
 
+  // Watching the value of the label associated with the current question index
+  // This value is used to update the container property of all section items
   const labelValue = watch(`questionnaires.${questionIndex}.${labelName}`);
   const SectionList =
     watch(`questionnaires.${questionIndex}.${sectionName}`) ?? [];
@@ -27,16 +29,22 @@ const useSyncSectionWithLabel = ({
     name: `questionnaires.${questionIndex}.${sectionName}`,
   });
 
+  function syncSectionContainers(sectionList: ContainerType[], label: string) {
+    sectionList.forEach((_, index) => {
+      setValue(
+        `questionnaires.${questionIndex}.${sectionName}.${index}.container`,
+        label
+      );
+    });
+  }
+
   useEffect(() => {
-    if (labelValue) {
-      SectionList.forEach((_: ContainerType, index: number) => {
-        setValue(
-          `questionnaires.${questionIndex}.${sectionName}.${index}.container`,
-          labelValue
-        );
-      });
+    if (
+      labelValue !== null &&
+      typeof labelValue !== "undefined" &&
+      labelValue !== ""
+    ) {
+      syncSectionContainers(SectionList, labelValue);
     }
   }, [labelValue, fields, questionIndex, sectionName, setValue]);
 };
-
-export default useSyncSectionWithLabel;
