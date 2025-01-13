@@ -51,7 +51,6 @@ export const Header: React.FC<Props> = ({
           display="flex"
           alignItems="flex-end"
           justifyContent="flex-end"
-
         >
           <Grid
             item
@@ -74,8 +73,7 @@ export const Header: React.FC<Props> = ({
                   id="cobranding_logo_button"
                   href={""}
                   shouldNavigateToNewTab={!isAuthenticated}
-                >
-                </HeaderLogoNavigation>
+                ></HeaderLogoNavigation>
               </Grid>
             </Grid>
             {isAuthenticated && <Grid item alignSelf="center"></Grid>}
