@@ -97,7 +97,7 @@ interface ConfirmationModalProps {
   isLoading: boolean;
   disabled?: boolean;
   onClickFn?: () => void;
-  checked?: boolean
+  checked?: boolean;
 }
 
 const ConfirmationModal = ({
@@ -108,7 +108,7 @@ const ConfirmationModal = ({
   isLoading,
   disabled,
   onClickFn,
-  checked
+  checked,
 }: ConfirmationModalProps) => {
   const [open, setOpen] = useState(false);
 
@@ -156,10 +156,15 @@ interface ButtonSelectorProps {
   type: ReactNode;
   disabled?: boolean;
   onClickFn?: () => void;
-  checked?: boolean
+  checked?: boolean;
 }
 
-const ButtonSelector = ({ type, disabled, onClickFn, checked }: ButtonSelectorProps) => {
+const ButtonSelector = ({
+  type,
+  disabled,
+  onClickFn,
+  checked,
+}: ButtonSelectorProps) => {
   switch (type) {
     case "Continue":
       return (
@@ -204,6 +209,7 @@ const ButtonSelector = ({ type, disabled, onClickFn, checked }: ButtonSelectorPr
     case "ToggleButton":
       return (
         <Switch
+          data-testid="toggle-button"
           onChange={onClickFn}
           disabled={disabled}
           checked={Boolean(checked)}
