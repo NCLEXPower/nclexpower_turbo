@@ -12,7 +12,7 @@ import {
 } from "../../../../../../../../../../../../../../components";
 import { Box, Typography } from "@mui/material";
 import { AnswerCaseStudy } from "./AnswerCaseStudy";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
@@ -102,10 +102,13 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     });
   }, [selectedIndex]);
 
-  const { infoTabs, tabsItem } = useMemo(() => ({
-    infoTabs: generateInfoTabs(),
-    tabsItem: generateTabsItemQuestion(6)
-  }), [values]);
+  const { infoTabs, tabsItem } = useMemo(
+    () => ({
+      infoTabs: generateInfoTabs(),
+      tabsItem: generateTabsItemQuestion(6),
+    }),
+    [values]
+  );
 
   if (contentLoader) {
     return <CaseStudyLoader />;

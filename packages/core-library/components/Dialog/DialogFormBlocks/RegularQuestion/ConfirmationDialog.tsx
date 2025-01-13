@@ -14,7 +14,7 @@ type Props = {
   handleSubmit: () => void;
   dialogContent: ReactNode;
   confirmButtonText?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 const ContinueModalContent: React.FC<Props> = ({
@@ -94,7 +94,7 @@ interface ConfirmationModalProps {
   customButton: React.ReactElement | React.ReactNode;
   dialogContent: string | ReactElement | ReactNode;
   confirmButtonText?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   disabled?: boolean;
   onClickFn?: () => void;
   checked?: boolean;
