@@ -16,7 +16,7 @@ export const UserProfile: React.FC<Props> = () => {
 
   const userName =
     internal?.firstname && internal?.lastname
-      ? `${internal.firstname} ${internal.lastname}`
+      ? `[${internal.firstname} ${internal.lastname}]`
       : "Unknown User";
   const email = internal?.email || "No email provided";
 
@@ -36,8 +36,13 @@ export const UserProfile: React.FC<Props> = () => {
     >
       <Avatar sx={{ width: 40, height: 40 }} /> {/* Smaller Avatar */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-        <Typography variant="h6">{userName}</Typography>
-        <Typography variant="body2">
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 600, fontSize: "1rem", whiteSpace: "nowrap" }}
+        >
+          {userName}
+        </Typography>
+        <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
           {roleName || "No role assigned"}
         </Typography>
       </Box>
