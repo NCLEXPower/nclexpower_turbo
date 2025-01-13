@@ -101,7 +101,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
         const result = await createCaseStudyQuestion.execute(
           convertToCreateCaseStudy(caseStudyAtom, internal)
         );
-        if (result.data === 200)
+        if (result.status === 200)
           toast.executeToast(
             "Case Study created successfully",
             "top-right",
