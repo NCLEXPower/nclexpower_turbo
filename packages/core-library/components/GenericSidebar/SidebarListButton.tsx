@@ -37,7 +37,7 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
   const router = useRouter();
   const path = router?.pathname;
   const navPaths = navigation.children.map((c) => c.path);
-  const isActive = !!navPaths.find((p) => path.startsWith(p));
+  const isActive = !!navPaths.find((p) => path?.startsWith(p));
 
   useEffect(() => {
     if (isAuthenticated) {
