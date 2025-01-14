@@ -14,12 +14,9 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useGetProgramList, useUniqueById } from "../../hooks";
 import { IconButton, EvaIcon } from "../../components";
-import { AccountMenu, BreadCrumbs } from "../index";
-import { AccountMenuItem } from "../GenericHeader/index";
 import { useAccessControl } from "../../hooks/useAccessControl";
 import { getRoleName } from "../../core/utils/permission";
 import { UserProfile } from "../UserProfile/UserProfile";
-import { Padding } from "@mui/icons-material/index";
 
 interface SideBarPropsType extends Partial<WebSidebarStylesType> {
   menu: Array<MenuItems>;
@@ -177,7 +174,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
               onNavigate={handleCloseSidebar}
             />
             <div style={{ padding: "12px" }}>
-              <UserProfile />
+              <UserProfile onLogout={onLogout} />
             </div>
           </Grid>
         )}
