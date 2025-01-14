@@ -72,15 +72,7 @@ export const IconComponent = (
         />
       );
     case "keySquare":
-      return (
-        <KeySquareIcon />
-        // <Image
-        //   src={keySquare}
-        //   alt="Key-Square Icon"
-        //   data-testid="keySquare"
-        //   style={{ color: "red" }}
-        // />
-      );
+      return <KeySquareIcon />;
     case "TRDSquare":
       return (
         <Image

@@ -48,7 +48,9 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
         overflow="hidden"
         borderRadius={3}
         sx={{
-          ...listStyles?.hovericonSx,
+          "&:hover": {
+            backgroundColor: "#ced3de33 !important",
+          },
           ...(minimizedIndicator && {
             backgroundImage: "linear-gradient(90deg, #0F2A71 0%, #181E2F 100%)",
             borderRadius: "8px",
@@ -64,17 +66,19 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
             padding: "8px 12px",
             ...(isAuthenticated && isActive
               ? listStyles?.activeSx || {
-                  color: "#051e34 !important",
-                  fontWeight: "bold !important",
+                  color: "#0F2A71 !important",
                   opacity: "1 !important",
                   textDecoration: "underline !important",
                   ".MuiSvgIcon-root": {
-                    color: "#051e34 !important",
+                    color: "#0F2A71 !important",
                   },
                 }
               : {}),
             "&:focus": {
               backgroundColor: "transparent !important",
+            },
+            "&:hover": {
+              color: "inherit !important",
             },
           }}
         >
@@ -86,7 +90,11 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
             </span>
           </ListItemIcon>
           <ListItemText>
-            <Typography variant="body2" fontSize={13}>
+            <Typography
+              variant="body2"
+              fontSize={13}
+              fontWeight={isActive ? 600 : 0}
+            >
               {navigation.label}
             </Typography>
           </ListItemText>

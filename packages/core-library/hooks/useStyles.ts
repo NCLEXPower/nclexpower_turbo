@@ -34,20 +34,12 @@ export const useStyle = (): WebSidebarStylesType & { wordWrap: SxProps } => {
       padding: "0 !important",
     },
     activeSx: {
-      color: "#F4C501 !important",
-      fontWeight: "bold !important",
       opacity: "1 !important",
       textDecoration: "underline !important",
-      ".MuiSvgIcon-root": {
-        color: "#F4C501 !important",
-      },
     },
     hovericonSx: {
       "&:hover": {
-        color: "#F4C501 !important",
-      },
-      "&:hover .MuiSvgIcon-root": {
-        color: "#F4C501 !important",
+        color: "inherit !important",
       },
     },
     opacitySx: {

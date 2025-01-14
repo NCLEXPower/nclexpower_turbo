@@ -69,16 +69,18 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
                 onClick={handleCollapseButton}
                 sx={{
                   padding: "8px 12px",
+                  "&:hover": {
+                    color: "inherit !important",
+                  },
                 }}
               >
-                <ListItemIcon sx={{ color: "red" }}>
+                <ListItemIcon>
                   {IconComponent(navigation.icon, open)}
                 </ListItemIcon>
 
                 <ListItemText>
                   <Typography
                     variant="body2"
-                    fontWeight={600}
                     fontSize={13}
                     flexGrow={1}
                     whiteSpace="nowrap"
@@ -91,7 +93,6 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
                   sx={{
                     ...listStyles?.opacitySx,
                     mr: -1,
-                    opacity: open ? 1 : 0,
                     transform: open ? "rotate(-180deg)" : "rotate(0)",
                     transition: "0.2s",
                   }}
