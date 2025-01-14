@@ -14,6 +14,7 @@ export interface SidebarButtonProps extends Partial<WebSidebarStylesType> {
   navigation: MenuItems;
   pathname: string;
   isAuthenticated: boolean;
+  isDrawerOpen: boolean;
   onNavigate: () => void;
 }
 
@@ -22,11 +23,13 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
   pathname,
   isAuthenticated,
   listStyles,
+  isDrawerOpen,
   onNavigate,
 }) => {
   const router = useRouter();
   const path = router?.pathname;
   const isActive = navigation.path === path;
+  const minimizedIndicator = isAuthenticated && isActive && !isDrawerOpen;
 
   const handleNavigate = () => {
     router.push({
@@ -41,7 +44,17 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
       whiteSpace="nowrap"
       sx={isAuthenticated ? listStyles?.paddingSx : null}
     >
-      <Box overflow="hidden" borderRadius={3} sx={listStyles?.hovericonSx}>
+      <Box
+        overflow="hidden"
+        borderRadius={3}
+        sx={{
+          ...listStyles?.hovericonSx,
+          ...(minimizedIndicator && {
+            backgroundImage: "linear-gradient(90deg, #0F2A71 0%, #181E2F 100%)",
+            borderRadius: "8px",
+          }),
+        }}
+      >
         <ListItemButton
           disabled={isActive}
           component="a"
@@ -51,12 +64,12 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
             padding: "8px 12px",
             ...(isAuthenticated && isActive
               ? listStyles?.activeSx || {
-                  color: "#F4C501 !important",
+                  color: "#051e34 !important",
                   fontWeight: "bold !important",
                   opacity: "1 !important",
                   textDecoration: "underline !important",
                   ".MuiSvgIcon-root": {
-                    color: "#F4C501 !important",
+                    color: "#051e34 !important",
                   },
                 }
               : {}),
@@ -66,7 +79,11 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
           }}
         >
           <ListItemIcon sx={isAuthenticated ? listStyles?.listItemIconSx : {}}>
-            {IconComponent(navigation.icon, false)}
+            <span
+              className={minimizedIndicator ? "text-white" : "text-[#0F2A71]"}
+            >
+              {IconComponent(navigation.icon, false)}
+            </span>
           </ListItemIcon>
           <ListItemText>
             <Typography variant="body2" fontSize={13}>

@@ -136,7 +136,7 @@ export const AuthorizedHeader: MenuItems[] = [
       {
         id: "8",
         label: "Body Systems (Daily)",
-        path: "/",
+        path: "/hub/stat/body-systems",
         icon: "DotsIcon",
         menuId: "menu8",
         parentId: "",
@@ -145,7 +145,7 @@ export const AuthorizedHeader: MenuItems[] = [
       {
         id: "9",
         label: "Patient Units (Daily)",
-        path: "/",
+        path: "/hub/stat/patient-units",
         icon: "DotsIcon",
         menuId: "menu9",
         parentId: "",
@@ -154,7 +154,7 @@ export const AuthorizedHeader: MenuItems[] = [
       {
         id: "10",
         label: "End of Section CAT",
-        path: "/",
+        path: "/hub/stat/end-of-section-cat",
         icon: "DotsIcon",
         menuId: "menu10",
         parentId: "",
@@ -163,7 +163,7 @@ export const AuthorizedHeader: MenuItems[] = [
       {
         id: "11",
         label: "Final CAT",
-        path: "/",
+        path: "/hub/stat/final-cat",
         icon: "DotsIcon",
         menuId: "menu11",
         parentId: "",
@@ -174,7 +174,7 @@ export const AuthorizedHeader: MenuItems[] = [
   {
     id: "12",
     label: "Billing Summary",
-    path: "/",
+    path: "/hub/billing-summary",
     icon: "feed",
     menuId: "menu12",
     parentId: "",

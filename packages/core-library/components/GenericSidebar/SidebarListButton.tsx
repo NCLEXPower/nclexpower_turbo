@@ -36,12 +36,20 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
   const path = router?.pathname;
+  const navPaths = navigation.children.map((c) => c.path);
+  const isActive = !!navPaths.find((p) => path.startsWith(p));
 
   useEffect(() => {
     if (isAuthenticated) {
       setOpen(true);
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!isDrawerOpen && !isActive) {
+      setOpen(false);
+    }
+  }, [isDrawerOpen, isActive]);
 
   const handleCollapseButton = () => {
     if (!isDrawerOpen && open === false) {
@@ -63,7 +71,7 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
                   padding: "8px 12px",
                 }}
               >
-                <ListItemIcon>
+                <ListItemIcon sx={{ color: "red" }}>
                   {IconComponent(navigation.icon, open)}
                 </ListItemIcon>
 
@@ -104,6 +112,7 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
               pathname={pathname}
               isAuthenticated={isAuthenticated}
               listStyles={listStyles}
+              isDrawerOpen={isDrawerOpen}
               onNavigate={onNavigate}
             />
           ))}

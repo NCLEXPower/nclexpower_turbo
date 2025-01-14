@@ -14,7 +14,6 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useGetProgramList, useUniqueById } from "../../hooks";
 import { IconButton, EvaIcon } from "../../components";
-import { set } from "nprogress";
 
 interface SideBarPropsType extends Partial<WebSidebarStylesType> {
   menu: Array<MenuItems>;
@@ -63,6 +62,7 @@ const RenderMenuItems: React.FC<RenderMenuItemsProps> = ({
           />
         ) : (
           <SidebarButton
+            isDrawerOpen={isDrawerOpen}
             navigation={navigation}
             pathname={pathname}
             isAuthenticated={isAuthenticated}
