@@ -100,7 +100,6 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
   };
   const { accessLevel } = useAccessControl();
   const roleName = getRoleName(accessLevel ?? -1);
-  console.log(accessLevel);
 
   return (
     <Drawer
