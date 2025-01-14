@@ -1,6 +1,7 @@
 export const KeySquareIcon = () => {
   return (
     <svg
+      data-testid="keySquare"
       width="24"
       height="24"
       viewBox="0 0 24 24"
