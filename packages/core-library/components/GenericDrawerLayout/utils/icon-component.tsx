@@ -73,7 +73,7 @@ export const IconComponent = (
       );
     case "keySquare":
       return (
-        <KeySquareIcon />
+        <KeySquareIcon data-testid="keySquare" />
         // <Image
         //   src={keySquare}
         //   alt="Key-Square Icon"
