@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SettingsSelectionType } from "../../types";
 import { Box, Typography } from "@mui/material";
 import { useApiCallback } from "../../../../../../../../../hooks";
@@ -9,8 +9,8 @@ import {
   ConfirmationModal,
   EvaIcon,
 } from "../../../../../../../../../components";
-import { useChatBotMode } from "../../../../../../../../../hooks/useChatBotMode";
 import { useExecuteToast } from "../../../../../../../../../contexts";
+import { getChatBotMode } from "../../../../../../../../../ssr";
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -21,21 +21,35 @@ interface Props {
 }
 
 export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
+  const [isChatBotModeOn, setIsChatBotModeOn] = useState<boolean>(false);
+  const [isChatBotLoading, setIsChatbotLoading] = useState<boolean>(true);
   const { execute: updateMode, loading: updateLoading } = useApiCallback(
-    async (api, args: number) => await api.webbackoffice.updateChatbotMode(args)
+    async (api, args: boolean) =>
+      await api.webbackoffice.updateHelpWidgetStatus(args)
   );
-  const {
-    data: isChatBotModeOn,
-    loading: chatbotLoading,
-    refetch,
-  } = useChatBotMode();
+
+  const fetchChatbotMode = async () => {
+    try {
+      const { isEnabled } = await getChatBotMode();
+      setIsChatBotModeOn(isEnabled);
+    } catch (error) {
+      showToast("Something went wrong, Please try again later", "error");
+    } finally {
+      setIsChatbotLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchChatbotMode();
+  }, []);
+
   const { showToast } = useExecuteToast();
 
   const handleBack = () => {
     previousStep();
   };
 
-  if (chatbotLoading || updateLoading) {
+  if (isChatBotLoading || updateLoading) {
     return (
       <Box data-testid="loading">
         <ComponentLoader />
@@ -50,8 +64,8 @@ export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
 
   async function handleConfirm() {
     try {
-      await updateMode(isChatBotModeOn ? 0 : 1);
-      await refetch();
+      await updateMode(!isChatBotModeOn);
+      await fetchChatbotMode();
       showToast("Successfully Update", "success");
     } catch {
       showToast("Something went wrong. Please try again later", "error");

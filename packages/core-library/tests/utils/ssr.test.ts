@@ -44,7 +44,7 @@ const mockMaintenanceStatus = {
 
 const mockChatbotMode = {
   id: "d7c3487b-232f-4464-87ce-c0a87166d915",
-  mode: 0,
+  isEnabled: false,
   createdDate: "2025-01-09T07:48:01.9335557",
   updatedDate: "2025-01-09T07:48:01.9335842",
 };

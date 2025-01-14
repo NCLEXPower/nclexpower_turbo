@@ -40,7 +40,9 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 
-const Layout: React.FC<React.PropsWithChildren<{ chatBotMode?: boolean }>> = ({ children, chatBotMode }) => {
+const Layout: React.FC<
+  React.PropsWithChildren<{ IsHideHelpWidget?: boolean }>
+> = ({ children, IsHideHelpWidget }) => {
   const router = useRouter();
   const contentData = useContentDataContext();
   const queryClient = new QueryClient();
@@ -96,7 +98,7 @@ const Layout: React.FC<React.PropsWithChildren<{ chatBotMode?: boolean }>> = ({ 
                     >
                       {children}
                       <Footer info={CompanyInfo} list={list} />
-                      {chatBotMode && <ChatBotWidget />}
+                      {IsHideHelpWidget && <ChatBotWidget />}
                     </DrawerLayout>
                   </LoadablePageContent>
                 </ContentLoader>

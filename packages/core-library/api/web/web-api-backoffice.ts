@@ -55,7 +55,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -148,8 +148,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-            contentAccessKey: "",
-          })}`
+              contentAccessKey: "",
+            })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -403,22 +403,32 @@ export class WebApiBackOffice {
   }
 
   public async getFormId() {
-    return await this.axios.get("/api/v2/content/BaseContent/get-form-id")
+    return await this.axios.get("/api/v2/content/BaseContent/get-form-id");
   }
 
   public async createDndOptions(params: CreateDndOptionsParams) {
-    return await this.axios.post("/api/v2/content/BaseContent/create-dnd-option", params)
+    return await this.axios.post(
+      "/api/v2/content/BaseContent/create-dnd-option",
+      params
+    );
   }
 
   public async getDndOptionList(params: DndOptionParams) {
-    return await this.axios.post<DndOptionsResponseType[]>(`/api/v2/content/BaseContent/get-all-dnd-options`, { ...params })
+    return await this.axios.post<DndOptionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-all-dnd-options`,
+      { ...params }
+    );
   }
 
   public async deleteDndOption(optionId: string) {
-    return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`);
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`
+    );
   }
 
-  public async updateChatbotMode(mode: number) {
-    return await this.axios.put(`/api/v1/Customer/update-chatbot-mode`, { mode });
+  public async updateHelpWidgetStatus(isEnabled: boolean) {
+    return await this.axios.put(`/api/v1/Customer/update-chatbot-mode`, {
+      isEnabled,
+    });
   }
 }
