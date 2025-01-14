@@ -94,18 +94,18 @@ export const ChooseProductsConfigurations = (props: {
         )}
         {(accessLevel === AccessLevels.ADMIN ||
           accessLevel === AccessLevels.ENCODER) && (
-            <Grid item xs={4}>
-              <Card
-                onClick={() =>
-                  handleSelection({ chosen: "CONFIG", selection: "QM" })
-                }
-                hoverEffect
-                elevation={5}
-                text="Web Simulator"
-                data-testid="web-simulator-card"
-              />
-            </Grid>
-          )}
+          <Grid item xs={4}>
+            <Card
+              onClick={() =>
+                handleSelection({ chosen: "CONFIG", selection: "QM" })
+              }
+              hoverEffect
+              elevation={5}
+              text="Web Simulator"
+              data-testid="web-simulator-card"
+            />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
@@ -357,6 +357,7 @@ export const MaintenanceMode = (props: {
                 selection: "WEBCUSTOMER",
               })
             }
+            data-testid="chatbot-widget-card"
             elevation={5}
             text="Chatbot Mode"
           />
@@ -367,7 +368,6 @@ export const MaintenanceMode = (props: {
     </Box>
   );
 };
-
 
 export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   const { hasAccess } = useAccessControl();
