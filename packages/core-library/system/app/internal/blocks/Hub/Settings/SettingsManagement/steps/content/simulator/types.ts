@@ -5,11 +5,20 @@ import {
   ddcAnswerOptionsSchema,
   dndAnswerOptionsSchema,
   defaultOptionSchema,
+  bowtieAnswerOptionsSchema,
 } from "./validation";
 
-export type ContainedRegularQuestionType = yup.InferType<typeof containedRegularQuestionSchema>;
+export type ContainedRegularQuestionType = yup.InferType<
+  typeof containedRegularQuestionSchema
+>;
 
-export type ContainedCaseStudyQuestionType = yup.InferType<typeof containedCaseStudyQuestionSchema>;
+export type ContainedCaseStudyQuestionType = yup.InferType<
+  typeof containedCaseStudyQuestionSchema
+>;
+
+export type BowtieAnswerOption = yup.InferType<
+  typeof bowtieAnswerOptionsSchema
+>;
 
 export type DDCAnswerOptionType = yup.InferType<typeof ddcAnswerOptionsSchema>;
 

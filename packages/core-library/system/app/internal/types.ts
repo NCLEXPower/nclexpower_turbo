@@ -82,16 +82,28 @@ export interface DDCAnswerOption extends AnswerOption {
   }[];
 }
 
+export type BowtieItemType = {
+  value: string;
+  container: string;
+  isAnswer: boolean;
+};
+
 export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN";
+  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
   answers: DDCAnswerOption[];
+  leftLabelName: string | undefined;
+  centerLabelName: string | undefined;
+  rightLabelName: string | undefined;
+  rightSection: BowtieItemType[] | undefined;
+  centerSection: BowtieItemType[] | undefined;
+  leftSection: BowtieItemType[] | undefined;
 };
 
 export type CaseStudyDataType = {

@@ -8,7 +8,11 @@ import { nonce } from "../types";
 import { config } from "../config";
 import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
-import { getEndpointResources, getMaintenanceMode } from "../ssr";
+import {
+  getEndpointResources,
+  getHasActiveGoLive,
+  getMaintenanceMode,
+} from "../ssr";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
@@ -46,6 +50,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const csp = generateCSP(generatedNonce);
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
+      const hasGoLiveActive = await getHasActiveGoLive();
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -60,7 +65,11 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
               ...result.props,
               slug,
               generatedNonce,
-              data: { MaintenanceStatus, endpoints },
+              data: {
+                MaintenanceStatus,
+                endpoints,
+                hasGoLive: hasGoLiveActive,
+              },
             },
           };
         }
@@ -75,6 +84,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
           data: {
             MaintenanceStatus,
             endpoints,
+            hasGoLive: hasGoLiveActive,
           },
         },
       };
