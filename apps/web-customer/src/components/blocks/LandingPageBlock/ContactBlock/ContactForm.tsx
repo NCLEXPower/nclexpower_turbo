@@ -17,7 +17,7 @@ import { Control, UseFormHandleSubmit } from "react-hook-form";
 import {
   ContactMock,
   SocialMediaMock,
-} from "../../../core/constant/ContactPageMock";
+} from "../../../../core/constant/ContactPageMock";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
@@ -95,7 +95,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 data-testid="email-input"
               />
             </Grid>
-            <Grid item sx={{ marginTop: 3 }}>
+            <Grid item sx={{ marginTop: 2 }}>
               <ControlledSelectField
                 name="categoryId"
                 options={data}

@@ -105,6 +105,17 @@ export async function getMaintenanceMode() {
   return ((await response.json()) as MaintenanceSsr) ?? null;
 }
 
+export async function getHasActiveGoLive() {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/check-active-schedule`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return ((await response.json()) as boolean) ?? null;
+}
+
 export async function getEndpointResources() {
   const response = await fetch(
     `${baseUrl}/api/v2/internal/baseInternal/get-all-endpoints`,
