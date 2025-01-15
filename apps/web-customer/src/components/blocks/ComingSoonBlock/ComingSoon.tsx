@@ -15,10 +15,14 @@ import {
 import { FormProvider, useForm } from 'react-hook-form';
 import { comingSoonSchema, ComingSoonType } from './validation';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, TextField } from 'core-library/components';
+import { Button, IconButton, TextField } from 'core-library/components';
 import { dateData } from './ComingSoonBlock';
 import { useResolution } from 'core-library/hooks';
 
+type SocialMediaType = {
+  icon: React.ReactNode,
+  link: string
+}
 
 export const ComingSoonPage: React.FC = () => {
   //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
@@ -35,6 +39,12 @@ export const ComingSoonPage: React.FC = () => {
   const onSubmit = (values: ComingSoonType) => {
     console.log(values);
   }
+
+  const SocialMediaIcons: SocialMediaType[] = [
+    { icon: <FacebookIcon width='2rem' />, link: '#' }, //add actual path to social media link
+    { icon: <InstagramIcon width='2rem' />, link: '#' },
+    { icon: <TwitterIcon width='2rem' />, link: '#' }
+  ]
 
   return (
     <div className="w-full h-full lg:h-screen">
@@ -205,10 +215,15 @@ export const ComingSoonPage: React.FC = () => {
             Our team is working hard behind the scenes to bring something innovative and engaging.
             Check back soon for updates—you won&apos;t want to miss this!
           </p>
-          <div className="flex items-center justify-center space-x-3 text-white">
-            <FacebookIcon width='2rem' />
-            <InstagramIcon width='2rem' />
-            <TwitterIcon width='2rem' />
+          <div className="flex items-center justify-center space-x-1.5 text-white">
+            {SocialMediaIcons.map((social, index) => (
+              <IconButton
+                key={index}
+                onClick={() => window.open(social.link, '_blank')}
+              >
+                {social.icon}
+              </IconButton>
+            ))}
           </div>
         </Box>
       </div>
