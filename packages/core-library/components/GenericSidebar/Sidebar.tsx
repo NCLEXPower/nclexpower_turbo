@@ -204,7 +204,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
                 setOpen={setOpen}
               />
               {open && (
-                <div style={{ padding: "12px" }}>
+                <div style={{ padding: "10px" }}>
                   <UserProfile onLogout={onLogout} />
                 </div>
               )}
