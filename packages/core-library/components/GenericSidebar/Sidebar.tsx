@@ -14,6 +14,7 @@ import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 import { useGetProgramList, useUniqueById } from "../../hooks";
 import { IconButton, EvaIcon } from "../../components";
+import { UserProfile } from "../UserProfile/UserProfile";
 
 interface SideBarPropsType extends Partial<WebSidebarStylesType> {
   menu: Array<MenuItems>;
@@ -192,15 +193,22 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
               setOpen={setOpen}
             />
           ) : (
-            <RenderMenuItems
-              menu={updatedMenu.filter((navigation) => !navigation.hide)}
-              pathname={pathname}
-              isAuthenticated={isAuthenticated}
-              listStyles={listStyles}
-              isDrawerOpen={open}
-              onNavigate={handleCloseSidebar}
-              setOpen={setOpen}
-            />
+            <>
+              <RenderMenuItems
+                menu={updatedMenu.filter((navigation) => !navigation.hide)}
+                pathname={pathname}
+                isAuthenticated={isAuthenticated}
+                listStyles={listStyles}
+                isDrawerOpen={open}
+                onNavigate={handleCloseSidebar}
+                setOpen={setOpen}
+              />
+              {open && (
+                <div style={{ padding: "12px" }}>
+                  <UserProfile onLogout={onLogout} />
+                </div>
+              )}
+            </>
           )}
         </div>
       </List>
