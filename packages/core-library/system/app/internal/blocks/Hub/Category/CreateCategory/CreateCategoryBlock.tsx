@@ -51,9 +51,10 @@ export const CreateCategoryBlock: React.FC = () => {
             return <Chip variant="filled" size="small" label="CONTENT AREA" />;
           }
           if (params.row.categoryType == 4) {
-            return (
-              <Chip variant="filled" size="small" label="COGNITIVE LEVEL" />
-            );
+            return <Chip variant="filled" size="small" label="COGNITIVE LEVEL" />
+          }
+          if (params.row.categoryType == 5) {
+            return <Chip variant="filled" size="small" label="CONTACT CONCERN" />
           }
 
           return <Chip variant="filled" size="small" label="REPORT ISSUE" />;
