@@ -1,8 +1,8 @@
 import React from "react";
 import { ProgramListBlock } from "../../../../components/blocks/HubBlocks/ProgramListBlock/ProgramListBlock";
 import { useGetProgramList } from "core-library/hooks";
-import { withCSP } from "core-library";
 import { GetServerSideProps } from "next";
+import { withCSP } from "core-library";
 
 const ProgramListPage: React.FC = () => {
   const { programList, loading } = useGetProgramList();
