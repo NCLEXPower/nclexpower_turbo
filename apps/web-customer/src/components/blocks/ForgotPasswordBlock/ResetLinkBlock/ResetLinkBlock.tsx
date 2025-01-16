@@ -14,7 +14,8 @@ import { useApiCallback } from "core-library/hooks";
 import { ResendCodeParams } from "core-library/api/types";
 import { useOtpVerification } from "@/core/hooks/useOtpVerification";
 import { useExecuteToast } from "core-library/contexts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 interface Props {}
 
@@ -33,7 +34,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
   };
 
   const handleResendEmail = async () => {
-    if (!email?.email) return;
+    if (!email?.email || resetLinkCb.loading) return;
 
     try {
       const resetLinkResult = await resetLinkCb.execute({
@@ -111,13 +112,24 @@ export const ResetLinkBlock: React.FC<Props> = () => {
             <div className="flex items-center">
               <p className="text-[16px] text-[#6D7081] font-ptSansNarrow font-regular md:text-left lg:text-[18px]">
                 If you don&apos;t see the email, check other places it might be,
-                like your junk, spam, or social folder, or{" "}
+                like your junk, spam, or social folder, {resetLinkCb.loading ? " " : "or "}
                 <button
-                  disabled={resetTime !== 0}
+                  disabled={resetTime !== 0 || resetLinkCb.loading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
                 >
-                  send the email again {resetTime !== 0 && `in (${resetTime}s)`}.
+                  {resetLinkCb.loading ? (
+                    <CircularProgress
+                      size={20}
+                      color="inherit"
+                      id="loader"
+                      aria-live="assertive"
+                      thickness={5}
+                      sx={{ border: 'none' }}
+                    />
+                  ) : (
+                    `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ''}`
+                  )}
                 </button>
               </p>
             </div>
@@ -136,7 +148,10 @@ export const ResetLinkBlock: React.FC<Props> = () => {
               </h4>
               <h4 className="text-[14px] font-ptSansNarrow font-regular lg:text-[16px]">
                 Our customer support team is here for you.{" "}
-                <span onClick={navigateToContact} className="cursor-pointer text-[14px] lg:text-[16px] text-darkBlue font-ptSans font-bold underline">
+                <span
+                  onClick={navigateToContact}
+                  className="cursor-pointer text-[14px] lg:text-[16px] text-darkBlue font-ptSans font-bold underline"
+                >
                   Contact Support
                 </span>
               </h4>

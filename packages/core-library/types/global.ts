@@ -208,4 +208,5 @@ type MaintenanceMode = string[] | undefined;
 export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
+  hasGoLive: boolean;
 };
