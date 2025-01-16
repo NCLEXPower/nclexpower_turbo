@@ -43,7 +43,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 }) => {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const form = useForm<RegistrationFormType>({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: yupResolver(registrationSchema),
     defaultValues: registrationSchema.getDefault(),
   });
