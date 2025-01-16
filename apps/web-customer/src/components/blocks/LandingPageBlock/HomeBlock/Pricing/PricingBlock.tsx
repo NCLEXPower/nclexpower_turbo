@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
-  const [nurseType, setNurseType] = useState<number>(1);
+  const [nurseType, setNurseType] = useState<number>(0);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
   const { dataSource } = useDataSource({ url });
