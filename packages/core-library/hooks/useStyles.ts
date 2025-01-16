@@ -1,6 +1,6 @@
-import { SxProps } from '@mui/system';
-import { WebSidebarStylesType } from '../types/web-sidebar-styles';
-import { useMemo } from 'react';
+import { SxProps } from "@mui/system";
+import { WebSidebarStylesType } from "../types/web-sidebar-styles";
+import { useMemo } from "react";
 
 const wordWrapStyles: SxProps = {
   "& *": {
@@ -12,10 +12,9 @@ const wordWrapStyles: SxProps = {
 };
 
 export const useStyle = (): WebSidebarStylesType & { wordWrap: SxProps } => {
-  const listStyles: WebSidebarStylesType['listStyles'] = {
+  const listStyles: WebSidebarStylesType["listStyles"] = {
     sidebarSx: {
       backgroundImage: "linear-gradient(90deg, #0F2A71 0%, #181E2F 100%)",
-      margin: "10px",
       color: "white",
       borderRadius: "8px",
     },
@@ -35,19 +34,12 @@ export const useStyle = (): WebSidebarStylesType & { wordWrap: SxProps } => {
       padding: "0 !important",
     },
     activeSx: {
-      color: "#F4C501 !important",
-      fontWeight: 'bold !important',
       opacity: "1 !important",
-      '.MuiSvgIcon-root': {
-        color: '#F4C501 !important',
-      },
+      textDecoration: "underline !important",
     },
     hovericonSx: {
-      '&:hover': {
-        color: "#F4C501 !important",
-      },
-      '&:hover .MuiSvgIcon-root': {
-        color: '#F4C501 !important',
+      "&:hover": {
+        color: "inherit !important",
       },
     },
     opacitySx: {
@@ -55,10 +47,13 @@ export const useStyle = (): WebSidebarStylesType & { wordWrap: SxProps } => {
     },
   };
 
-  const styles = useMemo(() => ({
-    listStyles,
-    wordWrap: wordWrapStyles,
-  }), []);
+  const styles = useMemo(
+    () => ({
+      listStyles,
+      wordWrap: wordWrapStyles,
+    }),
+    []
+  );
 
   return styles;
 };
