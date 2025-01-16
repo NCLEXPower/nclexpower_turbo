@@ -1,5 +1,5 @@
 import { renderHook, act } from "../../common";
-import { useCountdown } from "../../../hooks";
+import { useSignalRCountdown } from "../../../hooks";
 import * as signalR from "@microsoft/signalr";
 
 jest.mock("@microsoft/signalr", () => {
@@ -37,7 +37,7 @@ jest.mock("../../../config", () => ({
   },
 }));
 
-describe("useCountdown", () => {
+describe("useSignalRCountdown", () => {
   let connectionMock: jest.Mocked<signalR.HubConnection>;
 
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe("useCountdown", () => {
   });
 
   it("should initialize with null countdown and connectionError", () => {
-    const { result } = renderHook(() => useCountdown());
+    const { result } = renderHook(() => useSignalRCountdown());
 
     expect(result.current.countdown).toBeNull();
     expect(result.current.connectionError).toBeNull();
@@ -63,7 +63,7 @@ describe("useCountdown", () => {
       }
     });
 
-    const { result } = renderHook(() => useCountdown());
+    const { result } = renderHook(() => useSignalRCountdown());
     expect(result.current.countdown).toBeNull();
-  })
+  });
 });
