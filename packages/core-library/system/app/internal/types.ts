@@ -82,16 +82,28 @@ export interface DDClozeTableAnswerOption extends AnswerOption {
   }[];
 }
 
+export type BowtieItemType = {
+  value: string;
+  container: string;
+  isAnswer: boolean;
+};
+
 export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "DDT";
+  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
   answers: DDClozeTableAnswerOption[];
+  leftLabelName: string | undefined;
+  centerLabelName: string | undefined;
+  rightLabelName: string | undefined;
+  rightSection: BowtieItemType[] | undefined;
+  centerSection: BowtieItemType[] | undefined;
+  leftSection: BowtieItemType[] | undefined;
 };
 
 export type CaseStudyDataType = {

@@ -5,13 +5,24 @@
  */
 import { SelectOption } from "../../../../../../../../components";
 import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
-import { RegularQuestionSelectionOptions } from "../types";
+import { RegularQuestionSelectionOptions, SectionType } from "../types";
+
+export type BowtieFieldGroupType = {
+  key: keyof typeof labelNames;
+  count: number;
+};
 
 const createNumberList = (length: number) => {
   return Array.from({ length: length }, (_, index) => ({
     value: index + 1,
     label: String(index + 1),
   }));
+};
+
+export const labelNames = {
+  leftSection: "leftLabelName",
+  centerSection: "centerLabelName",
+  rightSection: "rightLabelName",
 };
 
 export const questionType = [
@@ -23,8 +34,48 @@ export const questionType = [
   { value: "HCP", label: "HCP" },
   { value: "MCQ", label: "MCQ(No Group)" },
   { value: "MCQ", label: "MCQ(Group)" },
-
+  { value: "BOWTIE", label: "BOWTIE" },
 ];
+
+export const BowtieFieldGroups: BowtieFieldGroupType[] = [
+  { key: "leftSection", count: 5 },
+  { key: "centerSection", count: 4 },
+  { key: "rightSection", count: 5 },
+];
+
+export const labelMapping: { sectionName: SectionType; labelName: string }[] = [
+  { sectionName: "leftSection", labelName: "leftLabelName" },
+  { sectionName: "centerSection", labelName: "centerLabelName" },
+  { sectionName: "rightSection", labelName: "rightLabelName" },
+];
+
+export const groupLabels = ({
+  LeftLabel,
+  CenterLabel,
+  RightLabel,
+}: {
+  LeftLabel: string;
+  CenterLabel: string;
+  RightLabel: string;
+}) => {
+  return [
+    {
+      label: LeftLabel || "Left Label",
+      section: "leftSection",
+      count: 5,
+    },
+    {
+      label: CenterLabel || "Center Label",
+      section: "centerSection",
+      count: 4,
+    },
+    {
+      label: RightLabel || "Right Label",
+      section: "rightSection",
+      count: 5,
+    },
+  ];
+};
 
 export const tabsSequence: SelectOption[] = Array.from(
   { length: 6 },
@@ -41,6 +92,12 @@ export const maxAnswer: SelectOption[] = createNumberList(5);
 export const initBgValues = { seqNum: 1, seqContent: "" };
 
 export const initAnswerValues = { answer: "", answerKey: false };
+
+export const bowtieInitAnswerValues = {
+  value: "",
+  container: "",
+  isAnswer: false,
+};
 
 export const caseStudyQuestionnaires = {
   maxPoints: 1,
@@ -59,7 +116,7 @@ export const questionnairesDefaultValue = Array.from(
 );
 
 export const initCaseStudyQuestionnaires = {
-  questionnaires: questionnairesDefaultValue
+  questionnaires: questionnairesDefaultValue,
 };
 
 export const initQuestionsValues = (

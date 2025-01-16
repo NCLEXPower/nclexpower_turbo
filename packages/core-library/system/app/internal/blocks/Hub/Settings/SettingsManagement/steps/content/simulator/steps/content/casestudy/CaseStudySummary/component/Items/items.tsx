@@ -9,6 +9,7 @@ import {
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 import { DDTItem } from "./DDTItem";
+import { BowtieSummary } from "./BowtieSummary";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -48,6 +49,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             }}
           />
         );
+
       default:
         return (
           <Typography sx={wordWrap}>
@@ -62,6 +64,8 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
       return "Select All That Apply";
     } else if (data.questionType === "MRSN") {
       return `Select ${data.maxAnswer} That Apply`;
+    } else if (data.questionType === "BOWTIE") {
+      return `Bowtie`;
     }
     return null;
   };
@@ -112,6 +116,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
               (data.questionType == "MRSN" && (
                 <AnswerList answers={data.answers} />
               ))}
+            {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
           </Box>
         ))
       ) : (

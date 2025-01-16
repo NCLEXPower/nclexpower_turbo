@@ -18,9 +18,13 @@ import { ItemContent } from "./component/Items/ItemContent";
 import { BackgroundInfoContent } from "./component/BackgroundInfo/BackgroundInfoContent";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
 import { CaseStudyLoader } from "../../loader";
-import { useBusinessQueryContext, useExecuteToast } from "../../../../../../../../../../../../../../contexts";
+import { useExecuteToast } from "../../../../../../../../../../../../../../contexts";
 import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
-import { useSensitiveInformation } from "../../../../../../../../../../../../../../hooks";
+import {
+  useApiCallback,
+  useSensitiveInformation,
+} from "../../../../../../../../../../../../../../hooks";
+import { CreateRegularType } from "../../../../../../../../../../../../../../api/types";
 
 interface CaseStudySummaryProps {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -73,8 +77,10 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   const [isTableView, setIsTableView] = useState<boolean>(false);
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
-  const { businessQueryCreateRegularQuestion } = useBusinessQueryContext();
-  const { mutateAsync, isLoading } = businessQueryCreateRegularQuestion();
+  const createCaseStudyQuestion = useApiCallback(
+    async (api, args: CreateRegularType) =>
+      await api.webbackoffice.createRegularQuestion(args)
+  );
   const { internal } = useSensitiveInformation();
   const toast = useExecuteToast();
 
@@ -92,18 +98,19 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   async function onSubmit() {
     try {
       if (caseStudyAtom) {
-        await mutateAsync(
+        const result = await createCaseStudyQuestion.execute(
           convertToCreateCaseStudy(caseStudyAtom, internal)
         );
-        toast.executeToast(
-          "Case Study created successfully",
-          "top-right",
-          false,
-          {
-            toastId: 0,
-            type: "success",
-          }
-        )
+        if (result.status === 200)
+          toast.executeToast(
+            "Case Study created successfully",
+            "top-right",
+            false,
+            {
+              toastId: 0,
+              type: "success",
+            }
+          );
       }
     } catch (error) {
       toast.executeToast(
@@ -114,7 +121,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
           toastId: 0,
           type: "error",
         }
-      )
+      );
     } finally {
       nextStep({});
       next();
@@ -167,7 +174,6 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
         <ConfirmationModal
           dialogContent="Are you sure you want to continue?"
           customButton="Continue"
-          isLoading={isLoading}
           handleSubmit={onSubmit}
         />
       </Box>
