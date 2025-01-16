@@ -35,10 +35,10 @@ export const DDTItem: React.FC<DDTQuestionProps> = ({ ddcData }) => {
         <FormControl
           variant="standard"
           key={optionName}
-          sx={{ minWidth: "100%" }}
+          sx={{ minWidth: "100%", height: "50%" }}
         >
           <PlainSelectField
-            variant="outlined"
+            variant="standard"
             options={mappedOptions || []}
             defaultValue={defaultSelectedOption || ""}
             displayEmpty

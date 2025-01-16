@@ -9,29 +9,28 @@ type CustomMenuBarPropsType = CustomMenusType & {
   content: string;
   customDependency?: string | number;
   questionType?: string;
+  onInsertTable?: (() => boolean) | undefined;
 };
 
 export const CustomMenuBar: React.FC<CustomMenuBarPropsType> = memo(
-  ({ editorFor, content, questionType }) => {
+  ({ editorFor, content, questionType, onInsertTable }) => {
     const { editor } = useCurrentEditor();
 
     if (!editor) return null;
 
     useEffect(() => {
-      if (questionType === "DDT" && editor) {
+      if (questionType === "DDT" && onInsertTable?.()) {
         editor
           .chain()
           .focus()
           .insertContent(" ")
           .insertTable({ rows: 4, cols: 2, withHeaderRow: true })
           .run();
-
         editor.commands.setTextSelection(1);
       }
-    }, [questionType, editor]);
+    }, [questionType]);
 
     const menus = MenuButtons({ editor, editorFor });
-    const sample = menus.filter((action) => action.label === "Insert Table");
 
     useEffect(() => {
       if (!editor) return;

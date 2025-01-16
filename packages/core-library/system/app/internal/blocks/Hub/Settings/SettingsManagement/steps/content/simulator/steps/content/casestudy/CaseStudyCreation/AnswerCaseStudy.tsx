@@ -35,6 +35,30 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
+
+  const [insertedIndices, setInsertedIndices] = useState<number[]>([]);
+
+  const handleTableInsertion = (currentIndex: number) => {
+    setInsertedIndices((prev) => {
+      const newIndices = [...prev];
+      const indexExists = newIndices.includes(currentIndex);
+
+      if (indexExists) {
+        return newIndices.filter((index) => index !== currentIndex);
+      } else {
+        return [...newIndices, currentIndex];
+      }
+    });
+    return !insertedIndices.includes(currentIndex);
+  };
+
+  useEffect(() => {
+    const currentQuestionType = questionnaires[index]?.questionType;
+    if (currentQuestionType !== "DDT" && insertedIndices.includes(index)) {
+      setInsertedIndices((prev) => prev.filter((index) => index !== index));
+    }
+  }, [questionnaires[index]?.questionType, index, insertedIndices]);
+
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
   const isBowTie = questionType == "BOWTIE";
 
@@ -129,6 +153,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               questionType={questionType}
               placeholder="Add question..."
               name={`questionnaires.${index}.itemStem`}
+              onInsertTable={() => handleTableInsertion(index)}
             />
           </Box>
           <Instruction questionType={questionType} />
