@@ -18,7 +18,7 @@ jest.mock("../../hooks/useApi", () => ({
   useApiCallback: jest.fn(),
 }));
 
-jest.mock("../../contexts/auth/hooks", () => ({
+jest.mock("../../contexts/auth/hooks.ts", () => ({
   useAccessToken: jest.fn().mockReturnValue(["token", jest.fn(), jest.fn()]),
   useAccountId: jest.fn().mockReturnValue(["uid", jest.fn(), jest.fn()]),
 }));
