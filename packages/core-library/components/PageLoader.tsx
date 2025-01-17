@@ -59,7 +59,14 @@ export const PageLoader: React.FC = () => {
         src={CoreZigmaLogo}
         alt="Logo"
       />
-      <Typography variant="h6" sx={{ mt: 2, mb: 3 }}>
+      <Typography sx={{ 
+        fontSize: "1rem",
+        fontWeight: "800",
+        mt: 2, 
+        mb: 3,
+        "@media (max-width: 400px)": {
+              fontSize: "12px",
+            }}}>
         {message || "Loading..."}
       </Typography>
       <CircularProgress variant="determinate" value={progress} />
