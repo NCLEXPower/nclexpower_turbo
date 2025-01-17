@@ -8,6 +8,7 @@ import { SATA } from "./blocks/Regular/SATA/SATA";
 import { DDC } from "./blocks/CaseStudy/DDC/DDC";
 import { MRSN } from "./blocks/CaseStudy/MRSN/MRSN";
 import { DND } from "./blocks/CaseStudy/DND/DND";
+import { HCP } from "./blocks/CaseStudy/HCP/HCP";
 import { Bowtie } from "./blocks/CaseStudy/Bowtie/Bowtie";
 
 export type AnswerOptionsType = {
@@ -40,6 +41,8 @@ export const AnswerOptions: React.FC<AnswerOptionsType> = ({
         return <MRSN questionIndex={questionIndex} />;
       case "DND":
         return <DND questionIndex={questionIndex} />;
+      case "HCP":
+        return <HCP questionIndex={questionIndex} />;
       case "BOWTIE":
         return <Bowtie questionIndex={questionIndex} />;
     }

@@ -5,6 +5,7 @@
  */
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
+import { HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -92,18 +93,19 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE";
+  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "HCP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDCAnswerOption[];
   leftLabelName: string | undefined;
   centerLabelName: string | undefined;
   rightLabelName: string | undefined;
   rightSection: BowtieItemType[] | undefined;
   centerSection: BowtieItemType[] | undefined;
   leftSection: BowtieItemType[] | undefined;
+  hcpContent: string | undefined;
+  answers: DDCAnswerOption[] | HCPNAnswerOptionType[];
 };
 
 export type CaseStudyDataType = {

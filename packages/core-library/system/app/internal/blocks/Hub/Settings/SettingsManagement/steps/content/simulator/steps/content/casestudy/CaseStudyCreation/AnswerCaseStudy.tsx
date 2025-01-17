@@ -20,16 +20,16 @@ import {
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
-import { useEffect } from "react";
-import { Instruction } from "./components/Instruction";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
+import { memo, useEffect, useRef } from "react";
+import { Instruction } from "./components/Instruction";
 
 interface Props {
   index: number;
 }
 
-export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
+export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
@@ -66,9 +66,10 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
+      <Instruction questionType={questionType} />
       <Box
         data-testid="answer-case-study"
-        sx={{ display: "flex", width: "100%" }}
+        sx={{ display: "flex", width: "100%", mt: 3 }}
       >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
@@ -130,7 +131,6 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               name={`questionnaires.${index}.itemStem`}
             />
           </Box>
-          <Instruction questionType={questionType} />
         </Box>
 
         {isBowTie && <BowtieAnswerArea questionIndex={index} />}
@@ -158,4 +158,4 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
       </Box>
     </Box>
   );
-};
+});
