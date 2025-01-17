@@ -126,6 +126,48 @@ const dndKeysSchema = yup.object({
     }),
 });
 
+export const mcqNoGroupAnswerSchema = yup.object({
+  rowId: yup.string().required("Row ID is required"),
+  rowTitle: yup.string().required("Row title is required"),
+  choices: yup
+    .object()
+    .test(
+      "one-true-value",
+      "One answer must be selected",
+      (obj) => obj && Object.values(obj).filter(Boolean).length === 1
+    ),
+});
+
+export const mcqNoGroupSchema = yup.object().shape({
+  tableData: yup
+    .object({
+      columns: yup
+        .array()
+        .of(
+          yup.object({
+            columnId: yup.string().required("Column ID is required"),
+            label: yup.string().required("Column label is required"),
+          })
+        )
+        .min(3, "At least 3 columns are required"),
+      rows: yup
+        .array()
+        .of(mcqNoGroupAnswerSchema)
+        .min(2, "At least 2 rows are required"),
+    })
+    .when("questionType", {
+      is: "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(
+            path,
+            "MCQ No Group answer options is required"
+          )
+        ),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+});
+
 // MRSN Max Answer Schema
 const mrsnMaxAnswer = yup.object({
   maxAnswer: yup.number().when("questionType", {
@@ -265,6 +307,7 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
+  MCQNOGROUP: mcqNoGroupSchema,
 };
 
 // Answers Schema
@@ -353,6 +396,7 @@ const caseStudyQuestionnaireSchema = yup.object({
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
+        .concat(mcqNoGroupSchema)
     )
     .default([]),
 });

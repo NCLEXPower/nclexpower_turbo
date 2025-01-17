@@ -88,11 +88,23 @@ export type BowtieItemType = {
   isAnswer: boolean;
 };
 
+export type MCQNoGroupAnswerOptionType = {
+  columns: {
+    label: string;
+    columnId: string;
+  }[];
+  rows: {
+    rowId: string;
+    rowTitle: string;
+    choices: Record<string, boolean>;
+  }[];
+};
+
 export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE";
+  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
@@ -104,6 +116,7 @@ export type QuestionnaireItem = {
   rightSection: BowtieItemType[] | undefined;
   centerSection: BowtieItemType[] | undefined;
   leftSection: BowtieItemType[] | undefined;
+  tableData: MCQNoGroupAnswerOptionType;
 };
 
 export type CaseStudyDataType = {
