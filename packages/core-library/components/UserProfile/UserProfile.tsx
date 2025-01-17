@@ -1,5 +1,6 @@
 import { useAccessControl } from "../../hooks/useAccessControl";
 import { getRoleName } from "../../core/utils/permission";
+import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import {
   Box,
   Typography,
@@ -18,10 +19,14 @@ interface Props {
 }
 
 export const UserProfile: React.FC<Props> = ({ onLogout }) => {
+  const { internal } = useSensitiveInformation();
   const { accessLevel } = useAccessControl();
   const roleName = getRoleName(accessLevel ?? -1);
 
-  const userName = "John Doe"; // Replace with actual user name
+  const userName =
+    internal?.firstname && internal?.lastname
+      ? `[${internal.firstname} ${internal.lastname}]`
+      : "Unknown User";
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -50,7 +55,7 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
         margin: "0 auto",
       }}
     >
-      <Avatar sx={{ width: 40, height: 40 }} /> {/* Smaller Avatar */}
+      <Avatar sx={{ width: 40, height: 40 }} />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography
           variant="h6"
