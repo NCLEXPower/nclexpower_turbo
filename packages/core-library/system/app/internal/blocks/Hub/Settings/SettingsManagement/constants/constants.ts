@@ -32,7 +32,7 @@ export const questionType = [
   { value: "DND", label: "DND" },
   { value: "HCP", label: "HCP" },
   { value: "MCQ", label: "MCQ(No Group)" },
-  { value: "MCQ", label: "MCQ(Group)" },
+  { value: "MCQGROUP", label: "MCQ(Group)" },
   { value: "BOWTIE", label: "BOWTIE" },
 ];
 

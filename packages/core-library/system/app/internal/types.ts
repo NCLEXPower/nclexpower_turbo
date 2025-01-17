@@ -82,6 +82,24 @@ export interface DDCAnswerOption extends AnswerOption {
   }[];
 }
 
+export type TablePropType = {
+  column?: number;
+  row?: number;
+  rowIndex?: number;
+  questionIndex: number;
+};
+
+export type MCQChoiceType = {
+  value: string;
+  choiceId: number;
+};
+
+export type MCQRowType = {
+  rowId: number;
+  rowTitle: string;
+  choices: MCQChoiceType[];
+};
+
 export type BowtieItemType = {
   value: string;
   container: string;
@@ -92,7 +110,7 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE";
+  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "MCQGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;

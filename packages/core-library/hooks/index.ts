@@ -50,3 +50,4 @@ export * from "./golive/useCountdown";
 export * from "./useWebHeaderStyles";
 export * from "./useSynchronizeSectionWithLabel";
 export * from "./useOrganizeSection";
+export * from "./useMCQTableConfig";

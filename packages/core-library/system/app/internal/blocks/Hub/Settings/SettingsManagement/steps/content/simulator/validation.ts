@@ -241,6 +241,64 @@ export const bowtieAnswerSchema = yup.object({
     }),
 });
 
+const mcqGroupColumn = yup.object({
+  label: yup
+    .string()
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Column label is required")
+        ),
+    })
+    .required("Column Title is Required"),
+});
+
+const mcqGroupRow = yup.object().shape({
+  rowId: yup.number(),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
+  choices: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.boolean().default(false),
+        choiceId: yup.number(),
+      })
+    )
+    .required("Choices are required."),
+});
+export const mcqGroupAnswerSchema = yup.object({
+  columns: yup
+    .array()
+    .of(mcqGroupColumn)
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+  rows: yup
+    .array()
+    .of(mcqGroupRow)
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+});
+
 // Question Options Schema
 const questionOptionsSchemas = {
   DDC: yup
@@ -265,6 +323,7 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
+  MCQGROUP: mcqGroupAnswerSchema,
 };
 
 // Answers Schema
@@ -353,6 +412,7 @@ const caseStudyQuestionnaireSchema = yup.object({
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
+        .concat(mcqGroupAnswerSchema)
     )
     .default([]),
 });

@@ -9,16 +9,18 @@ import {
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 import { BowtieSummary } from "./BowtieSummary";
+import { MCQGroupSummary } from "./MCQGroupSummary";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
     <Box marginTop="10px">
-      {answers.map((answer, index) => (
-        <Box display="flex" alignItems="center" paddingX="10px" key={index}>
-          <Checkbox disabled checked={answer.answerKey} />
-          <Typography fontSize="16px">{answer.answer}</Typography>
-        </Box>
-      ))}
+      {answers.length > 0 &&
+        answers.map((answer, index) => (
+          <Box display="flex" alignItems="center" paddingX="10px" key={index}>
+            <Checkbox disabled checked={answer.answerKey} />
+            <Typography fontSize="16px">{answer.answer}</Typography>
+          </Box>
+        ))}
     </Box>
   );
 };
@@ -56,6 +58,8 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
       return `Select ${data.maxAnswer} That Apply`;
     } else if (data.questionType === "BOWTIE") {
       return `Bowtie`;
+    } else if (data.questionType === "MCQGROUP") {
+      return `MCQ GROUP`;
     }
     return null;
   };
@@ -106,6 +110,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
               <AnswerList answers={data.answers} />
             )}
             {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
+            {data.questionType == "MCQGROUP" && <MCQGroupSummary data={data} />}
           </Box>
         ))
       ) : (
