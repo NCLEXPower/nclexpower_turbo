@@ -23,7 +23,7 @@ export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
     const choice = row.choices[columnIndex - 1];
     return (
       <Radio
-        checked={choice.value}
+        checked={choice?.value}
         disabled
       />
     )
@@ -34,7 +34,7 @@ export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
       <Table sx={{ minWidth: 650 }}>
         <TableHead style={{ backgroundColor: "#007AB7", color: "white" }}>
           <TableRow>
-            {data.columns.map((column: Columns) => (
+            {data.columns?.map((column: Columns) => (
               <TableCell
                 key={column.label}
                 align="center"
@@ -46,7 +46,7 @@ export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
           </TableRow>
         </TableHead>
         <TableBody style={{ backgroundColor: "#F0F0F0" }}>
-          {data.rows.map((row: Row) => (
+          {data.rows?.map((row: Row) => (
             <TableRow key={row.rowId}>
               <TableCell component="th" scope="row">
                 {row.rowTitle}

@@ -87,6 +87,19 @@ describe("AnswerOptions", () => {
     expect(screen.getByTestId("mrsn-form")).toBeInTheDocument();
   });
 
+  it("should render  when questionType is caseStudy and MCQ No Group", () => {
+    const { container } = render(
+      <FormProvider {...form}>
+        <AnswerOptions
+          questionIndex={1}
+          questionType="caseStudy"
+          questionnaireType="MCQNOGROUP"
+        />
+      </FormProvider>
+    );
+    expect(screen.getByTestId("mcq-no-group")).toBeInTheDocument();
+  });
+
   it("should render when questionType is caseStudy and DND", () => {
     const mockOptionList: DndOptionsType[] =
       [

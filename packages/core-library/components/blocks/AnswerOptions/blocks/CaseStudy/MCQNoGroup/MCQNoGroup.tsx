@@ -72,7 +72,7 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
   }
 
   return (
-    <Card>
+    <Card data-testid="mcq-no-group">
       <MCQNoGroupAnswer
         questionIndex={questionIndex}
         handleAppendRowTable={handleAppendRowTable}
