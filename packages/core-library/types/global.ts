@@ -215,5 +215,5 @@ export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
   hasGoLive: boolean;
-  ChatBotMode: ChatBotSsr;
+  hasChatBotWidget: ChatBotSsr;
 };

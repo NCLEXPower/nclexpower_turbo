@@ -36,7 +36,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   const MaintenanceMode =
     data && data.MaintenanceStatus?.currentMaintenanceMode;
-  const ChatBotMode = data && data.ChatBotMode?.isEnabled;
+  const shouldShowChatBotWidget = data && data.hasChatBotWidget?.isEnabled;
 
   if (error) {
     return <ErrorBox label={error.message} />;
@@ -59,7 +59,10 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
             <ToastProvider>
               <ClientSecretKeyContextProvider>
                 <ControlledToast autoClose={5000} hideProgressBar={false} />
-                <Layout IsHideHelpWidget={ChatBotMode} children={children} />
+                <Layout
+                  shouldShowChatBotWidget={shouldShowChatBotWidget}
+                  children={children}
+                />
               </ClientSecretKeyContextProvider>
             </ToastProvider>
           </AuthProvider>

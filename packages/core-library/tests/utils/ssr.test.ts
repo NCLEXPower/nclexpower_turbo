@@ -6,7 +6,7 @@ import {
   create,
   confirmedCreation,
   getMaintenanceMode,
-  getChatBotMode,
+  getHasChatBotWidget,
 } from "../../ssr";
 import { config } from "../../config";
 import {
@@ -188,7 +188,7 @@ describe("SSR Functions", () => {
       json: jest.fn().mockResolvedValue(mockChatbotMode),
     });
 
-    const result = await getChatBotMode();
+    const result = await getHasChatBotWidget();
 
     expect(fetch).toHaveBeenCalledWith(
       `${config.value.LOCAL_API_URL}/api/v1/Customer/get-chatbot-mode`,

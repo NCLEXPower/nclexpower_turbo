@@ -129,13 +129,10 @@ export async function getEndpointResources() {
   );
 }
 
-export async function getChatBotMode() {
-  const response = await fetch(
-    `${baseUrl}/api/v1/Customer/get-chatbot-mode`,
-    {
-      method: "GET",
-      headers: headers,
-    }
-  );
+export async function getHasChatBotWidget() {
+  const response = await fetch(`${baseUrl}/api/v1/Customer/get-chatbot-mode`, {
+    method: "GET",
+    headers: headers,
+  });
   return ((await response.json()) as ChatBotSsr) ?? null;
 }
