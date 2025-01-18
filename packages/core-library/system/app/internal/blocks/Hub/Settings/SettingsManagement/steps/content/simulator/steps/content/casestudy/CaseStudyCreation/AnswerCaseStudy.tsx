@@ -20,23 +20,23 @@ import {
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
-import { useEffect } from "react";
-import { Instruction } from "./components/Instruction";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
+import { memo, useEffect, useRef } from "react";
+import { Instruction } from "./components/Instruction";
+import { CustomFields } from "./components/CustomFields";
 
 interface Props {
   index: number;
 }
 
-export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
+export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
-  const isBowTie = questionType == "BOWTIE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -66,9 +66,10 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
+      <Instruction questionType={questionType} />
       <Box
         data-testid="answer-case-study"
-        sx={{ display: "flex", width: "100%" }}
+        sx={{ display: "flex", width: "100%", mt: 3 }}
       >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
@@ -130,32 +131,32 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               name={`questionnaires.${index}.itemStem`}
             />
           </Box>
-          <Instruction questionType={questionType} />
         </Box>
 
-        {isBowTie && <BowtieAnswerArea questionIndex={index} />}
-
         {questionType && (
-          <Box sx={{ textAlign: "start", mt: 3 }}>
-            <Typography color="#525252" fontSize="16px" fontWeight={600}>
-              Answer Options :
-            </Typography>
-            <Box
-              boxShadow={2}
-              sx={{
-                borderRadius: "5px",
-                overflow: "hidden",
-              }}
-            >
-              <AnswerOptions
-                questionIndex={index}
-                questionType="caseStudy"
-                questionnaireType={questionType}
-              />
+          <>
+            <CustomFields questionIndex={index} questionType={questionType} />
+            <Box sx={{ textAlign: "start", mt: 3 }}>
+              <Typography color="#525252" fontSize="16px" fontWeight={600}>
+                Answer Options :
+              </Typography>
+              <Box
+                boxShadow={2}
+                sx={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                }}
+              >
+                <AnswerOptions
+                  questionIndex={index}
+                  questionType="caseStudy"
+                  questionnaireType={questionType}
+                />
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
       </Box>
     </Box>
   );
-};
+});
