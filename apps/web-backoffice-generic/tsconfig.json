@@ -20,6 +20,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "tailwind.ts",
     "../../packages/core-library/global.d.ts",
     "../../packages/core-library/theme.d.ts",
     "../../packages/core-library/eva-icons.d.ts",
