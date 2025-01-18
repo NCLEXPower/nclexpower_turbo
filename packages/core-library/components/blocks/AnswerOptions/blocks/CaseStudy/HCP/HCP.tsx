@@ -15,21 +15,10 @@ type Props = {
 };
 
 export const HCP: React.FC<Props> = ({ questionIndex }) => {
-  const { watch, setValue } = useFormContext<ContainedCaseStudyQuestionType>();
+  const { watch } = useFormContext<ContainedCaseStudyQuestionType>();
   const answers = watch(
     `questionnaires.${questionIndex}.answers`
   ) as HCPNAnswerOptionType[];
-
-  const handleGetHighlighted = (content: HighlightedTextsObj[]) => {
-    setValue(
-      `questionnaires.${questionIndex}.answers`,
-      content.map((value) => ({
-        answer: value.text,
-        answerKey: false,
-        attrName: value.attr,
-      }))
-    );
-  };
 
   return (
     <Card data-testid="hcp-casestudy-block">
