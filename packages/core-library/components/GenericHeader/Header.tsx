@@ -13,6 +13,7 @@ import {
   Container,
   IconButton,
   Button,
+  ClickAwayListener,
 } from '@mui/material';
 import { useResolution } from '../../hooks';
 import { HeaderLogo } from './HeaderLogo';
@@ -23,7 +24,7 @@ import { AccountMenuItem } from '.';
 import { MenuItems } from '../../api/types';
 import SearchIcon from '@mui/icons-material/Search';
 import { config } from '../../config';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -72,27 +73,14 @@ export const Header: React.FC<Props> = ({
   const isInWebcHub = isAuthenticated && isInHub && appName.includes('c');
 
   const [showSearch, setShowSearch] = useState(false);
-  const searchFieldRef = useRef<HTMLDivElement>(null);
 
   const toggleSearchField = () => {
     setShowSearch((prev) => !prev);
   };
 
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (
-      searchFieldRef.current &&
-      !searchFieldRef.current.contains(event.target as Node)
-    ) {
-      setShowSearch(false);
-    }
+  const handleClickAway = () => {
+    setShowSearch(false);
   };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, []);
 
   const handleNavigate = (path: string) => {
     router.push({ pathname: path });
@@ -215,28 +203,29 @@ export const Header: React.FC<Props> = ({
                 alignSelf: 'center',
               }}
             >
-              <Container
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  gap: '10px',
-                }}
-              >
-                <IconButton onClick={toggleSearchField}>
-                  <SearchIcon fontSize='large' sx={{ color: 'white' }} />
-                </IconButton>
-                <Box
-                  ref={searchFieldRef}
+              <ClickAwayListener onClickAway={handleClickAway}>
+                <Container
                   sx={{
-                    width: showSearch ? '100%' : '0%',
-                    overflow: 'hidden',
-                    transition: 'width 0.5s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    gap: '10px',
                   }}
                 >
-                  <InputBase placeholder='Search' sx={inputBaseStyles} />
-                </Box>
-              </Container>
+                  <IconButton onClick={toggleSearchField}>
+                    <SearchIcon fontSize='large' sx={{ color: 'white' }} />
+                  </IconButton>
+                  <Box
+                    sx={{
+                      width: showSearch ? '100%' : '0%',
+                      overflow: 'hidden',
+                      transition: 'width 0.5s ease',
+                    }}
+                  >
+                    <InputBase placeholder='Search' sx={inputBaseStyles} />
+                  </Box>
+                </Container>
+              </ClickAwayListener>
             </Grid>
           )}
 
