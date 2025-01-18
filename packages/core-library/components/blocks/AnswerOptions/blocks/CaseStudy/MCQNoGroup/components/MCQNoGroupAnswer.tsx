@@ -24,14 +24,16 @@ type MCQNoGroupType = {
   handleAppendColumnHeaders: () => void;
   handleRemoveRow: (index: number) => void;
   handleRemoveColumnHeaders: (index: number) => void;
-  columnHeaderFields: Array<{ columnId: string; label: string }>;
+  columnHeaderFields: Array<{ label: string }>;
   control: Control<ContainedCaseStudyQuestionType>;
   tableRowFields?: Array<{
-    rowId: string;
+    rowId?: number | undefined;
     rowTitle: string;
-    choices: Record<string, boolean>
+    choices: Array<{
+      choiceId?: number;
+      value: boolean;
+    }>
   }>;
-  watchAnswerOptions?: Array<{ columnId: string; label: string }>;
   setValue: any;
   disableRemoveRow?: boolean;
   disableRemoveColumnHeaders?: boolean;
@@ -45,7 +47,6 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
   handleRemoveRow,
   handleRemoveColumnHeaders,
   columnHeaderFields,
-  watchAnswerOptions,
   tableRowFields,
   control,
   setValue,
@@ -121,7 +122,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               alignItems: "center",
             }}>
             <TextField
-              name={`questionnaires.${questionIndex}.tableData.columns.${index}.label`}
+              name={`questionnaires.${questionIndex}.columns.${index}.label`}
               control={control}
               label={index === 0 ? `Table Header` : `Column Header: ${index + 1}`}
               sx={{
@@ -155,7 +156,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
           <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={4}>
             <Box gridColumn="span 4">
               <ControlledTextField
-                name={`questionnaires.${questionIndex}.tableData.rows.${idx}.rowTitle`}
+                name={`questionnaires.${questionIndex}.rows.${idx}.rowTitle`}
                 label={`Table Row: ${idx + 1}`}
                 sx={{
                   borderRadius: "5px",
@@ -185,28 +186,33 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
           </Box>
           <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
             <RadioGroup
-              name={`questionnaires.${questionIndex}.tableData.rows.${idx}.choices`}
-              value={Object.entries(tableRowFields[idx].choices ?? {}).find(([_, value]) => value)?.[0] || ""}
+              name={`questionnaires.${questionIndex}.rows.${idx}.choices`}
+              value={tableRowFields[idx].choices.find(choice => choice.value)?.choiceId?.toString() ?? ""}
               onChange={(e) => {
-                const selectedAnswer = e.target.value;
+                const selectedChoiceId = parseInt(e.target.value, 10);
                 setValue(
-                  `questionnaires.${questionIndex}.tableData.rows.${idx}.choices`,
-                  Object.fromEntries(columnHeaderFields.slice(1).map(col =>
-                    [col.columnId, col.columnId === selectedAnswer]))
+                  `questionnaires.${questionIndex}.rows.${idx}.choices`,
+                  columnHeaderFields.slice(1).map((_, index) => ({
+                    choiceId: index,
+                    value: index === selectedChoiceId,
+                  }))
                 );
               }}
             >
-              {watchAnswerOptions?.slice(1).map((col) => (
+              {columnHeaderFields.slice(1).map((col, colIndex) => (
                 <FormControlLabel
-                  key={col.columnId}
-                  value={col.columnId}
-                  control={<Radio
-                    sx={{
-                      color: "red",
-                      '&.Mui-checked': {
-                        color: "green",
-                      },
-                    }} />}
+                  key={colIndex}
+                  value={colIndex.toString()}
+                  control={
+                    <Radio
+                      sx={{
+                        color: "red",
+                        '&.Mui-checked': {
+                          color: "green",
+                        },
+                      }}
+                    />
+                  }
                   label={col.label}
                 />
               ))}

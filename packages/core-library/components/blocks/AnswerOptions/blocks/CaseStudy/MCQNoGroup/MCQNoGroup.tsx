@@ -19,41 +19,47 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
     ContainedCaseStudyQuestionType
   >({
     control,
-    name: `questionnaires.${questionIndex}.tableData.rows`,
+    name: `questionnaires.${questionIndex}.rows`,
   });
   const { append: appendColumn, remove: removeColumnHeaders } = useFieldArray<
     ContainedCaseStudyQuestionType
   >({
     control,
-    name: `questionnaires.${questionIndex}.tableData.columns`,
+    name: `questionnaires.${questionIndex}.columns`,
   });
 
-  const tableRowFields = getValues(`questionnaires.${questionIndex}.tableData.rows`) || [];
-  const columnHeaderFields = getValues(`questionnaires.${questionIndex}.tableData.columns`) || [];
+  const tableRowFields = getValues(`questionnaires.${questionIndex}.rows`) || [];
+  const columnHeaderFields = getValues(`questionnaires.${questionIndex}.columns`) || [];
   const maxPoint = getValues(`questionnaires.${questionIndex}.maxPoints`);
-  const watchAnswerOptions = watch(`questionnaires.${questionIndex}.tableData.columns`);
   const disableAppendRow = tableRowFields.length >= maxPoint;
   const disableRemoveRow = tableRowFields.length <= 2;
   const disableRemoveColumnHeaders = columnHeaderFields.length <= 3;
 
   const handleAppendColumnHeaders = () => {
     appendColumn({
-      columnId: `col${columnHeaderFields.length + 1}`,
       label: "",
     });
+
+    const newChoicesLength = columnHeaderFields.length + 1;
     tableRowFields.forEach((_, rowIndex) => {
       setValue(
-        `questionnaires.${questionIndex}.tableData.rows.${rowIndex}.choices`,
-        Object.fromEntries(columnHeaderFields.slice(1).map(col => [col.columnId, false]))
+        `questionnaires.${questionIndex}.rows.${rowIndex}.choices`,
+        Array.from({ length: newChoicesLength - 1 }, (_, index) => ({
+          value: false,
+          choiceId: index,
+        }))
       );
     });
   };
 
   const handleAppendRowTable = () => {
     appendRow({
-      rowId: `row${tableRowFields.length + 1}`,
+      rowId: tableRowFields.length,
       rowTitle: "",
-      choices: Object.fromEntries(columnHeaderFields.slice(1).map(col => [col.columnId, false]))
+      choices: columnHeaderFields.slice(1).map((_, colIndex) => ({
+        value: false,
+        choiceId: colIndex,
+      })),
     });
   };
 
@@ -65,6 +71,9 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
     removeColumnHeaders(index);
   }
 
+  const test = watch();
+  console.log(test);
+
   return (
     <Card>
       <MCQNoGroupAnswer
@@ -75,7 +84,6 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
         handleRemoveRow={handleRemoveRow}
         handleRemoveColumnHeaders={handleRemoveColumnHeaders}
         columnHeaderFields={columnHeaderFields}
-        watchAnswerOptions={watchAnswerOptions}
         tableRowFields={tableRowFields}
         disableRemoveColumnHeaders={disableRemoveColumnHeaders}
         disableRemoveRow={disableRemoveRow}

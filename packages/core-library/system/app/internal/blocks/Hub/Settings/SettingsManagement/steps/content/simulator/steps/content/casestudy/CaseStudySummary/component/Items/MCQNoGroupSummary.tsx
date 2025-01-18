@@ -1,4 +1,8 @@
-import { QuestionnaireItem } from "../../../../../../../../../../../../../types";
+import {
+  Columns,
+  QuestionnaireItem,
+  Row
+} from "../../../../../../../../../../../../../types";
 import {
   Table,
   TableBody,
@@ -10,26 +14,16 @@ import {
   Radio
 } from '@mui/material';
 
-type RowType = {
-  rowId: string;
-  rowTitle: string;
-  choices: Record<string, boolean>;
-}
-
-type ColumnType = {
-  label: string;
-  columnId: string;
-}
-
 export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
   data
 }) => {
-  if (!data.tableData) return "No available data...";
+  if (!data) return "No available data...";
 
-  const renderRadio = (row: RowType, column: ColumnType) => {
+  const renderRadio = (row: Row, columnIndex: number) => {
+    const choice = row.choices[columnIndex - 1];
     return (
       <Radio
-        checked={row.choices[column.columnId]}
+        checked={choice.value}
         disabled
       />
     )
@@ -40,9 +34,9 @@ export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
       <Table sx={{ minWidth: 650 }}>
         <TableHead style={{ backgroundColor: "#007AB7", color: "white" }}>
           <TableRow>
-            {data.tableData.columns.map((column: ColumnType) => (
+            {data.columns.map((column: Columns) => (
               <TableCell
-                key={column.columnId}
+                key={column.label}
                 align="center"
                 style={{ color: "white" }}
               >
@@ -52,14 +46,14 @@ export const MCQNoGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
           </TableRow>
         </TableHead>
         <TableBody style={{ backgroundColor: "#F0F0F0" }}>
-          {data.tableData.rows.map((row: RowType) => (
+          {data.rows.map((row: Row) => (
             <TableRow key={row.rowId}>
               <TableCell component="th" scope="row">
                 {row.rowTitle}
               </TableCell>
-              {data.tableData.columns.slice(1).map((column: ColumnType) => (
-                <TableCell key={column.columnId} align="center">
-                  {renderRadio(row, column)}
+              {data.columns.slice(1).map((column: Columns, index: number) => (
+                <TableCell key={column.label} align="center">
+                  {renderRadio(row, index + 1)}
                 </TableCell>
               ))}
             </TableRow>

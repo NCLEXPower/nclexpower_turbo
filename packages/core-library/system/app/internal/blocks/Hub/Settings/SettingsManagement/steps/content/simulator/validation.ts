@@ -126,45 +126,62 @@ const dndKeysSchema = yup.object({
     }),
 });
 
-export const mcqNoGroupAnswerSchema = yup.object({
-  rowId: yup.string().required("Row ID is required"),
-  rowTitle: yup.string().required("Row title is required"),
-  choices: yup
-    .object()
-    .test(
-      "one-true-value",
-      "One answer must be selected",
-      (obj) => obj && Object.values(obj).filter(Boolean).length === 1
-    ),
-});
-
-export const mcqNoGroupSchema = yup.object().shape({
-  tableData: yup
-    .object({
-      columns: yup
-        .array()
-        .of(
-          yup.object({
-            columnId: yup.string().required("Column ID is required"),
-            label: yup.string().required("Column label is required"),
-          })
-        )
-        .min(3, "At least 3 columns are required"),
-      rows: yup
-        .array()
-        .of(mcqNoGroupAnswerSchema)
-        .min(2, "At least 2 rows are required"),
-    })
+const mcqGroupColumn = yup.object({
+  label: yup
+    .string()
     .when("questionType", {
-      is: "MCQNOGROUP",
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
       then: (schema) =>
         schema.required(({ path }) =>
-          generateQuestionErrorMessage(
-            path,
-            "MCQ No Group answer options is required"
-          )
+          generateQuestionErrorMessage(path, "Column label is required")
         ),
-      otherwise: (schema) => schema.notRequired(),
+    })
+    .required("Column Title is Required"),
+});
+
+const mcqGroupRow = yup.object().shape({
+  rowId: yup.number(),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
+  choices: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.boolean().default(false),
+        choiceId: yup.number(),
+      })
+    )
+    .required("Choices are required."),
+});
+
+export const mcqGroupAnswerSchema = yup.object({
+  columns: yup
+    .array()
+    .of(mcqGroupColumn)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+  rows: yup
+    .array()
+    .of(mcqGroupRow)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
     }),
 });
 
@@ -307,7 +324,7 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
-  MCQNOGROUP: mcqNoGroupSchema,
+  MCQNOGROUP: mcqGroupAnswerSchema,
 };
 
 // Answers Schema
@@ -396,7 +413,7 @@ const caseStudyQuestionnaireSchema = yup.object({
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
-        .concat(mcqNoGroupSchema)
+        .concat(mcqGroupAnswerSchema)
     )
     .default([]),
 });

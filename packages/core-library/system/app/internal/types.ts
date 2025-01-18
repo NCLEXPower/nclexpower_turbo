@@ -88,15 +88,16 @@ export type BowtieItemType = {
   isAnswer: boolean;
 };
 
-export type MCQNoGroupAnswerOptionType = {
-  columns: {
-    label: string;
-    columnId: string;
-  }[];
-  rows: {
-    rowId: string;
-    rowTitle: string;
-    choices: Record<string, boolean>;
+export type Columns = {
+  label: string;
+};
+
+export type Row = {
+  rowId: number;
+  rowTitle: string;
+  choices: {
+    choiceId: number;
+    value: boolean;
   }[];
 };
 
@@ -116,7 +117,8 @@ export type QuestionnaireItem = {
   rightSection: BowtieItemType[] | undefined;
   centerSection: BowtieItemType[] | undefined;
   leftSection: BowtieItemType[] | undefined;
-  tableData: MCQNoGroupAnswerOptionType;
+  column?: Columns[];
+  row?: Row[];
 };
 
 export type CaseStudyDataType = {
