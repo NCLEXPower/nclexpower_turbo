@@ -11,6 +11,8 @@ import Image from "next/image";
 interface Props {}
 
 export const RevolutionBannerBlock: React.FC<Props> = () => {
+  
+
   return (
     <div className="h-screen overflow-hidden">
       <ImageCarousel sliderConfig={settings}>
