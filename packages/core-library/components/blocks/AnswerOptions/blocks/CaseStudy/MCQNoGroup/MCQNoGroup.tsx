@@ -71,9 +71,6 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
     removeColumnHeaders(index);
   }
 
-  const test = watch();
-  console.log(test);
-
   return (
     <Card>
       <MCQNoGroupAnswer
