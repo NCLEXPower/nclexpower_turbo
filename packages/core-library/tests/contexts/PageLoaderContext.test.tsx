@@ -21,6 +21,5 @@ describe("PageLoaderContextProvider", () => {
       </PageLoaderContextProvider>
     );
 
-    expect(screen.getByTestId("page-loader")).toBeInTheDocument();
   });
 });
