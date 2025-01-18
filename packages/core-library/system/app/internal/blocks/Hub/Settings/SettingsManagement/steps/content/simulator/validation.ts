@@ -8,10 +8,10 @@ import { initAnswerValues } from "../../../constants/constants";
 import {
   DDCAnswerOptionType,
   DNDAnswerOptionType,
+  HCPNAnswerOptionType,
   SATAAnswerOptionType,
 } from "./types";
 import { generateQuestionErrorMessage } from "./utils/generateQuestionErrorMessage";
-
 /**
  * Regular Questions Schemas
  */
@@ -241,6 +241,20 @@ export const bowtieAnswerSchema = yup.object({
     }),
 });
 
+export const hcpOptionSchema = yup.object().shape({
+  answer: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Answer field is required")
+    ),
+  answerKey: yup.boolean().default(false),
+  attrName: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Attribute name is required")
+    ),
+});
+
 // Question Options Schema
 const questionOptionsSchemas = {
   DDC: yup
@@ -265,13 +279,26 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
+  HCP: yup
+    .array(hcpOptionSchema)
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Must contained atleast 1 option")
+    )
+    .test(
+      "select-atleast-2",
+      "You must select atleast 1 correct answer",
+      (val) => val.filter((val) => val.answerKey === true).length >= 1
+    ),
 };
 
 // Answers Schema
 const answersSchema = yup.object({
   answers: yup
     .mixed<
-      DDCAnswerOptionType[] | SATAAnswerOptionType[] | DNDAnswerOptionType[]
+      | DDCAnswerOptionType[]
+      | SATAAnswerOptionType[]
+      | DNDAnswerOptionType[]
+      | HCPNAnswerOptionType[]
     >()
     .when("questionType", (questionType, schema) => {
       const matchedSchema = Object.entries(questionOptionsSchemas).find(
@@ -288,6 +315,16 @@ const bgInfoContent = yup.object({
     .transform((value) => parseInt(value))
     .default(1),
   seqContent: yup.string(),
+});
+
+const hcpContentSchema = yup.object({
+  hcpContent: yup.string().when("questionType", {
+    is: "HCP",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "HCP content is required")
+      ),
+  }),
 });
 
 // Case Study Questionnaire Schema
@@ -350,6 +387,7 @@ const caseStudyQuestionnaireSchema = yup.object({
           transitionHeader: yup.string().optional().default(""),
         })
         .concat(answersSchema)
+        .concat(hcpContentSchema)
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
