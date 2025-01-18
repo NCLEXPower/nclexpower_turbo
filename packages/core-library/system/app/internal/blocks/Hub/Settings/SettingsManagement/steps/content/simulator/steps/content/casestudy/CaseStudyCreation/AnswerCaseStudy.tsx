@@ -24,6 +24,7 @@ import { BowtieAnswerArea } from "../../../../../../../../../../../../../../comp
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
 import { memo, useEffect, useRef } from "react";
 import { Instruction } from "./components/Instruction";
+import { CustomFields } from "./components/CustomFields";
 
 interface Props {
   index: number;
@@ -36,7 +37,6 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
-  const isBowTie = questionType == "BOWTIE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -133,27 +133,28 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
           </Box>
         </Box>
 
-        {isBowTie && <BowtieAnswerArea questionIndex={index} />}
-
         {questionType && (
-          <Box sx={{ textAlign: "start", mt: 3 }}>
-            <Typography color="#525252" fontSize="16px" fontWeight={600}>
-              Answer Options :
-            </Typography>
-            <Box
-              boxShadow={2}
-              sx={{
-                borderRadius: "5px",
-                overflow: "hidden",
-              }}
-            >
-              <AnswerOptions
-                questionIndex={index}
-                questionType="caseStudy"
-                questionnaireType={questionType}
-              />
+          <>
+            <CustomFields questionIndex={index} questionType={questionType} />
+            <Box sx={{ textAlign: "start", mt: 3 }}>
+              <Typography color="#525252" fontSize="16px" fontWeight={600}>
+                Answer Options :
+              </Typography>
+              <Box
+                boxShadow={2}
+                sx={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                }}
+              >
+                <AnswerOptions
+                  questionIndex={index}
+                  questionType="caseStudy"
+                  questionnaireType={questionType}
+                />
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
       </Box>
     </Box>

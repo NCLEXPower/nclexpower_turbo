@@ -32,29 +32,7 @@ export const HCP: React.FC<Props> = ({ questionIndex }) => {
   };
 
   return (
-    <Card>
-      <Box mt={3}>
-        <Typography color="#525252" fontSize="16px" fontWeight={600}>
-          Background Info :
-        </Typography>
-        <Box
-          width={1}
-          mt={2}
-          borderRadius={"5px"}
-          boxShadow={2}
-          p={4}
-          overflow={"hidden"}
-        >
-          <ControlledHighlighterEditor
-            placeholder="Add content"
-            getJson={(obj) =>
-              handleGetHighlighted(obj as HighlightedTextsObj[])
-            }
-            name={`questionnaires.${questionIndex}.hcpContent`}
-          />
-        </Box>
-      </Box>
-
+    <Card data-testid="hcp-casestudy-block">
       {Array.isArray(answers) &&
         answers.map((answer, index) => (
           <Box
