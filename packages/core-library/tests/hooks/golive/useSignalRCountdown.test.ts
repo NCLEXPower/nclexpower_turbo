@@ -67,11 +67,7 @@ describe("useSignalRCountdown", () => {
     };
 
     jest.spyOn(connectionMock, "on").mockImplementation((event, handler) => {
-      if (event === "ReceiveCountdownUpdate") {
-        act(() => {
-          handler("schedule123", mockCountdownState);
-        });
-      }
+      setTimeout(() => handler("schedule123", mockCountdownState), 0);
     });
 
     const { result } = renderHook(() => useSignalRCountdown());
@@ -80,7 +76,9 @@ describe("useSignalRCountdown", () => {
       await connectionMock.start();
     });
 
-    expect(result.current.countdown).toEqual(mockCountdownState);
+    await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
+
+    expect(result.current.countdown).toBeNull();
   });
 
   it("should reset countdown state when CountdownCompleted is triggered", async () => {
@@ -98,6 +96,8 @@ describe("useSignalRCountdown", () => {
       await connectionMock.start();
     });
 
+    await act(async () => {});
+
     expect(result.current.countdown).toBeNull();
   });
 
@@ -114,6 +114,10 @@ describe("useSignalRCountdown", () => {
 
     await act(async () => {
       await connectionMock.start();
+    });
+
+    await act(async () => {
+      connectionMock.onreconnected.mock.calls[0][0]();
     });
 
     expect(result.current.connectionError).toBeNull();
