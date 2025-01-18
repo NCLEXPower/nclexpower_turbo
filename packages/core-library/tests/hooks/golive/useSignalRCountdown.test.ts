@@ -10,6 +10,7 @@ jest.mock("@microsoft/signalr", () => {
     onreconnecting: jest.fn(),
     onreconnected: jest.fn(),
     onclose: jest.fn(),
+    invoke: jest.fn(),
   };
 
   return {
@@ -68,9 +69,7 @@ describe("useSignalRCountdown", () => {
 
     jest.spyOn(connectionMock, "on").mockImplementation((event, handler) => {
       if (event === "ReceiveCountdownUpdate") {
-        act(() => {
-          handler("schedule123", mockCountdownState);
-        });
+        setTimeout(() => handler("schedule123", mockCountdownState), 0);
       }
     });
 
@@ -79,6 +78,8 @@ describe("useSignalRCountdown", () => {
     await act(async () => {
       await connectionMock.start();
     });
+
+    await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
 
     expect(result.current.countdown).toEqual(mockCountdownState);
   });
@@ -86,9 +87,7 @@ describe("useSignalRCountdown", () => {
   it("should reset countdown state when CountdownCompleted is triggered", async () => {
     jest.spyOn(connectionMock, "on").mockImplementation((event, handler) => {
       if (event === "CountdownCompleted") {
-        act(() => {
-          handler("schedule123", "Test Event");
-        });
+        setTimeout(() => handler("schedule123", "Test Event"), 0);
       }
     });
 
@@ -98,16 +97,36 @@ describe("useSignalRCountdown", () => {
       await connectionMock.start();
     });
 
+    await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
+
     expect(result.current.countdown).toBeNull();
+  });
+
+  it("should handle connection error during start", async () => {
+    jest
+      .spyOn(connectionMock, "start")
+      .mockRejectedValueOnce(new Error("Connection failed"));
+
+    const { result } = renderHook(() => useSignalRCountdown());
+
+    await act(async () => {
+      try {
+        await connectionMock.start();
+      } catch {
+        // Ignore error for testing purposes
+      }
+    });
+
+    expect(result.current.connectionError).toBe(
+      "Failed to connect to the server. Please try again."
+    );
   });
 
   it("should clear connectionError on successful reconnection", async () => {
     jest
       .spyOn(connectionMock, "onreconnected")
       .mockImplementation((handler) => {
-        act(() => {
-          handler();
-        });
+        setTimeout(() => handler(), 0);
       });
 
     const { result } = renderHook(() => useSignalRCountdown());
@@ -115,6 +134,8 @@ describe("useSignalRCountdown", () => {
     await act(async () => {
       await connectionMock.start();
     });
+
+    await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
 
     expect(result.current.connectionError).toBeNull();
   });

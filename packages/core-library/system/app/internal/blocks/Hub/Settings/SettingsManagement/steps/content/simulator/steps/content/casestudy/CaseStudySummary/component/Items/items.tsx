@@ -9,6 +9,7 @@ import {
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 import { BowtieSummary } from "./BowtieSummary";
+import { HCPQuestion } from "./HCPQuestion";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -39,7 +40,8 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             }}
           />
         );
-
+      case "HCP":
+        return <HCPQuestion questionData={data} />;
       default:
         return (
           <Typography sx={wordWrap}>
