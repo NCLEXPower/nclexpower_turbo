@@ -501,6 +501,13 @@ export const theme = (tenant?: CmsTenant | null) => {
           },
         },
       },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            minWidth: "45px !important",
+          },
+        },
+      },
       MuiMenuItem: {
         styleOverrides: {
           root: {
