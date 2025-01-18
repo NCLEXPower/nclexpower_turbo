@@ -1,13 +1,14 @@
 import StarterKit from "@tiptap/starter-kit";
 import HcpHighlight from "./Extension";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import Placeholder from "@tiptap/extension-placeholder";
 import { FieldError } from "react-hook-form";
 import { FormHelperText } from "../../../FormHelperText/FormHelperText";
 import React, { useEffect } from "react";
+import { IconButton } from "../../../Button/IconButton";
 
 type PropsType = {
   contentEditable?: boolean | undefined;
