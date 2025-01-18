@@ -20,7 +20,8 @@ import {
 } from "@mui/icons-material";
 
 import { keySquare, TRDSqaureWhite, TRDSquare } from "../../../assets";
-import { SvgIconProps } from "@mui/material";
+import { SvgIconProps, SxProps } from "@mui/material";
+import { KeySquareIcon } from "../../Icons/KeySquareIcon";
 
 export const IconComponent = (
   iconName: string,
@@ -71,9 +72,7 @@ export const IconComponent = (
         />
       );
     case "keySquare":
-      return (
-        <Image src={keySquare} alt="Key-Square Icon" data-testid="keySquare" />
-      );
+      return <KeySquareIcon />;
     case "TRDSquare":
       return (
         <Image
