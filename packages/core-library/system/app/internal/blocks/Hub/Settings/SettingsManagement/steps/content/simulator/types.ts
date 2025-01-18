@@ -7,6 +7,7 @@ import {
   defaultOptionSchema,
   bowtieAnswerOptionsSchema,
   mcqGroupAnswerSchema,
+  hcpOptionSchema,
 } from "./validation";
 
 export type ContainedRegularQuestionType = yup.InferType<
@@ -30,5 +31,6 @@ export type DNDAnswerOptionType = yup.InferType<typeof dndAnswerOptionsSchema>;
 export type MCQNoGroupAnswerOptionType = yup.InferType<
   typeof mcqGroupAnswerSchema
 >;
+export type HCPNAnswerOptionType = yup.InferType<typeof hcpOptionSchema>;
 
 export type tabsTypes = "nurseNotes" | "hxPhy" | "labs" | "orders";
