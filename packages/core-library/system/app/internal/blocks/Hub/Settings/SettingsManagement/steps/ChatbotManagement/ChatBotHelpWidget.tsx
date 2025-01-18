@@ -10,7 +10,7 @@ import {
   EvaIcon,
 } from "../../../../../../../../../components";
 import { useExecuteToast } from "../../../../../../../../../contexts";
-import { getChatBotMode } from "../../../../../../../../../ssr";
+import { getHasChatBotWidget } from "../../../../../../../../../ssr";
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -20,18 +20,21 @@ interface Props {
   reset: () => void;
 }
 
-export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
-  const [isChatBotModeOn, setIsChatBotModeOn] = useState<boolean>(false);
+export const ChatBotHeplWidget: React.FC<Props> = ({
+  nextStep,
+  previousStep,
+}) => {
+  const [helpWidgetStatus, setHelpWidgetStatus] = useState<boolean>(false);
   const [isChatBotLoading, setIsChatbotLoading] = useState<boolean>(true);
   const { execute: updateMode, loading: updateLoading } = useApiCallback(
     async (api, args: boolean) =>
       await api.webbackoffice.updateHelpWidgetStatus(args)
   );
 
-  const fetchChatbotMode = async () => {
+  const fetchChatbotHelpWidgetStatus = async () => {
     try {
-      const { isEnabled } = await getChatBotMode();
-      setIsChatBotModeOn(isEnabled);
+      const { isEnabled } = await getHasChatBotWidget();
+      setHelpWidgetStatus(isEnabled);
     } catch (error) {
       showToast("Something went wrong, Please try again later", "error");
     } finally {
@@ -40,7 +43,7 @@ export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
   };
 
   useEffect(() => {
-    fetchChatbotMode();
+    fetchChatbotHelpWidgetStatus();
   }, []);
 
   const { showToast } = useExecuteToast();
@@ -58,14 +61,14 @@ export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
   }
 
   const toggleMessage = () => {
-    const message = isChatBotModeOn ? "OFF" : "ON";
+    const message = helpWidgetStatus ? "OFF" : "ON";
     return message;
   };
 
   async function handleConfirm() {
     try {
-      await updateMode(!isChatBotModeOn);
-      await fetchChatbotMode();
+      await updateMode(!helpWidgetStatus);
+      await fetchChatbotHelpWidgetStatus();
       showToast("Successfully Update", "success");
     } catch {
       showToast("Something went wrong. Please try again later", "error");
@@ -123,7 +126,7 @@ export const ChatbotMode: React.FC<Props> = ({ nextStep, previousStep }) => {
           <ConfirmationModal
             isLoading={false}
             handleSubmit={handleConfirm}
-            checked={isChatBotModeOn}
+            checked={helpWidgetStatus}
             customButton="ToggleButton"
             dialogContent={`Are you sure you want to turn ${toggleMessage()} chatbot widget`}
           />

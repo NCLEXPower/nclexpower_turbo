@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { useApiCallback } from "../../../hooks";
-import { ChatbotMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/ChatbotManagement/ChatbotMode";
+import { ChatbotMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/ChatbotManagement/ChatBotHelpWidget";
 
 jest.mock("../../../config", () => ({
   getConfig: jest

@@ -10,7 +10,7 @@ import { InAppRouterManagement } from "./routing/InAppRouterManagement";
 import { ImageManagement } from "./ImageManagement/ImageManagement";
 import { WizardFormMap } from "../../../../../../../../hooks";
 import { MaintenanceMode } from "./MaintenanceMode/MaintenanceMode";
-import { ChatbotMode } from './ChatbotManagement/ChatbotMode';
+import { ChatBotHeplWidget } from "./ChatbotManagement/ChatBotHelpWidget";
 
 export type SettingsManagementFormSteps = "DatabaseExcelComparison";
 
@@ -22,7 +22,7 @@ export type SettingsManagementSteps =
   | "ResourceManagement"
   | "RouterSettings"
   | "MaintenanceMode"
-  | "ChatbotMode";
+  | "ChatbotHelpWidget";
 
 export interface SettingsManagementStepProps {
   isLoading: boolean;
@@ -46,7 +46,7 @@ export const ChooseSettingsTypeStep = {
       if (values.chosen === "MAINTENANCE" && values.selection === "WEBCUSTOMER")
         return "MaintenanceMode";
       if (values.chosen === "CHATBOT" && values.selection === "WEBCUSTOMER")
-        return "ChatbotMode";
+        return "ChatbotHelpWidget";
     },
     previousStep: "InitialSettingsSelection",
     content: (props) => <SettingsManagement {...props} />,
@@ -66,9 +66,9 @@ export const ChooseSettingsTypeStep = {
     previousStep: "InitialSettingsSelection",
     content: (props) => <ImageManagement {...props} />,
   },
-  ChatbotMode: {
+  ChatbotHelpWidget: {
     previousStep: "InitialSettingsSelection",
-    content: (props) => <ChatbotMode {...props} />,
+    content: (props) => <ChatBotHeplWidget {...props} />,
   },
 } as WizardFormMap<
   Partial<SettingsManagementSteps>,
