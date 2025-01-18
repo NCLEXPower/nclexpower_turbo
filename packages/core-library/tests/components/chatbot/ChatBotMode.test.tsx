@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { useApiCallback } from "../../../hooks";
-import { ChatbotMode } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/ChatbotManagement/ChatBotHelpWidget";
+import { ChatBotHeplWidget } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/ChatbotManagement/ChatBotHelpWidget";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -43,7 +43,7 @@ describe("ChatbotMode", () => {
     });
 
     const { getByTestId } = render(
-      <ChatbotMode {...DEFAULT_PROPS} values={{}} />
+      <ChatBotHeplWidget {...DEFAULT_PROPS} values={{}} />
     );
     expect(getByTestId("loading")).toBeInTheDocument();
   });
