@@ -89,11 +89,24 @@ export type BowtieItemType = {
   isAnswer: boolean;
 };
 
+export type Columns = {
+  label: string;
+};
+
+export type Row = {
+  rowId: number;
+  rowTitle: string;
+  choices: {
+    choiceId: number;
+    value: boolean;
+  }[];
+};
+
 export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "HCP";
+  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "HCP" | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
@@ -104,6 +117,8 @@ export type QuestionnaireItem = {
   rightSection: BowtieItemType[] | undefined;
   centerSection: BowtieItemType[] | undefined;
   leftSection: BowtieItemType[] | undefined;
+  column?: Columns[];
+  row?: Row[];
   hcpContent: string | undefined;
   answers: DDCAnswerOption[] | HCPNAnswerOptionType[];
 };
