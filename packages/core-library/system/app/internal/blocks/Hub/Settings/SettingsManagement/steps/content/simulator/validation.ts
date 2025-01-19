@@ -126,6 +126,65 @@ const dndKeysSchema = yup.object({
     }),
 });
 
+const mcqGroupColumn = yup.object({
+  label: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Column label is required")
+        ),
+    })
+    .required("Column Title is Required"),
+});
+
+const mcqGroupRow = yup.object().shape({
+  rowId: yup.number(),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
+  choices: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.boolean().default(false),
+        choiceId: yup.number(),
+      })
+    )
+    .required("Choices are required."),
+});
+
+export const mcqGroupAnswerSchema = yup.object({
+  columns: yup
+    .array()
+    .of(mcqGroupColumn)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+  rows: yup
+    .array()
+    .of(mcqGroupRow)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+});
+
 // MRSN Max Answer Schema
 const mrsnMaxAnswer = yup.object({
   maxAnswer: yup.number().when("questionType", {
@@ -279,6 +338,7 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
+  MCQNOGROUP: mcqGroupAnswerSchema,
   HCP: yup
     .array(hcpOptionSchema)
     .required(({ path }) =>
@@ -391,6 +451,7 @@ const caseStudyQuestionnaireSchema = yup.object({
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
+        .concat(mcqGroupAnswerSchema)
     )
     .default([]),
 });
