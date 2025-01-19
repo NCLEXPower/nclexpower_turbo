@@ -50,7 +50,6 @@ jest.mock('@mui/x-data-grid', () => {
               <div key={row.id} role="row">
                 {row.categoryName}
                 <div>
-                  {/* Mock the Chip rendering based on categoryType */}
                   {row.categoryType === 0 && <div role="chip">PRICING</div>}
                   {row.categoryType === 2 && <div role="chip">CLIENT NEEDS</div>}
                   {row.categoryType === 3 && <div role="chip">CONTENT AREA</div>}
