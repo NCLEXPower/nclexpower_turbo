@@ -67,6 +67,10 @@ jest.mock('@mui/x-data-grid', () => {
 });
 
 describe("CreateCategoryBlock", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  
   it("should render without crashing and display key elements", async () => {
     render(<CreateCategoryBlock />);
 
