@@ -60,13 +60,13 @@ describe("DDTItem Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders 'no contents' for unmatched dropdowns", () => {
+  it("renders 'No Content Available' for unmatched dropdowns", () => {
     const dataWithNoMatch = {
       ...mockData,
       answers: [],
     };
 
     render(<DDTItem ddcData={dataWithNoMatch} />);
-    expect(screen.getAllByText("no contents")).toHaveLength(2);
+    expect(screen.getAllByText("No Content Available")).toHaveLength(2);
   });
 });
