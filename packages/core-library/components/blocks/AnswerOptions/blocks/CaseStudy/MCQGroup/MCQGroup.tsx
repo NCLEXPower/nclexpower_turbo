@@ -7,11 +7,11 @@ import {
 } from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
 import { MCQTableActions } from "./components/MCQTableActions";
 
-type BowtiePropsType = {
+type MCQGroupPropsType = {
   questionIndex: number;
 };
 
-export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
+export const MCQGroup: React.FC<MCQGroupPropsType> = ({ questionIndex }) => {
   const { watch, setValue, getValues } = useFormContext();
   const ColumnField = getValues(`questionnaires.${questionIndex}.columns`);
   const RowField = getValues(`questionnaires.${questionIndex}.rows`);
