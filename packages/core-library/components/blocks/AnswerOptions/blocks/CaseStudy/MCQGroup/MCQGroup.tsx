@@ -15,7 +15,6 @@ export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
   const { watch, setValue, getValues } = useFormContext();
   const ColumnField = getValues(`questionnaires.${questionIndex}.columns`);
   const RowField = getValues(`questionnaires.${questionIndex}.rows`);
-  const questionnaires = watch(`questionnaires`);
 
   if (
     !RowField ||
@@ -29,8 +28,6 @@ export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
     );
     setValue(`questionnaires.${questionIndex}.rows`, Array(1).fill(initMCQRow));
   }
-
-  console.log("questionnaires : ", questionnaires);
 
   return (
     <Box sx={{ padding: 5 }}>
