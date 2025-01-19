@@ -246,24 +246,30 @@ export const bowtieAnswerSchema = yup.object({
 });
 
 const mcqGroupColumn = yup.object({
-  label: yup.string().when("questionType", {
-    is: "MCQGROUP",
-    then: (schema) =>
-      schema.required(({ path }) =>
-        generateQuestionErrorMessage(path, "Column Title is required")
-      ),
-  }),
+  label: yup
+    .string()
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Column Title is required")
+        ),
+    })
+    .required("Column Title is required"),
 });
 
 const mcqGroupRow = yup.object().shape({
   rowId: yup.number(),
-  rowTitle: yup.string().when("questionType", {
-    is: "MCQGROUP",
-    then: (schema) =>
-      schema.required(({ path }) =>
-        generateQuestionErrorMessage(path, "Row title is required")
-      ),
-  }),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: "MCQGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
   choices: yup.array().of(
     yup.object({
       value: yup.boolean().default(false),
@@ -276,7 +282,6 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupColumn)
     .min(3)
-    .default(Array(3).fill(initMCQColumn))
     .when("questionType", {
       is: "MCQGROUP",
       then: (schema) =>
@@ -288,7 +293,6 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupRow)
     .min(1)
-    .default(Array(1).fill(initMCQRow))
     .when("questionType", {
       is: "MCQGROUP",
       then: (schema) =>
@@ -322,7 +326,6 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
-  MCQGROUP: mcqGroupAnswerSchema,
 };
 
 // Answers Schema

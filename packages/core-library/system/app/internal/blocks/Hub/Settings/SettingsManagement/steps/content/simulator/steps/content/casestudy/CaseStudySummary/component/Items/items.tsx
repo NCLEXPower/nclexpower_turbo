@@ -14,7 +14,7 @@ import { MCQGroupSummary } from "./MCQGroupSummary";
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
     <Box marginTop="10px">
-      {answers.length > 0 &&
+      {answers?.length > 0 &&
         answers.map((answer, index) => (
           <Box display="flex" alignItems="center" paddingX="10px" key={index}>
             <Checkbox disabled checked={answer.answerKey} />
