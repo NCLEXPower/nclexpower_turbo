@@ -15,6 +15,9 @@ export const CreateCategoryBlock: React.FC = () => {
   const { data, isLoading, refetch } = businessQuerySelectAllCategories([
     "selectAllCategories",
   ]);
+
+  const categoryTypes = ["PRICING", "REPORT ISSUE", "CLIENT NEEDS", "CONTENT AREA", "COGNITIVE LEVEL", "CONTACT CONCERN"]
+
   const { columns } = useColumns({
     columns: [
       {
@@ -41,23 +44,8 @@ export const CreateCategoryBlock: React.FC = () => {
         sortable: false,
         width: 150,
         renderCell: (params) => {
-          if (params.row.categoryType == 0) {
-            return <Chip variant="filled" size="small" label="PRICING" />;
-          }
-          if (params.row.categoryType == 2) {
-            return <Chip variant="filled" size="small" label="CLIENT NEEDS" />;
-          }
-          if (params.row.categoryType == 3) {
-            return <Chip variant="filled" size="small" label="CONTENT AREA" />;
-          }
-          if (params.row.categoryType == 4) {
-            return <Chip variant="filled" size="small" label="COGNITIVE LEVEL" />
-          }
-          if (params.row.categoryType == 5) {
-            return <Chip variant="filled" size="small" label="CONTACT CONCERN" />
-          }
-
-          return <Chip variant="filled" size="small" label="REPORT ISSUE" />;
+          const { categoryType: categoryIndex } = params.row
+          return <Chip variant="filled" size="small" label={categoryTypes[categoryIndex]} />;
         },
       },
       {
