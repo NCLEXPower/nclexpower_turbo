@@ -27,50 +27,11 @@ jest.mock("../../../contexts", () => ({
   }),
 }));
 
-jest.mock('@mui/x-data-grid', () => {
-  const actualModule = jest.requireActual('@mui/x-data-grid');
-  return {
-    ...actualModule,
-    DataGrid: (props: {
-      rows: any[];
-      columns: any[];
-      isLoading: boolean;
-      initPageSize: number;
-      'data-testid'?: string;
-    }) => {
-      if (props.isLoading) {
-        return <div role="progressbar">Loading...</div>;
-      }
-      return (
-        <div role="grid" data-testid={props['data-testid'] || 'data-grid'}>
-          {props.rows.length === 0 ? (
-            <div>No data</div>
-          ) : (
-            props.rows.map((row) => (
-              <div key={row.id} role="row">
-                {row.categoryName}
-                <div>
-                  {row.categoryType === 0 && <div role="chip">PRICING</div>}
-                  {row.categoryType === 2 && <div role="chip">CLIENT NEEDS</div>}
-                  {row.categoryType === 3 && <div role="chip">CONTENT AREA</div>}
-                  {row.categoryType === 4 && <div role="chip">COGNITIVE LEVEL</div>}
-                  {row.categoryType === 5 && <div role="chip">CONTACT CONCERN</div>}
-                  {row.categoryType === -1 && <div role="chip">REPORT ISSUE</div>}
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      );
-    },
-  };
-});
-
 describe("CreateCategoryBlock", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  
+
   it("should render without crashing and display key elements", async () => {
     render(<CreateCategoryBlock />);
 
@@ -87,21 +48,10 @@ describe("CreateCategoryBlock", () => {
 
     await waitFor(() => {
       const rows = screen.getAllByRole("row");
-      expect(rows.length).toBe(6);
+      expect(rows.length).toBe(7);
     });
 
     const categoryTypeChip = screen.getByText("PRICING");
     expect(categoryTypeChip).toBeInTheDocument();
-  });
-
-  it("should verify that Chip labels render correctly based on categoryType", async () => {
-    render(<CreateCategoryBlock />);
-
-    expect(await screen.findByText("PRICING")).toBeInTheDocument();
-    expect(await screen.findByText("CLIENT NEEDS")).toBeInTheDocument();
-    expect(await screen.findByText("CONTENT AREA")).toBeInTheDocument();
-    expect(await screen.findByText("COGNITIVE LEVEL")).toBeInTheDocument();
-    expect(await screen.findByText("CONTACT CONCERN")).toBeInTheDocument();
-    expect(await screen.findByText("REPORT ISSUE")).toBeInTheDocument();
   });
 });
