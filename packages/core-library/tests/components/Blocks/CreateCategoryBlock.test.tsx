@@ -70,7 +70,7 @@ describe("CreateCategoryBlock", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  
+
   it("should render without crashing and display key elements", async () => {
     render(<CreateCategoryBlock />);
 
@@ -82,7 +82,7 @@ describe("CreateCategoryBlock", () => {
     });
   });
 
-  it("should verify that DataGrid props and column are rendering", async () => {
+  it("should verify that DataGrid props and columns are rendering correctly", async () => {
     render(<CreateCategoryBlock />);
 
     await waitFor(() => {
@@ -97,11 +97,13 @@ describe("CreateCategoryBlock", () => {
   it("should verify that Chip labels render correctly based on categoryType", async () => {
     render(<CreateCategoryBlock />);
 
-    expect(await screen.findByText("PRICING")).toBeInTheDocument();
-    expect(await screen.findByText("CLIENT NEEDS")).toBeInTheDocument();
-    expect(await screen.findByText("CONTENT AREA")).toBeInTheDocument();
-    expect(await screen.findByText("COGNITIVE LEVEL")).toBeInTheDocument();
-    expect(await screen.findByText("CONTACT CONCERN")).toBeInTheDocument();
-    expect(await screen.findByText("REPORT ISSUE")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("PRICING")).toBeInTheDocument();
+      expect(screen.getByText("CLIENT NEEDS")).toBeInTheDocument();
+      expect(screen.getByText("CONTENT AREA")).toBeInTheDocument();
+      expect(screen.getByText("COGNITIVE LEVEL")).toBeInTheDocument();
+      expect(screen.getByText("CONTACT CONCERN")).toBeInTheDocument();
+      expect(screen.getByText("REPORT ISSUE")).toBeInTheDocument();
+    });
   });
 });
