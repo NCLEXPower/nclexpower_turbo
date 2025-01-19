@@ -14,7 +14,7 @@ export const BowtieAnswerArea: React.FC<BowtieAnswerAreaProps> = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", marginTop: "10px" }}>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box sx={{ display: "flex", gap: 2 }} data-testid="bowtie-custom-fields">
         <TextField
           control={control}
           name={`questionnaires.${questionIndex}.leftLabelName`}
