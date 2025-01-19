@@ -60,3 +60,20 @@ export type UserInfo = {
   lastName: string;
   email: string;
 };
+
+export type PlanType = {
+  abbr: string;
+  planName: string;
+  planType: "Standard" | "Fast Track";
+  duration: number;
+  price: number;
+  currency: string;
+  registered: boolean;
+};
+
+export type LatestPaymentItem = {
+  id: number;
+  label: string;
+  value: string;
+  icon?: React.ReactElement<HTMLImageElement>;
+};

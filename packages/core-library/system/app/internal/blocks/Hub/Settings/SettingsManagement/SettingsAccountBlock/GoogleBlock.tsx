@@ -1,4 +1,4 @@
-import { Box, ThemeProvider, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { blockSx } from "../SettingsStyles";
 import Link from "next/link";
 import Image from "next/image";

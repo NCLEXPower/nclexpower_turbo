@@ -33,9 +33,9 @@ const switchSx: SxProps = {
   "& .MuiSwitch-track": {
     width: 60,
     height: 30,
-    borderRadius: 50, // fully round
+    borderRadius: 50,
     backgroundColor: "#ccc",
-    opacity: 1, // ensure solid track color
+    opacity: 1,
   },
   "& .MuiSwitch-thumb": {
     width: 30,
@@ -45,9 +45,9 @@ const switchSx: SxProps = {
     padding: 0,
     margin: 0,
     top: "50%",
-    transform: "translateY(-50%)", // vertical centering of the thumb
+    transform: "translateY(-50%)",
     "&.Mui-checked": {
-      transform: "translateY(-50%) translateX(30px)", // move thumb to the right
+      transform: "translateY(-50%) translateX(30px)",
     },
   },
 };

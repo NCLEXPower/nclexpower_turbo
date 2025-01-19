@@ -1,12 +1,5 @@
-import { Box, SxProps, Typography } from "@mui/material";
-import {
-  blockSx,
-  boxHeaderSx,
-  sectionSx,
-  subtitleSx,
-  titleSx,
-} from "../SettingsStyles";
-import { Button } from "../../../../../../../../components";
+import { Box, Typography } from "@mui/material";
+import { sectionSx, subtitleSx, titleSx } from "../SettingsStyles";
 import React from "react";
 import { SubscriptionPlanBlock } from "./SubscriptionPlanBlock";
 import { BillingHistoryBlock } from "./BillingHistoryBlock";

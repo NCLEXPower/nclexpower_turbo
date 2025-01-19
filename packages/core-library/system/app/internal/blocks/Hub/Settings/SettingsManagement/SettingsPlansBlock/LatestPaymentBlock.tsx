@@ -1,12 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
-
-type LatestPaymentItem = {
-  id: number;
-  label: string;
-  value: string;
-  icon?: React.ReactSVGElement;
-};
+import Image from "next/image";
+import { visaIcon } from "../../../../../../../../assets";
+import { LatestPaymentItem } from "../types";
 
 const latestPaymentItems: LatestPaymentItem[] = [
   {
@@ -22,8 +18,8 @@ const latestPaymentItems: LatestPaymentItem[] = [
   {
     id: 3,
     label: "Card Used to Pay",
-    value: "December 05, 2024",
-    icon: undefined,
+    value: "Visa ****3532",
+    icon: <Image src={visaIcon} alt="visa icon" width={56} height={40} />,
   },
   {
     id: 4,
@@ -92,7 +88,7 @@ export const LatestPaymentBlock = () => {
                 >
                   {item.label}
                 </Typography>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   {item.icon && item.icon}
                   <Typography
                     sx={{

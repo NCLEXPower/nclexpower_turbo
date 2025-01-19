@@ -1,4 +1,3 @@
-import { Container } from "@mui/material";
 import { withCSP } from "core-library";
 import { Tabs } from "core-library/components";
 import { TabsItem } from "core-library/core/utils/contants/tabs-item";
