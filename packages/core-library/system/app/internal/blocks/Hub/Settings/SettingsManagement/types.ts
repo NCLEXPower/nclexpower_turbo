@@ -46,3 +46,17 @@ export type CaseStudyQuestionSelectionOptions =
   | "MCQNOGROUP"
   | "DDT"
   | "BOWTIE";
+
+export type ActiveSession = {
+  device: string;
+  location: string;
+  lastActive: string;
+  icon: React.ReactNode;
+};
+
+export type UserInfo = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  email: string;
+};
