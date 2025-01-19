@@ -1,16 +1,11 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { TextField } from "../../../../../forms/TextField";
-import { ControlledCheckbox } from "../../../../../Checkbox/Checkbox";
-import { Button } from "../../../../../Button/Button";
-import { useMCQTableConfig } from "../../../../../../hooks";
 import { MCQTableCreation } from "./components/MCQTableCreation";
-import { useAtom } from "jotai";
 import {
-  MCQColumnAtom,
-  MCQRowAtom,
-} from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/useAtomic";
+  initMCQColumn,
+  initMCQRow,
+} from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
+import { MCQTableActions } from "./components/MCQTableActions";
 
 type BowtiePropsType = {
   questionIndex: number;
@@ -18,41 +13,22 @@ type BowtiePropsType = {
 
 export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
   const { watch, setValue, getValues } = useFormContext();
+  const ColumnField = getValues(`questionnaires.${questionIndex}.columns`);
+  const RowField = getValues(`questionnaires.${questionIndex}.rows`);
   const questionnaires = watch(`questionnaires`);
-  const [column, setColumn] = useAtom<number>(MCQColumnAtom);
-  const [row, setRow] = useAtom<number>(MCQRowAtom);
-  useMCQTableConfig({ row, column, setValue, getValues, questionnaires });
 
-  const ButtonFunctions = [
-    {
-      action: "add",
-      count: column,
-      setCount: setColumn,
-      limit: 2,
-      label: "Add Column",
-    },
-    {
-      action: "add",
-      count: row,
-      setCount: setRow,
-      limit: 2,
-      label: "Add Row",
-    },
-    {
-      action: "remove",
-      count: row,
-      setCount: setRow,
-      limit: 2,
-      label: "Delete Row",
-    },
-    {
-      action: "remove",
-      count: column,
-      setCount: setColumn,
-      limit: 2,
-      label: "Delete Column",
-    },
-  ];
+  if (
+    !RowField ||
+    RowField?.length == 0 ||
+    !ColumnField ||
+    ColumnField?.length == 0
+  ) {
+    setValue(
+      `questionnaires.${questionIndex}.columns`,
+      Array(3).fill(initMCQColumn)
+    );
+    setValue(`questionnaires.${questionIndex}.rows`, Array(1).fill(initMCQRow));
+  }
 
   console.log("questionnaires : ", questionnaires);
 
@@ -67,24 +43,11 @@ export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
           flexWrap: "wrap",
         }}
       >
-        {ButtonFunctions.map(
-          ({ action, count, setCount, limit, label }, index) => (
-            <Button
-              key={index}
-              onClick={() => {
-                if (action === "add") {
-                  setCount(count + 1);
-                } else if (action === "remove" && count > limit) {
-                  setCount(count - 1);
-                }
-              }}
-              disabled={action === "remove" && count <= limit}
-              sx={{ borderRadius: 20, fontSize: 14, minWidth: "none" }}
-            >
-              {label}
-            </Button>
-          )
-        )}
+        <MCQTableActions
+          RowField={RowField}
+          ColumnField={ColumnField}
+          questionIndex={questionIndex}
+        />
       </Box>
 
       <Box
@@ -97,8 +60,8 @@ export const MCQGroup: React.FC<BowtiePropsType> = ({ questionIndex }) => {
         }}
       >
         <MCQTableCreation
-          column={column}
-          row={row}
+          ColumnField={ColumnField}
+          RowField={RowField}
           questionIndex={questionIndex}
         />
       </Box>

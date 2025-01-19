@@ -4,7 +4,11 @@ import {
   QuestionSelectionOptions,
   RegularQuestionSelectionOptions,
 } from "../../../types";
-import { initAnswerValues } from "../../../constants/constants";
+import {
+  initAnswerValues,
+  initMCQColumn,
+  initMCQRow,
+} from "../../../constants/constants";
 import {
   DDCAnswerOptionType,
   DNDAnswerOptionType,
@@ -242,44 +246,37 @@ export const bowtieAnswerSchema = yup.object({
 });
 
 const mcqGroupColumn = yup.object({
-  label: yup
-    .string()
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "Column label is required")
-        ),
-    })
-    .required("Column Title is Required"),
+  label: yup.string().when("questionType", {
+    is: "MCQGROUP",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Column Title is required")
+      ),
+  }),
 });
 
 const mcqGroupRow = yup.object().shape({
   rowId: yup.number(),
-  rowTitle: yup
-    .string()
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "Row title is required")
-        ),
+  rowTitle: yup.string().when("questionType", {
+    is: "MCQGROUP",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Row title is required")
+      ),
+  }),
+  choices: yup.array().of(
+    yup.object({
+      value: yup.boolean().default(false),
+      choiceId: yup.number(),
     })
-    .required("Row Title is required"),
-  choices: yup
-    .array()
-    .of(
-      yup.object({
-        value: yup.boolean().default(false),
-        choiceId: yup.number(),
-      })
-    )
-    .required("Choices are required."),
+  ),
 });
 export const mcqGroupAnswerSchema = yup.object({
   columns: yup
     .array()
     .of(mcqGroupColumn)
+    .min(3)
+    .default(Array(3).fill(initMCQColumn))
     .when("questionType", {
       is: "MCQGROUP",
       then: (schema) =>
@@ -290,6 +287,8 @@ export const mcqGroupAnswerSchema = yup.object({
   rows: yup
     .array()
     .of(mcqGroupRow)
+    .min(1)
+    .default(Array(1).fill(initMCQRow))
     .when("questionType", {
       is: "MCQGROUP",
       then: (schema) =>

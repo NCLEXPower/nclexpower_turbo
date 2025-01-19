@@ -5,6 +5,7 @@
  */
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
+import { ContainedCaseStudyQuestionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -83,14 +84,14 @@ export interface DDCAnswerOption extends AnswerOption {
 }
 
 export type TablePropType = {
-  column?: number;
-  row?: number;
+  ColumnField: MCQColumnType[];
+  RowField: MCQRowType[];
   rowIndex?: number;
   questionIndex: number;
 };
 
 export type MCQChoiceType = {
-  value: string;
+  value: boolean;
   choiceId: number;
 };
 
@@ -98,6 +99,10 @@ export type MCQRowType = {
   rowId: number;
   rowTitle: string;
   choices: MCQChoiceType[];
+};
+
+export type MCQColumnType = {
+  label: string;
 };
 
 export type BowtieItemType = {

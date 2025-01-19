@@ -1,40 +1,16 @@
 import { useFormContext } from "react-hook-form";
 import { TablePropType } from "../../../../../../../system/app/internal/types";
 import { ControlledCheckbox } from "../../../../../../Checkbox/Checkbox";
-import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { TextField } from "../../../../../../forms/TextField";
 
 export const RowComponent: React.FC<TablePropType> = ({
-  column,
+  ColumnField,
   questionIndex,
   rowIndex,
 }) => {
-  const { control, setValue, getValues } = useFormContext();
-
-  useEffect(() => {
-    const existingRowId = getValues(
-      `questionnaires.${questionIndex}.rows.${rowIndex}.rowId`
-    );
-    if (!existingRowId) {
-      setValue(
-        `questionnaires.${questionIndex}.rows.${rowIndex}.rowId`,
-        rowIndex && rowIndex + 1
-      );
-    }
-
-    Array(column)
-      .fill(null)
-      .forEach((_, colIndex) => {
-        const choicePath = `questionnaires.${questionIndex}.rows.${rowIndex}.choices.${colIndex}`;
-        const existingChoiceValue = getValues(`${choicePath}.value`);
-
-        if (existingChoiceValue === undefined) {
-          setValue(`${choicePath}.choiceId`, colIndex);
-          setValue(`${choicePath}.value`, false);
-        }
-      });
-  }, [control, rowIndex, column, getValues, setValue]);
+  const { control } = useFormContext();
+  const ColumnFieldContainer = ColumnField.length > 0 && ColumnField.length - 1;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -63,8 +39,8 @@ export const RowComponent: React.FC<TablePropType> = ({
           placeholder="Enter Text"
         />
       </Box>
-      {Array(column)
-        .fill(null)
+      {Array(ColumnFieldContainer)
+        .fill(false)
         .map((_, colIndex) => (
           <Box
             sx={{

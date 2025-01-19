@@ -149,3 +149,13 @@ export const defaultValues: ContentDateType = {
   approval: [],
   implementationSchedule: new Date(),
 };
+
+export const initMCQColumn = { label: "" };
+export const initMCQRow = {
+  rowTitle: "",
+  rowId: 0,
+  choices: [
+    { value: false, choiceId: 0 },
+    { value: false, choiceId: 1 },
+  ],
+};

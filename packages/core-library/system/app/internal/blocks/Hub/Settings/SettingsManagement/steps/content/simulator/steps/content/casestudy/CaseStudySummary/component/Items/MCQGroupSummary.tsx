@@ -1,5 +1,9 @@
 import React from "react";
-import { QuestionnaireItem } from "../../../../../../../../../../../../../types";
+import {
+  MCQChoiceType,
+  MCQRowType,
+  QuestionnaireItem,
+} from "../../../../../../../../../../../../../types";
 import { Box, Checkbox, Typography } from "@mui/material";
 
 export const MCQGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
@@ -10,18 +14,20 @@ export const MCQGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
       sx={{
         padding: 5,
         width: "100%",
+        overflowX: "auto",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "start",
         alignItems: "center",
       }}
     >
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", width: "100%" }}>
         {data.columns.length > 0 &&
-          data.columns.map((item: any, colIndex: number) => (
+          data.columns.map((item: { label: string }, colIndex: number) => (
             <Box
               sx={{
-                width: "150px",
+                minWidth: "150px",
+                maxWidth: "150px",
                 minHeight: "60px",
                 borderWidth: "2px",
                 borderColor: "black",
@@ -45,12 +51,13 @@ export const MCQGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
             </Box>
           ))}
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {data.rows.map((row: any, rowIndex: number) => (
+      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+        {data.rows.map((row: MCQRowType, rowIndex: number) => (
           <Box sx={{ display: "flex", width: "100%" }} key={rowIndex}>
             <Typography
               sx={{
-                width: "150px",
+                minWidth: "150px",
+                maxWidth: "150px",
                 minHeight: "60px",
                 borderWidth: "2px",
                 borderColor: "black",
@@ -62,10 +69,11 @@ export const MCQGroupSummary: React.FC<Partial<QuestionnaireItem>> = ({
             >
               {row.rowTitle}
             </Typography>
-            {row.choices.map((choice: any) => (
+            {row.choices.map((choice: MCQChoiceType) => (
               <Box
                 sx={{
-                  width: "150px",
+                  minWidth: "150px",
+                  maxWidth: "150px",
                   minHeight: "60px",
                   borderWidth: "2px",
                   borderColor: "black",

@@ -50,5 +50,4 @@ export * from "./golive/useSignalRCountdown";
 export * from "./useWebHeaderStyles";
 export * from "./useSynchronizeSectionWithLabel";
 export * from "./useOrganizeSection";
-export * from "./useMCQTableConfig";
 export * from "./useSocialMediaIcons";
