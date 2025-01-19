@@ -1,9 +1,9 @@
 import React, { memo, useEffect } from "react";
-import { BubbleMenu, useCurrentEditor } from "@tiptap/react";
+import { BubbleMenu, Editor, useCurrentEditor } from "@tiptap/react";
 import { Box } from "@mui/material";
 import { EditorButtonGroup } from "./EditorButtonGroup";
 import { CustomMenusType } from "../../types/editor-type";
-import { MenuButtons } from "./Menus";
+import { MenuButtons, insertTable } from "./Menus";
 
 type CustomMenuBarPropsType = CustomMenusType & {
   content: string;
@@ -18,17 +18,19 @@ export const CustomMenuBar: React.FC<CustomMenuBarPropsType> = memo(
 
     if (!editor) return null;
 
-    useEffect(() => {
+    const handleTableInsertion = (
+      questionType: string | undefined,
+      onInsertTable: (() => boolean) | undefined,
+      editor: Editor
+    ): void => {
       if (questionType === "DDT" && onInsertTable?.()) {
-        editor
-          .chain()
-          .focus()
-          .insertContent(" ")
-          .insertTable({ rows: 4, cols: 2, withHeaderRow: true })
-          .run();
-        editor.commands.setTextSelection(1);
+        insertTable(editor);
       }
-    }, [questionType]);
+    };
+
+    useEffect(() => {
+      handleTableInsertion(questionType, onInsertTable, editor);
+    }, [questionType, editor]);
 
     const menus = MenuButtons({ editor, editorFor });
 

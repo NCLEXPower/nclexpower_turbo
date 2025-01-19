@@ -25,6 +25,7 @@ import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
 import { memo, useEffect, useRef, useState } from "react";
 import { Instruction } from "./components/Instruction";
 import { CustomFields } from "./components/CustomFields";
+import { useTableInsertion } from "../../hooks/useTableInsertion";
 
 interface Props {
   index: number;
@@ -37,28 +38,7 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
 
-  const [insertedIndices, setInsertedIndices] = useState<number[]>([]);
-
-  const handleTableInsertion = (currentIndex: number) => {
-    setInsertedIndices((prev) => {
-      const newIndices = [...prev];
-      const indexExists = newIndices.includes(currentIndex);
-
-      if (indexExists) {
-        return newIndices.filter((index) => index !== currentIndex);
-      } else {
-        return [...newIndices, currentIndex];
-      }
-    });
-    return !insertedIndices.includes(currentIndex);
-  };
-
-  useEffect(() => {
-    const currentQuestionType = questionnaires[index]?.questionType;
-    if (currentQuestionType !== "DDT" && insertedIndices.includes(index)) {
-      setInsertedIndices((prev) => prev.filter((index) => index !== index));
-    }
-  }, [questionnaires[index]?.questionType, index, insertedIndices]);
+  const { handleTableInsertion } = useTableInsertion({ questionType, index });
 
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
 

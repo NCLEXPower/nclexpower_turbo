@@ -75,6 +75,20 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
     }
   };
 
+  const renderAnswerOption = (data: QuestionnaireItem) => {
+    switch (data.questionType) {
+      case "SATA":
+      case "MRSN":
+        return <AnswerList answers={data.answers} />;
+      case "BOWTIE":
+        return <BowtieSummary data={data} />;
+      case "MCQNOGROUP":
+        return <MCQNoGroupSummary data={data} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -117,14 +131,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType == "SATA" ||
-              (data.questionType == "MRSN" && (
-                <AnswerList answers={data.answers} />
-              ))}
-            {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
-            {data.questionType == "MCQNOGROUP" && (
-              <MCQNoGroupSummary data={data} />
-            )}
+            {renderAnswerOption(data)}
           </Box>
         ))
       ) : (

@@ -8,6 +8,8 @@ import React, { useCallback } from "react";
 import { Box, FormControl, Typography } from "@mui/material";
 import { PlainSelectField } from "../../../../../../../../../../../../../../../../components/Textfield/SelectField/PlainSelectField";
 import { DDCAnswerOptionType } from "../../../../../../types";
+import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { useSanitizedInputs } from "../../../../../../../../../../../../../../../../hooks";
 
 export interface DDTQuestionProps {
   ddcData: {
@@ -17,19 +19,22 @@ export interface DDTQuestionProps {
 }
 
 export const DDTItem: React.FC<DDTQuestionProps> = ({ ddcData }) => {
+  const { purifyInputs } = useSanitizedInputs({});
   const renderDropdown = useCallback(
     (optionName: string, answers: DDCAnswerOptionType[]) => {
       const answer = answers.find((ans) => ans.optionName === optionName);
-      if (!answer) return <p>no contents</p>;
+      if (!answer) {
+        return "No Content Available";
+      }
 
-      const defaultSelectedOption = answer.options?.find(
-        (option) => option.answerKey
-      )?.answer;
+      const defaultSelectedOption =
+        answer.options?.find((option) => option.answerKey)?.answer || "";
 
-      const mappedOptions = answer.options?.map((option) => ({
-        value: option.answer,
-        label: option.answer,
-      }));
+      const mappedOptions =
+        answer.options?.map((option) => ({
+          value: option.answer,
+          label: option.answer,
+        })) || [];
 
       return (
         <FormControl
@@ -39,22 +44,22 @@ export const DDTItem: React.FC<DDTQuestionProps> = ({ ddcData }) => {
         >
           <PlainSelectField
             variant="standard"
-            options={mappedOptions || []}
-            defaultValue={defaultSelectedOption || ""}
+            options={mappedOptions}
+            defaultValue={defaultSelectedOption}
             displayEmpty
             disabledOptions
           />
         </FormControl>
       );
     },
-    []
+    [PlainSelectField]
   );
 
   const renderContentWithDropdowns = useCallback(
     (itemStem: string, answers: DDCAnswerOptionType[]) => {
+      const sanitizeItemStem = purifyInputs(itemStem) as string;
       const parser = new DOMParser();
-      const doc = parser.parseFromString(itemStem, "text/html");
-
+      const doc = parser.parseFromString(sanitizeItemStem, "text/html");
       const nonTableContent = Array.from(doc.body.childNodes)
         .filter((node) => node.nodeName !== "TABLE")
         .map((node, index) => {
