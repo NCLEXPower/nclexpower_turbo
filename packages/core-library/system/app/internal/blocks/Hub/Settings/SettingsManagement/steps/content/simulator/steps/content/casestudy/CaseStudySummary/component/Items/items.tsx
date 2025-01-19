@@ -62,10 +62,10 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return `Select ${data.maxAnswer} That Apply`;
       case "BOWTIE":
         return `Bowtie`;
-    } else if (data.questionType === "MCQGROUP") {
-      return `MCQ GROUP`;
       case "MCQNOGROUP":
         return `MCQ No Group`;
+      case "MCQGROUP":
+        return `MCQ Group`;
     }
   };
 
@@ -111,14 +111,16 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType !== "DDC" && data.questionType !== "BOWTIE" &&
+            {data.questionType !== "DDC" &&
+              data.questionType !== "BOWTIE" &&
               data.questionType !== "MCQNOGROUP" && (
                 <AnswerList answers={data.answers} />
               )}
             {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
             {data.questionType == "MCQGROUP" && <MCQGroupSummary data={data} />}
-            {data.questionType == "MCQNOGROUP" && <MCQNoGroupSummary data={data} />}
-
+            {data.questionType == "MCQNOGROUP" && (
+              <MCQNoGroupSummary data={data} />
+            )}
           </Box>
         ))
       ) : (

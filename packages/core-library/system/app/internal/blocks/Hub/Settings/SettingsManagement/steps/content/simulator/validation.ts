@@ -4,11 +4,7 @@ import {
   QuestionSelectionOptions,
   RegularQuestionSelectionOptions,
 } from "../../../types";
-import {
-  initAnswerValues,
-  initMCQColumn,
-  initMCQRow,
-} from "../../../constants/constants";
+import { initAnswerValues } from "../../../constants/constants";
 import {
   DDCAnswerOptionType,
   DNDAnswerOptionType,
@@ -316,63 +312,6 @@ export const hcpOptionSchema = yup.object().shape({
     .required(({ path }) =>
       generateQuestionErrorMessage(path, "Attribute name is required")
     ),
-});
-
-const mcqGroupColumn = yup.object({
-  label: yup
-    .string()
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "Column Title is required")
-        ),
-    })
-    .required("Column Title is required"),
-});
-
-const mcqGroupRow = yup.object().shape({
-  rowId: yup.number(),
-  rowTitle: yup
-    .string()
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "Row title is required")
-        ),
-    })
-    .required("Row Title is required"),
-  choices: yup.array().of(
-    yup.object({
-      value: yup.boolean().default(false),
-      choiceId: yup.number(),
-    })
-  ),
-});
-export const mcqGroupAnswerSchema = yup.object({
-  columns: yup
-    .array()
-    .of(mcqGroupColumn)
-    .min(3)
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "This is required")
-        ),
-    }),
-  rows: yup
-    .array()
-    .of(mcqGroupRow)
-    .min(1)
-    .when("questionType", {
-      is: "MCQGROUP",
-      then: (schema) =>
-        schema.required(({ path }) =>
-          generateQuestionErrorMessage(path, "This is required")
-        ),
-    }),
 });
 
 // Question Options Schema
