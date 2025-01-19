@@ -4,12 +4,14 @@ import { PersonalInformationBlock } from "./PersonalInformationBlock";
 import { GoogleBlock } from "./GoogleBlock";
 import { DeleteAccountBlock } from "./DeleteAccountBlock";
 import { UserInfo } from "../types";
+import { profile } from "../../../../../../../../assets";
 
 const mockUserInfo: UserInfo = {
   firstName: "Kimberly",
   middleName: "",
   lastName: "Wexler",
   email: "kimwexler@hhm.com",
+  picture: profile,
 };
 
 interface SettingAccountBlockProps {

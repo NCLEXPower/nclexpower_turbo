@@ -6,7 +6,7 @@ import { ActiveSessionsBlock } from "./ActiveSessionsBlock";
 import { EvaIcon } from "../../../../../../../../components";
 import { ActiveSession } from "../types";
 
-const thisDeviceMockData = {
+const thisDeviceMockData: Omit<ActiveSession, "lastActive"> = {
   device: "Macbook Pro",
   location: "Manila, Philippines",
   icon: <EvaIcon name="monitor-outline" />,
@@ -36,7 +36,6 @@ export const SettingsSecurityBlock: React.FC<SettingsSecurityBlockProps> = ({
   title,
   subtitle,
 }) => {
-  const { device, location, icon } = thisDeviceMockData;
   return (
     <Box component="section" sx={sectionSx}>
       <Box className="flex flex-col mb-8">
@@ -69,7 +68,7 @@ export const SettingsSecurityBlock: React.FC<SettingsSecurityBlockProps> = ({
             gap: "20px",
           }}
         >
-          <ThisDeviceBlock device={device} location={location} icon={icon} />
+          <ThisDeviceBlock thisDeviceData={thisDeviceMockData} />
           <ActiveSessionsBlock activeSession={activeSessionsMockData} />
         </Box>
       </Box>

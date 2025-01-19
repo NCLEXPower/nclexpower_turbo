@@ -59,6 +59,7 @@ export type UserInfo = {
   middleName?: string;
   lastName: string;
   email: string;
+  picture: string;
 };
 
 export type PlanType = {

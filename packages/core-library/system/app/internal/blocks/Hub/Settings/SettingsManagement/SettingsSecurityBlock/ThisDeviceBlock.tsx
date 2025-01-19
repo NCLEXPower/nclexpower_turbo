@@ -1,17 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, textSx, titleSx } from "../SettingsStyles";
 import { EvaIcon } from "../../../../../../../../components";
+import { ActiveSession } from "../types";
 
 interface ThisDeviceBlockProps {
-  device: string;
-  location: string;
-  icon: React.ReactNode;
+  thisDeviceData: Omit<ActiveSession, "lastActive">;
 }
 export const ThisDeviceBlock: React.FC<ThisDeviceBlockProps> = ({
-  device,
-  location,
-  icon,
+  thisDeviceData,
 }) => {
+  const { device, location, icon } = thisDeviceData;
   return (
     <Box
       sx={{

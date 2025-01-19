@@ -1,7 +1,6 @@
 import { Box, SxProps, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import { Button, EvaIcon, TextField } from "../../../../../../../../components";
-import { profile } from "../../../../../../../../assets";
 import Image from "next/image";
 import { CSSProperties } from "react";
 import { useForm } from "react-hook-form";
@@ -176,7 +175,7 @@ export const PersonalInformationBlock: React.FC<
             }}
           >
             <Image
-              src={profile}
+              src={userInfo.picture}
               alt="profile picture"
               fill
               className="object-cover"
