@@ -1,44 +1,18 @@
-import { Box, SxProps, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import { Button, EvaIcon, TextField } from "../../../../../../../../components";
 import Image from "next/image";
-import { CSSProperties } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { accountSchema, AccountSchemaType } from "../validation";
-import { UserInfo } from "../types";
-
-const textFieldSx: SxProps = {
-  borderRadius: "10px",
-  padding: 0,
-  height: "45px",
-};
-
-const inputStyle: CSSProperties = {
-  borderRadius: "10px",
-  padding: "0 24px 0 50px",
-  height: "45px",
-};
-
-const buttonSx: SxProps = {
-  minWidth: "90px",
-  minHeight: "30px",
-  backgroundColor: "transparent",
-  borderRadius: "50px",
-  border: "1px solid #33333333",
-  boxShadow: "none",
-  color: "black",
-  fontWeight: 400,
-  padding: 0,
-};
-
-const inputIconStyle: CSSProperties = {
-  position: "absolute",
-  left: "16px",
-  top: "50%",
-  transform: "translateY(-50%)",
-  pointerEvents: "none",
-};
+import {
+  buttonSx,
+  inputIconStyle,
+  inputStyle,
+  textFieldSx,
+} from "./personalInformationStyles";
+import { CustomerTokenizeInformations } from "../../../../../../../../api/types";
+import { useEffect } from "react";
 
 type TextFieldItem = {
   id: number;
@@ -51,19 +25,19 @@ const textFieldItems: TextFieldItem[] = [
   {
     id: 1,
     label: "First Name",
-    name: "firstName",
+    name: "firstname",
     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
   },
   {
     id: 2,
     label: "Middle Name",
-    name: "middleName",
+    name: "middlename",
     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
   },
   {
     id: 3,
     label: "Last Name",
-    name: "lastName",
+    name: "lastname",
     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
   },
   {
@@ -75,7 +49,7 @@ const textFieldItems: TextFieldItem[] = [
 ];
 
 interface PersonalInformationBlockProps {
-  userInfo: UserInfo;
+  userInfo?: CustomerTokenizeInformations;
 }
 
 export const PersonalInformationBlock: React.FC<
@@ -86,7 +60,13 @@ export const PersonalInformationBlock: React.FC<
     resolver: yupResolver(accountSchema),
     defaultValues: userInfo,
   });
-  const { control, handleSubmit, setValue } = form;
+  const { control, handleSubmit, setValue, reset } = form;
+
+  useEffect(() => {
+    if (userInfo) {
+      reset(userInfo);
+    }
+  }, [userInfo, reset]);
 
   return (
     <Box
@@ -134,7 +114,7 @@ export const PersonalInformationBlock: React.FC<
           alignItems: {
             md: "center",
           },
-          gap: "10px",
+          gap: "30px",
           padding: "20px 40px",
         }}
       >
@@ -174,12 +154,14 @@ export const PersonalInformationBlock: React.FC<
               overflow: "hidden",
             }}
           >
-            <Image
-              src={userInfo.picture}
-              alt="profile picture"
-              fill
-              className="object-cover"
-            />
+            {userInfo?.imgUrl && userInfo?.imgUrl !== "None" && (
+              <Image
+                src={userInfo.imgUrl}
+                alt="profile picture"
+                fill
+                className="object-cover"
+              />
+            )}
           </Box>
           <Typography
             sx={{

@@ -3,16 +3,7 @@ import { sectionSx, subtitleSx, titleSx } from "../SettingsStyles";
 import { PersonalInformationBlock } from "./PersonalInformationBlock";
 import { GoogleBlock } from "./GoogleBlock";
 import { DeleteAccountBlock } from "./DeleteAccountBlock";
-import { UserInfo } from "../types";
-import { profile } from "../../../../../../../../assets";
-
-const mockUserInfo: UserInfo = {
-  firstName: "Kimberly",
-  middleName: "",
-  lastName: "Wexler",
-  email: "kimwexler@hhm.com",
-  picture: profile,
-};
+import { useSensitiveInformation } from "../../../../../../../../hooks";
 
 interface SettingAccountBlockProps {
   title: string;
@@ -23,6 +14,8 @@ export const SettingsAccountBlock: React.FC<SettingAccountBlockProps> = ({
   title,
   subtitle,
 }) => {
+  const { customer } = useSensitiveInformation();
+
   return (
     <Box component="section" sx={sectionSx}>
       <Box className="flex flex-col mb-8">
@@ -44,7 +37,7 @@ export const SettingsAccountBlock: React.FC<SettingAccountBlockProps> = ({
           gap: "20px",
         }}
       >
-        <PersonalInformationBlock userInfo={mockUserInfo} />
+        <PersonalInformationBlock userInfo={customer} />
         <Box
           sx={{
             display: "flex",

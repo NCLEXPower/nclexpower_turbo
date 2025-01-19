@@ -4,6 +4,7 @@ import React from "react";
 import { SubscriptionPlanBlock } from "./SubscriptionPlanBlock";
 import { BillingHistoryBlock } from "./BillingHistoryBlock";
 import { LatestPaymentBlock } from "./LatestPaymentBlock";
+import { billingHistoryItems, latestPayment } from "./constants";
 
 interface SettingsPlansBlockProps {
   title: string;
@@ -35,8 +36,8 @@ export const SettingsPlansBlock: React.FC<SettingsPlansBlockProps> = ({
             gap: "40px",
           }}
         >
-          <LatestPaymentBlock />
-          <BillingHistoryBlock />
+          <LatestPaymentBlock latestPayment={latestPayment} />
+          <BillingHistoryBlock items={billingHistoryItems} />
         </Box>
       </Box>
     </Box>

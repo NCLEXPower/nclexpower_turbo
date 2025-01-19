@@ -54,14 +54,6 @@ export type ActiveSession = {
   icon: React.ReactNode;
 };
 
-export type UserInfo = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  email: string;
-  picture: string;
-};
-
 export type PlanType = {
   abbr: string;
   planName: string;
@@ -74,7 +66,28 @@ export type PlanType = {
 
 export type LatestPaymentItem = {
   id: number;
+  label: "Payment Date" | "Type of Plan" | "Card Used to Pay" | "Total Payment";
+  value?: string;
+  icon?: string;
+};
+
+export type Payment = {
+  paymentDate: string;
+  planType: string;
+  cardUsed: string;
+  totalPayment: number;
+};
+
+export type BillingHistoryItem = {
+  orderId: string;
+  date: string;
+};
+
+export type PasswordAndSecurityItem = {
+  id: number;
   label: string;
-  value: string;
-  icon?: React.ReactElement<HTMLImageElement>;
+  subLabel?: string;
+  icon?: string;
+  isBtn?: boolean;
+  btnLabel?: string;
 };

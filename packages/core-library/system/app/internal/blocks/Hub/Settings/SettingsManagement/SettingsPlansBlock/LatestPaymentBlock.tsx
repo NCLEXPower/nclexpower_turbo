@@ -1,34 +1,30 @@
 import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import Image from "next/image";
-import { visaIcon } from "../../../../../../../../assets";
-import { LatestPaymentItem } from "../types";
+import { latestPaymentItems } from "./constants";
+import { LatestPaymentItem, Payment } from "../types";
 
-const latestPaymentItems: LatestPaymentItem[] = [
-  {
-    id: 1,
-    label: "Payment Date",
-    value: "December 05, 2024",
-  },
-  {
-    id: 2,
-    label: "Type of Plan",
-    value: "Practical Nurse - 8 days(Fast Track)",
-  },
-  {
-    id: 3,
-    label: "Card Used to Pay",
-    value: "Visa ****3532",
-    icon: <Image src={visaIcon} alt="visa icon" width={56} height={40} />,
-  },
-  {
-    id: 4,
-    label: "Total Payment",
-    value: "$180.00",
-  },
-];
+interface LatestPaymentBlockProps {
+  latestPayment: Payment;
+}
 
-export const LatestPaymentBlock = () => {
+export const LatestPaymentBlock: React.FC<LatestPaymentBlockProps> = ({
+  latestPayment,
+}) => {
+  const { paymentDate, planType, cardUsed, totalPayment } = latestPayment;
+
+  const labelToValueMap: Record<LatestPaymentItem["label"], string> = {
+    "Payment Date": paymentDate,
+    "Type of Plan": planType,
+    "Card Used to Pay": cardUsed,
+    "Total Payment": `$${totalPayment.toFixed(2)}`,
+  };
+
+  const items = latestPaymentItems.map((item) => ({
+    ...item,
+    value: labelToValueMap[item.label] || "",
+  }));
+
   return (
     <Box
       className="flex flex-col"
@@ -62,34 +58,20 @@ export const LatestPaymentBlock = () => {
         }}
       >
         <ul>
-          {latestPaymentItems.map((item) => (
-            <li key={item.id}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "15px",
-                  paddingY: "10px",
-                  minHeight: "80px",
-                  borderBottom: "2px solid #0F2A7133",
-                }}
-              >
-                <Typography
+          {items.length &&
+            items.map((item) => (
+              <li key={item.id}>
+                <Box
                   sx={{
-                    fontFamily: "'PT Sans','sans-serif'",
-                    fontWeight: 700,
-                    fontSize: {
-                      xs: "15px",
-                      sm: "20px",
-                    },
-                    color: "#3333334D",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "15px",
+                    paddingY: "10px",
+                    minHeight: "80px",
+                    borderBottom: "2px solid #0F2A7133",
                   }}
                 >
-                  {item.label}
-                </Typography>
-                <div className="flex items-center gap-2">
-                  {item.icon && item.icon}
                   <Typography
                     sx={{
                       fontFamily: "'PT Sans','sans-serif'",
@@ -98,16 +80,38 @@ export const LatestPaymentBlock = () => {
                         xs: "15px",
                         sm: "20px",
                       },
-                      color: "#333333",
-                      wordBreak: "break-word",
+                      color: "#3333334D",
                     }}
                   >
-                    {item.value}
+                    {item.label}
                   </Typography>
-                </div>
-              </Box>
-            </li>
-          ))}
+                  <div className="flex items-center gap-2">
+                    {item.icon && (
+                      <Image
+                        src={item.icon}
+                        alt="visa icon"
+                        width={56}
+                        height={40}
+                      />
+                    )}
+                    <Typography
+                      sx={{
+                        fontFamily: "'PT Sans','sans-serif'",
+                        fontWeight: 700,
+                        fontSize: {
+                          xs: "15px",
+                          sm: "20px",
+                        },
+                        color: "#333333",
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      {item.value}
+                    </Typography>
+                  </div>
+                </Box>
+              </li>
+            ))}
         </ul>
       </Box>
     </Box>

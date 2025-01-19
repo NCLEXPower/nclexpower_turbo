@@ -1,26 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import { Button } from "../../../../../../../../components";
+import { billingHistoryItems, billingHistoryItemsHeader } from "./constants";
+import { BillingHistoryItem } from "../types";
 
-type BillingHistoryItem = {
-  orderId: string;
-  date: string;
-};
+interface BillingHistoryBlockProps {
+  items: BillingHistoryItem[];
+}
 
-const billingHistoryItems: BillingHistoryItem[] = [
-  {
-    orderId: "RN23-7854865",
-    date: "12-05-2024 09:04:30",
-  },
-  {
-    orderId: "RN24-7854987",
-    date: "08-15-2024 09:04:30",
-  },
-];
-
-const billingHistoryItemsHeader: string[] = ["Order ID", "Date", "Action"];
-
-export const BillingHistoryBlock = () => {
+export const BillingHistoryBlock: React.FC<BillingHistoryBlockProps> = ({
+  items,
+}) => {
   return (
     <Box
       sx={{
@@ -64,85 +54,87 @@ export const BillingHistoryBlock = () => {
             },
           }}
         >
-          {billingHistoryItemsHeader.map((item) => (
-            <Typography
-              key={item}
-              sx={{
-                fontSize: {
-                  xs: "15px",
-                  sm: "20px",
-                },
-                fontWeight: "700",
-                color: "#33333380",
-                fontFamily: "'PT Sans','sans-serif'",
-              }}
-            >
-              {item}
-            </Typography>
-          ))}
+          {billingHistoryItemsHeader.length &&
+            billingHistoryItemsHeader.map((item) => (
+              <Typography
+                key={item}
+                sx={{
+                  fontSize: {
+                    xs: "15px",
+                    sm: "20px",
+                  },
+                  fontWeight: "700",
+                  color: "#33333380",
+                  fontFamily: "'PT Sans','sans-serif'",
+                }}
+              >
+                {item}
+              </Typography>
+            ))}
         </Box>
         <Box component="ul">
-          {billingHistoryItems.map((item) => (
-            <Box
-              component="li"
-              key={item.orderId}
-              className="flex justify-between items-center h-16 border-b border-b-[#0F2A71/10]"
-              sx={{
-                display: "fex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                height: "60px",
-                borderBottom: "2px solid #0F2A711A",
-                paddingX: {
-                  xs: "10px",
-                  sm: "20px",
-                },
-              }}
-            >
-              <Typography
+          {items.length &&
+            items.map((item) => (
+              <Box
+                component="li"
+                key={item.orderId}
+                className="flex justify-between items-center h-16 border-b border-b-[#0F2A71/10]"
                 sx={{
-                  fontFamily: "'PT Sans','sans-serif'",
-                  fontWeight: 400,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "18px",
+                  display: "fex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  height: "60px",
+                  borderBottom: "2px solid #0F2A711A",
+                  paddingX: {
+                    xs: "10px",
+                    sm: "20px",
                   },
                 }}
               >
-                {item.orderId}
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "'PT Sans','sans-serif'",
-                  fontWeight: 400,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "18px",
-                  },
-                }}
-              >
-                {item.date}
-              </Typography>
-              <div className="flex items-center justify-center">
-                <Button
+                <Typography
                   sx={{
-                    minHeight: "30px",
-                    minWidth: "65px",
-                    padding: 0,
-                    borderRadius: "4px",
-                    backgroundColor: "#0F2A71",
-                    boxShadow: "none",
                     fontFamily: "'PT Sans','sans-serif'",
-                    fontSize: "16px",
-                    color: "#FFF",
-                    fontWeight: 700,
+                    fontWeight: 400,
+                    fontSize: {
+                      xs: "12px",
+                      sm: "18px",
+                    },
                   }}
                 >
-                  View
-                </Button>
-              </div>
-            </Box>
-          ))}
+                  {item.orderId}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "'PT Sans','sans-serif'",
+                    fontWeight: 400,
+                    fontSize: {
+                      xs: "12px",
+                      sm: "18px",
+                    },
+                  }}
+                >
+                  {item.date}
+                </Typography>
+                <div className="flex items-center justify-center">
+                  <Button
+                    sx={{
+                      minHeight: "30px",
+                      minWidth: "65px",
+                      padding: 0,
+                      borderRadius: "4px",
+                      backgroundColor: "#0F2A71",
+                      boxShadow: "none",
+                      fontFamily: "'PT Sans','sans-serif'",
+                      fontSize: "16px",
+                      color: "#FFF",
+                      fontWeight: 700,
+                    }}
+                  >
+                    View
+                  </Button>
+                </div>
+              </Box>
+            ))}
         </Box>
       </Box>
     </Box>

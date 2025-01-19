@@ -86,9 +86,9 @@ export const RouteMenuCreation = yup.object({
 });
 
 export const accountSchema = yup.object({
-  firstName: yup.string().required("First Name is required"),
-  middleName: yup.string().optional(),
-  lastName: yup.string().required("Last Name is required"),
+  firstname: yup.string().required("First Name is required"),
+  middlename: yup.string().optional(),
+  lastname: yup.string().required("Last Name is required"),
   email: yup
     .string()
     .email("Please provide a valid email")
