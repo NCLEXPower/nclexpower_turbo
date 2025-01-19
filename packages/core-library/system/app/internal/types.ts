@@ -5,6 +5,7 @@
  */
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
+import { HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -88,22 +89,38 @@ export type BowtieItemType = {
   isAnswer: boolean;
 };
 
+export type Columns = {
+  label: string;
+};
+
+export type Row = {
+  rowId: number;
+  rowTitle: string;
+  choices: {
+    choiceId: number;
+    value: boolean;
+  }[];
+};
+
 export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE";
+  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE" | "HCP" | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
-  answers: DDClozeTableAnswerOption[];
   leftLabelName: string | undefined;
   centerLabelName: string | undefined;
   rightLabelName: string | undefined;
   rightSection: BowtieItemType[] | undefined;
   centerSection: BowtieItemType[] | undefined;
   leftSection: BowtieItemType[] | undefined;
+  column?: Columns[];
+  row?: Row[];
+  hcpContent: string | undefined;
+  answers: DDClozeTableAnswerOption[] | HCPNAnswerOptionType[];
 };
 
 export type CaseStudyDataType = {

@@ -1,12 +1,22 @@
 {
   "extends": "../typescript-config/react-library.json",
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "commonjs",
     "paths": {
-      "@mui/icons-material/*": ["../../node_modules/@mui/icons-material/*"],
-      "react": ["./node_modules/@types/react"],
-      "react-player": ["../../node_modules/react-player/lib/index.d.ts"]
+      "@mui/icons-material/*": [
+        "../../node_modules/@mui/icons-material/*"
+      ],
+      "react": [
+        "./node_modules/@types/react"
+      ],
+      "react-player": [
+        "../../node_modules/react-player/lib/index.d.ts"
+      ]
     }
   },
   "include": [
@@ -17,7 +27,11 @@
     "react.d.ts",
     "theme.d.ts",
     "eva-icons.d.ts",
-    "react-table-config.d.ts"
+    "react-table-config.d.ts",
+    "tiptap-extenstion.d.ts"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
