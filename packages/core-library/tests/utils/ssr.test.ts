@@ -191,7 +191,7 @@ describe("SSR Functions", () => {
     const result = await getHasChatBotWidget();
 
     expect(fetch).toHaveBeenCalledWith(
-      `${config.value.LOCAL_API_URL}/api/v1/Customer/get-chatbot-mode`,
+      `${config.value.LOCAL_API_URL}/api/v1/Customer/get-helpwidget-status`,
       { method: "GET", headers: mockHeaders }
     );
     expect(result).toEqual(mockChatbotMode);
