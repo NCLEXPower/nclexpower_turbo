@@ -130,7 +130,7 @@ export async function getEndpointResources() {
 }
 
 export async function getHasChatBotWidget() {
-  const response = await fetch(`${baseUrl}/api/v1/Customer/get-chatbot-mode`, {
+  const response = await fetch(`${baseUrl}/api/v1/Customer/get-helpwidget-status  `, {
     method: "GET",
     headers: headers,
   });

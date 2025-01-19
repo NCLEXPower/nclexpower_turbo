@@ -55,7 +55,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -148,8 +148,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-              contentAccessKey: "",
-            })}`
+            contentAccessKey: "",
+          })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -427,7 +427,7 @@ export class WebApiBackOffice {
   }
 
   public async updateHelpWidgetStatus(isEnabled: boolean) {
-    return await this.axios.put(`/api/v1/Customer/update-chatbot-mode`, {
+    return await this.axios.put(`/api/v1/Customer/update-helpwidget-status`, {
       isEnabled,
     });
   }
