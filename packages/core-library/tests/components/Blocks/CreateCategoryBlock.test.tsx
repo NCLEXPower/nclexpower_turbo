@@ -28,9 +28,44 @@ jest.mock("../../../contexts", () => ({
   }))
 }));
 
-jest.mock('@mui/x-data-grid', () => ({
-  ...jest.requireActual('@mui/x-data-grid'),
-}));
+jest.mock('@mui/x-data-grid', () => {
+  const actualModule = jest.requireActual('@mui/x-data-grid');
+  return {
+    ...actualModule,
+    DataGrid: (props: {
+      rows: any[];
+      columns: any[];
+      isLoading: boolean;
+      initPageSize: number;
+      'data-testid'?: string;
+    }) => {
+      if (props.isLoading) {
+        return <div role="progressbar">Loading...</div>;
+      }
+      return (
+        <div role="grid" data-testid={props['data-testid'] || 'data-grid'}>
+          {props.rows.length === 0 ? (
+            <div>No data</div>
+          ) : (
+            props.rows.map((row) => (
+              <div key={row.id} role="row">
+                {row.categoryName}
+                <div>
+                  {row.categoryType === 0 && <div role="chip">PRICING</div>}
+                  {row.categoryType === 2 && <div role="chip">CLIENT NEEDS</div>}
+                  {row.categoryType === 3 && <div role="chip">CONTENT AREA</div>}
+                  {row.categoryType === 4 && <div role="chip">COGNITIVE LEVEL</div>}
+                  {row.categoryType === 5 && <div role="chip">CONTACT CONCERN</div>}
+                  {row.categoryType === -1 && <div role="chip">REPORT ISSUE</div>}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      );
+    },
+  };
+});
 
 beforeAll(() => {
   HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue({
