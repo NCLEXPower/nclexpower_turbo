@@ -22,17 +22,19 @@ export const SettingsManagementPageForm = () => {
 
   return (
     <Box>
-      <Alert
-        severity="warning"
-        title="Settings Management"
-        description="Beware of changing some settings because it may cause changes from our products"
-      />
-      {/* we can add content loader here. */}
-      {render({
-        isLoading: true,
-        previous,
-        reset,
-      })}
+      <Container>
+        <Alert
+          severity="warning"
+          title="Settings Management"
+          description="Beware of changing some settings because it may cause changes from our products"
+        />
+        {/* we can add content loader here. */}
+        {render({
+          isLoading: true,
+          previous,
+          reset,
+        })}
+      </Container>
     </Box>
   );
 };

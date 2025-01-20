@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { config } from "../../config";
 import { getTimeZone } from "../../utils";
-import { LogLevel } from "@microsoft/signalr";
 
 export interface CountdownState {
   eventName: string;
@@ -44,12 +43,12 @@ export const useSignalRCountdown = () => {
         await connection.start();
         console.log("Connected to SignalR hub");
 
-        connection.on(
-          "ReceiveCountdownUpdate",
-          (scheduleId, data: CountdownState) => {
+        connection.invoke("JoinGroup", getTimeZone());
+        connection.on("ReceiveCountdownUpdate", (scheduleId, data) => {
+          if (data) {
             setCountdown(data);
           }
-        );
+        });
 
         connection.on("CountdownCompleted", (scheduleId, eventName) => {
           console.log(`Countdown for ${eventName} has completed`);

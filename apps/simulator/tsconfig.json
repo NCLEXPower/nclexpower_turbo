@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -13,7 +17,9 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [
@@ -25,7 +31,10 @@
     "../../packages/core-library/global.d.ts",
     "../../packages/core-library/theme.d.ts",
     "../../packages/core-library/eva-icons.d.ts",
-    "../../packages/core-library/config"
+    "../../packages/core-library/config",
+    "../../packages/core-library/tiptap-extenstion.d.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

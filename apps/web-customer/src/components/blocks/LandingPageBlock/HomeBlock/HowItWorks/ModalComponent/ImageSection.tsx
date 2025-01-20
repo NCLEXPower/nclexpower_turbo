@@ -31,7 +31,7 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
       src={image}
       alt={altText}
       loading='lazy'
-      className='w-full h-[33.33vh] md:h-[50vh] lg:h-[100vh] object-cover'
+      className='w-full h-full lg:h-[100vh] object-cover'
     />
   </div>
 );

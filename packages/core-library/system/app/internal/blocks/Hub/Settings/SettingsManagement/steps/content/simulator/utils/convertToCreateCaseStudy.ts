@@ -45,6 +45,8 @@ export const convertToCreateCaseStudy = (
           leftSection: questionnairesItem.leftSection,
           centerSection: questionnairesItem.centerSection,
           rightSection: questionnairesItem.rightSection,
+          columns: questionnairesItem.columns,
+          rows: questionnairesItem.rows,
         })
       ),
     },
