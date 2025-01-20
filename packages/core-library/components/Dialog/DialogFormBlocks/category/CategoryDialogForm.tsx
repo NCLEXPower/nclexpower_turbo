@@ -20,10 +20,9 @@ export const CategoryForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
 
   const categoryList = useMemo(() => data ? data?.map((value) => ({
     label: value.categoryTypeName,
-    value: value.categoryTypeName
+    value: value.categoryTypeValue
   })) : []
-    , [data])
-
+    , [data]);
 
   const { control, handleSubmit, clearErrors, setFocus, formState } =
     useForm<CategoryFormType>({
