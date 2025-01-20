@@ -79,13 +79,8 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
             <CssBaseline />
             <HeaderTitleContextProvider>
               <FormSubmissionContextProvider>
-                <ContentLoader
-                  loading={loading || contentData.loading || router.loading}
-                >
-                  <LoadablePageContent
-                    loading={loading || contentData.loading}
-                    pages={contentData.pages}
-                  >
+
+
                     <DrawerLayout
                       menu={headerMenu}
                       isAuthenticated={isAuthenticated}
@@ -94,13 +89,22 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                       onLogout={logout}
                       isPaid={isPaid}
                     >
+                      <ContentLoader
+                        loading={loading || contentData.loading || router.loading}
+                      >
+                        <LoadablePageContent
+                          loading={loading || contentData.loading}
+                          pages={contentData.pages}
+                        >
+
                       {children}
                       <Footer info={CompanyInfo} list={list} />
                       {/* dynamic hideHelp should be implemented here */}
                       {true && <ChatBotWidget />}
+                      </LoadablePageContent>
+                      </ContentLoader>
                     </DrawerLayout>
-                  </LoadablePageContent>
-                </ContentLoader>
+                    
               </FormSubmissionContextProvider>
             </HeaderTitleContextProvider>
           </ThemeProvider>

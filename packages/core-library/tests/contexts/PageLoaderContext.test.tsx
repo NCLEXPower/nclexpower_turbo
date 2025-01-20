@@ -1,4 +1,4 @@
-import { render, screen } from "../common";
+import { render, screen, waitFor } from "../common";
 import { PageLoaderContextProvider } from "../../contexts/PageLoaderContext";
 
 jest.mock("../../config", () => ({
@@ -21,5 +21,44 @@ describe("PageLoaderContextProvider", () => {
       </PageLoaderContextProvider>
     );
 
+  });
+});
+
+describe("PageLoaderContextProvider", () => {
+  it("renders children when isAuthenticated is true", async () => {
+    render(
+      <PageLoaderContextProvider loading={false} isAuthenticated={true}>
+        <div data-testid="child-component">Child Component</div>
+      </PageLoaderContextProvider>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("child-component")).toBeInTheDocument()
+    );
+  });
+
+  it("renders PageLoader when BASEAPP is webc_app and loading conditions are true", async () => {
+    render(
+      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
+        <div data-testid="child-component">Child Component</div>
+      </PageLoaderContextProvider>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("page-loader")).toBeInTheDocument()
+    );
+  });
+
+  it("sets isMounted to true after the component mounts", async () => {
+    render(
+      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
+        <div data-testid="child-component">Child Component</div>
+      </PageLoaderContextProvider>
+    );
+
+    // Wait for the `useEffect` logic to complete (isMounted becomes true)
+    await waitFor(() => {
+      expect(screen.queryByTestId("page-loader")).toBeInTheDocument();
+    });
   });
 });

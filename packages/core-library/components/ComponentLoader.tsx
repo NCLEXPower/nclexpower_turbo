@@ -13,7 +13,7 @@ export const ComponentLoader: React.FC<Props> = ({
   disableMarginBottom,
 }) => {
   return (
-    <div className="flex items-center justify-center w-screen h-screen ">
+    <div className="flex items-center justify-center w-100 min-h-screen">
       <Box
         data-testid="component-loader"
         mb={disableMarginBottom ? 0 : 16}
