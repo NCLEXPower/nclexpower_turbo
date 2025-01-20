@@ -1,38 +1,78 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import {
   ComingSoon,
   CoreZigmaLogo,
-  NCLEXYellowLogo
+  NCLEXYellowLogo,
 } from "core-library/assets";
 import Image from "next/image";
-import { useCountdown } from 'core-library/hooks/useCountdown';
-import { Typography } from "@mui/material";
+import { useCountdown } from "core-library/hooks/useCountdown";
+import { Box, Typography } from "@mui/material";
 import {
   FacebookIcon,
   InstagramIcon,
-  TwitterIcon
-} from 'core-library/components/Icons';
-import { FormProvider, useForm } from 'react-hook-form';
-import { comingSoonSchema, ComingSoonType } from './validation';
+  TwitterIcon,
+} from "core-library/components/Icons";
+import { FormProvider, useForm } from "react-hook-form";
+import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, TextField } from 'core-library/components';
-import { dateData } from './ComingSoonBlock';
+import { Button, TextField } from "core-library/components";
+import {
+  CountdownState,
+  SocialMediaConfig,
+  useResolution,
+  useSocialMediaIcons,
+} from "core-library/hooks";
 
+interface Props {
+  countdown: CountdownState | null;
+}
 
-export const ComingSoonPage: React.FC = () => {
-  //The value of timeRemaining should be changed once the data is provided from the backend unless it is enforced to return this value.
-  const { timeRemaining } = useCountdown({ timeRemaining: '30:04:30:00' });
+const dateData = [
+  {
+    days: "Days",
+    hours: "Hours",
+    minutes: "Minutes",
+    seconds: "Seconds",
+  },
+];
+
+const socialMediaConfigs: SocialMediaConfig[] = [
+  { platform: "facebook", link: "https://facebook.com" },
+  { platform: "instagram", link: "https://instagram.com" },
+  { platform: "twitter", link: "https://twitter.com" },
+];
+
+export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
+  const [timeRemaining, setTimeRemaining] =
+    useState<string>("00 : 00 : 00 : 00");
+
+  const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
   const method = useForm<ComingSoonType>({
     mode: "onSubmit",
     resolver: yupResolver(comingSoonSchema),
-  })
+  });
 
-  const { handleSubmit, control, formState: { isValid } } = method;
+  useEffect(() => {
+    if (countdown) {
+      const formattedTime = `${countdown.days.toString().padStart(2, "0")} : ${countdown.hours
+        .toString()
+        .padStart(2, "0")} : ${countdown.minutes
+        .toString()
+        .padStart(2, "0")} : ${countdown.seconds.toString().padStart(2, "0")}`;
+      setTimeRemaining(formattedTime);
+    }
+  }, [countdown]);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = method;
 
   const onSubmit = (values: ComingSoonType) => {
     console.log(values);
-  }
+  };
 
   return (
     <div className="w-full h-full lg:h-screen ">
@@ -79,7 +119,7 @@ export const ComingSoonPage: React.FC = () => {
               fontSize: "clamp(1.6rem, 2.5vw, 3rem)",
             }}
           >
-            Coming Soon
+            {countdown?.eventName}
           </Typography>
           <div className="pt-sans-bold">
             <Typography
@@ -94,29 +134,30 @@ export const ComingSoonPage: React.FC = () => {
             >
               {timeRemaining}
             </Typography>
-            {dateData.length > 0 && dateData?.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                  {item.days}
+            {dateData.length > 0 &&
+              dateData?.map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
+                    {item.days}
+                  </div>
+                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
+                    {item.hours}
+                  </div>
+                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
+                    {item.minutes}
+                  </div>
+                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
+                    {item.seconds}
+                  </div>
                 </div>
-                <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                  {item.hours}
-                </div>
-                <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                  {item.minutes}
-                </div>
-                <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                  {item.seconds}
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
           <FormProvider {...method}>
             <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-4 ">
               <TextField
                 control={control}
                 name="email"
-                placeholder='Email'
+                placeholder="Email"
                 sx={{
                   borderRadius: "10px",
                   flexGrow: 1,
@@ -127,11 +168,11 @@ export const ComingSoonPage: React.FC = () => {
                     sm: "14px",
                     lg: "16px",
                   },
-                  '& .MuiInputBase-input': {
-                    color: '#f3f3f3',
+                  "& .MuiInputBase-input": {
+                    color: "#f3f3f3",
                   },
-                  '& .MuiInputBase-input:focus': {
-                    color: '#000',
+                  "& .MuiInputBase-input:focus": {
+                    color: "#000",
                   },
                 }}
                 inputProps={{
@@ -152,7 +193,7 @@ export const ComingSoonPage: React.FC = () => {
                   fontSize: "clamp(10px, 5cqw, 16px)",
                   fontWeight: "bold",
                   alignSelf: {
-                    lg: 'end'
+                    lg: "end",
                   },
                   flexGrow: 1,
                   zIndex: 1,
@@ -170,17 +211,13 @@ export const ComingSoonPage: React.FC = () => {
             </div>
           </FormProvider>
           <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
-            Stay tuned as we prepare to unveil a brand-new experience just for you.
-            Our team is working hard behind the scenes to bring something innovative and engaging.
-            Check back soon for updates—you won&apos;t want to miss this!
+            {countdown?.description}
           </p>
-          <div className="flex items-center justify-center space-x-3 text-white">
-            <FacebookIcon width='2rem' />
-            <InstagramIcon width='2rem' />
-            <TwitterIcon width='2rem' />
+          <div className="flex items-center justify-center space-x-1.5 text-white">
+            {socialMediaIcons}
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

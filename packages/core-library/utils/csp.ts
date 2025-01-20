@@ -8,7 +8,11 @@ import { nonce } from "../types";
 import { config } from "../config";
 import { GetServerSideProps } from "next";
 import { ServerResponse } from "http";
-import { getEndpointResources, getMaintenanceMode } from "../ssr";
+import {
+  getEndpointResources,
+  getHasActiveGoLive,
+  getMaintenanceMode,
+} from "../ssr";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
@@ -25,7 +29,8 @@ export const generateCSP = (generatedNonce: string): string =>
   config.value.LOCAL_API_URL +
   " " +
   config.value.VERCELURL +
-  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com" +
+  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com " +
+  " " +
   config.value.STRIPE_URL_JS +
   ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
   " " +
@@ -46,6 +51,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const csp = generateCSP(generatedNonce);
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
+      const hasGoLiveActive = await getHasActiveGoLive();
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -60,7 +66,11 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
               ...result.props,
               slug,
               generatedNonce,
-              data: { MaintenanceStatus, endpoints },
+              data: {
+                MaintenanceStatus,
+                endpoints,
+                hasGoLive: hasGoLiveActive,
+              },
             },
           };
         }
@@ -75,6 +85,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
           data: {
             MaintenanceStatus,
             endpoints,
+            hasGoLive: hasGoLiveActive,
           },
         },
       };

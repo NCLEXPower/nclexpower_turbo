@@ -5,9 +5,13 @@ import {
   RegularQuestionSelectionOptions,
 } from "../../../types";
 import { initAnswerValues } from "../../../constants/constants";
-import { DDCAnswerOptionType, DNDAnswerOptionType, SATAAnswerOptionType } from "./types";
-import { generateQuestionErrorMessage } from './utils/generateQuestionErrorMessage';
-
+import {
+  DDCAnswerOptionType,
+  DNDAnswerOptionType,
+  HCPNAnswerOptionType,
+  SATAAnswerOptionType,
+} from "./types";
+import { generateQuestionErrorMessage } from "./utils/generateQuestionErrorMessage";
 /**
  * Regular Questions Schemas
  */
@@ -15,7 +19,9 @@ import { generateQuestionErrorMessage } from './utils/generateQuestionErrorMessa
 export const defaultOptionSchema = yup.object().shape({
   answer: yup
     .string()
-    .required(({ path }) => generateQuestionErrorMessage(path, "Answer field is required")),
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Answer field is required")
+    ),
   answerKey: yup.boolean().default(false),
 });
 
@@ -83,7 +89,9 @@ export const ddcAnswerOptionsSchema = yup
   .object({
     optionName: yup
       .string()
-      .required(({ path }) => generateQuestionErrorMessage(path, "Option name is required")),
+      .required(({ path }) =>
+        generateQuestionErrorMessage(path, "Option name is required")
+      ),
     options: yup.array(defaultOptionSchema).min(1).max(8),
   })
   .required();
@@ -102,63 +110,259 @@ const dndKeysSchema = yup.object({
       yup.object({
         indexPos: yup.number().required(),
         fieldKey: yup.string().required(),
-        answerId: yup.string().required(({ path }) => generateQuestionErrorMessage(path, "Must select correct answer")),
+        answerId: yup
+          .string()
+          .required(({ path }) =>
+            generateQuestionErrorMessage(path, "Must select correct answer")
+          ),
       })
     )
     .when("questionType", {
       is: "DND",
-      then: (schema) => schema.required(({ path }) => generateQuestionErrorMessage(path, "Dnd answer options is required")),
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Dnd answer options is required")
+        ),
+    }),
+});
+
+const mcqGroupColumn = yup.object({
+  label: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Column label is required")
+        ),
+    })
+    .required("Column Title is Required"),
+});
+
+const mcqGroupRow = yup.object().shape({
+  rowId: yup.number(),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
+  choices: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.boolean().default(false),
+        choiceId: yup.number(),
+      })
+    )
+    .required("Choices are required."),
+});
+
+export const mcqGroupAnswerSchema = yup.object({
+  columns: yup
+    .array()
+    .of(mcqGroupColumn)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+  rows: yup
+    .array()
+    .of(mcqGroupRow)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
     }),
 });
 
 // MRSN Max Answer Schema
 const mrsnMaxAnswer = yup.object({
-  maxAnswer: yup
-    .number()
-    .when("questionType", {
-      is: "MRSN",
-      then: (schema) =>
-        schema.required(({ path }) => generateQuestionErrorMessage(path, "Max answer is required")),
-    }),
+  maxAnswer: yup.number().when("questionType", {
+    is: "MRSN",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Max answer is required")
+      ),
+  }),
 });
 
 // MRSN Answer Schema
-const mrsnAnswerSchema = yup.array()
+const mrsnAnswerSchema = yup
+  .array()
   .of(defaultOptionSchema)
-  .when(["maxAnswer", "itemNum", "maxPoints"], ([maxAnswer, itemNum, maxPoints], schema) =>
-    schema
-      .test(
-        "answerKey-test",
-        `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
-        (answers) => Array.isArray(answers) && answers.filter((answer) => answer.answerKey).length === maxAnswer
-      )
-      .length(maxPoints, `Question No. ${itemNum}: Must have exactly ${maxPoints ?? ""} option(s).`)
+  .when(
+    ["maxAnswer", "itemNum", "maxPoints"],
+    ([maxAnswer, itemNum, maxPoints], schema) =>
+      schema
+        .test(
+          "answerKey-test",
+          `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
+          (answers) =>
+            Array.isArray(answers) &&
+            answers.filter((answer) => answer.answerKey).length === maxAnswer
+        )
+        .length(
+          maxPoints,
+          `Question No. ${itemNum}: Must have exactly ${maxPoints ?? ""} option(s).`
+        )
   );
+
+export const bowtieAnswerOptionsSchema = yup.object({
+  value: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, " Label is required")
+    )
+    .default(""),
+  container: yup.string(),
+  isAnswer: yup.boolean().default(false),
+});
+
+export const bowtieAnswerSchema = yup.object({
+  leftLabelName: yup.string().when("questionType", {
+    is: "BOWTIE",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Left Label is required")
+      ),
+  }),
+  centerLabelName: yup.string().when("questionType", {
+    is: "BOWTIE",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Center Label is required")
+      ),
+  }),
+  rightLabelName: yup.string().when("questionType", {
+    is: "BOWTIE",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "Right Label is required")
+      ),
+  }),
+
+  leftSection: yup
+    .array()
+    .of(bowtieAnswerOptionsSchema)
+    .when("questionType", {
+      is: "BOWTIE",
+      then: (schema) =>
+        schema.test(
+          "left-exactly-two-true-isAnswer",
+          "Left Section must have exactly 2 checked answers.",
+          (answers) =>
+            Array.isArray(answers) &&
+            answers.filter((answer) => answer.isAnswer).length === 2
+        ),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+  centerSection: yup
+    .array()
+    .of(bowtieAnswerOptionsSchema)
+    .when("questionType", {
+      is: "BOWTIE",
+      then: (schema) =>
+        schema.test(
+          "exactly-one-true-isAnswer",
+          "Center Section must have exactly 1 checked answer.",
+          (answers) =>
+            Array.isArray(answers) &&
+            answers.filter((answer) => answer.isAnswer).length === 1
+        ),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+  rightSection: yup
+    .array()
+    .of(bowtieAnswerOptionsSchema)
+    .when("questionType", {
+      is: "BOWTIE",
+      then: (schema) =>
+        schema.test(
+          "right-exactly-two-true-isAnswer",
+          "Right Section must have exactly 2 checked answers.",
+          (answers) =>
+            Array.isArray(answers) &&
+            answers.filter((answer) => answer.isAnswer).length === 2
+        ),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+});
+
+export const hcpOptionSchema = yup.object().shape({
+  answer: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Answer field is required")
+    ),
+  answerKey: yup.boolean().default(false),
+  attrName: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Attribute name is required")
+    ),
+});
 
 // Question Options Schema
 const questionOptionsSchemas = {
   DDC: yup
     .array(ddcAnswerOptionsSchema)
-    .min(1, ({ path }) => generateQuestionErrorMessage(path, "Maximum answer count"))
-    .max(10, ({ path }) => generateQuestionErrorMessage(path, "Maximum answer count")),
+    .min(1, ({ path }) =>
+      generateQuestionErrorMessage(path, "Maximum answer count")
+    )
+    .max(10, ({ path }) =>
+      generateQuestionErrorMessage(path, "Maximum answer count")
+    ),
   DND: yup
     .array(dndAnswerOptionsSchema)
-    .min(1, ({ path }) => generateQuestionErrorMessage(path, "Maximum answer count"))
-    .max(10, ({ path }) => generateQuestionErrorMessage(path, "Maximum answer count")),
+    .min(1, ({ path }) =>
+      generateQuestionErrorMessage(path, "Maximum answer count")
+    )
+    .max(10, ({ path }) =>
+      generateQuestionErrorMessage(path, "Maximum answer count")
+    ),
   SATA: yup
     .array(defaultOptionSchema)
     .min(4)
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
+  BOWTIE: bowtieAnswerSchema,
+  MCQNOGROUP: mcqGroupAnswerSchema,
+  HCP: yup
+    .array(hcpOptionSchema)
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Must contained atleast 1 option")
+    )
+    .test(
+      "select-atleast-2",
+      "You must select atleast 1 correct answer",
+      (val) => val.filter((val) => val.answerKey === true).length >= 1
+    ),
 };
 
 // Answers Schema
 const answersSchema = yup.object({
   answers: yup
-    .mixed<DDCAnswerOptionType[] | SATAAnswerOptionType[] | DNDAnswerOptionType[]>()
+    .mixed<
+      | DDCAnswerOptionType[]
+      | SATAAnswerOptionType[]
+      | DNDAnswerOptionType[]
+      | HCPNAnswerOptionType[]
+    >()
     .when("questionType", (questionType, schema) => {
-      const matchedSchema = Object.entries(questionOptionsSchemas).find(([key]) =>
-        questionType?.includes(key)
+      const matchedSchema = Object.entries(questionOptionsSchemas).find(
+        ([key]) => questionType?.includes(key)
       )?.[1];
       return matchedSchema || schema;
     }),
@@ -166,8 +370,21 @@ const answersSchema = yup.object({
 
 // Background Information Content Schema
 const bgInfoContent = yup.object({
-  seqNum: yup.number().transform((value) => parseInt(value)).default(1),
+  seqNum: yup
+    .number()
+    .transform((value) => parseInt(value))
+    .default(1),
   seqContent: yup.string(),
+});
+
+const hcpContentSchema = yup.object({
+  hcpContent: yup.string().when("questionType", {
+    is: "HCP",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "HCP content is required")
+      ),
+  }),
 });
 
 // Case Study Questionnaire Schema
@@ -179,33 +396,62 @@ const caseStudyQuestionnaireSchema = yup.object({
         .object({
           maxPoints: yup
             .number()
-            .required(({ path }) => generateQuestionErrorMessage(path, "Max options is required"))
-            .typeError(({ path }) => generateQuestionErrorMessage(path, "Max points must be a valid number.")),
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Max options is required")
+            )
+            .typeError(({ path }) =>
+              generateQuestionErrorMessage(
+                path,
+                "Max points must be a valid number."
+              )
+            ),
 
           seqNum: yup
             .number()
-            .required(({ path }) => generateQuestionErrorMessage(path, "Sequence number is required"))
-            .typeError(({ path }) => generateQuestionErrorMessage(path, "Sequence number must be a valid number")),
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Sequence number is required")
+            )
+            .typeError(({ path }) =>
+              generateQuestionErrorMessage(
+                path,
+                "Sequence number must be a valid number"
+              )
+            ),
 
           questionType: yup
             .mixed<CaseStudyQuestionSelectionOptions>()
             .transform((v) => (!v ? undefined : v))
-            .when("itemNum", (itemNum, schema) => schema.required(({ path }) => generateQuestionErrorMessage(path, "Question type is required"))),
+            .when("itemNum", (itemNum, schema) =>
+              schema.required(({ path }) =>
+                generateQuestionErrorMessage(path, "Question type is required")
+              )
+            ),
 
           itemNum: yup
             .number()
-            .required(({ path }) => generateQuestionErrorMessage(path, "Item number is required"))
-            .typeError(({ path }) => generateQuestionErrorMessage(path, "Item number must be a valid number.")),
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Item number is required")
+            )
+            .typeError(({ path }) =>
+              generateQuestionErrorMessage(
+                path,
+                "Item number must be a valid number."
+              )
+            ),
 
           itemStem: yup
             .string()
-            .required(({ path }) => generateQuestionErrorMessage(path, "Item stem is required.")),
-
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Item stem is required.")
+            ),
           transitionHeader: yup.string().optional().default(""),
         })
         .concat(answersSchema)
+        .concat(hcpContentSchema)
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
+        .concat(bowtieAnswerSchema)
+        .concat(mcqGroupAnswerSchema)
     )
     .default([]),
 });

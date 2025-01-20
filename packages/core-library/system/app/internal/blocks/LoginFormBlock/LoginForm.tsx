@@ -1,3 +1,10 @@
+/**
+
+Property of the NCLEX Power.
+Reuse as a whole or in part is prohibited without permission.
+Created by the Software Strategy & Development Division
+*/
+
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Button } from "../../../../../components/Button/Button";
@@ -12,22 +19,40 @@ import { CoreZigmaLogo } from "../../../../../assets";
 import { Checkbox } from "../../../../../components";
 import { useShowPassword } from "./useShowPassword";
 import { useKeyDown } from "../../../../../hooks/useKeyDown";
+import { SavedDataProps } from "./LoginFormBlock";
+import { useEffect } from "react";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
   submitLoading?: boolean;
+  rememberMe: boolean;
+  handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  savedData: SavedDataProps | null;
 };
 
-export const LoginForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
+export const LoginForm: React.FC<Props> = ({
+  onSubmit,
+  submitLoading,
+  rememberMe,
+  handleChangeRememberMe,
+  savedData,
+}) => {
   const form = useForm<LoginFormType>({
     mode: "onSubmit",
     resolver: yupResolver(loginSchema),
     defaultValues: loginSchema.getDefault(),
   });
 
-  const { control, handleSubmit, clearErrors, setFocus, formState } = form;
+  const { control, handleSubmit, clearErrors, setFocus, setValue, formState } = form;
   const { showPassword, handleClickShowPassword } = useShowPassword();
   useFormFocusOnError<LoginFormType>(formState.errors, setFocus);
+
+  useEffect(() => {
+    if (savedData) {
+      setValue("email", savedData.email);
+      setValue("password", savedData.password);
+    }
+  }, [savedData, setValue]);
 
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
@@ -121,6 +146,8 @@ export const LoginForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
         }}
       >
         <Checkbox
+          checked={rememberMe}
+          onChange={handleChangeRememberMe}
           label="Keep me logged in"
           sx={{ borderRadius: 4, fontSize: "14px" }}
           data-testid="checkbox"

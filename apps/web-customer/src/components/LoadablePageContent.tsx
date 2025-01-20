@@ -29,15 +29,20 @@ export const LoadablePageContent: React.FC<React.PropsWithChildren<Props>> = ({
     }
   }, [pages, calculationsLoading, isPageLoading]);
 
-  useEffect(() => {
-    const anchor = router.asPath.split("#")[1];
-    anchor ? scrollTo(anchor) : scrollTop();
-    mixpanelTrackPageLoad({
-      PageKey: pages?.pageRoute ?? "/",
-      $referrer: mixpanelSession.previousPage,
-      Scroll: mixpanelSession.scroll,
-    });
-  }, [pages, router.asPath]);
+  /**
+   * Tracks the page load event.
+   * Temporarily disable the tracking of page load event.
+   */
+
+  // useEffect(() => {
+  //   const anchor = router.asPath.split("#")[1];
+  //   anchor ? scrollTo(anchor) : scrollTop();
+  //   mixpanelTrackPageLoad({
+  //     PageKey: pages?.pageRoute ?? "/",
+  //     $referrer: mixpanelSession.previousPage,
+  //     Scroll: mixpanelSession.scroll,
+  //   });
+  // }, [pages, router.asPath]);
 
   return (
     <>

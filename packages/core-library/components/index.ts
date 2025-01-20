@@ -51,7 +51,7 @@ export * from "./Badge/CustomBadge";
 export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
-export * from "./Popover/Popover"
+export * from "./Popover/Popover";
 
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
@@ -76,6 +76,7 @@ export * from "./ErrorMap/ErrorMap";
 export * from "./EvaIcon";
 export * from "./chatbot";
 export * from "./Dialog/DialogBox";
+export * from "./Dialog/MultiContentDialog";
 export * from "./GenericSidebar/BaseSidebar/BaseSidebar";
 export { default as ConfirmationModal } from "./Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 export * from "./Popover/Popover";
@@ -85,3 +86,4 @@ export * from "./PasswordToggleAdornment";
 export * from "./Charts/generic/Chart";
 export * from "./recaptcha/RecaptchaComponent";
 export * from "./Button/StatusButton";
+export * from "./ScrollTop/ScrollTop";

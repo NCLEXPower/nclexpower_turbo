@@ -4,170 +4,237 @@
  * Created by the Software Strategy & Development Division
  */
 @font-face {
-    font-family: 'Inter';
-    src: url(./fonts/Inter-Bold.ttf) format('truetype');
-    font-weight: bold;
+  font-family: "Inter";
+  src: url(./fonts/Inter-Bold.ttf) format("truetype");
+  font-weight: bold;
 }
 
 @font-face {
-    font-family: 'Inter';
-    src: url(./fonts/Inter-Light.ttf) format('truetype');
-    font-weight: 300;
+  font-family: "Inter";
+  src: url(./fonts/Inter-Light.ttf) format("truetype");
+  font-weight: 300;
 }
 
 @font-face {
-    font-family: 'Inter';
-    src: url(./fonts/Inter-Regular.ttf) format('truetype');
+  font-family: "Inter";
+  src: url(./fonts/Inter-Regular.ttf) format("truetype");
 }
 
 @font-face {
-    font-family: 'Inter';
-    src: url(./fonts/Inter-Thin.ttf) format('truetype');
-    font-weight: 100;
+  font-family: "Inter";
+  src: url(./fonts/Inter-Thin.ttf) format("truetype");
+  font-weight: 100;
 }
 
 .visually-hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
 }
 
 .tiptap {
-    padding: 0rem;
+  padding: 0rem;
 }
 
 .tiptap p.is-editor-empty:first-child::before {
-    color: #adb5bd;
-    content: attr(data-placeholder);
-    float: left;
-    height: 0;
-    pointer-events: none;
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }
 
 .tiptap-list,
 .tiptap ul,
 .tiptap-decimal,
 .tiptap ol {
-    margin: 10px 20px !important;
+  margin: 10px 20px !important;
 }
 
 .tiptap-list,
 .tiptap ul {
-    list-style: disc;
+  list-style: disc;
 }
 
 .tiptap-decimal,
 .tiptap ol {
-    list-style: decimal;
+  list-style: decimal;
 }
 
 .tiptap {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .tiptap-field {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .is-editor-empty {
-    font-size: 16px !important;
+  font-size: 16px !important;
 }
 
 .tiptap-table,
 .tiptap table {
-    border-collapse: collapse;
-    margin: 0;
-    overflow: hidden;
-    table-layout: fixed;
-    width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .tiptap p {
-    margin: 0;
+  margin: 0;
 }
 
 .tiptap-cell {
-    border: 1px solid #b4a6a6;
-    padding: 6px 8px !important;
+  border: 1px solid #b4a6a6;
+  padding: 6px 8px !important;
 }
 
 .tiptap-field {
-    margin: 10px;
+  margin: 10px;
 }
 
 .tiptap td,
 .tiptap-th,
 .tiptap-row,
 .tiptap th {
-    padding: 6px 8px !important;
-    border: 1px solid #b4a6a6;
-    box-sizing: border-box;
-    min-width: 1em;
-    position: relative;
-    vertical-align: top;
+  padding: 6px 8px !important;
+  border: 1px solid #b4a6a6;
+  box-sizing: border-box;
+  min-width: 1em;
+  position: relative;
+  vertical-align: top;
 }
 
 .tiptap-heading,
 .tiptap h2 > * {
-    font-weight: bold;
-    margin: 2;
-    font-size: x-large;
-    font-family: 'Inter';
+  font-weight: bold;
+  margin: 2;
+  font-size: x-large;
+  font-family: "Inter";
 }
 
 .tiptap td > *,
 .tiptap th > * {
-    margin: 0;
+  margin: 0;
 }
 
 .tiptap th,
 .tiptap-th {
-    background-color: #e5f2ff;
-    font-weight: bold;
-    text-align: left;
-    color: #333;
+  background-color: #e5f2ff;
+  font-weight: bold;
+  text-align: left;
+  color: #333;
 }
 
 .tiptap .selectedCell:after {
-    content: '';
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: none;
-    position: absolute;
-    z-index: 2;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
 }
 
 .tiptap .column-resize-handle {
-    background-color: rgb(91, 156, 212);
-    bottom: -2px;
-    pointer-events: none;
-    position: absolute;
-    right: -2px;
-    top: 0;
-    width: 4px;
+  background-color: rgb(91, 156, 212);
+  bottom: -2px;
+  pointer-events: none;
+  position: absolute;
+  right: -2px;
+  top: 0;
+  width: 4px;
 }
 
 .tiptap .tableWrapper {
-    margin: 1.5rem 0;
-    overflow-x: auto;
+  margin: 1.5rem 0;
+  overflow-x: auto;
 }
 
 .tiptap.resize-cursor {
-    cursor: ew-resize;
-    cursor: col-resize;
+  cursor: ew-resize;
+  cursor: col-resize;
 }
 
-input[type='file'] {
-    display: none;
+input[type="file"] {
+  display: none;
 }
 
 .custom-file-upload {
-    display: inline-block;
-    cursor: pointer;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.no-background {
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+
+.tiptap:first-child {
+  margin-top: 0;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding: 0 1rem;
+  margin: 1.25rem 1rem 1.25rem 0.4rem;
+}
+
+.tiptap ul li p,
+.tiptap ol li p {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  line-height: 1.1;
+  margin-top: 2.5rem;
+  text-wrap: pretty;
+}
+
+.tiptap h1,
+.tiptap h2 {
+  margin-top: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tiptap h1 {
+  font-size: 1.4rem;
+}
+
+.tiptap h2 {
+  font-size: 1.2rem;
+}
+
+.tiptap h3 {
+  font-size: 1.1rem;
+}
+
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  font-size: 1rem;
+}
+
+.node-hcpHighlighter,
+.hcp-highlight,
+.hcp-answers-content { 
+  display: inline;
+}
+
+.highlightable-content,
+.hcp-highlighter {
+  background-color: #e6ff6e;
 }

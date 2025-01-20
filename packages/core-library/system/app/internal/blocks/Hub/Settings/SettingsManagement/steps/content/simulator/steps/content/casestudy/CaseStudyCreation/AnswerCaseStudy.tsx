@@ -20,28 +20,33 @@ import {
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
-import { useEffect, useState } from "react";
-import { Instruction } from './components/Instruction';
+import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
+import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
+import { memo, useEffect, useRef } from "react";
+import { Instruction } from "./components/Instruction";
+import { CustomFields } from "./components/CustomFields";
 
 interface Props {
   index: number;
 }
 
-export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
+export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
-  const currentSequence = watch(`questionnaires.${index}.seqNum`)
+  const currentSequence = watch(`questionnaires.${index}.seqNum`);
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
     setValue(`questionnaires.${index}.itemNum`, index + 1);
+    setValue(`questionnaires.${index}.questionType`, questionType);
   }, [index, getValues, questionType]);
 
-  const handleReset = () => {
-    resetField(`questionnaires.${index}.answers`);
+  const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
+    resetField(`questionnaires.${index}`);
+    setValue(`questionnaires.${index}.questionType`, value);
   };
 
   useEffect(() => {
@@ -61,14 +66,18 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box data-testid='answer-case-study' sx={{ display: "flex", width: "100%" }}>
+      <Instruction questionType={questionType} />
+      <Box
+        data-testid="answer-case-study"
+        sx={{ display: "flex", width: "100%", mt: 3 }}
+      >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
               name={`questionnaires.${index}.questionType`}
               label="Question Type:"
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
-              onChange={handleReset}
+              onChange={(value) => handleReset(value)}
               options={questionTypeOptions ?? []}
               width="60%"
             />
@@ -122,30 +131,32 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
               name={`questionnaires.${index}.itemStem`}
             />
           </Box>
-          <Instruction questionType={questionType} />
         </Box>
 
         {questionType && (
-          <Box sx={{ textAlign: "start", mt: 3 }}>
-            <Typography color="#525252" fontSize="16px" fontWeight={600}>
-              Answer Options :
-            </Typography>
-            <Box
-              boxShadow={2}
-              sx={{
-                borderRadius: "5px",
-                overflow: "hidden",
-              }}
-            >
-              <AnswerOptions
-                questionIndex={index}
-                questionType="caseStudy"
-                questionnaireType={questionType}
-              />
+          <>
+            <CustomFields questionIndex={index} questionType={questionType} />
+            <Box sx={{ textAlign: "start", mt: 3 }}>
+              <Typography color="#525252" fontSize="16px" fontWeight={600}>
+                Answer Options :
+              </Typography>
+              <Box
+                boxShadow={2}
+                sx={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                }}
+              >
+                <AnswerOptions
+                  questionIndex={index}
+                  questionType="caseStudy"
+                  questionnaireType={questionType}
+                />
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
       </Box>
     </Box>
   );
-};
+});

@@ -8,6 +8,9 @@ import {
 } from "../../../../../../../../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { BowtieSummary } from "./BowtieSummary";
+import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
+import { HCPQuestion } from "./HCPQuestion";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -38,6 +41,8 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             }}
           />
         );
+      case "HCP":
+        return <HCPQuestion questionData={data} />;
       default:
         return (
           <Typography sx={wordWrap}>
@@ -48,12 +53,16 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
   };
 
   const renderQuestionTypeLabel = (data: QuestionnaireItem) => {
-    if (data.questionType === "SATA") {
-      return "Select All That Apply";
-    } else if (data.questionType === "MRSN") {
-      return `Select ${data.maxAnswer} That Apply`;
+    switch (data.questionType) {
+      case "SATA":
+        return "Select All That Apply";
+      case "MRSN":
+        return `Select ${data.maxAnswer} That Apply`;
+      case "BOWTIE":
+        return `Bowtie`;
+      case "MCQNOGROUP":
+        return `MCQ No Group`;
     }
-    return null;
   };
 
   return (
@@ -98,9 +107,13 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType !== "DDC" && (
-              <AnswerList answers={data.answers} />
-            )}
+            {data.questionType !== "DDC" && data.questionType !== "BOWTIE" &&
+              data.questionType !== "MCQNOGROUP" && (
+                <AnswerList answers={data.answers} />
+              )}
+            {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
+            {data.questionType == "MCQNOGROUP" && <MCQNoGroupSummary data={data} />}
+
           </Box>
         ))
       ) : (
