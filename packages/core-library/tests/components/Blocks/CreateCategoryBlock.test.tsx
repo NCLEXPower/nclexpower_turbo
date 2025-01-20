@@ -28,8 +28,8 @@ jest.mock("../../../contexts", () => ({
   }))
 }));
 
-jest.mock('@mui/x-data-grid', () => {
-  const actualModule = jest.requireActual('@mui/x-data-grid');
+jest.mock("@mui/x-data-grid", () => {
+  const actualModule = jest.requireActual("@mui/x-data-grid");
   return {
     ...actualModule,
     DataGrid: (props: {
@@ -37,27 +37,23 @@ jest.mock('@mui/x-data-grid', () => {
       columns: any[];
       isLoading: boolean;
       initPageSize: number;
-      'category-block'?: string;
     }) => {
       return (
-        <div role="grid" data-testid={props['category-block'] || 'data-grid'}>
-          {props.rows.length === 0 ? (
-            <div>No data</div>
-          ) : (
-            props.rows.map((row) => (
-              <div key={row.id} role="row">
-                {row.categoryName}
-                <div>
-                  {row.categoryType === 0 && <div role="chip">PRICING</div>}
-                  {row.categoryType === 2 && <div role="chip">CLIENT NEEDS</div>}
-                  {row.categoryType === 3 && <div role="chip">CONTENT AREA</div>}
-                  {row.categoryType === 4 && <div role="chip">COGNITIVE LEVEL</div>}
-                  {row.categoryType === 5 && <div role="chip">CONTACT CONCERN</div>}
-                  {row.categoryType === -1 && <div role="chip">REPORT ISSUE</div>}
+        <div role="grid" data-testid="data-grid">
+          {props.rows.map((row) => (
+            <div key={row.id} role="row" data-rowid={row.id}>
+              {props.columns.map((col) => (
+                <div
+                  key={col.field}
+                  role="cell"
+                  data-colid={col.field}
+                  data-testid={`cell-${row.id}-${col.field}`}
+                >
+                  {col.renderCell ? col.renderCell({ row }) : row[col.field]}
                 </div>
-              </div>
-            ))
-          )}
+              ))}
+            </div>
+          ))}
         </div>
       );
     },
@@ -82,6 +78,16 @@ describe("CreateCategoryBlock", () => {
 
     const categoryBlock = screen.getByTestId('category-block')
     expect(categoryBlock).toBeInTheDocument()
+  });
+
+  it("should render rows with category names and types", async () => {
+    render(<CreateCategoryBlock />);
+
+    const firstRowCategoryName = screen.getByTestId("cell-1-categoryName");
+    expect(firstRowCategoryName).toHaveTextContent("Test Category");
+
+    const firstRowCategoryType = screen.getByTestId("cell-1-categoryType");
+    expect(firstRowCategoryType).toHaveTextContent("PRICING");
   });
 
 });
