@@ -88,25 +88,12 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return <BowtieSummary data={data} />;
       case "MCQNOGROUP":
         return <MCQNoGroupSummary data={data} />;
+      case "MCQGROUP":
+        return <MCQGroupSummary data={data} />;
       default:
         return null;
     }
   };
-
-  const renderAnswerOption = (data: QuestionnaireItem) => {
-    switch (data.questionType) {
-      case "SATA":
-      case "MRSN":
-        return <AnswerList answers={data.answers} />;
-      case "BOWTIE":
-        return <BowtieSummary data={data} />;
-      case "MCQNOGROUP":
-        return <MCQNoGroupSummary data={data} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Box
       display="flex"
@@ -154,11 +141,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
               data.questionType !== "MCQNOGROUP" && (
                 <AnswerList answers={data.answers} />
               )}
-            {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
-            {data.questionType == "MCQGROUP" && <MCQGroupSummary data={data} />}
-            {data.questionType == "MCQNOGROUP" && (
-              <MCQNoGroupSummary data={data} />
-            )}
+            {renderAnswerOption(data)}
           </Box>
         ))
       ) : (
