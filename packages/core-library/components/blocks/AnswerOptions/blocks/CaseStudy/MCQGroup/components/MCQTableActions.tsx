@@ -135,6 +135,7 @@ export const MCQTableActions: React.FC<MCQTableConfigProps> = ({
 
   return ButtonFunctions.map((button) => (
     <Button
+      data-testid="table-action-id"
       key={button.label}
       onClick={button.setCount}
       disabled={button.action === "remove" && button.count <= button.limit}

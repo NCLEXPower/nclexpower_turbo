@@ -12,7 +12,7 @@ type MCQGroupPropsType = {
 };
 
 export const MCQGroup: React.FC<MCQGroupPropsType> = ({ questionIndex }) => {
-  const { watch, setValue, getValues } = useFormContext();
+  const { setValue, getValues } = useFormContext();
   const ColumnField = getValues(`questionnaires.${questionIndex}.columns`);
   const RowField = getValues(`questionnaires.${questionIndex}.rows`);
 
@@ -30,7 +30,7 @@ export const MCQGroup: React.FC<MCQGroupPropsType> = ({ questionIndex }) => {
   }
 
   return (
-    <Box sx={{ padding: 5 }}>
+    <Box data-testid="mcq-group-id" sx={{ padding: 5 }}>
       <Box
         sx={{
           display: "flex",

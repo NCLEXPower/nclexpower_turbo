@@ -18,7 +18,7 @@ export const MCQTableCreation: React.FC<TablePropType> = ({
   }
 
   return (
-    <Box>
+    <Box data-testid="mcq-table-id">
       <Box sx={{ display: "flex" }}>
         {ColumnField?.length > 0 &&
           ColumnField.map((_, index) => (
