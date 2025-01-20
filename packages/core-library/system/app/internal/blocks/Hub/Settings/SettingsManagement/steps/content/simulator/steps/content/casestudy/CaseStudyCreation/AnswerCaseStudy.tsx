@@ -22,9 +22,10 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { ContainedCaseStudyQuestionType } from "../../../../types";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Instruction } from "./components/Instruction";
 import { CustomFields } from "./components/CustomFields";
+import { useTableInsertion } from "../../hooks/useTableInsertion";
 
 interface Props {
   index: number;
@@ -36,6 +37,9 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
   if (!questionnaires) return;
   const questionType = watch(`questionnaires.${index}.questionType`);
+
+  const { handleTableInsertion } = useTableInsertion({ questionType, index });
+
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
 
   useEffect(() => {
@@ -127,8 +131,10 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
           >
             <ControlledRichTextEditor
               editorFor="casestudy"
+              questionType={questionType}
               placeholder="Add question..."
               name={`questionnaires.${index}.itemStem`}
+              onInsertTable={() => handleTableInsertion(index)}
             />
           </Box>
         </Box>
