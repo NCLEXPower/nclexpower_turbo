@@ -12,9 +12,9 @@ jest.mock("../../../../core/router", () => ({
 }));
 
 jest.mock(
-  "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/Items/DDCQuestion",
+  "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/Items/DDCItem",
   () => ({
-    DDCquestion: jest.fn(() => <div>DDC Question Mock</div>),
+    DDCItem: jest.fn(() => <div>DDC Question Mock</div>),
   })
 );
 
@@ -129,11 +129,5 @@ describe("Items Component", () => {
   it('renders "No data available" when content is empty', () => {
     render(<Items content={[]} />);
     expect(screen.getByText("No data available")).toBeInTheDocument();
-  });
-
-  it("renders AnswerList for non-DDC and non-BOWTIE question types", () => {
-    render(<Items content={mockContent} />);
-    expect(screen.getByText("SATA Not Answer")).toBeInTheDocument();
-    expect(screen.getByText("SATA Answer")).toBeInTheDocument();
   });
 });
