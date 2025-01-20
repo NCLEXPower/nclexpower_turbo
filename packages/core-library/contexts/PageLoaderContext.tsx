@@ -66,7 +66,7 @@ export const PageLoaderContextProvider: React.FC<
       
       {isAuthenticated || !((isLoading || loading || router.loading || isCalculationsLoaded) &&
       config.value.BASEAPP === "webc_app") ? (
-        <>{children}</>
+        <div data-testid="children-component">{children}</div>
       ) : (
         <PageLoader />
       )}
