@@ -10,7 +10,9 @@ type DDCAnswerOptionPropsType = {
   questionIndex: number;
 };
 
-export const DDC: React.FC<DDCAnswerOptionPropsType> = ({ questionIndex }) => {
+export const DDClozeAndTable: React.FC<DDCAnswerOptionPropsType> = ({
+  questionIndex,
+}) => {
   const { setValue, getValues } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = getValues();
