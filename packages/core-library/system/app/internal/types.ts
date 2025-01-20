@@ -75,7 +75,7 @@ export type AnswerOption = {
   answerKey: boolean;
 };
 
-export interface DDCAnswerOption extends AnswerOption {
+export interface DDClozeTableAnswerOption extends AnswerOption {
   optionName: string;
   options: {
     answer: string;
@@ -106,7 +106,7 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "HCP" | "MCQNOGROUP";
+  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE" | "HCP" | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
@@ -120,7 +120,7 @@ export type QuestionnaireItem = {
   column?: Columns[];
   row?: Row[];
   hcpContent: string | undefined;
-  answers: DDCAnswerOption[] | HCPNAnswerOptionType[];
+  answers: DDClozeTableAnswerOption[] | HCPNAnswerOptionType[];
 };
 
 export type CaseStudyDataType = {
