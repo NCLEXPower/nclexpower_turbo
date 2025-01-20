@@ -4,7 +4,7 @@ import { Button, EvaIcon, TextField } from "../../../../../../../../components";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { accountSchema, AccountSchemaType } from "../validation";
+import { accountSchema } from "../validation";
 import {
   buttonSx,
   inputIconStyle,
@@ -14,39 +14,39 @@ import {
 import { CustomerTokenizeInformations } from "../../../../../../../../api/types";
 import { useEffect } from "react";
 
-type TextFieldItem = {
-  id: number;
-  label: string;
-  name: keyof AccountSchemaType;
-  icon: React.ReactNode;
-};
+// type TextFieldItem = {
+//   id: number;
+//   label: string;
+//   name: keyof AccountSchemaType;
+//   icon: React.ReactNode;
+// };
 
-const textFieldItems: TextFieldItem[] = [
-  {
-    id: 1,
-    label: "First Name",
-    name: "firstname",
-    icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-  },
-  {
-    id: 2,
-    label: "Middle Name",
-    name: "middlename",
-    icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-  },
-  {
-    id: 3,
-    label: "Last Name",
-    name: "lastname",
-    icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-  },
-  {
-    id: 4,
-    label: "Email Address",
-    name: "email",
-    icon: <EvaIcon name="at" fill="#3333334D" style={inputIconStyle} />,
-  },
-];
+// const textFieldItems: TextFieldItem[] = [
+//   {
+//     id: 1,
+//     label: "First Name",
+//     name: "firstname",
+//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
+//   },
+//   {
+//     id: 2,
+//     label: "Middle Name",
+//     name: "middlename",
+//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
+//   },
+//   {
+//     id: 3,
+//     label: "Last Name",
+//     name: "lastname",
+//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
+//   },
+//   {
+//     id: 4,
+//     label: "Email Address",
+//     name: "email",
+//     icon: <EvaIcon name="at" fill="#3333334D" style={inputIconStyle} />,
+//   },
+// ];
 
 interface PersonalInformationBlockProps {
   userInfo?: CustomerTokenizeInformations;
@@ -125,19 +125,69 @@ export const PersonalInformationBlock: React.FC<
           }}
         >
           <Box className="space-y-2 mx-auto">
-            {textFieldItems.map((item) => (
-              <TextField
-                key={item.id}
-                control={control}
-                label={item.label}
-                name={item.name}
-                icon={item.icon}
-                sx={textFieldSx}
-                inputProps={{
-                  sx: inputStyle,
-                }}
-              />
-            ))}
+            <TextField
+              control={control}
+              label="First Name"
+              name="firstname"
+              icon={
+                <EvaIcon
+                  name="person"
+                  fill="#3333334D"
+                  style={inputIconStyle}
+                />
+              }
+              sx={textFieldSx}
+              inputProps={{
+                sx: inputStyle,
+              }}
+            />
+
+            <TextField
+              control={control}
+              label="Middle Name"
+              name="middlename"
+              icon={
+                <EvaIcon
+                  name="person"
+                  fill="#3333334D"
+                  style={inputIconStyle}
+                />
+              }
+              sx={textFieldSx}
+              inputProps={{
+                sx: inputStyle,
+              }}
+            />
+
+            <TextField
+              control={control}
+              label="Last Name"
+              name="lastname"
+              icon={
+                <EvaIcon
+                  name="person"
+                  fill="#3333334D"
+                  style={inputIconStyle}
+                />
+              }
+              sx={textFieldSx}
+              inputProps={{
+                sx: inputStyle,
+              }}
+            />
+
+            <TextField
+              control={control}
+              label="Email Address"
+              name="email"
+              icon={
+                <EvaIcon name="at" fill="#3333334D" style={inputIconStyle} />
+              }
+              sx={textFieldSx}
+              inputProps={{
+                sx: inputStyle,
+              }}
+            />
           </Box>
         </Box>
         <Box className="flex flex-col items-center justify-center gap-2">
