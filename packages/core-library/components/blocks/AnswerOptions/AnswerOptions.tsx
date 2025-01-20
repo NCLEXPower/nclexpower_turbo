@@ -8,13 +8,15 @@ import { SATA } from "./blocks/Regular/SATA/SATA";
 import { DDC } from "./blocks/CaseStudy/DDC/DDC";
 import { MRSN } from "./blocks/CaseStudy/MRSN/MRSN";
 import { DND } from "./blocks/CaseStudy/DND/DND";
+import { HCP } from "./blocks/CaseStudy/HCP/HCP";
 import { Bowtie } from "./blocks/CaseStudy/Bowtie/Bowtie";
+import { MCQNoGroup } from "./blocks/CaseStudy/MCQNoGroup/MCQNoGroup";
 
 export type AnswerOptionsType = {
   questionType: "regularQuestion" | "caseStudy";
   questionnaireType?:
-    | CaseStudyQuestionSelectionOptions
-    | RegularQuestionSelectionOptions;
+  | CaseStudyQuestionSelectionOptions
+  | RegularQuestionSelectionOptions;
   questionIndex: number;
 };
 
@@ -40,8 +42,12 @@ export const AnswerOptions: React.FC<AnswerOptionsType> = ({
         return <MRSN questionIndex={questionIndex} />;
       case "DND":
         return <DND questionIndex={questionIndex} />;
+      case "HCP":
+        return <HCP questionIndex={questionIndex} />;
       case "BOWTIE":
         return <Bowtie questionIndex={questionIndex} />;
+      case "MCQNOGROUP":
+        return <MCQNoGroup questionIndex={questionIndex} />;
     }
   }
   return null;
