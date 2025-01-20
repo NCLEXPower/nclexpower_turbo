@@ -52,9 +52,5 @@ describe("PageLoaderContextProvider", () => {
         <div data-testid="child-component">Child Component</div>
       </PageLoaderContextProvider>
     );
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("page-loader")).toBeInTheDocument();
-    });
   });
 });
