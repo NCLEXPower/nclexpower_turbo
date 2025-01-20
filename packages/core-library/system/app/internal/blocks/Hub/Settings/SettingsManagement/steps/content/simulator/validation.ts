@@ -8,10 +8,10 @@ import { initAnswerValues } from "../../../constants/constants";
 import {
   DDCAnswerOptionType,
   DNDAnswerOptionType,
+  HCPNAnswerOptionType,
   SATAAnswerOptionType,
 } from "./types";
 import { generateQuestionErrorMessage } from "./utils/generateQuestionErrorMessage";
-
 /**
  * Regular Questions Schemas
  */
@@ -122,6 +122,65 @@ const dndKeysSchema = yup.object({
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Dnd answer options is required")
+        ),
+    }),
+});
+
+const mcqGroupColumn = yup.object({
+  label: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Column label is required")
+        ),
+    })
+    .required("Column Title is Required"),
+});
+
+const mcqGroupRow = yup.object().shape({
+  rowId: yup.number(),
+  rowTitle: yup
+    .string()
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "Row title is required")
+        ),
+    })
+    .required("Row Title is required"),
+  choices: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.boolean().default(false),
+        choiceId: yup.number(),
+      })
+    )
+    .required("Choices are required."),
+});
+
+export const mcqGroupAnswerSchema = yup.object({
+  columns: yup
+    .array()
+    .of(mcqGroupColumn)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
+        ),
+    }),
+  rows: yup
+    .array()
+    .of(mcqGroupRow)
+    .when("questionType", {
+      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      then: (schema) =>
+        schema.required(({ path }) =>
+          generateQuestionErrorMessage(path, "This is required")
         ),
     }),
 });
@@ -241,6 +300,20 @@ export const bowtieAnswerSchema = yup.object({
     }),
 });
 
+export const hcpOptionSchema = yup.object().shape({
+  answer: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Answer field is required")
+    ),
+  answerKey: yup.boolean().default(false),
+  attrName: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Attribute name is required")
+    ),
+});
+
 // Question Options Schema
 const questionOptionsSchemas = {
   DDC: yup
@@ -265,13 +338,27 @@ const questionOptionsSchemas = {
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
   BOWTIE: bowtieAnswerSchema,
+  MCQNOGROUP: mcqGroupAnswerSchema,
+  HCP: yup
+    .array(hcpOptionSchema)
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Must contained atleast 1 option")
+    )
+    .test(
+      "select-atleast-2",
+      "You must select atleast 1 correct answer",
+      (val) => val.filter((val) => val.answerKey === true).length >= 1
+    ),
 };
 
 // Answers Schema
 const answersSchema = yup.object({
   answers: yup
     .mixed<
-      DDCAnswerOptionType[] | SATAAnswerOptionType[] | DNDAnswerOptionType[]
+      | DDCAnswerOptionType[]
+      | SATAAnswerOptionType[]
+      | DNDAnswerOptionType[]
+      | HCPNAnswerOptionType[]
     >()
     .when("questionType", (questionType, schema) => {
       const matchedSchema = Object.entries(questionOptionsSchemas).find(
@@ -288,6 +375,16 @@ const bgInfoContent = yup.object({
     .transform((value) => parseInt(value))
     .default(1),
   seqContent: yup.string(),
+});
+
+const hcpContentSchema = yup.object({
+  hcpContent: yup.string().when("questionType", {
+    is: "HCP",
+    then: (schema) =>
+      schema.required(({ path }) =>
+        generateQuestionErrorMessage(path, "HCP content is required")
+      ),
+  }),
 });
 
 // Case Study Questionnaire Schema
@@ -350,9 +447,11 @@ const caseStudyQuestionnaireSchema = yup.object({
           transitionHeader: yup.string().optional().default(""),
         })
         .concat(answersSchema)
+        .concat(hcpContentSchema)
         .concat(dndKeysSchema)
         .concat(mrsnMaxAnswer)
         .concat(bowtieAnswerSchema)
+        .concat(mcqGroupAnswerSchema)
     )
     .default([]),
 });
