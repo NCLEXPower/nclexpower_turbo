@@ -56,7 +56,6 @@ describe("PageLoaderContextProvider", () => {
       </PageLoaderContextProvider>
     );
 
-    // Wait for the `useEffect` logic to complete (isMounted becomes true)
     await waitFor(() => {
       expect(screen.queryByTestId("page-loader")).toBeInTheDocument();
     });
