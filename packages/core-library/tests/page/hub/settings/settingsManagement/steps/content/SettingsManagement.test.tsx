@@ -3,6 +3,7 @@ import {
   ChooseProductsConfigurations,
   ContentManagementSystemSettings,
   InAppManagement,
+  MaintenanceMode,
   OtherConfigurations,
 } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/SettingsManagement";
 import { AccessLevels } from "../../../../../../../core/utils/permission";
@@ -102,6 +103,26 @@ describe("Settings Components", () => {
       expect(mockNextStep).toHaveBeenCalledWith({
         chosen: "ROUTER",
         selection: "IARM",
+      });
+    });
+  });
+
+  describe("MaintenanceMode", () => {
+    it('renders the "Chatbot Mode" card', () => {
+      render(<MaintenanceMode {...defaultProps} />);
+
+      expect(screen.getByTestId("chatbot-widget-card")).toBeInTheDocument();
+    });
+
+    it('calls nextStep with correct values when "Chatbot Mode" card is clicked', () => {
+      render(<MaintenanceMode {...defaultProps} />);
+
+      const card = screen.getByTestId("chatbot-widget-card");
+      fireEvent.click(card);
+
+      expect(mockNextStep).toHaveBeenCalledWith({
+        chosen: "CHATBOT",
+        selection: "WEBCUSTOMER",
       });
     });
   });

@@ -6,6 +6,7 @@ import {
   create,
   confirmedCreation,
   getMaintenanceMode,
+  getHasChatBotWidget,
 } from "../../ssr";
 import { config } from "../../config";
 import {
@@ -15,7 +16,7 @@ import {
 import { CmsTenant, TenantResponse } from "../../types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "../../utils";
-import { MaintenanceSsr } from "../../types/global";
+import { ChatBotSsr, MaintenanceSsr } from "../../types/global";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -39,6 +40,13 @@ const mockMaintenanceStatus = {
   currentMaintenanceMode: ["dev", "uat"],
   createdDate: "2024-11-28T23:29:28.2473075",
   updatedDate: "2024-11-29T03:10:22.5355995",
+};
+
+const mockChatbotMode = {
+  id: "d7c3487b-232f-4464-87ce-c0a87166d915",
+  isEnabled: false,
+  createdDate: "2025-01-09T07:48:01.9335557",
+  updatedDate: "2025-01-09T07:48:01.9335842",
 };
 
 describe("SSR Functions", () => {
@@ -173,5 +181,19 @@ describe("SSR Functions", () => {
       { method: "GET", headers: mockHeaders }
     );
     expect(result).toEqual(mockMaintenanceStatus);
+  });
+
+  it("should get chatbot mode", async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      json: jest.fn().mockResolvedValue(mockChatbotMode),
+    });
+
+    const result = await getHasChatBotWidget();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${config.value.LOCAL_API_URL}/api/v1/Customer/get-helpwidget-status`,
+      { method: "GET", headers: mockHeaders }
+    );
+    expect(result).toEqual(mockChatbotMode);
   });
 });

@@ -25,7 +25,8 @@ export type ChooseSettingsOptions =
   | "AUTOMATION"
   | "CMS"
   | "ROUTER"
-  | "MAINTENANCE";
+  | "MAINTENANCE"
+  | "CHATBOT";
 export type SettingsSelectionOptions =
   | "DBEXCEL"
   | "QM"
