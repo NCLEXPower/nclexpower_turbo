@@ -1,13 +1,14 @@
 import { Box, Checkbox, SxProps, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import { DDCquestion } from "./DDCQuestion";
+import { DDCItem } from "./DDCItem";
 import {
   AnswerOption,
-  DDCAnswerOption,
+  DDClozeTableAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { DDTItem } from "./DDTItem";
 import { BowtieSummary } from "./BowtieSummary";
 import { MCQGroupSummary } from "./MCQGroupSummary";
 import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
@@ -36,9 +37,18 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
     switch (data.questionType) {
       case "DDC":
         return (
-          <DDCquestion
+          <DDCItem
             ddcData={{
-              answers: data.answers as DDCAnswerOption[],
+              answers: data.answers as DDClozeTableAnswerOption[],
+              itemStem: data.itemStem,
+            }}
+          />
+        );
+      case "DDT":
+        return (
+          <DDTItem
+            ddcData={{
+              answers: data.answers as DDClozeTableAnswerOption[],
               itemStem: data.itemStem,
             }}
           />
@@ -66,6 +76,34 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return `MCQ No Group`;
       case "MCQGROUP":
         return `MCQ Group`;
+    }
+  };
+
+  const renderAnswerOption = (data: QuestionnaireItem) => {
+    switch (data.questionType) {
+      case "SATA":
+      case "MRSN":
+        return <AnswerList answers={data.answers} />;
+      case "BOWTIE":
+        return <BowtieSummary data={data} />;
+      case "MCQNOGROUP":
+        return <MCQNoGroupSummary data={data} />;
+      default:
+        return null;
+    }
+  };
+
+  const renderAnswerOption = (data: QuestionnaireItem) => {
+    switch (data.questionType) {
+      case "SATA":
+      case "MRSN":
+        return <AnswerList answers={data.answers} />;
+      case "BOWTIE":
+        return <BowtieSummary data={data} />;
+      case "MCQNOGROUP":
+        return <MCQNoGroupSummary data={data} />;
+      default:
+        return null;
     }
   };
 

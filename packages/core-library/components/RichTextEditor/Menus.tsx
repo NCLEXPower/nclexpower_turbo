@@ -194,3 +194,13 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
 
   return getButtons();
 };
+
+export const insertTable = (editor: any) => {
+  editor
+    .chain()
+    .focus()
+    .insertContent(" ")
+    .insertTable({ rows: 4, cols: 2, withHeaderRow: true })
+    .run();
+  editor.commands.setTextSelection(1);
+};
