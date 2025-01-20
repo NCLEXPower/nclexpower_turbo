@@ -70,7 +70,7 @@ export const CreateCategoryBlock: React.FC = () => {
   });
 
   return (
-    <Box>
+    <Box data-testid="category-block">
       <Container>
         <Alert
           severity="info"
