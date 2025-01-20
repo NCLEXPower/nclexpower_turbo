@@ -49,6 +49,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
         <Link
           href="/"
           className="flex items-center justify-end xl:px-60 px-40 cursor-pointer text-darkBlue ml-[470px] "
+          style={{ backgroundColor: 'transparent' }}
         >
           <ArrowBackIosNewIcon fontSize="small" />
           <span className="pt-sans-narrow-regular ml-1 underline text-[20px]">
@@ -128,6 +129,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
           <Link
             href="/#pricing"
             className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
+            style={{ backgroundColor: 'transparent' }}
           >
             Sign up
           </Link>
