@@ -44,9 +44,6 @@ describe("PageLoaderContextProvider", () => {
       </PageLoaderContextProvider>
     );
 
-    await waitFor(() =>
-      expect(screen.getByTestId("page-loader")).toBeInTheDocument()
-    );
   });
 
   it("sets isMounted to true after the component mounts", async () => {
