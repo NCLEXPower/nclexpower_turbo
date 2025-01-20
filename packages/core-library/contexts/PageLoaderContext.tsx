@@ -68,7 +68,7 @@ export const PageLoaderContextProvider: React.FC<
       config.value.BASEAPP === "webc_app") ? (
         <div data-testid="children-component">{children}</div>
       ) : (
-        <PageLoader />
+        <PageLoader data-testid="page-loader" />
       )}
     </context.Provider>
   );
