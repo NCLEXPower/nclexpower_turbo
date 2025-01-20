@@ -1,14 +1,17 @@
 import { Box, Checkbox, SxProps, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import { DDCquestion } from "./DDCQuestion";
+import { DDCItem } from "./DDCItem";
 import {
   AnswerOption,
-  DDCAnswerOption,
+  DDClozeTableAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { DDTItem } from "./DDTItem";
 import { BowtieSummary } from "./BowtieSummary";
+import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
+import { HCPQuestion } from "./HCPQuestion";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -32,14 +35,24 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
     switch (data.questionType) {
       case "DDC":
         return (
-          <DDCquestion
+          <DDCItem
             ddcData={{
-              answers: data.answers as DDCAnswerOption[],
+              answers: data.answers as DDClozeTableAnswerOption[],
               itemStem: data.itemStem,
             }}
           />
         );
-
+      case "DDT":
+        return (
+          <DDTItem
+            ddcData={{
+              answers: data.answers as DDClozeTableAnswerOption[],
+              itemStem: data.itemStem,
+            }}
+          />
+        );
+      case "HCP":
+        return <HCPQuestion questionData={data} />;
       default:
         return (
           <Typography sx={wordWrap}>
@@ -50,14 +63,30 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
   };
 
   const renderQuestionTypeLabel = (data: QuestionnaireItem) => {
-    if (data.questionType === "SATA") {
-      return "Select All That Apply";
-    } else if (data.questionType === "MRSN") {
-      return `Select ${data.maxAnswer} That Apply`;
-    } else if (data.questionType === "BOWTIE") {
-      return `Bowtie`;
+    switch (data.questionType) {
+      case "SATA":
+        return "Select All That Apply";
+      case "MRSN":
+        return `Select ${data.maxAnswer} That Apply`;
+      case "BOWTIE":
+        return `Bowtie`;
+      case "MCQNOGROUP":
+        return `MCQ No Group`;
     }
-    return null;
+  };
+
+  const renderAnswerOption = (data: QuestionnaireItem) => {
+    switch (data.questionType) {
+      case "SATA":
+      case "MRSN":
+        return <AnswerList answers={data.answers} />;
+      case "BOWTIE":
+        return <BowtieSummary data={data} />;
+      case "MCQNOGROUP":
+        return <MCQNoGroupSummary data={data} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -102,10 +131,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType !== "DDC" && data.questionType !== "BOWTIE" && (
-              <AnswerList answers={data.answers} />
-            )}
-            {data.questionType == "BOWTIE" && <BowtieSummary data={data} />}
+            {renderAnswerOption(data)}
           </Box>
         ))
       ) : (
