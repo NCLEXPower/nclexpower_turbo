@@ -10,12 +10,14 @@ import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { useIsDesignVisible } from "../../hooks";
+import { useAuthContext } from "../../contexts";
 
 export const Footer: React.FC<FooterProps> = (props) => {
+  const { isAuthenticated } = useAuthContext();
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
 
-  const isHidden = useIsDesignVisible();
+  const isHidden = useIsDesignVisible() || isAuthenticated;
 
   return (
     !isHidden && (
