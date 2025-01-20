@@ -66,9 +66,15 @@ const PricingDetail = ({ cardData, onClose }: PricingDetailProps) => {
             <h3 className="text-[#818181] text-lg lg:text-2xl font-ptSans ">
               Product Type
             </h3>
-            <h2 className="text-darkBlue text-2xl lg:text-4xl font-ptSans font-semibold">
-              Registed Nurse (RN)
-            </h2>
+            {cardData.programType === 0 ? (
+              <h2 className="text-darkBlue text-2xl lg:text-4xl font-ptSans font-semibold">
+                Registed Nurse (RN)
+              </h2>
+            ) : (
+              <h2 className="text-[#084A4E] text-2xl lg:text-4xl font-ptSans font-semibold">
+                Practical Nurse (PN)
+              </h2>
+            )}
           </div>
           <p className="text-curveGray font-ptSansNarrow  text-lg">
             Transform your learning experience with our comprehensive package,
@@ -180,7 +186,7 @@ const PricingDetail = ({ cardData, onClose }: PricingDetailProps) => {
         </div>
       </div>
 
-      <div className="w-full   xl:w-2/6 flex flex-col justify-between px-8 py-12 bg-[#F2F2F2] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]  rounded-2xl">
+      <div className="w-full   xl:w-2/6 flex flex-col justify-between px-8 py-12 text-[#232323] bg-[#F2F2F2] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]  rounded-2xl">
         <div className="flex flex-col h-full space-y-12">
           <FormControl className="h-1/2">
             <FormLabel id="product-selection">
@@ -196,7 +202,7 @@ const PricingDetail = ({ cardData, onClose }: PricingDetailProps) => {
               className="space-y-3"
             >
               <div
-                className={`flex items-center justify-between w-full px-6 py-6 rounded-2xl 
+                className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl 
                 transition-all duration-300
                shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.25)]
                 border border-[#0F2A716B]
@@ -211,24 +217,24 @@ const PricingDetail = ({ cardData, onClose }: PricingDetailProps) => {
                     checked={selectedProduct === 0}
                     className="hidden"
                   />
-                  <div className="w-full font-ptSans">
-                    <h1 className="text-xl font-ptSans  lg:text-3xl font-bold -mb-4">
+                  <div className="w-full font-ptSans  flex flex-col items-start justify-start">
+                    <h1 className="text-xl font-ptSans  lg:text-3xl font-bold -mb-4 pt-2">
                       Fast Track{' '}
                     </h1>
-                    <p className="text-sm font-ptSans font-normal text-curveGray">
+                    <p className="text-sm font-ptSans font-normal ">
                       {' '}
                       Eight (8) Days
                     </p>
                   </div>
                 </div>
 
-                <div className="w-full mx-auto text-right font-bold text-2xl  lg:text-4xl">
+                <div className="w-full mx-auto text-right font-bold text-2xl  lg:text-[35px]">
                   $ 180
                 </div>
               </div>
 
               <div
-                className={`flex items-center justify-between w-full px-6 py-6 rounded-2xl 
+                className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl 
                 transition-all duration-300
                shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.40)]
                 border border-[#084A4E6B]
@@ -244,16 +250,16 @@ const PricingDetail = ({ cardData, onClose }: PricingDetailProps) => {
                     checked={selectedProduct === 1}
                     className="hidden"
                   />
-                  <div className="w-2/3 lg:w-full font-ptSans">
-                    <h1 className=" text-xl font-ptSans  lg:text-3xl font-bold -mb-4">
+                  <div className="w-2/3 lg:w-full font-ptSans flex flex-col items-start justify-start">
+                    <h1 className=" text-xl font-ptSans  lg:text-3xl font-bold -mb-4 pt-2">
                       Standard{' '}
                     </h1>
-                    <p className=" text-sm font-ptSans font-normal text-curveGray  ">
+                    <p className=" text-sm font-ptSans font-normal  ">
                       Twenty Three (23) Days
                     </p>
                   </div>
                 </div>
-                <div className="w-1/3 lg:w-full text-right font-bold text-xl lg:text-4xl">
+                <div className="w-1/3 lg:w-full text-right font-bold text-xl lg:text-[35px] ">
                   $ 230
                 </div>
               </div>
