@@ -12,6 +12,7 @@ import {
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
 } from "core-library/contexts";
+import { Footer } from "core-library/components/ReusableFooter/Footer";
 import {
   CompanyInfo,
   CustomerMenus,
@@ -94,6 +95,7 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
                       isPaid={isPaid}
                     >
                       {children}
+                      <Footer info={CompanyInfo} list={list} />
                       {/* dynamic hideHelp should be implemented here */}
                       {true && <ChatBotWidget />}
                     </DrawerLayout>
