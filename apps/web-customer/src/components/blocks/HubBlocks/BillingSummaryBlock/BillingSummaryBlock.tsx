@@ -3,37 +3,10 @@ import { billingSummaryColumns } from "../../../../core/constant/BillingSummaryM
 import { DataGrid } from "core-library/components";
 import { OrderSummaryBlock, OrderDetailsBlock } from "./index";
 import { useGetBillingSummary } from "../../../../core/hooks/useGetBillingSummary";
-
-const tableStyle = {
-  border: "0.2px solid #B0BEC5",
-  boxShadow: "0px 10px 60px 0px rgba(226, 236, 249, 0.50)",
-  borderRadius: "8px",
-  overflow: "hidden",
-  marginX: "auto",
-  ".MuiDataGrid-columnSeparator": {
-    display: "none",
-  },
-  ".MuiDataGrid-cell": {
-    cursor: "pointer",
-  },
-  "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-    outline: "none !important",
-  },
-  "& .super-app-theme--header": {
-    background: "rgba(24, 30, 47, 0.95)",
-    outline: "none !important",
-    color: "#ffffff",
-  },
-  "@media (max-width: 1024px)": {
-    maxWidth: "700px",
-  },
-  "@media (max-width: 768px)": {
-    maxWidth: "310px",
-  },
-};
+import { tableStyle } from "./style";
 
 export const BillingSummaryBlock = () => {
-  const { isLoading, selectedData, setSelectedData, data } = useGetBillingSummary();
+  const { selectedData, setSelectedData, data } = useGetBillingSummary();
   
   return (
     <section className="bg-hubBackground">
@@ -49,12 +22,12 @@ export const BillingSummaryBlock = () => {
                   columns={billingSummaryColumns.map((col) => ({
                     ...col,
                     flex: undefined,
-                    width: col.flex ? 200 : undefined,
+                    width: col.flex ? 233 : undefined,
                     headerClassName: "super-app-theme--header",
                   }))}
                   rows={data ?? []}
                   initPageSize={5}
-                  isLoading={isLoading}
+                  isLoading={false} // will change the loading value here from the api loading
                   autoHeight
                   onRowClick={(params) => setSelectedData(params.row)}
                   sx={tableStyle}
