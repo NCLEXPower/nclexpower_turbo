@@ -55,7 +55,12 @@ export const ContactLocation = require('./contact/location.png');
 export const ContactMail = require('./contact/mail.png');
 export const ContactPhone = require('./contact/phone.png');
 
-export const ComingSoon = require("./ComingSoon/ComingSoon.png")
+export const ComingSoon = require('./ComingSoon/ComingSoon.png');
+
+export const LightBulbBlue = require('./LightBulbBlue.png');
+export const LightBulbGreen = require('./LightBulbGreen.png');
+export const BlueDocument = require('./DocumentBlue.png');
+export const GreenDocument = require('./DocumentGreen.png');
 
 export const ForgotPasswordImage = require('./forgotpassword/ForgotPasswordImage.json');
 export const ChangePasswordImage = require('./forgotpassword/ChangePasswordImage.json');
@@ -67,6 +72,8 @@ export const CardsIcon = require('./programslist/icons/cards-icon.svg');
 export const CATIcon = require('./programslist/icons/cat-icon.svg');
 export const CompletedIcon = require('./programslist/icons/completed.svg');
 export const CompletedWhiteIcon = require('./programslist/icons/completed-white.svg');
+export const CompletedBlueIcon = require('./programslist/icons/completed-blue.svg');
+
 export const InProgressIcon = require('./programslist/icons/in-progress.svg');
 export const InProgressWhiteIcon = require('./programslist/icons/in-progress-white.svg');
 export const PerspectiveIcon = require('./programslist/icons/perspective-icon.svg');
@@ -122,8 +129,7 @@ export const Default = require('./DefaultImage.jpg');
 export const PNBackground = require('./PNBackground.png');
 export const RNBackground = require('./RNBackground.png');
 
-export const DuplicateSession = require("./duplicate_session.svg");
-
+export const DuplicateSession = require('./duplicate_session.svg');
 
 export const ImageLists = [
   { id: 1, label: 'NCLEX Blue Logo', image: NCLEXBlueLogo },
@@ -214,8 +220,16 @@ export const ImageLists = [
   { id: 88, label: 'Default', image: Default },
   { id: 88, label: 'PNBackground', image: PNBackground },
   { id: 88, label: 'RNBackground', image: RNBackground },
-  { id: 89, label: 'Maintenance Mode Background', image: MaintenanceModeBackground },
-  { id: 90, label: 'Construction Worker Image', image: ConstructionWorkerImage },
+  {
+    id: 89,
+    label: 'Maintenance Mode Background',
+    image: MaintenanceModeBackground,
+  },
+  {
+    id: 90,
+    label: 'Construction Worker Image',
+    image: ConstructionWorkerImage,
+  },
 ];
 
 export const LottieLists = [
