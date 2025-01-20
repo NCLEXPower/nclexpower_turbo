@@ -9,7 +9,7 @@ import { NCLEXYellowLogo } from "../../assets";
 import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { useDesignVisibility, useIsDesignVisible } from "../../hooks";
+import { useIsDesignVisible } from "../../hooks";
 import { useAuthContext } from "../../contexts";
 
 export const Footer: React.FC<FooterProps> = (props) => {
