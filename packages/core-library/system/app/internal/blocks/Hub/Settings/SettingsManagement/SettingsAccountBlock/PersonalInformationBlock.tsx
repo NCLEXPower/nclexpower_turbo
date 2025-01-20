@@ -14,40 +14,6 @@ import {
 import { CustomerTokenizeInformations } from "../../../../../../../../api/types";
 import { useEffect } from "react";
 
-// type TextFieldItem = {
-//   id: number;
-//   label: string;
-//   name: keyof AccountSchemaType;
-//   icon: React.ReactNode;
-// };
-
-// const textFieldItems: TextFieldItem[] = [
-//   {
-//     id: 1,
-//     label: "First Name",
-//     name: "firstname",
-//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-//   },
-//   {
-//     id: 2,
-//     label: "Middle Name",
-//     name: "middlename",
-//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-//   },
-//   {
-//     id: 3,
-//     label: "Last Name",
-//     name: "lastname",
-//     icon: <EvaIcon name="person" fill="#3333334D" style={inputIconStyle} />,
-//   },
-//   {
-//     id: 4,
-//     label: "Email Address",
-//     name: "email",
-//     icon: <EvaIcon name="at" fill="#3333334D" style={inputIconStyle} />,
-//   },
-// ];
-
 interface PersonalInformationBlockProps {
   userInfo?: CustomerTokenizeInformations;
 }
