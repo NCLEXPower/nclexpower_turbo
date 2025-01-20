@@ -16,6 +16,7 @@ import { useEncryptItem } from 'core-library/contexts/auth/hooks';
 import { useDataSource } from 'core-library/hooks';
 import { ProductListResponse } from 'core-library/api/types';
 import { PriceButtonDetails } from '@/constants/constants';
+import PricingModal from './PricingComponent/PricingModal';
 
 interface Props {
   url?: string;
@@ -23,8 +24,20 @@ interface Props {
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number>(0);
+  const [viewMoreType, setViewMoreType] = useState(0);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const { dataSource } = useDataSource({ url });
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
@@ -66,22 +79,22 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
 
   return (
     <div
-      id='pricing'
-      className='pt-20 pb-40 h-fit bg-[#fafafa] flex items-center justify-center'
+      id="pricing"
+      className="pt-20 pb-40 h-fit bg-[#fafafa] flex items-center justify-center"
     >
-      <div className='w-full flex flex-col items-center'>
-        <div className='flex flex-col items-center px-10 text-center'>
-          <p className='lg:text-4xl text-3xl font-bold'>Pricing</p>
-          <p className='font-bold -mt-1'>
+      <div className="w-full flex flex-col items-center">
+        <div className="flex flex-col items-center px-10 text-center">
+          <p className="lg:text-4xl text-3xl font-bold">Pricing</p>
+          <p className="font-bold -mt-1">
             For RNs and PNs, choose between our 8-day (Fast Track) or 23-day
             (Standard) program.
           </p>
-          <p className='font-ptSansNarrow -mt-1'>
+          <p className="font-ptSansNarrow -mt-1">
             Both programs allow up to 6 months access to the system.
           </p>
         </div>
-        <div className='pt-10'>
-          <div className='flex lg:gap-5 gap-2 flex-wrap justify-center px-20'>
+        <div className="pt-10">
+          <div className="flex lg:gap-5 gap-2 flex-wrap justify-center px-20">
             {PriceButtonDetails.length > 0 &&
               PriceButtonDetails.map((nurseItem, index) => (
                 <button
@@ -89,16 +102,16 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   className={`max-h-20 ${nurseType === nurseItem.value ? `w-80 ${nurseType ? 'bg-[#08474b]' : 'bg-[#0c225c]'}` : 'w-72 saturate-0 hover:scale-95 bg-slate-700'} whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`}
                   onClick={() => filterItems(nurseItem.value)}
                 >
-                  <p className='font-bold text-3xl'>
-                    {nurseItem.acronym} <span className='font-normal'>|</span>
+                  <p className="font-bold text-3xl">
+                    {nurseItem.acronym} <span className="font-normal">|</span>
                   </p>
                   <p>{nurseItem.label}</p>
                 </button>
               ))}
           </div>
         </div>
-        <div className='w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center'>
-          <div className='flex gap-5 w-full justify-center self-center flex-wrap'>
+        <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
+          <div className="flex gap-5 w-full justify-center self-center flex-wrap">
             {filteredItems && filteredItems.length > 0 ? (
               filteredItems.slice(0, 2).map((item, index) => (
                 <div
@@ -120,6 +133,25 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
             )}
           </div>
         </div>
+
+        {filteredItems && filteredItems.length > 0 ? (
+          filteredItems.slice(0, 1).map((item, index) => (
+            <div>
+              <PricingModal
+                handleClickOpen={handleClickOpen}
+                handleClose={handleClose}
+                open={open}
+                cardData={item as unknown as ProductCardType}
+              />
+            </div>
+          ))
+        ) : (
+          <div
+            className={`bg-gradient-to-tr ${nurseType === 0 ? 'from-[#334f9d] to-[#0c225c] text-white' : 'from-[#31898f] to-[#08474b] text-white'} rounded-md shadow-md px-5 py-8 text-lg w-full text-center  font-semibold max-w-[750px]`}
+          >
+            <p>Programs unavailable, please reload the page</p>
+          </div>
+        )}
       </div>
     </div>
   );
