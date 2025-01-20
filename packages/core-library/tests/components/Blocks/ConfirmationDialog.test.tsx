@@ -122,4 +122,13 @@ describe("ConfirmationModal Component", () => {
     const confirmButton = screen.getByRole("button", { name: /Confirm/i });
     expect(confirmButton).toBeInTheDocument();
   });
+
+  it("it renders the toggle button", () => {
+    render(
+      <ConfirmationModal {...DEFAULT_PROPS} customButton="ToggleButton" />
+    );
+
+    const confirmButton = screen.getByTestId("toggle-button");
+    expect(confirmButton).toBeInTheDocument();
+  });
 });

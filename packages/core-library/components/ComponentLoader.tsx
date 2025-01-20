@@ -1,17 +1,15 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, CircularProgress } from "@mui/material";
 
 interface Props {
   disableMarginBottom?: boolean;
 }
 
-export const ComponentLoader: React.FC<Props> = ({
-  disableMarginBottom,
-}) => {
+export const ComponentLoader: React.FC<Props> = ({ disableMarginBottom }) => {
   return (
     <div className="flex items-center justify-center w-100 min-h-screen">
       <Box
