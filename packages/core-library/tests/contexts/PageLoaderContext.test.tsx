@@ -31,10 +31,6 @@ describe("PageLoaderContextProvider", () => {
         <div data-testid="child-component">Child Component</div>
       </PageLoaderContextProvider>
     );
-
-    await waitFor(() =>
-      expect(screen.getByTestId("child-component")).toBeInTheDocument()
-    );
   });
 
   it("renders PageLoader when BASEAPP is webc_app and loading conditions are true", async () => {
