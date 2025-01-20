@@ -40,7 +40,7 @@ export const MenuItemsSchema = yup.object({
     then: (schema) => schema.required("Menu Label is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  path: yup.string().default(''),
+  path: yup.string().default(""),
   children: yup.array().when("type", {
     is: "SubMenu",
     then: (schema) =>
@@ -54,34 +54,47 @@ export const MenuItemsSchema = yup.object({
         .min(1, "At least one submenu is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
-})
+});
 
 export const EditMenuItemsSchema = yup.object({
   id: yup.string().notRequired(),
-  icon: yup.string().required().default(''),
+  icon: yup.string().required().default(""),
   menuId: yup.string().notRequired(),
   parentId: yup.string().notRequired(),
-  label: yup.string().required("Menu Label is required").default(''),
-  path: yup.string().default(''),
-  children: yup.array()
+  label: yup.string().required("Menu Label is required").default(""),
+  path: yup.string().default(""),
+  children: yup
+    .array()
     .of(
       yup.object().shape({
         id: yup.string().notRequired(),
-        icon: yup.string().required().default(''),
+        icon: yup.string().required().default(""),
         menuId: yup.string().notRequired(),
         parentId: yup.string().notRequired(),
-        label: yup.string().required("Menu Label is required").default(''),
+        label: yup.string().required("Menu Label is required").default(""),
         path: yup.string().nullable().default(null),
       })
-    ).optional(),
-})
+    )
+    .optional(),
+});
 
 export const RouteMenuCreation = yup.object({
   systemMenus: yup.number().required("System Menus is required"),
   accountLevel: yup.number().required("Account Level is required"),
   menuEnvironments: yup.number().required("Menu Environments is required"),
-  menuItems: yup.array().of(EditMenuItemsSchema)
+  menuItems: yup.array().of(EditMenuItemsSchema),
 });
 
+export const accountSchema = yup.object({
+  firstname: yup.string().required("First Name is required"),
+  middlename: yup.string().optional(),
+  lastname: yup.string().required("Last Name is required"),
+  email: yup
+    .string()
+    .email("Please provide a valid email")
+    .required("Email is required"),
+});
+
+export type AccountSchemaType = yup.InferType<typeof accountSchema>;
 export type RouteManagementSchema = yup.InferType<typeof RouteMenuCreation>;
-export type MenuItemType = yup.InferType<typeof EditMenuItemsSchema>
+export type MenuItemType = yup.InferType<typeof EditMenuItemsSchema>;

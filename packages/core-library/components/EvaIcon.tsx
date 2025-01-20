@@ -1,11 +1,11 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useTheme } from "@mui/material";
 import * as eva from "eva-icons";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 
 interface Props {
   id?: string;
@@ -14,6 +14,7 @@ interface Props {
   width?: number;
   height?: number;
   className?: string;
+  style?: CSSProperties;
   ariaHidden?: boolean;
 }
 
@@ -24,7 +25,8 @@ export const EvaIcon: React.FC<Props> = ({
   width,
   height,
   className,
-  ariaHidden = false
+  style,
+  ariaHidden = false,
 }) => {
   const theme = useTheme();
 
@@ -36,14 +38,15 @@ export const EvaIcon: React.FC<Props> = ({
   const fillColor = fill === "#FF0000" ? theme.palette.primary.main : fill;
 
   return (
-      <i
+    <i
       id={id}
       data-eva={sanitizedName}
       data-eva-fill={fillColor}
       data-eva-height={height}
       data-eva-width={width}
       className={className}
+      style={style}
       aria-hidden={ariaHidden}
-      />
+    />
   );
 };
