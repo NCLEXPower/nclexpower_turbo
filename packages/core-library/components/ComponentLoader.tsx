@@ -12,6 +12,9 @@ interface Props {
 export const ComponentLoader: React.FC<Props> = ({ disableMarginBottom }) => {
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3a7e7e8ac81f784afb9b7504c02c181f9e6b33b5
     <div className="flex items-center justify-center w-100 min-h-screen">
       <Box
         data-testid="component-loader"
@@ -25,6 +28,7 @@ export const ComponentLoader: React.FC<Props> = ({ disableMarginBottom }) => {
         <CircularProgress size={60}/>
       </Box>
     </div>
+<<<<<<< HEAD
 =======
     <Box
       data-testid="component-loader"
@@ -38,5 +42,7 @@ export const ComponentLoader: React.FC<Props> = ({ disableMarginBottom }) => {
       <CircularProgress size={60} />
     </Box>
 >>>>>>> 1408a5116e9031ef10fe9c60c2f1c8c0a22b0404
+=======
+>>>>>>> 3a7e7e8ac81f784afb9b7504c02c181f9e6b33b5
   );
 };
