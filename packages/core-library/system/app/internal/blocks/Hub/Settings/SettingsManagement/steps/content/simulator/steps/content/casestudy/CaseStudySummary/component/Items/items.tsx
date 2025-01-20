@@ -138,6 +138,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             </Typography>
             {data.questionType !== "DDC" &&
               data.questionType !== "BOWTIE" &&
+              data.questionType !== "MCQGROUP" &&
               data.questionType !== "MCQNOGROUP" && (
                 <AnswerList answers={data.answers} />
               )}
