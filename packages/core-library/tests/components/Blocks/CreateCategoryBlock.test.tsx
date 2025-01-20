@@ -32,6 +32,13 @@ jest.mock('@mui/x-data-grid', () => ({
   ...jest.requireActual('@mui/x-data-grid'),
 }));
 
+beforeAll(() => {
+  HTMLCanvasElement.prototype.getContext = jest.fn().mockReturnValue({
+    fillRect: jest.fn(),
+    clearRect: jest.fn(),
+  });
+});
+
 describe("CreateCategoryBlock", () => {
 
   beforeEach(() => {
