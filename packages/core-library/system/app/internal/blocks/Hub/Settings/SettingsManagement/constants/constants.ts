@@ -33,7 +33,7 @@ export const questionType = [
   { value: "DND", label: "DND" },
   { value: "HCP", label: "HCP" },
   { value: "MCQNOGROUP", label: "MCQ(No Group)" },
-  { value: "MCQ", label: "MCQ(Group)" },
+  { value: "MCQGROUP", label: "MCQ(Group)" },
   { value: "BOWTIE", label: "BOWTIE" },
 ];
 
@@ -149,4 +149,14 @@ export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
 export const defaultValues: ContentDateType = {
   approval: [],
   implementationSchedule: new Date(),
+};
+
+export const initMCQColumn = { label: "" };
+export const initMCQRow = {
+  rowTitle: "",
+  rowId: 0,
+  choices: [
+    { value: false, choiceId: 0 },
+    { value: false, choiceId: 1 },
+  ],
 };

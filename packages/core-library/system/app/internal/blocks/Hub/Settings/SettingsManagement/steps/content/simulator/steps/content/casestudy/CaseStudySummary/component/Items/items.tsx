@@ -10,18 +10,20 @@ import { useStyle } from "../../../../../../../../../../../../../../../../hooks"
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 import { DDTItem } from "./DDTItem";
 import { BowtieSummary } from "./BowtieSummary";
+import { MCQGroupSummary } from "./MCQGroupSummary";
 import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
 import { HCPQuestion } from "./HCPQuestion";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
     <Box marginTop="10px">
-      {answers.map((answer, index) => (
-        <Box display="flex" alignItems="center" paddingX="10px" key={index}>
-          <Checkbox disabled checked={answer.answerKey} />
-          <Typography fontSize="16px">{answer.answer}</Typography>
-        </Box>
-      ))}
+      {answers?.length > 0 &&
+        answers.map((answer, index) => (
+          <Box display="flex" alignItems="center" paddingX="10px" key={index}>
+            <Checkbox disabled checked={answer.answerKey} />
+            <Typography fontSize="16px">{answer.answer}</Typography>
+          </Box>
+        ))}
     </Box>
   );
 };
@@ -72,6 +74,8 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return `Bowtie`;
       case "MCQNOGROUP":
         return `MCQ No Group`;
+      case "MCQGROUP":
+        return `MCQ Group`;
     }
   };
 
@@ -84,11 +88,12 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return <BowtieSummary data={data} />;
       case "MCQNOGROUP":
         return <MCQNoGroupSummary data={data} />;
+      case "MCQGROUP":
+        return <MCQGroupSummary data={data} />;
       default:
         return null;
     }
   };
-
   return (
     <Box
       display="flex"
@@ -131,6 +136,12 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
+            {data.questionType !== "DDC" &&
+              data.questionType !== "BOWTIE" &&
+              data.questionType !== "MCQGROUP" &&
+              data.questionType !== "MCQNOGROUP" && (
+                <AnswerList answers={data.answers} />
+              )}
             {renderAnswerOption(data)}
           </Box>
         ))

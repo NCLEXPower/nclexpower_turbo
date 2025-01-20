@@ -8,7 +8,6 @@ import { useFormContext } from "react-hook-form";
 import { ControlledCheckbox } from "../../../../../Checkbox/Checkbox";
 import { TextField } from "../../../../../forms/TextField";
 import { useSynchronizeSectionWithLabel } from "../../../../../../hooks";
-import { useEffect } from "react";
 
 type BowtiePropsType = {
   questionIndex: number;
