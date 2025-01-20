@@ -37,13 +37,10 @@ jest.mock('@mui/x-data-grid', () => {
       columns: any[];
       isLoading: boolean;
       initPageSize: number;
-      'data-testid'?: string;
+      'category-block'?: string;
     }) => {
-      if (props.isLoading) {
-        return <div role="progressbar">Loading...</div>;
-      }
       return (
-        <div role="grid" data-testid={props['data-testid'] || 'data-grid'}>
+        <div role="grid" data-testid={props['category-block'] || 'data-grid'}>
           {props.rows.length === 0 ? (
             <div>No data</div>
           ) : (
