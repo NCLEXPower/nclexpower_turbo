@@ -2,28 +2,54 @@ import { DrawerLayout } from "../../../components/GenericDrawerLayout/DrawerLayo
 import { act, render, screen, fireEvent } from "../../common";
 
 jest.mock("../../../config", () => ({
-  getConfig: jest.fn().mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
-  config: { 
+  getConfig: jest
+    .fn()
+    .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+  config: {
     value: {
-      BASEAPP: 'test-app'
-    }
+      BASEAPP: "test-app",
+    },
   },
 }));
 
 jest.mock("../../../core/router", () => ({
   useRouter: () => ({
-    pathname: '/test'
+    pathname: "/test",
   }),
 }));
 
 jest.mock("../../../contexts/auth/hooks", () => ({
   usePaid: () => [true],
+  useAccessToken: jest
+    .fn()
+    .mockReturnValue(["test-access-token", jest.fn(), jest.fn()]),
+  useAccountId: jest
+    .fn()
+    .mockReturnValue(["test-account-id", jest.fn(), jest.fn()]),
 }));
 
 describe("DrawerLayout", () => {
   const mockMenu = [
-        { id: "1", name: "Home", path: "/home", label: "Home", icon: "home", menuId: "1", parentId: "0", children: [] },
-        { id: "2", name: "About", path: "/about", label: "About", icon: "about", menuId: "2", parentId: "0", children: [] },
+    {
+      id: "1",
+      name: "Home",
+      path: "/home",
+      label: "Home",
+      icon: "home",
+      menuId: "1",
+      parentId: "0",
+      children: [],
+    },
+    {
+      id: "2",
+      name: "About",
+      path: "/about",
+      label: "About",
+      icon: "about",
+      menuId: "2",
+      parentId: "0",
+      children: [],
+    },
   ];
 
   it("should render the drawer layout with menu items when authenticated", () => {
@@ -59,7 +85,7 @@ describe("DrawerLayout", () => {
       );
     });
 
-    const menuButton = screen.getByRole('button', { name: /toggle-sidebar/i });
+    const menuButton = screen.getByRole("button", { name: /toggle-sidebar/i });
     act(() => {
       fireEvent.click(menuButton);
     });
