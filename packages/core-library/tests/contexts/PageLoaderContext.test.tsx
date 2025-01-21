@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "../common";
 import { PageLoaderContextProvider } from "../../contexts/PageLoaderContext";
+import { PageLoader } from "../../components";
 
 jest.mock("../../config", () => ({
   config: { value: { BASEAPP: "mockAppName" } },
@@ -20,7 +21,6 @@ describe("PageLoaderContextProvider", () => {
         <div data-testid="page-loader">Test Component</div>
       </PageLoaderContextProvider>
     );
-
   });
 });
 
@@ -52,7 +52,6 @@ describe("PageLoaderContextProvider", () => {
         <div data-testid="children-component">Child Component</div>
       </PageLoaderContextProvider>
     );
-
   });
 
   it("renders PageLoader when BASEAPP is 'webc_app' and loading conditions are true", () => {
@@ -65,6 +64,5 @@ describe("PageLoaderContextProvider", () => {
         <div data-testid="children-component">Child Component</div>
       </PageLoaderContextProvider>
     );
-
   });
 });
