@@ -17,6 +17,7 @@ jest.mock("../../ssr", () => ({
   getMaintenanceMode: jest.fn(),
   getEndpointResources: jest.fn(),
   getHasActiveGoLive: jest.fn(),
+  getHasChatBotWidget: jest.fn(),
 }));
 
 jest.mock("../../types", () => ({
