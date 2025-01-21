@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import ViewInArIcon from "@mui/icons-material/ViewInAr";
 interface Props {
   userName?: string;
   email?: string;
@@ -49,28 +52,42 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
         alignItems: "center",
         gap: 2,
         padding: 4,
-        border: "1px solid #ddd",
-        borderRadius: "8px",
+        borderRadius: "5px",
         maxWidth: "600px",
         margin: "0 auto",
+        background: "#FFF",
+        boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
       }}
     >
       <Avatar sx={{ width: 40, height: 40 }} />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography
-          variant="h6"
+          variant="h4"
           sx={{
-            fontWeight: 600,
-            fontSize: "1rem",
+            fontWeight: 700,
+            fontSize: "14px",
             whiteSpace: "nowrap",
             fontFamily: "PT Sans",
+            fontStyle: "normal",
+            color: "#3B0086",
+            lineHeight: "13px",
+            letterSpacing: "0.5px",
           }}
         >
           {userName}
         </Typography>
         <Typography
           variant="body2"
-          sx={{ fontSize: "0.8rem", fontFamily: "PT Sans" }}
+          sx={{
+            fontWeight: 700,
+            fontSize: "10px",
+            whiteSpace: "nowrap",
+            fontFamily: "PT Sans",
+            fontStyle: "normal",
+            color: "#7C7C7C",
+            lineHeight: "13px",
+            letterSpacing: "0.5px",
+          }}
         >
           {roleName || "No role assigned"}
         </Typography>
@@ -96,8 +113,81 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleClose}>Edit Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Log Out</MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            color: "#3B0086",
+            fontFamily: '"PT Sans", sans-serif',
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 400,
+            lineHeight: "normal",
+            letterSpacing: "-0.14px",
+          }}
+        >
+          <PermIdentityIcon fontSize="small" sx={{ marginRight: 1 }} />
+          View Profile
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            color: "#3B0086",
+            fontFamily: '"PT Sans", sans-serif',
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 400,
+            lineHeight: "normal",
+            letterSpacing: "-0.14px",
+          }}
+        >
+          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
+          More Menu
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            color: "#3B0086",
+            fontFamily: '"PT Sans", sans-serif',
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 400,
+            lineHeight: "normal",
+            letterSpacing: "-0.14px",
+          }}
+        >
+          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
+          More Menu
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            color: "#3B0086",
+            fontFamily: '"PT Sans", sans-serif',
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 400,
+            lineHeight: "normal",
+            letterSpacing: "-0.14px",
+          }}
+        >
+          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
+          More Menu
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            color: "#3B0086",
+            fontFamily: '"PT Sans", sans-serif',
+            fontSize: "14px",
+            fontStyle: "normal",
+            fontWeight: 400,
+            lineHeight: "normal",
+            letterSpacing: "-0.14px",
+          }}
+        >
+          <LogoutIcon fontSize="small" sx={{ marginRight: 1 }} />
+          Log Out
+        </MenuItem>
       </Popover>
     </Box>
   );
