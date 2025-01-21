@@ -32,7 +32,7 @@ export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) {}
+  ) { }
 
   /* This api should be in web-api-backoffice */
   public web_account_setup(params: RegisterParams) {
@@ -229,5 +229,9 @@ export class WebApi {
     return await this.axios.get(
       `/api/v2/internal/BaseInternal/active-schedule`
     );
+  }
+
+  public async getChatBotMode() {
+    return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
   }
 }
