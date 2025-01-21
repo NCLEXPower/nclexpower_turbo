@@ -73,44 +73,36 @@ const Layout: React.FC<
       isAuthenticated={isAuthenticated}
       loading={loading || contentData.loading}
     >
-      {loading || contentData.loading ? (
-        <>Loading...</>
-      ) : (
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme()}>
-            <CssBaseline />
-            <HeaderTitleContextProvider>
-              <FormSubmissionContextProvider>
-
-
-                    <DrawerLayout
-                      menu={headerMenu}
-                      isAuthenticated={isAuthenticated}
-                      headerStyles={headerStyles}
-                      sidebarStyles={sidebarStyles}
-                      onLogout={logout}
-                      isPaid={isPaid}
-                    >
-                      <ContentLoader
-                        loading={loading || contentData.loading || router.loading}
-                      >
-                        <LoadablePageContent
-                          loading={loading || contentData.loading}
-                          pages={contentData.pages}
-                        >
-
-                      {children}
-                      <Footer info={CompanyInfo} list={list} />
-                      {shouldShowChatBotWidget && <ChatBotWidget />}
-                      </LoadablePageContent>
-                      </ContentLoader>
-                    </DrawerLayout>
-                    
-              </FormSubmissionContextProvider>
-            </HeaderTitleContextProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      )}
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme()}>
+          <CssBaseline />
+          <HeaderTitleContextProvider>
+            <FormSubmissionContextProvider>
+              <DrawerLayout
+                menu={headerMenu}
+                isAuthenticated={isAuthenticated}
+                headerStyles={headerStyles}
+                sidebarStyles={sidebarStyles}
+                onLogout={logout}
+                isPaid={isPaid}
+              >
+                <ContentLoader
+                  loading={loading || contentData.loading || router.loading}
+                >
+                  <LoadablePageContent
+                    loading={loading || contentData.loading}
+                    pages={contentData.pages}
+                  >
+                    {children}
+                    <Footer info={CompanyInfo} list={list} />
+                    {shouldShowChatBotWidget && <ChatBotWidget />}
+                  </LoadablePageContent>
+                </ContentLoader>
+              </DrawerLayout>
+            </FormSubmissionContextProvider>
+          </HeaderTitleContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </PageLoaderContextProvider>
   );
 };
