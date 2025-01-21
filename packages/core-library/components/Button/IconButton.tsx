@@ -12,6 +12,7 @@ interface Props {
   onClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   edge?: false | "start" | "end";
   className?: string;
+  disabled?: boolean;
   sx?: SxProps;
 }
 
@@ -22,6 +23,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   edge,
   children,
   className,
+  disabled,
   sx,
 }) => {
   return (
@@ -32,6 +34,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
       edge={edge}
       className={className}
       sx={{ "&:focus": { outline: "none !important" }, ...sx }}
+      disabled={disabled}
     >
       {children}
     </MuiIconButton>

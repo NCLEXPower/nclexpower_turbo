@@ -403,18 +403,32 @@ export class WebApiBackOffice {
   }
 
   public async getFormId() {
-    return await this.axios.get("/api/v2/content/BaseContent/get-form-id")
+    return await this.axios.get("/api/v2/content/BaseContent/get-form-id");
   }
 
   public async createDndOptions(params: CreateDndOptionsParams) {
-    return await this.axios.post("/api/v2/content/BaseContent/create-dnd-option", params)
+    return await this.axios.post(
+      "/api/v2/content/BaseContent/create-dnd-option",
+      params
+    );
   }
 
   public async getDndOptionList(params: DndOptionParams) {
-    return await this.axios.post<DndOptionsResponseType[]>(`/api/v2/content/BaseContent/get-all-dnd-options`, { ...params })
+    return await this.axios.post<DndOptionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-all-dnd-options`,
+      { ...params }
+    );
   }
 
   public async deleteDndOption(optionId: string) {
-    return await this.axios.delete(`/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`);
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`
+    );
+  }
+
+  public async updateHelpWidgetStatus(isEnabled: boolean) {
+    return await this.axios.put(`/api/v1/Customer/update-helpwidget-status`, {
+      isEnabled,
+    });
   }
 }
