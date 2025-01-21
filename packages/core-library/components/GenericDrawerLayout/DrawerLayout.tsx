@@ -104,6 +104,7 @@ export const DrawerLayout: React.FC<
                 <Button
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
+                  aria-label="toggle-sidebar"
                 >
                   <MenuIcon sx={{ color: isScrolled ? "#00173F" : "white" }} />
                 </Button>
