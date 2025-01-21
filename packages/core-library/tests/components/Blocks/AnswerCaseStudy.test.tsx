@@ -24,7 +24,7 @@ jest.mock(
 jest.mock(
   "../../../components/blocks/AnswerOptions/blocks/CaseStudy/DDC/DDC",
   () => ({
-    DDC: jest.fn(() => <div>DDC Component</div>),
+    DDClozeAndTable: jest.fn(() => <div>DDC Component</div>),
   })
 );
 jest.mock(
