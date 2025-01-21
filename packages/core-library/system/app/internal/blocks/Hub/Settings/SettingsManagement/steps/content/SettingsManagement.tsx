@@ -31,7 +31,7 @@ const chooseSettingsStepFormSchema = yup.object({
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
-    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE"])
+    .oneOf(["CONFIG", "AUTOMATION", "ROUTER", "MAINTENANCE", "CHATBOT"])
     .required(),
 });
 
@@ -346,6 +346,20 @@ export const MaintenanceMode = (props: {
             }
             elevation={5}
             text="Web Customer"
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <Card
+            hoverEffect
+            onClick={() =>
+              handleSelection({
+                chosen: "CHATBOT",
+                selection: "WEBCUSTOMER",
+              })
+            }
+            data-testid="chatbot-widget-card"
+            elevation={5}
+            text="Chatbot Mode"
           />
         </Grid>
         <Grid item xs={4}></Grid>

@@ -244,4 +244,8 @@ export class WebApi {
       `/api/v2/internal/BaseInternal/send-notification`
     );
   }
+
+  public async getChatBotMode() {
+    return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
+  }
 }
