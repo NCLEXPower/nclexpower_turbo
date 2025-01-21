@@ -9,6 +9,7 @@ export const accessControl = {
     "InAppManagement",
     "OtherConfigurations",
     "MaintenanceMode",
+    "ChatbotMode"
   ],
   [AccessLevels.ADMIN]: [
     "ChooseProductsConfigurations",
@@ -16,6 +17,7 @@ export const accessControl = {
     "ContentManagementSystemSettings",
     "InAppManagement",
     "MaintenanceMode",
+    "ChatbotMode"
   ],
   [AccessLevels.ENCODER]: ["ChooseProductsConfigurations"],
 };
