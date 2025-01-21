@@ -101,14 +101,10 @@ const Layout: React.FC<
 
                       {children}
                       <Footer info={CompanyInfo} list={list} />
-<<<<<<< HEAD
                       {/* dynamic hideHelp should be implemented here */}
                       {true && <ChatBotWidget />}
                       </LoadablePageContent>
                       </ContentLoader>
-=======
-                      {shouldShowChatBotWidget && <ChatBotWidget />}
->>>>>>> 1408a5116e9031ef10fe9c60c2f1c8c0a22b0404
                     </DrawerLayout>
                     
               </FormSubmissionContextProvider>
