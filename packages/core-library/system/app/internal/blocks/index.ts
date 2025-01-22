@@ -23,3 +23,4 @@ export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";
 export * from "./Hub/SalesManagement/SalesManagementBlock";
 export * from "./Hub/Announcement/AnnouncementManagementBlock";
+export * from "./Hub/ComingSoon/ComingSoonManagementBlock";
