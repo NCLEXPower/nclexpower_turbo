@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "../../common";
+import { render } from "@testing-library/react";
 import { CreateCategoryBlock } from "./../../../system/app/internal/blocks/Hub/Category/CreateCategory/CreateCategoryBlock";
 import { useBusinessQueryContext, useDialogContext } from "../../../contexts";
 
@@ -83,7 +84,6 @@ describe("CreateCategoryBlock", () => {
   it("should render rows with category names, descriptions, and types", async () => {
     render(<CreateCategoryBlock />);
 
-    // Mapping of categoryType index to category name
     const categoryTypes = [
       "PRICING",
       "REPORT ISSUE",
@@ -93,16 +93,14 @@ describe("CreateCategoryBlock", () => {
       "CONTACT CONCERN",
     ];
 
-    // Check category names and descriptions
     const firstRowCategoryName = screen.getByTestId("cell-1-categoryName");
     expect(firstRowCategoryName).toHaveTextContent("Test Category");
 
     const firstRowCategoryDescription = screen.getByTestId("cell-1-categoryDescription");
     expect(firstRowCategoryDescription).toHaveTextContent("Description for Test Category");
 
-    // Ensure the categoryType is displayed as the mapped label
     const firstRowCategoryType = screen.getByTestId("cell-1-categoryType");
-    expect(firstRowCategoryType).toHaveTextContent(categoryTypes[0]);  // Expect "PRICING" for categoryType 0
+    expect(firstRowCategoryType).toHaveTextContent(categoryTypes[0]); 
   });
 
   it("should call openDialog when the Create button is clicked", async () => {
