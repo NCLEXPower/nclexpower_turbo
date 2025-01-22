@@ -7,7 +7,7 @@ import { time } from "console";
 import * as yup from "yup";
 
 export const contentDateSchema = yup.object({
-  title: yup
+  eventName: yup
     .string()
     .required("Title is required.")
     .max(100, "Title cannot be longer than 100 characters."),

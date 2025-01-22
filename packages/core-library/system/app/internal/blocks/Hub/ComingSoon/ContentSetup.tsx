@@ -2,6 +2,7 @@ import { Container, Stack, Typography } from "@mui/material";
 import {
   Button,
   Checkbox,
+  ConfirmationModal,
   GenericSelectField,
   TextAreaField,
   TextField,
@@ -24,7 +25,7 @@ const ContentSetup = () => {
   const [timer, setTimer] = useState(true);
   const [showPreview, setShowPreview] = useState(false);
 
-  const title = watch("title", "");
+  const title = watch("eventName", "");
   const environmentValue = watch("environment", "");
   const description = watch("description", "");
 
@@ -33,6 +34,8 @@ const ContentSetup = () => {
   const handleContinue = () => setShowPreview(true);
   const handleBack = () => setShowPreview(false);
 
+  const test = watch();
+  console.log(test);
   return (
     <Container
       sx={{
@@ -115,7 +118,7 @@ const ContentSetup = () => {
                     paddingLeft: "1rem",
                   }}
                 >
-                  {environmentValue || "Pre-Prod"}
+                  {environmentValue}
                 </Typography>
               </div>
               <div className="h-40">
@@ -162,11 +165,10 @@ const ContentSetup = () => {
                     onChange={toggleConfetti}
                   />
                 </Stack>
-                <Button
-                  sx={{ bgcolor: "#860000", borderRadius: "8px" }}
-                  id="back"
-                  text="Back"
-                  onClick={handleBack}
+                <ConfirmationModal
+                  dialogContent="Are you sure you want to Cancel “Coming Soon”?"
+                  customButton="Continue"
+                  handleSubmit={handleBack}
                 />
               </div>
             </div>
@@ -190,7 +192,7 @@ const ContentSetup = () => {
             }}
             control={control}
             placeholder="Input Title"
-            name={"title"}
+            name={"eventName"}
           />
           <Typography
             variant="h6"
@@ -251,14 +253,10 @@ const ContentSetup = () => {
                 onChange={toggleConfetti}
               />
             </Stack>
-            <Button
-              sx={{
-                bgcolor: "#3B0086",
-                borderRadius: "8px",
-              }}
-              id="continue"
-              text="Continue"
-              onClick={handleContinue}
+            <ConfirmationModal
+              dialogContent="Are you sure you want to Activate “Coming Soon”?"
+              customButton="Continue"
+              handleSubmit={handleContinue}
             />
           </div>
         </>

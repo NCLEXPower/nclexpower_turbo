@@ -217,6 +217,12 @@ const ButtonSelector = ({
         />
       );
 
+    case "Back":
+      return (
+        <Button sx={{ zIndex: 2 }} onClick={onClickFn}>
+          <Typography>Back</Typography>
+        </Button>
+      )
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>
