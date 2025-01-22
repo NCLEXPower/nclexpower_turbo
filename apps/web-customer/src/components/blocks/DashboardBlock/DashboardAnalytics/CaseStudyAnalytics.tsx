@@ -34,7 +34,7 @@ export const CaseStudyAnalytics = () => {
             <Box sx={containerStyle}>
               <Typography
                 sx={{
-                  fontSize: isMobile ? "1.2rem" : "clamp(1rem, 1.3vw, 1.4rem)",
+                  fontSize: isMobile ? "1.2rem" : "clamp(0.97rem, 1vw, 1.4rem)",
                   fontFamily: "PT Sans Narrow",
                   fontWeight: "bold",
                   color: "rgba(0, 23, 63, 1)",
@@ -84,7 +84,7 @@ export const FinalStudyAnalytics = () => {
             <Box sx={containerStyle}>
               <Typography
                 sx={{
-                  fontSize: isMobile ? "1.2rem" : "clamp(1rem, 1.3vw, 1.4rem)",
+                  fontSize: isMobile ? "1.2rem" : "clamp(0.97rem, 1vw, 1.4rem)",
                   fontFamily: "PT Sans Narrow",
                   fontWeight: "bold",
                   maxWidth: "100%",

@@ -11,11 +11,24 @@ import {
   CurrentProgress2,
 } from "./DashboardAnalytics";
 import { userData } from "./DashboardAnalytics/DashboardMock";
+import { useSensitiveInformation } from "core-library/hooks";
+import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
 
 export const Dashboard: React.FC = () => {
+  const { customer } = useSensitiveInformation();
+
+  const customerName = formatCustomerName(customer);
+
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div className="w-dvw flex flex-col flex-wrap xl:grid xl:grid-cols-12 xl:auto-rows-auto xl:w-full gap-3 p-6 h-full lg:grid-flow-row xl:grid-flow-row-dense">
-      <div className="col-span-10 col-start-3">
+      <div className="col-span-12 col-start-3">
         <Typography
           sx={{
             fontFamily: "Rajdhani",
@@ -24,8 +37,8 @@ export const Dashboard: React.FC = () => {
             fontWeight: "bold",
           }}
         >
-          WELCOME ! {userData.name} |
-          <span className="text-[25px]"> {userData.date}</span>
+          WELCOME ! {customerName} |
+          <span className="text-[25px]"> {formattedDate}</span>
         </Typography>
       </div>
 

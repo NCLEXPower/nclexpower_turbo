@@ -62,7 +62,9 @@ export const CurrentProgress = () => {
                     color: "rgba(15, 42, 113, 1)",
                     fontFamily: "Rajdhani",
                     lineHeight: 0.8,
-                    fontSize: isMobile ? "2rem" : "clamp(1.7rem, 2.2vw, 3rem)",
+                    fontSize: isMobile
+                      ? "2rem"
+                      : "clamp(1.62rem, 1.99vw, 3rem)",
                     fontWeight: "bold",
                     zIndex: 100,
 
