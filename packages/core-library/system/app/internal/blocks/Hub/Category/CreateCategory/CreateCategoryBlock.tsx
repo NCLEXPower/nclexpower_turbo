@@ -59,6 +59,7 @@ export const CreateCategoryBlock: React.FC = () => {
               <Button
                 variant="text"
                 onClick={async () => await deleteCategory(params.row.id)}
+                data-testid={`delete-button-${params.row.id}`}
               >
                 Delete
               </Button>
