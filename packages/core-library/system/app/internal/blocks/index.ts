@@ -23,3 +23,6 @@ export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";
 export * from "./Hub/SalesManagement/SalesManagementBlock";
 export * from "./Hub/Announcement/AnnouncementManagementBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAccountBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";
