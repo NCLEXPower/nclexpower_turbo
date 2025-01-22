@@ -6,29 +6,41 @@
 
 import React from 'react'
 import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../../../contexts'
-import { useColumns } from '../../../../../../hooks'
-import { Alert, Card, ConfirmationModal, DataGrid } from '../../../../../../components'
+import { useApiCallback, useColumns, useModal } from '../../../../../../hooks'
+import { Alert, Card, DeleteDialog, DataGrid } from '../../../../../../components'
 import { Box, Container, ListItemButton } from '@mui/material'
 import { InclusionType } from './inclusion/validation'
 import { InclusionForm } from './inclusion/InclusionForm'
 import { CustomPopover } from '../../../../../../components/Popover/Popover'
 import { GridMoreVertIcon } from '@mui/x-data-grid'
 import { atom, useAtom } from 'jotai'
-import { EditInclusionParams, GetAllInclusionResponse } from '../../../../../../api/types'
+import { EditInclusionParams } from '../../../../../../api/types'
 import { InclusionIdAtom } from '../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic'
 
 export const InclusionBlock: React.FC = () => {
+    const { open, close, props } = useModal();
     const [, setId] = useAtom(InclusionIdAtom)
     const { openDialog } = useDialogContext()
-    const { businessQueryGetAllInclusion, businessQueryCreateInclusion, businessQueryDeleteInclusion } = useBusinessQueryContext()
+    const { businessQueryGetAllInclusion, businessQueryCreateInclusion } = useBusinessQueryContext()
     const { data, isLoading, refetch } = businessQueryGetAllInclusion(["getAllInclusionApi"])
     const { mutateAsync: createInclusion } = businessQueryCreateInclusion()
     const { executeToast } = useExecuteToast()
-    const { mutateAsync: deleteInclusion } = businessQueryDeleteInclusion()
 
-    async function onDelete(row: GetAllInclusionResponse) {
-        await deleteInclusion(row.id)
-        refetch()
+    const inclusionCb = useApiCallback(
+        async (api, args: string) =>
+            await api.webbackoffice.deleteInclusion(args)
+    );
+
+    async function onDelete(id: string) {
+        try {
+            await inclusionCb.execute(id)
+            refetch()
+            executeToast('Inclusion successfully deleted', 'top-right', true, { type: 'success' })
+
+        }
+        catch {
+            executeToast('Something went wrong. Please try again later', 'top-right', true, { type: 'error' })
+        }
     }
 
     const handleEdit = (row: EditInclusionParams) => {
@@ -68,11 +80,17 @@ export const InclusionBlock: React.FC = () => {
                                     onClick={() => handleEdit(row)}>
                                     Edit
                                 </ListItemButton>
-                                <ConfirmationModal
-                                    customButton={'ListDeleteButton'}
-                                    dialogContent="Are you sure you want to delete this item?"
-                                    isLoading={false}
-                                    handleSubmit={() => onDelete(row)}
+                                <ListItemButton
+                                    sx={{ color: 'black' }}
+                                    onClick={() => open()}>
+                                    Delete
+                                </ListItemButton>
+                                <DeleteDialog
+                                    isOpen={props.isOpen}
+                                    handleClose={close}
+                                    expectedInput="Delete Inclusion"
+                                    handleDelete={() => onDelete(row.id)}
+                                    loading={inclusionCb.loading}
                                 />
                             </CustomPopover>
                         </Box>

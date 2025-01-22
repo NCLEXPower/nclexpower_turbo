@@ -13,7 +13,6 @@ import {
   useGetOrderNumber,
   useGetAllInclusion,
   useCreateInclusion,
-  useDeleteInclusion,
   useUpdateInclusion,
   useCreateSubsequentOptions,
   useCreateReportIssue,
@@ -1376,43 +1375,6 @@ describe("useCreateInclusion", () => {
     renderHook(() => useCreateInclusion(mockOptions));
 
     expect(useMutation).toHaveBeenCalledWith(expect.any(Function), mockOptions);
-  });
-});
-
-describe("useDeleteInclusion", () => {
-  const mockExecute = jest.fn();
-  const mockMutate = jest.fn();
-  const mockData: AxiosResponse<number, AxiosError> = {
-    data: 200,
-    status: 200,
-    statusText: "OK",
-    headers: new AxiosHeaders(),
-    config: { headers: new AxiosHeaders() },
-  };
-  const mockInclusionId: string = "test-inclusion-id";
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    (useApiCallback as jest.Mock).mockReturnValue({
-      execute: mockExecute,
-    });
-    (useMutation as jest.Mock).mockReturnValue({
-      mutateAsync: mockMutate,
-      isLoading: false,
-    });
-  });
-
-  it("should delete inclusion successfully", async () => {
-    const opt = { onSuccess: jest.fn() };
-    mockExecute.mockResolvedValue({ data: mockData });
-    const { result } = renderHook(() => useDeleteInclusion(opt));
-
-    await act(async () => {
-      await result.current?.mutateAsync?.(mockInclusionId);
-    });
-
-    expect(mockMutate).toHaveBeenCalled();
-    expect(result.current.isLoading).toBe(false);
   });
 });
 
