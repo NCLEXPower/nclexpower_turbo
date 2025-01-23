@@ -3,7 +3,6 @@ import { Typography } from "@mui/material";
 import { DialogBox } from "../../DialogBox";
 import { InputField, Button } from "../../..";
 
-
 type DeleteDialogProps = {
   handleClose: () => void;
   handleDelete: () => Promise<void>;

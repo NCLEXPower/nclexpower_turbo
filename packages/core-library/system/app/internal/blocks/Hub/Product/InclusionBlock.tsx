@@ -38,8 +38,8 @@ export const InclusionBlock: React.FC = () => {
             executeToast('Inclusion successfully deleted', 'top-right', true, { type: 'success' })
 
         }
-        catch {
-            executeToast('Something went wrong. Please try again later', 'top-right', true, { type: 'error' })
+        catch (error) {
+            executeToast(`Something went wrong during deletion ${error}. Please try again later`, 'top-right', true, { type: 'error' })
         }
     }
 
@@ -114,7 +114,7 @@ export const InclusionBlock: React.FC = () => {
             refetch()
         }
         catch (error) {
-            executeToast(`Something went wrong during deletion ${error}.`, 'top-right', true, { type: 'error' })
+            executeToast(`Something went wrong during submission ${error}. Please try again later`, 'top-right', true, { type: 'error' })
         }
     }
 
