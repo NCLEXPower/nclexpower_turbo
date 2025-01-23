@@ -32,7 +32,7 @@ export type Blocks =
 type BlockProps = {
   LoginFormBlock: {};
   HubOverviewBlock: { cards: DashboardCardType[] };
-  SettingsBlock: {};
+  SettingsBlock: { fileRoutes: string[] };
   QuestionApprovalBlock: {};
   EmailVerificationBlock: {};
   PasswordChangeBlock: {};
@@ -106,7 +106,14 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE" | "HCP" | "MCQNOGROUP";
+  questionType:
+    | "DDC"
+    | "SATA"
+    | "MRSN"
+    | "DDT"
+    | "BOWTIE"
+    | "HCP"
+    | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
