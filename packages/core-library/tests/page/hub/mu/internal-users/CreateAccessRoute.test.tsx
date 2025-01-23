@@ -31,11 +31,9 @@ describe("CreateAccessRoute component", () => {
   it("renders a top-level menu label and path", () => {
     render(<CreateAccessRoute menu={mockMenu} />);
 
-    expect(screen.getByText(/\[ dashboard \]/i)).toBeInTheDocument();
-    expect(screen.getByText(/\[ \/dashboard \]/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/\[ \/dashboard\/analytics \]/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("/dashboard")).toBeInTheDocument();
+    expect(screen.getByText("/dashboard/analytics")).toBeInTheDocument();
   });
 
   it("toggles child visibility when the button is clicked", async () => {
@@ -79,7 +77,7 @@ describe("CreateAccessRoute component", () => {
 
     render(<CreateAccessRoute menu={noChildrenMenu} />);
 
-    const toggleBtn = screen.getByRole("button", { name: /\[ empty \]/i });
+    const toggleBtn = screen.getByRole("button", { name: "Empty" });
     expect(toggleBtn).toBeDisabled();
   });
 });

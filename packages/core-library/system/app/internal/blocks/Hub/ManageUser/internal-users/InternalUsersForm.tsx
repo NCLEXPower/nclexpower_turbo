@@ -297,10 +297,9 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 onChange={handleOnChange}
               />
               <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
-                Access Route Level [
+                Access Route Level{" "}
                 {AccountLevel.find((level) => level.value === accessLevel)
                   ?.label ?? "Access Level"}
-                ]
               </Typography>
             </Box>
             <Box

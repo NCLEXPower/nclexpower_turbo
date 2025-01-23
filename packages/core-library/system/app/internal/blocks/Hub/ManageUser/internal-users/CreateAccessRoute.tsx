@@ -33,7 +33,7 @@ export const CreateAccessRoute: React.FC<CreateAccessRouteProps> = ({
                 fontSize: "clamp(14px,4vw,18px)",
               }}
             >
-              [ {menu.label} ]{" "}
+              {menu.label}
             </Typography>
             {!!menu.children.length && (
               <Box
@@ -58,7 +58,7 @@ export const CreateAccessRoute: React.FC<CreateAccessRouteProps> = ({
                   wordBreak: "break-all",
                 }}
               >
-                [ {menu.path} ]
+                {menu.path}
               </Typography>
             </div>
           )}
@@ -73,7 +73,7 @@ export const CreateAccessRoute: React.FC<CreateAccessRouteProps> = ({
               wordBreak: "break-all",
             }}
           >
-            [ {menu.path} ]
+            {menu.path}
           </Typography>
         </div>
       )}

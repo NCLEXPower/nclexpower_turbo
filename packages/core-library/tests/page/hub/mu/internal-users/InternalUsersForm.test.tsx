@@ -1,6 +1,3 @@
-import React from "react";
-
-import "@testing-library/jest-dom";
 import { MenuItems } from "../../../../../api/types";
 import InternalUsersForm from "../../../../../system/app/internal/blocks/Hub/ManageUser/internal-users/InternalUsersForm";
 import { useBusinessQueryContext } from "../../../../../contexts";
@@ -118,9 +115,7 @@ describe("InternalUsersForm Component", () => {
     userEvent.click(adminOption);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/access route level \[admin\]/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/access route level admin/i)).toBeInTheDocument();
     });
   });
 
@@ -164,9 +159,7 @@ describe("InternalUsersForm Component", () => {
     userEvent.click(adminOption);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/access route level \[admin\]/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/access route level admin/i)).toBeInTheDocument();
     });
 
     const submitButton = screen.getByTestId("submit-btn");
