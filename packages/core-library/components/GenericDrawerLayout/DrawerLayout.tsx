@@ -43,7 +43,8 @@ export const DrawerLayout: React.FC<
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
-  const [open, setOpen] = useState(true);
+
+  const [open, setOpen] = useState(false);
   const { isScrolled } = useScroll();
 
   const router = useRouter();
@@ -61,7 +62,7 @@ export const DrawerLayout: React.FC<
   };
 
   useEffect(() => {
-    setOpen(!isMobile);
+    setOpen(false);
   }, [isMobile]);
 
   if (!mounted) return;
@@ -105,6 +106,7 @@ export const DrawerLayout: React.FC<
                 <Button
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
+                  aria-label="toggle-sidebar"
                 >
                   <MenuIcon sx={{ color: isScrolled ? "#00173F" : "white" }} />
                 </Button>
