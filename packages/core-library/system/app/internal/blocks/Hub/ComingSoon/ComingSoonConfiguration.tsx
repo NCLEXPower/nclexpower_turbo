@@ -8,19 +8,16 @@ import {
 import {
   CountryMockData,
   TimezoneMockData,
-} from "../ComingSoon/ComingSoonMock";
-import { useForm } from "react-hook-form";
-import { contentDateSchema, ContentDateType } from "../ComingSoon/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
+} from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
+import { ContentDateType } from "./validation";
+import { Control } from "react-hook-form";
 
-const ComingSoonSetup = () => {
-  const form = useForm<ContentDateType>({
-    mode: "all",
-    resolver: yupResolver(contentDateSchema),
-  });
+type ComingSoonProps = {
+  control: Control<ContentDateType>;
+};
 
-  const { control } = form;
+const ComingSoonConfiguration = ({ control }: ComingSoonProps) => {
   const [isSwitchOn, setIsSwitchOn] = useState(true);
 
   return (
@@ -108,7 +105,7 @@ const ComingSoonSetup = () => {
             </Typography>
             <GenericSelectField
               options={TimezoneMockData}
-              name="timezones"
+              name="timeZone"
               control={control}
               placeholder="Select Timezone:"
               sx={{ width: 300, borderColor: "#3B0086", borderRadius: "8px" }}
@@ -127,7 +124,7 @@ const ComingSoonSetup = () => {
             <MultipleSelectField
               sx={{ width: 550, mb: 2 }}
               control={control}
-              name="countries"
+              name="selectedCountriesTimezones"
               label="select countries"
               options={CountryMockData}
               multiple
@@ -169,4 +166,4 @@ const ComingSoonSetup = () => {
   );
 };
 
-export default ComingSoonSetup;
+export default ComingSoonConfiguration;

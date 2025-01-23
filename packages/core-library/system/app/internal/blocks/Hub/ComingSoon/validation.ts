@@ -26,13 +26,19 @@ export const contentDateSchema = yup.object({
     .array()
     .of(yup.string())
     .min(1, "Please select at least one country."),
-  timezones: yup
-    .string()
-    .required("Timezone is required."),
+  timeZone: yup.string().required("Timezone is required."),
+  selectedCountriesTimezones: yup
+    .array()
+    .of(yup.string())
+    .min(1, "Please select at least one timezone.")
+    .required("Timezone is required.  Please select at least one timezone."),
   environment: yup
     .string()
     .required("Environment is required.")
     .oneOf(["Dev", "Pre-Prod"]),
+  confetti: yup.boolean().optional(),
+  announcement: yup.boolean().optional(),
+  isActive: yup.boolean().optional(),
 });
 
 export type ContentDateType = yup.InferType<typeof contentDateSchema>;

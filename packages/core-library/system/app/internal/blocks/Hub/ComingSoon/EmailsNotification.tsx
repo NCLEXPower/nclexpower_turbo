@@ -1,25 +1,9 @@
 import React, { useMemo } from "react";
-import { Typography, Container, Stack, Box } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 import { ReactTable } from "../../../../../../components";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { emailMockData } from "../ComingSoon/ComingSoonMock";
-import { contentDateSchema, ContentDateType } from "../ComingSoon/validation";
-import ComingSoonSetup from "../ComingSoon/ComingSoonSetup";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useForm } from "react-hook-form";
-import ContentSetup from "./ContentSetup";
-import Chip from "../../../../../../components/Chip/Chip";
+import { emailMockData } from "./ComingSoonMock";
 
-export const ComingSoonManagement = () => {
-  const form = useForm<ContentDateType>({
-    mode: "all",
-    resolver: yupResolver(contentDateSchema),
-  });
-
-  const { control, handleSubmit } = form;
-
+export const EmailsNotification = () => {
   const totalCount = useMemo(() => {
     return emailMockData.length;
   }, [emailMockData]);
@@ -48,11 +32,7 @@ export const ComingSoonManagement = () => {
   );
 
   return (
-    <Stack direction={"column"} spacing={2}>
-      <Stack direction="row" spacing={2} sx={{ height: "550px" }}>
-        <ComingSoonSetup />
-        <ContentSetup />
-      </Stack>
+    <React.Fragment>
       <Typography
         variant="h6"
         component="h2"
@@ -62,8 +42,9 @@ export const ComingSoonManagement = () => {
           color: "#3B0086",
           paddingTop: "3rem",
         }}
-        children={"Emails to Notify :"}
-      />
+      >
+        Emails to Notify
+      </Typography>
       <Typography
         sx={{
           fontSize: "1rem",
@@ -74,8 +55,11 @@ export const ComingSoonManagement = () => {
         children={`Total: ${totalCount} emails`}
       />
       <Container className="flex gap-2">
-        <ReactTable columns={columns} data={emailMockData} />
+        <ReactTable
+          columns={columns}
+          data={emailMockData}
+        />
       </Container>
-    </Stack>
+    </React.Fragment>
   );
 };
