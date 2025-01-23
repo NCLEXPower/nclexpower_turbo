@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { Grid, Box, Typography } from "@mui/material";
 import { accountSetupSchema, AccountSetupType } from "./validation";
@@ -65,8 +65,8 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
     defaultValues: { ...accountSetupSchema.getDefault() },
   });
 
-  const { control, handleSubmit, setValue, clearErrors, watch } = form;
-  const email = useWatch({ control, name: "email" });
+  const { control, handleSubmit, setValue, clearErrors, getValues } = form;
+
   const accessLevel = useWatch({ control, name: "accessLevel" });
 
   const filteredMenu: MenuItems[] | undefined = useMemo(
@@ -93,13 +93,11 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
     [uniquePaths]
   );
 
-  setValue("routers", routers ?? []);
+  if (routers.length) {
+    setValue("routers", routers);
+  }
 
-  useEffect(() => {
-    if (email) {
-      setValue("username", email);
-    }
-  }, [email, setValue]);
+  setValue("username", getValues("email"));
 
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -300,9 +298,8 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
               />
               <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
                 Access Route Level [
-                {AccountLevel.find(
-                  (level) => level.value === watch("accessLevel")
-                )?.label ?? "Access Level"}
+                {AccountLevel.find((level) => level.value === accessLevel)
+                  ?.label ?? "Access Level"}
                 ]
               </Typography>
             </Box>
