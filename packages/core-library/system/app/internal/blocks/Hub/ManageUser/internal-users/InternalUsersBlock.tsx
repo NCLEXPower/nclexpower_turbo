@@ -1,4 +1,3 @@
-import React from "react";
 import InternalUsersForm from "./InternalUsersForm";
 import { AccountSetupType } from "./validation";
 import { useAuthContext, useExecuteToast } from "../../../../../../../contexts";
