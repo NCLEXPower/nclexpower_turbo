@@ -1,5 +1,5 @@
-import { DeleteDialog } from "../../../components";
-import { act, render, screen, userEvent } from "../../common";
+import { ConfirmationDeleteDialog } from "../../../components";
+import { act, render, screen } from "../../common";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -18,7 +18,7 @@ describe("DialogBox", () => {
   it("should render the delete dialog without error when open is truthy", () => {
     act(() => {
       render(
-        <DeleteDialog
+        <ConfirmationDeleteDialog
           isOpen={true}
           handleClose={handleClose}
           handleDelete={handleDelete}
@@ -30,7 +30,7 @@ describe("DialogBox", () => {
   it("should render the delete dialog with the correct information", () => {
     act(() => {
       render(
-        <DeleteDialog
+        <ConfirmationDeleteDialog
           isOpen={true}
           handleClose={handleClose}
           handleDelete={handleDelete}
@@ -47,7 +47,7 @@ describe("DialogBox", () => {
   it("should disable the confirm button loading when loading is true", () => {
     act(() => {
       render(
-        <DeleteDialog
+        <ConfirmationDeleteDialog
           isOpen={true}
           handleClose={handleClose}
           handleDelete={handleDelete}

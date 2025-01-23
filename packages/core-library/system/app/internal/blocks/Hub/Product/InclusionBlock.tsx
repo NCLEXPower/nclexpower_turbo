@@ -7,7 +7,7 @@
 import React from 'react'
 import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../../../contexts'
 import { useApiCallback, useColumns, useModal } from '../../../../../../hooks'
-import { Alert, Card, DeleteDialog, DataGrid } from '../../../../../../components'
+import { Alert, Card, ConfirmationDeleteDialog, DataGrid } from '../../../../../../components'
 import { Box, Container, ListItemButton } from '@mui/material'
 import { InclusionType } from './inclusion/validation'
 import { InclusionForm } from './inclusion/InclusionForm'
@@ -85,9 +85,10 @@ export const InclusionBlock: React.FC = () => {
                                     onClick={() => open()}>
                                     Delete
                                 </ListItemButton>
-                                <DeleteDialog
+                                <ConfirmationDeleteDialog
                                     isOpen={props.isOpen}
                                     handleClose={close}
+                                    description="Are you sure you want to delete this inclusion? This action cannot be undone and this will permanently delete the inclusion."
                                     expectedInput="Delete Inclusion"
                                     handleDelete={() => onDelete(row.id)}
                                     loading={inclusionCb.loading}
@@ -112,8 +113,8 @@ export const InclusionBlock: React.FC = () => {
             }
             refetch()
         }
-        catch {
-            executeToast('Somethin went wrong. Please try again later', 'top-right', true, { type: 'error' })
+        catch (error) {
+            executeToast(`Something went wrong during deletion ${error}.`, 'top-right', true, { type: 'error' })
         }
     }
 

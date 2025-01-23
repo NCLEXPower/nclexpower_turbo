@@ -52,7 +52,6 @@ export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
 export * from "./Popover/Popover";
-export * from "./Dialog/DeleteDialog";
 
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
@@ -67,6 +66,7 @@ export * from "./Radio/Radio";
 export * from "./Textfield/TextField";
 export * from "./forms/TextAreaField";
 export * from "./blocks/Accordion/SummaryAccordion";
+export * from "./Dialog/DialogFormBlocks/DeleteModal/ConfirmationDeleteDialog";
 
 export * from "./Dialog/DialogFormBlocks";
 export { GenericSelectField } from "../components/Textfield/GenericSelectField";
