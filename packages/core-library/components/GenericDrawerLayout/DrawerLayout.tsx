@@ -87,6 +87,7 @@ export const DrawerLayout: React.FC<
             open={open}
             setOpen={handleDrawer}
             isAuthenticated={isAuthenticated}
+            onLogout={onLogout}
           />
         )}
       <Main open={open} isMobile={isMobile}>

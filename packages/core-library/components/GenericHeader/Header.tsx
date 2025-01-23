@@ -14,17 +14,17 @@ import {
   IconButton,
   Button,
   ClickAwayListener,
-} from '@mui/material';
-import { useResolution } from '../../hooks';
-import { HeaderLogo } from './HeaderLogo';
-import { useRouter } from '../../core';
-import { AccountMenu, BreadCrumbs } from '../index';
-import { WebHeaderStylesType } from '../../types/web-header-style';
-import { AccountMenuItem } from '.';
-import { MenuItems } from '../../api/types';
-import SearchIcon from '@mui/icons-material/Search';
-import { config } from '../../config';
-import { useState } from 'react';
+} from "@mui/material";
+import { useResolution } from "../../hooks";
+import { HeaderLogo } from "./HeaderLogo";
+import { useRouter } from "../../core";
+import { AccountMenu, BreadCrumbs } from "../index";
+import { WebHeaderStylesType } from "../../types/web-header-style";
+import { AccountMenuItem } from ".";
+import { MenuItems } from "../../api/types";
+import SearchIcon from "@mui/icons-material/Search";
+import { config } from "../../config";
+import { useState } from "react";
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -35,22 +35,22 @@ export interface Props extends Partial<WebHeaderStylesType> {
 }
 
 const inputBaseStyles = {
-  bgcolor: 'white',
-  color: 'black',
-  borderRadius: '7px',
-  padding: '5px',
-  width: '100%',
-  border: '1px solid #ccc',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  '& .MuiInputBase-input': {
-    padding: '5px',
-    borderRadius: '7px',
-    backgroundColor: 'white',
-    '&::placeholder': {
-      marginLeft: '10px',
-      color: '#888',
+  bgcolor: "white",
+  color: "black",
+  borderRadius: "7px",
+  padding: "5px",
+  width: "100%",
+  border: "1px solid #ccc",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  "& .MuiInputBase-input": {
+    padding: "5px",
+    borderRadius: "7px",
+    backgroundColor: "white",
+    "&::placeholder": {
+      marginLeft: "10px",
+      color: "#888",
     },
   },
 };
@@ -69,8 +69,8 @@ export const Header: React.FC<Props> = ({
   const router = useRouter();
   const path = router.pathname;
   const appName = config.value.BASEAPP;
-  const isInHub = router.pathname?.startsWith('/hub') || false;
-  const isInWebcHub = isAuthenticated && isInHub && appName.includes('c');
+  const isInHub = router.pathname?.startsWith("/hub") || false;
+  const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -95,18 +95,18 @@ export const Header: React.FC<Props> = ({
   return (
     !hidden && (
       <Box
-        role='banner'
-        component='header'
-        width='100%'
+        role="banner"
+        component="header"
+        width="100%"
         minHeight={70}
-        display='flex'
-        data-testid='header'
-        justifyContent='center'
-        alignItems='center'
-        position='sticky'
+        display="flex"
+        data-testid="header"
+        justifyContent="center"
+        alignItems="center"
+        position="sticky"
         top={0}
         zIndex={999}
-        bgcolor='background.default'
+        bgcolor="background.default"
         sx={{
           ...drawerHeader,
         }}
@@ -118,24 +118,24 @@ export const Header: React.FC<Props> = ({
         <Grid
           container
           px={8}
-          width='100%'
-          position='relative'
-          display='flex'
-          alignItems='flex-end'
-          justifyContent='flex-end'
+          width="100%"
+          position="relative"
+          display="flex"
+          alignItems="flex-end"
+          justifyContent="flex-end"
         >
           <Grid
             item
             container
-            alignItems='flex-center'
+            alignItems="flex-center"
             spacing={6}
-            height='auto'
+            height="auto"
           >
             <Grid
               item
               container
-              alignItems='center'
-              justifyContent='space-between'
+              alignItems="center"
+              justifyContent="space-between"
               xs
             >
               {!isAuthenticated && (
@@ -144,9 +144,9 @@ export const Header: React.FC<Props> = ({
                 </Grid>
               )}
 
-              <Grid item display='flex' alignItems='center'>
+              <Grid item display="flex" alignItems="center">
                 {!isMobile && !isAuthenticated ? (
-                  <Grid container gap={6} direction='row' alignItems='center'>
+                  <Grid container gap={6} direction="row" alignItems="center">
                     {menu &&
                       menu.length > 0 &&
                       menu.map((navigation, index) => (
@@ -154,7 +154,7 @@ export const Header: React.FC<Props> = ({
                           <Button
                             disabled={navigation.path == path}
                             sx={
-                              navigation.label === 'Login'
+                              navigation.label === "Login"
                                 ? loginButtonSx
                                 : headerLinkSx
                             }
@@ -169,11 +169,11 @@ export const Header: React.FC<Props> = ({
                 ) : null}
               </Grid>
             </Grid>
-            {isAuthenticated && <Grid item alignSelf='center'></Grid>}
-            {isAuthenticated && <Grid item alignSelf='center'></Grid>}
+            {isAuthenticated && <Grid item alignSelf="center"></Grid>}
+            {isAuthenticated && <Grid item alignSelf="center"></Grid>}
             {isMobile && <Grid item></Grid>}
           </Grid>
-          <Grid item xs={12} position='relative'></Grid>
+          <Grid item xs={12} position="relative"></Grid>
           {isInWebcHub && !isMobile && (
             <Grid
               item
@@ -183,8 +183,8 @@ export const Header: React.FC<Props> = ({
               lg
               xl
               sx={{
-                alignSelf: 'center',
-                display: { md: 'none', lg: 'block', xl: 'block' },
+                alignSelf: "center",
+                display: { md: "none", lg: "block", xl: "block" },
               }}
             >
               <BreadCrumbs />
@@ -199,30 +199,30 @@ export const Header: React.FC<Props> = ({
               lg={3}
               xl={3}
               sx={{
-                display: 'block',
-                alignSelf: 'center',
+                display: "block",
+                alignSelf: "center",
               }}
             >
               <ClickAwayListener onClickAway={handleClickAway}>
                 <Container
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    gap: '10px',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: "10px",
                   }}
                 >
                   <IconButton onClick={toggleSearchField}>
-                    <SearchIcon fontSize='large' sx={{ color: 'white' }} />
+                    <SearchIcon fontSize="large" sx={{ color: "white" }} />
                   </IconButton>
                   <Box
                     sx={{
-                      width: showSearch ? '100%' : '0%',
-                      overflow: 'hidden',
-                      transition: 'width 0.5s ease',
+                      width: showSearch ? "100%" : "0%",
+                      overflow: "hidden",
+                      transition: "width 0.5s ease",
                     }}
                   >
-                    <InputBase placeholder='Search' sx={inputBaseStyles} />
+                    <InputBase placeholder="Search" sx={inputBaseStyles} />
                   </Box>
                 </Container>
               </ClickAwayListener>
@@ -238,13 +238,13 @@ export const Header: React.FC<Props> = ({
               lg={2}
               xl={1}
               sx={{
-                display: 'block',
-                alignSelf: 'center',
+                display: "block",
+                alignSelf: "center",
               }}
             >
               <AccountMenu
-                icon={<Avatar src='/path-to-user-image.jpg' />}
-                label={isMobile ? '' : 'User'}
+                icon={<Avatar src="/path-to-user-image.jpg" />}
+                label={isMobile ? "" : "User"}
                 accountItem={AccountMenuItem}
                 onLogout={handleLogout}
               />

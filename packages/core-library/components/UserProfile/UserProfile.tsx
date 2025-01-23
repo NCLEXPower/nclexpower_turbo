@@ -11,9 +11,8 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
-import LogoutIcon from "@mui/icons-material/Logout";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import ViewInArIcon from "@mui/icons-material/ViewInAr";
+import { Menu_Items } from "../../../../apps/web-backoffice-generic/src/core/constant/Menu-Items";
+
 interface Props {
   userName?: string;
   email?: string;
@@ -28,7 +27,7 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
 
   const userName =
     internal?.firstname && internal?.lastname
-      ? `[${internal.firstname} ${internal.lastname}]`
+      ? `${internal.firstname} ${internal.lastname}`
       : "Unknown User";
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -39,6 +38,13 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (id: string) => {
+    if (id === "log-out" && onLogout) {
+      onLogout();
+    }
+    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -113,81 +119,12 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
           horizontal: "left",
         }}
       >
-        <MenuItem
-          onClick={handleClose}
-          sx={{
-            color: "#3B0086",
-            fontFamily: '"PT Sans", sans-serif',
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "normal",
-            letterSpacing: "-0.14px",
-          }}
-        >
-          <PermIdentityIcon fontSize="small" sx={{ marginRight: 1 }} />
-          View Profile
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          sx={{
-            color: "#3B0086",
-            fontFamily: '"PT Sans", sans-serif',
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "normal",
-            letterSpacing: "-0.14px",
-          }}
-        >
-          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
-          More Menu
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          sx={{
-            color: "#3B0086",
-            fontFamily: '"PT Sans", sans-serif',
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "normal",
-            letterSpacing: "-0.14px",
-          }}
-        >
-          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
-          More Menu
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          sx={{
-            color: "#3B0086",
-            fontFamily: '"PT Sans", sans-serif',
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "normal",
-            letterSpacing: "-0.14px",
-          }}
-        >
-          <ViewInArIcon fontSize="small" sx={{ marginRight: 1 }} />
-          More Menu
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          sx={{
-            color: "#3B0086",
-            fontFamily: '"PT Sans", sans-serif',
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "normal",
-            letterSpacing: "-0.14px",
-          }}
-        >
-          <LogoutIcon fontSize="small" sx={{ marginRight: 1 }} />
-          Log Out
-        </MenuItem>
+        {Menu_Items.map((item) => (
+          <MenuItem key={item.id} onClick={() => handleMenuItemClick(item.id)}>
+            {item.icon}
+            <Box sx={{ marginLeft: 1 }}>{item.label}</Box>
+          </MenuItem>
+        ))}
       </Popover>
     </Box>
   );

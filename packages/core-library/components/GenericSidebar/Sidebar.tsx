@@ -104,6 +104,12 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
     }
   };
 
+  const handleLogout = async () => {
+    if (onLogout) {
+      onLogout();
+    }
+  };
+
   return (
     <Drawer
       open={open}
@@ -205,7 +211,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
               />
               {open && (
                 <div style={{ padding: "10px" }}>
-                  <UserProfile onLogout={onLogout} />
+                  <UserProfile onLogout={handleLogout} />
                 </div>
               )}
             </>
