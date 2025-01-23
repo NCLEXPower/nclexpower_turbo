@@ -113,6 +113,7 @@ export const InclusionBlock: React.FC = () => {
             refetch()
         }
         catch (error) {
+            console.error(error)
             executeToast(`Something went wrong during submission ${error}. Please try again later`, 'top-right', true, { type: 'error' })
         }
     }
