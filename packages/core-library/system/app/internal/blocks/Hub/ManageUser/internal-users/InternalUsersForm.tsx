@@ -177,8 +177,6 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
     [uniquePaths]
   );
 
-  console.log(routers);
-
   setValue("routers", routers ?? []);
 
   useEffect(() => {
