@@ -26,19 +26,18 @@ export const InclusionBlock: React.FC = () => {
     const { mutateAsync: createInclusion } = businessQueryCreateInclusion()
     const { executeToast } = useExecuteToast()
 
-    const inclusionCb = useApiCallback(
+    const deleteInclusionCb = useApiCallback(
         async (api, args: string) =>
             await api.webbackoffice.deleteInclusion(args)
     );
 
     async function onDelete(id: string) {
         try {
-            await inclusionCb.execute(id)
+            await deleteInclusionCb.execute(id)
             refetch()
-            executeToast('Inclusion successfully deleted', 'top-right', true, { type: 'success' })
-
         }
         catch (error) {
+            console.error(error)
             executeToast(`Something went wrong during deletion ${error}. Please try again later`, 'top-right', true, { type: 'error' })
         }
     }
@@ -91,7 +90,7 @@ export const InclusionBlock: React.FC = () => {
                                     description="Are you sure you want to delete this inclusion? This action cannot be undone and this will permanently delete the inclusion."
                                     expectedInput="Delete Inclusion"
                                     handleDelete={() => onDelete(row.id)}
-                                    loading={inclusionCb.loading}
+                                    loading={deleteInclusionCb.loading}
                                 />
                             </CustomPopover>
                         </Box>
