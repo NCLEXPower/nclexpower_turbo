@@ -25,12 +25,14 @@ import { zxcvbn } from "@zxcvbn-ts/core";
 import React from "react";
 import { PasswordStrengthMeter } from "../Textfield/PasswordStrengthMeter";
 import { DialogProps } from "@mui/material/Dialog";
+import { EvaIcon } from "../EvaIcon";
 
 interface Props<T extends object> {
   name: Path<T>;
   control: Control<T>;
   defaultValue?: UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
   label?: string | JSX.Element | null;
+  icon?: React.ReactNode;
   color?: OutlinedInputProps["color"];
   type?: OutlinedInputProps["type"];
   startAdornment?: OutlinedInputProps["startAdornment"];
@@ -117,18 +119,21 @@ export const TextFieldComponent = <T extends object>({
             <InputLoader />
           ) : (
             <React.Fragment>
-              <Input
-                {...props}
-                {...field}
-                id={field?.name}
-                data-testid={props["data-testid"] || `${field.name}-field`}
-                error={!!fieldState?.error?.message}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                value={field?.value ?? ""}
-                onKeyDown={(e) => e.key === "Enter" && onEnter && onEnter()}
-              />
-              {props.isregister && <PasswordStrengthMeter result={result} />}
+              <div className="relative">
+                <Input
+                  {...props}
+                  {...field}
+                  id={field?.name}
+                  data-testid={props["data-testid"] || `${field.name}-field`}
+                  error={!!fieldState?.error?.message}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  value={field?.value ?? ""}
+                  onKeyDown={(e) => e.key === "Enter" && onEnter && onEnter()}
+                />
+                {props.icon && props.icon}
+                {props.isregister && <PasswordStrengthMeter result={result} />}
+              </div>
             </React.Fragment>
           )}
         </ErrorTooltip>
