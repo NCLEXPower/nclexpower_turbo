@@ -14,6 +14,7 @@ import {
   CreateCustomerResponse,
   CreatePaymentIntentParams,
   CreateSalesParams,
+  NotifyParams,
   OrderSummaryResponse,
   PaymentIntentResponse,
   ReportIssueType,
@@ -32,7 +33,7 @@ export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
 
   /* This api should be in web-api-backoffice */
   public web_account_setup(params: RegisterParams) {
@@ -228,6 +229,19 @@ export class WebApi {
   public async getActiveGoLiveSchedule() {
     return await this.axios.get(
       `/api/v2/internal/BaseInternal/active-schedule`
+    );
+  }
+
+  public async sendNotify(params: NotifyParams) {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notify`,
+      params
+    );
+  }
+
+  public async sendNotification() {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notification`
     );
   }
 

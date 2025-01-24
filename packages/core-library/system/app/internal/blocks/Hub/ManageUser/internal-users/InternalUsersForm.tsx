@@ -3,33 +3,60 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { Grid, Box, Typography } from "@mui/material";
 import { accountSetupSchema, AccountSetupType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AccountLevel } from "../../core/constant/accountLevel";
+import { AccountBox as AccountBoxIcon } from "@mui/icons-material";
 import {
-  Settings as SettingsIcon,
-  Key as KeyIcon,
-  AccountBox as AccountBoxIcon,
-} from "@mui/icons-material";
-import { useMenu } from '../../../../../../../components/GenericDrawerLayout/hooks/useMenu';
-import {
-  Card,
   Button,
   TextField,
   ControlledSelectField,
-  MultipleSelectField,
-  Alert
-} from '../../../../../../../components';
+  Alert,
+  EvaIcon,
+} from "../../../../../../../components";
+import { useBusinessQueryContext } from "../../../../../../../contexts";
+import { MenuItems } from "../../../../../../../api/types";
+import { CreateAccessRoute } from "./CreateAccessRoute";
 
 type Props = {
   onSubmit: (value: AccountSetupType) => void;
   isLoading: boolean;
 };
 
+const getUniquePaths = (menuItems: MenuItems[]): MenuItems[] => {
+  const seenPaths = new Set<string>();
+
+  const processMenuItem = (item: MenuItems): MenuItems | null => {
+    const filteredChildren = item.children
+      .map(processMenuItem)
+      .filter((child): child is MenuItems => !!child);
+
+    if (item.path === "" || !seenPaths.has(item.path)) {
+      if (item.path !== "") {
+        seenPaths.add(item.path);
+      }
+      return { ...item, children: filteredChildren };
+    }
+
+    return null;
+  };
+
+  return menuItems
+    .map(processMenuItem)
+    .filter((item): item is MenuItems => !!item)
+    .filter((item) => item.children.length || item.path);
+};
+
 export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
+  const { businessQueryGetAllMenus } = useBusinessQueryContext();
+  const {
+    data,
+    isLoading: menuLoading,
+    refetch,
+  } = businessQueryGetAllMenus(["getAllMenus"]);
   const form = useForm<AccountSetupType>({
     resolver: yupResolver(accountSetupSchema),
     criteriaMode: "all",
@@ -38,31 +65,45 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
     defaultValues: { ...accountSetupSchema.getDefault() },
   });
 
-  const { routes } = useMenu();
-  const { control, handleSubmit, setValue, clearErrors, watch } = form;
+  const { control, handleSubmit, setValue, clearErrors, getValues } = form;
 
-  const email = useWatch({ control, name: "email" });
+  const accessLevel = useWatch({ control, name: "accessLevel" });
 
-  const internalRoutes = routes?.map((item) => ({
-    label: item.label,
-    value: item.value,
-  }));
+  const filteredMenu: MenuItems[] | undefined = useMemo(
+    () =>
+      data
+        ?.filter((d) => d.accountLevel === accessLevel)
+        ?.flatMap((i) => i.menuItems),
+    [data, accessLevel]
+  );
 
-  useEffect(() => {
-    if (email) {
-      setValue("username", email);
-    }
-  }, [email, setValue]);
+  const uniquePaths = getUniquePaths(filteredMenu ?? []);
 
-  function handleOnChange(selectedValues: string[]) {
-    const selectedObjects = selectedValues.map((value) => {
-      const selectedOptions = internalRoutes.find(
-        (option) => option.value === value
-      );
-      return { label: selectedOptions?.label || "", value };
-    });
-    return selectedObjects;
+  const routers = useMemo(
+    () =>
+      uniquePaths
+        ?.flatMap((menu) => [
+          {
+            label: menu.label,
+            value: menu.path,
+          },
+          ...menu.children.map((m) => ({ label: m.label, value: m.path })),
+        ])
+        .filter((item) => !!item.value),
+    [uniquePaths]
+  );
+
+  if (routers.length) {
+    setValue("routers", routers);
   }
+
+  setValue("username", getValues("email"));
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setValue("accessLevel", Number(e.target.value));
+  };
 
   return (
     <FormProvider {...form}>
@@ -71,44 +112,42 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
         title="Create Internal Users"
         description="Create internal users with their details information, credentials, and permission routes."
       />
+
       <Grid
         container
-        direction="column"
-        rowSpacing={2}
-        gap={2}
-        sx={{ height: "auto" }}
+        rowSpacing="50px"
+        sx={{ marginTop: "20px", marginBottom: "100px" }}
       >
-        <Card
-          sx={{
-            marginTop: 4,
-            height: "auto",
-            backgroundColor: "rgba(59, 0, 134, 0.05)",
-            gap: 3,
-            padding: 4,
-          }}
+        <Grid
+          item
+          xs={12}
+          md={6}
+          paddingX="20px"
+          height="800px"
+          minWidth="400px"
         >
-          <div className="flex items-center gap-2 ">
-            <Typography sx={{ color: "#3B0086", fontWeight: "bold" }}>
-              Basic Information
-            </Typography>
-            <AccountBoxIcon sx={{ color: "#3B0086" }} />
-          </div>
-          <Typography
-            sx={{ color: "#606060", fontSize: "15px", marginBottom: 3 }}
-          >
-            Enter the user's basic details
-          </Typography>
-          <hr className="my-2" />
           <Box
             sx={{
-              gap: 4,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 3,
+              backgroundColor: "rgba(59, 0, 134, 0.05)",
+              borderRadius: "15px",
+              height: "100%",
+              overflow: "hidden",
             }}
           >
-            <Grid item md={6} lg={12}>
+            <Box className="flex items-center gap-2 h-12 bg-[#3B0086] pl-10">
+              <Typography sx={{ color: "#FFF", fontWeight: 700 }}>
+                Create Internal Access
+              </Typography>
+              <AccountBoxIcon sx={{ color: "#FFF" }} />
+            </Box>
+            <Box
+              sx={{
+                padding: "40px",
+              }}
+            >
+              <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
+                Account Details
+              </Typography>
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Enter first name"
@@ -124,8 +163,6 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
-            <Grid item md={6} lg={12}>
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Enter middle name"
@@ -141,8 +178,6 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
-            <Grid item md={6} lg={12}>
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Enter last name"
@@ -158,62 +193,18 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
-          </Box>
-          <ControlledSelectField
-            control={control}
-            name="accessLevel"
-            options={AccountLevel ?? []}
-            label="Select Access Level"
-            sx={{
-              borderRadius: "5px",
-              width: "100%",
-              backgroundColor: "#FFF",
-              border: "1px solid #3B0086",
-              marginTop: 3,
-            }}
-          />
-        </Card>
-        <Card
-          sx={{
-            marginTop: 4,
-            height: "auto",
-            backgroundColor: "rgba(59, 0, 134, 0.05)",
-            gap: 3,
-            padding: 4,
-          }}
-        >
-          <div className="flex items-center gap-2 ">
-            <Typography sx={{ color: "#3B0086", fontWeight: "bold" }}>
-              Account Credentials
-            </Typography>
-            <KeyIcon sx={{ color: "#3B0086" }} />
-          </div>
-          <Typography
-            sx={{ color: "#606060", fontSize: "15px", marginBottom: 3 }}
-          >
-            Set up password and email address
-          </Typography>
-          <hr />
-          <Box
-            sx={{
-              width: "100%",
-              gap: 4,
-              display: "flex",
-              alignItems: "start",
-              justifyContent: "start",
-              flexDirection: "column",
-              marginTop: 3,
-            }}
-          >
-            <Grid item md={6} lg={12}>
+
+              <hr className="my-8 text-[#00173F]" />
+
+              <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
+                Account Credentials
+              </Typography>
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Enter email address"
                 name="email"
                 sx={{
                   borderRadius: "5px",
-                  width: 600,
                   backgroundColor: "#Fff",
                   border: "1px solid #3B0086",
                 }}
@@ -222,8 +213,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
-            <Grid item md={6} lg={6}>
+
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Enter password"
@@ -231,7 +221,6 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 type="password"
                 sx={{
                   borderRadius: "5px",
-                  width: 600,
                   backgroundColor: "#Fff",
                   border: "1px solid #3B0086",
                 }}
@@ -240,8 +229,7 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
-            <Grid item md={6} lg={6}>
+
               <TextField<AccountSetupType>
                 control={control}
                 placeholder="Confirm Password"
@@ -249,7 +237,6 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 type="password"
                 sx={{
                   borderRadius: "5px",
-                  width: 600,
                   backgroundColor: "#Fff",
                   border: "1px solid #3B0086",
                 }}
@@ -258,75 +245,147 @@ export default function InternalUsersForm({ onSubmit, isLoading }: Props) {
                 }}
                 onBlur={() => clearErrors()}
               />
-            </Grid>
+
+              <hr className="my-8 text-[#00173F]" />
+            </Box>
           </Box>
-        </Card>
-        <Card
-          sx={{
-            marginTop: 4,
-            height: "auto",
-            backgroundColor: "rgba(59, 0, 134, 0.05)",
-            gap: 3,
-            padding: 4,
-          }}
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          paddingX="20px"
+          height="800px"
+          minWidth="400px"
         >
-          <div className="flex items-center gap-2 ">
-            <Typography sx={{ color: "#3B0086", fontWeight: "bold" }}>
-              Permission Routes
-            </Typography>
-            <SettingsIcon sx={{ color: "#3B0086" }} />
-          </div>
-          <Typography
-            sx={{ color: "#606060", fontSize: "15px", marginBottom: 3 }}
-          >
-            Select all available routes for the user
-          </Typography>
-          <hr />
-          <MultipleSelectField
-            control={control}
-            name="routers"
-            label="Set Access Routes"
-            options={internalRoutes ?? []}
-            multiple
+          <Box
             sx={{
-              borderRadius: "5px",
+              backgroundColor: "rgba(59, 0, 134, 0.05)",
+              borderRadius: "15px",
+              overflow: "hidden",
+              height: "100%",
               width: "100%",
-              backgroundColor: "#FFF",
-              border: "1px solid #3B0086",
-              marginTop: 3,
-            }}
-            onChange={handleOnChange}
-          />
-        </Card>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "start",
-            justifyContent: "start",
-          }}
-        >
-          <Button
-            fullWidth
-            onClick={handleSubmit(onSubmit)}
-            disabled={isLoading}
-            variant="contained"
-            sx={{
-              marginTop: 2,
-              width: 200,
-              px: 4,
-              py: 2,
-              backgroundColor: "#3B0086",
-              borderRadius: "6px",
-              color: "#F3F3F3",
-              "&:hover": {
-                backgroundColor: "rgba(59, 0, 134, 0.95)",
-              },
             }}
           >
-            <Typography sx={{ color: "#FFF" }}>Submit</Typography>
+            <Box className="flex items-center gap-2 h-12 bg-[#3B0086] pl-10">
+              <Typography sx={{ color: "#FFF", fontWeight: 700 }}>
+                Select Account Level
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                padding: "40px",
+                paddingBottom: 0,
+              }}
+            >
+              <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
+                Account Level
+              </Typography>
+              <ControlledSelectField
+                control={control}
+                name="accessLevel"
+                options={AccountLevel ?? []}
+                label={!!accessLevel?.toString() ? "" : "Select Access Level"}
+                sx={{
+                  borderRadius: "5px",
+                  width: "100%",
+                  backgroundColor: "#FFF",
+                  border: "1px solid #3B0086",
+                  marginTop: "10px",
+                  marginBottom: "30px",
+                }}
+                onChange={handleOnChange}
+              />
+              <Typography sx={{ color: "#3B0086", fontWeight: 700 }}>
+                Access Route Level{" "}
+                {AccountLevel.find((level) => level.value === accessLevel)
+                  ?.label ?? "Access Level"}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                padding: "20px",
+                paddingTop: "10px",
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                maxHeight: "100%",
+                overflowY: "auto",
+              }}
+            >
+              <Box
+                component="ul"
+                sx={{
+                  paddingY: "40px",
+                  paddingX: {
+                    xs: "20px",
+                    md: "40px",
+                  },
+                  marginBottom: "20px",
+                  borderRadius: "10px",
+                  backgroundColor: "#C9C9E1",
+                  minHeight: "250px",
+                  maxHeight: "450px",
+                  overflowY: "auto",
+                }}
+                className="space-y-4"
+              >
+                {uniquePaths && !!uniquePaths.length ? (
+                  uniquePaths.map((m) => (
+                    <CreateAccessRoute key={m.id} menu={m} />
+                  ))
+                ) : (
+                  <Box
+                    sx={{
+                      width: "100%",
+                      minHeight: "200px",
+                      backgroundColor: "#B1B1D5",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "30px",
+                      borderRadius: "10px",
+                      boxShadow: "inset 0 0 10px #00000040",
+                    }}
+                  >
+                    <EvaIcon
+                      name="attach"
+                      width={40}
+                      height={40}
+                      fill="#3B0086"
+                    />
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: "24px",
+                        color: "#3B0086",
+                        maxWidth: "270px",
+                        textAlign: "center",
+                      }}
+                    >
+                      Select Account Level to View Access Routes
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Box>
+          <Button
+            data-testid="submit-btn"
+            onClick={handleSubmit(onSubmit)}
+            sx={{
+              borderRadius: "10px",
+              width: "80%",
+              marginX: "auto",
+              marginTop: "20px",
+              backgroundColor: "#3B0086",
+              fontWeight: 700,
+            }}
+          >
+            Submit
           </Button>
-        </Box>
+        </Grid>
       </Grid>
     </FormProvider>
   );
