@@ -16,6 +16,7 @@ import { useEncryptItem } from 'core-library/contexts/auth/hooks';
 import { useDataSource } from 'core-library/hooks';
 import { ProductListResponse } from 'core-library/api/types';
 import { PriceButtonDetails } from '@/constants/constants';
+import { ComponentState } from 'core-library/components';
 
 interface Props {
   url?: string;
@@ -105,10 +106,12 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? 'hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg ' : 'hover:border-[#0c225c] hover:border-2 rounded-lg '}`}
                   key={index}
                 >
-                  <PricingCard
-                    cardData={item as unknown as ProductCardType}
-                    handleSelectProduct={handleSelectProduct}
-                  />
+                  <ComponentState data={dataSource}>
+                    <PricingCard
+                      cardData={item as unknown as ProductCardType}
+                      handleSelectProduct={handleSelectProduct}
+                    />
+                  </ComponentState>
                 </div>
               ))
             ) : (
