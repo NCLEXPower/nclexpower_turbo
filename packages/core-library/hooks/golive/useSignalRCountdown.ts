@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { config } from "../../config";
 import { getTimeZone } from "../../utils";
+import { useDebounce } from "../useDebounce";
+import { useApiCallback } from "../useApi";
 
 export interface CountdownState {
+  id: string;
   eventName: string;
   days: number;
   hours: number;
@@ -27,12 +30,33 @@ const headers = {
 export const useSignalRCountdown = () => {
   const [countdown, setCountdown] = useState<CountdownState | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
+  const [pendingData, setPendingData] = useState<CountdownState | null>(null);
+  const notificationSent = useRef(false);
+  const sendNotifCb = useApiCallback(
+    async (api) => await api.web.sendNotification()
+  );
+
+  const sendNotification = async () => {
+    if (notificationSent.current) return;
+
+    try {
+      const result = await sendNotifCb.execute();
+      if (result.status === 200) {
+        notificationSent.current = true;
+      }
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(`${baseUrl}/golive-signalr`, {
         headers,
-        transport: signalR.HttpTransportType.LongPolling,
+        transport:
+          signalR.HttpTransportType.WebSockets |
+          signalR.HttpTransportType.ServerSentEvents |
+          signalR.HttpTransportType.LongPolling,
       })
       .withAutomaticReconnect([0, 2000, 10000, 30000])
       .configureLogging(signalR.LogLevel.Information)
@@ -46,13 +70,14 @@ export const useSignalRCountdown = () => {
         connection.invoke("JoinGroup", getTimeZone());
         connection.on("ReceiveCountdownUpdate", (scheduleId, data) => {
           if (data) {
-            setCountdown(data);
+            setPendingData(data);
           }
         });
 
-        connection.on("CountdownCompleted", (scheduleId, eventName) => {
+        connection.on("CountdownCompleted", async (scheduleId, eventName) => {
           console.log(`Countdown for ${eventName} has completed`);
           setCountdown(null);
+          await sendNotification();
         });
       } catch (error) {
         console.error("Error connecting to SignalR hub:", error);
@@ -85,6 +110,14 @@ export const useSignalRCountdown = () => {
       connection.stop().then(() => console.log("SignalR connection stopped."));
     };
   }, []);
+
+  useDebounce(
+    () => {
+      if (pendingData) setCountdown(pendingData);
+    },
+    500,
+    [pendingData]
+  );
 
   return { countdown, connectionError };
 };
