@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { EmailsNotification } from "./EmailsNotification";
 import { Stack } from "@mui/material";
@@ -6,6 +6,7 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { usePreviousValue } from "../../../../../../hooks";
 
 export const ComingSoonManagementBlock: React.FC = () => {
   const form = useForm<ContentDateType>({
@@ -24,6 +25,13 @@ export const ComingSoonManagementBlock: React.FC = () => {
     setValue("isActive", false);
   }
 
+  const hasNoSchedule = watch("hasNoSchedule");
+  const [isSwitchOn, setIsSwitchOn] = useState(!hasNoSchedule);
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsSwitchOn(event.target.checked);
+    setValue("hasNoSchedule", !event.target.checked);
+  };
+
   const watchEventName = watch("eventName");
   const watchEnvironment = watch("environment");
   const watchDescription = watch("description");
@@ -38,7 +46,12 @@ export const ComingSoonManagementBlock: React.FC = () => {
         sx={{ height: "550px", width: "auto" }}
       >
         <FormProvider {...form}>
-          <ComingSoonManagement control={control} />
+          <ComingSoonManagement
+            control={control}
+            isSwitchOn={isSwitchOn}
+            onSwitchChange={handleSwitchChange}
+            isActive={watch("isActive")}
+          />
           <ComingSoonForm
             control={control}
             handleSubmit={handleSubmit}

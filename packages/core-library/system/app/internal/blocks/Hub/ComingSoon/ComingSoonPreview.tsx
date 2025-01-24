@@ -8,6 +8,7 @@ type ComingSoonProps = {
   watchConfetti?: boolean;
   watchAnnouncement?: boolean;
   isActive?: boolean;
+  isSwitchOn?: boolean;
   handleDeactivate: () => void;
 };
 
@@ -17,6 +18,7 @@ const ComingSoonPreview = ({
   watchDescription,
   watchConfetti,
   watchAnnouncement,
+  isSwitchOn,
   handleDeactivate,
 }: ComingSoonProps) => {
   return (
@@ -24,7 +26,7 @@ const ComingSoonPreview = ({
       <Typography
         sx={{ fontWeight: "bold", fontSize: "2rem", color: "#3B0086" }}
       >
-        Go Live Timer: On
+        Go Live Timer: {isSwitchOn ? "On" : "Off"}
       </Typography>
       <Typography
         sx={{ fontWeight: "bold", fontSize: "2rem", color: "#3B0086" }}

@@ -12,10 +12,12 @@ import { Control } from "react-hook-form";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
+  isSwitchOn: boolean;
+  isActive?: boolean;
+  onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ComingSoonManagement = ({ control }: ComingSoonProps) => {
-  const [isSwitchOn, setIsSwitchOn] = useState(true);
+const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }: ComingSoonProps) => {
 
   return (
     <Stack direction={"row"}>
@@ -52,10 +54,10 @@ const ComingSoonManagement = ({ control }: ComingSoonProps) => {
             />
             <div className="flex flex-row items-center">
               <DateField
-                name="schedule"
-                control={control}
-                placeholder="DD - MM - YYYY"
-                disabled={!isSwitchOn}
+              name="schedule"
+              control={control}
+              placeholder="DD - MM - YYYY"
+              disabled={!isSwitchOn}
               />
               <div>
                 <Typography
@@ -71,7 +73,8 @@ const ComingSoonManagement = ({ control }: ComingSoonProps) => {
                 <div className="flex flex-row items-center justify-between pr-10">
                   <SwitchButton
                     checked={isSwitchOn}
-                    onChange={() => setIsSwitchOn((prev) => !prev)}
+                    onChange={onSwitchChange}
+                    disabled={isActive}
                     sx={{
                       flexShrink: 0,
                     }}
@@ -113,6 +116,7 @@ const ComingSoonManagement = ({ control }: ComingSoonProps) => {
                 borderWidth: "1px",
               }}
               variant="outlined"
+              disabled={isActive}
             />
             <Typography
               sx={{
@@ -135,6 +139,7 @@ const ComingSoonManagement = ({ control }: ComingSoonProps) => {
               control={control}
               name="selectedCountriesTimezones"
               options={CountryMockData}
+              disabled={isActive}
               multiple
             />
           </Container>
