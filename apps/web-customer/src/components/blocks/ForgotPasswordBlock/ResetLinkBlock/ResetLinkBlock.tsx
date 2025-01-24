@@ -88,7 +88,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
       <div className="w-full hidden items-center justify-center ml-0 md:ml-20 lg:block">
         <Image src={resetLink} className="w-[850px] h-auto" alt="resetLink" />
       </div>
-      <div className="flex flex-col text-center gap-7 justify-center min-h-screen bg-[#f3f4f8] md:px-10 w-35%">
+      <div className="flex flex-col text-center gap-7 justify-center min-h-screen bg-[#f3f4f8] md:px-10 w-35%" style={{ width: "100%", maxWidth: "600px" }}>
         <div className="px-10 p-20 space-y-5">
           <div className="flex flex-col items-center justify-center">
             <Image
