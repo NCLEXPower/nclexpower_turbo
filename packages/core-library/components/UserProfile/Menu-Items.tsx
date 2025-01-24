@@ -1,4 +1,4 @@
-import { EvaIcon } from "core-library/components/EvaIcon";
+import { EvaIcon } from "../EvaIcon";
 import { Box, Typography } from "@mui/material";
 
 const sharedStyles = {

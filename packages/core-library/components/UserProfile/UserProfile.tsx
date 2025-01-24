@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
-import { Menu_Items } from "../../../../apps/web-backoffice-generic/src/core/constant/Menu-Items";
+import { Menu_Items } from "./Menu-Items";
 
 interface Props {
   userName?: string;
