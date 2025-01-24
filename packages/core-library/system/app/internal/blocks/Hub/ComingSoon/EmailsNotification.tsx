@@ -32,7 +32,7 @@ export const EmailsNotification = () => {
   );
 
   return (
-    <React.Fragment>
+    <Container>
       <Typography
         variant="h6"
         component="h2"
@@ -50,7 +50,6 @@ export const EmailsNotification = () => {
           fontSize: "1rem",
           fontWeight: "bold",
           color: "#3B0086",
-          marginTop: "-1rem",
         }}
         children={`Total: ${totalCount} emails`}
       />
@@ -60,6 +59,6 @@ export const EmailsNotification = () => {
           data={emailMockData}
         />
       </Container>
-    </React.Fragment>
+    </Container>
   );
 };

@@ -5,10 +5,7 @@ import {
   GenericSelectField,
   MultipleSelectField,
 } from "../../../../../../components";
-import {
-  CountryMockData,
-  TimezoneMockData,
-} from "./ComingSoonMock";
+import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { ContentDateType } from "./validation";
 import { Control } from "react-hook-form";
@@ -22,7 +19,7 @@ const ComingSoonConfiguration = ({ control }: ComingSoonProps) => {
 
   return (
     <Stack direction={"row"}>
-      <Container>
+      <Container sx={{ width: 600 }}>
         <Typography
           variant="h6"
           component="h2"
@@ -108,7 +105,13 @@ const ComingSoonConfiguration = ({ control }: ComingSoonProps) => {
               name="timeZone"
               control={control}
               placeholder="Select Timezone:"
-              sx={{ width: 300, borderColor: "#3B0086", borderRadius: "8px" }}
+              style={{
+                backgroundColor: "#FFF",
+                borderRadius: "8px",
+                borderColor: "#3B0086",
+                borderStyle: "solid",
+                borderWidth: "1px",
+              }}
               variant="outlined"
             />
             <Typography
@@ -122,10 +125,15 @@ const ComingSoonConfiguration = ({ control }: ComingSoonProps) => {
               Included Countries:
             </Typography>
             <MultipleSelectField
-              sx={{ width: 550, mb: 2 }}
+              sx={{
+                borderRadius: "8px",
+                width: "100%",
+                backgroundColor: "#FFF",
+                border: "1px solid #3B0086",
+                marginTop: 2,
+              }}
               control={control}
               name="selectedCountriesTimezones"
-              label="select countries"
               options={CountryMockData}
               multiple
             />

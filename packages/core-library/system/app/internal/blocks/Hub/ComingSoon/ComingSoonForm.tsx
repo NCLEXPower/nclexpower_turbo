@@ -1,9 +1,8 @@
 import { Container, Stack, Typography } from "@mui/material";
 import {
-  Checkbox,
   ConfirmationModal,
   ControlledCheckbox,
-  GenericSelectField,
+  ControlledSelectField,
   TextAreaField,
   TextField,
 } from "../../../../../../components";
@@ -21,7 +20,8 @@ type ComingSoonProps = {
   watchDescription: string;
   watchConfetti?: boolean;
   watchAnnouncement?: boolean;
-  showPreview?: boolean;
+  isActive?: boolean;
+  handleDeactivate: () => void;
 };
 
 const ComingSoonForm = ({
@@ -33,7 +33,8 @@ const ComingSoonForm = ({
   watchDescription,
   watchConfetti,
   watchAnnouncement,
-  showPreview,
+  isActive,
+  handleDeactivate,
 }: ComingSoonProps) => {
   return (
     <Container
@@ -46,21 +47,16 @@ const ComingSoonForm = ({
         paddingTop: "2rem",
       }}
     >
-      {showPreview ? (
-        /** Preview Section separate */
+      {isActive ? (
         <ComingSoonPreview
-          control={control}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
           watchEventName={watchEventName}
           watchEnvironment={watchEnvironment}
           watchDescription={watchDescription}
           watchConfetti={watchConfetti}
           watchAnnouncement={watchAnnouncement}
-          showPreview={showPreview}
+          handleDeactivate={handleDeactivate}
         />
       ) : (
-        /** Form Section */
         <>
           <Typography
             variant="h6"
@@ -74,6 +70,10 @@ const ComingSoonForm = ({
               borderRadius: "8px",
               borderColor: "#3B0086",
               backgroundColor: "rgba(59, 0, 134, 0.05)",
+              border: "1px solid #3B0086",
+              "& .MuiInputBase-input": {
+                color: "black",
+              },
             }}
             control={control}
             placeholder="Input Title"
@@ -91,15 +91,19 @@ const ComingSoonForm = ({
           >
             Environment:
           </Typography>
-          <GenericSelectField
+          <ControlledSelectField
             options={environment}
             name="environment"
             control={control}
             sx={{
-              width: "100%",
-              height: "50%",
-              borderColor: "#3B0086",
               borderRadius: "8px",
+              width: "100%",
+              backgroundColor: "rgba(59, 0, 134, 0.05)",
+              border: "1px solid #3B0086",
+              marginTop: 3,
+              "& .MuiInputBase-input": {
+                color: "black",
+              },
             }}
             variant="outlined"
           />
@@ -119,6 +123,18 @@ const ComingSoonForm = ({
             placeholder="Enter description here"
             name="description"
             control={control}
+            style={{
+              borderRadius: "8px",
+              backgroundColor: "rgba(59, 0, 134, 0.05)",
+              width: "100%",
+              resize: "none",
+              borderColor: "#3B0086",
+              borderStyle: "solid",
+              outline: "none",
+              padding: "10px",
+              color: "black",
+              fontWeight: "normal",
+            }}
           />
           <div
             className="flex items-center"

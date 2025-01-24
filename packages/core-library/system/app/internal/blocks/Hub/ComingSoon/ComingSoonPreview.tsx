@@ -1,38 +1,23 @@
-import { Container, Stack, Typography } from "@mui/material";
-import {
-  Checkbox,
-  ConfirmationModal,
-  ControlledCheckbox,
-  GenericSelectField,
-  TextAreaField,
-  TextField,
-} from "../../../../../../components";
-import { ContentDateType } from "./validation";
-import { Control, UseFormHandleSubmit } from "react-hook-form";
-import { environment } from "./ComingSoonMock";
+import { Container, Stack, TextareaAutosize, Typography } from "@mui/material";
+import { Checkbox, ConfirmationModal } from "../../../../../../components";
 
 type ComingSoonProps = {
-  control: Control<ContentDateType>;
-  handleSubmit: UseFormHandleSubmit<ContentDateType>;
-  onSubmit: (data: ContentDateType) => void;
   watchEventName: string;
   watchEnvironment: string;
   watchDescription: string;
   watchConfetti?: boolean;
   watchAnnouncement?: boolean;
-  showPreview?: boolean;
+  isActive?: boolean;
+  handleDeactivate: () => void;
 };
 
 const ComingSoonPreview = ({
-  control,
-  handleSubmit,
-  onSubmit,
   watchEventName,
   watchEnvironment,
   watchDescription,
   watchConfetti,
   watchAnnouncement,
-  showPreview,
+  handleDeactivate,
 }: ComingSoonProps) => {
   return (
     <>
@@ -120,18 +105,21 @@ const ComingSoonPreview = ({
             >
               Description:
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: "bold",
+            <TextareaAutosize
+              value={watchDescription}
+              readOnly
+              style={{
                 fontSize: "1rem",
                 color: "#B1B1B1",
                 paddingLeft: "1rem",
-                height: "50px",
+                width: "100%",
+                border: "none",
+                resize: "none",
+                overflow: "hidden",
+                outline: "none",
+                backgroundColor: "transparent",
               }}
-            >
-              {watchDescription}
-            </Typography>
+            />
           </div>
           <div
             className="flex items-center"
@@ -142,18 +130,20 @@ const ComingSoonPreview = ({
                 label="Post this as an announcement"
                 sx={{ fontSize: "12px" }}
                 checked={watchAnnouncement}
+                disabled
               />
               <Checkbox
                 label="Enable Confetti on Finish"
                 sx={{ fontSize: "12px" }}
                 checked={watchConfetti}
+                disabled
               />
             </Stack>
-            {/* <ConfirmationModal
-                  dialogContent="Are you sure you want to Cancel “Coming Soon”?"
-                  customButton="Continue"
-                  handleSubmit={} //isActive = false
-                /> */}
+            <ConfirmationModal
+              dialogContent="Are you sure you want to Cancel “Coming Soon”?"
+              customButton="Cancel"
+              handleSubmit={handleDeactivate}
+            />
           </div>
         </div>
       </Container>
