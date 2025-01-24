@@ -57,7 +57,7 @@ const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }:
               name="schedule"
               control={control}
               placeholder="DD - MM - YYYY"
-              disabled={!isSwitchOn}
+              disabled={!isSwitchOn||isActive}
               />
               <div>
                 <Typography

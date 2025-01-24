@@ -63,6 +63,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
             watchAnnouncement={watchAnnouncement}
             handleDeactivate={handleDeactivate}
             isActive={watch("isActive")}
+            isSwitchOn={isSwitchOn}
           />
         </FormProvider>
       </Stack>

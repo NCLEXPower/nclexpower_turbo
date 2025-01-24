@@ -21,6 +21,7 @@ type ComingSoonProps = {
   watchConfetti?: boolean;
   watchAnnouncement?: boolean;
   isActive?: boolean;
+  isSwitchOn?: boolean;
   handleDeactivate: () => void;
 };
 
@@ -34,6 +35,7 @@ const ComingSoonForm = ({
   watchConfetti,
   watchAnnouncement,
   isActive,
+  isSwitchOn,
   handleDeactivate,
 }: ComingSoonProps) => {
   return (
@@ -55,6 +57,7 @@ const ComingSoonForm = ({
           watchConfetti={watchConfetti}
           watchAnnouncement={watchAnnouncement}
           handleDeactivate={handleDeactivate}
+          isSwitchOn={isSwitchOn}
         />
       ) : (
         <>
