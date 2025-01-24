@@ -217,12 +217,22 @@ const ButtonSelector = ({
         />
       );
 
-    case "Back":
+    case "Cancel":
       return (
-        <Button sx={{ zIndex: 2 }} onClick={onClickFn}>
-          <Typography>Back</Typography>
+        <Button
+          sx={{
+            zIndex: 2,
+            bgcolor: "#860000",
+            color: "white",
+            "&:hover": {
+              bgcolor: "#860000",
+            },
+          }}
+          onClick={onClickFn}
+        >
+          <Typography>Cancel</Typography>
         </Button>
-      )
+      );
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>

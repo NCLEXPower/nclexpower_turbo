@@ -1,25 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { EmailsNotification } from "./EmailsNotification";
 import { Stack } from "@mui/material";
-import ComingSoonConfiguration from "./ComingSoonConfiguration";
+import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 export const ComingSoonManagementBlock: React.FC = () => {
-  const [showPreview, setShowPreview] = useState(false); // remove this change isActive
-
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
   });
 
-  const { control, handleSubmit, watch } = form;
+  const { control, handleSubmit, watch, setValue } = form;
 
   function onSubmit(values: ContentDateType) {
     console.log("go live value", values);
-    setShowPreview(true);
+    setValue("isActive", true);
+  }
+
+  function handleDeactivate() {
+    setValue("isActive", false);
   }
 
   const watchEventName = watch("eventName");
@@ -28,14 +30,15 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
 
-  const test = watch();
-  console.log(test);
-
   return (
     <Stack direction={"column"} spacing={2}>
-      <Stack direction="row" spacing={2} sx={{ height: "550px" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ height: "550px", width: "auto" }}
+      >
         <FormProvider {...form}>
-          <ComingSoonConfiguration control={control} />
+          <ComingSoonManagement control={control} />
           <ComingSoonForm
             control={control}
             handleSubmit={handleSubmit}
@@ -45,7 +48,8 @@ export const ComingSoonManagementBlock: React.FC = () => {
             watchDescription={watchDescription}
             watchConfetti={watchConfetti}
             watchAnnouncement={watchAnnouncement}
-            showPreview={showPreview}
+            handleDeactivate={handleDeactivate}
+            isActive={watch("isActive")}
           />
         </FormProvider>
       </Stack>
