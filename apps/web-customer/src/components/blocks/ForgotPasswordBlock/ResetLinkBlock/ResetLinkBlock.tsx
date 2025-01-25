@@ -117,6 +117,9 @@ export const ResetLinkBlock: React.FC<Props> = () => {
                   disabled={resetTime !== 0 || resetLinkCb.loading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
+                  style={{ outline: "none" }}
+                  onFocus={(e) => e.target.style.outline = "none"}
+                  onMouseDown={(e) => e.preventDefault()}
                 >
                   {resetLinkCb.loading ? (
                     <CircularProgress
@@ -125,7 +128,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
                       id="loader"
                       aria-live="assertive"
                       thickness={5}
-                      sx={{ border: 'none' }}
+                      sx={{ "&:focus": { outline: "none !important" }}}
                     />
                   ) : (
                     `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ''}`
