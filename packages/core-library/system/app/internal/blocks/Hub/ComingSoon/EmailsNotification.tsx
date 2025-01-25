@@ -55,6 +55,7 @@ export const EmailsNotification = () => {
       />
       <Container className="flex gap-2">
         <ReactTable
+          data-testid="react-table"
           columns={columns}
           data={emailMockData}
         />
