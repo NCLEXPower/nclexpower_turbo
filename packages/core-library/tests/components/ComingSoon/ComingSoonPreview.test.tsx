@@ -1,4 +1,3 @@
-// import { screen } from "@testing-library/react";
 import ComingSoonPreview from "../../../../core-library/system/app/internal/blocks/Hub/ComingSoon/ComingSoonPreview";
 import { render, screen } from "../../common";
 
