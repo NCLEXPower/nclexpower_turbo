@@ -35,10 +35,6 @@ export function StripePaymentPage({
   const { stripe, elements, isStripeReady } = useSafeStripe();
   const toast = useExecuteToast();
 
-  if (loading) {
-    return <ProductInformationLoader />;
-  }
-
   if (!isStripeReady) return;
 
   if (!stripe || !elements) {
