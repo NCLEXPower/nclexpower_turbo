@@ -38,6 +38,7 @@ export const RefundModal: React.FC<RefundModalProps> = ({ open, onClose }) => {
             Refund Request
           </Typography>
           <Button
+            data-testid="close-btn"
             onClick={onClose}
             variant="text"
             sx={{

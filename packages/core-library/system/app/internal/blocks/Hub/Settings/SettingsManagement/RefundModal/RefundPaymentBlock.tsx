@@ -295,7 +295,7 @@ export const RefundPaymentBlock: React.FC<RefundPaymentBlockProps> = ({
   const [openSubmit, setOpenSubmit] = useState<boolean>(false);
   const toggleSubmitModal = () => setOpenSubmit((prev) => !prev);
   return (
-    <Box>
+    <Box data-testid="payment-block">
       <SubmitRefundRequestModal open={openSubmit} onClose={toggleSubmitModal} />
       <Button
         variant="outlined"
@@ -305,6 +305,7 @@ export const RefundPaymentBlock: React.FC<RefundPaymentBlockProps> = ({
         Back
       </Button>
       <Typography
+        component="h3"
         sx={{
           ...textSx,
           fontWeight: 700,

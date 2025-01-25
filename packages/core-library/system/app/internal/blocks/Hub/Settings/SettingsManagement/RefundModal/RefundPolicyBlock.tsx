@@ -149,8 +149,11 @@ export const RefundPolicyBlock: React.FC<RefundPolicyBlockProps> = ({
   nextPage,
 }) => {
   return (
-    <Box>
-      <Typography sx={{ ...textSx, fontWeight: 700, fontSize: "38px" }}>
+    <Box data-testid="policy-block">
+      <Typography
+        component="h3"
+        sx={{ ...textSx, fontWeight: 700, fontSize: "38px" }}
+      >
         Refund Policy
       </Typography>
       <Box
