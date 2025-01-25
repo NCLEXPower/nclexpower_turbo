@@ -73,14 +73,19 @@ const Layout: React.FC<
       isAuthenticated={isAuthenticated}
       loading={loading || contentData.loading}
     >
-      {loading || contentData.loading ? (
-        <>Loading...</>
-      ) : (
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme()}>
-            <CssBaseline />
-            <HeaderTitleContextProvider>
-              <FormSubmissionContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme()}>
+          <CssBaseline />
+          <HeaderTitleContextProvider>
+            <FormSubmissionContextProvider>
+              <DrawerLayout
+                menu={headerMenu}
+                isAuthenticated={isAuthenticated}
+                headerStyles={headerStyles}
+                sidebarStyles={sidebarStyles}
+                onLogout={logout}
+                isPaid={isPaid}
+              >
                 <ContentLoader
                   loading={loading || contentData.loading || router.loading}
                 >
@@ -88,25 +93,16 @@ const Layout: React.FC<
                     loading={loading || contentData.loading}
                     pages={contentData.pages}
                   >
-                    <DrawerLayout
-                      menu={headerMenu}
-                      isAuthenticated={isAuthenticated}
-                      headerStyles={headerStyles}
-                      sidebarStyles={sidebarStyles}
-                      onLogout={logout}
-                      isPaid={isPaid}
-                    >
-                      {children}
-                      <Footer info={CompanyInfo} list={list} />
-                      {shouldShowChatBotWidget && <ChatBotWidget />}
-                    </DrawerLayout>
+                    {children}
+                    <Footer info={CompanyInfo} list={list} />
+                    {shouldShowChatBotWidget && <ChatBotWidget />}
                   </LoadablePageContent>
                 </ContentLoader>
-              </FormSubmissionContextProvider>
-            </HeaderTitleContextProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      )}
+              </DrawerLayout>
+            </FormSubmissionContextProvider>
+          </HeaderTitleContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </PageLoaderContextProvider>
   );
 };
