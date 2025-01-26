@@ -22,7 +22,7 @@ export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ dat
     }
 
     return (
-        <Box sx={{
+        <Box data-testid="component-states-id" sx={{
             display: 'flex',
             backgroundColor: 'white',
             borderRadius: '15px',
@@ -46,7 +46,7 @@ const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoad
     if (isEmpty) {
         return (<>
             <Image src={EmptyStateImage} alt='Empty Data' />
-            <Box>
+            <Box data-testid="component-is-empty-id">
                 <p className='h-fit font-bold leading-3 w-full'>Empty!</p>
                 <p className='h-fit text-[.8rem] leading-3 -mt-3 w-full'>No Data Available</p>
             </Box>
@@ -56,7 +56,7 @@ const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoad
         return (
             <>
                 <Image src={ErrorStateImage} alt='Error Occured' />
-                <Box>
+                <Box data-testid="component-is-error-id">
                     <p className='h-fit font-bold leading-3 w-full'>Error!</p>
                     <p className='h-fit text-[.8rem] leading-3 -mt-3 w-full'>Something went wrong</p>
                 </Box>
@@ -65,7 +65,7 @@ const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoad
     }
     if (isLoading) {
         return (
-            <Box>
+            <Box data-testid="component-is-loading-id">
                 <ComponentLoader disableMarginBottom />
                 <Box sx={{ bgcolor: 'Background' }}>
                     <p className='h-fit font-bold leading-3 w-full'>Loading</p>
