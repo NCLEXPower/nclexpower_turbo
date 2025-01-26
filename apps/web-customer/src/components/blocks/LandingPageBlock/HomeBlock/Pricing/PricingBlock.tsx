@@ -26,7 +26,8 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number>(0);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource } = useDataSource({ url });
+  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
+  const dataStates = { data: dataSource, isLoading, isSuccess, isError }
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -64,6 +65,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       }
     }
   }, [router.asPath]);
+
 
   return (
     <div
@@ -106,7 +108,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? 'hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg ' : 'hover:border-[#0c225c] hover:border-2 rounded-lg '}`}
                   key={index}
                 >
-                  <ComponentState data={dataSource}>
+                  <ComponentState data={dataSource} isError={isError} isSuccess={isSuccess} isLoading={isLoading} >
                     <PricingCard
                       cardData={item as unknown as ProductCardType}
                       handleSelectProduct={handleSelectProduct}

@@ -5,40 +5,44 @@ import { ComponentLoader } from '../ComponentLoader'
 import { PropsWithChildren, useEffect, useState } from 'react'
 
 
-export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ data, children }) => {
+export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ data, isSuccess, isError, isLoading, children }) => {
     const [isEmpty, setIsEmpty] = useState<boolean>(false)
 
+
     useEffect(() => {
-        if ((data.result?.length === 0 || data.result == null) && data.result.status === 200) {
+        if ((data.result?.length === 0 || data.result == null) && isSuccess) {
             setIsEmpty(true);
         } else {
             setIsEmpty(false);
         }
     }, [data.result, data.status]);
 
+    if (isSuccess && !isEmpty) {
+        return <>{children}</>
+    }
+
     return (
-        data.result.status === 200 && isEmpty == false ?
-            <>{children}</>
-            :
-            <Box sx={{
-                display: 'flex',
-                backgroundColor: 'white',
-                borderRadius: '15px',
-                minWidth: '250px',
-                width: "350px",
-                height: '400px',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                boxShadow: 2
-            }}>
-                <StateStatus status={data.status} isEmpty={isEmpty} />
-            </Box>
+        <Box sx={{
+            display: 'flex',
+            backgroundColor: 'white',
+            borderRadius: '15px',
+            minWidth: '250px',
+            width: "350px",
+            height: '400px',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            boxShadow: 2
+        }}>
+            <StateStatus isError={isError} isLoading={isLoading} isEmpty={isEmpty} />
+        </Box>
     )
+
+
 }
 
-const StateStatus = ({ status, isEmpty }: { status: string, isEmpty: boolean }) => {
+const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoading: boolean, isEmpty: boolean }) => {
     if (isEmpty) {
         return (<>
             <Image src={EmptyStateImage} alt='Empty Data' />
@@ -48,21 +52,26 @@ const StateStatus = ({ status, isEmpty }: { status: string, isEmpty: boolean }) 
             </Box>
         </>)
     }
-    switch (status) {
-        case 'error':
-            return (
-                <>
-                    <Image src={ErrorStateImage} alt='Error Occured' />
-                    <Box>
-                        <p className='h-fit font-bold leading-3 w-full'>Error!</p>
-                        <p className='h-fit text-[.8rem] leading-3 -mt-3 w-full'>Something went wrong</p>
-                    </Box>
-                </>
-            )
-        case 'loading':
-            return <ComponentLoader disableMarginBottom />
-        default:
-            return null
+    if (isError) {
+        return (
+            <>
+                <Image src={ErrorStateImage} alt='Error Occured' />
+                <Box>
+                    <p className='h-fit font-bold leading-3 w-full'>Error!</p>
+                    <p className='h-fit text-[.8rem] leading-3 -mt-3 w-full'>Something went wrong</p>
+                </Box>
+            </>
+        )
+    }
+    if (isLoading) {
+        return (
+            <Box>
+                <ComponentLoader disableMarginBottom />
+                <Box sx={{ bgcolor: 'Background' }}>
+                    <p className='h-fit font-bold leading-3 w-full'>Loading</p>
+                    <p className='h-fit text-[.8rem] leading-3 -mt-3 w-full'>Please Wait...</p>
+                </Box>
+            </Box>)
     }
 
 }
