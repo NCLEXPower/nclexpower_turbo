@@ -6,6 +6,7 @@
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
 import { HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { SsrTypes } from "../../../types/global";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -44,7 +45,7 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
-  InclusionBlock: {};
+  InclusionBlock: { data: SsrTypes };
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
   ContactUsManagementBlock: {};
@@ -106,7 +107,14 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "DDT"| "BOWTIE" | "HCP" | "MCQNOGROUP";
+  questionType:
+    | "DDC"
+    | "SATA"
+    | "MRSN"
+    | "DDT"
+    | "BOWTIE"
+    | "HCP"
+    | "MCQNOGROUP";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;

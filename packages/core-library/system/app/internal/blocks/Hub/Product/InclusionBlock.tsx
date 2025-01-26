@@ -6,7 +6,7 @@
 
 import React from 'react'
 import { useBusinessQueryContext, useDialogContext, useExecuteToast } from '../../../../../../contexts'
-import { useApiCallback, useColumns, useModal } from '../../../../../../hooks'
+import { useDeleteResource, useColumns, useEndpointByKey, useModal } from '../../../../../../hooks'
 import { Alert, Card, ConfirmationDeleteDialog, DataGrid } from '../../../../../../components'
 import { Box, Container, ListItemButton } from '@mui/material'
 import { InclusionType } from './inclusion/validation'
@@ -16,24 +16,30 @@ import { GridMoreVertIcon } from '@mui/x-data-grid'
 import { atom, useAtom } from 'jotai'
 import { EditInclusionParams } from '../../../../../../api/types'
 import { InclusionIdAtom } from '../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic'
+import { SsrTypes } from '../../../../../../types/global'
 
-export const InclusionBlock: React.FC = () => {
+interface Props {
+    data?: SsrTypes;
+}
+
+export const InclusionBlock: React.FC<Props> = ({ data }) => {
     const { open, close, props } = useModal();
     const [, setId] = useAtom(InclusionIdAtom)
     const { openDialog } = useDialogContext()
     const { businessQueryGetAllInclusion, businessQueryCreateInclusion } = useBusinessQueryContext()
-    const { data, isLoading, refetch } = businessQueryGetAllInclusion(["getAllInclusionApi"])
+    const { data: inclusionLists, isLoading, refetch } = businessQueryGetAllInclusion(["getAllInclusionApi"])
     const { mutateAsync: createInclusion } = businessQueryCreateInclusion()
     const { executeToast } = useExecuteToast()
+    const url = useEndpointByKey({
+        data: data?.endpoints,
+        key: "delete-inclusion",
+    });
 
-    const deleteInclusionCb = useApiCallback(
-        async (api, args: string) =>
-            await api.webbackoffice.deleteInclusion(args)
-    );
+    const { deleteCb } = useDeleteResource({ url });
 
     async function onDelete(id: string) {
         try {
-            await deleteInclusionCb.execute(id)
+            await deleteCb.execute({ id })
             refetch()
         }
         catch (error) {
@@ -90,7 +96,7 @@ export const InclusionBlock: React.FC = () => {
                                     description="Are you sure you want to delete this inclusion? This action cannot be undone and this will permanently delete the inclusion."
                                     expectedInput="Delete Inclusion"
                                     handleDelete={() => onDelete(row.id)}
-                                    loading={deleteInclusionCb.loading}
+                                    loading={deleteCb.loading}
                                 />
                             </CustomPopover>
                         </Box>
@@ -137,7 +143,7 @@ export const InclusionBlock: React.FC = () => {
                             rowSelection={false}
                             columns={columns}
                             getRowHeight={() => "auto"}
-                            rows={data ?? []} />
+                            rows={inclusionLists ?? []} />
                     </Card>
                 </Box>
             </Container>

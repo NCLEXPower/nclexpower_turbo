@@ -32,7 +32,7 @@ export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
 
   /* This api should be in web-api-backoffice */
   public web_account_setup(params: RegisterParams) {
@@ -233,5 +233,12 @@ export class WebApi {
 
   public async getChatBotMode() {
     return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
+  }
+
+  public deleteResource<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
   }
 }
