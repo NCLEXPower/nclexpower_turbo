@@ -27,6 +27,12 @@ export interface LoginParams {
   deviceId: string;
 }
 
+export interface NotifyParams {
+  goLiveId?: string | undefined;
+  maintenanceId?: string | undefined;
+  email: string;
+}
+
 export interface SsoLoginParams {
   email: string;
 }

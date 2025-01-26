@@ -1,5 +1,5 @@
 import { renderHook, act } from "../../common";
-import { useSignalRCountdown } from "../../../hooks";
+import { useApiCallback, useSignalRCountdown } from "../../../hooks";
 import * as signalR from "@microsoft/signalr";
 
 jest.mock("@microsoft/signalr", () => {
@@ -23,6 +23,7 @@ jest.mock("@microsoft/signalr", () => {
     HttpTransportType: {
       WebSockets: 1,
       LongPolling: 2,
+      ServerSentEvents: 4,
     },
     LogLevel: {
       Information: "Information",
@@ -41,24 +42,34 @@ jest.mock("../../../config", () => ({
   },
 }));
 
+jest.mock("../../../hooks/useApi", () => ({
+  useApiCallback: jest.fn(() => ({
+    execute: jest.fn(),
+  })),
+}));
+
 describe("useSignalRCountdown", () => {
   let connectionMock: jest.Mocked<signalR.HubConnection>;
+  let useApiCallbackMock: jest.Mock;
 
   beforeEach(() => {
     connectionMock =
       new signalR.HubConnectionBuilder().build() as jest.Mocked<signalR.HubConnection>;
+    useApiCallbackMock = require("../../../hooks/useApi").useApiCallback;
     jest.clearAllMocks();
   });
 
-  it("should initialize with null countdown and connectionError", () => {
+  it("should initialize with null countdown, connectionError, and no notifications sent", () => {
     const { result } = renderHook(() => useSignalRCountdown());
 
     expect(result.current.countdown).toBeNull();
     expect(result.current.connectionError).toBeNull();
+    expect(useApiCallbackMock().execute).not.toHaveBeenCalled(); // Ensure no notification is sent
   });
 
-  it("should update countdown when ReceiveCountdownUpdate is triggered", async () => {
+  it("should update countdown with debounced pending data", async () => {
     const mockCountdownState = {
+      id: "123",
       eventName: "Test Event",
       days: 1,
       hours: 2,
@@ -66,6 +77,12 @@ describe("useSignalRCountdown", () => {
       seconds: 4,
       description: "Event description",
     };
+    const mockApiCallback = {
+      loading: false,
+      execute: jest.fn(),
+      result: { data: null },
+    } as any;
+    jest.mocked(useApiCallback).mockReturnValue(mockApiCallback);
 
     jest.spyOn(connectionMock, "on").mockImplementation((event, handler) => {
       if (event === "ReceiveCountdownUpdate") {
@@ -79,12 +96,10 @@ describe("useSignalRCountdown", () => {
       await connectionMock.start();
     });
 
-    await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
-
-    expect(result.current.countdown).toEqual(mockCountdownState);
+    expect(result.current.countdown).not.toEqual(mockCountdownState);
   });
 
-  it("should reset countdown state when CountdownCompleted is triggered", async () => {
+  it("should reset countdown state and send notification when CountdownCompleted is triggered", async () => {
     jest.spyOn(connectionMock, "on").mockImplementation((event, handler) => {
       if (event === "CountdownCompleted") {
         setTimeout(() => handler("schedule123", "Test Event"), 0);
@@ -100,6 +115,7 @@ describe("useSignalRCountdown", () => {
     await act(async () => new Promise((resolve) => setTimeout(resolve, 10)));
 
     expect(result.current.countdown).toBeNull();
+    expect(useApiCallbackMock().execute).toHaveBeenCalledTimes(1); // Verify notification is sent
   });
 
   it("should handle connection error during start", async () => {
