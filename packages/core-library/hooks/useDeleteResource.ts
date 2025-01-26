@@ -1,10 +1,10 @@
 import { useApiCallback } from "./useApi";
 
-interface DeleteCbProps {
+interface Props {
   url?: string;
 }
 
-export const useDeleteResource = ({ url }: DeleteCbProps) => {
+export const useDeleteResource = ({ url }: Props) => {
   const deleteCb = useApiCallback(async (api, params: Record<string, any>) => {
     if (!url) {
       throw new Error("Url for deletion is required.");

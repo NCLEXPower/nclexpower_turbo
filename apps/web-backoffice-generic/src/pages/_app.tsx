@@ -26,8 +26,6 @@ Router.events.on("routeChangeError", () => NProgress.done());
 export default function App({ Component, pageProps }: AppProps) {
   const cache = useEmotionCache();
 
-  console.log("pageProps: ", pageProps?.data as SsrTypes);
-
   return (
     <CacheProvider value={cache}>
       <CookiesProvider>
