@@ -9,7 +9,7 @@ export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ dat
     const [isEmpty, setIsEmpty] = useState<boolean>(false)
 
     useEffect(() => {
-        if ((data.result?.length === 0 || data.result == null) && data.status === 'success') {
+        if ((data.result?.length === 0 || data.result == null) && data.result.status === 200) {
             setIsEmpty(true);
         } else {
             setIsEmpty(false);
@@ -17,7 +17,7 @@ export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ dat
     }, [data.result, data.status]);
 
     return (
-        data.status == 'success' && isEmpty == false ?
+        data.result.status === 200 && isEmpty == false ?
             <>{children}</>
             :
             <Box sx={{
