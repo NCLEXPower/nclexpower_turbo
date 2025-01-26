@@ -13,7 +13,7 @@ export interface DDCQuestionProps {
   };
 }
 
-export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
+export const DDCItem: React.FC<DDCQuestionProps> = ({ ddcData }) => {
   const { wordWrap } = useStyle();
 
   const renderDropdown = useCallback(
@@ -21,7 +21,7 @@ export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
       const answer = answers.find(
         (ans: DDCAnswerOptionType) => ans.optionName === optionName
       );
-      if (!answer) return;
+      if (!answer) return <p>no contents</p>;
 
       const defaultSelectedOption = answer.options?.find(
         (option) => option.answerKey === true
@@ -52,9 +52,6 @@ export const DDCquestion: React.FC<DDCQuestionProps> = ({ ddcData }) => {
 
   const renderContentWithDropdowns = useCallback(
     (itemStem: string, answers: DDCAnswerOptionType[]) => {
-      if (!itemStem) {
-        return <Typography>No content available</Typography>;
-      }
       const parts = itemStem.split(/\[\[(.*?)\]\]/);
 
       return parts.map((part, index) => {

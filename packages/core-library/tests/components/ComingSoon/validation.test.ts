@@ -1,0 +1,161 @@
+import { contentDateSchema } from "../../../../core-library/system/app/internal/blocks/Hub/ComingSoon/validation";
+
+jest.mock("../../../config", () => ({
+    getConfig: jest.fn().mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+    config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+    useRouter: jest.fn(),
+}));
+
+jest.mock("console", () => ({
+  time: jest.fn(),
+}));
+
+describe("Content Date Schema", () => {
+  it("should validate valid data", async () => {
+    const validData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: false,
+      schedule: new Date(new Date().setDate(new Date().getDate() + 1)),
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+      confetti: true,
+      announcement: false,
+      isActive: true,
+    };
+
+    await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
+  });
+
+  it("should return error when eventName is missing", async () => {
+    const invalidData = {
+      description: "Event Description",
+      hasNoSchedule: false,
+      schedule: new Date(),
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should return error when description exceeds max length", async () => {
+    const invalidData = {
+      eventName: "Valid Title",
+      description: "a".repeat(501),
+      hasNoSchedule: false,
+      schedule: new Date(),
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should allow optional confetti and announcement fields", async () => {
+    const validData = {
+      eventName: "Valid Title",
+      description: "Valid Description",
+      hasNoSchedule: true,
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Pre-Prod",
+    };
+
+    await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
+  });
+
+  it("should return error when schedule is before today", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: false,
+      schedule: new Date(new Date().setDate(new Date().getDate() - 1)),
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should return error when countries list is empty", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: true,
+      countries: [],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should return error when environment is invalid", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: true,
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Production",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should validate correctly when hasNoSchedule is true", async () => {
+    const validData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: true,
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
+  });
+
+  it("should return error when timeZone is missing", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: true,
+      countries: ["USA"],
+      selectedCountriesTimezones: ["America/New_York"],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should return error when selectedCountriesTimezones is empty", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: true,
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      selectedCountriesTimezones: [],
+      environment: "Dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+});

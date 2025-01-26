@@ -6,13 +6,16 @@ import Divider from "core-library/components/Divider/Divider";
 export const TopicsCompleted = () => {
   return (
     <Box>
-      <Typography sx={{
-        fontWeight: "bold",
-        marginBottom: 2,
-        color: "#04081470",
-        fontFamily: "PT Sans",
-        fontSize: "1.3rem"
-      }}>
+      <Typography
+        sx={{
+          fontWeight: "semibold",
+          marginBottom: 8,
+          pt: 5,
+          color: "rgba(35, 35, 35, 0.44)",
+          fontFamily: "PT Sans Narrow",
+          fontSize: "1.3rem",
+        }}
+      >
         Percent Topic Completed
       </Typography>
       {analytics.data.topics.map((topic, index) => (
@@ -23,7 +26,7 @@ export const TopicsCompleted = () => {
             alignItems: "center",
             justifyContent: "space-between",
             flexDirection: "column",
-            marginY: 6,
+            paddingY: 8,
           }}
         >
           <Box sx={{ position: "relative", display: "inline-flex" }}>
@@ -65,9 +68,9 @@ export const TopicsCompleted = () => {
             <Typography
               sx={{
                 fontWeight: "bold",
-                color: "#181E2F",
-                fontFamily: "PT Sans",
-                fontSize: "1.5rem"
+                color: "rgba(59, 61, 83, 1)",
+                fontFamily: "PT Sans Narrow",
+                fontSize: "2rem",
               }}
             >
               {`${topic.percentage}%`}
@@ -77,20 +80,19 @@ export const TopicsCompleted = () => {
                 fontWeight: "bold",
                 marginTop: 1,
                 display: "inline-block",
-                fontFamily: "PT Sans",
-                fontSize: "1.3rem",
-                color: "#23232380"
+                fontFamily: "PT Sans Narrow",
+                fontSize: "1.5rem",
+                color: "#23232380",
               }}
             >
               {topic.name}
-              <Divider sx={{
-                my: 2,
-                width: "100%",
-                backgroundColor: index % 2 === 0
-                  ? "#0F2A71"
-                  : "#181E2F",
-                height: "4px"
-              }}
+              <Divider
+                sx={{
+                  my: 2,
+                  width: "100%",
+                  backgroundColor: index % 2 === 0 ? "#0F2A71" : "#181E2F",
+                  height: "4px",
+                }}
               />
             </Typography>
           </Box>
