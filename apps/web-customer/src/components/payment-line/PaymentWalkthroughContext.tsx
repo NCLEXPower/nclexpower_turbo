@@ -261,6 +261,9 @@ export const PaymentWizardFormContextProvider: React.FC<
             paymentIntentId,
             publishableKey,
             stripePromise,
+            changePaymentStatusCb.loading,
+            isLoading,
+            validateLoading,
           ]
         )}
       >
