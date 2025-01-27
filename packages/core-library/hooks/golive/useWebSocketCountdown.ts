@@ -15,11 +15,6 @@ export interface CountdownState {
   Description: string;
 }
 
-const websocketUrl =
-  process.env.NODE_ENV === "production"
-    ? `${config.value.API_URL.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`
-    : `${config.value.LOCAL_API_URL.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`;
-
 export const useWebSocketCountdown = () => {
   const router = useRouter();
   const [countdown, setCountdown] = useState<CountdownState | null>(null);
@@ -46,6 +41,22 @@ export const useWebSocketCountdown = () => {
   };
 
   const connectWebSocket = () => {
+    const apiUrl = config.value.API_URL as string;
+    const localApiUrl = config.value.LOCAL_API_URL as string;
+
+    if (!apiUrl || !localApiUrl) {
+      console.error(
+        "API_URL or LOCAL_API_URL is not defined in the environment variables."
+      );
+      setConnectionError("Invalid WebSocket URL configuration.");
+      return;
+    }
+
+    const websocketUrl =
+      process.env.NODE_ENV === "production"
+        ? `${apiUrl.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`
+        : `${localApiUrl.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`;
+
     if (
       websocketRef.current &&
       websocketRef.current.readyState === WebSocket.OPEN

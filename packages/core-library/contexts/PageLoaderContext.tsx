@@ -54,9 +54,6 @@ export const PageLoaderContextProvider: React.FC<
     loading,
     router.loading,
   ]);
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <context.Provider
