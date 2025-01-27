@@ -9,6 +9,7 @@ type SwitchButtonPropsType = {
   checked: boolean;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | undefined;
   sx: SxProps<Theme> | undefined;
+  disabled?: boolean;
 };
 
 export const SwitchButton: React.FC<SwitchButtonPropsType> = ({
@@ -16,6 +17,7 @@ export const SwitchButton: React.FC<SwitchButtonPropsType> = ({
   inputProps,
   sx,
   checked,
+  disabled,
 }) => {
   return (
     <Switch
@@ -23,6 +25,7 @@ export const SwitchButton: React.FC<SwitchButtonPropsType> = ({
       checked={checked}
       onChange={onChange}
       inputProps={{ ...inputProps }}
+      disabled={disabled}
     />
   );
 };
