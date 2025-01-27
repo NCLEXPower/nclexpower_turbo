@@ -34,7 +34,7 @@ export type Blocks =
 type BlockProps = {
   LoginFormBlock: {};
   HubOverviewBlock: { cards: DashboardCardType[] };
-  SettingsBlock: {};
+  SettingsBlock: { fileRoutes: string[] };
   QuestionApprovalBlock: {};
   EmailVerificationBlock: {};
   PasswordChangeBlock: {};
