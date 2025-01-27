@@ -65,7 +65,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
     case "CreateCategoryBlock":
       return <CreateCategoryBlock />;
     case "InclusionBlock":
-      return <InclusionBlock />;
+      const { data } = props as ParseBlocksProps<"InclusionBlock">;
+      return <InclusionBlock data={data} />;
     case "DuplicateSessionBlock":
       return <DuplicateSessionBlock />;
     case "ChatbotManagement":
