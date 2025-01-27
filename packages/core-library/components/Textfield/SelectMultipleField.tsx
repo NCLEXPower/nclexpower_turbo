@@ -33,6 +33,7 @@ type BaseSelectFieldProps = {
   placeholder?: TextFieldProps["placeholder"];
   multiple?: boolean;
   "data-testid"?: string;
+  disabled?: boolean;
 };
 
 export function MultipleSelect({
@@ -45,6 +46,7 @@ export function MultipleSelect({
   value = [],
   placeholder,
   multiple = false,
+  disabled = false,
   ...rest
 }: BaseSelectFieldProps) {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -97,6 +99,7 @@ export function MultipleSelect({
                     onMouseDown={(e) => e.stopPropagation()}
                     deleteIcon={<CancelIcon aria-label="delete" />}
                     sx={{ borderRadius: 0, border: "1px solid #ccc" }}
+                    disabled={disabled}
                   />
                 ))}
               </Box>
@@ -107,7 +110,7 @@ export function MultipleSelect({
         {...rest}
       >
         {options.map((option, index) => (
-          <MenuItem key={`${option.value}-${index}`} value={option.value}>
+          <MenuItem key={`${option.value}-${index}`} value={option.value} disabled={disabled}>
             {option.label || option.categoryName}
           </MenuItem>
         ))}

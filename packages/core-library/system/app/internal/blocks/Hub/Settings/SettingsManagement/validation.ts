@@ -56,13 +56,31 @@ export const MenuItemsSchema = yup.object({
   }),
 });
 
+const MenuItemPath = yup
+  .string()
+  .nullable()
+  .default("/")
+  .when(["$routes", "children"], ([routes, children], schema) => {
+    console.log("validatiao", routes);
+
+    if (!routes || children.length > 0) {
+      return schema.notRequired();
+    }
+    return schema
+      .oneOf(
+        routes,
+        "You must create a file before adding a route. Please create the file and try again."
+      )
+      .required("This field is required");
+  });
+
 export const EditMenuItemsSchema = yup.object({
   id: yup.string().notRequired(),
   icon: yup.string().required().default(""),
   menuId: yup.string().notRequired(),
   parentId: yup.string().notRequired(),
   label: yup.string().required("Menu Label is required").default(""),
-  path: yup.string().default(""),
+  path: MenuItemPath,
   children: yup
     .array()
     .of(
@@ -72,7 +90,7 @@ export const EditMenuItemsSchema = yup.object({
         menuId: yup.string().notRequired(),
         parentId: yup.string().notRequired(),
         label: yup.string().required("Menu Label is required").default(""),
-        path: yup.string().nullable().default(null),
+        path: MenuItemPath,
       })
     )
     .optional(),
