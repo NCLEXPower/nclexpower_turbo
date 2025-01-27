@@ -566,21 +566,6 @@ export const useCreateInclusion = (
   }, opt);
 };
 
-export const useDeleteInclusion = (
-  opt?: MutOpt<AxiosResponse<number, AxiosError>>
-) => {
-  const deleteInclusionCB = useApiCallback(
-    async (api, args: string) => await api.webbackoffice.deleteInclusion(args)
-  );
-  return useAppMutation<AxiosResponse<number, AxiosError>, string>(
-    async (data) => {
-      const result = await deleteInclusionCB.execute(data);
-      return result;
-    },
-    opt
-  );
-};
-
 export const useUpdateInclusion = (
   opt?: MutOpt<AxiosResponse<number, AxiosError>>
 ) => {
