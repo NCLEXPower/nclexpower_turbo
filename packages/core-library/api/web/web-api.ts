@@ -248,4 +248,11 @@ export class WebApi {
   public async getChatBotMode() {
     return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
   }
+
+  public deleteResource<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
+  }
 }
