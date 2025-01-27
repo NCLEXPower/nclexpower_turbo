@@ -55,11 +55,13 @@ export const ComingSoonPage: React.FC<Props> = ({
 
   useEffect(() => {
     if (countdown) {
-      const formattedTime = `${countdown.days.toString().padStart(2, "0")} : ${countdown.hours
-        .toString()
-        .padStart(2, "0")} : ${countdown.minutes
-        .toString()
-        .padStart(2, "0")} : ${countdown.seconds.toString().padStart(2, "0")}`;
+      const formattedTime = `${countdown.Days.toString().padStart(2, "0")} : ${countdown.Hours.toString().padStart(
+        2,
+        "0"
+      )} : ${countdown.Minutes.toString().padStart(
+        2,
+        "0"
+      )} : ${countdown.Seconds.toString().padStart(2, "0")}`;
       setTimeRemaining(formattedTime);
     }
   }, [countdown]);
@@ -115,7 +117,7 @@ export const ComingSoonPage: React.FC<Props> = ({
               fontSize: "clamp(1.6rem, 2.5vw, 3rem)",
             }}
           >
-            {countdown?.eventName}
+            {countdown?.EventName}
           </Typography>
           <div className="pt-sans-bold">
             <Typography
@@ -209,7 +211,7 @@ export const ComingSoonPage: React.FC<Props> = ({
             </div>
           </FormProvider>
           <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
-            {countdown?.description}
+            {countdown?.Description}
           </p>
           <div className="flex items-center justify-center space-x-1.5 text-white">
             {socialMediaIcons}

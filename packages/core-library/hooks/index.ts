@@ -46,7 +46,7 @@ export * from "./useSafeStripe";
 export * from "./useMixpanelTracker";
 export * from "./analytics/useAnalytics";
 export * from "./ipCountry/useCountryFromIp";
-export * from "./golive/useSignalRCountdown";
+export * from "./golive/useWebSocketCountdown";
 export * from "./useWebHeaderStyles";
 export * from "./useSynchronizeSectionWithLabel";
 export * from "./useOrganizeSection";
