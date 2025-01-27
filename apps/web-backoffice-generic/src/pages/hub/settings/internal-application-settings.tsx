@@ -1,8 +1,24 @@
 import React from "react";
 import { ParseBlocks } from "core-library/system";
+import { GetServerSideProps } from "next";
+import { getAllRoutes } from "@/core/utils/getFileRoutes";
 
-const InternalApplicationSettings: React.FC = () => {
-  return <ParseBlocks blocks="SettingsBlock" />;
+type Props = {
+  routes: string[];
+};
+
+const InternalApplicationSettings = ({ routes }: Props) => {
+  return <ParseBlocks blocks="SettingsBlock" fileRoutes={routes} />;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const PATH = "src/pages/hub";
+
+  return {
+    props: {
+      routes: getAllRoutes(PATH),
+    },
+  };
 };
 
 export default InternalApplicationSettings;
