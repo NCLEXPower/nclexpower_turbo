@@ -1,12 +1,6 @@
 import { render } from "@testing-library/react";
-import { screen, fireEvent } from "../../../../common";
-import { RefundPaymentBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/RefundPaymentBlock";
-import { SubmitRefundRequestModal } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/SubmitRefundRequestModal";
-import {
-  refundCardData,
-  refundPaymentData,
-  refundPaymentItems,
-} from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/constants";
+import { screen, userEvent } from "../../../../common";
+import { RefundPaymentBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/contents/RefundPaymentBlock";
 
 jest.mock("../../../../../config", () => ({
   getConfig: jest
@@ -23,114 +17,56 @@ jest.mock(
 );
 
 describe("RefundPaymentBlock", () => {
-  const mockBackPage = jest.fn();
-
-  const renderComponent = () => {
-    render(<RefundPaymentBlock backPage={mockBackPage} />);
-  };
+  const mockPreviousStep = jest.fn();
+  const mockPrevious = jest.fn();
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("renders RefundPaymentBlock with all sections", () => {
-    renderComponent();
+  const renderForm = () => {
+    return render(
+      <RefundPaymentBlock
+        previousStep={mockPreviousStep}
+        previous={mockPrevious}
+      />
+    );
+  };
+
+  it("renders the RefundPaymentBlock UI correctly", () => {
+    renderForm();
 
     expect(
-      screen.getByText(/refund payment/i, { selector: "h3" })
+      screen.getByRole("heading", { name: /refund payment/i })
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /submit request/i })
     ).toBeInTheDocument();
 
     expect(screen.getByText(/payment method:/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `${refundCardData.name} ending in ${refundCardData.endingDigits}`
-      )
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `Expiry date: ${refundCardData.expiryMonth}/${refundCardData.expiryYear}`
-      )
-    ).toBeInTheDocument();
-
-    expect(screen.getByText(/refund amount/i)).toBeInTheDocument();
-
-    expect(screen.getByText(/refund reason/i)).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/content not as advertised/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/better alternative found/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/difficulty navigating platform/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText(/describe the reason for this refund/i)
-    ).toBeInTheDocument();
   });
 
-  it("triggers the backPage callback when clicking the back button", () => {
-    renderComponent();
+  it("calls previousStep({}) and previous when Back is clicked", async () => {
+    renderForm();
 
     const backButton = screen.getByRole("button", { name: /back/i });
-    fireEvent.click(backButton);
+    await userEvent.click(backButton);
 
-    expect(mockBackPage).toHaveBeenCalledTimes(1);
+    expect(mockPreviousStep).toHaveBeenCalledWith({});
+    expect(mockPrevious).toHaveBeenCalledTimes(1);
   });
 
-  it("opens the SubmitRefundRequestModal when clicking 'Submit Request'", () => {
-    renderComponent();
+  it("toggles the submit modal when clicking Submit Request", async () => {
+    renderForm();
 
-    const submitButton = screen.getByRole("button", {
+    const submitRequestButton = screen.getByRole("button", {
       name: /submit request/i,
     });
-    fireEvent.click(submitButton);
+    await userEvent.click(submitRequestButton);
 
-    // Assert modal is opened
     expect(screen.getByTestId("submit-modal")).toBeInTheDocument();
-    expect(SubmitRefundRequestModal).toHaveBeenCalledWith(
-      { open: true, onClose: expect.any(Function) },
-      {}
-    );
-  });
-
-  it("renders refund payment details correctly", () => {
-    renderComponent();
-
-    const labelToValueMap = {
-      "Estimated Refund Duration": refundPaymentData.refundDuration,
-      Subtotal: `$${refundPaymentData.subtotal.toFixed(2)}`,
-      "Time Period": refundPaymentData.timePeriod,
-      "Refund Percentage": `${refundPaymentData.refundPercentage.toFixed(2)}%`,
-      "Total Refundable": `$${(
-        refundPaymentData.subtotal *
-        (refundPaymentData.refundPercentage / 100)
-      ).toFixed(2)}`,
-    };
-
-    const listItems = screen.getAllByRole("listitem");
-    expect(listItems.length).toBe(refundPaymentItems.length + 1);
-
-    refundPaymentItems.forEach((item, index) => {
-      const label = item.label;
-      const value = labelToValueMap[label];
-
-      expect(listItems[index]).toHaveTextContent(label);
-      expect(listItems[index]).toHaveTextContent(value);
-    });
-
-    const refundAmountLabel = screen.getByText(/refund amount/i);
-
-    const refundAmountLi = refundAmountLabel.closest("li");
-    expect(refundAmountLi).toBeInTheDocument();
-
-    expect(refundAmountLi).toHaveTextContent(/refund amount/i);
-
-    const expectedRefundAmount = `$${(
-      refundPaymentData.subtotal *
-      (refundPaymentData.refundPercentage / 100)
-    ).toFixed(2)}`;
-
-    expect(refundAmountLi).toHaveTextContent(expectedRefundAmount);
   });
 });

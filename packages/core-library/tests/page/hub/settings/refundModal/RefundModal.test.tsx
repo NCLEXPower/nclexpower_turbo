@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import { RefundModal } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/RefundModal";
-import { screen, userEvent, waitFor } from "../../../../common";
+import { screen, userEvent } from "../../../../common";
+import { useRefundModalSteps } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/useSteps";
 
 jest.mock("../../../../../config", () => ({
   getConfig: jest
@@ -9,32 +10,47 @@ jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
-describe("Refund Modal", () => {
-  it("Renders the modal with Refund Policy be default", () => {
-    render(<RefundModal open={true} onClose={jest.fn()} />);
+jest.mock(
+  "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/useSteps",
+  () => ({
+    useRefundModalSteps: jest.fn(),
+  })
+);
 
-    expect(screen.getByTestId("policy-block")).toBeInTheDocument();
-  });
-
-  it("Toggles from policy to payment", async () => {
-    render(<RefundModal open={true} onClose={jest.fn()} />);
-
-    const continueButton = screen.getByRole("button", { name: /continue/i });
-    userEvent.click(continueButton);
-
-    waitFor(() => {
-      expect(screen.getByTestId("payment-block")).toBeInTheDocument();
+describe("RefundModal component", () => {
+  it("renders the modal content when open", () => {
+    (useRefundModalSteps as jest.Mock).mockReturnValue({
+      render: <div>Mocked Render</div>,
     });
+
+    render(<RefundModal open={true} onClose={jest.fn()} />);
+
+    // Verify modal content is in the document
+    expect(screen.getByText("Refund Request")).toBeInTheDocument();
+    expect(screen.getByText("Mocked Render")).toBeInTheDocument();
   });
 
-  it("Closes the modal upon clicking X button", async () => {
+  it("does not render the modal content when closed", () => {
+    (useRefundModalSteps as jest.Mock).mockReturnValue({
+      render: <div>Mocked Render</div>,
+    });
+
+    render(<RefundModal open={false} onClose={jest.fn()} />);
+
+    expect(screen.queryByText("Refund Request")).not.toBeInTheDocument();
+    expect(screen.queryByText("Mocked Render")).not.toBeInTheDocument();
+  });
+
+  it("calls onClose when the close button is clicked", async () => {
     const onCloseMock = jest.fn();
-    const user = userEvent.setup();
+    (useRefundModalSteps as jest.Mock).mockReturnValue({
+      render: <div>Mocked Render</div>,
+    });
 
     render(<RefundModal open={true} onClose={onCloseMock} />);
 
-    const closeBtn = screen.getByTestId("close-btn");
-    await user.click(closeBtn);
+    const closeButton = screen.getByTestId("close-btn");
+    await userEvent.click(closeButton);
 
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });

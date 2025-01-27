@@ -43,21 +43,61 @@ const StepIcon: React.FC<StepIconProps> = ({ active, completed }) => {
   );
 };
 
+interface StepIconNumberProps extends StepIconProps {
+  num: number;
+}
+
+const StepIconNumber: React.FC<StepIconNumberProps> = ({
+  num,
+  active,
+  completed,
+}) => {
+  return (
+    <Box
+      sx={{
+        width: {
+          xs: "30px",
+          sm: "50px",
+        },
+        height: {
+          xs: "30px",
+          sm: "50px",
+        },
+        borderRadius: "100%",
+        backgroundColor: completed || active ? "#0F2A71" : "#0F2A711A",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: completed || active ? "#FFF" : "#3333334D",
+        fontSize: "clamp(12px,2vw,20px)",
+        fontWeight: 700,
+        flexShrink: 0,
+      }}
+    >
+      {num}
+    </Box>
+  );
+};
+
 type AppStepperProps = {
   activeStep: number;
   sx?: StepperProps["sx"];
   steps: string[];
+  alternativeLabel?: boolean;
+  numberIcon?: boolean;
 };
 
 export const Stepper: React.FC<AppStepperProps> = ({
   activeStep,
   sx = {},
   steps = [],
+  alternativeLabel = true,
+  numberIcon = false,
 }) => {
   return (
     <MuiStepper
       activeStep={activeStep}
-      alternativeLabel
+      alternativeLabel={alternativeLabel}
       sx={{ maxWidth: 600, width: "100%", px: 0, ...sx }}
     >
       {steps.map((label, i) => (
@@ -67,7 +107,15 @@ export const Stepper: React.FC<AppStepperProps> = ({
           completed={activeStep > i}
           active={i === activeStep}
         >
-          <StepLabel StepIconComponent={StepIcon}>
+          <StepLabel
+            StepIconComponent={(props) =>
+              numberIcon ? (
+                <StepIconNumber {...props} num={i + 1} />
+              ) : (
+                <StepIcon {...props} />
+              )
+            }
+          >
             <Box sx={{ width: "50%", mx: "auto" }}>
               <Typography
                 fontWeight={activeStep === i ? "bold" : "normal"}

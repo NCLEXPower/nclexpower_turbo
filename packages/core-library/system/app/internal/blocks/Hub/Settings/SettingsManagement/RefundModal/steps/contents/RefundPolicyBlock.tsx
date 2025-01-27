@@ -1,8 +1,8 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { textSx } from "../SettingsStyles";
-import { gridData, policies, policyConditions } from "./constants";
-import { Button, EvaIcon } from "../../../../../../../../components";
-import { btnSx, gridBoxSx } from "./RefundModalStyles";
+import { btnSx, gridBoxSx } from "../../RefundModalStyles";
+import { textSx } from "../../../SettingsStyles";
+import { gridData, policies, policyConditions } from "../../constants";
+import { Button, EvaIcon } from "../../../../../../../../../../components";
 
 const PolicyGrid = () => {
   return (
@@ -140,14 +140,21 @@ const PolicyGrid = () => {
 };
 
 interface RefundPolicyBlockProps {
+  next: () => void;
   closeModal: () => void;
-  nextPage: () => void;
+  nextStep(values: {}): void;
 }
 
 export const RefundPolicyBlock: React.FC<RefundPolicyBlockProps> = ({
+  next,
+  nextStep,
   closeModal,
-  nextPage,
 }) => {
+  const nextPage = () => {
+    nextStep({});
+    next();
+  };
+
   return (
     <Box data-testid="policy-block">
       <Typography

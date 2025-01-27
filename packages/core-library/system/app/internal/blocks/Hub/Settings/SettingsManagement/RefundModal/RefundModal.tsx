@@ -1,10 +1,9 @@
 import { Box, Modal, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { textSx } from "../SettingsStyles";
 import { Button, EvaIcon } from "../../../../../../../../components";
-import { circleSx, modalBoxSx } from "./RefundModalStyles";
-import { RefundPolicyBlock } from "./RefundPolicyBlock";
-import { RefundPaymentBlock } from "./RefundPaymentBlock";
+import { modalBoxSx } from "./RefundModalStyles";
+import { useRefundModalSteps } from "./steps/useSteps";
 
 interface RefundModalProps {
   open: boolean;
@@ -12,13 +11,12 @@ interface RefundModalProps {
 }
 
 export const RefundModal: React.FC<RefundModalProps> = ({ open, onClose }) => {
-  const [isPolicy, setIsPolicy] = useState<boolean>(true);
+  const { render } = useRefundModalSteps(onClose);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
 
-  const togglePage = () => {
-    setIsPolicy((prev) => !prev);
-    scrollableRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useEffect(() => {
+    scrollableRef.current?.scrollTo({ top: 0, behavior: "instant" });
+  }, [render]);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -68,54 +66,7 @@ export const RefundModal: React.FC<RefundModalProps> = ({ open, onClose }) => {
             height: "90%",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "10px",
-              paddingX: "20px",
-              paddingBottom: "40px",
-            }}
-          >
-            <Box sx={circleSx}>1</Box>
-            <Typography sx={{ ...textSx, color: "#333333", fontWeight: 700 }}>
-              Refund Policy
-            </Typography>
-            <Box
-              sx={{
-                height: "2px",
-                width: "100%",
-                maxWidth: "100px",
-                backgroundColor: isPolicy ? "#3333334D" : "#333333",
-              }}
-            />
-            <Box
-              sx={{
-                ...circleSx,
-                ...(isPolicy && {
-                  backgroundColor: "#0F2A711A",
-                  color: "#3333334D",
-                }),
-              }}
-            >
-              2
-            </Box>
-            <Typography
-              sx={{
-                ...textSx,
-                color: isPolicy ? "#3333334D" : "#333333",
-                fontWeight: 700,
-              }}
-            >
-              Refund Payment
-            </Typography>
-          </Box>
-          {isPolicy ? (
-            <RefundPolicyBlock closeModal={onClose} nextPage={togglePage} />
-          ) : (
-            <RefundPaymentBlock backPage={togglePage} />
-          )}
+          {render}
         </Box>
       </Box>
     </Modal>

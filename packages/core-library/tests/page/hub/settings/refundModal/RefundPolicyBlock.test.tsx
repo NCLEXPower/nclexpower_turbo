@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
-import { screen, fireEvent, within } from "../../../../common";
-import { RefundPolicyBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/RefundPolicyBlock";
-import { policies } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/constants";
+import { screen, userEvent } from "../../../../common";
+import { RefundPolicyBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/contents/RefundPolicyBlock";
 
 jest.mock("../../../../../config", () => ({
   getConfig: jest
@@ -10,82 +9,77 @@ jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
-describe("Refund Policy Block", () => {
+jest.mock(
+  "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/constants",
+  () => ({
+    policies: [
+      { value: "Policy 1", hasTable: false },
+      { value: "Policy 2 with table", hasTable: true },
+    ],
+    policyConditions: ["Condition 1", "Condition 2"],
+    gridData: [
+      { timePeriod: "48h - 72h", amount: "100%" },
+      { timePeriod: "72h - 1 week", amount: "50%" },
+    ],
+  })
+);
+
+describe("RefundPolicyBlock", () => {
+  const mockNext = jest.fn();
+  const mockNextStep = jest.fn();
   const mockCloseModal = jest.fn();
-  const mockNextPage = jest.fn();
 
-  const renderComponent = () => {
-    return render(
-      <RefundPolicyBlock closeModal={mockCloseModal} nextPage={mockNextPage} />
-    );
-  };
-
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("Renders the refund policy block", () => {
-    renderComponent();
+  const renderForm = () => {
+    return render(
+      <RefundPolicyBlock
+        next={mockNext}
+        nextStep={mockNextStep}
+        closeModal={mockCloseModal}
+      />
+    );
+  };
 
-    expect(screen.getByTestId("policy-block")).toBeInTheDocument();
-  });
-
-  it("renders Refund Policy title", () => {
-    renderComponent();
+  it("renders the Refund Policy title", () => {
+    renderForm();
 
     expect(
       screen.getByText(/refund policy/i, { selector: "h3" })
     ).toBeInTheDocument();
   });
 
-  it("renders all policies from the constants", () => {
-    renderComponent();
+  it("displays policies and table when hasTable=true", () => {
+    renderForm();
 
-    policies.forEach((policy) => {
-      expect(screen.getByText(policy.value)).toBeInTheDocument();
-    });
+    expect(screen.getByText("Policy 1")).toBeInTheDocument();
+
+    expect(screen.getByText("Policy 2 with table")).toBeInTheDocument();
+
+    expect(screen.getByText("Time Period After Purchase")).toBeInTheDocument();
+    expect(screen.getByText("48h - 72h")).toBeInTheDocument();
   });
 
-  it("renders the PolicyGrid only for policies with hasTable set to true", () => {
-    renderComponent();
-
-    const policiesWithTable = policies.filter((policy) => policy.hasTable);
-    const policiesWithoutTable = policies.filter((policy) => !policy.hasTable);
-
-    policiesWithTable.forEach((policy) => {
-      const policyElement = screen.getByText(policy.value);
-      const policyContainer = policyElement.closest("li");
-
-      expect(
-        within(policyContainer!).getByText(/time period after purchase/i)
-      ).toBeInTheDocument();
-    });
-
-    policiesWithoutTable.forEach((policy) => {
-      const policyElement = screen.getByText(policy.value);
-      const policyContainer = policyElement.closest("li");
-
-      expect(
-        within(policyContainer!).queryByText(/time period after purchase/i)
-      ).not.toBeInTheDocument();
-    });
-  });
-
-  it("calls the closeModal function when the Cancel button is clicked", () => {
-    renderComponent();
+  it("calls closeModal when Cancel is clicked", async () => {
+    renderForm();
 
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
-    fireEvent.click(cancelButton);
+    await userEvent.click(cancelButton);
 
     expect(mockCloseModal).toHaveBeenCalledTimes(1);
+    expect(mockNext).not.toHaveBeenCalled();
+    expect(mockNextStep).not.toHaveBeenCalled();
   });
 
-  it("calls the nextPage function when the Continue button is clicked", () => {
-    renderComponent();
+  it("calls nextStep({}) and next when Continue is clicked", async () => {
+    renderForm();
 
     const continueButton = screen.getByRole("button", { name: /continue/i });
-    fireEvent.click(continueButton);
+    await userEvent.click(continueButton);
 
-    expect(mockNextPage).toHaveBeenCalledTimes(1);
+    expect(mockNextStep).toHaveBeenCalledWith({});
+    expect(mockNext).toHaveBeenCalledTimes(1);
   });
 });

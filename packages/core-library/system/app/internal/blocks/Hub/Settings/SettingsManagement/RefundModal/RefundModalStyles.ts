@@ -25,20 +25,6 @@ export const modalBoxSx: SxProps = {
   paddingBottom: "80px",
 };
 
-export const circleSx: SxProps = {
-  width: "clamp(20px,35px,50px)",
-  height: "clamp(20px,35px,50px)",
-  borderRadius: "9999px",
-  backgroundColor: "#0F2A71",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  color: "#FFF",
-  fontSize: "clamp(15px,2vw,20px)",
-  fontWeight: 700,
-  flexShrink: 0,
-};
-
 export const btnSx: SxProps = {
   borderRadius: "5px",
   minHeight: "50px",
