@@ -23,10 +23,10 @@ export const SystemMenu: SelectOption[] = [
     label: "Web Backoffice",
     value: 0,
     xvalue: 0,
-  }
+  },
 ];
 
-const AccountLevel = [
+export const AccountLevel = [
   {
     id: 1,
     label: "Developer",
