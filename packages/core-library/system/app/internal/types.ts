@@ -29,12 +29,13 @@ export type Blocks =
   | "ChatbotManagement"
   | "ContactUsManagementBlock"
   | "SalesManagement"
-  | "AnnouncementManagementBlock";
+  | "AnnouncementManagementBlock"
+  | "ComingSoonManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
   HubOverviewBlock: { cards: DashboardCardType[] };
-  SettingsBlock: {};
+  SettingsBlock: { fileRoutes: string[] };
   QuestionApprovalBlock: {};
   EmailVerificationBlock: {};
   PasswordChangeBlock: {};
@@ -52,6 +53,7 @@ type BlockProps = {
   ContactUsManagementBlock: {};
   SalesManagement: {};
   AnnouncementManagementBlock: {};
+  ComingSoonManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
