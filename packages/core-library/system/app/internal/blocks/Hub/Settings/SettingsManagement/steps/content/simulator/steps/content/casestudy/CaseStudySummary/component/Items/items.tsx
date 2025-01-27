@@ -13,6 +13,9 @@ import { BowtieSummary } from "./BowtieSummary";
 import { MCQGroupSummary } from "./MCQGroupSummary";
 import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
 import { HCPQuestion } from "./HCPQuestion";
+import { DNDQuestion } from './DNDQuestion';
+import { DNDSummary } from './DNDSummary';
+import { DNDAnswerOptionType } from '../../../../../../types';
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -55,12 +58,16 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         );
       case "HCP":
         return <HCPQuestion questionData={data} />;
+      case "DND":
+        return <DNDQuestion questionData={data} />;
       default:
         return (
           <Typography sx={wordWrap}>
             <ParsedHtml html={data.itemStem} />
           </Typography>
         );
+
+
     }
   };
 
@@ -76,20 +83,26 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
         return `MCQ No Group`;
       case "MCQGROUP":
         return `MCQ Group`;
+      case "HCP":
+        return `Phrase Selection`;
+      case "DND":
     }
   };
 
   const renderAnswerOption = (data: QuestionnaireItem) => {
     switch (data.questionType) {
+      case "HCP":
       case "SATA":
       case "MRSN":
-        return <AnswerList answers={data.answers} />;
+        return <AnswerList answers={data.answers as AnswerOption[]} />;
       case "BOWTIE":
         return <BowtieSummary data={data} />;
       case "MCQNOGROUP":
         return <MCQNoGroupSummary data={data} />;
       case "MCQGROUP":
         return <MCQGroupSummary data={data} />;
+      case "DND":
+        return <DNDSummary answers={data.answers as DNDAnswerOptionType[]} />
       default:
         return null;
     }
@@ -136,12 +149,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-            {data.questionType !== "DDC" &&
-              data.questionType !== "BOWTIE" &&
-              data.questionType !== "MCQGROUP" &&
-              data.questionType !== "MCQNOGROUP" && (
-                <AnswerList answers={data.answers} />
-              )}
+
             {renderAnswerOption(data)}
           </Box>
         ))

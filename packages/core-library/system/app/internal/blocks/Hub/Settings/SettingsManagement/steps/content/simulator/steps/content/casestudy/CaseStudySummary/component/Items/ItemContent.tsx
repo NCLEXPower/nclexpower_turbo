@@ -30,6 +30,7 @@ export const ItemContent: React.FC<ItemProps> = ({ values }) => {
     "HCP",
     "MCQGROUP",
     "DDT",
+    "DND",
     "MCQNOGROUP",
   ];
 
