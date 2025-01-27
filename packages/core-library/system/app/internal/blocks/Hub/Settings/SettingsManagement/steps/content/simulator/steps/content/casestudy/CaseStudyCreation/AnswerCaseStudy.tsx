@@ -61,8 +61,6 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
     }
   }, [questionType]);
 
-  console.log(useWatch())
-
   return (
     <Box
       sx={{

@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react'
 import { DndAnswerType } from '../../../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/DND/type';
-import { Box, FormControl, Typography } from '@mui/material';
-import { AnswerOptionsType, ParsedHtml, PlainSelectField } from '../../../../../../../../../../../../../../../../components';
-import { DNDAnswerOptionType, DNDAnswersType } from '../../../../../../types';
+import { Typography } from '@mui/material';
+import { ParsedHtml } from '../../../../../../../../../../../../../../../../components';
+import { DNDAnswerOptionType } from '../../../../../../types';
 import { QuestionnaireItem } from '../../../../../../../../../../../../../types';
-import { questionType } from '../../../../../../../../../constants/constants';
 
 type Props = {
     questionData: QuestionnaireItem
@@ -12,7 +11,6 @@ type Props = {
 
 export const DNDQuestion: React.FC<Props> = ({ questionData }) => {
     const { itemStem, dndAnswer } = questionData
-
 
     const renderContentWithDropdowns = useCallback(
         (itemStem: string, dndAnswers: DndAnswerType[]) => {
@@ -56,9 +54,6 @@ export const DNDQuestion: React.FC<Props> = ({ questionData }) => {
         },
         []
     );
-
-
-    console.log(questionData)
 
     return (
         <div>{renderContentWithDropdowns(itemStem, dndAnswer ?? [])}</div>

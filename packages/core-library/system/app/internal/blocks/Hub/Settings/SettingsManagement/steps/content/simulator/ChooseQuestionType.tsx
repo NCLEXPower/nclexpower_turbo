@@ -63,8 +63,7 @@ export const ChooseCaseStudyQuestionType = {
   InitialCaseNameSelection: {
     previousStep: "InitialCaseNameSelection",
     nextStep: "CaseStudyQuestionCreation",
-    content: (props) => <CaseStudySummary {...props} />,
-    // content: (props) => <CaseNameSelection {...props} />,
+    content: (props) => <CaseNameSelection {...props} />,
   },
   CaseStudyQuestionCreation: {
     previousStep: "InitialCaseNameSelection",
