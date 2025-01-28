@@ -12,14 +12,12 @@ type Props = {
 export const DNDQuestion: React.FC<Props> = ({ questionData }) => {
     const { itemStem, dndAnswer } = questionData
 
-    const renderContentWithDropdowns = useCallback(
+    const renderContent = useCallback(
         (itemStem: string, dndAnswers: DndAnswerType[]) => {
             if (!itemStem) {
                 return <Typography>No content available</Typography>;
             }
             const parts = itemStem.split(/\[\[(.*?)\]\]/);
-
-            console.log(parts);
 
             return parts.map((part, index) => {
                 const answerOptions = questionData.answers as DNDAnswerOptionType[];
@@ -56,6 +54,6 @@ export const DNDQuestion: React.FC<Props> = ({ questionData }) => {
     );
 
     return (
-        <div>{renderContentWithDropdowns(itemStem, dndAnswer ?? [])}</div>
+        <div>{renderContent(itemStem, dndAnswer ?? [])}</div>
     )
 }

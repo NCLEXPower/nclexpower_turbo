@@ -60,6 +60,7 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined
     },
     {
       questionType: "SATA",
@@ -90,6 +91,7 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined
     },
     {
       questionType: "BOWTIE",
@@ -114,6 +116,7 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined
     },
   ];
 
