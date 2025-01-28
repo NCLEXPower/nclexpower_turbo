@@ -54,7 +54,10 @@ export const submitDialogBoxSx: SxProps = {
     maxWidth: "900px",
     height: "unset",
     minHeight: "450px",
-    padding: "40px",
+    padding: {
+      xs: "20px",
+      sm: "40px",
+    },
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",

@@ -33,13 +33,19 @@ export const SubmitRefundRequestModal: React.FC<
             sx={{
               ...textSx,
               fontWeight: 700,
-              fontSize: "32px",
+              fontSize: "clamp(28px,2vw,32px)",
               marginBottom: "30px",
             }}
           >
             Are you sure to cancel your subscription?
           </Typography>
-          <Typography sx={{ ...textSx, color: "#33333380" }}>
+          <Typography
+            sx={{
+              ...textSx,
+              color: "#33333380",
+              fontSize: "clamp(15px,3vw,20px)",
+            }}
+          >
             If you wish to cancel your subscription, confirm your decision by
             clicking 'Continue' to process your refund payment
           </Typography>
