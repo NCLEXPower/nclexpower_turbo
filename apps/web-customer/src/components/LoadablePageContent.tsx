@@ -7,13 +7,11 @@ import { useMixpanelTrackerSession } from "core-library/hooks";
 
 interface Props {
   loading?: boolean;
-  pages: { pageRoute: string; pageAuthorization: number } | undefined | null;
 }
 
 export const LoadablePageContent: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   loading,
-  pages,
 }) => {
   const { scrollTo, scrollTop } = useScroll();
   const { isLoading, isCalculationsLoaded } = usePageLoaderContext();
@@ -22,12 +20,6 @@ export const LoadablePageContent: React.FC<React.PropsWithChildren<Props>> = ({
   const calculationsLoading =
     router.asPath === router.staticRoutes.hub && !isCalculationsLoaded;
   const isPageLoading = (loading || isLoading) && !calculationsLoading;
-
-  useEffect(() => {
-    if (!pages?.pageRoute && !calculationsLoading && !isPageLoading) {
-      router.push((routes) => routes.page_not_found);
-    }
-  }, [pages, calculationsLoading, isPageLoading]);
 
   /**
    * Tracks the page load event.
