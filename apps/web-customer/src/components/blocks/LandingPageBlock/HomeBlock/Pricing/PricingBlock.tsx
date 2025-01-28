@@ -8,14 +8,15 @@ import PricingCard from "./PricingComponent/PricingCard";
 import {
   ProductCardType,
   SelectedProductType,
-} from "core-library/types/global";
-import { useRouter } from "core-library/core";
-import { Encryption } from "core-library/utils/Encryption";
-import { config } from "core-library/config";
-import { useEncryptItem } from "core-library/contexts/auth/hooks";
-import { useDataSource } from "core-library/hooks";
-import { ProductListResponse } from "core-library/api/types";
-import { PriceButtonDetails } from "@/constants/constants";
+} from 'core-library/types/global';
+import { useRouter } from 'core-library/core';
+import { Encryption } from 'core-library/utils/Encryption';
+import { config } from 'core-library/config';
+import { useEncryptItem } from 'core-library/contexts/auth/hooks';
+import { useDataSource } from 'core-library/hooks';
+import { ProductListResponse } from 'core-library/api/types';
+import { PriceButtonDetails } from '@/constants/constants';
+import { ComponentState } from 'core-library/components';
 
 interface Props {
   url?: string;
@@ -25,7 +26,8 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource } = useDataSource({ url });
+  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
+  const dataStates = { data: dataSource, isLoading, isSuccess, isError }
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -64,6 +66,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     }
   }, [router.asPath]);
 
+
   return (
     <div
       id="pricing"
@@ -89,13 +92,11 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                 const isNotSelected =
                   nurseType && nurseType !== nurseItem.value;
 
-                const buttonClasses = `max-h-20 ${
-                  isSelected
+                const buttonClasses = `max-h-20 ${isSelected
                     ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${
-                        isNotSelected ? "saturate-0" : ""
-                      } hover:scale-95`
-                } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
+                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
+                    } hover:scale-95`
+                  } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
                 return (
                   <button
                     key={index}
@@ -123,10 +124,12 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
                   key={index}
                 >
-                  <PricingCard
-                    cardData={item as unknown as ProductCardType}
-                    handleSelectProduct={handleSelectProduct}
-                  />
+                  <ComponentState data={dataSource} isError={isError} isSuccess={isSuccess} isLoading={isLoading} >
+                    <PricingCard
+                      cardData={item as unknown as ProductCardType}
+                      handleSelectProduct={handleSelectProduct}
+                    />
+                  </ComponentState>
                 </div>
               ))
             ) : (
