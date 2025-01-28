@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
 import { ContainedCaseStudyQuestionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { SsrTypes } from "../../../types/global";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -28,12 +29,13 @@ export type Blocks =
   | "ChatbotManagement"
   | "ContactUsManagementBlock"
   | "SalesManagement"
-  | "AnnouncementManagementBlock";
+  | "AnnouncementManagementBlock"
+  | "ComingSoonManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
   HubOverviewBlock: { cards: DashboardCardType[] };
-  SettingsBlock: {};
+  SettingsBlock: { fileRoutes: string[] };
   QuestionApprovalBlock: {};
   EmailVerificationBlock: {};
   PasswordChangeBlock: {};
@@ -45,12 +47,13 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
-  InclusionBlock: {};
+  InclusionBlock: { data: SsrTypes };
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
   ContactUsManagementBlock: {};
   SalesManagement: {};
   AnnouncementManagementBlock: {};
+  ComingSoonManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {

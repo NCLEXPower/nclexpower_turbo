@@ -7,9 +7,18 @@
 import React from "react";
 import withAuth from "core-library/core/utils/withAuth";
 import { ParseBlocks } from "core-library/system";
+import { GetServerSideProps } from "next";
+import { withCSP } from "core-library";
+import { SsrTypes } from "core-library/types/global";
 
-const InclusionMainPage: React.FC = () => {
-    return <ParseBlocks blocks="InclusionBlock" />;
+type Props = {
+    data: SsrTypes;
 };
+
+const InclusionMainPage: React.FC<Props> = ({ data }) => {
+    return <ParseBlocks blocks="InclusionBlock" data={data} />;
+};
+
+export const getServerSideProps: GetServerSideProps = withCSP();
 
 export default withAuth(InclusionMainPage);
