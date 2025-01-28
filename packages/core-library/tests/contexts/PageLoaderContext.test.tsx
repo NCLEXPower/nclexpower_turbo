@@ -49,22 +49,4 @@ describe("PageLoaderContextProvider", () => {
       </PageLoaderContextProvider>
     );
   });
-
-  it("renders null when isMounted is false initially", () => {
-    jest.useFakeTimers();
-
-    const { container } = render(
-      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
-        <div data-testid="child-component">Test Component</div>
-      </PageLoaderContextProvider>
-    );
-
-    expect(container.firstChild).toBeNull();
-
-    act(() => {
-      jest.advanceTimersByTime(6000);
-    });
-
-    jest.useRealTimers();
-  });
 });

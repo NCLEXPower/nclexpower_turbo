@@ -44,7 +44,6 @@ const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
 > = ({ children, shouldShowChatBotWidget }) => {
   const router = useRouter();
-  const contentData = useContentDataContext();
   const queryClient = new QueryClient();
   const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
@@ -71,7 +70,7 @@ const Layout: React.FC<
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={loading || contentData.loading}
+      loading={loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>
@@ -86,13 +85,8 @@ const Layout: React.FC<
                 onLogout={logout}
                 isPaid={isPaid}
               >
-                <ContentLoader
-                  loading={loading || contentData.loading || router.loading}
-                >
-                  <LoadablePageContent
-                    loading={loading || contentData.loading}
-                    pages={contentData.pages}
-                  >
+                <ContentLoader loading={loading || router.loading}>
+                  <LoadablePageContent loading={loading}>
                     {children}
                     <Footer info={CompanyInfo} list={list} />
                     {shouldShowChatBotWidget && <ChatBotWidget />}
