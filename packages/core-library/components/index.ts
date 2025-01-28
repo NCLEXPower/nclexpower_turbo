@@ -66,6 +66,7 @@ export * from "./Radio/Radio";
 export * from "./Textfield/TextField";
 export * from "./forms/TextAreaField";
 export * from "./blocks/Accordion/SummaryAccordion";
+export * from "./Dialog/DialogFormBlocks/DeleteModal/ConfirmationDeleteDialog";
 
 export * from "./Dialog/DialogFormBlocks";
 export { GenericSelectField } from "../components/Textfield/GenericSelectField";
