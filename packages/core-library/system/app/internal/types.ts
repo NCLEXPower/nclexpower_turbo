@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
 import { ContainedCaseStudyQuestionType, DNDAnswersType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { DNDAnswerOptionType, HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { SsrTypes } from "../../../types/global";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -46,7 +47,7 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
-  InclusionBlock: {};
+  InclusionBlock: { data: SsrTypes };
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
   ContactUsManagementBlock: {};
