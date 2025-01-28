@@ -6,7 +6,7 @@
 import React, { ReactElement, ReactNode, useState } from "react";
 import { Button } from "../../../Button/Button";
 import { DialogBox } from "../../DialogBox";
-import { Box, ListItemButton, Typography } from "@mui/material";
+import { Box, ListItemButton, Switch, Typography } from "@mui/material";
 import { EvaIcon } from "../../../EvaIcon";
 
 type Props = {
@@ -97,6 +97,7 @@ interface ConfirmationModalProps {
   isLoading?: boolean;
   disabled?: boolean;
   onClickFn?: () => void;
+  checked?: boolean;
 }
 
 const ConfirmationModal = ({
@@ -107,6 +108,7 @@ const ConfirmationModal = ({
   isLoading,
   disabled,
   onClickFn,
+  checked,
 }: ConfirmationModalProps) => {
   const [open, setOpen] = useState(false);
 
@@ -124,6 +126,7 @@ const ConfirmationModal = ({
   return (
     <>
       <ButtonSelector
+        checked={checked}
         type={customButton}
         disabled={disabled}
         onClickFn={handleClickOpen}
@@ -153,9 +156,15 @@ interface ButtonSelectorProps {
   type: ReactNode;
   disabled?: boolean;
   onClickFn?: () => void;
+  checked?: boolean;
 }
 
-const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
+const ButtonSelector = ({
+  type,
+  disabled,
+  onClickFn,
+  checked,
+}: ButtonSelectorProps) => {
   switch (type) {
     case "Continue":
       return (
@@ -197,6 +206,33 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
         </Button>
       );
 
+    case "ToggleButton":
+      return (
+        <Switch
+          data-testid="toggle-button"
+          onChange={onClickFn}
+          disabled={disabled}
+          checked={Boolean(checked)}
+          sx={{ borderRadius: "10px", marginBottom: "10px" }}
+        />
+      );
+
+    case "Cancel":
+      return (
+        <Button
+          sx={{
+            zIndex: 2,
+            bgcolor: "#860000",
+            color: "white",
+            "&:hover": {
+              bgcolor: "#860000",
+            },
+          }}
+          onClick={onClickFn}
+        >
+          <Typography>Cancel</Typography>
+        </Button>
+      );
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>

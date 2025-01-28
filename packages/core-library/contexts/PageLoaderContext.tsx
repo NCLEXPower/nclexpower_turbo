@@ -39,13 +39,21 @@ export const PageLoaderContextProvider: React.FC<
     loading ?? router.loading
   );
   const [contentLoader, setContentLoader] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
+      setIsMounted(true);
       setIsCalculationsLoaded(false);
     }, 6000);
-  }, [isLoading, isCalculationsLoaded, loading, router.loading]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    isCalculationsLoaded,
+    loading,
+    router.loading,
+  ]);
 
   return (
     <context.Provider
@@ -58,11 +66,14 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {(isLoading || loading || router.loading || isCalculationsLoaded) &&
-      config.value.BASEAPP === "webc_app" ? (
-        <PageLoader />
+      {isAuthenticated ||
+      !(
+        (isLoading || loading || router.loading || isCalculationsLoaded) &&
+        config.value.BASEAPP === "webc_app"
+      ) ? (
+        <div data-testid="children-component">{children}</div>
       ) : (
-        <>{children}</>
+        <PageLoader data-testid="page-loader" />
       )}
     </context.Provider>
   );

@@ -36,6 +36,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   const MaintenanceMode =
     data && data.MaintenanceStatus?.currentMaintenanceMode;
+  const shouldShowChatBotWidget = data && data.hasChatBotWidget?.isEnabled;
 
   if (error) {
     return <ErrorBox label={error.message} />;
@@ -51,19 +52,20 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <React.Fragment>
-      <ContentDataContextProvider slug={slug ?? "/"}>
-        <CSPHead nonce={generatedNonce ?? "no-nonce"} />
-        <BusinessQueryContextProvider>
-          <AuthProvider>
-            <ToastProvider>
-              <ClientSecretKeyContextProvider>
-                <ControlledToast autoClose={5000} hideProgressBar={false} />
-                <Layout children={children} />
-              </ClientSecretKeyContextProvider>
-            </ToastProvider>
-          </AuthProvider>
-        </BusinessQueryContextProvider>
-      </ContentDataContextProvider>
+      <CSPHead nonce={generatedNonce ?? "no-nonce"} />
+      <BusinessQueryContextProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <ClientSecretKeyContextProvider>
+              <ControlledToast autoClose={5000} hideProgressBar={false} />
+              <Layout
+                shouldShowChatBotWidget={shouldShowChatBotWidget}
+                children={children}
+              />
+            </ClientSecretKeyContextProvider>
+          </ToastProvider>
+        </AuthProvider>
+      </BusinessQueryContextProvider>
     </React.Fragment>
   );
 };

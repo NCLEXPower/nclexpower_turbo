@@ -5,13 +5,7 @@ import {
   NCLEXYellowLogo,
 } from "core-library/assets";
 import Image from "next/image";
-import { useCountdown } from "core-library/hooks/useCountdown";
 import { Box, Typography } from "@mui/material";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TwitterIcon,
-} from "core-library/components/Icons";
 import { FormProvider, useForm } from "react-hook-form";
 import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -25,6 +19,8 @@ import {
 
 interface Props {
   countdown: CountdownState | null;
+  onSubmit: (values: ComingSoonType) => void;
+  loading: boolean;
 }
 
 const dateData = [
@@ -42,7 +38,11 @@ const socialMediaConfigs: SocialMediaConfig[] = [
   { platform: "twitter", link: "https://twitter.com" },
 ];
 
-export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
+export const ComingSoonPage: React.FC<Props> = ({
+  countdown,
+  onSubmit,
+  loading,
+}) => {
   const [timeRemaining, setTimeRemaining] =
     useState<string>("00 : 00 : 00 : 00");
 
@@ -55,11 +55,13 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
 
   useEffect(() => {
     if (countdown) {
-      const formattedTime = `${countdown.days.toString().padStart(2, "0")} : ${countdown.hours
-        .toString()
-        .padStart(2, "0")} : ${countdown.minutes
-        .toString()
-        .padStart(2, "0")} : ${countdown.seconds.toString().padStart(2, "0")}`;
+      const formattedTime = `${countdown.Days.toString().padStart(2, "0")} : ${countdown.Hours.toString().padStart(
+        2,
+        "0"
+      )} : ${countdown.Minutes.toString().padStart(
+        2,
+        "0"
+      )} : ${countdown.Seconds.toString().padStart(2, "0")}`;
       setTimeRemaining(formattedTime);
     }
   }, [countdown]);
@@ -69,10 +71,6 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
     control,
     formState: { isValid },
   } = method;
-
-  const onSubmit = (values: ComingSoonType) => {
-    console.log(values);
-  };
 
   return (
     <div className="w-full h-full lg:h-screen ">
@@ -119,7 +117,7 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
               fontSize: "clamp(1.6rem, 2.5vw, 3rem)",
             }}
           >
-            {countdown?.eventName}
+            {countdown?.EventName}
           </Typography>
           <div className="pt-sans-bold">
             <Typography
@@ -158,6 +156,7 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
                 control={control}
                 name="email"
                 placeholder="Email"
+                disabled={loading}
                 sx={{
                   borderRadius: "10px",
                   flexGrow: 1,
@@ -172,7 +171,7 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
                     color: "#f3f3f3",
                   },
                   "& .MuiInputBase-input:focus": {
-                    color: "#000",
+                    color: "#f3f3f3",
                   },
                 }}
                 inputProps={{
@@ -184,7 +183,8 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
               />
               <Button
                 onClick={handleSubmit(onSubmit)}
-                disabled={!isValid}
+                disabled={!isValid || loading}
+                loading={loading}
                 sx={{
                   color: "#0F2A71",
                   bgcolor: "#FFF",
@@ -211,7 +211,7 @@ export const ComingSoonPage: React.FC<Props> = ({ countdown }) => {
             </div>
           </FormProvider>
           <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
-            {countdown?.description}
+            {countdown?.Description}
           </p>
           <div className="flex items-center justify-center space-x-1.5 text-white">
             {socialMediaIcons}
