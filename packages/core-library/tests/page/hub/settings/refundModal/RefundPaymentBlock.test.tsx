@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { screen, userEvent } from "../../../../common";
-import { RefundPaymentBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/contents/RefundPaymentBlock";
+import { RefundPaymentBlock } from "../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/RefundModal/steps/contents/RefundPaymentBlock/RefundPaymentBlock";
 
 jest.mock("../../../../../config", () => ({
   getConfig: jest

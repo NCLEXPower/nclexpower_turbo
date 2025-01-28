@@ -5,9 +5,10 @@ import {
   WizardFormMap,
 } from "../../../../../../../../../hooks";
 import { RefundModalStepProps, RefundModalTypeSteps } from "./RefundModalTypes";
-import { RefundPaymentBlock } from "./contents/RefundPaymentBlock";
-import { RefundPolicyBlock } from "./contents/RefundPolicyBlock";
+import { RefundPaymentBlock } from "./contents/RefundPaymentBlock/RefundPaymentBlock";
+import { RefundPolicyBlock } from "./contents/RefundPolicyBlock/RefundPolicyBlock";
 import { Stepper } from "../../../../../../../../../components";
+import { stepperSx } from "../RefundModalStyles";
 
 export const useRefundModalSteps = (closeModal: () => void) => {
   const steps = useMemo(() => {
@@ -25,10 +26,7 @@ export const useRefundModalSteps = (closeModal: () => void) => {
     } as WizardFormMap<Partial<RefundModalTypeSteps>, {}, RefundModalStepProps>;
   }, []);
 
-  const formWizardValues = (
-    prev: Partial<{}> | undefined,
-    values: Partial<{}>
-  ): Partial<{}> => ({
+  const formWizardValues = (prev: {} | undefined, values: {}): {} => ({
     ...prev,
     ...values,
   });
@@ -54,26 +52,7 @@ export const useRefundModalSteps = (closeModal: () => void) => {
           steps={stepLabels}
           alternativeLabel={false}
           numberIcon
-          sx={{
-            marginX: "auto",
-            gap: "10px",
-            paddingX: "20px",
-            paddingBottom: "40px",
-            justifyContent: "center",
-
-            "& .MuiBox-root:has(.MuiTypography-root)": {
-              width: "unset",
-            },
-
-            "& .MuiStepConnector-root": {
-              width: "100%",
-              maxWidth: "120px",
-            },
-
-            "& .MuiTypography-root": {
-              fontSize: "clamp(12px,2vw,20px)",
-            },
-          }}
+          sx={stepperSx}
         />
         {renderStep({
           next,

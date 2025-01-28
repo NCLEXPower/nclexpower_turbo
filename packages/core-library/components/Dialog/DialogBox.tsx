@@ -26,7 +26,7 @@ interface Props extends DialogProps {
   overflowContent?: string;
   ContentHeight?: string;
   isOverflowing?: boolean;
-  headerStyle?: DialogProps['sx'];
+  headerStyle?: DialogProps["sx"];
 }
 
 export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
@@ -52,7 +52,6 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
       onClose={handleClose}
       sx={{
         overflowY: isOverflowing ? overflowContent : "none",
-        zIndex: 1,
         "& .MuiDialog-paper": {
           height: ContentHeight,
           maxHeight: isOverflowing ? "550px" : "auto",
@@ -70,9 +69,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
           pb: { xs: 6, sm: 8 },
           textAlign: "center",
           fontFamily: "PT Sans",
-          ...headerStyle
-        }
-        }
+          ...headerStyle,
+        }}
       >
         {!hideCloseButton && (
           <Box
@@ -82,9 +80,10 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
             justifyContent="flex-end"
           >
             <IconButton
+              data-testid="close-btn"
               color="primary"
               size="small"
-              sx={{ height: 32, width: 32, fontSize: 32 }}
+              sx={{ height: 32, width: 32, fontSize: 32, color: "white" }}
               disabled={loading}
               onClick={handleClose}
             >

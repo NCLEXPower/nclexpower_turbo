@@ -3,17 +3,17 @@ import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import { Button, EvaIcon } from "../../../../../../../../components";
 import { buttonSx, pNCard } from "./subscriptionPlanStyles";
 import { plans } from "./constants";
-import { useState } from "react";
 import { RefundModal } from "../RefundModal/RefundModal";
+import { useModal } from "../../../../../../../../hooks";
 
 export const SubscriptionPlanBlock = () => {
-  const [openRefundModal, setOpenRefundModal] = useState<boolean>(false);
+  const { open, close, props } = useModal();
 
-  const toggleModal = () => setOpenRefundModal((prev) => !prev);
+  const openModal = () => open();
 
   return (
     <>
-      <RefundModal open={openRefundModal} onClose={toggleModal} />
+      <RefundModal open={props.isOpen} onClose={close} />
       <Box sx={blockSx}>
         <Box sx={boxHeaderSx}>
           <Typography
@@ -157,7 +157,7 @@ export const SubscriptionPlanBlock = () => {
                         backgroundColor: "#084A4E",
                         color: "#FFF",
                       }}
-                      onClick={toggleModal}
+                      onClick={openModal}
                     >
                       Cancel Subscription
                     </Button>

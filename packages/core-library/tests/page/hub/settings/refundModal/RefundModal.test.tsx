@@ -25,7 +25,6 @@ describe("RefundModal component", () => {
 
     render(<RefundModal open={true} onClose={jest.fn()} />);
 
-    // Verify modal content is in the document
     expect(screen.getByText("Refund Request")).toBeInTheDocument();
     expect(screen.getByText("Mocked Render")).toBeInTheDocument();
   });

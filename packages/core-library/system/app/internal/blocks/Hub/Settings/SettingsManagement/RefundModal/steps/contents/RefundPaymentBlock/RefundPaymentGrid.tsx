@@ -1,41 +1,28 @@
-import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Typography,
-} from "@mui/material";
-import {
-  Button,
-  EvaIcon,
-  TextField,
-} from "../../../../../../../../../../components";
-import { textSx } from "../../../SettingsStyles";
-import { btnSx, cardSx } from "../../RefundModalStyles";
-import Image from "next/image";
-import { Checkbox } from "@mui/material";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import { refundReasonSchema, RefundReasonType } from "../../../validation";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   RefundCardData,
   RefundPaymentItem,
   RefundPaymentValues,
-} from "../../../types";
+} from "../../../../types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { refundReasonSchema, RefundReasonType } from "../../../../validation";
+import { refundPaymentItems } from "../../../constants";
+import { Box, Grid, Typography } from "@mui/material";
 import {
-  refundCardData,
-  refundPaymentData,
-  refundPaymentItems,
-} from "../../constants";
-import { useState } from "react";
-import { SubmitRefundRequestModal } from "../../SubmitRefundRequestModal";
+  ControlledCheckbox,
+  EvaIcon,
+  TextField,
+} from "../../../../../../../../../../../components";
+import Image from "next/image";
+import { cardSx } from "../../../RefundModalStyles";
+import { textSx } from "../../../../SettingsStyles";
 
 interface PaymentGridProps {
   paymentValues: RefundPaymentValues;
   refundCardData: RefundCardData;
 }
 
-const PaymentGrid: React.FC<PaymentGridProps> = ({
+export const PaymentGrid: React.FC<PaymentGridProps> = ({
   paymentValues,
   refundCardData,
 }) => {
@@ -46,6 +33,8 @@ const PaymentGrid: React.FC<PaymentGridProps> = ({
     mode: "all",
     defaultValues: refundReasonSchema.getDefault(),
   });
+
+  const { control } = form;
 
   const { refundDuration, subtotal, timePeriod, refundPercentage } =
     paymentValues;
@@ -202,49 +191,35 @@ const PaymentGrid: React.FC<PaymentGridProps> = ({
         }}
       >
         <FormProvider {...form}>
-          <Box sx={{ ...cardSx, flexGrow: 1, padding: "20px" }}>
+          <Box
+            sx={{
+              ...cardSx,
+              flexGrow: 1,
+              padding: "20px",
+              "& .MuiTypography-root": {
+                fontFamily: "PT Sans",
+              },
+            }}
+          >
             <Typography sx={{ ...textSx, fontWeight: 700, fontSize: "28px" }}>
               Refund Reason
             </Typography>
-            <FormGroup
-              sx={{
-                padding: "10px",
-              }}
-              className="space-y-2"
-            >
-              <Controller
-                name="reason1"
-                control={form.control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={<Checkbox {...field} />}
-                    label="Content Not as Advertised"
-                  />
-                )}
-              />
 
-              <Controller
-                name="reason2"
-                control={form.control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={<Checkbox {...field} />}
-                    label="Better Alternative Found"
-                  />
-                )}
-              />
-
-              <Controller
-                name="reason3"
-                control={form.control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={<Checkbox {...field} />}
-                    label="Difficulty Navigating Platform"
-                  />
-                )}
-              />
-            </FormGroup>
+            <ControlledCheckbox
+              control={form.control}
+              name="reason1"
+              label="Content Not as Advertised"
+            />
+            <ControlledCheckbox
+              control={form.control}
+              name="reason2"
+              label="Better Alternative Found"
+            />
+            <ControlledCheckbox
+              control={form.control}
+              name="reason3"
+              label="Difficulty Navigating Platform"
+            />
 
             <div className="flex gap-2 items-end px-3">
               <label htmlFor="otherReason">Others</label>
@@ -287,68 +262,5 @@ const PaymentGrid: React.FC<PaymentGridProps> = ({
         </FormProvider>
       </Grid>
     </Grid>
-  );
-};
-
-interface RefundPaymentBlockProps {
-  previousStep(values: {}): void;
-  previous: () => void;
-}
-export const RefundPaymentBlock: React.FC<RefundPaymentBlockProps> = ({
-  previousStep,
-  previous,
-}) => {
-  const [openSubmit, setOpenSubmit] = useState<boolean>(false);
-  const toggleSubmitModal = () => setOpenSubmit((prev) => !prev);
-
-  const prevPage = () => {
-    previousStep({});
-    previous();
-  };
-
-  return (
-    <Box data-testid="payment-block">
-      <SubmitRefundRequestModal open={openSubmit} onClose={toggleSubmitModal} />
-      <Button
-        variant="outlined"
-        onClick={prevPage}
-        sx={{ ...btnSx, marginY: "40px", minWidth: "150px" }}
-      >
-        Back
-      </Button>
-      <Typography
-        component="h3"
-        sx={{
-          ...textSx,
-          fontWeight: 700,
-          fontSize: "38px",
-          paddingLeft: "20px",
-        }}
-      >
-        Refund Payment
-      </Typography>
-
-      <PaymentGrid
-        paymentValues={refundPaymentData}
-        refundCardData={refundCardData}
-      />
-
-      <Button
-        sx={{
-          ...btnSx,
-          bgcolor: "#FF0000",
-          border: "none",
-          minWidth: "230px",
-          marginLeft: "auto",
-          marginRight: {
-            xs: "auto",
-            sm: "10px",
-          },
-        }}
-        onClick={toggleSubmitModal}
-      >
-        Submit Request
-      </Button>
-    </Box>
   );
 };
