@@ -2,23 +2,25 @@ import React from "react";
 import {
   useApi,
   useApiCallback,
-  useSignalRCountdown,
+  useWebSocketCountdown,
 } from "core-library/hooks";
 import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
 import { ComingSoonType } from "../ComingSoonBlock/validation";
 import { NotifyParams } from "core-library/api/types";
 
 export const GoLiveBlock: React.FC = () => {
-  const { countdown } = useSignalRCountdown();
-  const goLiveCb = useApi(
-    async (api) => await api.web.getActiveGoLiveSchedule()
-  );
+  const { countdown, connectionError } = useWebSocketCountdown();
   const notifyCb = useApiCallback(
     async (api, args: NotifyParams) => await api.web.sendNotify(args)
   );
 
-  if (countdown === null) return <p>Something went wrong.</p>;
+  if (connectionError) {
+    return <p>Error: {connectionError}</p>;
+  }
 
+  if (!countdown) {
+    return <p>No active countdown.</p>;
+  }
   return (
     <ComingSoonPage
       countdown={countdown}
@@ -31,7 +33,7 @@ export const GoLiveBlock: React.FC = () => {
     try {
       const result = await notifyCb.execute({
         email: values.email,
-        goLiveId: countdown?.id,
+        goLiveId: countdown?.Id,
       });
       if (result.data === 200 || result.status === 200) {
         alert("Successfully submitted.");

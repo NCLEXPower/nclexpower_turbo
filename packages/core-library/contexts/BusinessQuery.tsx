@@ -43,7 +43,6 @@ import {
   useGetAllInclusion,
   useDeleteRoute,
   useCreateInclusion,
-  useDeleteInclusion,
   useUpdateInclusion,
   useCreateSubsequentOptions,
   useGetSubsequentList,
@@ -278,14 +277,6 @@ interface BusinessQueryContextValue {
     string,
     unknown
   >;
-  businessQueryDeleteInclusion: (
-    opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<
-    AxiosResponse<number, AxiosError<unknown, any>>,
-    any,
-    string,
-    unknown
-  >;
 
   businessQueryCreateSubsequentOptions: (
     opt?: MutOpt<AxiosResponse<SubsequentOptionType, AxiosError>>
@@ -395,7 +386,6 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllInclusion = useGetAllInclusion;
   const businessQueryDeleteRoute = useDeleteRoute;
   const businessQueryCreateInclusion = useCreateInclusion;
-  const businessQueryDeleteInclusion = useDeleteInclusion;
   const businessQueryUpdateInclusion = useUpdateInclusion;
   const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
   const businessQueryGetSubsequentList = useGetSubsequentList;
@@ -442,7 +432,6 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInclusion,
         businessQueryDeleteRoute,
         businessQueryCreateInclusion,
-        businessQueryDeleteInclusion,
         businessQueryUpdateInclusion,
         businessQueryCreateSubsequentOptions,
         businessQueryGetSubsequentList,
