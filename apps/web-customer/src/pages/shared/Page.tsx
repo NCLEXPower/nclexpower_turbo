@@ -46,9 +46,9 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     return <MaintenanceBlock />;
   }
 
-  // if (data?.hasGoLive) {
-  //   return <GoLiveBlock />; //Replace with actual Go-Live UI
-  // }
+  if (data?.hasGoLive) {
+    return <GoLiveBlock />; //Replace with actual Go-Live UI
+  }
 
   return (
     <React.Fragment>

@@ -83,7 +83,7 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
               data-testid="close-btn"
               color="primary"
               size="small"
-              sx={{ height: 32, width: 32, fontSize: 32, color: "white" }}
+              sx={{ height: 32, width: 32, fontSize: 32 }}
               disabled={loading}
               onClick={handleClose}
             >
