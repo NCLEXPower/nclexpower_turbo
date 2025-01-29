@@ -3,8 +3,7 @@ import { NCLEXBlueLogo } from "core-library/assets";
 import Image from "next/image";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Toolbar } from "@mui/material";
-
-import { EvaIcon } from "core-library/components/EvaIcon";
+import { EvaIcon } from "core-library/components";
 import { PricingDetailProps } from "core-library/types/global";
 
 const PricingDetail: React.FC<PricingDetailProps> = ({

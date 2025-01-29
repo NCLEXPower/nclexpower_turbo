@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductSelection from "./ProductSelection";
 import PricingDetail from "./PricingDetail";
 import { ProductInformationProps } from "core-library/types/global";
-import { ProductDetailsSkeleton } from "./ProductDetailsSkeleton";
+import { ProductDetailSkeletonLoader } from "./ProductDetailSkeletonLoader";
 
 const ProductInformation = ({
   cardData,
@@ -26,7 +26,7 @@ const ProductInformation = ({
 
   if (loading) {
     return (
-      <ProductDetailsSkeleton
+      <ProductDetailSkeletonLoader
         inclusionsCount={filteredCardData?.inclusions?.features?.length || 5}
       />
     );

@@ -2,7 +2,7 @@ import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { PricingModalProps, ProductCardType } from "core-library/types/global";
+import { PricingModalProps } from "core-library/types/global";
 import ProductInformation from "./ProductInformation";
 
 const Transition = React.forwardRef(function Transition(
@@ -21,8 +21,6 @@ export default function PricingModal({
   open,
   cardData,
 }: PricingModalProps) {
-  console.log("cardData Pring Modal", cardData);
-
   return (
     <div className="py-6">
       <p

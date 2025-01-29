@@ -1,5 +1,4 @@
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/material";
-import React, { useState } from "react";
 import Image from "next/image";
 import {
   BlueDocument,

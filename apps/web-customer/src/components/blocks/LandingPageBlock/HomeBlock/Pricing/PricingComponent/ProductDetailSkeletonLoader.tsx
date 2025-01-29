@@ -1,13 +1,11 @@
 import { Box } from "@mui/material";
 import { AnimatedBoxSkeleton } from "core-library/components";
 
-interface ProductDetailsSkeletonProps {
+interface Props {
   inclusionsCount?: number;
 }
 
-export const ProductDetailsSkeleton = ({
-  inclusionsCount,
-}: ProductDetailsSkeletonProps) => {
+export const ProductDetailSkeletonLoader = ({ inclusionsCount }: Props) => {
   return (
     <div className="w-full min-h-full flex flex-col p-6 xl:flex-row xl:gap-24 xl:p-12">
       <div className="w-full xl:w-4/6 pl-6 lg:pl-16 my-6">
