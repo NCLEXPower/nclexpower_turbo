@@ -18,6 +18,7 @@ import { ProductListResponse } from "core-library/api/types";
 import { PriceButtonDetails } from "@/constants/constants";
 import PricingModal from "./PricingComponent/PricingModal";
 import { ComponentState } from "core-library/components";
+import { Button } from "@mui/material";
 
 interface Props {
   url?: string;
@@ -28,12 +29,17 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const [selectedItems, setSelectedItems] = React.useState<ProductCardType>(
+    {} as ProductCardType
+  );
+  const handleClickOpen = (items: any) => {
+    setSelectedItems(items);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedItems({} as ProductCardType);
   };
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
@@ -161,7 +167,25 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         </div>
 
         {filteredItems && filteredItems.length > 0 ? (
-          filteredItems.slice(0, 1).map((item, index) => (
+          <div>
+            <PricingModal
+              handleClickOpen={() => handleClickOpen(filteredItems.slice(0, 2))}
+              handleClose={handleClose}
+              open={open}
+              handleSelectProduct={handleSelectProduct}
+              cardData={selectedItems}
+            />
+          </div>
+        ) : (
+          <div
+            className={`bg-gradient-to-tr ${nurseType === 0 ? "from-[#334f9d] to-[#0c225c] text-white" : "from-[#31898f] to-[#08474b] text-white"} rounded-md shadow-md px-5 py-8 text-lg w-full text-center  font-semibold max-w-[750px]`}
+          >
+            <p>Programs unavailable, please reload the page</p>
+          </div>
+        )}
+
+        {/* {filteredItems && filteredItems.length > 0 ? (
+          filteredItems.slice(0, 2).map((item, index) => (
             <div>
               <PricingModal
                 handleClickOpen={handleClickOpen}
@@ -177,7 +201,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
           >
             <p>Programs unavailable, please reload the page</p>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

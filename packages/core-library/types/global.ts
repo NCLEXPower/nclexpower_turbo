@@ -11,8 +11,8 @@ import {
   NumberValue,
   SelectionValue,
   StringValue,
-} from './common';
-import { PanelListItem } from './page';
+} from "./common";
+import { PanelListItem } from "./page";
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
@@ -21,13 +21,13 @@ export interface CmsGlobals {
   errors?: ErrorsEntity[] | null;
   messages?: MessagesEntity[] | null;
   modals?: ModalsEntity[] | null;
-  dialogs?: DialogElement['value'][] | null;
+  dialogs?: DialogElement["value"][] | null;
   contentHtmlBlocks?: ContentBlockEntity[] | null;
   classifiers?: ClassifierEntity[] | null;
   icons?: IconsEntity[] | null;
 }
 
-export type PreloadedGlobals = Pick<CmsGlobals, 'labels'>;
+export type PreloadedGlobals = Pick<CmsGlobals, "labels">;
 interface ClassifierEntity {
   elements: {
     classifierKey?: StringValue;
@@ -41,7 +41,7 @@ interface ClassifierEntity {
       }[];
     };
   };
-  type: 'Classifier';
+  type: "Classifier";
 }
 
 interface ModalsEntity {
@@ -187,15 +187,29 @@ export interface ProductCardType {
 }
 
 export interface PricingModalProps {
-  handleClickOpen: () => void;
+  handleClickOpen: (item: ProductCardType) => void;
   handleClose: () => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
   open: boolean;
   cardData: ProductCardType;
 }
 
-export interface PricingDetailProps {
+export interface ProductInformationProps {
   onClose: () => void;
   cardData: ProductCardType;
+  handleSelectProduct: (item: SelectedProductType) => void;
+}
+
+export interface PricingDetailProps {
+  filteredCardData: ProductCardType;
+  onClose: () => void;
+}
+
+export interface ProductSelectionProps {
+  cardData: ProductCardType[];
+  selectedProduct: number;
+  setSelectedProduct: (value: number) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
 }
 
 export type NavigationItemType = {

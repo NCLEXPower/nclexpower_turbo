@@ -1,20 +1,9 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
-import { Box } from '@mui/material';
-import PricingDetail from './PricingDetail';
-import { PricingModalProps } from 'core-library/types/global';
+import * as React from "react";
+import Dialog from "@mui/material/Dialog";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
+import { PricingModalProps, ProductCardType } from "core-library/types/global";
+import ProductInformation from "./ProductInformation";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,14 +17,17 @@ const Transition = React.forwardRef(function Transition(
 export default function PricingModal({
   handleClickOpen,
   handleClose,
+  handleSelectProduct,
   open,
   cardData,
 }: PricingModalProps) {
+  console.log("cardData Pring Modal", cardData);
+
   return (
     <div className="py-6">
       <p
         className="text-base font-normal cursor-pointer underline text-[#717171]"
-        onClick={handleClickOpen}
+        onClick={() => handleClickOpen(cardData)}
       >
         View more details
       </p>
@@ -46,7 +38,11 @@ export default function PricingModal({
         TransitionComponent={Transition}
       >
         <div className="min-h-screen">
-          <PricingDetail cardData={cardData} onClose={handleClose} />
+          <ProductInformation
+            cardData={cardData}
+            onClose={handleClose}
+            handleSelectProduct={handleSelectProduct}
+          />
         </div>
       </Dialog>
     </div>
