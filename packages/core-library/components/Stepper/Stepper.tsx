@@ -6,6 +6,7 @@ import {
   Step,
   StepLabel,
   Typography,
+  StepContent,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import React from "react";
@@ -15,18 +16,10 @@ const StepIcon: React.FC<StepIconProps> = ({ active, completed }) => {
     <Box
       sx={{
         borderRadius: "100%",
-        borderColor: (theme) => {
-          if (completed || active) {
-            return theme.palette.secondary.light;
-          }
-          return theme.palette.grey[400];
-        },
-        borderStyle: "solid",
-        borderWidth: () => {
-          if (active) return [4, 6];
-          return 2;
-        },
-        backgroundColor: "white",
+        backgroundColor: (theme) =>
+          active ? "#0F2A71" :
+            completed ? theme.palette.success.main : "#0F2A71"
+        ,
         width: [15, 20],
         height: [15, 20],
         display: "flex",
@@ -35,9 +28,7 @@ const StepIcon: React.FC<StepIconProps> = ({ active, completed }) => {
       }}
     >
       {completed && (
-        <CheckIcon
-          sx={{ color: "secondary.light", width: ["0.4em", "0.6em"] }}
-        />
+        <CheckIcon sx={{ color: "#fff", width: ["0.4em", "0.6em"] }} />
       )}
     </Box>
   );
@@ -47,41 +38,66 @@ type AppStepperProps = {
   activeStep: number;
   sx?: StepperProps["sx"];
   steps: string[];
+  stepContent?: React.ReactNode;
+  orientation?: "horizontal" | "vertical";
+  labelStyle?: React.CSSProperties;
+  alternativeLabel?: boolean;
 };
 
 export const Stepper: React.FC<AppStepperProps> = ({
   activeStep,
   sx = {},
   steps = [],
+  orientation = "horizontal",
+  stepContent,
+  labelStyle,
+  alternativeLabel = true,
 }) => {
   return (
-    <MuiStepper
-      activeStep={activeStep}
-      alternativeLabel
-      sx={{ maxWidth: 600, width: "100%", px: 0, ...sx }}
-    >
-      {steps.map((label, i) => (
-        <Step
-          sx={{ px: 0 }}
-          key={label}
-          completed={activeStep > i}
-          active={i === activeStep}
+    <React.Fragment>
+      <Box
+        sx={{
+          width: "100%",
+          position: "relative",
+          pl: 3,
+        }}
+      >
+        <MuiStepper
+          activeStep={activeStep}
+          alternativeLabel={alternativeLabel}
+          orientation={orientation}
+          sx={{ width: "100%", px: 0, }}
         >
-          <StepLabel StepIconComponent={StepIcon}>
-            <Box sx={{ width: "50%", mx: "auto" }}>
-              <Typography
-                fontWeight={activeStep === i ? "bold" : "normal"}
-                fontSize="0.6rem"
-                variant="caption"
-                display="flex"
-                alignItems="center"
-              >
-                {label}
-              </Typography>
-            </Box>
-          </StepLabel>
-        </Step>
-      ))}
-    </MuiStepper>
+          {steps.map((label, i) => (
+            <Step
+              key={label}
+              completed={activeStep > i}
+              active={i === activeStep}
+            >
+              <StepLabel StepIconComponent={StepIcon}>
+                <Box sx={{ mx: "auto" }}>
+                  <Typography
+                    fontWeight={activeStep === i ? "bold" : "normal"}
+                    fontSize="1rem"
+                    display="flex"
+                    alignItems="center"
+                    style={{ ...labelStyle }}
+                  >
+                    {label}
+                  </Typography>
+                </Box>
+              </StepLabel>
+              {stepContent ? (
+                <StepContent>
+                  {stepContent}
+                </StepContent>
+              ) : null}
+            </Step>
+          ))}
+        </MuiStepper>
+      </Box>
+
+    </React.Fragment>
+
   );
 };

@@ -39,7 +39,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     );
     setEncryptedProduct(encyptedData);
     router.push({
-      pathname: '/order-summary',
+      pathname: '/account/registration', //temporarily as viewing product details are in progress
     });
   };
 

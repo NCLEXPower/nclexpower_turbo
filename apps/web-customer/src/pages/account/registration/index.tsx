@@ -6,8 +6,9 @@
 import { GetServerSideProps } from "next";
 import { withCSP } from "core-library";
 import { RegistrationBlock } from "../../../components/blocks/RegistrationBlock/RegistrationBlock";
+import { RegistrationWalkthroughBlock } from "@/components/register-line/RegistrationWalkthroughBlock";
 
- const RegistrationPage:React.FC = () => <RegistrationBlock/>
+const RegistrationPage: React.FC = () => <RegistrationWalkthroughBlock />
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const referer = context.req.headers.referer || "";

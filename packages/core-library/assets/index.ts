@@ -55,6 +55,7 @@ export const ContactLocation = require("./contact/location.png");
 export const ContactMail = require("./contact/mail.png");
 export const ContactPhone = require("./contact/phone.png");
 
+export const RegistrationBG = require("./register/RegistrationBackground.png");
 export const ComingSoon = require("./ComingSoon/ComingSoon.png");
 
 export const ForgotPasswordImage = require("./forgotpassword/ForgotPasswordImage.json");
