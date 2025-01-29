@@ -22,13 +22,46 @@ export const useWebSocketCountdown = () => {
   const router = useRouter();
   const [countdown, setCountdown] = useState<CountdownState | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
-  const [pendingData, setPendingData] = useState<CountdownState | null>(null);
   const notificationSent = useRef(false);
   const websocketRef = useRef<WebSocket | null>(null);
+  const reconnectTimeout = useRef<number>();
+  const isMounted = useRef(false);
+  const maxReconnectAttempts = 10;
+  const reconnectAttempts = useRef(0);
 
   const sendNotifCb = useApiCallback(
     async (api) => await api.web.sendNotification()
   );
+
+  const websocketUrl =
+      process.env.NODE_ENV === "development"
+        ? `${localApiUrl.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`
+        : `${apiUrl.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`;
+
+  const handleNormalClose = (code: number) => {
+    if (code === 1000) {
+      setConnectionError("Connection closed normally");
+      return false;
+    }
+    if (code === 1008) {
+      setConnectionError("Invalid timezone configuration");
+      return false;
+    }
+    return true;
+  }
+
+  const scheduleReconnect = () => {
+    if (reconnectAttempts.current >= maxReconnectAttempts || !isMounted.current) {
+      setConnectionError("Max reconnect attempts reached");
+      return;
+    }
+
+    const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
+    reconnectTimeout.current = window.setTimeout(() => {
+      reconnectAttempts.current++;
+      connectWebSocket();
+    }, delay)
+  }
 
   const sendNotification = async () => {
     if (notificationSent.current) return;
@@ -44,91 +77,57 @@ export const useWebSocketCountdown = () => {
   };
 
   const connectWebSocket = () => {
-    if (!apiUrl || !localApiUrl) {
-      console.error(
-        "API_URL or LOCAL_API_URL is not defined in the environment variables."
-      );
-      setConnectionError("Invalid WebSocket URL configuration.");
-      return;
-    }
+    if (!isMounted.current) return;
 
-    const websocketUrl =
-      process.env.NODE_ENV === "development"
-        ? `${localApiUrl.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`
-        : `${apiUrl.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`;
-
-    if (
-      websocketRef.current &&
-      websocketRef.current.readyState === WebSocket.OPEN
-    ) {
-      console.log("WebSocket already connected.");
-      return;
-    }
-
-    if (websocketRef.current) {
-      websocketRef.current.close();
-    }
+    websocketRef.current?.close();
 
     const ws = new WebSocket(websocketUrl);
     websocketRef.current = ws;
 
     ws.onopen = () => {
+      reconnectAttempts.current = 0;
       setConnectionError(null);
+      console.log("WebSocket connected");
       ws.send(JSON.stringify({ type: "JoinGroup", timeZone: getTimeZone() }));
     };
 
     ws.onmessage = async (event) => {
       try {
         const data = JSON.parse(event.data);
-
         if (data.type === "ReceiveCountdownUpdate") {
-          setPendingData(data.payload);
+          setCountdown(data.payload);
         } else if (data.type === "CountdownCompleted") {
-          if (!notificationSent.current) {
-            console.log("Countdown completed!");
-            notificationSent.current = true;
-            await sendNotification();
-            await router.push((route) => route.home);
-            setCountdown(null);
-          }
-        } else {
-          console.log("Unhandled message type:", data);
+          await router.push((route) => route.home);
         }
       } catch (error) {
-        console.error("Failed to parse WebSocket message:", event.data, error);
+        console.error("Message handling error:", error);
       }
     };
 
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
-      setConnectionError("WebSocket error occurred.");
+      setConnectionError("Connection error. Reconnecting...");
+      scheduleReconnect();
     };
 
-    ws.onclose = () => {
-      console.error("WebSocket connection closed. Reconnecting...");
-      setConnectionError("Connection lost. Reconnecting...");
-      setTimeout(() => connectWebSocket(), 5000);
+    ws.onclose = (event) => {
+      if (handleNormalClose(event.code)) {
+        console.log(`Connection closed (${event.reason}), reconnecting...`);
+        scheduleReconnect();
+      }
     };
   };
 
   useEffect(() => {
+    isMounted.current = true;
     connectWebSocket();
 
     return () => {
-      if (websocketRef.current) {
-        console.log("Cleaning up WebSocket connection.");
-        websocketRef.current.close();
-      }
+      isMounted.current = false;
+      websocketRef.current?.close();
+      clearTimeout(reconnectTimeout.current);
     };
   }, []);
-
-  useDebounce(
-    () => {
-      if (pendingData) setCountdown(pendingData);
-    },
-    500,
-    [pendingData]
-  );
 
   return { countdown, connectionError };
 };
