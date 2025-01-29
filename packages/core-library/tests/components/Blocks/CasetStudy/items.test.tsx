@@ -118,6 +118,48 @@ describe("Items Component", () => {
       hcpContent: undefined,
       dndAnswer: undefined
     },
+    {
+      questionType: "DND",
+      itemStem: "A sample DND Question [[item1]] and [[item2]]",
+      answers: [],
+      transitionHeader: "Transition Header for SATA Question",
+      maxPoints: 0,
+      seqNum: 0,
+      itemNum: 0,
+      dndAnswer: [],
+      centerLabelName: undefined,
+      rightLabelName: undefined,
+      rightSection: undefined,
+      centerSection: undefined,
+      leftSection: undefined,
+      hcpContent: undefined,
+      maxAnswer: undefined,
+      leftLabelName: undefined
+    },
+    {
+      questionType: "HCP",
+      itemStem: "A sample DND Question [[item1]] and [[item2]]",
+      answers: [
+        {
+          answer: "answet-key-tes",
+          answerKey: false,
+          attrName: 'test-attr',
+        }
+      ],
+      transitionHeader: "Transition Header for SATA Question",
+      maxPoints: 0,
+      seqNum: 0,
+      itemNum: 0,
+      dndAnswer: [],
+      centerLabelName: undefined,
+      rightLabelName: undefined,
+      rightSection: undefined,
+      centerSection: undefined,
+      leftSection: undefined,
+      hcpContent: 'Sample HCP Content',
+      maxAnswer: undefined,
+      leftLabelName: undefined
+    }
   ];
 
   it("renders items correctly when content is provided", () => {

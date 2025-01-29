@@ -66,8 +66,6 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             <ParsedHtml html={data.itemStem} />
           </Typography>
         );
-
-
     }
   };
 

@@ -54,6 +54,6 @@ export const DNDQuestion: React.FC<Props> = ({ questionData }) => {
     );
 
     return (
-        <div>{renderContent(itemStem, dndAnswer ?? [])}</div>
+        <div data-testid="dnd-answer-block">{renderContent(itemStem, dndAnswer ?? [])}</div>
     )
 }
