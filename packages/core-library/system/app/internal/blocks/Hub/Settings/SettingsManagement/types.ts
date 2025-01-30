@@ -92,3 +92,28 @@ export type PasswordAndSecurityItem = {
   isBtn?: boolean;
   btnLabel?: string;
 };
+
+export type RefundPaymentItem = {
+  label:
+    | "Estimated Refund Duration"
+    | "Subtotal"
+    | "Time Period"
+    | "Refund Percentage"
+    | "Total Refundable";
+  value: string;
+};
+
+export type RefundPaymentValues = {
+  refundDuration: string;
+  subtotal: number;
+  timePeriod: string;
+  refundPercentage: number;
+};
+
+export type RefundCardData = {
+  icon: string;
+  name: string;
+  endingDigits: number;
+  expiryMonth: number;
+  expiryYear: number;
+};
