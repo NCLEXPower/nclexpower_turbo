@@ -1,10 +1,26 @@
-/*
-The useDownloadPDF hook provides a simple and reusable solution to download PDF files from an API.
-
-The downloadFile function accepts a key (for authentication or file identification) and a fileName (for the downloaded file). It sends a POST request to fetch the file, creates a downloadable link, and triggers the download.
-
-State management isLoading indicates whether the download process is in progress while error captures any error messages that occur during the file download.
-*/
+/**
+ * The useDownloadPDF hook handles the process of fetching a PDF file using an API and downloading it to the user's device. It also manages loading and error states.
+ *
+ * Expected behavior:
+ *    1. Calls an API endpoint (https://api.example.com/get-pdf) with a security key to fetch a PDF.
+ *    2. If successful, it creates a downloadable link for the file and triggers the download.
+ *    3. If the request fails, it sets an error message.
+ *    4. isLoading is true during the fetch process and false once complete.
+ *
+ * @returns An object with:
+ *    - downloadFile: A function that triggers the file download.
+ *    - isLoading: A boolean indicating whether the download is in progress.
+ *    - error: A string representing an error message if the download fails (null if no error).
+ *
+ * @param downloadFile
+ *    - key (string): A security key required to fetch the PDF.
+ *    - fileName (string): The name to save the downloaded file as.
+ *
+ * @example
+ * const { downloadFile, isLoading, error } = useDownloadPDF();
+ * downloadFile('file-key', 'document.pdf');
+ * 
+**/
 
 import { useState } from 'react';
 
