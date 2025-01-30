@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { config } from "../../config";
 import { getTimeZone } from "../../utils";
-import { useDebounce } from "../useDebounce";
 import { useApiCallback } from "../useApi";
 import { useRouter } from "../../core";
 
@@ -28,58 +27,64 @@ export const useWebSocketCountdown = () => {
   const isMounted = useRef(false);
   const maxReconnectAttempts = 10;
   const reconnectAttempts = useRef(0);
+  const heartbeatInterval = useRef<number>();
+  const isSending = useRef(false);
 
   const sendNotifCb = useApiCallback(
     async (api) => await api.web.sendNotification()
   );
 
-  const websocketUrl =
-      process.env.NODE_ENV === "development"
-        ? `${localApiUrl.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`
-        : `${apiUrl.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`;
+  const websocketUrl = `${
+    process.env.NODE_ENV === "development"
+      ? localApiUrl.replace("http://", "ws://")
+      : apiUrl.replace("https://", "wss://")
+  }/golive-websocket?timezone=${encodeURIComponent(getTimeZone())}`;
 
   const handleNormalClose = (code: number) => {
-    if (code === 1000) {
-      setConnectionError("Connection closed normally");
-      return false;
-    }
+    if (code === 1000) return false; // Normal closure
     if (code === 1008) {
       setConnectionError("Invalid timezone configuration");
       return false;
     }
     return true;
-  }
+  };
 
   const scheduleReconnect = () => {
-    if (reconnectAttempts.current >= maxReconnectAttempts || !isMounted.current) {
+    if (
+      !isMounted.current ||
+      reconnectAttempts.current >= maxReconnectAttempts
+    ) {
       setConnectionError("Max reconnect attempts reached");
       return;
     }
 
-    const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
+    const baseDelay = Math.min(
+      1000 * Math.pow(2, reconnectAttempts.current),
+      30000
+    );
+    const jitter = Math.random() * 1000;
+    const delay = baseDelay + jitter;
+
     reconnectTimeout.current = window.setTimeout(() => {
       reconnectAttempts.current++;
       connectWebSocket();
-    }, delay)
-  }
+    }, delay);
+  };
 
-  const sendNotification = async () => {
-    if (notificationSent.current) return;
-
-    try {
-      const result = await sendNotifCb.execute();
-      if (result.status === 200) {
-        notificationSent.current = true;
+  const startHeartbeat = (ws: WebSocket) => {
+    heartbeatInterval.current = window.setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "Heartbeat" }));
       }
-    } catch (error) {
-      console.error("Error sending notification:", error);
-    }
+    }, 25000);
   };
 
   const connectWebSocket = () => {
     if (!isMounted.current) return;
 
     websocketRef.current?.close();
+    clearTimeout(reconnectTimeout.current);
+    clearInterval(heartbeatInterval.current);
 
     const ws = new WebSocket(websocketUrl);
     websocketRef.current = ws;
@@ -88,7 +93,14 @@ export const useWebSocketCountdown = () => {
       reconnectAttempts.current = 0;
       setConnectionError(null);
       console.log("WebSocket connected");
-      ws.send(JSON.stringify({ type: "JoinGroup", timeZone: getTimeZone() }));
+      startHeartbeat(ws);
+      ws.send(
+        JSON.stringify({
+          type: "JoinGroup",
+          timeZone: getTimeZone(),
+          timestamp: Date.now(),
+        })
+      );
     };
 
     ws.onmessage = async (event) => {
@@ -97,6 +109,8 @@ export const useWebSocketCountdown = () => {
         if (data.type === "ReceiveCountdownUpdate") {
           setCountdown(data.payload);
         } else if (data.type === "CountdownCompleted") {
+          websocketRef.current?.close(1000, "Countdown completed");
+          await sendNotification();
           await router.push((route) => route.home);
         }
       } catch (error) {
@@ -111,11 +125,31 @@ export const useWebSocketCountdown = () => {
     };
 
     ws.onclose = (event) => {
-      if (handleNormalClose(event.code)) {
-        console.log(`Connection closed (${event.reason}), reconnecting...`);
+      console.log(`Connection closed (${event.code}: ${event.reason})`);
+      clearInterval(heartbeatInterval.current);
+
+      if (!handleNormalClose(event.code)) {
         scheduleReconnect();
       }
     };
+  };
+
+  const sendNotification = async () => {
+    if (notificationSent.current || isSending.current) return;
+    isSending.current = true;
+    notificationSent.current = true;
+
+    try {
+      const result = await sendNotifCb.execute();
+      if (result.status !== 200) {
+        notificationSent.current = false;
+      }
+    } catch (error) {
+      notificationSent.current = false;
+      console.error("Notification error:", error);
+    } finally {
+      isSending.current = false;
+    }
   };
 
   useEffect(() => {
@@ -124,8 +158,9 @@ export const useWebSocketCountdown = () => {
 
     return () => {
       isMounted.current = false;
-      websocketRef.current?.close();
+      websocketRef.current?.close(1000, "Component unmounted");
       clearTimeout(reconnectTimeout.current);
+      clearInterval(heartbeatInterval.current);
     };
   }, []);
 
