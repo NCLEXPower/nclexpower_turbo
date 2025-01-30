@@ -65,7 +65,6 @@ export const RegistrationWalkthroughForm = () => {
               }}
               fullWidth
               variant="outlined"
-            // onClick={signInWithGoogle}
             >
               <span className="mr-4 font-ptSansNarrow font-normal text-[18px] lg:text-[20px] text-black normal-case ">
                 Sign up with Google
