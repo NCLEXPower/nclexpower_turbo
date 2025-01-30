@@ -2,10 +2,11 @@ import fs from "fs";
 import path from "path";
 
 export const getAllRoutes = (dir: string): string[] => {
-  const resolveDir = path.resolve(dir);
+  const resolveDir = path.join(process.cwd(), dir);
 
   if (!fs.existsSync(resolveDir)) {
-    throw new Error(`Directory does not exist: ${resolveDir}`);
+    console.warn(`Directory does not exist: ${resolveDir}`);
+    return [];
   }
 
   const routes: string[] = [];
