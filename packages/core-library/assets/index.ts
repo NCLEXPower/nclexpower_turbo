@@ -16,6 +16,9 @@ export const CarouselThree = require("./CarouselThree.png");
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
 export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
 
+export const EmptyStateImage = require("./EmptyState.svg");
+export const ErrorStateImage = require("./ErrorState.svg");
+
 export const WatchVideos = require("./CardOne.png");
 export const StudyCards = require("./CardTwo.png");
 export const PracticeTest = require("./CardThree.png");
