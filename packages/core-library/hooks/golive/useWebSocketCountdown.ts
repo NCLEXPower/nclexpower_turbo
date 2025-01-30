@@ -14,8 +14,13 @@ export interface CountdownState {
   Description: string;
 }
 
-const apiUrl = config.value.API_URL as string;
-const localApiUrl = config.value.LOCAL_API_URL as string;
+const apiUrl = config.value.API_URL;
+const localApiUrl = config.value.LOCAL_API_URL;
+
+const websocketUrl =
+  process.env.NODE_ENV === "development"
+    ? `${localApiUrl.replace("http://", "ws://")}/golive-websocket?timezone=${getTimeZone()}`
+    : `${apiUrl.replace("https://", "wss://")}/golive-websocket?timezone=${getTimeZone()}`;
 
 export const useWebSocketCountdown = () => {
   const router = useRouter();
@@ -48,6 +53,7 @@ export const useWebSocketCountdown = () => {
     }
     return true;
   };
+
 
   const scheduleReconnect = () => {
     if (
