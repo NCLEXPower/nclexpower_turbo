@@ -33,14 +33,14 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = (product: SelectedProductType) => {
+  const handleSelectProduct = async (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
     setEncryptedProduct(encyptedData);
-    router.push({
+    await router.push({
       pathname: '/account/registration', //temporarily as viewing product details are in progress
     });
   };

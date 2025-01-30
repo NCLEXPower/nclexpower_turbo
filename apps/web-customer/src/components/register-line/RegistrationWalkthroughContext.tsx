@@ -4,6 +4,7 @@ import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDecryptOrder, useRouter } from "core-library";
 import {
+  useActiveSteps,
   useApi,
   useApiCallback,
   useBeforeUnload,
@@ -16,6 +17,7 @@ import { useCustomerCreation } from "@/core/hooks/useCustomerCreation";
 import { CreateCustomerParams } from "core-library/api/types";
 import { validatePassword } from "@/core";
 import { useShowPassword } from "../blocks/ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
+import { useResetOnRouteChange } from "core-library/core/hooks/useResetOnRouteChange";
 
 export interface RegistrationFormContextValue {
   methods: UseFormReturn<RegistrationFormType>;
@@ -60,8 +62,13 @@ export const useRegistrationWalkthroughFormContext = () => {
 export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChildren> = ({
   children
 }) => {
-  useBeforeUnload(true);
   const router = useRouter();
+  const { reset: resetActiveStep } = useActiveSteps(0);
+
+  useBeforeUnload(true);
+
+  useResetOnRouteChange({ resetStep: resetActiveStep });
+
   const orderNumberCb = useApi((api) => api.webbackoffice.getOrderNumber());
   const createOrderSummaryCb = useApiCallback(
     async (

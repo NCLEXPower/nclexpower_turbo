@@ -98,12 +98,6 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
           </div>
 
           <div className="p-2 my-6 flex flex-col gap-3">
-            <div className="text-paragraph flex justify-between">
-              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>Balance Amount :</Typography>
-              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
-                {orderDetail.amount}.00 {orderDetail.currency}
-              </Typography>
-            </div>
             <div className=" flex justify-between">
               <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>Total Amount:</Typography>
               <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>

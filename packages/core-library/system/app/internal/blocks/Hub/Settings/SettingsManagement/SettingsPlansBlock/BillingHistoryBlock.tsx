@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { blockSx, boxHeaderSx, titleSx } from "../SettingsStyles";
 import { Button } from "../../../../../../../../components";
-import { billingHistoryItems, billingHistoryItemsHeader } from "./constants";
+import { billingHistoryItemsHeader } from "./constants";
 import { BillingHistoryItem } from "../types";
 
 interface BillingHistoryBlockProps {
