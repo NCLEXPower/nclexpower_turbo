@@ -41,7 +41,10 @@ export const useWebSocketCountdown = () => {
   }/golive-websocket?timezone=${encodeURIComponent(getTimeZone())}`;
 
   const handleNormalClose = (code: number) => {
-    if (code === 1000) return false; // Normal closure
+    if (code === 1000) {
+      setConnectionError("Connection closed normally");
+      return false;
+    }
     if (code === 1008) {
       setConnectionError("Invalid timezone configuration");
       return false;
@@ -82,6 +85,7 @@ export const useWebSocketCountdown = () => {
   const connectWebSocket = () => {
     if (!isMounted.current) return;
 
+    // Clean up previous connection
     websocketRef.current?.close();
     clearTimeout(reconnectTimeout.current);
     clearInterval(heartbeatInterval.current);

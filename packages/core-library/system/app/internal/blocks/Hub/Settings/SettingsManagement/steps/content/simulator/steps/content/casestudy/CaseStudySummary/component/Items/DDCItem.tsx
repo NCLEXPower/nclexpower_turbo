@@ -1,6 +1,5 @@
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
 import React, { useCallback } from "react";
-import { useSanitizedInputs } from "../../../../../../../../../../../../../../../../hooks/useSanitizeInputs";
 import { DDCAnswerOptionType } from "../../../../../../types";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { PlainSelectField } from "../../../../../../../../../../../../../../../../components/Textfield/SelectField/PlainSelectField";
