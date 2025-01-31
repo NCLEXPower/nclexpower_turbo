@@ -1,17 +1,48 @@
 import React from "react";
-import { useApi, useCountdown } from "core-library/hooks";
+import {
+  useApi,
+  useApiCallback,
+  useWebSocketCountdown,
+} from "core-library/hooks";
+import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
+import { ComingSoonType } from "../ComingSoonBlock/validation";
+import { NotifyParams } from "core-library/api/types";
 
 export const GoLiveBlock: React.FC = () => {
-  const { countdown } = useCountdown();
-  const goLiveCb = useApi(
-    async (api) => await api.web.getActiveGoLiveSchedule()
+  const { countdown, connectionError } = useWebSocketCountdown();
+  const notifyCb = useApiCallback(
+    async (api, args: NotifyParams) => await api.web.sendNotify(args)
   );
-  console.log("goLiveCb", goLiveCb.result?.data);
-  console.log("countdown", countdown);
+
+  if (connectionError) {
+    return <p>Error: {connectionError}</p>;
+  }
+
+  if (!countdown) {
+    return <p>No active countdown.</p>;
+  }
   return (
-    <div>
-      <h1>Go Live Block</h1>
-      <p>Go Live Block content</p>
-    </div>
+    <ComingSoonPage
+      countdown={countdown}
+      onSubmit={handleSubmit}
+      loading={notifyCb.loading}
+    />
   );
+
+  async function handleSubmit(values: ComingSoonType) {
+    try {
+      const result = await notifyCb.execute({
+        email: values.email,
+        goLiveId: countdown?.Id,
+      });
+      if (result.data === 200 || result.status === 200) {
+        alert("Successfully submitted.");
+        return;
+      }
+    } catch (error) {
+      console.error(`Something went wrong: ${error}`);
+      alert("Failed to submit. Please try again.");
+      return;
+    }
+  }
 };

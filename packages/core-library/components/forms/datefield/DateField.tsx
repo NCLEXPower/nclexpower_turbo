@@ -35,6 +35,7 @@ interface Props<T extends object> {
   onBlur?: OutlinedInputProps["onBlur"];
   returnRawValue?: boolean;
   boldLabelFirstWord?: boolean;
+  disabled?: boolean;
 }
 
 export const DateField = <T extends FieldValues>({
@@ -42,6 +43,7 @@ export const DateField = <T extends FieldValues>({
   control,
   defaultValue,
   isLoading,
+  disabled,
   ...props
 }: Props<T>) => (
   <Controller<T>
@@ -49,7 +51,7 @@ export const DateField = <T extends FieldValues>({
     control={control}
     defaultValue={defaultValue}
     render={({ formState: _, ...controllerProps }) => (
-      <DateFieldComponent {...controllerProps} {...props} />
+      <DateFieldComponent {...controllerProps} {...props} disabled={disabled} />
     )}
   />
 );
@@ -70,6 +72,7 @@ export const DateFieldComponent = <T extends object>({
   isLoading,
   returnRawValue,
   boldLabelFirstWord,
+  disabled,
   ...props
 }: ComponentProps<T>) => {
   const value =
@@ -96,6 +99,7 @@ export const DateFieldComponent = <T extends object>({
           isLoading={isLoading}
           onFocus={onFocus}
           onBlur={onBlur}
+          disabled={disabled}
           onChange={(val) => {
             if (!val) {
               field?.onChange?.(null);

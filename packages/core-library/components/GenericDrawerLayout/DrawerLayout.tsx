@@ -8,7 +8,7 @@ import {
   useResolution,
   useRouteBasedVisibility,
 } from "../../hooks";
-import { useScroll } from "../../core/hooks/useScroll"; 
+import { useScroll } from "../../core/hooks/useScroll";
 import { Main } from "./content/Main";
 import MenuIcon from "@mui/icons-material/Menu";
 import { WebHeaderStylesType } from "../../types/web-header-style";
@@ -44,15 +44,16 @@ export const DrawerLayout: React.FC<
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
-  const { isScrolled } = useScroll(); 
+  const { isScrolled } = useScroll();
 
   const router = useRouter();
 
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const appName = config.value.BASEAPP;
-  const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
+  const inWebc = appName.includes("c");
+  const isInWebcHub = isAuthenticated && isInHub && inWebc;
   const parsedIsPaid =
-    isAuthenticated && appName.includes("c")
+    isAuthenticated && inWebc
       ? Decryption(isPaid ?? ":", config.value.SECRET_KEY)
       : "yes";
 
@@ -61,7 +62,9 @@ export const DrawerLayout: React.FC<
   };
 
   useEffect(() => {
-    setOpen(!isMobile);
+    if (isMobile) {
+      setOpen(false);
+    }
   }, [isMobile]);
 
   if (!mounted) return;
@@ -104,8 +107,13 @@ export const DrawerLayout: React.FC<
                 <Button
                   onClick={handleDrawer}
                   sx={{ color: isInWebcHub && "white" }}
+                  aria-label="toggle-sidebar"
                 >
-                  <MenuIcon sx={{ color: isScrolled ? "#00173F" : "white" }} />
+                  <MenuIcon
+                    sx={{
+                      color: inWebc && !isScrolled ? "white" : "#00173F",
+                    }}
+                  />
                 </Button>
               )
             }

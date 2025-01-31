@@ -8,24 +8,26 @@ import PricingCard from "./PricingComponent/PricingCard";
 import {
   ProductCardType,
   SelectedProductType,
-} from "core-library/types/global";
-import { useRouter } from "core-library/core";
-import { Encryption } from "core-library/utils/Encryption";
-import { config } from "core-library/config";
-import { useEncryptItem } from "core-library/contexts/auth/hooks";
-import { useDataSource } from "core-library/hooks";
-import { ProductListResponse } from "core-library/api/types";
-import { PriceButtonDetails } from "@/constants/constants";
+} from 'core-library/types/global';
+import { useRouter } from 'core-library/core';
+import { Encryption } from 'core-library/utils/Encryption';
+import { config } from 'core-library/config';
+import { useEncryptItem } from 'core-library/contexts/auth/hooks';
+import { useDataSource } from 'core-library/hooks';
+import { ProductListResponse } from 'core-library/api/types';
+import { PriceButtonDetails } from '@/constants/constants';
+import { ComponentState } from 'core-library/components';
 
 interface Props {
   url?: string;
 }
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
-  const [nurseType, setNurseType] = useState<number>(1);
+  const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource } = useDataSource({ url });
+  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
+  const dataStates = { data: dataSource, isLoading, isSuccess, isError }
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -55,6 +57,16 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     }
   }, [products]);
 
+  useEffect(() => {
+    if (router.asPath.includes("#pricing")) {
+      const pricingSection = document.getElementById("pricing");
+      if (pricingSection) {
+        pricingSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [router.asPath]);
+
+
   return (
     <div
       id="pricing"
@@ -71,21 +83,37 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
             Both programs allow up to 6 months access to the system.
           </p>
         </div>
+
         <div className="pt-10">
           <div className="flex lg:gap-5 gap-2 flex-wrap justify-center px-20">
             {PriceButtonDetails.length > 0 &&
-              PriceButtonDetails.map((nurseItem, index) => (
-                <button
-                  key={index}
-                  className={`max-h-20 ${nurseType === nurseItem.value ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}` : "w-72 saturate-0 hover:scale-95 bg-slate-700"} whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`}
-                  onClick={() => filterItems(nurseItem.value)}
-                >
-                  <p className="font-bold text-3xl">
-                    {nurseItem.acronym} <span className="font-normal">|</span>
-                  </p>
-                  <p>{nurseItem.label}</p>
-                </button>
-              ))}
+              PriceButtonDetails.map((nurseItem, index) => {
+                const isSelected = nurseType === nurseItem.value;
+                const isNotSelected =
+                  nurseType && nurseType !== nurseItem.value;
+
+                const buttonClasses = `max-h-20 ${isSelected
+                    ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
+                    } hover:scale-95`
+                  } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
+                return (
+                  <button
+                    key={index}
+                    className={buttonClasses}
+                    onClick={() => {
+                      filterItems(nurseItem.value);
+                      setNurseType(nurseItem.value);
+                    }}
+                    aria-label={`Filter by ${nurseItem.label}`}
+                  >
+                    <p className="font-bold text-3xl">
+                      {nurseItem.acronym} <span className="font-normal">|</span>
+                    </p>
+                    <p>{nurseItem.label}</p>
+                  </button>
+                );
+              })}
           </div>
         </div>
         <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
@@ -93,13 +121,15 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
             {filteredItems && filteredItems.length > 0 ? (
               filteredItems.slice(0, 2).map((item, index) => (
                 <div
-                  className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 rounded-lg "}`}
+                  className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
                   key={index}
                 >
-                  <PricingCard
-                    cardData={item as unknown as ProductCardType}
-                    handleSelectProduct={handleSelectProduct}
-                  />
+                  <ComponentState data={dataSource} isError={isError} isSuccess={isSuccess} isLoading={isLoading} >
+                    <PricingCard
+                      cardData={item as unknown as ProductCardType}
+                      handleSelectProduct={handleSelectProduct}
+                    />
+                  </ComponentState>
                 </div>
               ))
             ) : (

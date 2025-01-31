@@ -8,6 +8,7 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/src/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "../../packages/core-library/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: "class",
   theme: {
@@ -58,6 +59,7 @@ const config: Config = {
           hoverToWhite: "#ffffff", // white
         },
         paragraph: "#878e99",
+        hubBackground: '#e6eaf3'
       },
       backgroundImage: {
         "core-zigma": "url('../assets/CoreZigmaBG.png')",

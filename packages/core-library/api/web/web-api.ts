@@ -14,6 +14,7 @@ import {
   CreateCustomerResponse,
   CreatePaymentIntentParams,
   CreateSalesParams,
+  NotifyParams,
   OrderSummaryResponse,
   PaymentIntentResponse,
   ReportIssueType,
@@ -229,5 +230,29 @@ export class WebApi {
     return await this.axios.get(
       `/api/v2/internal/BaseInternal/active-schedule`
     );
+  }
+
+  public async sendNotify(params: NotifyParams) {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notify`,
+      params
+    );
+  }
+
+  public async sendNotification() {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notification`
+    );
+  }
+
+  public async getChatBotMode() {
+    return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
+  }
+
+  public deleteResource<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
   }
 }

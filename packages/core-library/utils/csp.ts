@@ -12,6 +12,7 @@ import {
   getEndpointResources,
   getHasActiveGoLive,
   getMaintenanceMode,
+  getHasChatBotWidget,
 } from "../ssr";
 
 const baseUrl =
@@ -29,10 +30,8 @@ export const generateCSP = (generatedNonce: string): string =>
   config.value.LOCAL_API_URL +
   " " +
   config.value.VERCELURL +
-  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com" +
-  config.value.STRIPE_URL_JS +
+  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com wss://nclexdev-6ecb32719de0.herokuapp.com wss://*.herokuapp.com wss://*.vercel.app https://*.vercel.app " +
   ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
-  " " +
   config.value.STRIPE_URL_JS +
   ";";
 
@@ -51,6 +50,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
       const hasGoLiveActive = await getHasActiveGoLive();
+      const hasChatBotWidget = await getHasChatBotWidget();
 
       setCSPHeader(context.res as ServerResponse, csp);
 
@@ -69,6 +69,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
                 MaintenanceStatus,
                 endpoints,
                 hasGoLive: hasGoLiveActive,
+                hasChatBotWidget,
               },
             },
           };
@@ -85,6 +86,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             MaintenanceStatus,
             endpoints,
             hasGoLive: hasGoLiveActive,
+            hasChatBotWidget,
           },
         },
       };

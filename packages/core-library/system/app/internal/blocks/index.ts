@@ -30,3 +30,7 @@ export * from "./Hub/ProgramManagement/program-section-management/ProgramSection
 export * from "./Hub/ProgramManagement/program-section-management/blocks/create/ProgramSectionManagementCreateBlock";
 export * from "./Hub/ProgramManagement/program-section-management/blocks/edit/ProgramSectionManagementEditBlock";
 export * from "./Hub/ProgramManagement/program-section-management/blocks/edit-item/ProgramSectionManagementEditItemBlock";
+export * from "./Hub/ComingSoon/ComingSoonManagementBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAccountBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";
+export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";

@@ -43,7 +43,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 }) => {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const form = useForm<RegistrationFormType>({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: yupResolver(registrationSchema),
     defaultValues: registrationSchema.getDefault(),
   });
@@ -116,7 +116,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
             <h4 className="text-[18px] font-regular font-ptSans">
               Already have an account?{" "}
               <span className="text-[18px] font-bold underline font-mainBlue">
-                <Link href="/login">Login</Link>
+                <Link href="/login" style={{ backgroundColor: 'transparent' }}>Login</Link>
               </span>
             </h4>
           </Box>
