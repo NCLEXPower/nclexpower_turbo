@@ -61,8 +61,6 @@ const MenuItemPath = yup
   .nullable()
   .default("/")
   .when(["$routes", "children"], ([routes, children], schema) => {
-    console.log("validatiao", routes);
-
     if (!routes || children.length > 0) {
       return schema.notRequired();
     }
@@ -113,6 +111,15 @@ export const accountSchema = yup.object({
     .required("Email is required"),
 });
 
+export const refundReasonSchema = yup.object({
+  reason1: yup.boolean().optional().default(false),
+  reason2: yup.boolean().optional().default(false),
+  reason3: yup.boolean().optional().default(false),
+  otherReason: yup.string().optional().default(""),
+  note: yup.string().optional().default(""),
+});
+
 export type AccountSchemaType = yup.InferType<typeof accountSchema>;
 export type RouteManagementSchema = yup.InferType<typeof RouteMenuCreation>;
 export type MenuItemType = yup.InferType<typeof EditMenuItemsSchema>;
+export type RefundReasonType = yup.InferType<typeof refundReasonSchema>;
