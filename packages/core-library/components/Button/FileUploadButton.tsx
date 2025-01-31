@@ -8,6 +8,7 @@ interface Props {
   isDisabled?: boolean;
   onUpload(files: FileList | null): void;
   text: string;
+  sx?: object;
 }
 
 export const FileUploadButton: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const FileUploadButton: React.FC<Props> = ({
   acceptTypes,
   onUpload,
   text,
+  sx
 }) => {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -38,6 +40,7 @@ export const FileUploadButton: React.FC<Props> = ({
         data-testid="upload-button"
         onClick={handleClick}
         disabled={isDisabled}
+        sx={sx}
       >
         <Box
           component="label"

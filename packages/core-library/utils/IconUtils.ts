@@ -11,7 +11,7 @@ import {
     PerspectiveIcon,
     StrategyIcon,
     CATIcon,
-  } from "core-library/assets";
+  } from "../assets";
 
 const statusIcons = {
     completed: CompletedWhiteIcon,

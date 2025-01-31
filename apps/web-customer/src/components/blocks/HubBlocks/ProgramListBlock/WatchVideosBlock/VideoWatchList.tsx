@@ -57,9 +57,11 @@ export const VideoWatchList: React.FC<VideoWatchListProps> = ({
                 <h4 className="font-ptSans text-[#232323] font-bold text-[14px]">
                   {secVidTitle}
                 </h4>
-                <h4 className="font-ptSans text-[#9A9A9A] text-[14px]">
-                  {secVidDuration} minutes
-                </h4>
+                {secVidDuration && (
+                  <h4 className="font-ptSans text-[#9A9A9A] text-[14px]">
+                    {secVidDuration} minutes
+                  </h4>
+                )}
                 <h4 className="font-ptSans text-[#9A9A9A] text-[14px]">
                   Author: {secVidAuthor}
                 </h4>

@@ -25,6 +25,13 @@ import {
   ContactUsManagementBlock,
   SalesManagementBlock,
   AnnouncementManagementBlock,
+  ProgramManagementListBlock,
+  ProgramManagementListCreateBlock,
+  ProgramManagementListEditBlock,
+  ProgramSectionManagementListBlock,
+  ProgramSectionManagementCreateBlock,
+  ProgramSectionManagementEditBlock,
+  ProgramSectionManagementEditItemBlock
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -74,6 +81,20 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <SalesManagementBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
+    case "ProgramManagementListBlock":
+      return <ProgramManagementListBlock />;
+    case "ProgramManagementListCreateBlock":
+      return <ProgramManagementListCreateBlock />;
+    case "ProgramManagementListEditBlock":
+      return <ProgramManagementListEditBlock />;
+    case "ProgramSectionManagementBlock":
+      return <ProgramSectionManagementListBlock />;
+    case "ProgramSectionManagementCreateBlock":
+      return <ProgramSectionManagementCreateBlock />;
+    case "ProgramSectionManagementEditBlock":
+      return <ProgramSectionManagementEditBlock />;
+    case "ProgramSectionManagementEditItemBlock":
+      return <ProgramSectionManagementEditItemBlock />
     default:
       return null;
   }

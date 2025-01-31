@@ -26,7 +26,14 @@ export type Blocks =
   | "ChatbotManagement"
   | "ContactUsManagementBlock"
   | "SalesManagement"
-  | "AnnouncementManagementBlock";
+  | "AnnouncementManagementBlock"
+  | "ProgramManagementListBlock"
+  | "ProgramManagementListCreateBlock"
+  | "ProgramManagementListEditBlock"
+  | "ProgramSectionManagementBlock"
+  | "ProgramSectionManagementCreateBlock"
+  | "ProgramSectionManagementEditBlock"
+  | "ProgramSectionManagementEditItemBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -49,6 +56,13 @@ type BlockProps = {
   ContactUsManagementBlock: {};
   SalesManagement: {};
   AnnouncementManagementBlock: {};
+  ProgramManagementListBlock: {};
+  ProgramManagementListCreateBlock: {};
+  ProgramManagementListEditBlock: {}; 
+  ProgramSectionManagementBlock: {};
+  ProgramSectionManagementCreateBlock: {};
+  ProgramSectionManagementEditBlock: {};
+  ProgramSectionManagementEditItemBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {

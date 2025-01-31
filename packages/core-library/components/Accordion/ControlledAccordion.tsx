@@ -13,6 +13,7 @@ interface HeaderProps {
   headerBackgroundColor?: string;
   headerHeight?: string;
   accordionRadius?: string;
+  accordionMargin?: string;
 }
 
 interface ItemProps {
@@ -39,7 +40,9 @@ interface Props<T> extends HeaderProps {
 const StyledAccordion = styled(Accordion)<{
   expanded: boolean;
   accordionRadius?: string;
-}>(({ expanded, accordionRadius }) => ({
+  accordionMargin?: string;
+}>(({ expanded, accordionRadius, accordionMargin }) => ({
+  margin: accordionMargin ?? "0px",
   borderRadius: accordionRadius ?? "0px",
   "& .MuiAccordion-region": {
     height: expanded ? "auto" : 0,
@@ -68,6 +71,7 @@ export const ControlledAccordion = <T extends ItemProps>({
   headerHeight,
   noAvailableDataText,
   accordionRadius,
+  accordionMargin
 }: Props<T>) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -89,6 +93,7 @@ export const ControlledAccordion = <T extends ItemProps>({
 
           return (
             <StyledAccordion
+              accordionMargin={accordionMargin}
               accordionRadius={accordionRadius}
               disabled={disabled}
               key={panelId}

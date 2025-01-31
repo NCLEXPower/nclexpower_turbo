@@ -21,7 +21,11 @@ type StaticRoutes = Record<
   | "order_summary"
   | "account_registration"
   | "device_not_recognized"
-  | "contact_us",
+  | "contact_us"
+  | "program_management_list"
+  | "program_section_management"
+  | "program_section_management_create"
+  | "program_section_management_edit",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -48,6 +52,10 @@ export const STATIC_ROUTES: StaticRoutes = {
   order_summary: "/order-summary",
   device_not_recognized: "/device-enrollment",
   contact_us: "/contact",
+  program_management_list: "/hub/program/program-management-list",
+  program_section_management: "/hub/program/program-section-management",
+  program_section_management_create: "/hub/program/program-section-management/create",
+  program_section_management_edit: "/hub/program/program-section-management/edit"
 };
 
 const routeTitles: Record<string, string> = {

@@ -13,6 +13,7 @@ interface Props {
   edge?: false | "start" | "end";
   className?: string;
   sx?: SxProps;
+  disabled?: boolean;
 }
 
 export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
@@ -23,6 +24,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   className,
   sx,
+  disabled
 }) => {
   return (
     <MuiIconButton
@@ -31,6 +33,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
       onClick={onClick}
       edge={edge}
       className={className}
+      disabled={disabled}
       sx={{ "&:focus": { outline: "none !important" }, ...sx }}
     >
       {children}
