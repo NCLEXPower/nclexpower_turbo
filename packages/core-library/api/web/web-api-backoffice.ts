@@ -48,6 +48,9 @@ import {
   CreateDndOptionsParams,
   DndOptionParams,
   DndOptionsResponseType,
+  CaseNameParams,
+  DeleteCaseNameParams,
+  CaseNameResponseType,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -55,7 +58,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -148,8 +151,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-            contentAccessKey: "",
-          })}`
+              contentAccessKey: "",
+            })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -430,5 +433,25 @@ export class WebApiBackOffice {
     return await this.axios.put(`/api/v1/Customer/update-helpwidget-status`, {
       isEnabled,
     });
+  }
+
+  public async getAllCaseNames() {
+    return await this.axios.get<CaseNameResponseType[]>(
+      `/api/v2/content/BaseContent/get-case-names`
+    );
+  }
+
+  public async createCaseName(params: CaseNameParams) {
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/create-case-name`,
+      params
+    );
+  }
+
+  public async deleteCaseName(params: DeleteCaseNameParams) {
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/delete-case-name`,
+      params
+    );
   }
 }
