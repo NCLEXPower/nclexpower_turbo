@@ -39,12 +39,10 @@ export const PageLoaderContextProvider: React.FC<
     loading ?? router.loading
   );
   const [contentLoader, setContentLoader] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-      setIsMounted(true);
       setIsCalculationsLoaded(false);
     }, 6000);
   }, [
@@ -54,7 +52,6 @@ export const PageLoaderContextProvider: React.FC<
     loading,
     router.loading,
   ]);
-
   return (
     <context.Provider
       value={{
