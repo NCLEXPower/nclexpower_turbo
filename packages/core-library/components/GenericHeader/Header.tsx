@@ -25,6 +25,7 @@ import { MenuItems } from "../../api/types";
 import SearchIcon from "@mui/icons-material/Search";
 import { config } from "../../config";
 import { useState } from "react";
+import { UserProfile } from "../UserProfile/UserProfile";
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -230,25 +231,20 @@ export const Header: React.FC<Props> = ({
           )}
 
           {isAuthenticated && (
-            <Grid
-              item
-              xs={3.5}
-              sm={1.5}
-              md={2}
-              lg={2}
-              xl={1}
+            <Box
               sx={{
-                display: "block",
-                alignSelf: "center",
+                position: "absolute",
+                right: 20,
+                top: "50%",
+                transform: "translateY(-50%)",
+                display: "flex",
+                alignItems: "center",
+                zIndex: 1000,
+                margin: 2,
               }}
             >
-              <AccountMenu
-                icon={<Avatar src="/path-to-user-image.jpg" />}
-                label={isMobile ? "" : "User"}
-                accountItem={AccountMenuItem}
-                onLogout={handleLogout}
-              />
-            </Grid>
+              <UserProfile onLogout={handleLogout} />
+            </Box>
           )}
         </Grid>
       </Box>
