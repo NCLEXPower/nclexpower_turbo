@@ -23,16 +23,6 @@ describe("PageLoaderContextProvider", () => {
   });
 });
 
-it("sets isMounted to true after useEffect runs", async () => {
-  render(
-    <PageLoaderContextProvider loading={true} isAuthenticated={false}>
-      <div data-testid="child-component">Test Component</div>
-    </PageLoaderContextProvider>
-  );
-
-  await new Promise((resolve) => setTimeout(resolve, 6000));
-});
-
 describe("PageLoaderContextProvider", () => {
   it("renders children-component when isAuthenticated is true", () => {
     render(

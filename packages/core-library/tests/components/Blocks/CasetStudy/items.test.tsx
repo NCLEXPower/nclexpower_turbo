@@ -60,6 +60,7 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined,
     },
     {
       questionType: "SATA",
@@ -90,6 +91,7 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined,
     },
     {
       questionType: "BOWTIE",
@@ -114,12 +116,36 @@ describe("Items Component", () => {
       centerSection: undefined,
       leftSection: undefined,
       hcpContent: undefined,
+      dndAnswer: undefined,
+    },
+    {
+      questionType: "HCP",
+      itemStem: "A sample HCP Question [[item1]] and [[item2]]",
+      answers: [
+        {
+          answer: "answet-key-tes",
+          answerKey: false,
+          attrName: "test-attr",
+        },
+      ],
+      transitionHeader: "Transition Header for SATA Question",
+      maxPoints: 0,
+      seqNum: 0,
+      itemNum: 0,
+      dndAnswer: [],
+      centerLabelName: undefined,
+      rightLabelName: undefined,
+      rightSection: undefined,
+      centerSection: undefined,
+      leftSection: undefined,
+      hcpContent: "Sample HCP Content",
+      maxAnswer: undefined,
+      leftLabelName: undefined,
     },
   ];
 
   it("renders items correctly when content is provided", () => {
     render(<Items content={mockContent} />);
-
     expect(screen.getByText("DDC Question Mock")).toBeInTheDocument();
     expect(screen.getByText("Sample SATA Question?")).toBeInTheDocument();
     expect(screen.getByText("Select All That Apply")).toBeInTheDocument();
