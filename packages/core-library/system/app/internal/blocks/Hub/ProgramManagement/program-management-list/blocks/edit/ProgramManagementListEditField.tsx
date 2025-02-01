@@ -277,6 +277,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     <IconButton
                       disabled={fields.length > 0 || editingSectionData}
                       onClick={() => handleEditProgramSection(section)}
+                      data-testid="edit-section-button"
                     >
                       <EvaIcon name="edit-outline" />
                     </IconButton>
@@ -337,6 +338,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                         backgroundColor: "#f5f5f5",
                       },
                     }}
+                    data-testid="remove-section-button"
                   >
                     <EvaIcon name="close-outline" />
                   </IconButton>
@@ -414,6 +416,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
               },
             }}
             onClick={handleAddSection}
+            data-testid="add-section-button"
           >
             <EvaIcon name="plus-outline" fill="#6C6C6C" />
             <Typography variant="h6" sx={{ color: "#6C6C6C" }}>
@@ -434,6 +437,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
             borderRadius: "10px",
           }}
           onClick={onSave}
+          data-testid="submit-button"
         >
           <Typography variant="h6" sx={{ color: "white" }}>
             Update

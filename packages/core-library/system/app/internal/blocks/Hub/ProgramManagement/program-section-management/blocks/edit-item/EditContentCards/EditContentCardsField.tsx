@@ -152,6 +152,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                       height: "100%",
                       mt: 8,
                     }}
+                    data-testid="remove-topic"
                   >
                     <EvaIcon
                       name="close-outline"
@@ -238,6 +239,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                 }}
                               ></Box>
                               <FileUploadField
+                                data-testid={`file-input-${topicIndex}-${faceIndex}`}
                                 triggerLabel={
                                   cardFacesFileName ||
                                   `Select card face ${faceIndex + 1}`
@@ -297,6 +299,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                   })}
                 </Grid>
                 <Button
+                  data-testid="add-card"
                   sx={{
                     mt: 2,
                     alignSelf: "flex-end",
@@ -329,6 +332,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
             </Button>
 
             <Button
+              data-testid="save-button"
               sx={{
                 width: "157px",
                 background: "#D40000",
