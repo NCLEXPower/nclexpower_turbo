@@ -8,8 +8,8 @@ import {
   useExecuteToast,
   useDialogContext,
 } from "../../../contexts";
-import { ApprovalListViewBlock } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
-import { mockData } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/mockData";
+import { ApprovalListViewBlock } from "../../../components/blocks/ContentApproval/ApprovalListViewBlock";
+import { mockData } from "../../../components/blocks/ContentApproval/mockData";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },

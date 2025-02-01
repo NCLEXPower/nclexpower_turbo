@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "../../common";
 import {
   ApprovalBlockProps,
   ApprovalListView,
-} from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListView";
+} from "../../../components/blocks/ContentApproval/ApprovalListView";
 import { AuthorizedContentsResponseType } from "../../../api/types";
 import { ColumnDef } from "@tanstack/react-table";
 
