@@ -61,6 +61,7 @@ const routeTitles: Record<string, string> = {
   "/account/forgot-password": "Forgot Password",
   "/account/reset-link": "Reset Link Success",
   "/about": "About",
+  "/account/registration": "Account Registration",
 };
 
 export const useRouter = () => {
@@ -192,7 +193,7 @@ function openInNewTab(path: string | PathFromRoutes | { pathname: string }) {
     resolvedPath = routeUrl(path);
   } else if (typeof path === "function") {
     resolvedPath = path(STATIC_ROUTES);
-  } else if (path && typeof path === 'object' && "pathname" in path) {
+  } else if (path && typeof path === "object" && "pathname" in path) {
     resolvedPath = routeUrl(path.pathname);
   } else {
     throw new Error("Invalid path type for openInNewTab");
