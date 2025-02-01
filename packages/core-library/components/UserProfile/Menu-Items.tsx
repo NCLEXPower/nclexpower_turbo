@@ -109,7 +109,6 @@ export const Menu_Items = [
           alignItems: "center",
           ...sharedStyles,
         }}
-        data-testid="logout-button"
       >
         <EvaIcon
           id="logout-icon"
@@ -122,5 +121,6 @@ export const Menu_Items = [
       </Box>
     ),
     label: <Typography sx={sharedStyles}>Log Out</Typography>,
+    testId: "logout-button",
   },
 ];

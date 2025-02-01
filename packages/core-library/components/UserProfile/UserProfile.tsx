@@ -121,7 +121,11 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
         }}
       >
         {Menu_Items.map((item) => (
-          <MenuItem key={item.id} onClick={() => handleMenuItemClick(item.id)}>
+          <MenuItem
+            key={item.id}
+            data-testid={item.testId || undefined}
+            onClick={() => handleMenuItemClick(item.id)}
+          >
             {item.icon}
             <Box sx={{ marginLeft: 1 }}>{item.label}</Box>
           </MenuItem>
