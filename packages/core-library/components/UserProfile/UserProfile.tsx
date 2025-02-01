@@ -64,6 +64,7 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
         background: "#FFF",
         boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
       }}
+      data-testid="account-menu-button"
     >
       <Avatar sx={{ width: 40, height: 40 }} />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
