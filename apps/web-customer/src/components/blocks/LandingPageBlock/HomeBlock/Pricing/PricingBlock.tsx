@@ -47,15 +47,15 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = (product: SelectedProductType) => {
+  const handleSelectProduct = async (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
     setEncryptedProduct(encyptedData);
-    router.push({
-      pathname: "/order-summary",
+    await router.push({
+      pathname: '/account/registration', //temporarily as viewing product details are in progress
     });
   };
 
@@ -104,6 +104,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                 const isSelected = nurseType === nurseItem.value;
                 const isNotSelected =
                   nurseType && nurseType !== nurseItem.value;
+
 
                 const buttonClasses = `max-h-20 ${
                   isSelected
