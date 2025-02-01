@@ -45,8 +45,13 @@ export const PageLoaderContextProvider: React.FC<
       setIsLoading(false);
       setIsCalculationsLoaded(false);
     }, 6000);
-  }, [isLoading, isCalculationsLoaded, loading, router.loading]);
-
+  }, [
+    isAuthenticated,
+    isLoading,
+    isCalculationsLoaded,
+    loading,
+    router.loading,
+  ]);
   return (
     <context.Provider
       value={{
@@ -58,11 +63,14 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {(isLoading || loading || router.loading || isCalculationsLoaded) &&
-      config.value.BASEAPP === "webc_app" ? (
-        <PageLoader />
+      {isAuthenticated ||
+      !(
+        (isLoading || loading || router.loading || isCalculationsLoaded) &&
+        config.value.BASEAPP === "webc_app"
+      ) ? (
+        <div data-testid="children-component">{children}</div>
       ) : (
-        <>{children}</>
+        <PageLoader data-testid="page-loader" />
       )}
     </context.Provider>
   );

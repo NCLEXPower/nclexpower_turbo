@@ -49,7 +49,7 @@ export function SelectField({
       )}
       <TextField
         select
-        label={label}
+        label={!value ? label : null}
         error={error}
         value={value ?? ""}
         onChange={onChange}

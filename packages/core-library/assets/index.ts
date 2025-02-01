@@ -16,6 +16,9 @@ export const CarouselThree = require("./CarouselThree.png");
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
 export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
 
+export const EmptyStateImage = require("./EmptyState.svg");
+export const ErrorStateImage = require("./ErrorState.svg");
+
 export const WatchVideos = require("./CardOne.png");
 export const StudyCards = require("./CardTwo.png");
 export const PracticeTest = require("./CardThree.png");
@@ -46,6 +49,10 @@ export const Arrow = require("./aboutus/arrow.svg");
 export const NurseIcon = require("./aboutus/nurse.png");
 export const EngineerIcon = require("./aboutus/engineer.png");
 
+export const LightBulbBlue = require("./LightBulbBlue.png");
+export const LightBulbGreen = require("./LightBulbGreen.png");
+export const BlueDocument = require("./DocumentBlue.png");
+export const GreenDocument = require("./DocumentGreen.png");
 export const ContactIcon = require("./contact/contactIcon.png");
 export const ContactUsBanner = require("./contact/ContactUsBanner.svg");
 export const ContactFacebook = require("./contact/facebook.png");
@@ -55,6 +62,7 @@ export const ContactLocation = require("./contact/location.png");
 export const ContactMail = require("./contact/mail.png");
 export const ContactPhone = require("./contact/phone.png");
 
+export const RegistrationBG = require("./register/RegistrationBackground.png");
 export const ComingSoon = require("./ComingSoon/ComingSoon.png");
 
 export const ForgotPasswordImage = require("./forgotpassword/ForgotPasswordImage.json");

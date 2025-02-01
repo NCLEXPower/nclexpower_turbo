@@ -25,6 +25,7 @@ import {
   ContactUsManagementBlock,
   SalesManagementBlock,
   AnnouncementManagementBlock,
+  ComingSoonManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -39,7 +40,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       const { cards } = props as ParseBlocksProps<"HubOverviewBlock">;
       return <HubBlock cards={cards} />;
     case "SettingsBlock":
-      return <SettingsManagementPageBlock />;
+      const { fileRoutes } = props as ParseBlocksProps<"SettingsBlock">;
+      return <SettingsManagementPageBlock fileRoutes={fileRoutes} />;
     case "QuestionApprovalBlock":
       return <QuestionApprovalBlock />;
     case "EmailVerificationBlock":
@@ -63,7 +65,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
     case "CreateCategoryBlock":
       return <CreateCategoryBlock />;
     case "InclusionBlock":
-      return <InclusionBlock />;
+      const { data } = props as ParseBlocksProps<"InclusionBlock">;
+      return <InclusionBlock data={data} />;
     case "DuplicateSessionBlock":
       return <DuplicateSessionBlock />;
     case "ChatbotManagement":
@@ -74,6 +77,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <SalesManagementBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
+    case "ComingSoonManagementBlock":
+      return <ComingSoonManagementBlock />;
     default:
       return null;
   }

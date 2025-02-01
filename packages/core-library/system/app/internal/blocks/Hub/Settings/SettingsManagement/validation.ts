@@ -56,13 +56,29 @@ export const MenuItemsSchema = yup.object({
   }),
 });
 
+const MenuItemPath = yup
+  .string()
+  .nullable()
+  .default("/")
+  .when(["$routes", "children"], ([routes, children], schema) => {
+    if (!routes || children.length > 0) {
+      return schema.notRequired();
+    }
+    return schema
+      .oneOf(
+        routes,
+        "You must create a file before adding a route. Please create the file and try again."
+      )
+      .required("This field is required");
+  });
+
 export const EditMenuItemsSchema = yup.object({
   id: yup.string().notRequired(),
   icon: yup.string().required().default(""),
   menuId: yup.string().notRequired(),
   parentId: yup.string().notRequired(),
   label: yup.string().required("Menu Label is required").default(""),
-  path: yup.string().default(""),
+  path: MenuItemPath,
   children: yup
     .array()
     .of(
@@ -72,7 +88,7 @@ export const EditMenuItemsSchema = yup.object({
         menuId: yup.string().notRequired(),
         parentId: yup.string().notRequired(),
         label: yup.string().required("Menu Label is required").default(""),
-        path: yup.string().nullable().default(null),
+        path: MenuItemPath,
       })
     )
     .optional(),
@@ -95,6 +111,15 @@ export const accountSchema = yup.object({
     .required("Email is required"),
 });
 
+export const refundReasonSchema = yup.object({
+  reason1: yup.boolean().optional().default(false),
+  reason2: yup.boolean().optional().default(false),
+  reason3: yup.boolean().optional().default(false),
+  otherReason: yup.string().optional().default(""),
+  note: yup.string().optional().default(""),
+});
+
 export type AccountSchemaType = yup.InferType<typeof accountSchema>;
 export type RouteManagementSchema = yup.InferType<typeof RouteMenuCreation>;
 export type MenuItemType = yup.InferType<typeof EditMenuItemsSchema>;
+export type RefundReasonType = yup.InferType<typeof refundReasonSchema>;
