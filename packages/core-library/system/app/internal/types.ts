@@ -5,7 +5,9 @@
  */
 import { ReactNode } from "react";
 import { DashboardCardType } from "./blocks/Hub/types";
-import { HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { ContainedCaseStudyQuestionType, DNDAnswersType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { DNDAnswerOptionType, HCPNAnswerOptionType } from "./blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { SsrTypes } from "../../../types/global";
 
 export type Blocks =
   | "LoginFormBlock"
@@ -27,12 +29,13 @@ export type Blocks =
   | "ChatbotManagement"
   | "ContactUsManagementBlock"
   | "SalesManagement"
-  | "AnnouncementManagementBlock";
+  | "AnnouncementManagementBlock"
+  | "ComingSoonManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
   HubOverviewBlock: { cards: DashboardCardType[] };
-  SettingsBlock: {};
+  SettingsBlock: { fileRoutes: string[] };
   QuestionApprovalBlock: {};
   EmailVerificationBlock: {};
   PasswordChangeBlock: {};
@@ -44,12 +47,13 @@ type BlockProps = {
   ReportedIssuesBlock: {};
   CreateRegularQuestionTypeBlock: {};
   CreateCategoryBlock: {};
-  InclusionBlock: {};
+  InclusionBlock: { data: SsrTypes };
   DuplicateSessionBlock: {};
   ChatbotManagement: {};
   ContactUsManagementBlock: {};
   SalesManagement: {};
   AnnouncementManagementBlock: {};
+  ComingSoonManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
@@ -75,13 +79,35 @@ export type AnswerOption = {
   answerKey: boolean;
 };
 
-export interface DDCAnswerOption extends AnswerOption {
+export interface DDClozeTableAnswerOption extends AnswerOption {
   optionName: string;
   options: {
     answer: string;
     answerKey: boolean;
   }[];
 }
+
+export type TablePropType = {
+  ColumnField: MCQColumnType[];
+  RowField: MCQRowType[];
+  rowIndex?: number;
+  questionIndex: number;
+};
+
+export type MCQChoiceType = {
+  value: boolean;
+  choiceId: number;
+};
+
+export type MCQRowType = {
+  rowId: number;
+  rowTitle: string;
+  choices: MCQChoiceType[];
+};
+
+export type MCQColumnType = {
+  label: string;
+};
 
 export type BowtieItemType = {
   value: string;
@@ -106,7 +132,16 @@ export type QuestionnaireItem = {
   [x: string]: any;
   maxPoints: number;
   seqNum: number;
-  questionType: "DDC" | "SATA" | "MRSN" | "BOWTIE" | "HCP" | "MCQNOGROUP";
+  questionType:
+  | "DDC"
+  | "SATA"
+  | "MRSN"
+  | "DDT"
+  | "BOWTIE"
+  | "MCQGROUP"
+  | "HCP"
+  | "MCQNOGROUP"
+  | "DND";
   itemNum: number;
   itemStem: string;
   transitionHeader: string;
@@ -119,8 +154,9 @@ export type QuestionnaireItem = {
   leftSection: BowtieItemType[] | undefined;
   column?: Columns[];
   row?: Row[];
+  dndAnswer: DNDAnswersType[] | undefined
   hcpContent: string | undefined;
-  answers: DDCAnswerOption[] | HCPNAnswerOptionType[];
+  answers: DDClozeTableAnswerOption[] | HCPNAnswerOptionType[] | DNDAnswerOptionType[];
 };
 
 export type CaseStudyDataType = {

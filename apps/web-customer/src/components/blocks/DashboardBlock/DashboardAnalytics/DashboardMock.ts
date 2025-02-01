@@ -1,48 +1,54 @@
 export const currentProgress = [
   {
-    "programType": "Standard",
-    "totalDays": "23 Days",
-    "currentDay": "05",
-    "currentFocus": "Respiratory"
-  }
-]
+    programType: "Standard",
+    totalDays: "23 Days",
+    currentDay: "05",
+    currentFocus: "Respiratory",
+  },
+];
+
+export const userData = {
+  name: "Arjon Rivera",
+  date: "January 07, 2025",
+};
 
 export const progressTaken = [
   {
     id: 1,
-    "programTitle": "Body Systems",
-    "programSubTitle": "Daily",
-    "programDay": "10"
+    programTitle: "Body Systems",
+    programSubTitle: "Daily",
+    programDay: "10",
   },
   {
     id: 2,
-    "programTitle": "Patient Unit",
-    "programSubTitle": "Section",
-    "programDay": "12"
-  }
-]
+    programTitle: "Patient Unit",
+    programSubTitle: "Section",
+    programDay: "12",
+  },
+];
 
 export const caseStudyData = [
   {
-    "programType": "Case Study",
-    "totalDays": "02",
+    programType: "Case Study",
+    totalDays: "02",
   },
-]
+];
 
 export const finalData = [
   {
-    "programType": "Final/Comprehensive",
-    "totalDays": "00",
-  }
-  
-]
+    programType: "Final/Comprehensive",
+    totalDays: "00",
+  },
+];
 
 export const analytics = {
   data: {
     currentProgressChart: [
       {
-        value: 10, label: "Respiratory", color: "#0F2A71"
-      }
+        value: 10,
+        label: "Respiratory",
+        color: "#0F2A71",
+      },
     ],
     topicCompleted: [
       { value: 60, label: "Body Systems", color: "#0F2A71" },

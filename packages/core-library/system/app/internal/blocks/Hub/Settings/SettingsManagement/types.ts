@@ -25,7 +25,8 @@ export type ChooseSettingsOptions =
   | "AUTOMATION"
   | "CMS"
   | "ROUTER"
-  | "MAINTENANCE";
+  | "MAINTENANCE"
+  | "CHATBOT";
 export type SettingsSelectionOptions =
   | "DBEXCEL"
   | "QM"
@@ -46,3 +47,73 @@ export type CaseStudyQuestionSelectionOptions =
   | "MCQNOGROUP"
   | "DDT"
   | "BOWTIE";
+
+export type ActiveSession = {
+  device: string;
+  location: string;
+  lastActive: string;
+  icon: React.ReactNode;
+};
+
+export type PlanType = {
+  abbr: string;
+  planName: string;
+  planType: "Standard" | "Fast Track";
+  duration: number;
+  price: number;
+  currency: string;
+  registered: boolean;
+};
+
+export type LatestPaymentItem = {
+  id: number;
+  label: "Payment Date" | "Type of Plan" | "Card Used to Pay" | "Total Payment";
+  value?: string;
+  icon?: string;
+};
+
+export type Payment = {
+  paymentDate: string;
+  planType: string;
+  cardUsed: string;
+  totalPayment: number;
+};
+
+export type BillingHistoryItem = {
+  orderId: string;
+  date: string;
+};
+
+export type PasswordAndSecurityItem = {
+  id: number;
+  label: string;
+  subLabel?: string;
+  icon?: string;
+  isBtn?: boolean;
+  btnLabel?: string;
+};
+
+export type RefundPaymentItem = {
+  label:
+    | "Estimated Refund Duration"
+    | "Subtotal"
+    | "Time Period"
+    | "Refund Percentage"
+    | "Total Refundable";
+  value: string;
+};
+
+export type RefundPaymentValues = {
+  refundDuration: string;
+  subtotal: number;
+  timePeriod: string;
+  refundPercentage: number;
+};
+
+export type RefundCardData = {
+  icon: string;
+  name: string;
+  endingDigits: number;
+  expiryMonth: number;
+  expiryYear: number;
+};

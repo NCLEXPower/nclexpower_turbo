@@ -40,9 +40,10 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 
-const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const Layout: React.FC<
+  React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
+> = ({ children, shouldShowChatBotWidget }) => {
   const router = useRouter();
-  const contentData = useContentDataContext();
   const queryClient = new QueryClient();
   const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
@@ -69,43 +70,33 @@ const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={loading || contentData.loading}
+      loading={loading}
     >
-      {loading || contentData.loading ? (
-        <>Loading...</>
-      ) : (
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme()}>
-            <CssBaseline />
-            <HeaderTitleContextProvider>
-              <FormSubmissionContextProvider>
-                <ContentLoader
-                  loading={loading || contentData.loading || router.loading}
-                >
-                  <LoadablePageContent
-                    loading={loading || contentData.loading}
-                    pages={contentData.pages}
-                  >
-                    <DrawerLayout
-                      menu={headerMenu}
-                      isAuthenticated={isAuthenticated}
-                      headerStyles={headerStyles}
-                      sidebarStyles={sidebarStyles}
-                      onLogout={logout}
-                      isPaid={isPaid}
-                    >
-                      {children}
-                      <Footer info={CompanyInfo} list={list} />
-                      {/* dynamic hideHelp should be implemented here */}
-                      {true && <ChatBotWidget />}
-                    </DrawerLayout>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme()}>
+          <CssBaseline />
+          <HeaderTitleContextProvider>
+            <FormSubmissionContextProvider>
+              <DrawerLayout
+                menu={headerMenu}
+                isAuthenticated={isAuthenticated}
+                headerStyles={headerStyles}
+                sidebarStyles={sidebarStyles}
+                onLogout={logout}
+                isPaid={isPaid}
+              >
+                <ContentLoader loading={loading || router.loading}>
+                  <LoadablePageContent loading={loading}>
+                    {children}
+                    <Footer info={CompanyInfo} list={list} />
+                    {shouldShowChatBotWidget && <ChatBotWidget />}
                   </LoadablePageContent>
                 </ContentLoader>
-              </FormSubmissionContextProvider>
-            </HeaderTitleContextProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      )}
+              </DrawerLayout>
+            </FormSubmissionContextProvider>
+          </HeaderTitleContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </PageLoaderContextProvider>
   );
 };

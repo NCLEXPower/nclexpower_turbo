@@ -43,20 +43,25 @@ export function SelectField({
   return (
     <div>
       {helperText && (
-        <FormHelperText error={error} sx={{marginBottom: 2}}>{helperText}</FormHelperText>
+        <FormHelperText error={error} sx={{ marginBottom: 2 }}>
+          {helperText}
+        </FormHelperText>
       )}
       <TextField
         select
-        label={label}
+        label={!value ? label : null}
         error={error}
         value={value ?? ""}
         onChange={onChange}
         placeholder={placeholder}
-        InputLabelProps={{ shrink: false, }}
+        InputLabelProps={{ shrink: false }}
         {...rest}
       >
         {options.map((option) => (
-          <MenuItem key={option.xvalue ?? option.value} value={option.xvalue ?? option.value}>
+          <MenuItem
+            key={option.xvalue ?? option.value}
+            value={option.xvalue ?? option.value}
+          >
             {option.label}
           </MenuItem>
         ))}
@@ -75,7 +80,7 @@ export type ControlledSelectFieldProps = {
 export function ControlledSelectField({
   control,
   name,
-  onChange,
+  onChange: parentOnChange,
   shouldUnregister,
   ...rest
 }: ControlledSelectFieldProps) {
@@ -91,7 +96,9 @@ export function ControlledSelectField({
         <SelectField
           error={Boolean(error?.message)}
           helperText={error?.message}
-          onChange={onChange}
+          onChange={(e) => {
+            onChange(e), parentOnChange?.(e);
+          }}
           onBlur={onBlur}
           value={value}
           {...rest}

@@ -172,12 +172,12 @@ export const AuthorizedHeader: MenuItems[] = [
     ],
   },
   {
-    id: "12",
-    label: "Billing Summary",
-    path: "/hub/billing-summary",
-    icon: "feed",
-    menuId: "menu12",
-    parentId: "",
+    id: '12',
+    label: 'Billing Summary',
+    path: '/hub/billing-summary',
+    icon: 'TRDSquare',
+    menuId: 'menu12',
+    parentId: '',
     children: [],
   },
 ];
