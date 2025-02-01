@@ -33,15 +33,15 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = (product: SelectedProductType) => {
+  const handleSelectProduct = async (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
     setEncryptedProduct(encyptedData);
-    router.push({
-      pathname: "/order-summary",
+    await router.push({
+      pathname: '/account/registration', //temporarily as viewing product details are in progress
     });
   };
 
@@ -93,9 +93,9 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   nurseType && nurseType !== nurseItem.value;
 
                 const buttonClasses = `max-h-20 ${isSelected
-                    ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
-                    } hover:scale-95`
+                  ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                  : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
+                  } hover:scale-95`
                   } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
                 return (
                   <button
