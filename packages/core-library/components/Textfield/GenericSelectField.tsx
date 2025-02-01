@@ -40,6 +40,7 @@ export type BaseSelectFieldProps = Omit<
   transformValue?: (value: string) => any | undefined;
   getValue?: (value: any) => string;
   onChange?: (...event: any[]) => void;
+  disabled?: boolean;
 };
 
 export type SelectFieldProps<T extends boolean = false> =
@@ -61,6 +62,7 @@ export function SelectField<T extends boolean>({
   transformValue = (v: string) => v,
   getValue = (value: any) => value,
   value,
+  disabled,
   ...rest
 }: SelectFieldProps<T>) {
   return (
@@ -79,6 +81,7 @@ export function SelectField<T extends boolean>({
             onChange?.(transformValue(e.target.value) ?? e.target.value)
           }
           value={getValue(value) ?? ""}
+          disabled={disabled}
           {...rest}
         />
         {helperText && (
@@ -100,6 +103,7 @@ export function GenericSelectField<T extends FieldValues, U extends boolean>({
   onChange: origOnChange,
   transformValue = (v: string) => v,
   shouldUnregister,
+  disabled,
   ...rest
 }: ControlledSelectFieldProps<T, U>) {
   return (
@@ -122,6 +126,7 @@ export function GenericSelectField<T extends FieldValues, U extends boolean>({
           inputRef={ref}
           value={value ?? ""}
           width={width}
+          disabled={disabled}
           {...rest}
         />
       )}

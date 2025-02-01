@@ -47,7 +47,7 @@ export const ProgressStepper: React.FC<Props> = ({
                 flex: 1,
                 textAlign: "center",
                 fontFamily: "PT Sans Narrow",
-                fontSize: "clamp(1.1rem, 2.5vw, 1.3rem)",
+                fontSize: "clamp(0.73rem, 2.5vw, 1rem)",
                 color: textColor,
                 transition: "color 0.3s ease",
                 fontWeight,

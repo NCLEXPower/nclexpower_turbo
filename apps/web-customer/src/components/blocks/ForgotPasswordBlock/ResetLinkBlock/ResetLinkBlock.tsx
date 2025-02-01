@@ -88,7 +88,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
       <div className="w-full hidden items-center justify-center ml-0 md:ml-20 lg:block">
         <Image src={resetLink} className="w-[850px] h-auto" alt="resetLink" />
       </div>
-      <div className="flex flex-col text-center gap-7 justify-center min-h-screen bg-[#f3f4f8] md:px-10 w-35%">
+      <div className="flex flex-col text-center gap-7 justify-center min-h-screen bg-[#f3f4f8] md:px-10 w-35% w-full max-w-[600px]">
         <div className="px-10 p-20 space-y-5">
           <div className="flex flex-col items-center justify-center">
             <Image
@@ -117,6 +117,9 @@ export const ResetLinkBlock: React.FC<Props> = () => {
                   disabled={resetTime !== 0 || resetLinkCb.loading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
+                  style={{ outline: "none" }}
+                  onFocus={(e) => e.target.style.outline = "none"}
+                  onMouseDown={(e) => e.preventDefault()}
                 >
                   {resetLinkCb.loading ? (
                     <CircularProgress
@@ -125,7 +128,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
                       id="loader"
                       aria-live="assertive"
                       thickness={5}
-                      sx={{ border: 'none' }}
+                      sx={{ "&:focus": { outline: "none !important" }}}
                     />
                   ) : (
                     `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ''}`

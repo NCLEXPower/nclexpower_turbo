@@ -102,21 +102,22 @@ export const dndAnswerOptionsSchema = yup.object({
   label: yup.string().required(),
 });
 
+// DND Answers Schema
+export const dndAnswersSchema = yup.object({
+  indexPos: yup.number().required(),
+  fieldKey: yup.string().required(),
+  answerId: yup
+    .string()
+    .required(({ path }) =>
+      generateQuestionErrorMessage(path, "Must select correct answer")
+    ),
+})
+
 // DND Keys Schema
 const dndKeysSchema = yup.object({
   dndAnswer: yup
     .array()
-    .of(
-      yup.object({
-        indexPos: yup.number().required(),
-        fieldKey: yup.string().required(),
-        answerId: yup
-          .string()
-          .required(({ path }) =>
-            generateQuestionErrorMessage(path, "Must select correct answer")
-          ),
-      })
-    )
+    .of(dndAnswersSchema)
     .when("questionType", {
       is: "DND",
       then: (schema) =>

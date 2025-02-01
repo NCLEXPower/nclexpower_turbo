@@ -36,8 +36,6 @@ export async function middleware(request: NextRequest) {
     baseUrl
   );
 
-  console.log("hasTwoFactorAuth", hasTwoFactorAuth);
-
   if (hasTwoFactorAuth && !tokenId) {
     if (pathname !== "/account/verification/otp") {
       return NextResponse.redirect(proceed2faUrl);
