@@ -111,6 +111,7 @@ const AccordionHeader: React.FC<AccordionHeaderProps> = ({
                 className="w-[35px]"
                 onClick={() => handleEditProgramList(item)}
                 sx={{ backgroundColor: "#F4C501", borderRadius: "10px" }}
+                data-testid="edit-outline"
               >
                 <EvaIcon
                   name="edit-outline"
@@ -122,6 +123,7 @@ const AccordionHeader: React.FC<AccordionHeaderProps> = ({
               <Button
                 onClick={() => handleRemoveProgramList(item)}
                 sx={{ backgroundColor: "#D40000", borderRadius: "10px" }}
+                data-testid="trash-outline"
               >
                 <EvaIcon
                   name="trash-outline"
