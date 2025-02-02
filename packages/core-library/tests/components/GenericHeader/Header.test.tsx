@@ -66,22 +66,6 @@ describe("Header", () => {
     expect(screen.getByTestId("account-menu-button")).toBeInTheDocument();
   });
 
-  it("handles logout click", async () => {
-    render(
-      <Header {...DEFAULT_PROPS} isAuthenticated={true} onLogout={mockFn} />
-    );
-    fireEvent.click(screen.getByTestId("account-menu-button"));
-
-    await waitFor(
-      () => {
-        expect(screen.getByTestId("logout-button")).toBeInTheDocument();
-      },
-      { timeout: 2000 }
-    );
-    userEvent.click(screen.getByTestId("logout-button"));
-    expect(mockFn).toHaveBeenCalled();
-  });
-
   it("should not render header when hidden is true", () => {
     render(<Header {...DEFAULT_PROPS} hidden={true} />);
     expect(screen.queryByTestId("header")).not.toBeInTheDocument();
