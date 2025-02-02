@@ -43,7 +43,7 @@ export const DrawerLayout: React.FC<
   webCustomer,
 }) => {
   const isHidden = useIsDesignVisible();
-  const { isMobile } = useResolution();
+  const { isMobile, isTablet } = useResolution();
   const mounted = useIsMounted();
   const [open, setOpen] = useState(true);
   const { isScrolled } = useScroll();
