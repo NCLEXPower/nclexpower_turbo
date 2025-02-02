@@ -74,6 +74,7 @@ describe("DrawerLayout", () => {
           menu={mockMenu}
           isAuthenticated={true}
           data-testid="drawer-layout"
+          webCustomer={true}
         >
           <div>Content</div>
         </DrawerLayout>
