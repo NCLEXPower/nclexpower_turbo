@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeniedCountryType, notAvailableSchema } from "./validation";
 import { DeniedCountry } from "./DeniedCountry";
-import { SocialMediaConfig, useDesignVisibility, useSocialMediaIcons } from "core-library/hooks";
+import { SocialMediaConfig, useSocialMediaIcons } from "core-library/hooks";
 
 export const DeniedCountryBlock: React.FC = () => {
-  useDesignVisibility();
   const form = useForm<DeniedCountryType>({
     mode: "all",
     resolver: yupResolver(notAvailableSchema),

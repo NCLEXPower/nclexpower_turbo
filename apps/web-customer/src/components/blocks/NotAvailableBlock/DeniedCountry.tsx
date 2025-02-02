@@ -52,25 +52,16 @@ export const DeniedCountry = ({
           zIndex: -1,
         }}
       />
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex items-center justify-center gap-4">
         <Image
           src={CoreZigmaLogo}
           alt="CoreZigma"
-          style={{
-            width: "110px",
-            height: "110px",
-            objectFit: "cover",
-          }}
+          className="w-[70px] h-[70px] sm:w-[90px] sm:h-[90px] md:w-[80px] md:h-[80px] object-cover"
         />
         <Image
           src={NCLEXYellowLogo}
-          alt="CoreZigma"
-          style={{
-            width: "161px",
-            height: "40px",
-            objectFit: "cover",
-            zIndex: 0,
-          }}
+          alt="NCLEXYellowLogo"
+          className="w-[100px] h-[25px] sm:w-[130px] sm:h-[30px] md:w-[161px] md:h-[40px] object-cover z-0"
         />
       </div>
       <div
@@ -84,7 +75,7 @@ export const DeniedCountry = ({
           opacity: 0.3,
         }}
       />
-      <div>
+      <div className="mx-10">
         <Typography
           variant="h2"
           fontWeight={600}
@@ -135,18 +126,18 @@ export const DeniedCountry = ({
         <Typography
           variant="body1"
           color="white"
-          className="opacity-90 lg:max-w-[700px] lg:pt-5"
+          className="opacity-90 pt-5"
           fontFamily="Poppins"
           sx={{
-            fontSize: "clamp(1rem, 5cqw, 1rem)",
+            fontSize: "clamp(0.7rem, 2.5vw, 1rem)",
           }}
         >
           Thank you for your patience – we&apos;re looking forward to seeing you
           here very soon when we open our doors!
         </Typography>
       </div>
-      <div className="flex flex-col mb-10 lg:mb-10 lg:flex-row items-end justify-center gap-4 pt-10 md:mb-10">
-        <TextField
+      <div className="flex flex-col pt-5 mb-10 lg:mb-10 md:flex-row items-end justify-center gap-4 md:pt-10 md:mb-10">
+      <TextField
           control={control}
           name="email"
           placeholder="Email"
@@ -202,11 +193,11 @@ export const DeniedCountry = ({
           height: "2px",
           backgroundColor: "grey",
           zIndex: 1,
-          marginTop: "15px",
+          marginTop: isMobile ? "15px" : "0px",
           opacity: 0.3,
         }}
       />
-      <div className="pb-10">
+      <div className="mb-5">
         <Typography
           variant="body1"
           color="white"
