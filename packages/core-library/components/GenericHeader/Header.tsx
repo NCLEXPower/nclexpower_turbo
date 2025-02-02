@@ -25,7 +25,6 @@ import { MenuItems } from "../../api/types";
 import SearchIcon from "@mui/icons-material/Search";
 import { config } from "../../config";
 import { useState } from "react";
-import { UserProfile } from "../UserProfile/UserProfile";
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -243,7 +242,12 @@ export const Header: React.FC<Props> = ({
                 margin: 2,
               }}
             >
-              <UserProfile onLogout={handleLogout} />
+              <AccountMenu
+                icon={<Avatar src="/path-to-user-image.jpg" />}
+                label={isMobile ? "" : "User"}
+                accountItem={AccountMenuItem}
+                onLogout={handleLogout}
+              />
             </Box>
           )}
         </Grid>

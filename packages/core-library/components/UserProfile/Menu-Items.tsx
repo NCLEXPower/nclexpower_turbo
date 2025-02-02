@@ -2,7 +2,7 @@ import { EvaIcon } from "../EvaIcon";
 import { Box, Typography } from "@mui/material";
 
 const sharedStyles = {
-  color: "#3B0086",
+  color: "white",
   fontFamily: '"PT Sans", sans-serif',
   fontSize: "14px",
   fontStyle: "normal",
@@ -25,7 +25,7 @@ export const Menu_Items = [
         <EvaIcon
           id="edit-icon"
           name="edit-2-outline"
-          fill="#3B0086"
+          fill="white"
           width={20}
           height={20}
           ariaHidden
@@ -47,7 +47,7 @@ export const Menu_Items = [
         <EvaIcon
           id="more-icon"
           name="inbox-outline"
-          fill="#3B0086"
+          fill="white"
           width={20}
           height={20}
           ariaHidden
@@ -69,7 +69,7 @@ export const Menu_Items = [
         <EvaIcon
           id="more-icon"
           name="inbox-outline"
-          fill="#3B0086"
+          fill="white"
           width={20}
           height={20}
           ariaHidden
@@ -91,7 +91,7 @@ export const Menu_Items = [
         <EvaIcon
           id="more-icon"
           name="inbox-outline"
-          fill="#3B0086"
+          fill="white"
           width={20}
           height={20}
           ariaHidden
@@ -99,28 +99,5 @@ export const Menu_Items = [
       </Box>
     ),
     label: <Typography sx={sharedStyles}>More Menu 3</Typography>,
-  },
-  {
-    id: "log-out",
-    icon: (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          ...sharedStyles,
-        }}
-      >
-        <EvaIcon
-          id="logout-icon"
-          name="log-out-outline"
-          fill="#3B0086"
-          width={20}
-          height={20}
-          ariaHidden
-        />
-      </Box>
-    ),
-    label: <Typography sx={sharedStyles}>Log Out</Typography>,
-    testId: "logout-button",
   },
 ];
