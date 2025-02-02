@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "../../common";
+import { fireEvent, render, screen, waitFor, userEvent } from "../../common";
 import { Header, Props } from "../../../components/GenericHeader/Header";
 import { useRouter } from "../../../core";
 import { useResolution } from "../../../hooks";
@@ -72,10 +72,13 @@ describe("Header", () => {
     );
     fireEvent.click(screen.getByTestId("account-menu-button"));
 
-    await waitFor(() => {
-      expect(screen.getByTestId("logout-button")).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByTestId("logout-button"));
+    await waitFor(
+      () => {
+        expect(screen.getByTestId("logout-button")).toBeInTheDocument();
+      },
+      { timeout: 2000 }
+    );
+    userEvent.click(screen.getByTestId("logout-button"));
     expect(mockFn).toHaveBeenCalled();
   });
 

@@ -125,9 +125,13 @@ export const UserProfile: React.FC<Props> = ({ onLogout }) => {
             key={item.id}
             data-testid={item.testId || undefined}
             onClick={() => handleMenuItemClick(item.id)}
+            sx={{ display: "flex", alignItems: "center", gap: 1, px: 2 }}
           >
             {item.icon}
-            <Box sx={{ marginLeft: 1 }}>{item.label}</Box>
+
+            <Typography variant="body2" sx={{ color: "inherit" }}>
+              {item.label}
+            </Typography>
           </MenuItem>
         ))}
       </Popover>
