@@ -27,6 +27,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ sectionDataId, onEdit, onDele
   return (
     <Box className="flex gap-2">
       <IconButton
+        data-testid="edit-button"
         onClick={() => onEdit(sectionDataId)}
         sx={{
           height: "35px",

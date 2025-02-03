@@ -49,6 +49,10 @@ export const Arrow = require("./aboutus/arrow.svg");
 export const NurseIcon = require("./aboutus/nurse.png");
 export const EngineerIcon = require("./aboutus/engineer.png");
 
+export const LightBulbBlue = require("./LightBulbBlue.png");
+export const LightBulbGreen = require("./LightBulbGreen.png");
+export const BlueDocument = require("./DocumentBlue.png");
+export const GreenDocument = require("./DocumentGreen.png");
 export const ContactIcon = require("./contact/contactIcon.png");
 export const ContactUsBanner = require("./contact/ContactUsBanner.svg");
 export const ContactFacebook = require("./contact/facebook.png");
@@ -58,6 +62,7 @@ export const ContactLocation = require("./contact/location.png");
 export const ContactMail = require("./contact/mail.png");
 export const ContactPhone = require("./contact/phone.png");
 
+export const RegistrationBG = require("./register/RegistrationBackground.png");
 export const ComingSoon = require("./ComingSoon/ComingSoon.png");
 
 export const ForgotPasswordImage = require("./forgotpassword/ForgotPasswordImage.json");
@@ -238,4 +243,4 @@ export const HelpWidget = require("./home/HelpWidget.json");
 export const google = require("./settings/google.svg");
 export const profile = require("./settings/profile.png");
 export const visaIcon = require("./visaIcon.svg");
-export const noVideoImage = require('./programmanagement/noVideoImage.png');
+export const NotAvailableBG = require("./NotAvailableBG.png");
