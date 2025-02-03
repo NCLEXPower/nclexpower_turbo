@@ -1,22 +1,18 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
 import { Logout as LogoutIcon } from "@mui/icons-material";
 import { NavigationType } from "../../types/navigation";
 import { useState } from "react";
 import { Button } from "../Button/Button";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { config } from "../../config";
 import { useRouter } from "../../core";
 import { useResolution } from "../../hooks";
 import { useAccessControl } from "../../hooks/useAccessControl";
 import { getRoleName } from "../../core/utils/permission";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Menu_Items } from "../UserProfile/Menu-Items";
+import { EvaIcon } from "../EvaIcon";
 
 interface Props {
   label: string;
@@ -76,7 +72,7 @@ export const AccountMenu: React.FC<Props> = ({
             variant="h4"
             sx={{
               fontWeight: 700,
-              fontSize: "14px",
+              fontSize: "12px",
               whiteSpace: "nowrap",
               fontFamily: "PT Sans",
               fontStyle: "normal",
@@ -91,7 +87,7 @@ export const AccountMenu: React.FC<Props> = ({
             variant="body2"
             sx={{
               fontWeight: 700,
-              fontSize: "10px",
+              fontSize: "8.5px",
               whiteSpace: "nowrap",
               fontFamily: "PT Sans",
               fontStyle: "normal",
@@ -105,21 +101,41 @@ export const AccountMenu: React.FC<Props> = ({
         </Box>
 
         {openMenu ? (
-          <IconButton
-            size="small"
-            sx={{ marginLeft: "auto" }}
-            onClick={handleClick}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              border: "1px solid #EBEBEB",
+              borderRadius: "50%",
+            }}
           >
-            <MoreVertIcon />
-          </IconButton>
+            <EvaIcon
+              id="more-vertical-icon"
+              name="more-vertical"
+              fill="#3B0086"
+              width={20}
+              height={20}
+              ariaHidden
+            />
+          </Box>
         ) : (
-          <IconButton
-            size="small"
-            sx={{ marginLeft: "auto" }}
-            onClick={handleClick}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              border: "1px solid #3B0086",
+              borderRadius: "50%",
+            }}
           >
-            <MoreVertIcon />
-          </IconButton>
+            <EvaIcon
+              id="more-vertical-icon"
+              name="more-vertical"
+              fill="#3B0086"
+              width={20}
+              height={20}
+              ariaHidden
+            />
+          </Box>
         )}
       </Button>
       <Popper

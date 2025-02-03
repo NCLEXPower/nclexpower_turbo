@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, userEvent } from "../../common";
+import { fireEvent, render, screen, waitFor } from "../../common";
 import { Header, Props } from "../../../components/GenericHeader/Header";
 import { useRouter } from "../../../core";
 import { useResolution } from "../../../hooks";
