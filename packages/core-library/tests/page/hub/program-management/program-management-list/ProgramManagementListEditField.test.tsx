@@ -6,7 +6,6 @@
 import { render, screen, fireEvent } from "../../../../common";
 import { ProgramManagementListEditField } from "../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-management-list/blocks/edit/ProgramManagementListEditField";
 import { Control } from "react-hook-form";
-import * as reactHookForm from "react-hook-form";
 
 jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
@@ -22,7 +21,7 @@ jest.mock("../../../../../components", () => ({
       {children}
     </button>
   ),
-  EvaIcon: ({ name, fill }: any) => <span>{name}</span>,
+  EvaIcon: ({ name }: any) => <span>{name}</span>,
   IconButton: ({ onClick, children, ...props }: any) => (
     <button onClick={onClick} {...props}>
       {children}
@@ -43,25 +42,32 @@ jest.mock("../../../../../components", () => ({
   ),
 }));
 
-describe("ProgramManagementListEditField", () => {
-  const mockOnSave = jest.fn();
-  const mockHandleBack = jest.fn();
-  const mockHandleAddSection = jest.fn();
-  const mockHandleSectionChange = jest.fn();
-  const mockHandleMultipleSelectChange = jest.fn();
-  const mockSetValue = jest.fn();
-  const mockHandleEditProgramSection = jest.fn();
-  const mockHandleDeleteProgramSection = jest.fn();
-  const mockHandleRemoveSection = jest.fn();
+const mockOnSave = jest.fn();
+const mockHandleBack = jest.fn();
+const mockHandleAddSection = jest.fn();
+const mockHandleSectionChange = jest.fn();
+const mockHandleMultipleSelectChange = jest.fn();
+const mockSetValue = jest.fn();
+const mockHandleEditProgramSection = jest.fn();
+const mockHandleDeleteProgramSection = jest.fn();
+const mockHandleRemoveSection = jest.fn();
 
-  const mockUseForm = jest.fn().mockReturnValue({
-    control: {} as Control,
+const mockUseForm = jest.fn().mockReturnValue({
+  control: {} as Control,
+  setValue: mockSetValue,
+  handleSubmit: jest.fn(),
+});
+
+jest.mock('react-hook-form', () => ({
+  ...jest.requireActual('react-hook-form'),
+  useForm: jest.fn().mockReturnValue({
+    control: {},
     setValue: mockSetValue,
     handleSubmit: jest.fn(),
-  });
+  }),
+}));
 
-  jest.spyOn(reactHookForm, "useForm").mockImplementation(mockUseForm);
-
+describe("ProgramManagementListEditField", () => {
   const defaultProps = {
     onSave: mockOnSave,
     handleBack: mockHandleBack,
