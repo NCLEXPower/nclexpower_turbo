@@ -234,6 +234,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                       height: "100%",
                       mt: 8,
                     }}
+                    data-testid="remove-topic-button"
                   >
                     <EvaIcon
                       name="close-outline"
@@ -347,6 +348,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
 
                               {topic.cardFaces.length > 1 && (
                                 <IconButton
+                                  data-testId="remove-card-face"
                                   onClick={() =>
                                     handleRemoveCardFace(topicIndex, faceIndex)
                                   }
