@@ -21,7 +21,7 @@ export const DeniedCountryBlock: React.FC = () => {
     { platform: "twitter", link: "https://twitter.com" },
   ];
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
-  console.log("errors: ", errors);
+
   return (
     <FormProvider {...form}>
     <DeniedCountry
