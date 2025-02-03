@@ -243,3 +243,4 @@ export const HelpWidget = require("./home/HelpWidget.json");
 export const google = require("./settings/google.svg");
 export const profile = require("./settings/profile.png");
 export const visaIcon = require("./visaIcon.svg");
+export const NotAvailableBG = require("./NotAvailableBG.png");
