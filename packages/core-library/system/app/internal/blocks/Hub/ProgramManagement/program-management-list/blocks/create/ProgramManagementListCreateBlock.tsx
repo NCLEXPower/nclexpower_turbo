@@ -98,33 +98,34 @@ export const ProgramManagementListCreateBlock = () => {
   };
 
   const onSubmit = (data: CreateProgramFormType | undefined) => {
-    if (data) {
-      if (data.sections) {
-        console.log("Sections:");
-        data.sections.forEach((section, index) => {
-          let sectionValue;
-          if (typeof section.sectionValue === "string") {
-            sectionValue = section.sectionValue;
-          } else if (Array.isArray(section.sectionValue)) {
-            sectionValue = section.sectionValue.join(", ");
-          } else {
-            sectionValue = "Invalid value";
-          }
-
-          console.log(
-            `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
-          );
-        });
-      } else {
-        console.error("Sections are undefined.");
-      }
-    } else {
+    if (!data) {
       console.error("Form data is undefined.");
+      return;
     }
-
+  
+    const { sections } = data;
+    if (!sections) {
+      console.error("Sections are undefined.");
+      return;
+    }
+  
+    console.log("Sections:");
+    sections.forEach((section, index) => {
+      const sectionValue = 
+        typeof section.sectionValue === "string"
+          ? section.sectionValue
+          : Array.isArray(section.sectionValue)
+          ? section.sectionValue.join(", ")
+          : "Invalid value";
+  
+      console.log(
+        `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
+      );
+    });
+  
     alert(JSON.stringify(data));
   };
-
+  
   const handleBack = () => {
     router.back();
   };

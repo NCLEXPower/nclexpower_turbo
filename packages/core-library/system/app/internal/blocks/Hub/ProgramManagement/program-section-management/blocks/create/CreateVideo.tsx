@@ -17,7 +17,7 @@ import { videoSchema, SectionFormType } from "../../validation";
 import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../assets";
-import { useFileUpload } from "../../../../../../../../../hooks/useFileUpload";
+import { useFileUpload } from "../../../../../../../../../hooks";
 
 interface CreateVideo {
   section?: string;

@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { documentSchema, SectionFormType } from "../../validation";
 import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
-import { useFileUpload } from "../../../../../../../../../hooks/useFileUpload";
+import { useFileUpload } from "../../../../../../../../../hooks";
 
 interface CreateDocumentProps {
   section?: string;

@@ -18,21 +18,14 @@ import Image from "next/image";
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { WelcomeProgram } from "../../../../../../../../../assets";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
+import { CreateProgramFormType } from "../../validation";
 
 interface Props {
   onSave: (values: any) => void;
   handleBack: () => void;
   fileName: string;
   programImage: File[];
-  control: Control<{
-    sections?: {
-      sectionTitle: string;
-      sectionType: string;
-      sectionValue: any;
-    }[];
-    programImage: File[];
-    programName: string;
-  }>;
+  control: Control<CreateProgramFormType>
   fields: FieldArrayWithId<
     {
       sections?: {
@@ -218,85 +211,97 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
         />
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {fields.map((item, index) => (
-            <Grid
-              key={item.id}
-              sx={{
-                display: "grid",
-                gap: 2,
-                gridTemplateColumns: "1fr 1fr",
-                alignItems: "center",
-              }}
-            >
-              <TextField
-                label="Section Title"
-                name={`sections.${index}.sectionTitle`}
-                control={control}
-                placeholder="Enter Section Title"
-                sx={{ width: "100%" }}
-                inputProps={{ style: { padding: 15 } }}
-              />
-              <GenericSelectField
-                control={control}
-                name={`sections.${index}.sectionType`}
-                options={sectionList}
-                label="Select Section Type"
-                onChange={(value) => handleSectionChange(index, value)}
-              />
+          {fields.length === 0 ? (
+            <Typography variant="body2" color="textSecondary">
+              No sections available. Please add a section.
+            </Typography>
+          ) : (
+            <Box>
+              {fields.map((item, index) => (
+                <Grid
+                  key={item.id}
+                  sx={{
+                    display: "grid",
+                    gap: 2,
+                    gridTemplateColumns: "1fr 1fr",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    label="Section Title"
+                    name={`sections.${index}.sectionTitle`}
+                    control={control}
+                    placeholder="Enter Section Title"
+                    sx={{ width: "100%" }}
+                    inputProps={{ style: { padding: 15 } }}
+                  />
 
-              {selectedSections[index] &&
-              filteredSectionValuesList(selectedSections[index]).length > 0 ? (
-                <Grid item sx={{ gridColumn: "span 2", marginTop: 2 }}>
-                  {selectedSections[index] === "video" ? (
-                    <>
-                      <MultipleSelectField
-                        control={control}
-                        name={`sections.${index}.sectionValue`}
-                        label={`Select in ${selectedSections[index]} section`}
-                        options={filteredSectionValuesList(
-                          selectedSections[index]
-                        )}
-                        multiple
-                        sx={{
-                          borderRadius: "5px",
-                          width: "100%",
-                          backgroundColor: "#FFF",
-                          border: "1px solid #3B0086",
-                          marginTop: 3,
-                        }}
-                        onChange={(e) => handleMultipleSelectChange(index, e)}
-                      />
-                      <Divider
-                        sx={{
-                          my: 4,
-                          width: "100%",
-                          height: "2px",
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <GenericSelectField
-                        control={control}
-                        name={`sections.${index}.sectionValue`}
-                        options={filteredSectionValuesList(
-                          selectedSections[index]
-                        )}
-                        label={`Select in ${selectedSections[index]} section`}
-                      />
-                      <Divider
-                        sx={{
-                          my: 4,
-                          width: "100%",
-                          height: "2px",
-                        }}
-                      />
-                    </>
-                  )}
+                  <GenericSelectField
+                    control={control}
+                    name={`sections.${index}.sectionType`}
+                    options={sectionList}
+                    label="Select Section Type"
+                    onChange={(value) => handleSectionChange(index, value)}
+                  />
+
+                  {selectedSections[index] &&
+                  filteredSectionValuesList(selectedSections[index]).length >
+                    0 ? (
+                    <Grid item sx={{ gridColumn: "span 2", marginTop: 2 }}>
+                      {selectedSections[index] === "video" ? (
+                        <>
+                          <MultipleSelectField
+                            control={control}
+                            name={`sections.${index}.sectionValue`}
+                            label={`Select in ${selectedSections[index]} section`}
+                            options={filteredSectionValuesList(
+                              selectedSections[index]
+                            )}
+                            multiple
+                            sx={{
+                              borderRadius: "5px",
+                              width: "100%",
+                              backgroundColor: "#FFF",
+                              border: "1px solid #3B0086",
+                              marginTop: 3,
+                            }}
+                            onChange={(e) =>
+                              handleMultipleSelectChange(index, e)
+                            }
+                          />
+                          <Divider
+                            sx={{
+                              my: 4,
+                              width: "100%",
+                              height: "2px",
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <GenericSelectField
+                            control={control}
+                            name={`sections.${index}.sectionValue`}
+                            options={filteredSectionValuesList(
+                              selectedSections[index]
+                            )}
+                            label={`Select in ${selectedSections[index]} section`}
+                          />
+                          <Divider
+                            sx={{
+                              my: 4,
+                              width: "100%",
+                              height: "2px",
+                            }}
+                          />
+                        </>
+                      )}
+                    </Grid>
+                  ) : null}
                 </Grid>
-              ) : null}
-            </Grid>
-          ))}
+              ))}
+            </Box>
+          )}
         </Box>
 
         <Button

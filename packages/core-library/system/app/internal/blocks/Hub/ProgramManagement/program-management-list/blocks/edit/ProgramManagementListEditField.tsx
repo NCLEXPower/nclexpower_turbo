@@ -20,21 +20,14 @@ import { WelcomeProgram } from "../../../../../../../../../assets";
 import { getSectionTypeIcons } from "../../../../../../../../../utils/IconUtils";
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { SectionListType } from "../../../../../../../../../types/wc/programList";
+import { CreateProgramFormType } from "../../validation";
 
 interface Props {
   onSave: (values: any) => void;
   handleBack: () => void;
   fileName: string;
   programImage: File[];
-  control: Control<{
-    sections?: {
-      sectionTitle: string;
-      sectionType: string;
-      sectionValue: any;
-    }[];
-    programImage: File[];
-    programName: string;
-  }>;
+  control: Control<CreateProgramFormType>;
   fields: FieldArrayWithId<
     {
       sections?: {

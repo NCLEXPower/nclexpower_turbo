@@ -4,7 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { renderHook, act } from "../common";
-import { useFileUpload } from "../../hooks/useFileUpload";
+import { useFileUpload } from "../../hooks";
 import { UseFormSetValue } from "react-hook-form";
 
 jest.mock("../../config", () => ({
