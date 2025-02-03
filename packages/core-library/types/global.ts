@@ -186,6 +186,32 @@ export interface ProductCardType {
   };
 }
 
+export interface PricingModalProps {
+  handleClickOpen: (item: ProductCardType) => void;
+  handleClose: () => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
+  open: boolean;
+  cardData: ProductCardType;
+}
+
+export interface ProductInformationProps {
+  onClose: () => void;
+  cardData: ProductCardType;
+  handleSelectProduct: (item: SelectedProductType) => void;
+}
+
+export interface PricingDetailProps {
+  filteredCardData: ProductCardType;
+  onClose: () => void;
+}
+
+export interface ProductSelectionProps {
+  cardData: ProductCardType[];
+  selectedProduct: number;
+  setSelectedProduct: (value: number) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
+}
+
 export type NavigationItemType = {
   id: number;
   label: string;
