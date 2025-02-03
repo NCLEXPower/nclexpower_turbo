@@ -21,6 +21,7 @@ import {
 import {
   ChatBotWidget,
   DrawerLayout,
+  ErrorBox,
   MultiContentDialog,
 } from "core-library/components";
 import {
@@ -31,6 +32,7 @@ import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirec
 import { theme } from "core-library/contents/theme/theme";
 import {
   useAuthInterceptor,
+  usePreventDuplicateSession,
   useStyle,
   useWebHeaderStyles,
 } from "core-library/hooks";
@@ -53,8 +55,9 @@ const Layout: React.FC<
   const [isNewAccount] = useNewAccount(); //this is a temporary implementation
   usePaymentSuccessRedirect(confirmValue);
   useAuthInterceptor();
-
   const showWelcomeDialog = isAuthenticated && isNewAccount;
+
+  const { duplicate } = usePreventDuplicateSession();
 
   if (showWelcomeDialog) {
     return (
@@ -65,6 +68,10 @@ const Layout: React.FC<
         showTour
       />
     );
+  }
+
+  if (isAuthenticated && duplicate) {
+    <ErrorBox label="Page not found. Please try again or contact administrator" />;
   }
 
   return (
