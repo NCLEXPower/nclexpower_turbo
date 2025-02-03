@@ -18,7 +18,7 @@ import {
   ContentDateAtom,
   ContentDateType,
 } from "../../Dialog/DialogFormBlocks/contentApproval/validation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ApprovalListView } from "./ApprovalListView";
 
 export interface ApprovalProps {
@@ -39,7 +39,11 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   );
 
   const [multiple, setMultiple] = useState(false);
-  const [selectedValues, setSelectedValues] = useState<ContentDateType>();
+  // const [selectedValues, setSelectedValues] = useState<ContentDateType>();
+  const [selectedValues, setSelectedValues] = useState<ContentDateType>({
+    data: [],
+    implementationSchedule: new Date(),
+  });
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   const [selectedRows, setSelectedRows] = useState<number>();
@@ -66,19 +70,20 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     setMultiple(event.target.checked);
   };
 
-  const handleSelectedRows = (
-    selectedRowModel: RowModel<AuthorizedContentsResponseType>
-  ) => {
-    const selectedData = selectedRowModel.flatRows.map((row) => ({
-      contentId: row.original.mainContent.id,
-      contentAuthorId: row.original.author.id,
-    }));
-    setSelectedValues({
-      data: selectedData,
-      implementationSchedule: new Date(),
-    });
-    setSelectedRows(selectedRowModel.rows.length);
-  };
+  const handleSelectedRows = useCallback(
+    (selectedRowModel: RowModel<AuthorizedContentsResponseType>) => {
+      const selectedData = selectedRowModel.flatRows.map((row) => ({
+        contentId: row.original.mainContent.id,
+        contentAuthorId: row.original.author.id,
+      }));
+      setSelectedValues({
+        data: selectedData,
+        implementationSchedule: new Date(),
+      });
+      setSelectedRows(selectedRowModel.rows.length);
+    },
+    [setSelectedValues, setSelectedRows]
+  );
 
   const handleSelection = (
     action: string,
@@ -119,30 +124,33 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     }
   };
 
-  const renderActionButtons = (contentId: string, contentAuthorId: string) =>
-    actionButtons.length > 0 &&
-    actionButtons.map((btn) => {
-      const disabled = selectedRows ? true : btn.action == "reject";
-      const tooltipTitle =
-        btn.action == "reject" ? "Reject action will be on page viewer" : "";
+  const renderActionButtons = useCallback(
+    (contentId: string, contentAuthorId: string) =>
+      actionButtons.length > 0 &&
+      actionButtons.map((btn) => {
+        const disabled = selectedRows ? true : btn.action == "reject";
+        const tooltipTitle =
+          btn.action == "reject" ? "Reject action will be on page viewer" : "";
 
-      return (
-        <CustomTooltip title={tooltipTitle} key={btn.action}>
-          <span>
-            <ListItemButton
-              data-testid="approvalAction"
-              onClick={() =>
-                handleSelection(btn.action, contentId, contentAuthorId)
-              }
-              sx={{ bgcolor: "white", color: "black" }}
-              disabled={disabled}
-            >
-              {btn.label}
-            </ListItemButton>
-          </span>
-        </CustomTooltip>
-      );
-    });
+        return (
+          <CustomTooltip title={tooltipTitle} key={btn.action}>
+            <span>
+              <ListItemButton
+                data-testid="approvalAction"
+                onClick={() =>
+                  handleSelection(btn.action, contentId, contentAuthorId)
+                }
+                sx={{ bgcolor: "white", color: "black" }}
+                disabled={disabled}
+              >
+                {btn.label}
+              </ListItemButton>
+            </span>
+          </CustomTooltip>
+        );
+      }),
+    []
+  );
 
   const columns: ColumnDef<AuthorizedContentsResponseType>[] = [
     { id: "id", header: "ID", accessorKey: "id", enablePinning: true },
@@ -194,8 +202,9 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
       <Box
         sx={{
           display: "flex",
+          margin: "10px",
           backgroundColor: "white",
-          borderRadius: "15px",
+          borderRadius: "2px",
           minWidth: "250px",
           width: "100%",
           height: "400px",
@@ -203,7 +212,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          boxShadow: 2,
+          boxShadow: 3,
         }}
       >
         <StateStatus

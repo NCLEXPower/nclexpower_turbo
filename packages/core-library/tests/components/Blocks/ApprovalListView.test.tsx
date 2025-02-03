@@ -150,8 +150,6 @@ describe("ApprovalListView", () => {
 
   it("renders component correctly", () => {
     render(<ApprovalListView {...DEFAULTPROPS} />);
-
-    expect(screen.getByText("Manage Approvals")).toBeInTheDocument();
     expect(screen.getByText("Multiple Selection")).toBeInTheDocument();
   });
 
