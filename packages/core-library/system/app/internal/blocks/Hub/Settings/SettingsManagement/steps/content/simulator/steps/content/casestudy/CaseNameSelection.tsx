@@ -77,14 +77,12 @@ export const CaseNameSelection: React.FC<Props> = ({
           <Typography variant="button" sx={{ mb: 2 }}>
             Case Name Selections
           </Typography>
-
           <Typography variant="caption" sx={{ mb: 4, textAlign: "left" }}>
             Please identify the primary case name, followed by any optional
             secondary conditions. For example, if a patient has Condition A and
             another illness, select "Condition A" as the primary case and
             optionally include the other illness as the secondary case.
           </Typography>
-
           <MultipleSelectField
             control={control}
             name="caseName"

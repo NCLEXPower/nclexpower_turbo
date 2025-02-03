@@ -83,8 +83,6 @@ export const containedRegularQuestionSchema = yup
   .concat(regularQuestionsFormSchema);
 
 // Case Study Questions Schemas
-
-// DDC Answer Options Schema
 export const ddcAnswerOptionsSchema = yup
   .object({
     optionName: yup
@@ -96,13 +94,11 @@ export const ddcAnswerOptionsSchema = yup
   })
   .required();
 
-// DND Answer Options Schema
 export const dndAnswerOptionsSchema = yup.object({
   value: yup.string().required(),
-  label: yup.string().required(),
+  answer: yup.string().required(),
 });
 
-// DND Answers Schema
 export const dndAnswersSchema = yup.object({
   indexPos: yup.number().required(),
   fieldKey: yup.string().required(),
@@ -111,9 +107,8 @@ export const dndAnswersSchema = yup.object({
     .required(({ path }) =>
       generateQuestionErrorMessage(path, "Must select correct answer")
     ),
-})
+});
 
-// DND Keys Schema
 const dndKeysSchema = yup.object({
   dndAnswer: yup
     .array()
@@ -141,7 +136,7 @@ const mcqGroupColumn = yup.object({
 });
 
 const mcqGroupRow = yup.object().shape({
-  rowId: yup.number(),
+  rowIndexPos: yup.number(),
   rowTitle: yup
     .string()
     .when("questionType", {
@@ -157,7 +152,7 @@ const mcqGroupRow = yup.object().shape({
     .of(
       yup.object({
         value: yup.boolean().default(false),
-        choiceId: yup.number(),
+        choiceIndexPos: yup.number(),
       })
     )
     .required("Choices are required."),
@@ -186,7 +181,6 @@ export const mcqGroupAnswerSchema = yup.object({
     }),
 });
 
-// MRSN Max Answer Schema
 const mrsnMaxAnswer = yup.object({
   maxAnswer: yup.number().when("questionType", {
     is: "MRSN",
@@ -197,7 +191,6 @@ const mrsnMaxAnswer = yup.object({
   }),
 });
 
-// MRSN Answer Schema
 const mrsnAnswerSchema = yup
   .array()
   .of(defaultOptionSchema)
@@ -315,7 +308,6 @@ export const hcpOptionSchema = yup.object().shape({
     ),
 });
 
-// Question Options Schema
 const questionOptionsSchemas = {
   DDC: yup
     .array(ddcAnswerOptionsSchema)
@@ -352,7 +344,6 @@ const questionOptionsSchemas = {
     ),
 };
 
-// Answers Schema
 const answersSchema = yup.object({
   answers: yup
     .mixed<
@@ -369,7 +360,6 @@ const answersSchema = yup.object({
     }),
 });
 
-// Background Information Content Schema
 const bgInfoContent = yup.object({
   seqNum: yup
     .number()
