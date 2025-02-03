@@ -50,6 +50,7 @@ const Layout: React.FC<React.PropsWithChildren<Props>> = ({
                   isAuthenticated={isAuthenticated && tokenValidated}
                   onLogout={logout}
                   isPaid={isPaid}
+                  webCustomer={true}
                 >
                   <ContentLoader loading={loading}>
                     <PageContainer stickOut={false}>
