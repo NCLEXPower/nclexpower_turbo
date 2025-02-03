@@ -105,7 +105,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
             alignItems: "center",
           }}
         >
-          <IconButton onClick={handleBack}>
+          <IconButton onClick={handleBack} data-testid="back-button">
             <EvaIcon name="arrow-back-outline" fill="#ffffff" />
           </IconButton>
           <Typography variant="h6" sx={{ color: "white" }}>
