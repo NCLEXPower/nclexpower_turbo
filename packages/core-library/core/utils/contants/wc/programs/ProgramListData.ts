@@ -188,7 +188,7 @@ export const standardProgramList: StandardProgramListType[] = [
               },
               {
                 cardTopic: "Cardiac Arrythmias (ECG)",
-                cardFaces: [ECG_01, ETC_02, ECG_03, ECG_04, ECG_05],
+                cardFaces: [ECG_01, ECG_02, ECG_03, ECG_04, ECG_05],
               },
               {
                 cardTopic: "ETC Cardiac",

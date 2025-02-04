@@ -189,16 +189,10 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
               const hasVideos = sectionVideos && sectionVideos.length > 0;
               const hasData = sectionData && !!sectionData.length;
 
-              if (sectionData?.length) {
-                // console.log("section data:", sectionData);
-              }
-
               const handleClick = () => {
                 if (sectionType === "video") {
                   hasVideos && handleShowVideos(sectionVideos, id);
                 } else if (sectionType === "content-cards") {
-                  // console.log("content card clicked");
-                  // console.log(sectionData);
                   hasData && handleShowContentCards(sectionData, id);
                 }
               };
@@ -216,9 +210,6 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       height={16}
                     />
                     <h4
-                      // onClick={() =>
-                      //   hasVideos && handleShowVideos(sectionVideos, id)
-                      // }
                       onClick={handleClick}
                       className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
