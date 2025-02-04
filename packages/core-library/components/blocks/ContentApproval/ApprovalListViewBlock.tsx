@@ -39,7 +39,6 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
   );
 
   const [multiple, setMultiple] = useState(false);
-  // const [selectedValues, setSelectedValues] = useState<ContentDateType>();
   const [selectedValues, setSelectedValues] = useState<ContentDateType>({
     data: [],
     implementationSchedule: new Date(),

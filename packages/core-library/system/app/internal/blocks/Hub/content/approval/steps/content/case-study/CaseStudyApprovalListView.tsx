@@ -12,7 +12,7 @@ export const CaseStudyApprovalListView: React.FC<Props> = ({ nextStep }) => {
   const accountId = getAccountId ?? "no-account-id";
   const { businessQueryGetContents } = useBusinessQueryContext();
 
-  const { data, isLoading } = businessQueryGetContents(
+  const { data, isLoading, isError } = businessQueryGetContents(
     ["getAuthorizeContentContents"],
     {
       MainType: "Regular",
@@ -24,6 +24,12 @@ export const CaseStudyApprovalListView: React.FC<Props> = ({ nextStep }) => {
     (qtype) => qtype.mainContent.mainType === "Case Study"
   );
 
-  //   console.log(data);
-  return <ApprovalListViewBlock nextStep={nextStep} data={csdata} />;
+  return (
+    <ApprovalListViewBlock
+      nextStep={nextStep}
+      data={csdata}
+      isError={isError}
+      isLoading={isLoading}
+    />
+  );
 };
