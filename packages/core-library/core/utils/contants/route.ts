@@ -1,7 +1,7 @@
 import { generateNestedRoutes } from "../routeUtils";
 import { config } from "../../../config";
 
-export const hubBaseRoute = config.value.BASEHUB;
+export const hubBaseRoute = config.value?.BASEHUB || "/hub";
 const hubSubRoutes = [
   "",
   "/create-category",
