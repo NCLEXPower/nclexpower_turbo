@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateProgramFormType, createProgramSchema } from "../../validation";
@@ -97,42 +97,42 @@ export const ProgramManagementListCreateBlock = () => {
     append({ sectionTitle: "", sectionType: "", sectionValue: "" });
   };
 
-  const onSubmit = (data: CreateProgramFormType | undefined) => {
+  const handleCreateProgram = (data: CreateProgramFormType | undefined) => {
     if (!data) {
       console.error("Form data is undefined.");
       return;
     }
-  
+
     const { sections } = data;
     if (!sections) {
       console.error("Sections are undefined.");
       return;
     }
-  
+
     console.log("Sections:");
     sections.forEach((section, index) => {
-      const sectionValue = 
+      const sectionValue =
         typeof section.sectionValue === "string"
           ? section.sectionValue
           : Array.isArray(section.sectionValue)
-          ? section.sectionValue.join(", ")
-          : "Invalid value";
-  
+            ? section.sectionValue.join(", ")
+            : "Invalid value";
+
       console.log(
         `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
       );
     });
-  
+
     alert(JSON.stringify(data));
   };
-  
+
   const handleBack = () => {
     router.back();
   };
 
   return (
     <ProgramManagementListCreateField
-      onSave={handleSubmit(onSubmit)}
+      onSave={handleSubmit(handleCreateProgram)}
       handleBack={handleBack}
       fileName={fileName}
       programImage={programImage}

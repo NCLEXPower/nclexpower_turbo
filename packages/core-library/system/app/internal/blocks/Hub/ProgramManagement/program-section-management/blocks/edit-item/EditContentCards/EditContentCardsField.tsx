@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Control } from "react-hook-form";
@@ -16,6 +16,7 @@ import {
 } from "../../../../../../../../../../components";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../../assets";
+import { SectionFormType } from "../../../validation";
 
 interface EditContentCardsFieldProps {
   topics: { cardTopic: string; cardFaces: File[] }[];
@@ -28,7 +29,7 @@ interface EditContentCardsFieldProps {
   handleRemoveCardFace: (topicIndex: number, faceIndex: number) => void;
   handleAddTopic: () => void;
   handleRemoveTopic: (topicIndex: number) => void;
-  onSave: (values: any) => void;
+  onSave: (values: SectionFormType) => void;
   handleFileChange?: (
     fileList: FileList | null,
     topicIndex: number,
@@ -49,6 +50,10 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
   handleAddCardFace,
   handleRemoveCardFace,
 }) => {
+  const handleSaveClick = () => {
+    const values = getValues();
+    onSave(values);
+  };
   return (
     <Box
       sx={{
@@ -339,7 +344,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                 borderRadius: "10px",
                 color: "white",
               }}
-              onClick={onSave}
+              onClick={handleSaveClick}
             >
               Update
             </Button>

@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { ComponentLoader } from "../../../../../../../../../../components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -237,6 +237,14 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
     }
   };
 
+  const handleSave = async (values: SectionFormType) => {
+    onSubmit(values);
+  };
+
+  const handleSaveWrapper = () => {
+    handleSubmit((values: SectionFormType) => handleSave(values))();
+  };
+
   return (
     <EditContentCardsField
       getValues={form.getValues}
@@ -248,7 +256,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
       handleRemoveTopic={handleRemoveTopic}
       handleAddCardFace={handleAddCardFace}
       handleRemoveCardFace={handleRemoveCardFace}
-      onSave={handleSubmit(onSubmit)}
+      onSave={handleSaveWrapper}
     />
   );
 };

@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Typography } from "@mui/material";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -109,14 +109,7 @@ export const ProgramManagementListEditBlock = () => {
     setValue(`sections.${index}.sectionValue`, selectedValues);
   };
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    getValues,
-    reset,
-    watch,
-  } = form;
+  const { control, handleSubmit, setValue, getValues, reset, watch } = form;
   const { fields, append, remove } = useFieldArray({
     control,
     name: "sections",
@@ -137,35 +130,37 @@ export const ProgramManagementListEditBlock = () => {
     remove(index);
   };
 
-  const onSubmit = (data: CreateProgramFormType | undefined) => {
-    if (data) {
-      if (data.sections) {
-        console.log("Sections:");
-        data.sections.forEach((section, index) => {
-          let sectionValue;
-          if (typeof section.sectionValue === "string") {
-            sectionValue = section.sectionValue;
-          } else if (Array.isArray(section.sectionValue)) {
-            sectionValue = section.sectionValue.join(", ");
-          } else {
-            sectionValue = "Invalid value";
-          }
-
-          console.log(
-            `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
-          );
-        });
-        alert(`updating section to ${programId}`);
-        setShowAddSection(true);
-        setEditingSectionId(null);
-        setEditingSectionData(null);
-        reset();
-      } else {
-        console.error("Sections are undefined.");
-      }
-    } else {
+  const handleEditProgram = (data?: CreateProgramFormType) => {
+    if (!data) {
       console.error("Form data is undefined.");
+      return;
     }
+
+    const { sections } = data;
+
+    if (!sections) {
+      console.error("Sections are undefined.");
+      return;
+    }
+
+    console.log("Sections:");
+    sections.forEach((section, index) => {
+      const sectionValue = Array.isArray(section.sectionValue)
+        ? section.sectionValue.join(", ")
+        : typeof section.sectionValue === "string"
+          ? section.sectionValue
+          : "Invalid value";
+
+      console.log(
+        `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
+      );
+    });
+
+    alert(`Updating section to ${programId}`);
+    setShowAddSection(true);
+    setEditingSectionId(null);
+    setEditingSectionData(null);
+    reset();
 
     alert(JSON.stringify(data));
   };
@@ -237,7 +232,7 @@ export const ProgramManagementListEditBlock = () => {
 
   return (
     <ProgramManagementListEditField
-      onSave={handleSubmit(onSubmit)}
+      onSave={handleSubmit(handleEditProgram)}
       handleBack={handleBack}
       fileName={fileName}
       programImage={programImage}
