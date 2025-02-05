@@ -20,6 +20,12 @@ jest.mock("../../../core/router", () => ({
 
 jest.mock("../../../contexts/auth/hooks", () => ({
   usePaid: () => [true],
+  useAccessToken: jest
+    .fn()
+    .mockReturnValue(["test-access-token", jest.fn(), jest.fn()]),
+  useAccountId: jest
+    .fn()
+    .mockReturnValue(["test-account-id", jest.fn(), jest.fn()]),
 }));
 
 describe("DrawerLayout", () => {
