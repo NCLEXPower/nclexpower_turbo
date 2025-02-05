@@ -82,7 +82,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
             alignItems: "center",
           }}
         >
-          <IconButton onClick={handleBack}>
+          <IconButton onClick={handleBack} data-testid="back-button">
             <EvaIcon name="arrow-back-outline" fill="#ffffff" />
           </IconButton>
           <Typography variant="h6" sx={{ color: "white" }}>
@@ -319,6 +319,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
             },
           }}
           onClick={handleAddSection}
+          data-testid="add-section-button"
         >
           <EvaIcon name="plus-outline" fill="#6C6C6C" />
           <Typography variant="h6" sx={{ color: "#6C6C6C" }}>
@@ -338,6 +339,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
             borderRadius: "10px",
           }}
           onClick={onSave}
+          data-testid="submit-button"
         >
           <Typography variant="h6" sx={{ color: "white" }}>
             Submit
