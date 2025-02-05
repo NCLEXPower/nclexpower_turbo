@@ -28,8 +28,6 @@ export default function ContentReviewerBlock({
   nextStep,
   previousStep,
 }: Props) {
-  const theme = useTheme();
-
   const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
   const [selectedPageIndex, setSelectedPageIndex] = useState<number>(1);
   const [isApproved, setIsApproved] = useState<boolean>(false);

@@ -30,7 +30,6 @@ import { author, mainContent, RadioData } from "./ContentReviewerData";
 import React, { useEffect } from "react";
 import { MainContent } from "./RegularMainContent";
 import { CSMainContent } from "./CSMainContent";
-import { ContentDateType } from "../../../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
 
 type contentType = {
   contentId: string;
