@@ -143,7 +143,6 @@ export const ProgramManagementListEditBlock = () => {
       return;
     }
 
-    console.log("Sections:");
     sections.forEach((section, index) => {
       const sectionValue = Array.isArray(section.sectionValue)
         ? section.sectionValue.join(", ")
@@ -156,13 +155,10 @@ export const ProgramManagementListEditBlock = () => {
       );
     });
 
-    alert(`Updating section to ${programId}`);
     setShowAddSection(true);
     setEditingSectionId(null);
     setEditingSectionData(null);
     reset();
-
-    alert(JSON.stringify(data));
   };
 
   const handleEditProgramSection = (section: any) => {

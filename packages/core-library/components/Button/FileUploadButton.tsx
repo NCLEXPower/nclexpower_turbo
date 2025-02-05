@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 import React, { useRef } from "react";
 import { Button } from "./Button";
 
@@ -8,7 +8,7 @@ interface Props {
   isDisabled?: boolean;
   onUpload(files: FileList | null): void;
   text: string;
-  sx?: object;
+  sx?: SxProps;
 }
 
 export const FileUploadButton: React.FC<Props> = ({

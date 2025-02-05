@@ -109,7 +109,6 @@ export const ProgramManagementListCreateBlock = () => {
       return;
     }
 
-    console.log("Sections:");
     sections.forEach((section, index) => {
       const sectionValue =
         typeof section.sectionValue === "string"
@@ -122,8 +121,6 @@ export const ProgramManagementListCreateBlock = () => {
         `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
       );
     });
-
-    alert(JSON.stringify(data));
   };
 
   const handleBack = () => {

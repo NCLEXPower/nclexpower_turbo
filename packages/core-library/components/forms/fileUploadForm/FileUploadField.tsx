@@ -1,5 +1,5 @@
 import { ErrorOutline } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { Stack, SxProps, Typography } from "@mui/material";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {
@@ -32,7 +32,7 @@ interface Props<T extends object> {
   preUploadErrors?: string[];
   onUpload?(files: FileList | null): void;
   triggerLabel?: string;
-  sx?: object;
+  sx?: SxProps;
 }
 
 interface ComponentProps<T extends object>

@@ -157,7 +157,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                       height: "100%",
                       mt: 8,
                     }}
-                    data-testid="remove-topic"
+                    ariaLabel="remove-topic"
                   >
                     <EvaIcon
                       name="close-outline"
@@ -224,7 +224,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                     ? URL.createObjectURL(cardFaceLink)
                                     : noVideoImage
                                 }
-                                alt={cardFacesFileName}
+                                alt={`Card Face ${faceIndex + 1}`}
                                 layout="fill"
                                 objectFit="cover"
                                 style={{
@@ -272,6 +272,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
 
                               {topic.cardFaces.length > 1 && (
                                 <IconButton
+                                  data-testid={`close-outline-${topicIndex}-${faceIndex}`}
                                   onClick={() =>
                                     handleRemoveCardFace(topicIndex, faceIndex)
                                   }
