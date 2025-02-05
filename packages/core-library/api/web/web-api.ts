@@ -20,6 +20,7 @@ import {
   ReportIssueType,
   ResendCodeParams,
   ResetPasswordParams,
+  ScheduleResponse,
   SelectEmailResponse,
   UpdatePaymentIntentParams,
   ValidateResetLinkTokenParams,
@@ -254,5 +255,11 @@ export class WebApi {
     params: Record<string, any>
   ) {
     return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
+  }
+
+  public async getActiveSchedule() {
+    return await this.axios.get<ScheduleResponse>(
+      `/api/v2/internal/baseInternal/active-schedule`
+    );
   }
 }
