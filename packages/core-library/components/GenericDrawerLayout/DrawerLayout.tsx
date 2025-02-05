@@ -27,7 +27,6 @@ type DrawerLayoutType = {
   headerStyles?: WebHeaderStylesType;
   sidebarStyles?: WebSidebarStylesType;
   isPaid: string | undefined;
-  webCustomer: boolean;
 };
 
 export const DrawerLayout: React.FC<
@@ -40,7 +39,6 @@ export const DrawerLayout: React.FC<
   headerStyles,
   sidebarStyles,
   isPaid,
-  webCustomer,
 }) => {
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
@@ -49,8 +47,6 @@ export const DrawerLayout: React.FC<
   const { isScrolled } = useScroll();
 
   const router = useRouter();
-
-  const webCustomerState = webCustomer ?? false;
 
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const appName = config.value.BASEAPP;
@@ -71,9 +67,9 @@ export const DrawerLayout: React.FC<
     } else if (isAuthenticated) {
       setOpen(true);
     } else {
-      setOpen(!webCustomerState);
+      setOpen(!inWebc);
     }
-  }, [webCustomerState, isAuthenticated, isMobile]);
+  }, [inWebc, isAuthenticated, isMobile]);
 
   if (!mounted) return;
 

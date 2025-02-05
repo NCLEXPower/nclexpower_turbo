@@ -39,7 +39,6 @@ import { useContentDataContext } from "core-library/contexts/content/ContentData
 import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
-import { useState } from "react";
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
 > = ({ children, shouldShowChatBotWidget }) => {
@@ -55,7 +54,6 @@ const Layout: React.FC<
   useAuthInterceptor();
 
   const showWelcomeDialog = isAuthenticated && isNewAccount;
-  const [isWebCustomer, setIsWebCustomer] = useState<boolean>(true);
 
   if (showWelcomeDialog) {
     return (
@@ -85,7 +83,6 @@ const Layout: React.FC<
                 sidebarStyles={sidebarStyles}
                 onLogout={logout}
                 isPaid={isPaid}
-                webCustomer={isWebCustomer}
               >
                 <ContentLoader loading={loading || router.loading}>
                   <LoadablePageContent loading={loading}>
