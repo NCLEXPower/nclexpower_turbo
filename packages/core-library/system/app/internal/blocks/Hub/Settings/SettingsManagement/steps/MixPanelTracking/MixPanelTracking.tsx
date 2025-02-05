@@ -2,8 +2,12 @@ import { useSetAtom } from 'jotai';
 import { EnvironmentSelection } from '../content/component/EnvironmentSelection';
 import { SelectedConfirmationObj } from '../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic';
 import { SettingsSelectionType } from '../../types';
-import { Box, Button, Typography } from '@mui/material';
-import { EvaIcon, PageLoader } from '../../../../../../../../../components';
+import { Box, Typography } from '@mui/material';
+import {
+  Button,
+  EvaIcon,
+  PageLoader,
+} from '../../../../../../../../../components';
 import { useMaintenanceMode } from '../../../../../../../../../hooks';
 import {
   useBusinessQueryContext,
