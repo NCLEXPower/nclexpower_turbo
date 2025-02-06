@@ -1,23 +1,18 @@
-/**
- * Property of the NCLEX Power.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
 import { useSetAtom } from 'jotai';
+import { EnvironmentSelection } from '../content/component/EnvironmentSelection';
 import { SelectedConfirmationObj } from '../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic';
-import { useMaintenanceMode } from '../../../../../../../../../hooks';
 import { SettingsSelectionType } from '../../types';
-import {
-  useBusinessQueryContext,
-  useExecuteToast,
-} from '../../../../../../../../../contexts';
 import { Box, Typography } from '@mui/material';
 import {
   Button,
   EvaIcon,
   PageLoader,
 } from '../../../../../../../../../components';
-import { EnvironmentSelection } from '../content/component/EnvironmentSelection';
+import { useMaintenanceMode } from '../../../../../../../../../hooks';
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from '../../../../../../../../../contexts';
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -27,26 +22,12 @@ interface Props {
   reset: () => void;
 }
 
-export const MaintenanceMode: React.FC<Props> = ({
-  previousStep,
-  previous,
-  reset,
-}) => {
-  const { data, loading, dateCommenced, refetch } = useMaintenanceMode();
+export const MixPanelTracking: React.FC<Props> = ({ previousStep }) => {
+  const { data, loading, refetch } = useMaintenanceMode();
   const setStatus = useSetAtom(SelectedConfirmationObj);
   const { businessQueryCommenceEnvMaintenanceMode } = useBusinessQueryContext();
   const { mutateAsync, isLoading } = businessQueryCommenceEnvMaintenanceMode();
   const { showToast } = useExecuteToast();
-
-  const confirmChange = async (environment: string) => {
-    const checker = data?.currentMaintenanceMode.includes(environment);
-    await mutateAsync([environment]);
-    refetch();
-    showToast(
-      `${environment.toUpperCase()} Environment is now ${checker ? 'Active' : 'Under Maintenance'} `,
-      'success'
-    );
-  };
 
   const handleBack = () => {
     setStatus(null);
@@ -61,9 +42,18 @@ export const MaintenanceMode: React.FC<Props> = ({
     );
   }
 
+  const confirmChange = async (environment: string) => {
+    const checker = data?.currentMaintenanceMode.includes(environment);
+    await mutateAsync([environment]);
+    refetch();
+    showToast(
+      `${environment.toUpperCase()} Environment is now ${checker ? 'Active' : 'Under Maintenance'} `,
+      'success'
+    );
+  };
   return (
     <Box
-      data-testid='maintenance-mode-id'
+      data-testid='mixpanel-mode-id'
       sx={{
         width: '100%',
         height: 'fit-content',
@@ -100,16 +90,13 @@ export const MaintenanceMode: React.FC<Props> = ({
       </Button>
       <Box sx={{ width: '80%' }}>
         <Typography color='#3B0086' fontWeight={700} variant='h2'>
-          Web Customer : Maintenance Mode
-        </Typography>
-        <Typography color='#3B0086' fontWeight={700} variant='h6'>
-          Last Update : {dateCommenced}
+          Web Customer : Mix Panel Tracking
         </Typography>
         <EnvironmentSelection
           onSubmit={confirmChange}
           currentMaintenance={data?.currentMaintenanceMode}
           isLoading={isLoading}
-        />
+        ></EnvironmentSelection>
       </Box>
     </Box>
   );
