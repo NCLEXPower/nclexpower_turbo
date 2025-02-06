@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { ProgramHeader } from "./ProgramHeader";
 import { ProgramGridView } from "./ProgramGridView";
 import {
+  SectionDataType,
   SectionListType,
   SectionVideosType,
   StandardProgramListType,
@@ -27,6 +28,9 @@ import {
 } from "core-library/utils/IconUtils";
 import { useRouter } from "core-library";
 import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
+import { useModal } from "core-library/hooks";
+import { ContentCardsModal } from "./ContentCardsModal/ContentCardsModal";
+import { PhotoSlider } from "react-photo-view";
 
 interface ProgramListBlockProps {
   program: StandardProgramListType[];
@@ -56,6 +60,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
 
   const toggleView = () => setListView((prev) => !prev);
   const progress = useCalculateProgramProgress(program);
+  const { open, close, props } = useModal<SectionDataType[]>();
 
   const router = useRouter();
   const lastPathSegment = router.asPath.split("/").filter(Boolean).pop();
@@ -70,6 +75,13 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     router.push(
       `/hub/programs/${lastPathSegment}/watch?secVids=${encodedSecVids}&programId=${programId}`
     );
+  };
+
+  const handleShowContentCards = (
+    sectionData: SectionDataType[],
+    programId: string
+  ) => {
+    open(sectionData);
   };
 
   const AccordionHeader: React.FC<AccordionHeaderProps> = ({
@@ -171,9 +183,19 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                 sectionTitle,
                 sectionStatus,
                 sectionVideos,
+                sectionData,
               } = item;
 
               const hasVideos = sectionVideos && sectionVideos.length > 0;
+              const hasData = sectionData && !!sectionData.length;
+
+              const handleClick = () => {
+                if (sectionType === "video") {
+                  hasVideos && handleShowVideos(sectionVideos, id);
+                } else if (sectionType === "content-cards") {
+                  hasData && handleShowContentCards(sectionData, id);
+                }
+              };
 
               return (
                 <div
@@ -188,9 +210,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       height={16}
                     />
                     <h4
-                      onClick={() =>
-                        hasVideos && handleShowVideos(sectionVideos, id)
-                      }
+                      onClick={handleClick}
                       className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
                       {sectionTitle}
@@ -222,6 +242,11 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
           subtitle={programSubtitle}
           listView={listView}
           handleClick={toggleView}
+        />
+        <ContentCardsModal
+          open={props.isOpen}
+          onClose={close}
+          data={props.context || []}
         />
         {isLoading ? (
           <ProgramSkeletonLoader listView={listView} />

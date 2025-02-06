@@ -14,6 +14,7 @@ interface Props {
   className?: string;
   disabled?: boolean;
   sx?: SxProps;
+  disableRipple?: boolean;
 }
 
 export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
@@ -25,6 +26,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   className,
   disabled,
   sx,
+  disableRipple,
 }) => {
   return (
     <MuiIconButton
@@ -35,6 +37,7 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
       className={className}
       disabled={disabled}
       sx={{ "&:focus": { outline: "none !important" }, ...sx }}
+      disableRipple={disableRipple}
     >
       {children}
     </MuiIconButton>

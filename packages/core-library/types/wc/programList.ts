@@ -1,17 +1,17 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { StaticImageData } from "next/image";
 
 export type SectionListType = {
-    sectionId: string;
-    sectionType: string;
-    sectionTitle: string;
-    sectionStatus: string;
-    sectionVideos?: SectionVideosType[];
-    sectionData?: SectionDataType[];
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionStatus: string;
+  sectionVideos?: SectionVideosType[];
+  sectionData?: SectionDataType[];
 };
 
 export type SectionDataType = {
@@ -27,90 +27,98 @@ export type SectionDataType = {
   contentAreaCoverage?: string[];
 };
 
+export type ImageType = {
+  default: {
+    src: string;
+    height: number;
+    width: number;
+    blurDataURL: string;
+  };
+};
+
 export type SectionCardsType = {
-  cardTopic?: string
-  cardFaces?: string[]
-}
+  cardTopic: string;
+  cardFaces: ImageType[] | string[];
+};
 
 export type SectionVideosType = {
-    secVidId: string;
-    secVidTitle: string;
-    secVidUrl: string;
-    secVidPlaceholder: StaticImageData;
-    secVidDuration?: string;
-    secVidAuthor: string;
-    secVidAuthorImg: StaticImageData;
-    secVidDescription: string;
+  secVidId: string;
+  secVidTitle: string;
+  secVidUrl: string;
+  secVidPlaceholder: StaticImageData;
+  secVidDuration?: string;
+  secVidAuthor: string;
+  secVidAuthorImg: StaticImageData;
+  secVidDescription: string;
 };
 
 export type StandardProgramListType = {
-    id: string;
-    title: string;
-    programStatus: string;
-    programImage: StaticImageData;
-    sections?: SectionListType[];
-    disabled?: boolean;
+  id: string;
+  title: string;
+  programStatus: string;
+  programImage: StaticImageData;
+  sections?: SectionListType[];
+  disabled?: boolean;
 };
 
 export interface ProgramSectionList {
-    sectionId: string;
-    sectionType: string;
-    sectionTitle: string;
-    sectionData: SectionData[];
-  }
-  
-  type SectionData =
-    | DocumentSectionData
-    | VideoSectionData
-    | SimulatorSectionData
-    | ContentCardsSectionData
-    | MedCardsSectionData
-    | CATSectionData;
-  
-  interface DocumentSectionData {
-    sectionDataId: string;
-    title: string;
-    link: string;
-    description: string;
-  }
-  
-  interface VideoSectionData {
-    sectionDataId: string;
-    title: string;
-    link: string;
-    authorName: string,
-    authorImage:  string,
-    videoPlaceholder: string,
-    description: string;
-  }
-  
-  interface SimulatorSectionData {
-    sectionDataId: string;
-    title: string;
-    contentArea: string;
-    guided: boolean;
-    unguided: boolean;
-    practice: boolean;
-  }
-  
-  interface ContentCardsSectionData {
-    sectionDataId: string;
-    title: string;
-    cards: {
-      cardTopic: string;
-      cardFaces: string[];
-    }[];
-  }
-  
-  interface MedCardsSectionData {
-    sectionDataId: string;
-    title: string;
-    link: string;
-  }
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionData: SectionData[];
+}
 
-  interface CATSectionData {
-    sectionDataId: string;
-    catSimulator: string;
-    contentAreaCoverage: string[];
-  }
+type SectionData =
+  | DocumentSectionData
+  | VideoSectionData
+  | SimulatorSectionData
+  | ContentCardsSectionData
+  | MedCardsSectionData
+  | CATSectionData;
 
+interface DocumentSectionData {
+  sectionDataId: string;
+  title: string;
+  link: string;
+  description: string;
+}
+
+interface VideoSectionData {
+  sectionDataId: string;
+  title: string;
+  link: string;
+  authorName: string;
+  authorImage: string;
+  videoPlaceholder: string;
+  description: string;
+}
+
+interface SimulatorSectionData {
+  sectionDataId: string;
+  title: string;
+  contentArea: string;
+  guided: boolean;
+  unguided: boolean;
+  practice: boolean;
+}
+
+interface ContentCardsSectionData {
+  sectionDataId: string;
+  title: string;
+  cards: {
+    cardTopic: string;
+    cardFaces: string[];
+  }[];
+}
+
+interface MedCardsSectionData {
+  sectionDataId: string;
+  title: string;
+  link: string;
+}
+
+interface CATSectionData {
+  sectionDataId: string;
+  catSimulator: string;
+  contentAreaCoverage: string[];
+}
