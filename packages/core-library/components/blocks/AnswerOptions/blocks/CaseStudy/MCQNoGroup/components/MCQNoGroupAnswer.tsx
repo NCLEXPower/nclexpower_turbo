@@ -75,6 +75,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               gap: 1.5,
             }}
             onClick={handleAppendRowTable}
+            data-testid="append-row-table"
             disabled={disableAppendRow}
           >
             <Typography variant="body2">Add Row Fields</Typography>
@@ -98,6 +99,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               gap: 1.5,
             }}
             onClick={handleAppendColumnHeaders}
+            data-testid="append-column-headers"
           >
             <Typography variant="body2">
               Add Column Header
