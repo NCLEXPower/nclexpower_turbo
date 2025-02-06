@@ -214,6 +214,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                     background:
                       "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
                   }}
+                  data-testid="placeholder"
                 />
                 <Box
                   sx={{
@@ -333,13 +334,14 @@ export const CreateVideo: React.FC<CreateVideo> = ({
             <TextField
               name="authorName"
               control={control}
-              placeholder="Enter title"
+              placeholder="Enter Author Name"
               sx={{
                 borderRadius: "10px",
                 width: "100%",
                 background: "white",
               }}
               inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
+              data-testid="title"
             />
           </Box>
 
