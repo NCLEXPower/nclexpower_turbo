@@ -378,6 +378,7 @@ export const MaintenanceMode = (props: {
                 selection: 'WEBCUSTOMER',
               })
             }
+            data-testid='mixpanel-card'
             elevation={5}
             text='Mix Panel Tracking'
           />
