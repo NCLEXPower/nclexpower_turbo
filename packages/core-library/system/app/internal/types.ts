@@ -30,7 +30,8 @@ export type Blocks =
   | "ContactUsManagementBlock"
   | "SalesManagement"
   | "AnnouncementManagementBlock"
-  | "ComingSoonManagementBlock";
+  | "ComingSoonManagementBlock"
+  | "CaseNameManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -54,6 +55,7 @@ type BlockProps = {
   SalesManagement: {};
   AnnouncementManagementBlock: {};
   ComingSoonManagementBlock: {};
+  CaseNameManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {
