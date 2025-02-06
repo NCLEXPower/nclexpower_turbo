@@ -1,29 +1,33 @@
 import React from "react";
 import {
-  useApi,
   useApiCallback,
-  useWebSocketCountdown,
+  useScheduleCountdown,
 } from "core-library/hooks";
 import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
 import { ComingSoonType } from "../ComingSoonBlock/validation";
 import { NotifyParams } from "core-library/api/types";
+import { config } from "core-library/config";
+import { sanitizedEnvironment } from "core-library";
 
 export const GoLiveBlock: React.FC = () => {
-  const { countdown, connectionError } = useWebSocketCountdown();
+  const { daysRemaining, error, schedule } = useScheduleCountdown();
   const notifyCb = useApiCallback(
     async (api, args: NotifyParams) => await api.web.sendNotify(args)
   );
+  const environment = sanitizedEnvironment(schedule?.environment);
 
-  if (connectionError) {
-    return <p>Error: {connectionError}</p>;
+  if (error) {
+    return <p>Error: {error}</p>;
   }
 
-  if (!countdown) {
-    return <p>No active countdown.</p>;
+  if (config.value.SYSENV !== environment) {
+    return <p>Something went wrong.</p>
   }
+
   return (
     <ComingSoonPage
-      countdown={countdown}
+      schedule={schedule}
+      daysRemaining={daysRemaining}
       onSubmit={handleSubmit}
       loading={notifyCb.loading}
     />
@@ -33,7 +37,7 @@ export const GoLiveBlock: React.FC = () => {
     try {
       const result = await notifyCb.execute({
         email: values.email,
-        goLiveId: countdown?.Id,
+        goLiveId: schedule?.id,
       });
       if (result.data === 200 || result.status === 200) {
         alert("Successfully submitted.");
