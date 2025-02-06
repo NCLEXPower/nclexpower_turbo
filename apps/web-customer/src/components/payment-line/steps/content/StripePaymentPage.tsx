@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { NCLEXBanner, ProceedButton, SignOutButton } from "./components";
-import { Card, Checkbox, EvaIcon } from "core-library/components";
+import { Card, EvaIcon } from "core-library/components";
 import { Box } from "@mui/material";
-import { ProductInformationLoader } from "core-library/system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/loader";
 import {
   PaymentExecutionProps,
   usePaymentWalkthroughFormContext,
 } from "../../PaymentWalkthroughContext";
-import { useSafeStripe, useValidateToken } from "core-library/hooks";
+import { useSafeStripe } from "core-library/hooks";
 import { NotFoundBlock } from "@/components/blocks/NotFoundBlock/NotFoundBlock";
 import {
   LinkAuthenticationElement,
@@ -35,6 +34,9 @@ export function StripePaymentPage({
   const { stripe, elements, isStripeReady } = useSafeStripe();
   const toast = useExecuteToast();
 
+
+const [isSubmitting, setIsSubmitting] = useState(false)
+
   if (!isStripeReady) return;
 
   if (!stripe || !elements) {
@@ -42,11 +44,18 @@ export function StripePaymentPage({
   }
 
   async function handleProceed() {
-    const stripeObject = {
-      stripe,
-      elements,
-    } as PaymentExecutionProps;
-    await execute({ ...stripeObject });
+    setIsSubmitting(true);
+    try {
+      const stripeObject = {
+        stripe,
+        elements,
+      } as PaymentExecutionProps;
+      await execute({ ...stripeObject });
+    } catch(error) {
+      console.error(error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handlePrevious = () => {
@@ -94,7 +103,7 @@ export function StripePaymentPage({
           <h1 className="pt-sans-bold md:text-3xl text-2xl lg:text-4xl text-[#0F2A71] mb-4">
             Payment
           </h1>
-          <Card sx={{ padding: 5, width: "100%" }} elevation={4}>
+          <Card sx={{ padding: 5, width: "100%", pointerEvents:isSubmitting ? 'none' : 'unset' }} elevation={4}>
             <Box sx={{ width: "100%" }}>
               <h1 className="pt-sans-bold text:lg md:text-2xl text-[#0F2A71]">
                 Contact/Payment Information
@@ -113,7 +122,7 @@ export function StripePaymentPage({
             </div>
           </Card>
           <ProceedButton
-            loading={loading}
+            loading={loading || isSubmitting}
             onClick={handleProceed}
             btnTitle="Confirm Payment"
           />
