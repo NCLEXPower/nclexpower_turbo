@@ -5,6 +5,7 @@ import {
   MenuItem,
   FormHelperText,
   TextFieldProps,
+  SxProps,
 } from "@mui/material";
 
 type SelectOption = {
@@ -27,6 +28,7 @@ type BaseSelectFieldProps = {
   variant?: TextFieldProps["variant"];
   placeholder?: TextFieldProps["placeholder"];
   disabled?: boolean;
+  listSx?: SxProps;
 };
 
 export function SelectField({
@@ -38,6 +40,7 @@ export function SelectField({
   onChange,
   value,
   placeholder,
+  listSx,
   ...rest
 }: BaseSelectFieldProps) {
   return (
@@ -61,6 +64,7 @@ export function SelectField({
           <MenuItem
             key={option.xvalue ?? option.value}
             value={option.xvalue ?? option.value}
+            sx={{ ...listSx }}
           >
             {option.label}
           </MenuItem>
