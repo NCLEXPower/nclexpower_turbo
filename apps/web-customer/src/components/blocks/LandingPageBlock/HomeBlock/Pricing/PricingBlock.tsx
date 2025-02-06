@@ -8,40 +8,54 @@ import PricingCard from "./PricingComponent/PricingCard";
 import {
   ProductCardType,
   SelectedProductType,
-} from 'core-library/types/global';
-import { useRouter } from 'core-library/core';
-import { Encryption } from 'core-library/utils/Encryption';
-import { config } from 'core-library/config';
-import { useEncryptItem } from 'core-library/contexts/auth/hooks';
-import { useDataSource } from 'core-library/hooks';
-import { ProductListResponse } from 'core-library/api/types';
-import { PriceButtonDetails } from '@/constants/constants';
-import { ComponentState } from 'core-library/components';
+} from "core-library/types/global";
+import { useRouter } from "core-library/core";
+import { Encryption } from "core-library/utils/Encryption";
+import { config } from "core-library/config";
+import { useEncryptItem } from "core-library/contexts/auth/hooks";
+import { useDataSource } from "core-library/hooks";
+import { ProductListResponse } from "core-library/api/types";
+import { PriceButtonDetails } from "@/constants/constants";
+import PricingModal from "./PricingComponent/PricingModal";
+import { ComponentState } from "core-library/components";
 
 interface Props {
   url?: string;
 }
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
+  const [open, setOpen] = React.useState(false);
+  const [selectedItems, setSelectedItems] = React.useState<ProductCardType>(
+    {} as ProductCardType
+  );
+  const handleClickOpen = (items: any) => {
+    setSelectedItems(items);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItems({} as ProductCardType);
+  };
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
   const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
-  const dataStates = { data: dataSource, isLoading, isSuccess, isError }
+  const dataStates = { data: dataSource, isLoading, isSuccess, isError };
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
       : [];
   const router = useRouter();
-  const handleSelectProduct = (product: SelectedProductType) => {
+  const handleSelectProduct = async (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
     setEncryptedProduct(encyptedData);
-    router.push({
-      pathname: "/order-summary",
+    await router.push({
+      pathname: '/account/registration', //temporarily as viewing product details are in progress
     });
   };
 
@@ -65,7 +79,6 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       }
     }
   }, [router.asPath]);
-
 
   return (
     <div
@@ -92,10 +105,11 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                 const isNotSelected =
                   nurseType && nurseType !== nurseItem.value;
 
+
                 const buttonClasses = `max-h-20 ${isSelected
-                    ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
-                    } hover:scale-95`
+                  ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                  : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
+                  } hover:scale-95`
                   } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
                 return (
                   <button
@@ -118,13 +132,18 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         </div>
         <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
           <div className="flex gap-5 w-full justify-center self-center flex-wrap">
-            {filteredItems && filteredItems.length > 0 ? (
+            {filteredItems && filteredItems.length > 0 && (
               filteredItems.slice(0, 2).map((item, index) => (
                 <div
                   className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
                   key={index}
                 >
-                  <ComponentState data={dataSource} isError={isError} isSuccess={isSuccess} isLoading={isLoading} >
+                  <ComponentState
+                    data={dataSource}
+                    isError={isError}
+                    isSuccess={isSuccess}
+                    isLoading={isLoading}
+                  >
                     <PricingCard
                       cardData={item as unknown as ProductCardType}
                       handleSelectProduct={handleSelectProduct}
@@ -132,15 +151,21 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                   </ComponentState>
                 </div>
               ))
-            ) : (
-              <div
-                className={`bg-gradient-to-tr ${nurseType === 0 ? "from-[#334f9d] to-[#0c225c] text-white" : "from-[#31898f] to-[#08474b] text-white"} rounded-md shadow-md px-5 py-8 text-lg w-full text-center  font-semibold max-w-[750px]`}
-              >
-                <p>Programs unavailable, please reload the page</p>
-              </div>
             )}
           </div>
         </div>
+
+        {filteredItems && filteredItems.length > 0 && (
+          <div>
+            <PricingModal
+              handleClickOpen={() => handleClickOpen(filteredItems.slice(0, 2))}
+              handleClose={handleClose}
+              open={open}
+              handleSelectProduct={handleSelectProduct}
+              cardData={selectedItems}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

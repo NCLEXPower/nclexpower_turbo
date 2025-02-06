@@ -11,24 +11,21 @@ import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "core-library/components";
 import {
-  CountdownState,
   SocialMediaConfig,
-  useResolution,
   useSocialMediaIcons,
 } from "core-library/hooks";
+import { Schedule } from "core-library/api/types";
 
 interface Props {
-  countdown: CountdownState | null;
+  schedule?: Schedule | undefined
+  daysRemaining?: number | undefined;
   onSubmit: (values: ComingSoonType) => void;
   loading: boolean;
 }
 
 const dateData = [
   {
-    days: "Days",
-    hours: "Hours",
-    minutes: "Minutes",
-    seconds: "Seconds",
+    days: "Days"
   },
 ];
 
@@ -39,12 +36,11 @@ const socialMediaConfigs: SocialMediaConfig[] = [
 ];
 
 export const ComingSoonPage: React.FC<Props> = ({
-  countdown,
+  schedule,
+  daysRemaining,
   onSubmit,
   loading,
 }) => {
-  const [timeRemaining, setTimeRemaining] =
-    useState<string>("00 : 00 : 00 : 00");
 
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
@@ -52,19 +48,6 @@ export const ComingSoonPage: React.FC<Props> = ({
     mode: "onSubmit",
     resolver: yupResolver(comingSoonSchema),
   });
-
-  useEffect(() => {
-    if (countdown) {
-      const formattedTime = `${countdown.Days.toString().padStart(2, "0")} : ${countdown.Hours.toString().padStart(
-        2,
-        "0"
-      )} : ${countdown.Minutes.toString().padStart(
-        2,
-        "0"
-      )} : ${countdown.Seconds.toString().padStart(2, "0")}`;
-      setTimeRemaining(formattedTime);
-    }
-  }, [countdown]);
 
   const {
     handleSubmit,
@@ -117,7 +100,7 @@ export const ComingSoonPage: React.FC<Props> = ({
               fontSize: "clamp(1.6rem, 2.5vw, 3rem)",
             }}
           >
-            {countdown?.EventName}
+            {schedule?.eventName}
           </Typography>
           <div className="pt-sans-bold">
             <Typography
@@ -130,25 +113,13 @@ export const ComingSoonPage: React.FC<Props> = ({
                 textAlign: "center",
               }}
             >
-              {timeRemaining}
+              {daysRemaining}
             </Typography>
-            {dateData.length > 0 &&
-              dateData?.map((item, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.days}
-                  </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.hours}
-                  </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.minutes}
-                  </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.seconds}
-                  </div>
-                </div>
-              ))}
+           <div className="flex items-center justify-between">
+              <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
+                {daysRemaining === 1 ? "Day to go" : `Days to go`}
+              </div>
+            </div>
           </div>
           <FormProvider {...method}>
             <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-4 ">
@@ -211,7 +182,7 @@ export const ComingSoonPage: React.FC<Props> = ({
             </div>
           </FormProvider>
           <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
-            {countdown?.Description}
+            {schedule?.description}
           </p>
           <div className="flex items-center justify-center space-x-1.5 text-white">
             {socialMediaIcons}

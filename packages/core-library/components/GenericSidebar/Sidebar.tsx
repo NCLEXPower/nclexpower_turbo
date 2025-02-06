@@ -103,6 +103,12 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
     }
   };
 
+  const handleLogout = async () => {
+    if (onLogout) {
+      onLogout();
+    }
+  };
+
   return (
     <Drawer
       open={open}
