@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NCLEXBanner, ProceedButton, SignOutButton } from "./components";
-import { Card, Checkbox, EvaIcon } from "core-library/components";
+import { Card, EvaIcon } from "core-library/components";
 import { Box } from "@mui/material";
-import { ProductInformationLoader } from "core-library/system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/loader";
 import {
   PaymentExecutionProps,
   usePaymentWalkthroughFormContext,
 } from "../../PaymentWalkthroughContext";
-import { useSafeStripe, useValidateToken } from "core-library/hooks";
+import { useSafeStripe } from "core-library/hooks";
 import { NotFoundBlock } from "@/components/blocks/NotFoundBlock/NotFoundBlock";
 import {
   LinkAuthenticationElement,
