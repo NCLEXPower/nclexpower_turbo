@@ -6,6 +6,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "react-photo-view/dist/react-photo-view.css";
 import "./index.css";
 import "./mui.css";
 import "../styles/password-strength-meter.css";
