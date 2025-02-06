@@ -41,6 +41,7 @@ import { useContentDataContext } from "core-library/contexts/content/ContentData
 import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
+import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
 
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
@@ -70,8 +71,8 @@ const Layout: React.FC<
     );
   }
 
-  if (isAuthenticated && duplicate) {
-    <ErrorBox label="Page not found. Please try again or contact administrator" />;
+  if (duplicate) {
+    return <DuplicateSessionBlock />;
   }
 
   return (
