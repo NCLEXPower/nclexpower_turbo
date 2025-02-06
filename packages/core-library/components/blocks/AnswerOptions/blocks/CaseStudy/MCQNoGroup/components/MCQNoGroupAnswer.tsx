@@ -120,6 +120,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               display: "flex",
               width: "100%",
               alignItems: "center",
+              flexDirection: "column",
             }}>
             <TextField
               name={`questionnaires.${questionIndex}.columns.${index}.label`}
@@ -135,10 +136,16 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
                 style: { padding: 15, borderRadius: "3px" },
               }}
             />
-            <IconButton
+            <Button
               onClick={() => handleRemoveColumnHeaders(index)}
               disabled={disableRemoveColumnHeaders}
-              sx={{ marginTop: 6 }}
+              sx={{
+                marginTop: 6,
+                backgroundColor: disableRemoveColumnHeaders ? "" : "transparent",
+                "&:hover": {
+                  backgroundColor: disableRemoveColumnHeaders ? "" : "#f5f5f5",
+                }
+              }}
             >
               <EvaIcon
                 name="minus-square-outline"
@@ -147,7 +154,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
                 height={30}
                 ariaHidden
               />
-            </IconButton>
+            </Button>
           </Box>
         ))}
       </Box>
@@ -170,18 +177,26 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               />
             </Box>
             <Box gridColumn="span 1" sx={{ marginTop: 8 }}>
-              <IconButton
+              <Button
                 onClick={() => handleRemoveRow(idx)}
                 disabled={disableRemoveRow}
+                sx={{
+                  backgroundColor: disableRemoveRow ? "" : "transparent",
+                  "&:hover": {
+                    backgroundColor: disableRemoveRow ? "" : "#f5f5f5",
+                  }
+                }}
               >
                 <EvaIcon
                   name="minus-square-outline"
-                  fill="#c1121f"
+                  style={{
+                    border: disableRemoveRow ? "#030303" : "#c1121f",
+                  }}
                   width={30}
                   height={30}
                   ariaHidden
                 />
-              </IconButton>
+              </Button>
             </Box>
           </Box>
           <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>

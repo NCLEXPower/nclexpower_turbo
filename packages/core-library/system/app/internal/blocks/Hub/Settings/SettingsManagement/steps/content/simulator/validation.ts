@@ -111,7 +111,7 @@ export const dndAnswersSchema = yup.object({
     .required(({ path }) =>
       generateQuestionErrorMessage(path, "Must select correct answer")
     ),
-})
+});
 
 // DND Keys Schema
 const dndKeysSchema = yup.object({
@@ -160,7 +160,10 @@ const mcqGroupRow = yup.object().shape({
         choiceId: yup.number(),
       })
     )
-    .required("Choices are required."),
+    .required("Choices are required.")
+    .test("must-select-one", "You must select at least one choice", (choices) =>
+      choices.some((choice) => choice.value === true)
+    ),
 });
 
 export const mcqGroupAnswerSchema = yup.object({

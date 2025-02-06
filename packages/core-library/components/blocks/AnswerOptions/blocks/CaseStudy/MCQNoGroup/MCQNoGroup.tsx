@@ -69,6 +69,17 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
 
   const handleRemoveColumnHeaders = (index: number) => {
     removeColumnHeaders(index);
+
+    const removeChoices = columnHeaderFields.length - 1;
+    tableRowFields.forEach((_, rowIndex) => {
+      setValue(
+        `questionnaires.${questionIndex}.rows.${rowIndex}.choices`,
+        Array.from({ length: removeChoices - 1 }, (_, index) => ({
+          value: false,
+          choiceId: index,
+        }))
+      );
+    });
   }
 
   return (
