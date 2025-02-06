@@ -15,6 +15,19 @@ export type AccessKeyType = {
   appName: string;
 };
 
+export interface Schedule {
+  id: string;
+  eventName: string;
+  description: string;
+  environment: number;
+}
+export interface ScheduleResponse {
+  success: boolean;
+  daysRemaining: number;
+  schedule: Schedule;
+  error: string;
+}
+
 export interface OpenPagesResponse {
   pageRoute: string;
   pageAuthorization: number;
