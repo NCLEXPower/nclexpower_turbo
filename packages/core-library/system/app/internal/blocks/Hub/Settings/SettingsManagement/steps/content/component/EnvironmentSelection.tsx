@@ -6,15 +6,15 @@
 import {
   GppMaybeOutlined as GppOutlineIcon,
   TaskAltOutlined as TaskOutlinedIcon,
-} from "@mui/icons-material";
-import { Card, StatusButton } from "../../../../../../../../../components";
-import { Box, Typography } from "@mui/material";
-import { EnvironmentList } from "../../constants/constants";
-import { FormProvider, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { createEnvironmentSchema } from "./validation";
-import { useAtomValue, useSetAtom } from "jotai";
-import { SelectedConfirmationObj } from "../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic";
+} from '@mui/icons-material';
+import { Card, StatusButton } from '../../../../../../../../../../components';
+import { Box, Typography } from '@mui/material';
+import { EnvironmentList } from '../../../constants/constants';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createEnvironmentSchema } from '../../MaintenanceMode/validation';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { SelectedConfirmationObj } from '../../../../../../../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic';
 
 interface Props {
   onSubmit: (value: string) => void;
@@ -35,7 +35,7 @@ export const EnvironmentSelection = ({
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: EnvironmentList.reduce(
-      (acc, env) => ({ ...acc, [`confirmationText_${env}`]: "" }),
+      (acc, env) => ({ ...acc, [`confirmationText_${env}`]: '' }),
       {}
     ),
   });
@@ -49,23 +49,23 @@ export const EnvironmentSelection = ({
 
   return (
     <Card
-      data-testid="env-selection"
-      sx={{ borderRadius: "10px", bgcolor: "#dedeec" }}
+      data-testid='env-selection'
+      sx={{ borderRadius: '10px', bgcolor: '#dedeec' }}
     >
-      <Typography variant="sublabel" fontSize=".8em">
+      <Typography variant='sublabel' fontSize='.8em'>
         Warning : This page handles the Maintenance Mode of Web Customer
       </Typography>
 
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 3,
-          justifyContent: "space-around",
-          alignItems: "center",
+          justifyContent: 'space-around',
+          alignItems: 'center',
           paddingTop: 3,
-          height: "fit-content",
-          width: "100%",
+          height: 'fit-content',
+          width: '100%',
         }}
       >
         <FormProvider {...methods}>
@@ -77,34 +77,34 @@ export const EnvironmentSelection = ({
                 <Box
                   key={index}
                   sx={{
-                    borderRadius: "10px",
-                    width: "100%",
-                    height: "80px",
-                    display: "flex",
+                    borderRadius: '10px',
+                    width: '100%',
+                    height: '80px',
+                    display: 'flex',
                     flexGrow: 1,
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    bgcolor: "white",
-                    boxShadow: "inherit",
-                    paddingX: "20px",
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    bgcolor: 'white',
+                    boxShadow: 'inherit',
+                    paddingX: '20px',
                     gap: 5,
-                    backgroundColor: status ? "#f9f2c5" : "#bad8ba",
+                    backgroundColor: status ? '#f9f2c5' : '#bad8ba',
                   }}
                 >
                   {status ? (
-                    <GppOutlineIcon sx={{ color: "#968200" }} />
+                    <GppOutlineIcon sx={{ color: '#968200' }} />
                   ) : (
-                    <TaskOutlinedIcon sx={{ color: "#5CB85C" }} />
+                    <TaskOutlinedIcon sx={{ color: '#5CB85C' }} />
                   )}
 
                   <Typography
                     fontWeight={700}
-                    width="50%"
-                    textAlign="center"
-                    variant="sublabel"
-                    fontSize="1.2em"
-                    color={status ? "#d1b819" : "#1a8c07"}
+                    width='50%'
+                    textAlign='center'
+                    variant='sublabel'
+                    fontSize='1.2em'
+                    color={status ? '#d1b819' : '#1a8c07'}
                   >
                     {List.toUpperCase()}
                   </Typography>
