@@ -330,8 +330,6 @@ const questionOptionsSchemas = {
     .min(4)
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
-  BOWTIE: bowtieAnswerSchema,
-  MCQNOGROUP: mcqGroupAnswerSchema,
   HCP: yup
     .array(hcpOptionSchema)
     .required(({ path }) =>
