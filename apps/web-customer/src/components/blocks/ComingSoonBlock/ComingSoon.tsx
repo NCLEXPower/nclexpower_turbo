@@ -11,15 +11,12 @@ import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "core-library/components";
 import {
-  CountdownState,
   SocialMediaConfig,
-  useResolution,
   useSocialMediaIcons,
 } from "core-library/hooks";
 import { Schedule } from "core-library/api/types";
 
 interface Props {
-  countdown: CountdownState | null;
   schedule?: Schedule | undefined
   daysRemaining?: number | undefined;
   onSubmit: (values: ComingSoonType) => void;
@@ -41,11 +38,10 @@ const socialMediaConfigs: SocialMediaConfig[] = [
 export const ComingSoonPage: React.FC<Props> = ({
   schedule,
   daysRemaining,
-  countdown,
   onSubmit,
   loading,
 }) => {
-  const [timeRemaining, setTimeRemaining] = useState<string>("00");
+
 
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
@@ -54,12 +50,6 @@ export const ComingSoonPage: React.FC<Props> = ({
     resolver: yupResolver(comingSoonSchema),
   });
 
-  useEffect(() => {
-    if (countdown) {
-      const formattedTime = `${countdown.Days.toString().padStart(2, "0")}`;
-      setTimeRemaining(formattedTime);
-    }
-  }, [countdown]);
 
   const {
     handleSubmit,
@@ -139,7 +129,9 @@ export const ComingSoonPage: React.FC<Props> = ({
               {dateData.length > 0 &&
                 dateData?.map((item, index) => (
                   <div key={index} className="font-['Poppins'] font-bold text-[#CDCDCD] text-[clamp(1.3rem,4cqw,2.5rem)] flex flex-col items-start leading-none">
-                    <span className="font-[700] text-[clamp(1.2rem,2.5cqw,1.9rem)] font-sans">Days</span>
+                    <span className="font-[700] text-[clamp(1.2rem,2.5cqw,1.9rem)] font-sans">
+                      {daysRemaining === 1 ? 'Day' : 'Days'}
+                    </span>
                     <span className="font-[700] text-[clamp(0.9rem,2cqw,1.4rem)] font-sans">To Go</span>
                   </div>
                 ))}
