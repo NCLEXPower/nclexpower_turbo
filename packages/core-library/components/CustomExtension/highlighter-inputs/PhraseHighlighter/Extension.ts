@@ -44,7 +44,9 @@ const HcpHighlighter = Mark.create({
             .focus()
             .setMark(this.name, {
               ...attributes,
-              name: attributes.name || `highlighted-${Date.now()}`,
+              name:
+                attributes.name ||
+                `highlighted-${Math.random().toString(36).substring(2, 15)}`,
             })
             .run();
         },
