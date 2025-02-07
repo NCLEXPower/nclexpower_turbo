@@ -3,7 +3,8 @@ import { ProgramManagementListEditBlock } from "../../../../../system/app/intern
 import { useAtom } from "jotai";
 import { StaticImageData } from "next/image";
 import { useRouter } from "../../../../../core";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Control, useFieldArray, useForm } from "react-hook-form";
+import { ProgramManagementListEditField } from "../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-management-list/blocks/edit/ProgramManagementListEditField";
 jest.mock(
   "../../../../../core/utils/contants/wc/programs/ProgramListData",
   () => ({
@@ -51,8 +52,8 @@ jest.mock("../../../../../components", () => ({
     </button>
   ),
   TextField: ({ name }: any) => <input name={name} />,
-  FileUploadField: ({ onUpload }: any) => (
-    <input type="file" onChange={(e) => onUpload(e.target.files)} />
+  FileUploadField: ({ onUpload, ...props }: any) => (
+    <input type="file" onChange={(e) => onUpload(e.target.files)} {...props} />
   ),
   GenericSelectField: ({ onChange, options }: any) => (
     <select onChange={(e) => onChange(e.target.value)}>
@@ -69,6 +70,45 @@ const mockBack = jest.fn();
 (useRouter as jest.Mock).mockReturnValue({
   back: mockBack,
 });
+
+const mockOnSave = jest.fn();
+const mockHandleBack = jest.fn();
+const mockHandleAddSection = jest.fn();
+const mockHandleSectionChange = jest.fn();
+const mockHandleMultipleSelectChange = jest.fn();
+const mockSetValue = jest.fn();
+const mockHandleEditProgramSection = jest.fn();
+const mockHandleDeleteProgramSection = jest.fn();
+const mockHandleRemoveSection = jest.fn();
+
+const mockUseForm = jest.fn().mockReturnValue({
+  control: {} as Control,
+  setValue: mockSetValue,
+  handleSubmit: jest.fn(),
+});
+
+const defaultProps = {
+  onSave: mockOnSave,
+  handleBack: mockHandleBack,
+  fileName: "",
+  programImage: [],
+  control: mockUseForm().control,
+  fields: [],
+  sectionList: [],
+  handleSectionChange: mockHandleSectionChange,
+  handleAddSection: mockHandleAddSection,
+  filteredSectionValuesList: () => [],
+  handleMultipleSelectChange: mockHandleMultipleSelectChange,
+  selectedSections: {},
+  setValue: mockSetValue,
+  showAddSection: true,
+  sections: [],
+  editingSectionId: null,
+  editingSectionData: null,
+  handleEditProgramSection: mockHandleEditProgramSection,
+  handleDeleteProgramSection: mockHandleDeleteProgramSection,
+  handleRemoveSection: mockHandleRemoveSection,
+};
 
 describe("ProgramManagementListEditBlock", () => {
   let mockHandleSubmit: jest.Mock;
@@ -166,5 +206,33 @@ describe("ProgramManagementListEditBlock", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("should call onUpload when a file is selected", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const fileInput = await screen.findByTestId("file-upload-input");
+
+    expect(fileInput).toBeInTheDocument();
+    const file = new File(["dummy content"], "example.jpg", {
+      type: "image/jpeg",
+    });
+
+    fireEvent.change(fileInput, { target: { files: [file] } });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "programImage",
+      expect.any(Array)
+    );
+  });
+
+  it("should show Add section when showAddSection is true", async () => {
+    setUpMocks("1");
+
+    render(<ProgramManagementListEditField {...defaultProps} />);
+
+    const addSectionButton = await screen.findByTestId("add-section-button");
+    expect(addSectionButton).toBeInTheDocument();
   });
 });
