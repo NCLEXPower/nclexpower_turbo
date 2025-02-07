@@ -34,3 +34,4 @@ export * from "./Hub/ComingSoon/ComingSoonManagementBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAccountBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";
+export * from "./Hub/QuestionManagement/CaseNameManagementBlock";

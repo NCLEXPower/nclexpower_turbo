@@ -32,7 +32,8 @@ import {
   ProgramSectionManagementCreateBlock,
   ProgramSectionManagementEditBlock,
   ProgramSectionManagementEditItemBlock,
-  ComingSoonManagementBlock
+  ComingSoonManagementBlock,
+  CaseNameManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -100,6 +101,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <ProgramSectionManagementEditItemBlock />
     case "ComingSoonManagementBlock":
       return <ComingSoonManagementBlock />;
+    case "CaseNameManagementBlock":
+      return <CaseNameManagementBlock />;
     default:
       return null;
   }

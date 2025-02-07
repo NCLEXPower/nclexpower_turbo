@@ -38,7 +38,7 @@ export type ImageType = {
 
 export type SectionCardsType = {
   cardTopic: string;
-  cardFaces: ImageType[] | string[];
+  cardFaces: ImageType[];
 };
 
 export type SectionVideosType = {

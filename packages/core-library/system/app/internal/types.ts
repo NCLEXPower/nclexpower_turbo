@@ -37,7 +37,8 @@ export type Blocks =
   | "ProgramSectionManagementCreateBlock"
   | "ProgramSectionManagementEditBlock"
   | "ProgramSectionManagementEditItemBlock"
-  | "ComingSoonManagementBlock";
+  | "ComingSoonManagementBlock"
+  | "CaseNameManagementBlock";
 
 type BlockProps = {
   LoginFormBlock: {};
@@ -68,6 +69,7 @@ type BlockProps = {
   ProgramSectionManagementEditBlock: {};
   ProgramSectionManagementEditItemBlock: {};
   ComingSoonManagementBlock: {};
+  CaseNameManagementBlock: {};
 };
 
 export type ParseBlocksProps<B extends Blocks = Blocks> = {

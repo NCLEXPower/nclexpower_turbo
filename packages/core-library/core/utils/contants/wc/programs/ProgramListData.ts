@@ -1184,29 +1184,6 @@ export const standardProgramManagementList: StandardProgramListType[] = [
         ],
       },
       {
-        sectionId: "221235683256",
-        sectionType: "content-cards",
-        sectionTitle: "Day 1 Content Cards",
-        sectionStatus: "available",
-        sectionData: [
-            {
-                sectionDataId: "4.1",
-                title: "Cardio",
-                cards: [
-                    {
-                        cardTopic: "Hypertension",
-                        cardFaces: ["https://htncard.face1", "https://htncard.face2"]
-                        
-                    },
-                    {
-                        cardTopic: "Coronary Artery Disease",
-                        cardFaces: ["https://cadcard.face1", "https://cadcard.face2"]
-                    }
-                ]
-              },
-        ],
-      },
-      {
         sectionId: "876952637461",
         sectionType: "med-cards",
         sectionTitle: "DL Med Cards",
@@ -1300,29 +1277,6 @@ export const fastrackProgramManagementList: StandardProgramListType[] = [
                   unguided: true,
                   practice: true,
               },
-          ],
-        },
-        {
-          sectionId: "456789012",
-          sectionType: "content-cards",
-          sectionTitle: "Day 1 Content Cards",
-          sectionStatus: "available",
-          sectionData: [
-              {
-                  sectionDataId: "4.1",
-                  title: "Cardio",
-                  cards: [
-                      {
-                          cardTopic: "Hypertension",
-                          cardFaces: ["https://htncard.face1", "https://htncard.face2"]
-                          
-                      },
-                      {
-                          cardTopic: "Coronary Artery Disease",
-                          cardFaces: ["https://cadcard.face1", "https://cadcard.face2"]
-                      }
-                  ]
-                },
           ],
         },
         {
