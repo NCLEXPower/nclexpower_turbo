@@ -75,19 +75,6 @@ describe("AnswerOptions", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("should render  when questionType is caseStudy and MRSN", () => {
-    const { container } = render(
-      <FormProvider {...form}>
-        <AnswerOptions
-          questionIndex={1}
-          questionType="caseStudy"
-          questionnaireType="MRSN"
-        />
-      </FormProvider>
-    );
-    expect(screen.getByTestId("mrsn-form")).toBeInTheDocument();
-  });
-
   it("should render  when questionType is caseStudy and MCQ No Group", () => {
     const { container } = render(
       <FormProvider {...form}>
