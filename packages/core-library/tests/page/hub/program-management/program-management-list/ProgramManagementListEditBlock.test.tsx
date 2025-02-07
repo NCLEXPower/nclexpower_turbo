@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from "../../../../common";
+import { fireEvent, render, screen, waitFor } from "../../../../common";
 import { ProgramManagementListEditBlock } from "../../../../../system/app/internal/blocks";
 import { useAtom } from "jotai";
 import { StaticImageData } from "next/image";
 import { useRouter } from "../../../../../core";
+import { useFieldArray, useForm } from "react-hook-form";
 jest.mock(
   "../../../../../core/utils/contants/wc/programs/ProgramListData",
   () => ({
@@ -17,6 +18,12 @@ jest.mock(
     ],
   })
 );
+
+jest.mock("react-hook-form", () => ({
+  ...jest.requireActual("react-hook-form"),
+  useForm: jest.fn(),
+  useFieldArray: jest.fn(),
+}));
 
 jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
@@ -64,6 +71,34 @@ const mockBack = jest.fn();
 });
 
 describe("ProgramManagementListEditBlock", () => {
+  let mockHandleSubmit: jest.Mock;
+  let mockSetValue: jest.Mock;
+  let mockAppend: jest.Mock;
+  let mockHandleAddSection: jest.Mock;
+  let mockHandleEditProgramSection: jest.Mock;
+
+  mockHandleAddSection = jest.fn();
+  mockHandleSubmit = jest.fn();
+  mockSetValue = jest.fn();
+  mockAppend = jest.fn();
+  mockHandleEditProgramSection = jest.fn();
+
+  (useForm as jest.Mock).mockReturnValue({
+    control: {},
+    handleSubmit: mockHandleSubmit,
+    handleAddSection: mockHandleAddSection,
+    handleEditProgramSection: mockHandleEditProgramSection,
+    setValue: mockSetValue,
+    getValues: jest.fn(),
+    watch: jest.fn(),
+    formState: { errors: {} },
+  });
+
+  (useFieldArray as jest.Mock).mockReturnValue({
+    fields: [],
+    append: mockAppend,
+  });
+
   const setUpMocks = (programId: string = "1") => {
     (useAtom as jest.Mock).mockReturnValue([programId, jest.fn()]);
   };
@@ -119,5 +154,17 @@ describe("ProgramManagementListEditBlock", () => {
     expect(
       screen.getByText("No program selected. Please go back to previous page.")
     ).toBeInTheDocument();
+  });
+
+  it("should call onSave when the Update button is clicked", async () => {
+    setUpMocks("1");
+
+    render(<ProgramManagementListEditBlock />);
+
+    const submitButton = await screen.findByTestId("submit-button");
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
 });
