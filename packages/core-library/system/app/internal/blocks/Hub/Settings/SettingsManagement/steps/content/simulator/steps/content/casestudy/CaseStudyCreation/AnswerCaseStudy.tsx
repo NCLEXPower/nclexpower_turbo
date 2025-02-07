@@ -54,7 +54,10 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   };
 
   useEffect(() => {
-    if (questionType === "SATA" && !questionnaires[index].answers?.length) {
+    if (
+      questionType === "SATA" ||
+      (questionType === "MRSN" && !questionnaires[index].answers?.length)
+    ) {
       setValue(`questionnaires.${index}.answers`, [
         ...Array(5).fill(initAnswerValues),
       ]);
