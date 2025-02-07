@@ -14,7 +14,7 @@ export const DNDSummary: React.FC<Props> = ({ answers }) => {
         {answers.length > 0 &&
           answers.map((answer) => (
             <Card key={answer.value} sx={{ p: 1, borderRadius: 5 }}>
-              {answer.label}
+              {answer.answer}
             </Card>
           ))}
       </Box>

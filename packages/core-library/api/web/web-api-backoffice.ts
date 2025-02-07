@@ -48,6 +48,9 @@ import {
   CreateDndOptionsParams,
   DndOptionParams,
   DndOptionsResponseType,
+  CaseNameParams,
+  DeleteCaseNameParams,
+  CaseNameResponseType,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -430,5 +433,23 @@ export class WebApiBackOffice {
     return await this.axios.put(`/api/v1/Customer/update-helpwidget-status`, {
       isEnabled,
     });
+  }
+
+  public async getAllCaseNames() {
+    return await this.axios.get<CaseNameResponseType[]>(
+      `/api/v2/content/BaseContent/get-case-names`
+    );
+  }
+
+  public async createCaseName(params: CaseNameParams) {
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/create-case-name`,
+      params
+    );
+  }
+
+  public async deleteCaseName(params: DeleteCaseNameParams) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
   }
 }
