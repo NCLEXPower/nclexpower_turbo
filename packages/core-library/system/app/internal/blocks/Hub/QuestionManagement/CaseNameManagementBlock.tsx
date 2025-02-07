@@ -19,7 +19,7 @@ import {
   DeleteCaseNameParams,
 } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
-import { GridMoreVertIcon } from "@mui/x-data-grid";
+import { GridMoreVertIcon, GridToolbar } from "@mui/x-data-grid";
 
 export const CaseNameManagementBlock = () => {
   const getCaseNamesCb = useApi((api) => api.webbackoffice.getAllCaseNames());
@@ -115,6 +115,7 @@ export const CaseNameManagementBlock = () => {
             <DataGrid
               data-testid="data-grid-casename"
               sx={{ minHeight: "600px" }}
+              slots={{ toolbar: GridToolbar }}
               isLoading={isLoading}
               initPageSize={10}
               rowSelection={false}
