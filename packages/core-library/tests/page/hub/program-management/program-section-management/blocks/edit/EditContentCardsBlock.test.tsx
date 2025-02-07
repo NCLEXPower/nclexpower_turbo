@@ -30,19 +30,6 @@ jest.mock("jotai", () => ({
   useAtom: jest.fn(() => ["mockedValue", jest.fn()]),
 }));
 
-const mockProgramSectionList = [
-  {
-    sectionType: "ExampleSection",
-    sectionData: [
-      {
-        sectionDataId: "1",
-        title: "Example Title",
-        cards: [{ cardTopic: "Example Topic", cardFaces: ["face1", "face2"] }],
-      },
-    ],
-  },
-];
-
 jest.mock("../../../../../../../components", () => ({
   ComponentLoader: () => <div data-testid="component-loader">Loading...</div>,
 }));
@@ -127,5 +114,29 @@ describe("EditContentCardsBlock Component", () => {
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalled();
     });
+  });
+
+  it("disables the save button if no changes are made", () => {
+    render(<EditContentCardsBlock onSubmit={mockOnSubmit} />);
+
+    const saveButton = screen.getByText("Save");
+    expect(saveButton).toBeEnabled();
+
+    fireEvent.click(saveButton);
+
+    waitFor(() => {
+      expect(mockOnSubmit).not.toHaveBeenCalled();
+    });
+  });
+
+  it("triggers topic addition multiple times", async () => {
+    render(<EditContentCardsBlock onSubmit={mockOnSubmit} />);
+
+    const addButton = screen.getByText("Add Topic");
+    fireEvent.click(addButton);
+    fireEvent.click(addButton);
+
+    expect(screen.getByTestId("topic-0")).toBeInTheDocument();
+    expect(screen.getByTestId("topic-1")).toBeInTheDocument();
   });
 });
