@@ -39,10 +39,9 @@ export const AnswerOptions: React.FC<AnswerOptionsType> = ({
         return <DDClozeAndTable questionIndex={questionIndex} />;
       case "DDT":
         return <DDClozeAndTable questionIndex={questionIndex} />;
+      case "MRSN":
       case "SATA":
         return <SATA questionIndex={questionIndex} />;
-      case "MRSN":
-        return <MRSN questionIndex={questionIndex} />;
       case "DND":
         return <DND questionIndex={questionIndex} />;
       case "HCP":
