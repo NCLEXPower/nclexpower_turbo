@@ -197,18 +197,13 @@ const mrsnAnswerSchema = yup
   .when(
     ["maxAnswer", "itemNum", "maxPoints"],
     ([maxAnswer, itemNum, maxPoints], schema) =>
-      schema
-        .test(
-          "answerKey-test",
-          `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
-          (answers) =>
-            Array.isArray(answers) &&
-            answers.filter((answer) => answer.answerKey).length === maxAnswer
-        )
-        .length(
-          maxPoints,
-          `Question No. ${itemNum}: Must have exactly ${maxPoints ?? ""} option(s).`
-        )
+      schema.test(
+        "answerKey-test",
+        `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
+        (answers) =>
+          Array.isArray(answers) &&
+          answers.filter((answer) => answer.answerKey).length === maxAnswer
+      )
   );
 
 export const bowtieAnswerOptionsSchema = yup.object({
