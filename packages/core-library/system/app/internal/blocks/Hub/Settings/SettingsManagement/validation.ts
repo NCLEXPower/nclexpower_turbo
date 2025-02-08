@@ -61,7 +61,7 @@ const MenuItemPath = yup
   .nullable()
   .default("/")
   .when(["$routes", "children"], ([routes, children], schema) => {
-    if (!routes || children.length > 0) {
+    if (!routes || (children && children.length > 0)) {
       return schema.notRequired();
     }
     return schema
