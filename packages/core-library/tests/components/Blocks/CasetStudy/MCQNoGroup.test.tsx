@@ -1,5 +1,6 @@
 import { render, screen } from "../../../common";
 import { MCQNoGroup } from "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQNoGroup/MCQNoGroup";
+import { initMCQColumn, initMCQRow } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
 
 jest.mock("../../../../config", () => ({
   config: { value: jest.fn() },
@@ -9,11 +10,13 @@ jest.mock("../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+const setValueMock = jest.fn();
+
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => ({
     watch: jest.fn(),
     control: jest.fn(),
-    setValue: jest.fn(),
+    setValue: setValueMock,
     getValues: jest.fn(),
   })),
   useFieldArray: jest.fn(() => ({
@@ -25,6 +28,14 @@ jest.mock("react-hook-form", () => ({
 describe("MCQ No Group", () => {
   it("should render MCQ No Group", () => {
     render(<MCQNoGroup questionIndex={1} />);
+  });
+
+  it("should render properly all the buttons for creating MCQ No Group", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    expect(screen.getByTestId("append-row-table")).toBeInTheDocument();
+    expect(screen.getByTestId("append-column-headers")).toBeInTheDocument();
+    expect(screen.getByTestId("remove-row")).toBeInTheDocument();
+    expect(screen.getByTestId("remove-column-headers")).toBeInTheDocument
   });
 
   it("should properly append row table", () => {
@@ -66,4 +77,61 @@ describe("MCQ No Group", () => {
     const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
     expect(removeColumnHeadersButton).toBeDisabled();
   });
+
+  it("should initialize columns and rows if they are empty", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    expect(setValueMock).toHaveBeenCalledWith(
+      "questionnaires.1.columns", [{ "label": "" }, { "label": "" }, { "label": "" }]
+    );
+    expect(setValueMock).toHaveBeenCalledWith(
+      "questionnaires.1.rows",
+      [
+        {
+          rowTitle: "",
+          rowId: 0,
+          choices: [
+            { value: false, choiceId: 0 },
+            { value: false, choiceId: 1 },
+          ],
+        }
+      ]
+    );
+  });
+
+  // it("should initialize columns and rows if they are empty", () => {
+  //   const setValueMock = jest.fn();
+  //   jest.mock("react-hook-form", () => ({
+  //     useFormContext: jest.fn(() => ({
+  //       watch: jest.fn(),
+  //       control: jest.fn(),
+  //       setValue: setValueMock,
+  //       getValues: jest.fn(() => ({
+  //         questionnaires: [{ columns: [], rows: [] }],
+  //       })),
+  //     })),
+  //     useFieldArray: jest.fn(() => ({
+  //       append: jest.fn(),
+  //       remove: jest.fn(),
+  //     })),
+  //   }));
+
+  //   render(<MCQNoGroup questionIndex={1} />);
+  //   expect(setValueMock).toHaveBeenCalledWith(
+  //     "questionnaires.1.columns", [{ "label": "" }, { "label": "" }, { "label": "" }]
+  //   );
+  //   expect(setValueMock).toHaveBeenCalledWith(
+  //     "questionnaires.1.rows",
+  //     [
+  //       {
+  //         rowTitle: "",
+  //         rowId: 0,
+  //         choices: [
+  //           { value: false, choiceId: 0 },
+  //           { value: false, choiceId: 1 },
+  //         ],
+  //       }
+  //     ]
+  //     Array(1).fill(initMCQRow)
+  //   );
+  // });
 });
