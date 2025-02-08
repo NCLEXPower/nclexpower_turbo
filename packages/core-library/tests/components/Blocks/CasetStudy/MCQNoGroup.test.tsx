@@ -1,6 +1,5 @@
-import { render, screen } from "../../../common";
+import { render, screen, fireEvent } from "../../../common";
 import { MCQNoGroup } from "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQNoGroup/MCQNoGroup";
-import { initMCQColumn, initMCQRow } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
 
 jest.mock("../../../../config", () => ({
   config: { value: jest.fn() },
@@ -35,7 +34,7 @@ describe("MCQ No Group", () => {
     expect(screen.getByTestId("append-row-table")).toBeInTheDocument();
     expect(screen.getByTestId("append-column-headers")).toBeInTheDocument();
     expect(screen.getByTestId("remove-row")).toBeInTheDocument();
-    expect(screen.getByTestId("remove-column-headers")).toBeInTheDocument
+    expect(screen.getByTestId("remove-column-headers")).toBeInTheDocument();
   });
 
   it("should properly append row table", () => {
@@ -123,5 +122,19 @@ describe("MCQ No Group", () => {
     const removeRowTableButton = screen.getByTestId("remove-row");
     removeRowTableButton.click();
     expect(setValueMock).toHaveBeenCalled();
+  });
+
+  it("should call handleRemoveColumnHeaders with the correct index", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
+    fireEvent.click(removeColumnHeadersButton);
+    expect(setValueMock).toHaveBeenCalledWith(
+      "questionnaires.1.columns",
+      [
+        { label: "" },
+        { label: "" },
+        { label: "" },
+      ]
+    );
   });
 });
