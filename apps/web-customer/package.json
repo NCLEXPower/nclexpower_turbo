@@ -38,6 +38,7 @@
     "react-dom": "^18",
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.50.1",
+    "react-photo-view": "^1.2.7",
     "react-player": "^2.16.0",
     "react-query": "^3.39.3",
     "react-slick": "^0.30.2",

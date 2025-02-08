@@ -733,3 +733,17 @@ export type DndOptionsResponseType = {
   label: string;
   value: string;
 };
+
+export type CaseNameParams = {
+  caseName: string;
+};
+
+export type CaseNameResponseType = {
+  id: string;
+  caseName: string;
+  dateCreated: string;
+};
+
+export type DeleteCaseNameParams = {
+  id: string;
+};
