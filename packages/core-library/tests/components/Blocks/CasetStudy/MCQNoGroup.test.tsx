@@ -52,18 +52,31 @@ describe("MCQ No Group", () => {
     expect(appendColumnHeadersButton).toBeInTheDocument();
   });
 
-  it("should properly remove row table", () => {
-    render(<MCQNoGroup questionIndex={1} />);
-    const removeRowTableButton = screen.getByTestId("remove-row");
-    removeRowTableButton.click();
-    expect(removeRowTableButton).toBeInTheDocument();
-  });
-
-  it("should properly remove column headers", () => {
+  it("should update the choices when column headers are removed", () => {
     render(<MCQNoGroup questionIndex={1} />);
     const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
     removeColumnHeadersButton.click();
-    expect(removeColumnHeadersButton).toBeInTheDocument();
+    expect(setValueMock).toHaveBeenCalledWith(
+      "questionnaires.1.columns",
+      [
+        { label: "" },
+        { label: "" },
+        { label: "" },
+      ]
+    );
+    expect(setValueMock).toHaveBeenCalledWith(
+      "questionnaires.1.rows",
+      [
+        {
+          rowTitle: "",
+          rowId: 0,
+          choices: [
+            { value: false, choiceId: 0 },
+            { value: false, choiceId: 1 },
+          ],
+        }
+      ]
+    );
   });
 
   it("should disable remove row table button upon render", () => {

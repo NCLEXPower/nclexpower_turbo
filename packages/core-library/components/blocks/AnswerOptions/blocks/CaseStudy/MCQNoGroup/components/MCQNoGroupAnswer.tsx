@@ -73,28 +73,6 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               textTransform: "none",
               gap: 1.5,
             }}
-            onClick={handleAppendRowTable}
-            data-testid="append-row-table"
-            disabled={disableAppendRow}
-          >
-            <Typography variant="body2">Add Row</Typography>
-            <EvaIcon
-              name="plus-square-outline"
-              fill="#fff"
-              width={30}
-              height={30}
-              ariaHidden
-            />
-          </Button>
-          <Button
-            sx={{
-              height: "45px",
-              borderRadius: "10px",
-              marginTop: "10px",
-              width: "100%",
-              textTransform: "none",
-              gap: 1.5,
-            }}
             onClick={handleAppendColumnHeaders}
             data-testid="append-column-headers"
           >
@@ -117,18 +95,14 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               width: "100%",
               textTransform: "none",
               gap: 1.5,
-              backgroundColor: "#800f2f",
-              "&:hover": {
-                backgroundColor: "#800f2f95",
-              }
             }}
-            onClick={() => handleRemoveRow(tableRowFields.length - 1)}
-            data-testid="remove-row"
-            disabled={disableRemoveRow}
+            onClick={handleAppendRowTable}
+            data-testid="append-row-table"
+            disabled={disableAppendRow}
           >
-            Remove Row
+            <Typography variant="body2">Add Row</Typography>
             <EvaIcon
-              name="minus-square-outline"
+              name="plus-square-outline"
               fill="#fff"
               width={30}
               height={30}
@@ -153,6 +127,32 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             data-testid="remove-column-headers"
           >
             Remove Column
+            <EvaIcon
+              name="minus-square-outline"
+              fill="#fff"
+              width={30}
+              height={30}
+              ariaHidden
+            />
+          </Button>
+          <Button
+            sx={{
+              height: "45px",
+              borderRadius: "10px",
+              marginTop: "10px",
+              width: "100%",
+              textTransform: "none",
+              gap: 1.5,
+              backgroundColor: "#800f2f",
+              "&:hover": {
+                backgroundColor: "#800f2f95",
+              }
+            }}
+            onClick={() => handleRemoveRow(tableRowFields.length - 1)}
+            data-testid="remove-row"
+            disabled={disableRemoveRow}
+          >
+            Remove Row
             <EvaIcon
               name="minus-square-outline"
               fill="#fff"
