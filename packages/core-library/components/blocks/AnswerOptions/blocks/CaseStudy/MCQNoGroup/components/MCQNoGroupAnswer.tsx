@@ -11,7 +11,6 @@ import {
   ControlledTextField,
   TextField,
   EvaIcon,
-  IconButton,
   Button,
 } from "../../../../../../";
 import { ContainedCaseStudyQuestionType } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
@@ -26,7 +25,7 @@ type MCQNoGroupType = {
   handleRemoveColumnHeaders: (index: number) => void;
   columnHeaderFields: Array<{ label: string }>;
   control: Control<ContainedCaseStudyQuestionType>;
-  tableRowFields?: Array<{
+  tableRowFields: Array<{
     rowId?: number | undefined;
     rowTitle: string;
     choices: Array<{
@@ -64,7 +63,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
           gap: 1
         }}
       >
-        <Box display="flex" alignItems="center" gap={2} width="100%">
+        <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} width="100%">
           <Button
             sx={{
               height: "45px",
@@ -78,7 +77,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             data-testid="append-row-table"
             disabled={disableAppendRow}
           >
-            <Typography variant="body2">Add Row Fields</Typography>
+            <Typography variant="body2">Add Row</Typography>
             <EvaIcon
               name="plus-square-outline"
               fill="#fff"
@@ -87,8 +86,6 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               ariaHidden
             />
           </Button>
-        </Box>
-        <Box display="flex" alignItems="center" width="100%">
           <Button
             sx={{
               height: "45px",
@@ -102,7 +99,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             data-testid="append-column-headers"
           >
             <Typography variant="body2">
-              Add Column Header
+              Add Column
             </Typography>
             <EvaIcon
               name="plus-square-outline"
@@ -112,10 +109,63 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               ariaHidden
             />
           </Button>
+          <Button
+            sx={{
+              height: "45px",
+              borderRadius: "10px",
+              marginTop: "10px",
+              width: "100%",
+              textTransform: "none",
+              gap: 1.5,
+              backgroundColor: "#800f2f",
+              "&:hover": {
+                backgroundColor: "#800f2f95",
+              }
+            }}
+            onClick={() => handleRemoveRow(tableRowFields.length - 1)}
+            data-testid="remove-row"
+            disabled={disableRemoveRow}
+          >
+            Remove Row
+            <EvaIcon
+              name="minus-square-outline"
+              fill="#fff"
+              width={30}
+              height={30}
+              ariaHidden
+            />
+          </Button>
+          <Button
+            sx={{
+              height: "45px",
+              borderRadius: "10px",
+              marginTop: "10px",
+              width: "100%",
+              textTransform: "none",
+              gap: 1.5,
+              backgroundColor: "#800f2f",
+              "&:hover": {
+                backgroundColor: "#800f2f95",
+              }
+            }}
+            onClick={() => handleRemoveColumnHeaders(columnHeaderFields.length - 1)}
+            disabled={disableRemoveColumnHeaders}
+            data-testid="remove-column-headers"
+          >
+            Remove Column
+            <EvaIcon
+              name="minus-square-outline"
+              fill="#fff"
+              width={30}
+              height={30}
+              ariaHidden
+            />
+          </Button>
         </Box>
+
       </Box>
       <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-        {columnHeaderFields.map((_, index) => (
+        {columnHeaderFields.length > 0 && columnHeaderFields.map((_, index) => (
           <Box
             key={index}
             sx={{
@@ -138,29 +188,10 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
                 style: { padding: 15, borderRadius: "3px" },
               }}
             />
-            <Button
-              onClick={() => handleRemoveColumnHeaders(index)}
-              disabled={disableRemoveColumnHeaders}
-              sx={{
-                marginTop: 6,
-                backgroundColor: disableRemoveColumnHeaders ? "" : "transparent",
-                "&:hover": {
-                  backgroundColor: disableRemoveColumnHeaders ? "" : "#f5f5f5",
-                }
-              }}
-            >
-              <EvaIcon
-                name="minus-square-outline"
-                fill="#c1121f"
-                width={30}
-                height={30}
-                ariaHidden
-              />
-            </Button>
           </Box>
         ))}
       </Box>
-      {tableRowFields?.map((_, idx) => (
+      {tableRowFields.length && tableRowFields.map((_, idx) => (
         <StyledBox key={idx}>
           <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={4}>
             <Box gridColumn="span 4">
@@ -177,28 +208,6 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
                   style: { padding: 15, borderRadius: "3px" },
                 }}
               />
-            </Box>
-            <Box gridColumn="span 1" sx={{ marginTop: 8 }}>
-              <Button
-                onClick={() => handleRemoveRow(idx)}
-                disabled={disableRemoveRow}
-                sx={{
-                  backgroundColor: disableRemoveRow ? "" : "transparent",
-                  "&:hover": {
-                    backgroundColor: disableRemoveRow ? "" : "#f5f5f5",
-                  }
-                }}
-              >
-                <EvaIcon
-                  name="minus-square-outline"
-                  style={{
-                    border: disableRemoveRow ? "#030303" : "#c1121f",
-                  }}
-                  width={30}
-                  height={30}
-                  ariaHidden
-                />
-              </Button>
             </Box>
           </Box>
           <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>

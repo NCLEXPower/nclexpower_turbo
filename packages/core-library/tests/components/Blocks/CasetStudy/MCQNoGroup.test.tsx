@@ -40,4 +40,30 @@ describe("MCQ No Group", () => {
     appendColumnHeadersButton.click();
     expect(appendColumnHeadersButton).toBeInTheDocument();
   });
+
+  it("should properly remove row table", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    const removeRowTableButton = screen.getByTestId("remove-row");
+    removeRowTableButton.click();
+    expect(removeRowTableButton).toBeInTheDocument();
+  });
+
+  it("should properly remove column headers", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
+    removeColumnHeadersButton.click();
+    expect(removeColumnHeadersButton).toBeInTheDocument();
+  });
+
+  it("should disable remove row table button upon render", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    const removeRowTableButton = screen.getByTestId("remove-row");
+    expect(removeRowTableButton).toBeDisabled();
+  });
+
+  it("should disable remove column headers button upon render", () => {
+    render(<MCQNoGroup questionIndex={1} />);
+    const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
+    expect(removeColumnHeadersButton).toBeDisabled();
+  });
 });
