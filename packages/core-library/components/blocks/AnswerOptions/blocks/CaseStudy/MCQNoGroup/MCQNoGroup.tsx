@@ -68,10 +68,8 @@ export const MCQNoGroup: React.FC<MCQNoGroupType> = ({
     removeRow(index);
   };
 
-  if (!columnHeaderFields ||
-    columnHeaderFields?.length == 0 ||
-    !tableRowFields ||
-    tableRowFields?.length == 0
+  if (!columnHeaderFields || columnHeaderFields.length == 0 ||
+    !tableRowFields || tableRowFields.length == 0
   ) {
     setValue(
       `questionnaires.${questionIndex}.columns`,
