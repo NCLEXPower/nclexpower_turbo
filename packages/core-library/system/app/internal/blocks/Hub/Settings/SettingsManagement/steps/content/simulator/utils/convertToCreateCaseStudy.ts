@@ -38,7 +38,7 @@ export const convertToCreateCaseStudy = (
           seqNum: questionnairesItem.seqNum,
           transitionHeader: questionnairesItem.transitionHeader,
           maxAnswer: questionnairesItem?.maxAnswer,
-          answers: questionnairesItem.answers,
+          answers: questionnairesItem.answers ?? [],
           centerLabelName: questionnairesItem.centerLabelName,
           leftLabelName: questionnairesItem.leftLabelName,
           rightLabelName: questionnairesItem.rightLabelName,
