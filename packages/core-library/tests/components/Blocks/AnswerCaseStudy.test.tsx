@@ -27,12 +27,7 @@ jest.mock(
     DDClozeAndTable: jest.fn(() => <div>DDC Component</div>),
   })
 );
-jest.mock(
-  "../../../components/blocks/AnswerOptions/blocks/CaseStudy/MRSN/MRSN",
-  () => ({
-    MRSN: jest.fn(() => <div>MRSN Component</div>),
-  })
-);
+
 jest.mock(
   "../../../components/blocks/AnswerOptions/blocks/CaseStudy/DND/DND",
   () => ({
@@ -147,17 +142,6 @@ describe("AnswerCaseStudy", () => {
     expect(screen.getByText("SATA Component")).toBeInTheDocument();
   });
 
-  it("renders MRSN component for caseStudy with MRSN questionnaireType", () => {
-    render(
-      <AnswerOptions
-        questionType="caseStudy"
-        questionnaireType="MRSN"
-        questionIndex={1}
-      />
-    );
-    expect(screen.getByText("MRSN Component")).toBeInTheDocument();
-  });
-
   it("renders DND component for caseStudy with DND questionnaireType", () => {
     render(
       <AnswerOptions
@@ -191,7 +175,6 @@ describe("AnswerCaseStudy", () => {
     expect(screen.queryByText("MCQ Component")).not.toBeInTheDocument();
     expect(screen.queryByText("SATA Component")).not.toBeInTheDocument();
     expect(screen.queryByText("DDC Component")).not.toBeInTheDocument();
-    expect(screen.queryByText("MRSN Component")).not.toBeInTheDocument();
     expect(screen.queryByText("DND Component")).not.toBeInTheDocument();
     expect(screen.queryByText("Bowtie Component")).not.toBeInTheDocument();
   });

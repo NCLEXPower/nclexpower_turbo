@@ -232,10 +232,6 @@ export const Header: React.FC<Props> = ({
           {isAuthenticated && (
             <Box
               sx={{
-                position: "absolute",
-                right: 20,
-                top: "50%",
-                transform: "translateY(-50%)",
                 display: "flex",
                 alignItems: "center",
                 zIndex: 1000,

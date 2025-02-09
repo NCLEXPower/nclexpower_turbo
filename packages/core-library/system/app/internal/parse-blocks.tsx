@@ -26,6 +26,7 @@ import {
   SalesManagementBlock,
   AnnouncementManagementBlock,
   ComingSoonManagementBlock,
+  CaseNameManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -79,6 +80,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <AnnouncementManagementBlock />;
     case "ComingSoonManagementBlock":
       return <ComingSoonManagementBlock />;
+    case "CaseNameManagementBlock":
+      return <CaseNameManagementBlock />;
     default:
       return null;
   }
