@@ -124,7 +124,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             }}
             onClick={() => handleRemoveColumnHeaders(columnHeaderFields.length - 1)}
             disabled={disableRemoveColumnHeaders}
-            data-testid="remove-column-headers"
+            data-testid={`remove-column-header-${columnHeaderFields.length}`}
           >
             Remove Column
             <EvaIcon
@@ -149,7 +149,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               }
             }}
             onClick={() => handleRemoveRow(tableRowFields.length - 1)}
-            data-testid="remove-row"
+            data-testid={`remove-row-${tableRowFields.length}`}
             disabled={disableRemoveRow}
           >
             Remove Row

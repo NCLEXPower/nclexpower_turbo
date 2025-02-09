@@ -33,19 +33,19 @@ describe("MCQ No Group", () => {
     render(<MCQNoGroup questionIndex={1} />);
     expect(screen.getByTestId("append-row-table")).toBeInTheDocument();
     expect(screen.getByTestId("append-column-headers")).toBeInTheDocument();
-    expect(screen.getByTestId("remove-row")).toBeInTheDocument();
-    expect(screen.getByTestId("remove-column-headers")).toBeInTheDocument();
+    expect(screen.getByTestId("remove-row-0")).toBeInTheDocument();
+    expect(screen.getByTestId("remove-column-header-0")).toBeInTheDocument();
   });
 
   it("should disable remove row table button upon render", () => {
     render(<MCQNoGroup questionIndex={1} />);
-    const removeRowTableButton = screen.getByTestId("remove-row");
+    const removeRowTableButton = screen.getByTestId("remove-row-0");
     expect(removeRowTableButton).toBeDisabled();
   });
 
   it("should disable remove column headers button upon render", () => {
     render(<MCQNoGroup questionIndex={1} />);
-    const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
+    const removeColumnHeadersButton = screen.getByTestId("remove-column-header-0");
     expect(removeColumnHeadersButton).toBeDisabled();
   });
 
@@ -71,7 +71,7 @@ describe("MCQ No Group", () => {
 
   it("should call handleRemoveColumnHeaders with the correct index", () => {
     render(<MCQNoGroup questionIndex={1} />);
-    const removeColumnHeadersButton = screen.getByTestId("remove-column-headers");
+    const removeColumnHeadersButton = screen.getByTestId("remove-column-header-0");
     fireEvent.click(removeColumnHeadersButton);
     expect(setValueMock).toHaveBeenCalledWith(
       "questionnaires.1.columns",
@@ -101,7 +101,7 @@ describe("MCQ No Group", () => {
 
   it("should call handleRemoveRow with the correct index", () => {
     render(<MCQNoGroup questionIndex={1} />);
-    const removeRowTableButton = screen.getByTestId("remove-row");
+    const removeRowTableButton = screen.getByTestId("remove-row-0");
     fireEvent.click(removeRowTableButton);
     expect(setValueMock).toHaveBeenCalledWith(
       "questionnaires.1.rows",
