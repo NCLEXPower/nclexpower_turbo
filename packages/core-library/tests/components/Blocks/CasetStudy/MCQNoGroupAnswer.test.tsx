@@ -1,7 +1,6 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "../../../common";
 import { Control } from "react-hook-form";
 import { MCQNoGroupAnswer } from "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQNoGroup/components/MCQNoGroupAnswer";
-import { CaseStudyQuestionSelectionOptions } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/types";
 import { ContainedCaseStudyQuestionType } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 
 jest.mock("../../../../components", () => ({
