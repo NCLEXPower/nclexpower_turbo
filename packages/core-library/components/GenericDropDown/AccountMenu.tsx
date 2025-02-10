@@ -48,14 +48,14 @@ export const AccountMenu: React.FC<Props> = ({
 
   const { isMobile } = useResolution();
 
-  const { internal } = useSensitiveInformation();
+  const { internal, customer } = useSensitiveInformation();
   const { accessLevel } = useAccessControl();
   const roleName = getRoleName(accessLevel ?? -1);
 
   const userName =
     internal?.firstname && internal?.lastname
       ? `${internal.firstname} ${internal.lastname}`
-      : "Unknown User";
+      : `${customer?.firstname} ${customer?.lastname}`;
 
   return (
     <Box>
@@ -76,7 +76,7 @@ export const AccountMenu: React.FC<Props> = ({
               whiteSpace: "nowrap",
               fontFamily: "PT Sans",
               fontStyle: "normal",
-              color: "#3B0086",
+              color: isInWebcHub ? "white" : "#3B0086",
               lineHeight: "13px",
               letterSpacing: "0.5px",
             }}
@@ -96,7 +96,7 @@ export const AccountMenu: React.FC<Props> = ({
               letterSpacing: "0.5px",
             }}
           >
-            {roleName || "No role assigned"}
+            {isInWebcHub ? "" : roleName || "No role assigned"}
           </Typography>
         </Box>
 
@@ -105,14 +105,15 @@ export const AccountMenu: React.FC<Props> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              border: "1px solid #EBEBEB",
+              border: isInWebcHub ? "1px solid white" : "1px solid #EBEBEB",
               borderRadius: "50%",
+              color: isInWebcHub ? "white" : "#3B0086",
             }}
           >
             <EvaIcon
               id="more-vertical-icon"
               name="more-vertical"
-              fill="#3B0086"
+              fill={isInWebcHub ? "white" : "#3B0086"}
               width={20}
               height={20}
               ariaHidden
@@ -123,14 +124,15 @@ export const AccountMenu: React.FC<Props> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              border: "1px solid #3B0086",
+              border: isInWebcHub ? "1px solid white" : "1px solid #3B0086",
               borderRadius: "50%",
+              color: isInWebcHub ? "white" : "#3B0086",
             }}
           >
             <EvaIcon
               id="more-vertical-icon"
               name="more-vertical"
-              fill="#3B0086"
+              fill={isInWebcHub ? "white" : "#3B0086"}
               width={20}
               height={20}
               ariaHidden
