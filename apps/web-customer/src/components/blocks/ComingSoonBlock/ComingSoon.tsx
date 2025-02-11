@@ -11,24 +11,21 @@ import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "core-library/components";
 import {
-  CountdownState,
   SocialMediaConfig,
-  useResolution,
   useSocialMediaIcons,
 } from "core-library/hooks";
+import { Schedule } from "core-library/api/types";
 
 interface Props {
-  countdown: CountdownState | null;
+  schedule?: Schedule | undefined
+  daysRemaining?: number | undefined;
   onSubmit: (values: ComingSoonType) => void;
   loading: boolean;
 }
 
 const dateData = [
   {
-    days: "Days",
-    hours: "Hours",
-    minutes: "Minutes",
-    seconds: "Seconds",
+    days: "Days To Go",
   },
 ];
 
@@ -39,12 +36,12 @@ const socialMediaConfigs: SocialMediaConfig[] = [
 ];
 
 export const ComingSoonPage: React.FC<Props> = ({
-  countdown,
+  schedule,
+  daysRemaining,
   onSubmit,
   loading,
 }) => {
-  const [timeRemaining, setTimeRemaining] =
-    useState<string>("00 : 00 : 00 : 00");
+
 
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
@@ -53,18 +50,6 @@ export const ComingSoonPage: React.FC<Props> = ({
     resolver: yupResolver(comingSoonSchema),
   });
 
-  useEffect(() => {
-    if (countdown) {
-      const formattedTime = `${countdown.Days.toString().padStart(2, "0")} : ${countdown.Hours.toString().padStart(
-        2,
-        "0"
-      )} : ${countdown.Minutes.toString().padStart(
-        2,
-        "0"
-      )} : ${countdown.Seconds.toString().padStart(2, "0")}`;
-      setTimeRemaining(formattedTime);
-    }
-  }, [countdown]);
 
   const {
     handleSubmit,
@@ -73,27 +58,29 @@ export const ComingSoonPage: React.FC<Props> = ({
   } = method;
 
   return (
-    <div className="w-full h-full lg:h-screen ">
-      <div className="w-full flex justify-center items-center h-full flex-col">
+    <div className="w-full min-h-screen relative bg-[#0F2A71]">
+      <div className="w-full flex justify-center items-center min-h-screen flex-col">
         <Image
           src={ComingSoon}
           alt="CoreZigma"
           style={{
             width: "100%",
-            height: "100vh",
+            height: "100%",
             position: "absolute",
             objectFit: "cover",
+            top: 0,
+            left: 0,
             zIndex: 0,
           }}
         />
-        <div className="flex items-center justify-center flex-col z-10 px-12 lg:px-80 space-y-2 lg:space-y-3">
-          <div className="flex items-center justify-center gap-6">
+        <div className="flex items-center justify-center flex-col z-10 px-8 lg:px-60">
+          <div className="flex items-center justify-center gap-4">
             <Image
               src={CoreZigmaLogo}
               alt="CoreZigma"
               style={{
-                width: "130px",
-                height: "130px",
+                width: "50px",
+                height: "50px",
                 objectFit: "cover",
               }}
             />
@@ -101,8 +88,8 @@ export const ComingSoonPage: React.FC<Props> = ({
               src={NCLEXYellowLogo}
               alt="CoreZigma"
               style={{
-                width: "161px",
-                height: "40px",
+                width: "135px",
+                height: "30px",
                 objectFit: "cover",
                 zIndex: 0,
               }}
@@ -110,48 +97,48 @@ export const ComingSoonPage: React.FC<Props> = ({
           </div>
           <Typography
             sx={{
-              fontFamily: "PT Sans",
+              fontFamily: "Poppins",
               fontWeight: "bold",
-              color: "#f3f3f3",
-              marginBottom: 4,
-              fontSize: "clamp(1.6rem, 2.5vw, 3rem)",
+              color: "#CDCDCD",
+              marginBottom: 3,
+              fontSize: "clamp(3rem, 3.5vw, 4rem)",
+              textAlign: "center",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            {countdown?.EventName}
+            {schedule?.eventName}
           </Typography>
-          <div className="pt-sans-bold">
-            <Typography
-              sx={{
-                fontFamily: "PT Sans",
-                fontWeight: "bold",
-                color: "#f3f3f3",
-                marginBottom: 4,
-                fontSize: "clamp(2.3rem, 5cqw, 8rem)",
-                textAlign: "center",
-              }}
-            >
-              {timeRemaining}
-            </Typography>
-            {dateData.length > 0 &&
-              dateData?.map((item, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.days}
+          <div>
+            <div className="flex items-center justify-center gap-4">
+              <Typography
+                sx={{
+                  fontFamily: "Poppins",
+                  fontWeight: "bold",
+                  color: "#CDCDCD",
+                  fontSize: "clamp(7rem, 5cqw, 7rem)",
+                  textAlign: "center",
+                  marginTop: 0,
+                  marginBottom: 0,
+                  lineHeight: 1,
+                }}
+              >
+                {daysRemaining}
+              </Typography>
+              {dateData.length > 0 &&
+                dateData?.map((item, index) => (
+                  <div key={index} className="font-['Poppins'] font-bold text-[#CDCDCD] text-[clamp(1.3rem,4cqw,2.5rem)] flex flex-col items-start leading-none">
+                    <span className="font-[700] text-[clamp(1.2rem,2.5cqw,1.9rem)] font-sans">
+                      {daysRemaining === 1 ? 'Day' : 'Days'}
+                    </span>
+                    <span className="font-[700] text-[clamp(0.9rem,2cqw,1.4rem)] font-sans">To Go</span>
                   </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.hours}
-                  </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.minutes}
-                  </div>
-                  <div className="font-pt-sans-narrow text-[#f3f3f3] text-[clamp(1.3rem,4cqw,2.5rem)] md:ml-4">
-                    {item.seconds}
-                  </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
           <FormProvider {...method}>
-            <div className="flex w-3/4 gap-2 flex-col justify-center items-center lg:flex-row lg:gap-4 ">
+            <div className="flex w-[95%] gap-2 flex-col justify-center lg:items-end lg:flex-row lg:gap-4 mt-4">
               <TextField
                 control={control}
                 name="email"
@@ -159,19 +146,19 @@ export const ComingSoonPage: React.FC<Props> = ({
                 disabled={loading}
                 sx={{
                   borderRadius: "10px",
-                  flexGrow: 1,
-                  border: "1px solid #f3f3f3",
-                  color: "#f3f3f3",
+                  flexGrow: 3,
+                  height: "56px",
+                  border: "2px solid #D9D9D9",
                   fontSize: {
                     xs: "12px",
                     sm: "14px",
                     lg: "16px",
                   },
                   "& .MuiInputBase-input": {
-                    color: "#f3f3f3",
+                    color: "#D9D9D9",
                   },
                   "& .MuiInputBase-input:focus": {
-                    color: "#f3f3f3",
+                  
                   },
                 }}
                 inputProps={{
@@ -187,16 +174,17 @@ export const ComingSoonPage: React.FC<Props> = ({
                 loading={loading}
                 sx={{
                   color: "#0F2A71",
-                  bgcolor: "#FFF",
+                  bgcolor: "#FFFFFF",
                   borderRadius: "10px",
-                  fontFamily: "'PT Sans', sans-serif",
-                  fontSize: "clamp(10px, 5cqw, 16px)",
+                  fontFamily: "'Poppins'",
+                  fontSize: "clamp(5px, 3cqw, 14px)",
                   fontWeight: "bold",
-                  alignSelf: {
-                    lg: "end",
-                  },
-                  flexGrow: 1,
+                  height: "56px",
+                  minHeight: "56px",
+                  maxHeight: "56px",
+                  flexGrow: 0.5,
                   zIndex: 1,
+                  marginTop: "4px",
                   padding: {
                     xs: "6px 12px",
                     lg: "8px 16px",
@@ -210,10 +198,10 @@ export const ComingSoonPage: React.FC<Props> = ({
               </Button>
             </div>
           </FormProvider>
-          <p className="pt-sans-narrow-regular text-white text-[clamp(1.2rem,3cqw,1.7rem)] text-center px-4">
-            {countdown?.Description}
+          <p className="font-['Poppins'] text-white text-[clamp(0.4rem,1cqw,1rem)] text-center px-4 flex flex-col mt-8 mb-4">
+            {schedule?.description}
           </p>
-          <div className="flex items-center justify-center space-x-1.5 text-white">
+          <div className="flex items-center justify-center space-x-1.5 text-white mt-4">
             {socialMediaIcons}
           </div>
         </div>

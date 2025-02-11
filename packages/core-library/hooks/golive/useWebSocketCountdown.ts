@@ -17,6 +17,11 @@ export interface CountdownState {
 const apiUrl = config.value.API_URL;
 const localApiUrl = config.value.LOCAL_API_URL;
 
+/**
+ *
+ * @deprecated
+ */
+
 export const useWebSocketCountdown = () => {
   const router = useRouter();
   const [countdown, setCountdown] = useState<CountdownState | null>(null);

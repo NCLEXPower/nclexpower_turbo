@@ -43,7 +43,9 @@ export const DrawerLayout: React.FC<
   const isHidden = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
+
   const [open, setOpen] = useState(true);
+
   const { isScrolled } = useScroll();
 
   const router = useRouter();
@@ -64,8 +66,12 @@ export const DrawerLayout: React.FC<
   useEffect(() => {
     if (isMobile) {
       setOpen(false);
+    } else if (isAuthenticated) {
+      setOpen(true);
+    } else {
+      setOpen(!inWebc);
     }
-  }, [isMobile]);
+  }, [inWebc, isAuthenticated, isMobile]);
 
   if (!mounted) return;
 
@@ -90,6 +96,7 @@ export const DrawerLayout: React.FC<
             open={open}
             setOpen={handleDrawer}
             isAuthenticated={isAuthenticated}
+            onLogout={onLogout}
           />
         )}
       <Main open={open} isMobile={isMobile}>
