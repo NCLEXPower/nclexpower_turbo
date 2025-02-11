@@ -20,6 +20,7 @@ import { EditContentCardsField } from "./EditContentCardsField";
 interface EditContentCardsProps {
   section?: string;
   contentLoader?: boolean;
+  
   onSubmit: (values: SectionFormType) => void;
 }
 

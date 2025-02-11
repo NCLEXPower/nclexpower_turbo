@@ -13,7 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { documentSchema, SectionFormType } from "../../validation";
-import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../utils";
 import { useFileUpload } from "../../../../../../../../../hooks";
 
 interface CreateDocumentProps {

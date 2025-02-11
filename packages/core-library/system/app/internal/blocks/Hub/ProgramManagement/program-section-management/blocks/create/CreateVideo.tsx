@@ -14,7 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { videoSchema, SectionFormType } from "../../validation";
-import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../utils";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../assets";
 import { useFileUpload } from "../../../../../../../../../hooks";

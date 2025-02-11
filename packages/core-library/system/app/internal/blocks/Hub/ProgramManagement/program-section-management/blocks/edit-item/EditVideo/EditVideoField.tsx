@@ -11,7 +11,7 @@ import {
   FileUploadField,
   TextField,
 } from "../../../../../../../../../../components";
-import { formatSectionTitle } from "../../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../../utils";
 import { Control } from "react-hook-form";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../../assets";

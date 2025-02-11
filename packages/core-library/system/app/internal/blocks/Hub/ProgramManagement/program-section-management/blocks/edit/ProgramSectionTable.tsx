@@ -8,7 +8,7 @@ import { IconButton, EvaIcon } from "../../../../../../../../../components";
 import { PaginatedTable } from "../../../../../../../../../components/table";
 import { Column } from "react-table";
 import { useMemo } from "react";
-import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../utils";
 
 interface ProgramSectionTableProps {
   tableData: Array<{ [key: string]: any }>;

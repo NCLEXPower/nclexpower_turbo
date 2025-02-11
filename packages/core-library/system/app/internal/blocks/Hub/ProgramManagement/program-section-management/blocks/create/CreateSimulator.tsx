@@ -14,7 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { simulatorSchema, SectionFormType } from "../../validation";
-import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../utils";
 import { useSelectfieldOptions } from "../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/hooks/useSelectfieldOptions";
 
 interface CreateSimulatorProps {
@@ -22,6 +22,15 @@ interface CreateSimulatorProps {
   contentLoader?: boolean;
   onSubmit: (values: SectionFormType) => void;
 }
+
+const checkboxes: {
+  label: string;
+  name: "guided" | "unguided" | "practice";
+}[] = [
+  { label: "Guided", name: "guided" },
+  { label: "Unguided", name: "unguided" },
+  { label: "Practice", name: "practice" },
+];
 
 export const CreateSimulator: React.FC<CreateSimulatorProps> = ({
   section,
@@ -98,42 +107,22 @@ export const CreateSimulator: React.FC<CreateSimulatorProps> = ({
 
             <Grid item xs={12} md={6}>
               <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography sx={{ color: "#3B0086" }}>Guided*</Typography>
-                    <ControlledCheckbox control={control} name="guided" />
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography sx={{ color: "#3B0086" }}>Unguided*</Typography>
-                    <ControlledCheckbox control={control} name="unguided" />
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography sx={{ color: "#3B0086" }}>Practice*</Typography>
-                    <ControlledCheckbox control={control} name="practice" />
-                  </Box>
-                </Grid>
+                {checkboxes.map(({ label, name }) => (
+                  <Grid item xs={4} key={name}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography sx={{ color: "#3B0086" }}>
+                        {label}*
+                      </Typography>
+                      <ControlledCheckbox control={control} name={name} />
+                    </Box>
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
           </Grid>

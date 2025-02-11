@@ -45,7 +45,7 @@ interface Props {
   filteredSectionValuesList: (
     sectionType: string
   ) => { label: string; value: string }[];
-  handleMultipleSelectChange: (index: number, value: any) => void;
+  handleMultipleSelectChange: (index: number, value: string) => void;
   selectedSections: Record<number, string>;
   setValue: UseFormSetValue<any>;
 }

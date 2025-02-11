@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CATSchema, SectionFormType } from "../../validation";
 import { useState } from "react";
-import { formatSectionTitle } from "../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../utils";
 import { useSelectfieldOptions } from "../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/hooks/useSelectfieldOptions";
 
 interface CreateCATSimulatorProps {
@@ -29,7 +29,9 @@ export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
   contentLoader,
   onSubmit,
 }) => {
-  const [contentAreaCoverageList, setContentAreaCoverageList] = useState<string[]>([""]);
+  const [contentAreaCoverageList, setContentAreaCoverageList] = useState<
+    string[]
+  >([""]);
   const { cleanedContentArea } = useSelectfieldOptions();
 
   const form = useForm({
@@ -115,24 +117,32 @@ export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
           <Typography sx={{ color: "#3B0086" }}>
             Content Area Coverage*:
           </Typography>
-          {contentAreaCoverageList.map((_, index) => (
-            <Box key={index} sx={{ display: "flex", flexDirection: "column" }}>
-              <GenericSelectField
-                control={control}
-                name={`contentAreaCoverage.${index}`}
-                options={cleanedContentArea ?? []}
-                value={contentAreaCoverageList[index]}
-                onChange={(e) => handleContentAreaChange(e, index)}
-                sx={{
-                  borderRadius: "5px",
-                  width: "100%",
-                  backgroundColor: "#FFF",
-                  border: "1px solid #3B0086",
-                }}
-              />
-            </Box>
-          ))}
-
+          {contentAreaCoverageList?.length ? (
+            contentAreaCoverageList.map((_, index) => (
+              <Box
+                key={index}
+                sx={{ display: "flex", flexDirection: "column" }}
+              >
+                <GenericSelectField
+                  control={control}
+                  name={`contentAreaCoverage.${index}`}
+                  options={cleanedContentArea ?? []}
+                  value={contentAreaCoverageList[index]}
+                  onChange={(e) => handleContentAreaChange(e, index)}
+                  sx={{
+                    borderRadius: "5px",
+                    width: "100%",
+                    backgroundColor: "#FFF",
+                    border: "1px solid #3B0086",
+                  }}
+                />
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ color: "red" }}>
+              No content area coverage available.
+            </Typography>
+          )}
           <Button
             sx={{
               mt: 4,

@@ -10,7 +10,7 @@ import {
   FileUploadField,
   TextField,
 } from "../../../../../../../../../../components";
-import { formatSectionTitle } from "../../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../../utils";
 import { Control } from "react-hook-form";
 
 interface EditDocumentFieldProps {

@@ -11,7 +11,7 @@ import {
   GenericSelectField,
   TextField,
 } from "../../../../../../../../../../components";
-import { formatSectionTitle } from "../../../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../../../utils";
 import { Control } from "react-hook-form";
 import { GetCategoryType } from "../../../../../../../../../../api/types";
 

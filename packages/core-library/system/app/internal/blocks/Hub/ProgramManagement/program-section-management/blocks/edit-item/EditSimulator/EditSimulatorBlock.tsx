@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { ComponentLoader } from "../../../../../../../../../../components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -86,19 +86,25 @@ export const EditSimulatorBlock: React.FC<EditSimulatorProps> = ({
   }
 
   useEffect(() => {
-    if (selectedSectionData && isSimulatorSectionData(selectedSectionData)) {
-      setValue("title", selectedSectionData.title);
-      setValue("contentArea", selectedSectionData.contentArea);
-      setValue("guided", selectedSectionData.guided);
-      setValue("unguided", selectedSectionData.unguided);
-      setValue("practice", selectedSectionData.practice);
-    } else {
-      setValue("title", "");
-      setValue("contentArea", "");
-      setValue("guided", false);
-      setValue("unguided", false);
-      setValue("practice", false);
-    }
+    const defaultValues =
+      selectedSectionData && isSimulatorSectionData(selectedSectionData)
+        ? selectedSectionData
+        : {
+            title: "",
+            contentArea: "",
+            guided: false,
+            unguided: false,
+            practice: false,
+          };
+
+    Object.entries(defaultValues).forEach(([key, value]) => {
+      if (key in defaultValues) {
+        setValue(
+          key as keyof SectionFormType,
+          value as SectionFormType[keyof SectionFormType]
+        );
+      }
+    });
   }, [selectedSectionData, setValue]);
 
   const handleContentAreaChange = (value: string) => {

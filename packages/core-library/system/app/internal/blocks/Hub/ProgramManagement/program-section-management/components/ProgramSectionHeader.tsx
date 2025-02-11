@@ -7,7 +7,7 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { EvaIcon, IconButton } from "../../../../../../../../components";
-import { formatSectionTitle } from "../../../../../../../../utils/FormatSectionTitles";
+import { formatSectionTitle } from "../../../../../../../../utils";
 
 interface ProgramSectionHeaderProps {
   sectionImage: string;
