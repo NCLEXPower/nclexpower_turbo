@@ -35,7 +35,6 @@ export const useGoogleSignIn = () => {
   async function checkEmailCb(email: string) {
     try {
       const result = await emailCb.execute({ email: email });
-
       if (result.data.isExpired) {
         toast.executeToast(
           "The account you are trying to access is already expired.",
@@ -48,14 +47,19 @@ export const useGoogleSignIn = () => {
       }
 
       if (!result.data.accountIsFound) {
-        toast.executeToast(
-          "The account you are trying to access is not found.",
-          "top-right",
-          false,
-          { type: "error" }
-        );
-        signOut();
-        return;
+        if (router.pathname === "/account/registration") {
+          console.log("test basic details", session?.user?.name);
+          console.log("test email", session?.user?.email);
+        } else {
+          toast.executeToast(
+            "The account you are trying to access is not found.",
+            "top-right",
+            false,
+            { type: "error" }
+          );
+          signOut();
+          return;
+        }
       }
 
       if (
@@ -104,14 +108,13 @@ export const useGoogleSignIn = () => {
   }
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     if (status === "authenticated" && session.user?.email) {
       checkEmailCb(session.user.email);
     }
   }, [session, status, isAuthenticated]);
 
-  const signInWithGoogle = () => {
-    signIn("google");
+  const signInWithGoogle = async () => {
+    await signIn("google");
   };
 
   return {

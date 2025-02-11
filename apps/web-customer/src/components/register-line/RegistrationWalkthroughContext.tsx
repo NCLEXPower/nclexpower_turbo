@@ -9,6 +9,7 @@ import {
   useApiCallback,
   useBeforeUnload,
   useFormDirtyState,
+  useGoogleSignIn,
   useRecaptcha
 } from "core-library/hooks";
 import { SelectedProductType } from "core-library/types/global";
@@ -32,6 +33,7 @@ export interface RegistrationFormContextValue {
   passwordCriteria: { isValid: boolean; message: string }[];
   recaptchaRef?: React.MutableRefObject<any>;
   siteKey: string;
+  signInWithGoogle: () => void
 }
 
 const RegistrationWizardFormContext =
@@ -48,6 +50,7 @@ const RegistrationWizardFormContext =
     passwordCriteria: [],
     recaptchaRef: undefined,
     siteKey: "",
+    signInWithGoogle: () => null
   });
 
 export const useRegistrationWalkthroughFormContext = () => {
@@ -64,6 +67,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
 }) => {
   const router = useRouter();
   const { reset: resetActiveStep } = useActiveSteps(0);
+  const { signInWithGoogle } = useGoogleSignIn();
 
   useBeforeUnload(true);
 
@@ -193,6 +197,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
             passwordCriteria,
             recaptchaRef,
             siteKey,
+            signInWithGoogle
           }), [
           methods,
           isDirty,
@@ -206,6 +211,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
           passwordCriteria,
           recaptchaRef,
           siteKey,
+          signInWithGoogle
         ])}>
         {children}
       </RegistrationWizardFormContext.Provider>

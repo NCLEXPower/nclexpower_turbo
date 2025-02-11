@@ -20,12 +20,14 @@ export default NextAuth({
     async jwt({ token, account, profile }) {
       if (account && profile) {
         token.email = profile.email;
+        token.name = profile.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (token.email && session.user) {
         session.user.email = token.email as string;
+        session.user.name = token.name;
       }
       return session;
     },
