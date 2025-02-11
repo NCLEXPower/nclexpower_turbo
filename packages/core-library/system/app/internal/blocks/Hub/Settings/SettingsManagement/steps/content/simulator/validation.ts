@@ -155,7 +155,10 @@ const mcqGroupRow = yup.object().shape({
         choiceIndexPos: yup.number(),
       })
     )
-    .required("Choices are required."),
+    .required("Choices are required.")
+    .test("must-select-one", "You must select at least one choice", (choices) =>
+      choices.some((choice) => choice.value === true)
+    ),
 });
 
 export const mcqGroupAnswerSchema = yup.object({
