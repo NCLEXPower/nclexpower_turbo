@@ -38,8 +38,7 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
     case "LoginFormBlock":
       return <LoginFormBlock />;
     case "HubOverviewBlock":
-      const { cards } = props as ParseBlocksProps<"HubOverviewBlock">;
-      return <HubBlock cards={cards} />;
+      return <HubBlock />;
     case "SettingsBlock":
       const { fileRoutes } = props as ParseBlocksProps<"SettingsBlock">;
       return <SettingsManagementPageBlock fileRoutes={fileRoutes} />;

@@ -21,6 +21,7 @@ import {
 import {
   ChatBotWidget,
   DrawerLayout,
+  ErrorBox,
   MultiContentDialog,
 } from "core-library/components";
 import {
@@ -31,6 +32,7 @@ import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirec
 import { theme } from "core-library/contents/theme/theme";
 import {
   useAuthInterceptor,
+  usePreventDuplicateSession,
   useStyle,
   useWebHeaderStyles,
 } from "core-library/hooks";
@@ -39,6 +41,7 @@ import { useContentDataContext } from "core-library/contexts/content/ContentData
 import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
+import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
 
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
@@ -53,8 +56,9 @@ const Layout: React.FC<
   const [isNewAccount] = useNewAccount(); //this is a temporary implementation
   usePaymentSuccessRedirect(confirmValue);
   useAuthInterceptor();
-
   const showWelcomeDialog = isAuthenticated && isNewAccount;
+
+  const { duplicate } = usePreventDuplicateSession();
 
   if (showWelcomeDialog) {
     return (
@@ -65,6 +69,10 @@ const Layout: React.FC<
         showTour
       />
     );
+  }
+
+  if (duplicate) {
+    return <DuplicateSessionBlock />;
   }
 
   return (

@@ -19,6 +19,10 @@ interface Props {
   selectedTabIndex?: (value: number) => void;
   customStyle?: CustomStyleProps;
   tabBtnSx?: SxProps;
+  btnSpacing?: number;
+  separateIndex?: number;
+  indentBtn?: number;
+  contentPaddingTop?: number;
 }
 
 export const Tabs: React.FC<Props> = ({
@@ -29,6 +33,10 @@ export const Tabs: React.FC<Props> = ({
   selectedTabIndex,
   customStyle,
   tabBtnSx,
+  btnSpacing = 3,
+  separateIndex,
+  indentBtn,
+  contentPaddingTop,
 }) => {
   const { isMobile } = useResolution();
   const [selected, setSelected] = useState<number | null>(1);
@@ -50,7 +58,7 @@ export const Tabs: React.FC<Props> = ({
           item
           xs={12}
           justifyContent={justifyContent}
-          spacing={3}
+          spacing={btnSpacing}
         >
           {tabs.map((tab, index) => (
             <Grid item key={tab.id}>
@@ -91,6 +99,8 @@ export const Tabs: React.FC<Props> = ({
                   marginLeft: tab.id !== 1 ? "-1px" : "unset",
                   px: 2,
                   boxShadow: "none",
+                  ...(index === separateIndex && { marginRight: "40px" }),
+                  ...(index === 0 && { marginLeft: indentBtn }),
                 }}
                 onClick={(e) => handleSelected(e, tab.id)}
                 onKeyDown={(e) => handleKeyDown(e, tab.id)}
@@ -113,6 +123,7 @@ export const Tabs: React.FC<Props> = ({
                     setSelected((prev) => (prev === tab.id ? null : tab.id))
                   }
                   sx={{
+                    marginRight: "20px",
                     "&:focus": {
                       outline: "none !important",
                       boxShadow: "none",
@@ -153,7 +164,7 @@ export const Tabs: React.FC<Props> = ({
         </Grid>
       ) : (
         selectedTab && (
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ paddingTop: contentPaddingTop }}>
             {selectedTab.content}
           </Grid>
         )
