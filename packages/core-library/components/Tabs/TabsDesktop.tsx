@@ -10,9 +10,20 @@ interface Props {
   tabs: Array<TabOption>;
   "aria-label"?: string;
   sx?: SxProps;
+  indentIndex?: number;
+  tabsSx?: SxProps;
+  getTabSx?: (index: number) => SxProps;
 }
 
-export const TabsDesktop: React.FC<Props> = ({ id, tabs, sx, ...other }) => {
+export const TabsDesktop: React.FC<Props> = ({
+  id,
+  tabs,
+  sx,
+  tabsSx,
+  indentIndex,
+  getTabSx,
+  ...other
+}) => {
   const { activeTabIndex, onTabChanged } = useTabsContext();
 
   return (
@@ -20,11 +31,17 @@ export const TabsDesktop: React.FC<Props> = ({ id, tabs, sx, ...other }) => {
       id={id}
       value={activeTabIndex}
       onChange={(_, value) => onTabChanged(value)}
-      sx={{ mb: 3 }}
+      sx={{ mb: 3, ...tabsSx }}
       {...other}
     >
       {tabs.map((tab, index) => (
-        <Tab key={`${index}`} label={tab.key} sx={sx} />
+        <Tab
+          key={`${index}`}
+          label={tab.key}
+          sx={{
+            ...(getTabSx ? getTabSx(index) : sx),
+          }}
+        />
       ))}
     </Tabs>
   );
