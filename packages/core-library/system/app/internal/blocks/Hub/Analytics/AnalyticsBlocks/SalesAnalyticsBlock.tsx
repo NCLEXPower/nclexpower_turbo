@@ -4,7 +4,7 @@ import { BarCard, GaugeCard, LineCard, RenderStatCards } from "../Cards";
 import { contentBgColor, contentBox } from "../AnalyticsStyles";
 import { useSalesData } from "../../../../../../../hooks/useSalesData";
 import { SalesType } from "../types";
-import { calculateGaugeData } from "../constants";
+import { calculateGaugeData } from "../utils";
 
 interface Props {
   salesType: SalesType;

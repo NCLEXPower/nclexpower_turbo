@@ -3,7 +3,7 @@ import { TimePeriodCheckboxes } from "../Checkbox/TimePeriodCheckBox";
 import { contentBgColor, contentBox } from "../AnalyticsStyles";
 import { useUsersAnalyticsData } from "../../../../../../../hooks/useUsersAnalyticsData";
 import { GaugeCard, RenderStatCards } from "../Cards";
-import { calculateGaugeData } from "../constants";
+import { calculateGaugeData } from "../utils";
 
 export const UsersAnalyticsBlock = () => {
   const { data, handlePeriodChange, selectedPeriod, statsCardData } =

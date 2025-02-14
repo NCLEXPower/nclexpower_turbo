@@ -1,8 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { cardBox, gridItemSx } from "../AnalyticsStyles";
 import { Chart } from "../../../../../../../components";
-import { formatNumber, SalesBarChartOptions } from "../constants";
+import { SalesBarChartOptions } from "../constants";
 import { BarData } from "../types";
+import { formatNumber } from "../utils";
 
 interface BarCardProps {
   cardTitle: string;

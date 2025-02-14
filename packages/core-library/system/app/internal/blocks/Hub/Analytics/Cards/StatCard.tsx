@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { cardBox, gridItemSx } from "../AnalyticsStyles";
-import { formatNumber } from "../constants";
+import { formatNumber } from "../utils";
 
 type RenderStatCardsProps = {
   data: StatCardProps[];

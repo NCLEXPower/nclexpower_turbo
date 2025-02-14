@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { cardBox, gridItemSx, labelBox } from "../AnalyticsStyles";
 import { Chart } from "../../../../../../../components";
-import { SaleLinChartOptions } from "../constants";
+import { SaleLineChartOptions } from "../constants";
 import { LineData } from "../types";
 
 interface Props {
@@ -70,7 +70,7 @@ export const LineCard: React.FC<Props> = ({
             dataSet={lineData}
             width={350}
             height={200}
-            options={SaleLinChartOptions}
+            options={SaleLineChartOptions}
             sx={{ bgcolor: "#FFF" }}
           />
         </div>

@@ -5,22 +5,7 @@ import {
 } from "../../../../../../components/Charts/generic/charts/type";
 import { SalesAnalyticsBlock } from "./AnalyticsBlocks/SalesAnalyticsBlock";
 import { UsersAnalyticsBlock } from "./AnalyticsBlocks/UsersAnalyticsBlock";
-
-export const formatNumber = (num: number) => {
-  return new Intl.NumberFormat("en", { notation: "compact" }).format(num);
-};
-
-export const calculateGaugeData = (
-  standardUsers: number,
-  fastTrackUsers: number
-) => {
-  const total = standardUsers + fastTrackUsers;
-  if (total === 0) return { standardUsers: 0, fastTrackUsers: 0 };
-  return {
-    standardUsers: (standardUsers / total) * 100,
-    fastTrackUsers: (fastTrackUsers / total) * 100,
-  };
-};
+import { formatNumber } from "./utils";
 
 export const timePeriod: string[] = [
   "All",
@@ -53,7 +38,7 @@ export const SalesBarChartOptions: BarChartOptions = {
   ],
   yAxis: [
     {
-      valueFormatter: (value) => formatNumber(value), // Formats numbers (e.g., 100,000)
+      valueFormatter: (value) => formatNumber(value),
     },
   ],
   grid: { horizontal: true },
@@ -61,7 +46,7 @@ export const SalesBarChartOptions: BarChartOptions = {
   borderRadius: 5,
 };
 
-export const SaleLinChartOptions: LineChartOptions = {
+export const SaleLineChartOptions: LineChartOptions = {
   xAxis: [
     {
       scaleType: "band",

@@ -12,7 +12,6 @@ export const TimePeriodCheckboxes: React.FC<Props> = ({
   selectedPeriod,
   handlePeriodChange,
 }) => {
-  console.log(selectedPeriod);
   return (
     <Box
       sx={{

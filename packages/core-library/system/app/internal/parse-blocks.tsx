@@ -75,7 +75,6 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
     case "ContactUsManagementBlock":
       return <ContactUsManagementBlock />;
     case "SalesManagement":
-      // return <SalesManagementBlock />;
       return <AnalyticsBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
