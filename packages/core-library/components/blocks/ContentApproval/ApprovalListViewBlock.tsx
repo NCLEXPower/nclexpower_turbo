@@ -18,7 +18,7 @@ import {
   ContentDateAtom,
   ContentDateType,
 } from "../../Dialog/DialogFormBlocks/contentApproval/validation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ApprovalListView } from "./ApprovalListView";
 
 export interface ApprovalProps {
@@ -43,7 +43,6 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     data: [],
     implementationSchedule: new Date(),
   });
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   const [selectedRows, setSelectedRows] = useState<number>();
   const { contentLoader, setContentLoader } = usePageLoaderContext();
@@ -57,11 +56,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
     }, 3000);
   }, [setContentLoader]);
 
-  useEffect(() => {
-    if (data?.length === 0) {
-      setIsEmpty(true);
-    }
-  }, [data]);
+  const isEmpty = useMemo(() => data?.length === 0, [data]);
 
   const handleMultipleSelection = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -133,18 +128,16 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
 
         return (
           <CustomTooltip title={tooltipTitle} key={btn.action}>
-            <span>
-              <ListItemButton
-                data-testid="approvalAction"
-                onClick={() =>
-                  handleSelection(btn.action, contentId, contentAuthorId)
-                }
-                sx={{ bgcolor: "white", color: "black" }}
-                disabled={disabled}
-              >
-                {btn.label}
-              </ListItemButton>
-            </span>
+            <ListItemButton
+              data-testid="approvalAction"
+              onClick={() =>
+                handleSelection(btn.action, contentId, contentAuthorId)
+              }
+              sx={{ bgcolor: "white", color: "black" }}
+              disabled={disabled}
+            >
+              {btn.label}
+            </ListItemButton>
           </CustomTooltip>
         );
       }),

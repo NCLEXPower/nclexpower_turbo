@@ -2,9 +2,11 @@ import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { BackgroundInfoContent } from "../../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/BackgroundInfo/BackgroundInfoContent";
 import { ItemContent } from "../../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/Items/ItemContent";
+import { CaseStudyContentCollectionDtos } from "../../../../../../../../../../api/types";
+import { ContainedCaseStudyQuestionType } from "../../../../../Settings/SettingsManagement/steps/content/simulator/types";
 
 interface Props {
-  mainContent: any;
+  mainContent: ContainedCaseStudyQuestionType[];
 }
 export const CSMainContent: React.FC<Props> = ({ mainContent }) => {
   return (

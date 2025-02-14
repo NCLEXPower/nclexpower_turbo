@@ -93,27 +93,28 @@ export default function ContentApproverForm({}: Props) {
         </CustomPopover>
       </Box>
       <Box>
-        {contentApprovers.map((item, index) => (
-          <div key={index}>
-            <Chip
-              sx={{
-                backgroundColor: "#0c215c",
-                color: "#F3F3F3",
-                marginBottom: 4,
-              }}
-              label={item.content}
-            />
-            <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
-              Approver name: {item.approver}
-            </Typography>
-            <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
-              Comment: {item.comment}
-            </Typography>
-            <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
-              Created At: {item.createdAt}
-            </Typography>
-          </div>
-        ))}
+        {contentApprovers.length > 0 &&
+          contentApprovers.map((item, index) => (
+            <div key={index}>
+              <Chip
+                sx={{
+                  backgroundColor: "#0c215c",
+                  color: "#F3F3F3",
+                  marginBottom: 4,
+                }}
+                label={item.content}
+              />
+              <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
+                Approver name: {item.approver}
+              </Typography>
+              <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
+                Comment: {item.comment}
+              </Typography>
+              <Typography sx={{ fontSize: "1rem", color: "#0c215c" }}>
+                Created At: {item.createdAt}
+              </Typography>
+            </div>
+          ))}
       </Box>
     </FormProvider>
   );

@@ -79,6 +79,7 @@ export default function ContentReviewerBlock({
           "success"
         );
       } catch (err) {
+        console.error("Something went wrong", err);
         showToast(
           "An error occurred while submitting the review. Please try again.",
           "error"

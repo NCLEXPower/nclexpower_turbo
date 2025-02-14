@@ -412,6 +412,10 @@ export type CaseStudyContentCollectionDtos = {
   questionnaires: QuestionnaireType[];
 };
 
+export interface CaseStudyContentCollection extends ContainedCaseStudyQuestionType {
+  id: string;
+}
+
 export type SequenceContentType = {
   seqContent?: string;
   seqNum: number;

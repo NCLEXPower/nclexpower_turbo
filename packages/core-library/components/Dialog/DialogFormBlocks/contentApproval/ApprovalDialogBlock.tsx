@@ -3,7 +3,6 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { useState } from "react";
 import { ContentDateAtom, ContentDateType } from "./validation";
 import {
   useDialogContext,
@@ -16,8 +15,8 @@ import { defaultValues } from "../../../../system/app/internal/blocks/Hub/Settin
 
 export const ApprovalDialogBlock = () => {
   const { closeDialog } = useDialogContext();
-  const { contentLoader, setContentLoader } = usePageLoaderContext();
-  const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
+  const { setContentLoader } = usePageLoaderContext();
+  const [approvalAtom] = useAtom(ContentDateAtom);
 
   const { showToast } = useExecuteToast();
 

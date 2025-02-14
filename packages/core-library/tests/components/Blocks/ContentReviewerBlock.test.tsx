@@ -46,7 +46,7 @@ describe("ContentReviewerBlock", () => {
     });
   });
 
-  it("renders ContentReviewerBlock correctly", () => {
+  it("should renders ContentReviewerBlock correctly", () => {
     render(
       <ContentReviewerBlock
         nextStep={mockNextStep}
@@ -58,7 +58,7 @@ describe("ContentReviewerBlock", () => {
     expect(screen.getByText(/Go Back/i)).toBeInTheDocument();
   });
 
-  it("calls previousStep when 'Go Back' button is clicked", () => {
+  it("should calls previousStep when 'Go Back' button is clicked", () => {
     render(
       <ContentReviewerBlock
         nextStep={mockNextStep}

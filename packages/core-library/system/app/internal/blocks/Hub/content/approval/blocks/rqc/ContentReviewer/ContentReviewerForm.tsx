@@ -27,9 +27,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { crbSchema, crbType } from "./validation";
 import { author, mainContent, RadioData } from "./ContentReviewerData";
-import React, { useEffect } from "react";
-import { MainContent } from "./RegularMainContent";
+import React, { useEffect, useMemo } from "react";
+import { RegularMainContent } from "./RegularMainContent";
 import { CSMainContent } from "./CSMainContent";
+import { ContainedCaseStudyQuestionType } from "../../../../../Settings/SettingsManagement/steps/content/simulator/types";
+import { MainContentCollection } from "../../../../../../../../../../api/types";
 
 type contentType = {
   contentId: string;
@@ -66,9 +68,22 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
     resolver: yupResolver(crbSchema),
   });
 
-  const filteredMainContent = mainContent.filter(
-    (content) => content.id === data.contentId
-  );
+  const mainType = mainContent[0].mainType;
+  const baseContent =
+    mainType === "Case Study"
+      ? mainContent[0].mainCaseStudyContentCollections
+      : mainContent[0].mainContentCollections;
+  const filteredMainContent = useMemo(() => {
+    if (mainType === "Case Study") {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as ContainedCaseStudyQuestionType[];
+    } else {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as MainContentCollection[];
+    }
+  }, [data, mainType]);
 
   const filteredAuthor = author.filter(
     (content) => content.authorId === data.contentAuthorId
@@ -81,12 +96,20 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
     setValue("authorId", data.contentAuthorId);
   }, [data]);
 
-  const renderContent = (content: any) => {
-    const mainType = content[0].main_type;
-    if (mainType !== "Case Study") {
-      return <MainContent mainContent={content} />;
+  const renderContent = (
+    content: MainContentCollection[] | ContainedCaseStudyQuestionType[],
+    mainType: string
+  ) => {
+    if (mainType === "Case Study") {
+      return (
+        <CSMainContent
+          mainContent={content as ContainedCaseStudyQuestionType[]}
+        />
+      );
     } else {
-      return <CSMainContent mainContent={content} />;
+      return (
+        <RegularMainContent mainContent={content as MainContentCollection[]} />
+      );
     }
   };
 
@@ -264,7 +287,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
             </Card>
           </CustomPopover>
         </Box>
-        {renderContent(filteredMainContent)}
+        {renderContent(filteredMainContent, mainType)}
       </FormProvider>
     </Box>
   );

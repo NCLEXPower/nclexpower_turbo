@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { MainContent } from "../../../system/app/internal/blocks/Hub/content/approval/blocks/rqc/ContentReviewer/RegularMainContent";
-import { ParsedHtml } from "../../../components";
+import { RegularMainContent } from "../../../system/app/internal/blocks/Hub/content/approval/blocks/rqc/ContentReviewer/RegularMainContent";
+import { MainContentCollection } from "../../../api/types";
 
 jest.mock("../../../hooks", () => ({
   useSanitizedInputs: jest.fn(() => ({ purifyInputs: jest.fn() })),
@@ -19,38 +19,42 @@ jest.mock("../../../core", () => ({
 }));
 
 describe("MainContent Component", () => {
-  const mockMainContent = [
+  const mockMainContent: MainContentCollection[] = [
     {
-      id: "1",
-      main_type: "Type A",
-      type: "Category X",
-      question: "<p>Sample Question?</p>",
-      cognitiveLevel: "Medium",
-      contentArea: "Science",
-      clientNeeds: "Knowledge Acquisition",
+      id: "0c3f073a-a3e1-4639-badb-c6532d46c559",
+      question: "<p>What are the colors in the French flag?</p>",
+      clientNeeds: "Geography Knowledge",
+      cognitiveLevel: "Basic",
+      contentArea: "World Geography",
       mainContentAnswerCollections: [
-        {
-          answers: [
-            { answer: "Answer 1", answerKey: true },
-            { answer: "Answer 2", answerKey: false },
-          ],
-        },
+        { id: "test1", answer: "Blue", answerKey: true },
+        { id: "test2", answer: "White", answerKey: true },
+        { id: "test3", answer: "Red", answerKey: true },
+        { id: "test4", answer: "Green", answerKey: false },
+        { id: "test5", answer: "Yellow", answerKey: false },
       ],
     },
   ];
 
   test("renders main content correctly", () => {
-    render(<MainContent mainContent={mockMainContent} />);
+    render(<RegularMainContent mainContent={mockMainContent} />);
 
     expect(
-      screen.getByText("Sample Question?", { exact: false })
+      screen.getByText("What are the colors in the French flag?", {
+        exact: false,
+      })
     ).toBeInTheDocument();
-    expect(screen.getByText("Cognitive Level: Medium")).toBeInTheDocument();
-    expect(screen.getByText("Content Area: Science")).toBeInTheDocument();
+    expect(screen.getByText("Cognitive Level: Basic")).toBeInTheDocument();
     expect(
-      screen.getByText("Client Needs: Knowledge Acquisition")
+      screen.getByText("Content Area: World Geography")
     ).toBeInTheDocument();
-    expect(screen.getByText("Answer 1")).toBeInTheDocument();
-    expect(screen.getByText("Answer 2")).toBeInTheDocument();
+    expect(
+      screen.getByText("Client Needs: Geography Knowledge")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Blue")).toBeInTheDocument();
+    expect(screen.getByText("White")).toBeInTheDocument();
+    expect(screen.getByText("Red")).toBeInTheDocument();
+    expect(screen.getByText("Green")).toBeInTheDocument();
+    expect(screen.getByText("Yellow")).toBeInTheDocument();
   });
 });
