@@ -7,7 +7,6 @@ import {
 } from "../AnalyticsStyles";
 import { Chart } from "../../../../../../../components";
 import { GaugeChartOptions } from "../constants";
-import { ProductDuration } from "../types";
 
 interface Props {
   cardFor: "sales" | "users";

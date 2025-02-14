@@ -3,14 +3,14 @@ import {
   PeriodicMockData,
   SalesData,
   SalesType,
-} from "../system/app/internal/blocks/Hub/SalesManagement/types";
+} from "../system/app/internal/blocks/Hub/Analytics/types";
 import {
   AllSalesMockData,
   PNSalesMockData,
   RNSalesMockData,
-} from "../system/app/internal/blocks/Hub/SalesManagement/AnalyticsMockData";
+} from "../system/app/internal/blocks/Hub/Analytics/AnalyticsMockData";
 import { usePeriodTime } from "./usePeriodTime";
-import { statBgColor } from "../system/app/internal/blocks/Hub/SalesManagement/AnalyticsStyles";
+import { statBgColor } from "../system/app/internal/blocks/Hub/Analytics/AnalyticsStyles";
 
 export const useSalesData = (salesType: SalesType) => {
   const getMockData = (salesType: SalesType): PeriodicMockData => {

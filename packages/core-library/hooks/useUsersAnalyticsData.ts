@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { UsersMockData } from "../system/app/internal/blocks/Hub/SalesManagement/AnalyticsMockData";
+import { UsersMockData } from "../system/app/internal/blocks/Hub/Analytics/AnalyticsMockData";
 import { usePeriodTime } from "./usePeriodTime";
-import { PeriodicUserMockData } from "../system/app/internal/blocks/Hub/SalesManagement/types";
-import { statBgColor } from "../system/app/internal/blocks/Hub/SalesManagement/AnalyticsStyles";
+import { PeriodicUserMockData } from "../system/app/internal/blocks/Hub/Analytics/types";
+import { statBgColor } from "../system/app/internal/blocks/Hub/Analytics/AnalyticsStyles";
 
-export const useUserAnalyticsData = () => {
+export const useUsersAnalyticsData = () => {
   const { data, handlePeriodChange, selectedPeriod } = usePeriodTime({
     Data: UsersMockData,
   });

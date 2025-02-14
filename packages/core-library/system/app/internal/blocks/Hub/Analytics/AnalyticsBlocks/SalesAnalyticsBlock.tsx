@@ -4,6 +4,7 @@ import { BarCard, GaugeCard, LineCard, RenderStatCards } from "../Cards";
 import { contentBgColor, contentBox } from "../AnalyticsStyles";
 import { useSalesData } from "../../../../../../../hooks/useSalesData";
 import { SalesType } from "../types";
+import { calculateGaugeData } from "../constants";
 
 interface Props {
   salesType: SalesType;
@@ -52,7 +53,10 @@ export const SalesAnalyticsBlock: React.FC<Props> = ({
         ) : (
           <GaugeCard
             cardFor={"sales"}
-            dataSet={data.productDurations}
+            dataSet={calculateGaugeData(
+              data.productDurations.fastTrack,
+              data.productDurations.standard
+            )}
             gaugeColors={["#181E2F", "#2A61AC"]}
             title="Products Durations"
             titleColor="#00173F"
@@ -73,7 +77,10 @@ export const SalesAnalyticsBlock: React.FC<Props> = ({
 
         <GaugeCard
           cardFor={"sales"}
-          dataSet={data.repeatSales}
+          dataSet={calculateGaugeData(
+            data.repeatSales.firstTime,
+            data.repeatSales.repeated
+          )}
           gaugeColors={["#074548", "#0C8087"]}
           title="Repeat Sales"
           titleColor="#085156"

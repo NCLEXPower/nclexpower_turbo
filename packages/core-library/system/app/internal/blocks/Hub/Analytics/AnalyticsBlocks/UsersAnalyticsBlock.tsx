@@ -1,13 +1,13 @@
 import { Box, Grid } from "@mui/material";
 import { TimePeriodCheckboxes } from "../Checkbox/TimePeriodCheckBox";
 import { contentBgColor, contentBox } from "../AnalyticsStyles";
-import { useUserAnalyticsData } from "../../../../../../../hooks/useUsersAnalyticsData";
+import { useUsersAnalyticsData } from "../../../../../../../hooks/useUsersAnalyticsData";
 import { GaugeCard, RenderStatCards } from "../Cards";
 import { calculateGaugeData } from "../constants";
 
 export const UsersAnalyticsBlock = () => {
   const { data, handlePeriodChange, selectedPeriod, statsCardData } =
-    useUserAnalyticsData();
+    useUsersAnalyticsData();
 
   return (
     <Box

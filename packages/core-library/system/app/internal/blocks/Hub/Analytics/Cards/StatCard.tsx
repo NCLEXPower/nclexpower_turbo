@@ -40,6 +40,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   return (
     <Grid item xs={4} sx={gridItemSx}>
       <Box
+        data-testid="stat-card"
         sx={{
           ...cardBox,
           width: "100%",
