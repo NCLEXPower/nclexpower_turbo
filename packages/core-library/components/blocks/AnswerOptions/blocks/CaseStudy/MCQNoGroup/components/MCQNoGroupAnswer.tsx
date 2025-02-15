@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   FormControl,
+  FormGroup,
   Typography
 } from "@mui/material";
 import { Control } from "react-hook-form";
@@ -13,7 +14,6 @@ import {
 } from "../../../../../../";
 import { ContainedCaseStudyQuestionType } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { ColumnComponent } from "../../MCQGroup/components/MCQColumnComponent";
-import { FormGroup } from "@mui/material";
 
 type MCQNoGroupType = {
   questionIndex: number;
