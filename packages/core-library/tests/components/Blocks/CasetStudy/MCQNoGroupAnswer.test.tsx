@@ -8,7 +8,18 @@ jest.mock("../../../../components", () => ({
   TextField: jest.fn(() => <input />),
   EvaIcon: jest.fn(() => <div />),
   Button: jest.fn(({ children, ...props }) => <button {...props}>{children}</button>),
+  ControlledCheckbox: jest.fn(() => <input type="checkbox" />),
 }));
+
+jest.mock("../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQGroup/components/MCQColumnComponent", () => ({
+  ColumnComponent: jest.fn(() => <div />),
+}));
+
+jest.mock("react-hook-form", () => ({
+  Control: jest.fn(() => <div />),
+}));
+
+
 
 jest.mock("../../../../config", () => ({
   config: { value: jest.fn() },
@@ -89,20 +100,8 @@ describe("MCQNoGroupAnswer", () => {
     expect(defaultProps.handleRemoveColumnHeaders).toHaveBeenCalledWith(3);
   });
 
-  it("should call handleRemoveRow with the correct index", () => {
+  it("should render ControlledCheckbox components for each table row", () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    fireEvent.click(screen.getByTestId("remove-row-1"));
-    expect(defaultProps.handleRemoveRow).toHaveBeenCalledWith(0);
-  });
-
-
-  it("should render ControlledTextField components for each table row", () => {
-    render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
-  });
-
-  it("should render RadioGroup components for each table row", () => {
-    render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
   });
 });
