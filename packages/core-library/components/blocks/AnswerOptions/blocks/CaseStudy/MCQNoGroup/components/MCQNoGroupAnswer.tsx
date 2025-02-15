@@ -175,6 +175,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
           {columnHeaderFields?.length > 0 &&
             columnHeaderFields.map((_, index) => (
               <ColumnComponent
+                key={`column-${index}`}
                 columnIndex={index}
                 questionIndex={questionIndex}
               />
@@ -183,7 +184,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
 
         {tableRowFields?.length > 0 &&
           tableRowFields.map((_, rowIndex) => (
-            <Box sx={{ display: "flex" }}>
+            <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
               <Box
                 sx={{
                   flexGrow: 1,
