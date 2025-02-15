@@ -6,9 +6,21 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { usePreviousValue } from "../../../../../../hooks";
+import { useApiCallback } from "../../../../../../hooks";
+import { CreateCountryTimezonesParams, GetCountryTimezonesParams } from "../../../../../../api/types";
 
 export const ComingSoonManagementBlock: React.FC = () => {
+
+  const createCountryTimezonesCb = useApiCallback(
+    (api, args: CreateCountryTimezonesParams) =>
+      api.webbackoffice.createCountryTimezone(args)
+  );
+
+  const getCountryTimezonesCb = useApiCallback(
+    (api, args: GetCountryTimezonesParams) =>
+      api.webbackoffice.getCountryTimezone(args)
+  );
+  
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),

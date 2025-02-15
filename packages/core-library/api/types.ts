@@ -747,3 +747,18 @@ export type CaseNameResponseType = {
 export type DeleteCaseNameParams = {
   id: string;
 };
+
+export type CreateCountryTimezonesParams = {
+  countryKey: string;
+  country: string;
+  timeZones: string[];
+};
+
+export type GetCountryTimezonesParams = {
+  countryKey: string;
+  goLiveDate: string;
+};
+
+export type DeleteTimezonesParams = {
+  id: string;
+};

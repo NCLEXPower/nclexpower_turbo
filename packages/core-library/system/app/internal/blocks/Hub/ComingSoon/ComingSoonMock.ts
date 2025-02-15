@@ -51,3 +51,33 @@ export const emailMockData: TableColumns[] = [
     status: "sent",
   },
 ];
+
+  // Mock data for the countdown display
+  export const mockSelectedCountries = [
+    {
+      code: "US",
+      name: "United States of America",
+      daysLeft: 13,
+    },
+    {
+      code: "CA",
+      name: "Canada",
+      daysLeft: 14,
+    },
+    {
+      code: "AU",
+      name: "Australia",
+      daysLeft: 13,
+    },
+    // Add more to demonstrate scrolling
+    {
+      code: "JP",
+      name: "Japan",
+      daysLeft: 10,
+    },
+    {
+      code: "FR",
+      name: "France",
+      daysLeft: 8,
+    },
+  ];
