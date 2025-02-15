@@ -1,7 +1,7 @@
 import { render, screen } from "../../../common";
 import { LineCard } from "../../../../system/app/internal/blocks/Hub/Analytics/Cards";
 import { Chart } from "../../../../components";
-import { SaleLinChartOptions } from "../../../../system/app/internal/blocks/Hub/Analytics/constants";
+import { SaleLineChartOptions } from "../../../../system/app/internal/blocks/Hub/Analytics/constants";
 
 jest.mock("../../../../config", () => ({
   config: { value: jest.fn() },
@@ -52,7 +52,7 @@ describe("LineCard Component", () => {
         ],
         width: 350,
         height: 200,
-        options: SaleLinChartOptions,
+        options: SaleLineChartOptions,
       }),
       {}
     );
