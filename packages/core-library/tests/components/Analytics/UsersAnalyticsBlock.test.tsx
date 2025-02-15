@@ -1,7 +1,7 @@
 import { render, screen } from "../../common";
 import { useUsersAnalyticsData } from "../../../hooks/useUsersAnalyticsData";
 import { UsersAnalyticsBlock } from "../../../system/app/internal/blocks/Hub/Analytics/AnalyticsBlocks/UsersAnalyticsBlock";
-import { calculateGaugeData } from "../../../system/app/internal/blocks/Hub/Analytics/constants";
+import { calculateGaugeData } from "../../../system/app/internal/blocks/Hub/Analytics/utils";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
