@@ -43,7 +43,7 @@ export const usePeriodTime = <
       console.error(
         "extractPeriodData: Invalid data structure, expected an object."
       );
-      return {};
+      return {} as { [K in keyof T]: T[K][PeriodType] };
     }
 
     if (!timePeriod.includes(period)) {
