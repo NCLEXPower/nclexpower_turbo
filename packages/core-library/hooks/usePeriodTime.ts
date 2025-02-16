@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { timePeriod } from "../system/app/internal/blocks/Hub/Analytics/constants";
 
 export type PeriodType = "all" | "today" | "weekly" | "monthly" | "ytd";
 
@@ -38,6 +39,20 @@ export const usePeriodTime = <
   );
 
   function extractPeriodData(source: T, period: PeriodType) {
+    if (!source || typeof source !== "object") {
+      console.error(
+        "extractPeriodData: Invalid data structure, expected an object."
+      );
+      return {};
+    }
+
+    if (!timePeriod.includes(period)) {
+      console.warn(
+        `extractPeriodData: Invalid period "${period}". Defaulting to "all".`
+      );
+      period = "all";
+    }
+
     return Object.fromEntries(
       Object.entries(source).map(([key, value]) => [
         key,
