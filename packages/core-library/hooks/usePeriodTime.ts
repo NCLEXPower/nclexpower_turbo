@@ -46,7 +46,7 @@ export const usePeriodTime = <
       return {} as { [K in keyof T]: T[K][PeriodType] };
     }
 
-    if (!timePeriod.includes(period)) {
+    if (!timePeriod.map((s) => s.toLocaleLowerCase()).includes(period)) {
       console.warn(
         `extractPeriodData: Invalid period "${period}". Defaulting to "all".`
       );
