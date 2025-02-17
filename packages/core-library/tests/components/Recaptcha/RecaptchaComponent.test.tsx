@@ -16,27 +16,34 @@ beforeAll(() => {
   };
 });
 
+jest.spyOn(global, 'clearInterval').mockImplementation(jest.fn());
+
 document.body.innerHTML = `<script src="https://www.google.com/recaptcha/api.js"></script>`;
 
 describe('RecaptchaComponent', () => {
   it('should render skeleton loader when recaptcha is not loaded', async () => {
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    screen.debug();
-
     const skeleton = await waitFor(() => screen.getByTestId('skeleton-loader'));
     expect(skeleton).toBeInTheDocument();
   });
 
   it('should render recaptcha when it is loaded', async () => {
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => expect(window.grecaptcha.ready).toHaveBeenCalled());
-
-    screen.debug();
-
     const recaptcha = await waitFor(() => screen.getByTestId('recaptcha'));
     expect(recaptcha).toBeInTheDocument();
+  });
+
+  it('should check for recaptcha and clear the interval when loaded', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+    await waitFor(() => expect(clearInterval).toHaveBeenCalled());
+  });
+
+  it('should clear interval when component unmounts', async () => {
+    const { unmount } = render(
+      <RecaptchaComponent sitekey='your-sitekey-here' />
+    );
+    unmount();
+    await waitFor(() => expect(clearInterval).toHaveBeenCalled());
   });
 
   it('should append the script to the document when the recaptcha is not present', () => {

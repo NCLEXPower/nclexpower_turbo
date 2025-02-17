@@ -57,9 +57,7 @@ export const RecaptchaComponent = forwardRef<ReCAPTCHA, ReCAPTCHAProps>(
             light
             data-testid='skeleton-loader'
             style={{ width: '302px', height: '76px' }}
-          >
-            Loading Recaptcha ...
-          </AnimatedBoxSkeleton>
+          />
         )}
         {isRecaptchaLoaded && (
           <ReCAPTCHA {...props} ref={ref as React.RefObject<ReCAPTCHA>} />
