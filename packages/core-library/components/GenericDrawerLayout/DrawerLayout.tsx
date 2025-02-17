@@ -66,8 +66,12 @@ export const DrawerLayout: React.FC<
   useEffect(() => {
     if (isMobile) {
       setOpen(false);
+    } else if (isAuthenticated) {
+      setOpen(true);
+    } else {
+      setOpen(!inWebc);
     }
-  }, [isMobile]);
+  }, [inWebc, isAuthenticated, isMobile]);
 
   if (!mounted) return;
 
