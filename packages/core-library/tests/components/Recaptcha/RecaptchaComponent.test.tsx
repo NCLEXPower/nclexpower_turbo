@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { RecaptchaComponent } from '../../../components';
 import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 jest.mock('next/config', () => () => ({
   publicRuntimeConfig: {
@@ -49,17 +50,23 @@ describe('RecaptchaComponent', () => {
     setIntervalSpy.mockRestore();
   });
 
-  it('should clear interval when component unmounts', async () => {
+  it('should clear interval on component unmount', () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
     const { unmount } = render(
       <RecaptchaComponent sitekey='your-sitekey-here' />
     );
     unmount();
-    await waitFor(() => expect(clearInterval).toHaveBeenCalled());
+
+    expect(clearIntervalSpy).toHaveBeenCalled();
+
+    setIntervalSpy.mockRestore();
+    clearIntervalSpy.mockRestore();
   });
 
   it('should append the script to the document when the recaptcha is not present', () => {
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
     const script = document.querySelector(
       'script[src="https://www.google.com/recaptcha/api.js"]'
     );
@@ -79,5 +86,11 @@ describe('RecaptchaComponent', () => {
     });
 
     jest.restoreAllMocks();
+  });
+
+  it('should assign ref correctly to ReCAPTCHA component', () => {
+    const mockRef = React.createRef<ReCAPTCHA>();
+    render(<ReCAPTCHA sitekey='your-sitekey-here' ref={mockRef} />);
+    expect(mockRef.current).not.toBeNull();
   });
 });
