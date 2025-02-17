@@ -4,7 +4,7 @@ import { AnimatedBoxSkeleton } from '../AnimatedBoxSkeleton/AnimatedSkeletonBox'
 
 declare global {
   interface Window {
-    grecaptcha?: {
+    grecaptcha: {
       render: (...args: any[]) => void;
       getResponse: (...args: any[]) => string;
       reset: (...args: any[]) => void;
@@ -48,14 +48,17 @@ export const RecaptchaComponent = forwardRef<ReCAPTCHA, ReCAPTCHAProps>(
     }, [isScriptLoaded]);
 
     return (
-      <div style={{ marginTop: '10px', position: 'relative' }}>
+      <div
+        style={{ marginTop: '10px', position: 'relative' }}
+        data-testid='recaptcha'
+      >
         {!isRecaptchaLoaded && (
           <AnimatedBoxSkeleton
             light
             data-testid='skeleton-loader'
             style={{ width: '302px', height: '76px' }}
           >
-            Loading ...
+            Loading Recaptcha ...
           </AnimatedBoxSkeleton>
         )}
         {isRecaptchaLoaded && (
