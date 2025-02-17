@@ -1,5 +1,30 @@
 import { DrawerLayout } from "../../../components/GenericDrawerLayout/DrawerLayout";
-import { act, render, screen, fireEvent } from "../../common";
+import { render } from "@testing-library/react";
+import { screen } from "../../common";
+import { useResolution } from "../../../hooks";
+
+const mockMenu = [
+  {
+    id: "1",
+    name: "Home",
+    path: "/home",
+    label: "Home",
+    icon: "home",
+    menuId: "1",
+    parentId: "0",
+    children: [],
+  },
+  {
+    id: "2",
+    name: "About",
+    path: "/about",
+    label: "About",
+    icon: "about",
+    menuId: "2",
+    parentId: "0",
+    children: [],
+  },
+];
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -7,14 +32,14 @@ jest.mock("../../../config", () => ({
     .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
   config: {
     value: {
-      BASEAPP: "test-app",
+      BASEAPP: "wc",
     },
   },
 }));
 
 jest.mock("../../../core/router", () => ({
   useRouter: () => ({
-    pathname: "/test",
+    pathname: "/hub",
   }),
 }));
 
@@ -28,69 +53,65 @@ jest.mock("../../../contexts/auth/hooks", () => ({
     .mockReturnValue(["test-account-id", jest.fn(), jest.fn()]),
 }));
 
+jest.mock("../../../hooks", () => ({
+  useResolution: jest.fn().mockReturnValue({
+    isMobile: false,
+  }),
+  useIsDesignVisible: jest.fn().mockReturnValue(false),
+  useIsMounted: jest.fn().mockReturnValue(true),
+}));
+
+jest.mock("../../../components", () => ({
+  Sidebar: ({ open }: { open: boolean }) => (
+    <div data-testid="mock-sidebar">
+      {open ? "Sidebar Open" : "Sidebar Closed"}
+    </div>
+  ),
+}));
+
+jest.mock("../../../components/GenericHeader/Header", () => ({
+  Header: () => <div data-testid="mock-header" />,
+}));
+
 describe("DrawerLayout", () => {
-  const mockMenu = [
-    {
-      id: "1",
-      name: "Home",
-      path: "/home",
-      label: "Home",
-      icon: "home",
-      menuId: "1",
-      parentId: "0",
-      children: [],
-    },
-    {
-      id: "2",
-      name: "About",
-      path: "/about",
-      label: "About",
-      icon: "about",
-      menuId: "2",
-      parentId: "0",
-      children: [],
-    },
-  ];
-
-  it("should render the drawer layout with menu items when authenticated", () => {
-    act(() => {
-      render(
-        <DrawerLayout
-          isPaid="true"
-          menu={mockMenu}
-          isAuthenticated={true}
-          data-testid="drawer-layout"
-        >
-          <div>Content</div>
-        </DrawerLayout>
-      );
+  beforeEach(() => {
+    (useResolution as jest.Mock).mockReturnValue({
+      isMobile: false,
     });
-
-    expect(screen.getByText("Home")).toBeInTheDocument();
-    expect(screen.getByText("About")).toBeInTheDocument();
-    expect(screen.getByText("Content")).toBeInTheDocument();
   });
 
-  it("should toggle sidebar when menu button is clicked", () => {
-    act(() => {
-      render(
-        <DrawerLayout
-          isPaid="true"
-          menu={mockMenu}
-          isAuthenticated={true}
-          data-testid="drawer-layout"
-        >
-          <div>Content</div>
-        </DrawerLayout>
-      );
-    });
+  it("closes sidebar on mobile view", () => {
+    (useResolution as jest.Mock).mockReturnValue({ isMobile: true });
+    render(
+      <DrawerLayout isPaid="true" menu={mockMenu} isAuthenticated={true}>
+        <div data-testid="mock-content">Content</div>
+      </DrawerLayout>
+    );
 
-    const menuButton = screen.getByRole("button", { name: /toggle-sidebar/i });
-    act(() => {
-      fireEvent.click(menuButton);
-    });
+    expect(screen.getByTestId("mock-sidebar")).toHaveTextContent(
+      "Sidebar Closed"
+    );
+  });
 
-    expect(screen.getByText("Home")).toBeInTheDocument();
-    expect(screen.getByText("About")).toBeInTheDocument();
+  it("opens sidebar when isAuthenticated is true and isMobile is false", () => {
+    render(
+      <DrawerLayout isPaid="true" menu={mockMenu} isAuthenticated={true}>
+        <div>Content</div>
+      </DrawerLayout>
+    );
+
+    expect(screen.getByTestId("mock-sidebar")).toHaveTextContent(
+      "Sidebar Open"
+    );
+  });
+
+  it("hide the sidebar if not authenticated", () => {
+    render(
+      <DrawerLayout isPaid="true" menu={mockMenu} isAuthenticated={false}>
+        <div>Content</div>
+      </DrawerLayout>
+    );
+
+    expect(screen.queryByTestId("mock-sidebar")).not.toBeInTheDocument();
   });
 });
