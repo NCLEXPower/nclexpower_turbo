@@ -43,7 +43,7 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
-import { HubTourSteps } from "../hub/hubTourSteps";
+import { HubTourSteps } from "../../components/blocks/DashboardBlock/hubTourSteps";
 
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
