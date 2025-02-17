@@ -4,7 +4,7 @@ import { AnimatedBoxSkeleton } from '../AnimatedBoxSkeleton/AnimatedSkeletonBox'
 
 declare global {
   interface Window {
-    grecaptcha: {
+    grecaptcha?: {
       render: (...args: any[]) => void;
       getResponse: (...args: any[]) => string;
       reset: (...args: any[]) => void;

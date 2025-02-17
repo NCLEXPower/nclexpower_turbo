@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { RecaptchaComponent } from '../../../components';
+import React from 'react';
 
 jest.mock('next/config', () => () => ({
   publicRuntimeConfig: {
@@ -33,9 +34,19 @@ describe('RecaptchaComponent', () => {
     expect(recaptcha).toBeInTheDocument();
   });
 
-  it('should check for recaptcha and clear the interval when loaded', async () => {
+  it('should check recaptcha at intervals and clear interval when loaded', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-    await waitFor(() => expect(clearInterval).toHaveBeenCalled());
+
+    await waitFor(() => {
+      expect(setIntervalSpy).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(clearInterval).toHaveBeenCalled();
+    });
+
+    setIntervalSpy.mockRestore();
   });
 
   it('should clear interval when component unmounts', async () => {
@@ -53,5 +64,20 @@ describe('RecaptchaComponent', () => {
       'script[src="https://www.google.com/recaptcha/api.js"]'
     );
     expect(script).toBeInTheDocument();
+  });
+
+  it('should set isRecaptchaLoaded to true when recaptcha is ready', async () => {
+    const setStateMock = jest.fn();
+    jest
+      .spyOn(React, 'useState')
+      .mockImplementation(() => [false, setStateMock]);
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(setStateMock).toHaveBeenCalledWith(true);
+    });
+
+    jest.restoreAllMocks();
   });
 });
