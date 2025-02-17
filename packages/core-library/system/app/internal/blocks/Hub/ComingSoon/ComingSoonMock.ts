@@ -2,16 +2,13 @@ import { SelectOption } from "../../../../../../components";
 
 export const CountryMockData: SelectOption[] = [
   { label: "USA", value: "USA" },
-  { label: "Canada", value: "Canada" },
-  { label: "Australia", value: "Australia" },
+  { label: "Canada", value: "CAN" },
+  { label: "Australia", value: "AUS" },
 ];
 
+
 export const TimezoneMockData: SelectOption[] = [
-  { label: "GMT+8 Asia/Singapore", value: "Etc/GMT-8" },
-  { label: "GMT+9 Asia/Tokyo", value: "Etc/GMT-9" },
-  { label: "GMT+4 Asia/Dubai", value: "Etc/GMT-4" },
-  { label: "GMT Europe/London", value: "Etc/GMT" },
-  { label: "GMT-5 America/New_York", value: "Etc/GMT+5" },
+  { label: "GMT+8 Asia/Manila", value: "Etc/GMT-8" },
 ];
 
 export const environment: SelectOption[] = [
@@ -52,7 +49,6 @@ export const emailMockData: TableColumns[] = [
   },
 ];
 
-  // Mock data for the countdown display
   export const mockSelectedCountries = [
     {
       code: "US",

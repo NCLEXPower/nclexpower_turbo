@@ -13,6 +13,8 @@ import {
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { ContentDateType } from "./validation";
 import { Control } from "react-hook-form";
+import { useApi, useApiCallback } from "../../../../../../hooks";
+
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
@@ -27,6 +29,16 @@ const ComingSoonManagement = ({
   onSwitchChange,
   isActive,
 }: ComingSoonProps) => {
+  const getCountryTimezonesCb = useApi((api) =>
+    api.webbackoffice.getCountryTimezone()
+  );
+
+  const mappedData = getCountryTimezonesCb.result?.data.map((item) => ({
+    label: item.countryKey,
+    value: item.countryKey,
+  }))|| [];
+  console.log("mappedData", mappedData);
+  
   return (
     <Stack direction={"row"}>
       <Container sx={{ width: 600 }}>
@@ -63,7 +75,7 @@ const ComingSoonManagement = ({
             </Typography>
             <div className="flex flex-row items-center">
               <DateField
-                name="schedule"
+                name="goLiveDate"
                 control={control}
                 placeholder="DD - MM - YYYY"
                 disabled={!isSwitchOn || isActive}
@@ -148,7 +160,7 @@ const ComingSoonManagement = ({
                 marginTop: 2,
               }}
               control={control}
-              name="selectedCountriesTimezones"
+              name="countryKey"
               options={CountryMockData}
               disabled={isActive}
               multiple
@@ -176,7 +188,6 @@ const ComingSoonManagement = ({
             </Typography>
           </div>
 
-          {/* Scrollable container for the mock countdown list */}
           <div className="mt-4 ml-10 max-h-32 overflow-y-auto flex flex-col space-y-1">
             {mockSelectedCountries.map((country) => (
               <div

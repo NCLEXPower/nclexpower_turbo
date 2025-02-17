@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { EmailsNotification } from "./EmailsNotification";
 import { Stack } from "@mui/material";
@@ -6,21 +6,14 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApiCallback } from "../../../../../../hooks";
-import { CreateCountryTimezonesParams, GetCountryTimezonesParams } from "../../../../../../api/types";
+import { useApi, useApiCallback } from "../../../../../../hooks";
+import { CountryMockData } from "./ComingSoonMock";
 
 export const ComingSoonManagementBlock: React.FC = () => {
-
-  const createCountryTimezonesCb = useApiCallback(
-    (api, args: CreateCountryTimezonesParams) =>
-      api.webbackoffice.createCountryTimezone(args)
+  const getCountryTimezones = useApi((api) =>
+    api.webbackoffice.getCountryTimezone()
   );
 
-  const getCountryTimezonesCb = useApiCallback(
-    (api, args: GetCountryTimezonesParams) =>
-      api.webbackoffice.getCountryTimezone(args)
-  );
-  
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
@@ -49,6 +42,14 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const watchDescription = watch("description");
   const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
+  const watchCountryKey = watch("countryKey");
+
+  useEffect(() => {
+    const countryNames = (watchCountryKey || []).map((key) => 
+      CountryMockData.find(c => c.value === key)?.label || key
+    );
+    setValue("countryName", countryNames);
+  }, [watchCountryKey, setValue]);
 
   return (
     <Stack direction={"column"} spacing={2}>

@@ -462,8 +462,8 @@ export class WebApiBackOffice {
     );
   }
 
-  public async getCountryTimezone(args: GetCountryTimezonesParams) {
-    return await this.axios.get<GetCountryTimezonesParams>(
+  public async getCountryTimezone() {
+    return await this.axios.get<GetCountryTimezonesParams[]>(
       `/api/v2/content/baseContent/get-country-timezones`
     );
   }

@@ -22,7 +22,7 @@ describe("Content Date Schema", () => {
       schedule: new Date(new Date().setDate(new Date().getDate() + 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
       confetti: true,
       announcement: false,
@@ -39,7 +39,7 @@ describe("Content Date Schema", () => {
       schedule: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
@@ -54,7 +54,7 @@ describe("Content Date Schema", () => {
       schedule: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
@@ -68,7 +68,7 @@ describe("Content Date Schema", () => {
       hasNoSchedule: true,
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Pre-Prod",
     };
 
@@ -83,7 +83,7 @@ describe("Content Date Schema", () => {
       schedule: new Date(new Date().setDate(new Date().getDate() - 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
@@ -97,7 +97,7 @@ describe("Content Date Schema", () => {
       hasNoSchedule: true,
       countries: [],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
@@ -111,7 +111,7 @@ describe("Content Date Schema", () => {
       hasNoSchedule: true,
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Production",
     };
 
@@ -125,7 +125,7 @@ describe("Content Date Schema", () => {
       hasNoSchedule: true,
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
@@ -138,21 +138,21 @@ describe("Content Date Schema", () => {
       description: "Event Description",
       hasNoSchedule: true,
       countries: ["USA"],
-      selectedCountriesTimezones: ["America/New_York"],
+      countryKey: ["America/New_York"],
       environment: "Dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
   });
 
-  it("should return error when selectedCountriesTimezones is empty", async () => {
+  it("should return error when countryKey is empty", async () => {
     const invalidData = {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: true,
       countries: ["USA"],
       timeZone: "America/New_York",
-      selectedCountriesTimezones: [],
+      countryKey: [],
       environment: "Dev",
     };
 

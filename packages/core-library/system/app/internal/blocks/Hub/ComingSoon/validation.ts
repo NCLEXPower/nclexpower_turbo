@@ -16,26 +16,25 @@ export const contentDateSchema = yup.object({
     .required("Description is required.")
     .max(500, "Title cannot be longer than 100 characters."),
   hasNoSchedule: yup.boolean().default(false),
-  schedule: yup
-    .date()
-    .when("hasNoSchedule", {
-      is: false,
-      then: () =>
-        yup
-          .date()
-          .required("Date is required.")
-          .min(
-            new Date(new Date().setHours(0, 0, 0, 0)),
-            "Date cannot be before today"
-          ),
-      otherwise: () => yup.string().notRequired(),
-    }),
+  goLiveDate: yup.date().when("hasNoSchedule", {
+    is: false,
+    then: () =>
+      yup
+        .date()
+        .required("Date is required.")
+        .min(
+          new Date(new Date().setHours(0, 0, 0, 0)),
+          "Date cannot be before today"
+        ),
+    otherwise: () => yup.string().notRequired(),
+  }),
   countries: yup
     .array()
     .of(yup.string())
     .min(1, "Please select at least one country."),
+  countryName: yup.array().of(yup.string()).optional(),
   timeZone: yup.string().required("Timezone is required."),
-  selectedCountriesTimezones: yup
+  countryKey: yup
     .array()
     .of(yup.string())
     .min(1, "Please select at least one timezone.")
