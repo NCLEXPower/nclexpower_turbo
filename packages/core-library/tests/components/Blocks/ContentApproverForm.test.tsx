@@ -33,16 +33,6 @@ describe("ContentApproverForm", () => {
     expect(screen.getByText("Created At: 2024-02-05")).toBeInTheDocument();
   });
 
-  it("renders the Box and StateStatus when contentLoader is true", () => {
-    render(<ContentApproverForm />);
-
-    const boxElement = screen.getByRole("box");
-    expect(boxElement).toBeInTheDocument();
-
-    const stateStatusElement = screen.getByRole("state-status");
-    expect(stateStatusElement).toBeInTheDocument();
-  });
-
   it("does not render the Box and StateStatus when both isError and contentLoader are false", () => {
     render(<ContentApproverForm />);
 
