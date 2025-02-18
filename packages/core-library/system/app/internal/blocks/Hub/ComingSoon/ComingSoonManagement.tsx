@@ -29,15 +29,21 @@ const ComingSoonManagement = ({
   onSwitchChange,
   isActive,
 }: ComingSoonProps) => {
-  const getCountryTimezonesCb = useApi((api) =>
-    api.webbackoffice.getCountryTimezone()
-  );
+  
+  // const getCountryTimezones = useApi((api) =>
+  //   api.webbackoffice.getCountryTimezone({
+  //     countryKey: "AUS",
+  //     goLiveDate:
+  //       "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
+  //   })
+  // );
 
-  const mappedData = getCountryTimezonesCb.result?.data.map((item) => ({
-    label: item.countryKey,
-    value: item.countryKey,
-  }))|| [];
-  console.log("mappedData", mappedData);
+  // const mappedData = getCountryTimezones.result?.data.map((item) => ({
+  //   label: item.countryKey,
+  //   value: item.countryKey,
+  // })) || [];
+  
+  // console.log("mappedData", getCountryTimezones.result.data);
   
   return (
     <Stack direction={"row"}>

@@ -7,12 +7,17 @@ import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useApi, useApiCallback } from "../../../../../../hooks";
-import { CountryMockData } from "./ComingSoonMock";
 
 export const ComingSoonManagementBlock: React.FC = () => {
   const getCountryTimezones = useApi((api) =>
-    api.webbackoffice.getCountryTimezone()
+    api.webbackoffice.getCountryTimezone({
+      countryKey: "AUS",
+      goLiveDate:
+        "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
+    })
   );
+
+  console.log("mappedData", getCountryTimezones.result?.data);
 
   const form = useForm<ContentDateType>({
     mode: "all",
@@ -42,14 +47,6 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const watchDescription = watch("description");
   const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
-  const watchCountryKey = watch("countryKey");
-
-  useEffect(() => {
-    const countryNames = (watchCountryKey || []).map((key) => 
-      CountryMockData.find(c => c.value === key)?.label || key
-    );
-    setValue("countryName", countryNames);
-  }, [watchCountryKey, setValue]);
 
   return (
     <Stack direction={"column"} spacing={2}>

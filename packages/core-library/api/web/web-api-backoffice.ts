@@ -455,16 +455,11 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
   }
 
-  public async createCountryTimezone(params: CreateCountryTimezonesParams) {
-    return await this.axios.post(
-      "/api/v2/content/baseContent/create-country-timezones",
-      params
-    );
-  }
 
-  public async getCountryTimezone() {
-    return await this.axios.get<GetCountryTimezonesParams[]>(
-      `/api/v2/content/baseContent/get-country-timezones`
+  public async getCountryTimezone(params: GetCountryTimezonesParams) {
+    return await this.axios.post<GetCountryTimezonesParams[]>(
+      `/api/v2/content/baseContent/get-country-timezones`,
+      params
     );
   }
 }
