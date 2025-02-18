@@ -1,20 +1,19 @@
 import React from "react";
 import {
   Box,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
+  FormControl,
+  FormGroup,
   Typography
 } from "@mui/material";
 import { Control } from "react-hook-form";
 import {
-  ControlledTextField,
   TextField,
   EvaIcon,
   Button,
+  ControlledCheckbox,
 } from "../../../../../../";
 import { ContainedCaseStudyQuestionType } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
-import { StyledBox } from "../../../Regular/content/StyledBox";
+import { ColumnComponent } from "../../MCQGroup/components/MCQColumnComponent";
 
 type MCQNoGroupType = {
   questionIndex: number;
@@ -162,90 +161,92 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             />
           </Button>
         </Box>
-
       </Box>
-      <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-        {columnHeaderFields.length > 0 && columnHeaderFields.map((_, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
-              flexDirection: "column",
-            }}>
-            <TextField
-              name={`questionnaires.${questionIndex}.columns.${index}.label`}
-              control={control}
-              label={index === 0 ? `Table Header` : `Column Header: ${index + 1}`}
-              sx={{
-                borderRadius: "5px",
-                width: "100%",
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #0F2A71",
-              }}
-              inputProps={{
-                style: { padding: 15, borderRadius: "3px" },
-              }}
-            />
-          </Box>
-        ))}
-      </Box>
-      {tableRowFields.length && tableRowFields.map((_, idx) => (
-        <StyledBox key={idx}>
-          <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={4}>
-            <Box gridColumn="span 4">
-              <ControlledTextField
-                name={`questionnaires.${questionIndex}.rows.${idx}.rowTitle`}
-                label={`Table Row: ${idx + 1}`}
-                sx={{
-                  borderRadius: "5px",
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #0F2A71",
-                  width: "100%"
-                }}
-                inputProps={{
-                  style: { padding: 15, borderRadius: "3px" },
-                }}
+      <Box
+        sx={{
+          overflowX: "auto",
+          width: "100%",
+          maxWidth: "550px",
+          overflowY: "hidden",
+          height: "fit-content",
+        }}
+      >
+        <Box sx={{ display: "flex" }}>
+          {columnHeaderFields?.length > 0 &&
+            columnHeaderFields.map((_, index) => (
+              <ColumnComponent
+                key={`column-${index}`}
+                columnIndex={index}
+                questionIndex={questionIndex}
               />
-            </Box>
-          </Box>
-          <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-            <RadioGroup
-              name={`questionnaires.${questionIndex}.rows.${idx}.choices`}
-              value={tableRowFields[idx].choices.find(choice => choice.value)?.choiceId?.toString() ?? ""}
-              onChange={(e) => {
-                const selectedChoiceId = parseInt(e.target.value, 10);
-                setValue(
-                  `questionnaires.${questionIndex}.rows.${idx}.choices`,
-                  columnHeaderFields.slice(1).map((_, index) => ({
-                    choiceId: index,
-                    value: index === selectedChoiceId,
-                  }))
-                );
-              }}
-            >
-              {columnHeaderFields.slice(1).map((col, colIndex) => (
-                <FormControlLabel
-                  key={colIndex}
-                  value={colIndex.toString()}
-                  control={
-                    <Radio
-                      sx={{
-                        color: "red",
-                        '&.Mui-checked': {
-                          color: "green",
-                        },
-                      }}
-                    />
-                  }
-                  label={col.label}
+            ))}
+        </Box>
+
+        {tableRowFields?.length > 0 &&
+          tableRowFields.map((_, rowIndex) => (
+            <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: 0.5,
+                  borderWidth: 0.5,
+                  minWidth: 150,
+                  maxWidth: 150,
+                }}
+              >
+                <TextField
+                  control={control}
+                  name={`questionnaires.${questionIndex}.rows.${rowIndex}.rowTitle`}
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    minWidth: 150,
+                    maxWidth: 150,
+                    marginTop: -2,
+                  }}
+                  placeholder="Enter Text"
                 />
+              </Box>
+              {columnHeaderFields.slice(1).map((_, colIndex) => (
+                <Box
+                  key={colIndex}
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: 0.5,
+                    borderWidth: 0.5,
+                    minWidth: 150,
+                    maxWidth: 150,
+                  }}
+                >
+                  <FormControl>
+                    <FormGroup>
+                      <ControlledCheckbox
+                        control={control}
+                        name={`questionnaires.${questionIndex}.rows.${rowIndex}.choices.${colIndex}.value`}
+                        defaultValue={0}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          columnHeaderFields.slice(1).forEach((_, index) => {
+                            setValue(
+                              `questionnaires.${questionIndex}.rows.${rowIndex}.choices.${index}.value`,
+                              index === colIndex ? (isChecked ? true : false) : false
+                            );
+                          });
+                        }}
+                      />
+                    </FormGroup>
+                  </FormControl>
+                </Box>
               ))}
-            </RadioGroup>
-          </Box>
-        </StyledBox>
-      ))}
+            </Box>
+          ))}
+      </Box>
     </Box>
   );
 };

@@ -58,6 +58,7 @@ export const RegistrationBlock = () => {
       orderNumber: orderNumberCb.result?.data,
       productId,
       totalAmount: amount,
+      privacyServicePolicy: values.termsofservice,
     };
 
     try {
