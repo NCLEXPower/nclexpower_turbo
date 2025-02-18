@@ -25,15 +25,6 @@ describe("ContentReviewerBlock", () => {
   const mockNextStep = jest.fn();
   const mockSetContentLoader = jest.fn();
   const mockShowToast = jest.fn();
-  const approvalDataMock = {
-    data: [
-      {
-        contentId: "3fa85f64-5717-4562-b3fc-2c963f66afab",
-        contentAuthorId: "3fa85f64-5717-4562-b3fc-2c963f66afa9",
-      },
-    ],
-    implementationSchedule: new Date(),
-  };
 
   beforeEach(() => {
     (usePageLoaderContext as jest.Mock).mockReturnValue({
@@ -51,7 +42,6 @@ describe("ContentReviewerBlock", () => {
       <ContentReviewerBlock
         nextStep={mockNextStep}
         previousStep={mockPreviousStep}
-        values={{}}
       />
     );
 
@@ -63,7 +53,6 @@ describe("ContentReviewerBlock", () => {
       <ContentReviewerBlock
         nextStep={mockNextStep}
         previousStep={mockPreviousStep}
-        values={{}}
       />
     );
 

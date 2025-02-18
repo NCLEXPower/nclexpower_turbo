@@ -21,7 +21,6 @@ import { useAtom } from "jotai";
 type Props = {
   nextStep(values: {}): void;
   previousStep(): void;
-  values: {};
 };
 
 export default function ContentReviewerBlock({
