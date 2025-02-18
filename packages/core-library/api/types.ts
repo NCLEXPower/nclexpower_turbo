@@ -238,6 +238,7 @@ export interface CreateCustomerParams {
   orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+  privacyServicePolicy: boolean;
 }
 
 export interface CreateCustomerResponse {
