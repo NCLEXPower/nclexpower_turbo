@@ -93,4 +93,27 @@ describe('RecaptchaComponent', () => {
     render(<ReCAPTCHA sitekey='your-sitekey-here' ref={mockRef} />);
     expect(mockRef.current).not.toBeNull();
   });
+
+  it('should only add the script once if mounted multiple times', () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const scripts = document.querySelectorAll(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    expect(scripts.length).toBe(1);
+  });
+
+  it('should handle the case when grecaptcha is not available initially', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      const script = document.querySelector(
+        'script[src="https://www.google.com/recaptcha/api.js"]'
+      );
+      expect(script).toBeInTheDocument();
+    });
+  });
 });
