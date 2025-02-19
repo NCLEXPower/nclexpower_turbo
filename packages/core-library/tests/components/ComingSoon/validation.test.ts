@@ -1,12 +1,14 @@
 import { contentDateSchema } from "../../../../core-library/system/app/internal/blocks/Hub/ComingSoon/validation";
 
 jest.mock("../../../config", () => ({
-    getConfig: jest.fn().mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
-    config: { value: jest.fn() },
+  getConfig: jest
+    .fn()
+    .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+  config: { value: jest.fn() },
 }));
 
 jest.mock("../../../core/router", () => ({
-    useRouter: jest.fn(),
+  useRouter: jest.fn(),
 }));
 
 jest.mock("console", () => ({
@@ -19,7 +21,7 @@ describe("Content Date Schema", () => {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: false,
-      schedule: new Date(new Date().setDate(new Date().getDate() + 1)),
+      goLiveDate: new Date(new Date().setDate(new Date().getDate() + 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
@@ -36,7 +38,7 @@ describe("Content Date Schema", () => {
     const invalidData = {
       description: "Event Description",
       hasNoSchedule: false,
-      schedule: new Date(),
+      goLiveDate: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
@@ -51,7 +53,7 @@ describe("Content Date Schema", () => {
       eventName: "Valid Title",
       description: "a".repeat(501),
       hasNoSchedule: false,
-      schedule: new Date(),
+      goLiveDate: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
@@ -75,12 +77,12 @@ describe("Content Date Schema", () => {
     await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
   });
 
-  it("should return error when schedule is before today", async () => {
+  it("should return error when goLiveDate is before today", async () => {
     const invalidData = {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: false,
-      schedule: new Date(new Date().setDate(new Date().getDate() - 1)),
+      goLiveDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],

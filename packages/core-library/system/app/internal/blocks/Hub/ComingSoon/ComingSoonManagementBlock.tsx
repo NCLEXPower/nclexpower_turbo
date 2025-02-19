@@ -9,14 +9,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useApi, useApiCallback } from "../../../../../../hooks";
 
 export const ComingSoonManagementBlock: React.FC = () => {
-  const getCountryTimezones = useApi((api) =>
-    api.webbackoffice.getCountryTimezone({
-      countryKey: "AUS",
-      goLiveDate:
-        "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
-    })
+  const getCountryTimezones = useApiCallback(
+    (
+      api,
+      { countryKey, goLiveDate }: { countryKey: string; goLiveDate: string }
+    ) => api.webbackoffice.getCountryTimezone({ countryKey, goLiveDate })
   );
 
+  getCountryTimezones.execute({
+    countryKey: "AUS",
+    goLiveDate: "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
+  });
   console.log("mappedData", getCountryTimezones.result?.data);
 
   const form = useForm<ContentDateType>({
