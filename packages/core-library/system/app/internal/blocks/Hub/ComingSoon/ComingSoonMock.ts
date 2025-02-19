@@ -11,7 +11,7 @@ export const TimezoneMockData: SelectOption[] = [
   { label: "GMT+8 Asia/Manila", value: "Etc/GMT-8" },
 ];
 
-export const environment: SelectOption[] = [
+export const TargetEnvironment: SelectOption[] = [
   { label: "Pre-Prod", value: "Pre-Prod" },
   { label: "Dev", value: "Dev" },
 ];
@@ -61,19 +61,8 @@ export const emailMockData: TableColumns[] = [
       daysLeft: 14,
     },
     {
-      code: "AU",
+      code: "AUS",
       name: "Australia",
       daysLeft: 13,
-    },
-    // Add more to demonstrate scrolling
-    {
-      code: "JP",
-      name: "Japan",
-      daysLeft: 10,
-    },
-    {
-      code: "FR",
-      name: "France",
-      daysLeft: 8,
     },
   ];

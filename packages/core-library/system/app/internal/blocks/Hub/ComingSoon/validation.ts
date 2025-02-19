@@ -39,7 +39,7 @@ export const contentDateSchema = yup.object({
     .of(yup.string())
     .min(1, "Please select at least one timezone.")
     .required("Timezone is required. Please select at least one timezone."),
-  environment: yup
+  TargetEnvironment: yup
     .string()
     .required("Environment is required.")
     .oneOf(["Dev", "Pre-Prod"]),

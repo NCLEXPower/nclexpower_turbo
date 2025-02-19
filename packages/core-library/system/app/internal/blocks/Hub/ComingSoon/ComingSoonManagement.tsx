@@ -11,10 +11,10 @@ import {
   TimezoneMockData,
 } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
-import { ContentDateType } from "./validation";
-import { Control } from "react-hook-form";
+import { contentDateSchema, ContentDateType } from "./validation";
+import { Control, useForm } from "react-hook-form";
 import { useApi, useApiCallback } from "../../../../../../hooks";
-
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
@@ -38,12 +38,6 @@ const ComingSoonManagement = ({
   //   })
   // );
 
-  // const mappedData = getCountryTimezones.result?.data.map((item) => ({
-  //   label: item.countryKey,
-  //   value: item.countryKey,
-  // })) || [];
-  
-  // console.log("mappedData", getCountryTimezones.result.data);
   
   return (
     <Stack direction={"row"}>

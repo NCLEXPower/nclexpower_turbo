@@ -9,18 +9,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useApi, useApiCallback } from "../../../../../../hooks";
 
 export const ComingSoonManagementBlock: React.FC = () => {
-  const getCountryTimezones = useApiCallback(
-    (
-      api,
-      { countryKey, goLiveDate }: { countryKey: string; goLiveDate: string }
-    ) => api.webbackoffice.getCountryTimezone({ countryKey, goLiveDate })
-  );
 
-  getCountryTimezones.execute({
-    countryKey: "AUS",
-    goLiveDate: "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
+  const getCountryTimezones = useApiCallback((api, args) => {
+    const { countryKey, goLiveDate } = args as {
+      countryKey: any;
+      goLiveDate: any;
+    };
+    return api.webbackoffice.getCountryTimezone({ countryKey, goLiveDate });
   });
-  console.log("mappedData", getCountryTimezones.result?.data);
+
+  // const mappedData = getCountryTimezones.result?.data?.map((item) => ({
+  //   label: item.countryKey,
+  //   value: item.countryKey,
+  // })) ?? [];
+
+  // console.log("mappedData", getCountryTimezones.result?.data);
+
+
 
   const form = useForm<ContentDateType>({
     mode: "all",
@@ -31,6 +36,16 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
   function onSubmit(values: ContentDateType) {
     console.log("go live value", values);
+
+    if (Array.isArray(values.countryKey)) {
+      values.countryKey.forEach((key) => {
+        getCountryTimezones.execute({
+          countryKey: key,
+          goLiveDate: values.goLiveDate?.toString() || "",
+        });
+      });
+    }
+
     setValue("isActive", true);
   }
 
@@ -44,12 +59,12 @@ export const ComingSoonManagementBlock: React.FC = () => {
     setIsSwitchOn(event.target.checked);
     setValue("hasNoSchedule", !event.target.checked);
   };
-
   const watchEventName = watch("eventName");
-  const watchEnvironment = watch("environment");
+  const watchEnvironment = watch("TargetEnvironment");
   const watchDescription = watch("description");
   const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
+  
 
   return (
     <Stack direction={"column"} spacing={2}>

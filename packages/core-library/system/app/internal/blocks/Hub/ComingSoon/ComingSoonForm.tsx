@@ -8,7 +8,7 @@ import {
 } from "../../../../../../components";
 import { ContentDateType } from "./validation";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
-import { environment } from "./ComingSoonMock";
+import { TargetEnvironment } from "./ComingSoonMock";
 import ComingSoonPreview from "./ComingSoonPreview";
 
 type ComingSoonProps = {
@@ -95,8 +95,8 @@ const ComingSoonForm = ({
             Environment:
           </Typography>
           <ControlledSelectField
-            options={environment}
-            name="environment"
+            options={TargetEnvironment}
+            name="TargetEnvironment"
             control={control}
             sx={{
               borderRadius: "8px",
