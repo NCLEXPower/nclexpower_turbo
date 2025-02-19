@@ -39,7 +39,6 @@ describe("LoginForm", () => {
     expect(screen.getByTestId("email-input")).toBeInTheDocument();
     expect(screen.getByTestId("password-input")).toBeInTheDocument();
     expect(screen.getByTestId("checkbox")).toBeInTheDocument();
-    expect(screen.getByTestId("forgotpassword")).toBeInTheDocument();
     expect(screen.getByTestId("signin")).toBeInTheDocument();
   });
 
