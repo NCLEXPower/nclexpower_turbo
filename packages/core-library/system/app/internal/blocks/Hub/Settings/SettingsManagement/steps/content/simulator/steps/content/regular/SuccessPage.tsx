@@ -45,7 +45,7 @@ export const SuccessPage: React.FC<Props> = (props) => {
       padding="1rem"
       data-testid={`${type_identifier}-question`}
     >
-      <CheckCircleIcon sx={{ fontSize: 100, color: "#37BEC7" }} />
+      <CheckCircleIcon sx={{ fontSize: 100, color: "" }} />
       <Typography
         variant="inherit"
         paddingY="32px"
@@ -73,7 +73,6 @@ export const SuccessPage: React.FC<Props> = (props) => {
           data-testid="create-new-button"
           onClick={handleCreateNew}
           sx={{
-            backgroundColor: "#7222B1",
             height: "45px",
             borderRadius: "10px",
             marginTop: "10px",
@@ -86,4 +85,12 @@ export const SuccessPage: React.FC<Props> = (props) => {
       </Box>
     </Box>
   );
+};
+
+export const SuccessView = () => {
+  return <Box></Box>;
+};
+
+export const ErrorView = () => {
+  return;
 };

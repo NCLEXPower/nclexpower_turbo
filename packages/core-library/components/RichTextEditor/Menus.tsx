@@ -3,9 +3,14 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import UndoIcon from "@mui/icons-material/Undo";
+import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import RedoIcon from "@mui/icons-material/Redo";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
 import React from "react";
+import SuperscriptIcon from "@mui/icons-material/Superscript";
 import { Editor } from "@tiptap/react";
 import { CustomMenusType, MenuButtonType } from "../../types/editor-type";
 
@@ -177,20 +182,62 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
     createButton(
       "Toggle Superscript",
       () => editor.chain().focus().toggleSuperscript().run(),
-      undefined,
-      editor.isActive('superscript')
-    ),
-    createButton(
-      "Set Superscript",
-      () => editor.chain().focus().setSuperscript().run(),
-      undefined,
-      editor.isActive('superscript')
+      <SuperscriptIcon />,
+      editor.isActive("superscript")
     ),
     createButton(
       "Unset Superscript",
       () => editor.chain().focus().unsetSuperscript().run(),
       undefined,
-      !editor.isActive('superscript')
+      !editor.isActive("superscript")
+    ),
+  ];
+
+  const textAlign: MenuButtonType[] = [
+    createButton(
+      "Align Left",
+      () => editor.chain().focus().setTextAlign("left").run(),
+      <FormatAlignLeftIcon />,
+      false,
+      editor.isActive({ textAlign: "left" })
+    ),
+    createButton(
+      "Align Center",
+      () => editor.chain().focus().setTextAlign("center").run(),
+      <FormatAlignCenterIcon />,
+      false,
+      editor.isActive({ textAlign: "center" })
+    ),
+    createButton(
+      "Align Right",
+      () => editor.chain().focus().setTextAlign("right").run(),
+      <FormatAlignRightIcon />,
+      false,
+      editor.isActive({ textAlign: "right" })
+    ),
+  ];
+
+  const colors: MenuButtonType[] = [
+    createButton(
+      "Text Blue",
+      () => editor.chain().focus().setColor("#0000FF").run(),
+      <FormatColorTextIcon sx={{ color: "#0000FF" }} />,
+      false,
+      editor.isActive("textStyle", { color: "#0000FF" })
+    ),
+    createButton(
+      "Text Red",
+      () => editor.chain().focus().setColor("#FF0000").run(),
+      <FormatColorTextIcon sx={{ color: "#FF0000" }} />,
+      false,
+      editor.isActive("textStyle", { color: "#FF0000" })
+    ),
+    createButton(
+      "Unset Color",
+      () => editor.chain().focus().unsetColor().run(),
+      <FormatColorTextIcon />,
+      false,
+      editor.isActive("textStyle", { color: "#000000" })
     ),
   ];
 
@@ -199,15 +246,17 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
       case "default":
         return [...typographyStyles];
       case "questions":
-        return [...typographyStyles, ...listStyles];
+        return [...typographyStyles, ...listStyles, ...textAlign];
       case "casestudy":
         return [
-          ...typographyStyles,
           ...headings,
+          ...typographyStyles,
+          ...colors,
+          ...textAlign,
           ...listStyles,
           ...tableButtons,
+          ...superScript,
           ...revertButtons,
-          ...superScript
         ];
       default:
         return [];

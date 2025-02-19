@@ -6,6 +6,7 @@ import {
 } from "../../../types";
 import { initAnswerValues } from "../../../constants/constants";
 import {
+  CaseStudyType,
   DDCAnswerOptionType,
   DNDAnswerOptionType,
   HCPNAnswerOptionType,
@@ -448,14 +449,25 @@ export const containedCaseStudyQuestionSchema = yup
   .object({
     caseName: yup
       .array()
+      .transform((value) => (Array.isArray(value) ? value : [value]))
       .min(1, "Please select at least 1 case name")
       .required("Select at least 1 case name"),
     formId: yup.string(),
+    caseType: yup.mixed<CaseStudyType>().required(),
+    caseNum: yup.number().required(),
     nurseNotes: yup.array(bgInfoContent).default([]),
     hxPhy: yup.array(bgInfoContent).default([]),
     labs: yup.array(bgInfoContent).default([]),
     orders: yup.array(bgInfoContent).default([]),
     type: yup.mixed<CaseStudyQuestionSelectionOptions>().optional(),
     main_type: yup.mixed<QuestionSelectionOptions>().default("Case Study"),
+    rationale: yup.string().when("$step", {
+      is: 2,
+      then: (schema) => schema.required("Rationale is Required"),
+    }),
+    mainText: yup.string().when("$step", {
+      is: 2,
+      then: (schema) => schema.required("Main Text Field is Required"),
+    }),
   })
   .concat(caseStudyQuestionnaireSchema);

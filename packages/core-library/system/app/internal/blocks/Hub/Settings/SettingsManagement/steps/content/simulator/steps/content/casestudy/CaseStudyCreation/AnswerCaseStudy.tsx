@@ -15,11 +15,14 @@ import { GenericSelectField } from "../../../../../../../../../../../../../../co
 import {
   initAnswerValues,
   maxPoints,
-  questionType as questionTypeOptions,
+  questionTypes as questionTypeOptions,
   tabsSequence,
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
-import { ContainedCaseStudyQuestionType } from "../../../../types";
+import {
+  CaseStudyType,
+  ContainedCaseStudyQuestionType,
+} from "../../../../types";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
 import { memo, useEffect, useRef, useState } from "react";
@@ -35,12 +38,14 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
+
   if (!questionnaires) return;
+
   const questionType = watch(`questionnaires.${index}.questionType`);
-
   const { handleTableInsertion } = useTableInsertion({ questionType, index });
-
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
+  const caseType: CaseStudyType = watch("caseType");
+  const isStandAlone = watch("caseType") === "STANDALONE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -85,7 +90,7 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
               label="Question Type:"
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
               onChange={(value) => handleReset(value)}
-              options={questionTypeOptions ?? []}
+              options={questionTypeOptions[caseType] ?? []}
               width="60%"
             />
             <GenericSelectField
@@ -93,6 +98,7 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
               name={`questionnaires.${index}.seqNum`}
               label="Sequence No. :"
               options={tabsSequence ?? []}
+              disabled={isStandAlone}
               width="35%"
             />
           </Box>

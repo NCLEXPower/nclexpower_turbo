@@ -8,11 +8,13 @@ import { ContainedCaseStudyQuestionType } from "../../../../types";
 import {
   Button,
   Card,
+  ControlledRichTextEditor,
   Tabs,
+  TextField,
 } from "../../../../../../../../../../../../../../components";
 import { Box, Typography } from "@mui/material";
 import { AnswerCaseStudy } from "./AnswerCaseStudy";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
@@ -58,14 +60,25 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
-  const { getValues, reset: formReset, formState, handleSubmit } = form;
+  const {
+    getValues,
+    reset: formReset,
+    formState,
+    handleSubmit,
+    control,
+    watch,
+  } = form;
   const { errors } = formState;
+  const isStandAlone = watch("caseType") === "STANDALONE";
+  const ITEM_LENGTH = isStandAlone ? 1 : 6;
+
+  console.log(watch());
 
   useEffect(() => {
     setContentLoader(true);
     setTimeout(() => {
       setContentLoader(false);
-    }, 6000);
+    }, 3000);
   }, []);
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
@@ -84,7 +97,9 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     return InfoTabs.map((tab, index) => ({
       id: index,
       title: tab.title,
-      content: <BackgroundInfoTab type={tab.type} />,
+      content: (
+        <BackgroundInfoTab type={tab.type} isSequenceDisabled={isStandAlone} />
+      ),
     }));
   };
 
@@ -105,7 +120,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const { infoTabs, tabsItem } = useMemo(
     () => ({
       infoTabs: generateInfoTabs(),
-      tabsItem: generateTabsItemQuestion(6),
+      tabsItem: generateTabsItemQuestion(ITEM_LENGTH),
     }),
     [values]
   );
@@ -113,6 +128,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   if (contentLoader) {
     return <CaseStudyLoader />;
   }
+
   return (
     <Box>
       <FormProvider {...form}>
@@ -143,7 +159,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 mb: 3,
               }}
             >
-              Background Info:
+              Main Text:
             </Typography>
             <Card
               sx={{
@@ -155,13 +171,37 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 borderColor: "#0B225C",
               }}
             >
-              <Tabs
-                width="fit-content"
-                selectedTabIndex={(value) => setSelectedIndex(value)}
-                tabsItem={infoTabs}
-              />
+              <ControlledRichTextEditor editorFor="default" name="mainText" />
             </Card>
+            <Box mt={3}>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "16px",
+                  mb: 3,
+                }}
+              >
+                Background Info:
+              </Typography>
+              <Card
+                sx={{
+                  width: "100%",
+                  overflowY: "auto",
+                  position: "relative",
+                  borderRadius: "10px",
+                  border: 1,
+                  borderColor: "#0B225C",
+                }}
+              >
+                <Tabs
+                  width="fit-content"
+                  selectedTabIndex={(value) => setSelectedIndex(value)}
+                  tabsItem={infoTabs}
+                />
+              </Card>
+            </Box>
           </Box>
+
           <Box height={"90%"} width={"45%"}>
             <Typography
               sx={{
@@ -185,6 +225,35 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
               <Tabs width="fit-content" tabsItem={tabsItem} />
             </Card>
           </Box>
+        </Box>
+
+        <Box mt={3}>
+          <Typography
+            sx={{
+              fontWeight: 600,
+              fontSize: "16px",
+              mb: 3,
+            }}
+          >
+            Rationale
+          </Typography>
+          <Card
+            sx={{
+              width: "100%",
+              overflowY: "auto",
+              position: "relative",
+              borderRadius: "10px",
+              border: 1,
+              borderColor: "#0B225C",
+            }}
+          >
+            <ControlledRichTextEditor
+              name="rationale"
+              control={control}
+              editorFor="casestudy"
+              placeholder="Add text"
+            />
+          </Card>
         </Box>
       </FormProvider>
       <Box

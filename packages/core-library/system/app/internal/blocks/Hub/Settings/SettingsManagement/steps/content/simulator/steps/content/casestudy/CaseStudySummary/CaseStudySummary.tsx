@@ -88,7 +88,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     setContentLoader(true);
     setTimeout(() => {
       setContentLoader(false);
-    }, 6000);
+    }, 3000);
   }, []);
 
   const handleClick = () => {
@@ -96,22 +96,24 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   };
 
   async function onSubmit() {
+    console.log(caseStudyAtom);
+
     try {
-      if (caseStudyAtom) {
-        const result = await createCaseStudyQuestion.execute(
-          convertToCreateCaseStudy(caseStudyAtom, internal)
-        );
-        if (result.status === 200)
-          toast.executeToast(
-            "Case Study created successfully",
-            "top-right",
-            false,
-            {
-              toastId: 0,
-              type: "success",
-            }
-          );
-      }
+      // if (caseStudyAtom) {
+      //   const result = await createCaseStudyQuestion.execute(
+      //     convertToCreateCaseStudy(caseStudyAtom, internal)
+      //   );
+      //   if (result.status === 200)
+      //     toast.executeToast(
+      //       "Case Study created successfully",
+      //       "top-right",
+      //       false,
+      //       {
+      //         toastId: 0,
+      //         type: "success",
+      //       }
+      //     );
+      // }
     } catch (error) {
       toast.executeToast(
         "An error occurred while creating case study.",
