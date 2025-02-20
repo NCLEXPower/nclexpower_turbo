@@ -57,7 +57,7 @@ interface Props {
   handleEditProgramSection: (section: any) => void;
   handleDeleteProgramSection: (sectionId: string) => void;
   handleRemoveSection: (index: number) => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 export const ProgramManagementListEditField: React.FC<Props> = ({

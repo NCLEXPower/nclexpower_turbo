@@ -67,8 +67,14 @@ jest.mock('react-hook-form', () => ({
   }),
 }));
 
+beforeAll(() => {
+  global.URL.createObjectURL = jest.fn(() => 'http://dummyurl.com');
+});
+
+
 describe("ProgramManagementListEditField", () => {
   const defaultProps = {
+    isLoading: true,
     onSave: mockOnSave,
     handleBack: mockHandleBack,
     fileName: "",

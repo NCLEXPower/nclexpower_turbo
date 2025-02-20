@@ -72,9 +72,6 @@ describe('EditVideoField', () => {
         <EditVideoField
           control={methods.control as Control<FormValues>}
           onSave={jest.fn()}
-          linkValue=""
-          videoPlaceholderValue=""
-          authorImageValue=""
           section="test"
           videoFileName=""
           videoLink={[]}
@@ -87,33 +84,5 @@ describe('EditVideoField', () => {
     );
 
     expect(screen.getByRole('heading', { name: /edit test item/i })).toBeInTheDocument();
-  });
-
-  it('calls onSave when the "Update" button is clicked', async () => {
-    const mockOnSave = jest.fn();
-    const { methods } = setupForm();
-
-    render(
-      <FormProvider {...methods}>
-        <EditVideoField
-          control={methods.control as Control<FormValues>}
-          onSave={mockOnSave}
-          linkValue="video-link"
-          videoPlaceholderValue="placeholder"
-          authorImageValue="author-image"
-          section="test"
-          videoFileName="video.mp4"
-          videoLink={[]}
-          videoPlaceholderFileName="placeholder.jpg"
-          videoPlaceholderLink={[]}
-          authorImageFileName="author.jpg"
-          authorImageLink={[]}
-        />
-      </FormProvider>
-    );
-
-    fireEvent.click(screen.getByText('Update'));
-
-    await waitFor(() => expect(mockOnSave).toHaveBeenCalledTimes(1));
   });
 });

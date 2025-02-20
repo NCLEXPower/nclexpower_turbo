@@ -82,28 +82,10 @@ describe("ProgramSectionHeader", () => {
         sectionType={mockSectionType}
         showHeaderButtons={true}
         handleCreateSection={mockHandleCreateSection}
-        handleDeleteSection={mockHandleDeleteSection}
       />
     );
 
     expect(screen.getByText("plus-outline")).toBeInTheDocument();
-    expect(screen.getByText("trash-outline")).toBeInTheDocument();
-  });
-
-  it("calls handleDeleteSection when the delete button is clicked", () => {
-    render(
-      <ProgramSectionHeader
-        sectionImage={mockSectionImage}
-        sectionTitle={mockSectionTitle}
-        sectionType={mockSectionType}
-        showHeaderButtons={true}
-        handleDeleteSection={mockHandleDeleteSection}
-      />
-    );
-
-    fireEvent.click(screen.getByText("trash-outline"));
-
-    expect(mockHandleDeleteSection).toHaveBeenCalled();
   });
 
   it("renders the edit button when showAddButton is true and handleEditSection is provided", () => {

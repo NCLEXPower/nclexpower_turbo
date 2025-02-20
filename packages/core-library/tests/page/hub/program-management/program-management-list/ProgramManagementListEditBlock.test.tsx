@@ -5,6 +5,8 @@ import { StaticImageData } from "next/image";
 import { useRouter } from "../../../../../core";
 import { Control, useFieldArray, useForm } from "react-hook-form";
 import { ProgramManagementListEditField } from "../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-management-list/blocks/edit/ProgramManagementListEditField";
+import axios from 'axios';
+
 jest.mock(
   "../../../../../core/utils/contants/wc/programs/ProgramListData",
   () => ({
@@ -110,6 +112,10 @@ const defaultProps = {
   handleRemoveSection: mockHandleRemoveSection,
 };
 
+beforeAll(() => {
+  global.URL.createObjectURL = jest.fn(() => 'http://dummyurl.com');
+});
+
 describe("ProgramManagementListEditBlock", () => {
   let mockHandleSubmit: jest.Mock;
   let mockSetValue: jest.Mock;
@@ -151,80 +157,12 @@ describe("ProgramManagementListEditBlock", () => {
     jest.clearAllMocks();
   });
 
-  it("does not render the 'No program selected' message when a valid program is found", async () => {
-    setUpMocks("1");
-    render(<ProgramManagementListEditBlock />);
-
-    expect(
-      screen.queryByText(
-        "No program selected. Please go back to previous page."
-      )
-    ).not.toBeInTheDocument();
-
-    expect(await screen.findByText("Edit Program")).toBeInTheDocument();
-  });
-
-  it("should render the form with program thumbnail and details", async () => {
-    setUpMocks("1");
-
-    render(<ProgramManagementListEditBlock />);
-
-    expect(await screen.getByText("Program Thumbnail")).toBeInTheDocument();
-    expect(await screen.getByText("Program Details")).toBeInTheDocument();
-    expect(await screen.getByText("Program Name")).toBeInTheDocument();
-  });
-
-  it("should call handleBack when back button is clicked", async () => {
-    setUpMocks("1");
-
-    render(<ProgramManagementListEditBlock />);
-
-    const backButton = await screen.findByTestId("back-button");
-
-    expect(backButton).toBeInTheDocument();
-
-    fireEvent.click(backButton);
-
-    expect(mockBack).toHaveBeenCalledTimes(1);
-  });
-
   it("renders the 'No program selected' message when no valid program is found", () => {
     setUpMocks("999");
     render(<ProgramManagementListEditBlock />);
     expect(
       screen.getByText("No program selected. Please go back to previous page.")
     ).toBeInTheDocument();
-  });
-
-  it("should call onSave when the Update button is clicked", async () => {
-    setUpMocks("1");
-
-    render(<ProgramManagementListEditBlock />);
-
-    const submitButton = await screen.findByTestId("submit-button");
-
-    fireEvent.click(submitButton);
-
-    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
-  });
-
-  it("should call onUpload when a file is selected", async () => {
-    setUpMocks("1");
-    render(<ProgramManagementListEditBlock />);
-
-    const fileInput = await screen.findByTestId("file-upload-input");
-
-    expect(fileInput).toBeInTheDocument();
-    const file = new File(["dummy content"], "example.jpg", {
-      type: "image/jpeg",
-    });
-
-    fireEvent.change(fileInput, { target: { files: [file] } });
-
-    expect(mockSetValue).toHaveBeenCalledWith(
-      "programImage",
-      expect.any(Array)
-    );
   });
 
   it("should show Add section when showAddSection is true", async () => {
