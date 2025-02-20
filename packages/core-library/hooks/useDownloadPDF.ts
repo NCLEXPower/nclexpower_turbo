@@ -27,12 +27,9 @@ export const useDownloadPDF = () => {
 
   const downloadPdf = async (policyType: number) => {
     try{
-      console.log("Executing API call...");
       const response = await downloadPdfCb.execute(policyType);
-      console.log("API Response Data:", response.data); // Debugging
       const fileUrl = response.data.fileUrl;
-      console.log(response.data.fileUrl);
-
+      
       if (!fileUrl) {
         throw new Error("File URL not found!");
       }
