@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
 
-export const getAllRoutes = (dir: string): string[] => {
-  const resolveDir = path.join(process.cwd(), dir);
+export const getAllRoutes = (): string[] => {
+  const resolveDir = path.join(__dirname, "..");
+
+  console.log("Resolved Dir:", resolveDir);
 
   if (!fs.existsSync(resolveDir)) {
     console.warn(`Directory does not exist: ${resolveDir}`);
