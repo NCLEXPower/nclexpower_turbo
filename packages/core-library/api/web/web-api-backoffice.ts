@@ -51,6 +51,7 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  DeleteReportIssuesParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -451,5 +452,11 @@ export class WebApiBackOffice {
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
+  }
+
+  public async deleteReportIssue(params: DeleteReportIssuesParams) {
+    return await this.axios.delete(
+      `/api/v1/Customer/delete-report-issue?${qs.stringify({ ...params })}`
+    )
   }
 }

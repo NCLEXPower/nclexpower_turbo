@@ -745,6 +745,10 @@ export type CaseNameResponseType = {
   dateCreated: string;
 };
 
+export type DeleteReportIssuesParams = {
+  id: string;
+}
+
 export type DeleteCaseNameParams = {
   id: string;
 };
