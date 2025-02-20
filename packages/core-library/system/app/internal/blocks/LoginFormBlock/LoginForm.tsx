@@ -43,7 +43,8 @@ export const LoginForm: React.FC<Props> = ({
     defaultValues: loginSchema.getDefault(),
   });
 
-  const { control, handleSubmit, clearErrors, setFocus, setValue, formState } = form;
+  const { control, handleSubmit, clearErrors, setFocus, setValue, formState } =
+    form;
   const { showPassword, handleClickShowPassword } = useShowPassword();
   useFormFocusOnError<LoginFormType>(formState.errors, setFocus);
 
@@ -152,15 +153,6 @@ export const LoginForm: React.FC<Props> = ({
           sx={{ borderRadius: 4, fontSize: "14px" }}
           data-testid="checkbox"
         />
-        <Typography component="span" variant="caption">
-          <Link
-            href="/account/forgot-password"
-            style={{ textDecoration: "underline", color: "#3C31DD" }}
-            data-testid="forgotpassword"
-          >
-            Forgot Password?
-          </Link>
-        </Typography>
       </Grid>
 
       <Button

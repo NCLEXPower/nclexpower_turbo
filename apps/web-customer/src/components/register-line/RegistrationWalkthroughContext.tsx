@@ -9,7 +9,7 @@ import {
   useApiCallback,
   useBeforeUnload,
   useFormDirtyState,
-  useRecaptcha
+  useRecaptcha,
 } from "core-library/hooks";
 import { SelectedProductType } from "core-library/types/global";
 import { useExecuteToast } from "core-library/contexts";
@@ -57,11 +57,11 @@ export const useRegistrationWalkthroughFormContext = () => {
     );
   }
   return useContext(RegistrationWizardFormContext);
-}
+};
 
-export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChildren> = ({
-  children
-}) => {
+export const RegistrationWizardFormContextProvider: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
   const router = useRouter();
   const { reset: resetActiveStep } = useActiveSteps(0);
 
@@ -95,10 +95,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
     handleClickShowconfirmPassword,
   } = useShowPassword();
 
-  async function onSubmit(
-    values: RegistrationFormType,
-    token: string | null
-  ) {
+  async function onSubmit(values: RegistrationFormType, token: string | null) {
     const { productId, amount } = orderDetail;
 
     if (!productId || !amount || !token) return reset();
@@ -112,6 +109,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
       orderNumber: orderNumberCb.result?.data,
       productId,
       totalAmount: amount,
+      privacyServicePolicy: values.termsofservice,
     };
 
     try {
@@ -179,9 +177,7 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
         value={useMemo(
           () => ({
             methods,
-            isLoading:
-              isLoading ||
-              orderNumberCb.loading,
+            isLoading: isLoading || orderNumberCb.loading,
             isDirty,
             setIsDirty,
             onSubmit,
@@ -193,22 +189,25 @@ export const RegistrationWizardFormContextProvider: React.FC<React.PropsWithChil
             passwordCriteria,
             recaptchaRef,
             siteKey,
-          }), [
-          methods,
-          isDirty,
-          setIsDirty,
-          isLoading,
-          onSubmit,
-          showPassword,
-          showconfirmPassword,
-          handleClickShowPassword,
-          handleClickShowconfirmPassword,
-          passwordCriteria,
-          recaptchaRef,
-          siteKey,
-        ])}>
+          }),
+          [
+            methods,
+            isDirty,
+            setIsDirty,
+            isLoading,
+            onSubmit,
+            showPassword,
+            showconfirmPassword,
+            handleClickShowPassword,
+            handleClickShowconfirmPassword,
+            passwordCriteria,
+            recaptchaRef,
+            siteKey,
+          ]
+        )}
+      >
         {children}
       </RegistrationWizardFormContext.Provider>
     </FormProvider>
   );
-}
+};

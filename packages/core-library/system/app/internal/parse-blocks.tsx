@@ -23,7 +23,6 @@ import {
   DuplicateSessionBlock,
   ChatbotManagementBlock,
   ContactUsManagementBlock,
-  SalesManagementBlock,
   AnnouncementManagementBlock,
   ProgramManagementListBlock,
   ProgramManagementListCreateBlock,
@@ -34,6 +33,7 @@ import {
   ProgramSectionManagementEditItemBlock,
   ComingSoonManagementBlock,
   CaseNameManagementBlock,
+  AnalyticsBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -82,7 +82,7 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
     case "ContactUsManagementBlock":
       return <ContactUsManagementBlock />;
     case "SalesManagement":
-      return <SalesManagementBlock />;
+      return <AnalyticsBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
     case "ProgramManagementListBlock":

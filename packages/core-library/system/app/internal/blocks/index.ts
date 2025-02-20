@@ -21,7 +21,6 @@ export * from "./Hub/Product/InclusionBlock";
 export * from "./DuplicateSession/DuplicateSessionBlock";
 export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";
-export * from "./Hub/SalesManagement/SalesManagementBlock";
 export * from "./Hub/Announcement/AnnouncementManagementBlock";
 export * from "./Hub/ProgramManagement/program-management-list/ProgramManagementListBlock";
 export * from "./Hub/ProgramManagement/program-management-list/blocks/create/ProgramManagementListCreateBlock";
@@ -35,3 +34,4 @@ export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAc
 export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";
 export * from "./Hub/QuestionManagement/CaseNameManagementBlock";
+export * from "./Hub/Analytics/AnalyticsBlock";
