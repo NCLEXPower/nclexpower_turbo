@@ -82,7 +82,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
       await api.webbackoffice.createRegularQuestion(args)
   );
   const { internal } = useSensitiveInformation();
-  const toast = useExecuteToast();
+  const { showToast } = useExecuteToast();
 
   useEffect(() => {
     setContentLoader(true);
@@ -95,44 +95,28 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     setIsTableView((prev) => !prev);
   };
 
-  async function onSubmit() {
-    console.log(caseStudyAtom);
-
-    try {
-      // if (caseStudyAtom) {
-      //   const result = await createCaseStudyQuestion.execute(
-      //     convertToCreateCaseStudy(caseStudyAtom, internal)
-      //   );
-      //   if (result.status === 200)
-      //     toast.executeToast(
-      //       "Case Study created successfully",
-      //       "top-right",
-      //       false,
-      //       {
-      //         toastId: 0,
-      //         type: "success",
-      //       }
-      //     );
-      // }
-    } catch (error) {
-      toast.executeToast(
-        "An error occurred while creating case study.",
-        "top-right",
-        false,
-        {
-          toastId: 0,
-          type: "error",
-        }
-      );
-    } finally {
-      nextStep({});
-      next();
-    }
-  }
   const handlePrevious = () => {
     previousStep();
     previous();
   };
+
+  async function onSubmit() {
+    try {
+      if (caseStudyAtom) {
+        const result = await createCaseStudyQuestion.execute(
+          convertToCreateCaseStudy(caseStudyAtom, internal)
+        );
+        if (result.status === 200) {
+          showToast("Case Study created successfully", "success");
+          nextStep({});
+          next();
+        }
+      }
+    } catch (error) {
+      handlePrevious();
+      showToast("An error occurred while creating case study.", "error");
+    }
+  }
 
   if (contentLoader) {
     return <CaseStudyLoader />;

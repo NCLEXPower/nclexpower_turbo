@@ -29,6 +29,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { Instruction } from "./components/Instruction";
 import { CustomFields } from "./components/CustomFields";
 import { useTableInsertion } from "../../hooks/useTableInsertion";
+import { boolean } from "yup";
 
 interface Props {
   index: number;
@@ -52,6 +53,23 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
     setValue(`questionnaires.${index}.itemNum`, index + 1);
     setValue(`questionnaires.${index}.questionType`, questionType);
   }, [index, getValues, questionType]);
+
+  const handleUpdateSeqNumber = (value: string) => {
+    const parsedvalue = parseInt(value);
+    setValue(`questionnaires.${index}.seqNum`, parsedvalue);
+
+    if (questionnaires) {
+      const [question] = questionnaires.filter((q) => q.seqNum === parsedvalue);
+      if (question?.transitionHeader) {
+        setValue(
+          `questionnaires.${index}.transitionHeader`,
+          question.transitionHeader
+        );
+        return;
+      }
+    }
+    setValue(`questionnaires.${index}.transitionHeader`, "");
+  };
 
   const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
     resetField(`questionnaires.${index}`);
@@ -97,6 +115,7 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
               name={`questionnaires.${index}.seqNum`}
               label="Sequence No. :"
+              onChange={handleUpdateSeqNumber}
               options={tabsSequence ?? []}
               disabled={isStandAlone}
               width="35%"
