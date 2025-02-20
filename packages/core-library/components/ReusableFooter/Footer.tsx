@@ -118,6 +118,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
                     lineHeight: 1,
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
+                    textDecoration: "underline",
+                    textDecorationColor: "#FFD700",
+                    textUnderlineOffset: "4px"
                   }}
                 >
                   {props.info.phone}
@@ -127,6 +130,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
                     lineHeight: 1,
                     fontSize: { xs: "12px", sm: "13px", md: "14px" },
                     width: "fit-content",
+                    textDecoration: "underline",
+                    textDecorationColor: "#FFD700",
+                    textUnderlineOffset: "4px"
                   }}
                 >
                   {props.info.website}
