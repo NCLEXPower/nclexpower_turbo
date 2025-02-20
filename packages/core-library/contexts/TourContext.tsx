@@ -1,24 +1,23 @@
-import React, { createContext, useContext } from "react";
-import { TourProvider, StepType } from "@reactour/tour";
+import { createContext, useCallback, useContext } from "react";
+import { TourProvider, StepType, useTour } from "@reactour/tour";
 
-interface TourContextProps {}
+interface TourContextProps {
+  startTour: (steps: StepType[]) => void;
+}
 
 const TourContext = createContext<TourContextProps | undefined>(undefined);
 
 export const useTourContext = () => {
-  if (!TourContext) {
+  const context = useContext(TourContext);
+  if (!context) {
     throw new Error("useTourContext must be used within a TourProviderWrapper");
   }
-  return useContext(TourContext);
+  return context;
 };
 
-interface TourProviderProps {
-  steps: StepType[];
-}
-
-export const TourContextProvider: React.FC<
-  React.PropsWithChildren<TourProviderProps>
-> = ({ children, steps }) => {
+export const TourContextProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const radius = 4;
   const style = {
     popover: (base: any) => ({
@@ -32,20 +31,37 @@ export const TourContextProvider: React.FC<
   };
 
   return (
-    <TourContext.Provider value={{}}>
-      <TourProvider
-        steps={steps}
-        padding={{
-          mask: 2,
-          popover: [5, 10],
-        }}
-        styles={style}
-        badgeContent={({ totalSteps, currentStep }) =>
-          `${currentStep + 1}/${totalSteps}`
-        }
-      >
-        {children}
-      </TourProvider>
+    <TourProvider
+      steps={[]}
+      padding={{
+        mask: 2,
+        popover: [5, 10],
+      }}
+      styles={style}
+      badgeContent={({ totalSteps, currentStep }) =>
+        `${currentStep + 1}/${totalSteps}`
+      }
+    >
+      <TourContextInner>{children}</TourContextInner>
+    </TourProvider>
+  );
+};
+
+const TourContextInner: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { setIsOpen, setSteps, setCurrentStep } = useTour();
+
+  const startTour = useCallback(
+    (steps: StepType[]) => {
+      setSteps?.(steps);
+      setCurrentStep(0);
+      setIsOpen(!!steps.length);
+    },
+    [setSteps, setCurrentStep, setIsOpen]
+  );
+
+  return (
+    <TourContext.Provider value={{ startTour }}>
+      {children}
     </TourContext.Provider>
   );
 };

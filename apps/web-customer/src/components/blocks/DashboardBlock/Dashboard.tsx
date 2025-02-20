@@ -11,23 +11,14 @@ import {
   CurrentProgress2,
 } from "./DashboardAnalytics";
 import { userData } from "./DashboardAnalytics/DashboardMock";
-import { useLocalStorage, useSensitiveInformation } from "core-library/hooks";
+import { useSensitiveInformation } from "core-library/hooks";
 import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
-import { useTour } from "@reactour/tour";
-import { useEffect } from "react";
+import { HubTourSteps } from "./hubTourSteps";
+import { useTourContext } from "core-library/contexts";
 
 export const Dashboard: React.FC = () => {
   const { customer } = useSensitiveInformation();
-  const { setIsOpen } = useTour();
-  const { getItem, setItem } = useLocalStorage<string>("HubTourKey");
-
-  useEffect(() => {
-    const tour = getItem();
-    if (!tour) {
-      setIsOpen(true);
-      setItem("HubTourKey");
-    }
-  }, [setIsOpen]);
+  const { startTour } = useTourContext();
 
   const customerName = formatCustomerName(customer);
 
@@ -40,6 +31,7 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="w-dvw flex flex-col flex-wrap xl:grid xl:grid-cols-12 xl:auto-rows-auto xl:w-full gap-3 p-6 h-full lg:grid-flow-row xl:grid-flow-row-dense">
+      <button onClick={() => startTour(HubTourSteps)}>START TOUR</button>
       <div className="col-span-12 col-start-3">
         <Typography
           sx={{

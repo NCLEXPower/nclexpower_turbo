@@ -47,16 +47,16 @@ export const HubTourSteps: TourStep[] = [
   {
     selector: "[data-tour='step-9']",
     content:
-      "Analyze your performance across different patient need categories. Compare your current progress against your target goals to identify improvement areas.",
+      "Analyze your Comprehensive CAT performance across different patient needs categories. See which areas need further improvement to help you strengthen your confidence!",
   },
   {
     selector: "[data-tour='step-10']",
     content:
-      "This section breaks down your performance across various topics. Use it to track trends and adjust your study approach as needed.",
+      "This graph breaks down your performance across various topic categories. Use it to track trends and adjust your study approach as needed.",
   },
   {
     selector: "[data-tour='step-11']",
     content:
-      "This graph tracks the consistency of your ability estimates (Theta) over multiple CAT tests. A stable trend indicates consistent performance, while fluctuations may suggest varying test difficulties or learning progress.",
+      "This graph tracks the consistency of your ability estimates (Theta) over multiple Comprehensive CAT tests. A stable trend indicates consistent performance – aim for the passing mark each time and boost your confidence for the actual exam!",
   },
 ];

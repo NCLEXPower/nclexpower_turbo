@@ -38,7 +38,7 @@ export const Layout: React.FC<Props> = ({ questionaire, data }) => {
               <QueryClientProvider client={queryClient}>
                 <div className="min-h-screen flex flex-col bg-slate-100">
                   <AlertMessageV2Provider>
-                    <TourContextProvider steps={TourSteps}>
+                    <TourContextProvider>
                       <ToolbarSettingsProvider>
                         {hasAccessToken && <Header logout={logout} current={itemselect[0]?.current} />}
                         <PageContainer selectedItem={itemselect}>
