@@ -101,7 +101,7 @@ export const RemoveProgramDialogContent: React.FC<
               onCopy={(e) => e.preventDefault()}
             >
               In order to delete this topic, type{" "}
-              <strong>[{programTitle}]</strong> in the text below to confirm.
+              <strong>{programTitle}</strong> in the text below to confirm.
             </Typography>
 
             <TextField

@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import { Button } from "../../../../../../../../../components";
 import { useRouter } from "../../../../../../../../../core";
@@ -24,6 +24,8 @@ import { usePageLoaderContext } from "../../../../../../../../../contexts/PageLo
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { useExecuteToast } from "../../../../../../../../../contexts";
+import { useApiCallback } from "../../../../../../../../../hooks";
+import { CreateSectionParams } from "../../../../../../../../../api/types";
 
 const sectionComponents: Record<string, React.FC<any>> = {
   document: CreateDocument,
@@ -31,7 +33,7 @@ const sectionComponents: Record<string, React.FC<any>> = {
   video: CreateVideo,
   simulator: CreateSimulator,
   "content-cards": CreateContentCards,
-  CAT: CreateCATSimulator,
+  cat: CreateCATSimulator,
 };
 
 export const ProgramSectionManagementCreateBlock = () => {
@@ -41,26 +43,114 @@ export const ProgramSectionManagementCreateBlock = () => {
   const { showToast } = useExecuteToast();
   const { contentLoader, setContentLoader } = usePageLoaderContext();
 
+  const createSectionCB = useApiCallback(
+    async (api, args: CreateSectionParams) =>
+      await api.webbackoffice.createSection(args)
+  );
+
   const handleBack = () => {
     router.back();
   };
 
-  const handleSubmitSection = async (values: SectionFormType) => {
-    console.log(values);
-    // add api logic here for creating section per sectionType
-    switch (sectionType) {
-      case "document":
-        break;
-      default:
-        break;
-    }
+  const handleSubmitSection = async (
+    values: SectionFormType,
+    reset: () => void
+  ) => {
+    if (!values) return;
+
+    const getPayload = () => {
+      switch (sectionType) {
+        case "document":
+        case "med-cards":
+          if ("title" in values && "link" in values) {
+            return {
+              sectionType,
+              sectionTitle,
+              sectionData: [{ title: values.title, link: values.link }],
+            };
+          }
+          break;
+        case "simulator":
+          if ("contentArea" in values) {
+            return {
+              sectionType,
+              sectionTitle,
+              sectionData: [
+                {
+                  title: values.title,
+                  contentArea: values.contentArea,
+                  guided: values.guided,
+                  unguided: values.guided,
+                  practice: values.practice,
+                },
+              ],
+            };
+          }
+          break;
+        case "video":
+          if ("description" in values) {
+            return {
+              sectionType,
+              sectionTitle,
+              sectionData: [
+                {
+                  title: values.title,
+                  link: values.link,
+                  authorImage: values.authorImage,
+                  authorName: values.authorName,
+                  videoPlaceholder: values.videoPlaceholder,
+                  description: values.description,
+                },
+              ],
+            };
+          }
+          break;
+        case "cat":
+          if ("contentAreaCoverage" in values) {
+            return {
+              sectionType,
+              sectionTitle,
+              sectionData: [
+                {
+                  title: values.catSimulator,
+                  catSimulator: values.catSimulator,
+                  contentAreaCoverage: values.contentAreaCoverage,
+                },
+              ],
+            };
+          }
+          break;
+        case "content-cards":
+          if ("cards" in values) {
+            return {
+              sectionType,
+              sectionTitle,
+              sectionData: [{ title: values.title, cards: values.cards }],
+            };
+          }
+          break;
+        default:
+          return null;
+      }
+    };
+
+    const payload = getPayload();
+    if (!payload) return;
+
     try {
-      showToast(`${sectionTitle} item added successfully`, "success");
-      setContentLoader(true);
+      const result = await createSectionCB.execute(payload);
+      if (result.status === 200) {
+        showToast(`${sectionTitle} item added successfully`, "success");
+        reset();
+      } else {
+        showToast(`Error creating a ${sectionTitle} item`, "error");
+      }
     } catch (err) {
       console.error(err);
-    } finally {
-      setContentLoader(false);
+      showToast(
+        `Error creating a ${sectionTitle} item. Please try again`,
+        "error"
+      );
     }
   };
 
@@ -115,11 +205,12 @@ export const ProgramSectionManagementCreateBlock = () => {
       <ProgramSectionHeader
         sectionType={sectionType}
         sectionTitle={sectionTitle}
-        sectionImage={getSectionTypeIcons(sectionTitle)}
+        sectionImage={getSectionTypeIcons(sectionType)}
       />
 
       {SectionComponent && (
         <SectionComponent
+          isLoading={createSectionCB.loading}
           contentLoader={contentLoader}
           onSubmit={handleSubmitSection}
           section={sectionType}

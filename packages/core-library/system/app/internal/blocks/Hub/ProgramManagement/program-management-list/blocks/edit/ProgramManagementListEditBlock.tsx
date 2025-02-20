@@ -10,15 +10,25 @@ import {
   CreateProgramFormType,
   createProgramSchema,
   programIDAtom,
+  programTypeAtom,
 } from "../../validation";
-import {
-  programSectionList,
-  standardProgramManagementList,
-} from "../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import { useRouter } from "../../../../../../../../../core";
 import { ProgramManagementListEditField } from "./ProgramManagementListEditField";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../../../contexts";
+import { sectionTypeAndTitle } from "../../../program-section-management/constants";
+import {
+  GetAllSectionsResponseType,
+  Section,
+  SectionData,
+  UpdateProgramParams,
+  UpdateSection,
+} from "../../../../../../../../../api/types";
+import { useApiCallback } from "../../../../../../../../../hooks";
 
 export const ProgramManagementListEditBlock = () => {
   const [selectedSections, setSelectedSections] = useState<
@@ -26,68 +36,81 @@ export const ProgramManagementListEditBlock = () => {
   >({});
   const [showAddSection, setShowAddSection] = useState<boolean>(true);
   const [programId] = useAtom(programIDAtom);
+  const [atomProgramType] = useAtom(programTypeAtom);
   const router = useRouter();
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [editingSectionData, setEditingSectionData] = useState<any>(null);
+  const { showToast } = useExecuteToast();
 
-  const selectedProgram = standardProgramManagementList.find(
-    (program) => program.id === programId
+  const { businessQueryGetAllPrograms } = useBusinessQueryContext();
+  const { data: allProgramsList } = businessQueryGetAllPrograms([
+    "all_programs_api",
+  ]);
+
+  const { businessQueryGetAllSections } = useBusinessQueryContext();
+  const { data: allSectionsList } = businessQueryGetAllSections([
+    "all_sections_api",
+  ]);
+
+  const updateProgramCB = useApiCallback(
+    async (api, args: UpdateProgramParams) =>
+      await api.webbackoffice.updatePrograms(args)
   );
 
-  if (!selectedProgram) {
-    return (
-      <Typography>
-        No program selected. Please go back to previous page.
-      </Typography>
-    );
-  }
+  const selectedProgram = useMemo(() => {
+    if (Array.isArray(allProgramsList)) {
+      return (
+        allProgramsList.find((program) => program.id === programId) || null
+      );
+    }
+    return null;
+  }, [allProgramsList, programId]);
 
-  const { title, sections } = selectedProgram;
+  const sectionList = sectionTypeAndTitle
+    ? sectionTypeAndTitle.map((item) => ({
+        label: item.sectionTitle,
+        value: item.sectionType,
+      }))
+    : [];
+
+  const { title, sections, programImage } = selectedProgram || {};
 
   const form = useForm({
     mode: "onSubmit",
     resolver: yupResolver(createProgramSchema),
     defaultValues: {
+      programImage: programImage,
       programName: title,
       sections: [],
     },
   });
 
-  const sectionList = useMemo(
-    () =>
-      programSectionList
-        ? programSectionList.map((item) => ({
-            label: item.sectionTitle,
-            value: item.sectionType,
-          }))
-        : [],
-    []
-  );
-
   const filteredSectionValuesList = (sectionType: string) => {
-    const selectedSectionData = programSectionList.find(
+    if (!Array.isArray(allSectionsList)) return [];
+
+    const selectedSections = allSectionsList.filter(
       (section) => section.sectionType === sectionType
     );
 
-    return (
-      selectedSectionData?.sectionData.map((dataItem) => {
-        if (sectionType === "CAT" && "catSimulator" in dataItem) {
+    return selectedSections.flatMap((section) =>
+      section.sectionData.map((dataItem: GetAllSectionsResponseType) => {
+        if (sectionType === "cat" && "catSimulator" in dataItem) {
           return {
             label: dataItem.catSimulator,
-            value: dataItem.catSimulator,
+            value: section.sectionId,
           };
         }
         if ("title" in dataItem) {
           return {
             label: dataItem.title,
-            value: dataItem.title,
+            value: section.sectionId,
           };
         }
         return {
           label: "Unknown",
-          value: dataItem.sectionDataId,
+          value: section.sectionId ?? "Unknown",
         };
-      }) || []
+      })
     );
   };
 
@@ -116,8 +139,11 @@ export const ProgramManagementListEditBlock = () => {
   });
 
   const programImageWatch = watch("programImage");
-  const programImage = getValues("programImage");
-  const fileName = programImage && programImage[0]?.name;
+  const programImageValue = getValues("programImage");
+  const fileName =
+    typeof programImageValue === "string"
+      ? programImageValue
+      : programImageValue && programImageValue[0]?.name;
 
   const handleAddSection = () => {
     append({ sectionTitle: "", sectionType: "", sectionValue: "" });
@@ -130,7 +156,7 @@ export const ProgramManagementListEditBlock = () => {
     remove(index);
   };
 
-  const handleEditProgram = (data?: CreateProgramFormType) => {
+  const handleEditProgram = async (data?: CreateProgramFormType) => {
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -143,17 +169,95 @@ export const ProgramManagementListEditBlock = () => {
       return;
     }
 
-    sections.forEach((section, index) => {
-      const sectionValue = Array.isArray(section.sectionValue)
-        ? section.sectionValue.join(", ")
-        : typeof section.sectionValue === "string"
-          ? section.sectionValue
-          : "Invalid value";
+    if (!Array.isArray(allSectionsList)) {
+      console.error("allSectionsList is not an array.");
+      return;
+    }
 
-      console.log(
-        `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
+    const stringifiedSections = sections.flatMap((section) => {
+      if (!section.sectionValue) return [];
+
+      const matchingSections = allSectionsList.filter((item) =>
+        Array.isArray(section.sectionValue)
+          ? section.sectionValue.includes(item.sectionId)
+          : item.sectionId === section.sectionValue
       );
+
+      if (matchingSections.length === 0) return [];
+
+      return matchingSections
+        .map((matchingSection) => {
+          const matchedSectionData = matchingSection.sectionData
+            .map((dataItem: SectionData) => {
+              if (
+                section.sectionType === "document" ||
+                section.sectionType === "med-cards"
+              ) {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  link: dataItem.link,
+                };
+              } else if (section.sectionType === "video") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  link: dataItem.link,
+                  authorName: dataItem.authorName,
+                  authorImage: dataItem.authorImage,
+                  videoplaceholder: dataItem.videoPlaceholder,
+                  description: dataItem.description,
+                };
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (matchedSectionData.length === 0) return null;
+
+          return {
+            programSectionId: matchingSection.sectionId,
+            sectionType: section.sectionType,
+            sectionTitle: section.sectionTitle,
+            sectionStatus: "available",
+            sectionData: matchedSectionData,
+          };
+        })
+        .filter((section): section is UpdateSection => section !== null);
     });
+
+    const combinedSections = [
+      ...stringifiedSections,
+      ...(selectedProgram.sections || []).map(
+        ({ sectionId, ...rest }: Section) => ({
+          ...rest,
+          programSectionId: sectionId,
+        })
+      ),
+    ];
+
+    const payload = {
+      id: selectedProgram.id,
+      title: data.programName,
+      programImage,
+      programType: atomProgramType,
+      stringifiedSections: combinedSections,
+    };
+
+    if (!payload) return;
+
+    try {
+      const result = await updateProgramCB.execute(payload);
+      if (result.status === 200) {
+        showToast(`Successfully updated ${data.programName}`, "success");
+        reset();
+      } else {
+        showToast(`Error creating a ${data.programName}`, "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(`Error updating program. Please try again`, "error");
+    }
 
     setShowAddSection(true);
     setEditingSectionId(null);
@@ -172,7 +276,7 @@ export const ProgramManagementListEditBlock = () => {
 
     const getSectionValue = () => {
       if (section.sectionType === "video") {
-        return section.sectionVideos.map((item: any) => item.secVidTitle);
+        return section.sectionData.map((item: any) => item.secVidTitle);
       }
 
       return section.sectionData.map((item: any) => {
@@ -218,6 +322,16 @@ export const ProgramManagementListEditBlock = () => {
     }
   };
 
+  useEffect(() => {
+    if (selectedProgram) {
+      form.reset({
+        programImage: selectedProgram.programImage,
+        programName: selectedProgram.title,
+        sections: [],
+      });
+    }
+  }, [selectedProgram, form]);
+
   const handleDeleteProgramSection = (sectionId: string) => {
     alert(sectionId);
   };
@@ -226,12 +340,20 @@ export const ProgramManagementListEditBlock = () => {
     router.back();
   };
 
+  if (!selectedProgram) {
+    return (
+      <Typography>
+        No program selected. Please go back to previous page.
+      </Typography>
+    );
+  }
   return (
     <ProgramManagementListEditField
+      isLoading={updateProgramCB.loading}
       onSave={handleSubmit(handleEditProgram)}
       handleBack={handleBack}
       fileName={fileName}
-      programImage={programImage}
+      programImage={programImageValue}
       control={control}
       fields={fields}
       sectionList={sectionList}

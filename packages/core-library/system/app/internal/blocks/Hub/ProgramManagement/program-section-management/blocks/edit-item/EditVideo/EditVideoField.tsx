@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import {
@@ -15,11 +15,9 @@ import { formatSectionTitle } from "../../../../../../../../../../utils";
 import { Control } from "react-hook-form";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../../assets";
+import ReactPlayer from "react-player";
 
 interface EditVideoFieldProps {
-  linkValue: string;
-  videoPlaceholderValue: string;
-  authorImageValue: string;
   section?: string;
   control: Control<{
     title: string;
@@ -36,14 +34,12 @@ interface EditVideoFieldProps {
   videoPlaceholderLink: File[];
   authorImageFileName: string;
   authorImageLink: File[];
+  isLoading?: boolean;
 }
 
 export const EditVideoField: React.FC<EditVideoFieldProps> = ({
   section,
   control,
-  linkValue,
-  videoPlaceholderValue,
-  authorImageValue,
   onSave,
   videoFileName,
   videoLink,
@@ -51,6 +47,7 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
   videoPlaceholderLink,
   authorImageFileName,
   authorImageLink,
+  isLoading,
 }) => {
   return (
     <Box
@@ -133,19 +130,19 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                   overflow: "hidden",
                 }}
               >
-                <Image
-                  src={
+                <ReactPlayer
+                  url={
                     videoFileName
-                      ? URL.createObjectURL(videoLink[0])
+                      ? videoFileName.startsWith("http")
+                        ? videoFileName
+                        : URL.createObjectURL(videoLink[0])
                       : noVideoImage
                   }
-                  alt="video"
-                  layout="fill"
-                  objectFit="cover"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
-                  }}
+                  playing
+                  controls
+                  width="100%"
+                  height="100%"
+                  style={{ objectFit: "cover" }}
                 />
                 <Box
                   sx={{
@@ -159,7 +156,8 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                   }}
                 ></Box>
                 <FileUploadField
-                  triggerLabel={linkValue || "Upload Video"}
+                  acceptTypes={["mp4", "webm", "ogg", "avi", "mov", "mkv"]}
+                  triggerLabel="Change Video"
                   control={control}
                   name="link"
                   sx={{
@@ -199,7 +197,9 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                 <Image
                   src={
                     videoPlaceholderFileName
-                      ? URL.createObjectURL(videoPlaceholderLink[0])
+                      ? videoPlaceholderFileName.startsWith("http")
+                        ? videoPlaceholderFileName
+                        : URL.createObjectURL(videoPlaceholderLink[0])
                       : noVideoImage
                   }
                   alt="video placeholder"
@@ -222,9 +222,8 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                   }}
                 ></Box>
                 <FileUploadField
-                  triggerLabel={
-                    videoPlaceholderValue || "Upload Video Placeholder"
-                  }
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
+                  triggerLabel="Change Video Placeholder"
                   control={control}
                   name="videoPlaceholder"
                   sx={{
@@ -264,7 +263,9 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                 <Image
                   src={
                     authorImageFileName
-                      ? URL.createObjectURL(authorImageLink[0])
+                      ? authorImageFileName.startsWith("http")
+                        ? authorImageFileName
+                        : URL.createObjectURL(authorImageLink[0])
                       : noVideoImage
                   }
                   alt="author image"
@@ -287,7 +288,8 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                   }}
                 ></Box>
                 <FileUploadField
-                  triggerLabel={authorImageValue || "Upload Author Image"}
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
+                  triggerLabel="Change Author Image"
                   control={control}
                   name="authorImage"
                   sx={{
@@ -356,6 +358,7 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
+            loading={isLoading}
             onClick={onSave}
           >
             Update

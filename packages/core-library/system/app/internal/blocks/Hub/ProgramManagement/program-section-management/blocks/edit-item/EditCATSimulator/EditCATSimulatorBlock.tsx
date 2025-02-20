@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { ComponentLoader } from "../../../../../../../../../../components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,36 +10,52 @@ import {
   SectionFormType,
   SectionDataIdAtom,
   CATSchema,
+  SectionTypeAtom,
 } from "../../../validation";
-import { programSectionList } from "../../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import { useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import * as yup from "yup";
 import { EditCATSimulatorField } from "./EditCATSimulatorField";
 import { useSelectfieldOptions } from "../../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/hooks/useSelectfieldOptions";
+import { useBusinessQueryContext } from "../../../../../../../../../../contexts";
+import { SectionDataType } from "../../../types";
 
 interface EditCATSimulatorProps {
   section?: string;
   contentLoader?: boolean;
   onSubmit: (values: SectionFormType) => void;
+  isLoading?: boolean;
 }
 
 export const EditCATSimulatorBlock: React.FC<EditCATSimulatorProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const [sectionDataId] = useAtom(SectionDataIdAtom);
+  const [sectionType] = useAtom(SectionTypeAtom);
+
+  const { businessQueryGetSectionsByType } = useBusinessQueryContext();
+  const { data: sectionsList } = businessQueryGetSectionsByType(
+    ["section_type_api"],
+    { sectionType }
+  );
+
   const { cleanedContentArea } = useSelectfieldOptions();
 
   const selectedSectionData = useMemo(() => {
-    const sectionData = programSectionList.find(
-      (item) => item.sectionType === section
-    );
-    return sectionData?.sectionData.find(
-      (data) => data.sectionDataId === sectionDataId
-    );
-  }, [section, sectionDataId]);
+    if (!Array.isArray(sectionsList)) return null;
+
+    for (const section of sectionsList) {
+      const foundData = section.sectionData.find(
+        (data: SectionDataType) => data.sectionDataId === sectionDataId
+      );
+      if (foundData) return foundData;
+    }
+
+    return null;
+  }, [sectionsList, section, sectionDataId]);
 
   const defaultValues = useMemo(() => {
     if (selectedSectionData && isCATSimulatorSectionData(selectedSectionData)) {
@@ -57,8 +73,6 @@ export const EditCATSimulatorBlock: React.FC<EditCATSimulatorProps> = ({
   const [contentAreaCoverageList, setContentAreaCoverageList] = useState<
     string[]
   >(defaultValues.contentAreaCoverage || []);
-
-  console.log(contentAreaCoverageList);
 
   const form = useForm<yup.InferType<typeof CATSchema>>({
     mode: "onSubmit",
@@ -87,6 +101,7 @@ export const EditCATSimulatorBlock: React.FC<EditCATSimulatorProps> = ({
       setValue("catSimulator", "");
       setValue("contentAreaCoverage", [""]);
     }
+    setContentAreaCoverageList(defaultValues.contentAreaCoverage || [""]);
   }, [selectedSectionData, setValue]);
 
   const handleContentAreaChange = (selectedValue: string, index: number) => {
@@ -106,6 +121,7 @@ export const EditCATSimulatorBlock: React.FC<EditCATSimulatorProps> = ({
 
   return (
     <EditCATSimulatorField
+      isLoading={isLoading}
       control={control}
       lists={cleanedContentArea}
       section={section}

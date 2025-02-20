@@ -96,3 +96,4 @@ export type SectionFormType =
 export const SectionTitleAtom = atom<string>("");
 export const SectionTypeAtom = atom<string>("");
 export const SectionDataIdAtom = atom<string>("");
+export const SectionIdAtom = atom<string>("");

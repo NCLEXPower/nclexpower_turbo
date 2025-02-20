@@ -36,6 +36,7 @@ interface EditContentCardsFieldProps {
     faceIndex: number
   ) => void;
   getValues: (fieldName?: string) => any;
+  isLoading?: boolean;
 }
 
 export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
@@ -49,6 +50,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
   handleRemoveTopic,
   handleAddCardFace,
   handleRemoveCardFace,
+  isLoading,
 }) => {
   const handleSaveClick = () => {
     const values = getValues();
@@ -187,6 +189,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                       );
                       const cardFacesFileName =
                         cardFaceLink && cardFaceLink?.name;
+
                       return (
                         <Grid item xs={12} sm={4} key={faceIndex}>
                           <Box
@@ -224,7 +227,9 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                 <Image
                                   src={
                                     cardFacesFileName
-                                      ? URL.createObjectURL(cardFaceLink)
+                                      ? cardFacesFileName.startsWith("http")
+                                        ? cardFacesFileName
+                                        : URL.createObjectURL(cardFaceLink)
                                       : noVideoImage
                                   }
                                   alt={`Card Face ${faceIndex + 1}`}
@@ -247,11 +252,15 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                   }}
                                 ></Box>
                                 <FileUploadField
+                                  acceptTypes={[
+                                    "png",
+                                    "jpeg",
+                                    "jpg",
+                                    "gif",
+                                    "webp",
+                                  ]}
                                   data-testid={`file-input-${topicIndex}-${faceIndex}`}
-                                  triggerLabel={
-                                    cardFacesFileName ||
-                                    `Select card face ${faceIndex + 1}`
-                                  }
+                                  triggerLabel={"Change Card"}
                                   control={control}
                                   name={`cards.${topicIndex}.cardFaces.${faceIndex}`}
                                   sx={{
@@ -320,6 +329,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                       borderRadius: "10px",
                       color: "white",
                     }}
+                    disabled={isLoading}
                     onClick={() => handleAddCardFace(topicIndex)}
                   >
                     Add Card
@@ -343,6 +353,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                 borderRadius: "10px",
                 color: "white",
               }}
+              disabled={isLoading}
               onClick={handleAddTopic}
             >
               Add Topic
@@ -356,6 +367,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                 borderRadius: "10px",
                 color: "white",
               }}
+              loading={isLoading}
               onClick={handleSaveClick}
             >
               Update

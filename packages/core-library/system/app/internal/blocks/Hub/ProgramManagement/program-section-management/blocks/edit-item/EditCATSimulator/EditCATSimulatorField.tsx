@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import {
@@ -23,6 +23,7 @@ interface EditCATSimulatorFieldProps {
   onSave: (values: any) => void;
   handleAddNew: () => void;
   coverageList: string[];
+  isLoading?: boolean;
 }
 
 export const EditCATSimulatorField: React.FC<EditCATSimulatorFieldProps> = ({
@@ -33,6 +34,7 @@ export const EditCATSimulatorField: React.FC<EditCATSimulatorFieldProps> = ({
   handleAddNew,
   onSave,
   coverageList,
+  isLoading,
 }) => {
   return (
     <Box
@@ -134,6 +136,7 @@ export const EditCATSimulatorField: React.FC<EditCATSimulatorFieldProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
+            loading={isLoading}
             onClick={onSave}
           >
             Update

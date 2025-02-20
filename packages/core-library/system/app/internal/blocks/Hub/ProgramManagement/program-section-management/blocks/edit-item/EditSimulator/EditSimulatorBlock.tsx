@@ -10,35 +10,52 @@ import {
   SectionFormType,
   SectionDataIdAtom,
   simulatorSchema,
+  SectionTypeAtom,
 } from "../../../validation";
-import { programSectionList } from "../../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import { useEffect, useMemo } from "react";
 import { useAtom } from "jotai";
 import * as yup from "yup";
 import { EditSimulatorField } from "./EditSimulatorField";
 import { useSelectfieldOptions } from "../../../../../Settings/SettingsManagement/steps/content/simulator/steps/content/hooks/useSelectfieldOptions";
+import { useBusinessQueryContext } from "../../../../../../../../../../contexts";
+import { SectionDataType } from "../../../types";
 
 interface EditSimulatorProps {
   section?: string;
   contentLoader?: boolean;
   onSubmit: (values: SectionFormType) => void;
+  isLoading?: boolean;
 }
 
 export const EditSimulatorBlock: React.FC<EditSimulatorProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const [sectionDataId] = useAtom(SectionDataIdAtom);
+  const [sectionType] = useAtom(SectionTypeAtom);
+
+  const { businessQueryGetSectionsByType } = useBusinessQueryContext();
+  const { data: sectionsList } = businessQueryGetSectionsByType(
+    ["section_type_api"],
+    { sectionType }
+  );
+
   const { cleanedContentArea } = useSelectfieldOptions();
+
   const selectedSectionData = useMemo(() => {
-    const sectionData = programSectionList.find(
-      (item) => item.sectionType.toLowerCase() === section?.toLowerCase()
-    );
-    return sectionData?.sectionData.find(
-      (data) => data.sectionDataId === sectionDataId
-    );
-  }, [section, sectionDataId]);
+    if (!Array.isArray(sectionsList)) return null;
+
+    for (const section of sectionsList) {
+      const foundData = section.sectionData.find(
+        (data: SectionDataType) => data.sectionDataId === sectionDataId
+      );
+      if (foundData) return foundData;
+    }
+
+    return null;
+  }, [sectionsList, section, sectionDataId]);
 
   const defaultValues = useMemo(() => {
     if (selectedSectionData && isSimulatorSectionData(selectedSectionData)) {
@@ -117,6 +134,7 @@ export const EditSimulatorBlock: React.FC<EditSimulatorProps> = ({
 
   return (
     <EditSimulatorField
+      isLoading={isLoading}
       lists={cleanedContentArea}
       section={section}
       control={control}

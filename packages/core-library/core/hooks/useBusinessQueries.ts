@@ -45,9 +45,12 @@ import {
   GetMenuByIdParams,
   UpdateMenuItemParams,
   ContactFormType,
+  GetSectionParams,
+  GetAllSectionsResponseType
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
+import { StandardProgramListType } from "../../types/wc/programList";
 
 export const useAppMutation = <Response, TVariables = unknown>(
   mutationFn: (variables: TVariables) => Promise<Response>,
@@ -756,5 +759,51 @@ export const useCommenceEnvMaintenanceMode = (
       return result;
     },
     opt
+  );
+};
+
+export const useGetSectionsByType = (
+  queryKey: string[],
+  sectionType: GetSectionParams
+): UseQueryResult<GetAllSectionsResponseType | undefined, any> => {
+  const getSectionsByType = useApi((api) => api.webbackoffice.getSectionListByType(sectionType));
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getSectionsByType.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+};
+
+export const useGetAllSections = (
+  queryKey: string[],
+): UseQueryResult<GetAllSectionsResponseType | undefined, any> => {
+  const getAllSections = useApi((api) => api.webbackoffice.getAllSections());
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllSections.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+};
+
+export const useGetAllPrograms = (
+  queryKey: string[],
+): UseQueryResult<StandardProgramListType | undefined, any> => {
+  const getAllPrograms = useApi((api) => api.webbackoffice.getAllPrograms());
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getAllPrograms.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
   );
 };

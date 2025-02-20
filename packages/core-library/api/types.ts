@@ -747,3 +747,165 @@ export type CaseNameResponseType = {
 export type DeleteCaseNameParams = {
   id: string;
 };
+
+export type CreateSectionParams = {
+  sectionType: string;
+  sectionTitle: string;
+  sectionData?: {
+    sectionDataId?: string;
+    title?: string;
+    link?: File[] | undefined;
+    contentArea?: string | null;
+    catSimulator?: string | null;
+    contentAreaCoverage?: string[];
+    guided?: boolean | null;
+    unguided?: boolean | null;
+    practice?: boolean | null;
+    authorName?: string | null;
+    authorImage?: File[] | undefined;
+    videoPlaceholder?: File[] | undefined;
+    description?: string | null;
+    cards?: {
+      cardId?: string;
+      cardTopic?: string;
+      cardFaces?: File[] | undefined;
+    }[];
+  }[];
+}
+
+export type CreateSectionResponse = {
+  success: boolean;
+  sectionId: string;
+}
+
+export interface GetAllSectionsResponseType {
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionData?: {
+    sectionDataId?: string;
+    title?: string;
+    link?: string | null;
+    contentArea?: string | null;
+    catSimulator?: string | null;
+    contentAreaCoverage?: string[];
+    guided?: string | null;
+    unguided?: string | null;
+    practice?: string | null;
+    authorName?: string | null;
+    authorImage?: string | null;
+    videoPlaceholder?: string | null;
+    description?: string | null;
+    cards?: {
+      cardId?: string;
+      cardTopic?: string;
+      cardFaces?: string | null;
+    }[];
+  }[];
+}
+
+export type GetSectionParams = {
+  sectionType: string;
+}
+
+export interface UpdateSectionParams {
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionDataId?: string;
+  title?: string;
+  link?: File[] | undefined;
+  contentArea?: string | null;
+  catSimulator?: string | null;
+  contentAreaCoverage?: string[];
+  guided?: boolean | null;
+  unguided?: boolean | null;
+  practice?: boolean | null;
+  authorName?: string | null;
+  authorImage?: File[] | undefined;
+  videoPlaceholder?: File[] | undefined;
+  description?: string | null;
+  cards?: {
+  cardId?: string;
+    cardTopic?: string;
+    cardFaces?: File[] | undefined;
+  }[];
+}
+
+export interface UpdateSectionResponse extends CreateSectionResponse {}
+
+export type SectionData = {
+  sectionDataId: string;
+  title?: string;
+  link?: File[];
+  authorName?: string;
+  authorImage?: File[];
+  videoPlaceholder?: File[];
+  description?: string;
+};
+
+export type Section = {
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionData: SectionData[];
+};
+
+export type CreateProgramParams = {
+  title: string;
+  programImage: File[];
+  programType: number;
+  stringifiedSections: Section[];
+};
+
+
+export type UpdateSection = {
+  programSectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionStatus: string;
+  sectionData: SectionData[];
+}
+
+export type UpdateProgramParams = {
+  id: string;
+  title: string;
+  programImage: File[];
+  stringifiedSections: UpdateSection[];
+  programType: number;
+}
+
+export interface CreateProgramResponse extends CreateSectionResponse {}
+
+export interface GetAllProgramsResponseType {
+  id: string;
+  title: string;
+  programStatus: string;
+  programImage: string;
+  sections: {
+    sectionId: string;
+    sectionType: string;
+    sectionTitle: string;
+    sectionStatus: string;
+    sectionData?: {
+      sectionDataId?: string;
+      title?: string;
+      link?: string | null;
+      contentArea?: string | null;
+      catSimulator?: string | null;
+      contentAreaCoverage?: string[];
+      guided?: string | null;
+      unguided?: string | null;
+      practice?: string | null;
+      authorName?: string | null;
+      authorImage?: string | null;
+      videoPlaceholder?: string | null;
+      description?: string | null;
+      cards?: {
+        cardId?: string;
+        cardTopic?: string;
+        cardFaces?: string | null;
+      }[];
+    }[];
+  }[]
+}

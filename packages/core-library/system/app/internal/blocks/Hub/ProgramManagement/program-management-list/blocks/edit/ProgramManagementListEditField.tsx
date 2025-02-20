@@ -25,7 +25,7 @@ import { CreateProgramFormType } from "../../validation";
 interface Props {
   onSave: (values: any) => void;
   handleBack: () => void;
-  fileName: string;
+  fileName: string | File[];
   programImage: File[];
   control: Control<CreateProgramFormType>;
   fields: FieldArrayWithId<
@@ -57,9 +57,11 @@ interface Props {
   handleEditProgramSection: (section: any) => void;
   handleDeleteProgramSection: (sectionId: string) => void;
   handleRemoveSection: (index: number) => void;
+  isLoading: boolean;
 }
 
 export const ProgramManagementListEditField: React.FC<Props> = ({
+  isLoading,
   onSave,
   handleBack,
   fileName,
@@ -136,8 +138,10 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
               >
                 <Image
                   src={
-                    fileName
-                      ? URL.createObjectURL(programImage[0])
+                    typeof fileName === "string" 
+                      ? fileName.startsWith("http") 
+                        ? fileName 
+                        : URL.createObjectURL(programImage[0]) 
                       : WelcomeProgram
                   }
                   alt="program thumbnail"
@@ -160,6 +164,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                   }}
                 ></Box>
                 <FileUploadField
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
                   data-testid="file-upload-input"
                   triggerLabel="Replace Image"
                   control={control}
@@ -430,6 +435,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
             mt: "20px",
             borderRadius: "10px",
           }}
+          loading={isLoading}
           onClick={onSave}
           data-testid="submit-button"
         >

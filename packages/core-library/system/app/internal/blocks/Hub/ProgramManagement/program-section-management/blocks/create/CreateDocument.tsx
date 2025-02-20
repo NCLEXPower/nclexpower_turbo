@@ -19,13 +19,15 @@ import { useFileUpload } from "../../../../../../../../../hooks";
 interface CreateDocumentProps {
   section?: string;
   contentLoader?: boolean;
-  onSubmit: (values: SectionFormType) => void;
+  onSubmit: (values: SectionFormType, reset: () => void) => void;
+  isLoading?: boolean;
 }
 
 export const CreateDocument: React.FC<CreateDocumentProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const form = useForm({
     mode: "onSubmit",
@@ -33,7 +35,7 @@ export const CreateDocument: React.FC<CreateDocumentProps> = ({
     defaultValues: documentSchema.getDefault(),
   });
 
-  const { control, handleSubmit, watch, setValue } = form;
+  const { control, handleSubmit, watch, setValue, reset } = form;
   const { handleFileChange } = useFileUpload(setValue);
 
   const linkValue = watch("link");
@@ -105,6 +107,14 @@ export const CreateDocument: React.FC<CreateDocumentProps> = ({
             <Typography sx={{ color: "#3B0086" }}>Link*:</Typography>
             <Box sx={{ display: "flex", alignItems: "left", lineHeight: 0 }}>
               <FileUploadField
+                acceptTypes={[
+                  section === "document" ? "pdf" : "zip",
+                  "x-zip-compressed",
+                  "x-rar-compressed",
+                  "x-7z-compressed",
+                  "x-tar",
+                  "gzip",
+                ]}
                 triggerLabel={linkValue?.[0]?.name || "Upload Document"}
                 control={control}
                 name="link"
@@ -122,7 +132,8 @@ export const CreateDocument: React.FC<CreateDocumentProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
-            onClick={handleSubmit(onSubmit)}
+            loading={isLoading}
+            onClick={handleSubmit((values) => onSubmit(values, reset))}
           >
             Create
           </Button>

@@ -1,110 +1,169 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
-import { useMemo } from "react";
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import { useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { Button } from "../../../../../../../../../components";
+import { Button, DialogBox } from "../../../../../../../../../components";
 import { useRouter } from "../../../../../../../../../core";
 import { ProgramSectionHeader } from "../../components/ProgramSectionHeader";
 import { getSectionTypeIcons } from "../../../../../../../../../utils/IconUtils";
-import { SectionTitleAtom, SectionTypeAtom, SectionDataIdAtom } from "../../validation";
+import {
+  SectionTitleAtom,
+  SectionTypeAtom,
+  SectionDataIdAtom,
+  SectionIdAtom,
+} from "../../validation";
 import { useAtom } from "jotai";
-import { programSectionList } from "../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import { ProgramSectionTable } from "./ProgramSectionTable";
+import { useApiCallback } from "../../../../../../../../../hooks";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../../../contexts";
+import { RemoveSection } from "./RemoveSection";
+import { CardsType, SectionDataTypes } from "../../types";
 
 export const ProgramSectionManagementEditBlock = () => {
   const router = useRouter();
   const [sectionTitle, setAtomSectionTitle] = useAtom(SectionTitleAtom);
-  const [sectionType, setAtomSectionType] = useAtom(SectionTypeAtom); 
+  const [sectionType, setAtomSectionType] = useAtom(SectionTypeAtom);
   const [, setAtomSectionDataId] = useAtom(SectionDataIdAtom);
+  const [, setAtomSectionId] = useAtom(SectionIdAtom);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+
+  const { showToast } = useExecuteToast();
 
   const handleBack = () => {
     router.back();
   };
 
+  const { businessQueryGetSectionsByType } = useBusinessQueryContext();
+  const { data: sectionsList, refetch } = businessQueryGetSectionsByType(
+    ["section_type_api"],
+    { sectionType }
+  );
+
+  const deleteSectionCb = useApiCallback(
+    async (api, args: string) => await api.webbackoffice.deleteSectionList(args)
+  );
+
   const handleCreateSection = (sectionTitle: string) => {
     setAtomSectionTitle(sectionTitle);
     setAtomSectionType(sectionType);
-    router.push("/hub/program/program-section-management/create");
+    router.push((route) => route.program_section_management_create);
   };
 
-  const editSection = (sectionDataId: string) => {
+  const editSection = (sectionId: string, sectionDataId: string) => {
+    setAtomSectionId(sectionId);
     setAtomSectionDataId(sectionDataId);
     setAtomSectionType(sectionType);
-    router.push("/hub/program/program-section-management/edit-item");
+    router.push((route) => route.program_section_management_edit_item);
   };
 
-  const deleteSection = (sectionDataId: string) => {
-    // add delete api once available
-    alert(`Delete section with ID: ${sectionDataId}`);
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleShowRemoveDialog = (sectionId: string, sectionTitle: string) => {
+    setId(sectionId);
+    setTitle(sectionTitle);
+    setShowModal(true);
+  };
+
+  const deleteSection = async (sectionId: string) => {
+    try {
+      const deleteSectionResult = await deleteSectionCb.execute(sectionId);
+
+      if (deleteSectionResult.status === 200) {
+        refetch();
+        showToast(`${title} removed successfully`, "success");
+        setShowModal(false);
+      } else {
+        showToast(`Error removing ${title}`, "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(`Error removing ${title}. Please try again`, "error");
+    }
   };
 
   const tableData = useMemo(() => {
-    return programSectionList
-      .filter((item) => item.sectionType === sectionType)
-      .flatMap((section) =>
-        section.sectionData.map((data) => {
-          const commonData = { title: "title" in data ? data.title : "", sectionDataId: data.sectionDataId };
-          switch (sectionType) {
+    if (!Array.isArray(sectionsList)) return [];
+
+    return sectionsList.flatMap((section) => {
+      if (!Array.isArray(section.sectionData)) return [];
+
+      return section.sectionData
+        .map((data: SectionDataTypes) => {
+          if (!data) return null;
+
+          const commonData = {
+            sectionId: section.sectionId,
+            sectionType: section.sectionType,
+            sectionTitle: section.sectionTitle,
+            sectionDataId: data.sectionDataId ?? "",
+            title: data.title ?? "",
+          };
+
+          switch (section.sectionType) {
             case "document":
             case "med-cards":
-              if ("link" in data) {
-                return { ...commonData, link: data.link || "" };
-              }
-              break;
+              return { ...commonData, link: data.link ?? "" };
+
             case "video":
-              if ("link" in data && "videoPlaceholder" in data) {
-                return {
-                  ...commonData,
-                  link: data.link || "",
-                  videoPlaceholder: data.videoPlaceholder || "",
-                  authorImage: data.authorImage || "",
-                  authorName: data.authorName || "",
-                  description: data.description || "",
-                };
-              }
-              break;
+              return {
+                ...commonData,
+                link: data.link ?? "",
+                videoPlaceholder: data.videoPlaceholder ?? "",
+                authorImage: data.authorImage ?? "",
+                authorName: data.authorName ?? "",
+                description: data.description ?? "",
+              };
+
             case "simulator":
-              if ("contentArea" in data) {
-                return {
-                  ...commonData,
-                  contentArea: data.contentArea || "",
-                  guided: data.guided ? "☑" : "☐",
-                  unguided: data.unguided ? "☑" : "☐",
-                  practice: data.practice ? "☑" : "☐",
-                };
-              }
-              break;
+              return {
+                ...commonData,
+                contentArea: data.contentArea ?? "",
+                guided: data.guided ? "☑" : "☐",
+                unguided: data.unguided ? "☑" : "☐",
+                practice: data.practice ? "☑" : "☐",
+              };
+
             case "content-cards":
-              if ("cards" in data) {
-                return {
-                  ...commonData,
-                  cardTopic: data.cards?.map((card) => card.cardTopic).join(", ") || "",
-                  cardFaces: data.cards?.flatMap((card) => card.cardFaces).join(", ") || "",
-                };
-              }
-              break;
-            case "CAT":
-              if ("catSimulator" in data) {
-                return {
-                  ...commonData,
-                  catSimulator: data.catSimulator || "",
-                  contentAreaCoverage: Array.isArray(data.contentAreaCoverage)
-                    ? data.contentAreaCoverage.join(", ")
-                    : "",
-                };
-              }
-              break;
+              return {
+                ...commonData,
+                cardTopic:
+                  data.cards?.map((card) => card.cardTopic).join(", ") ??
+                  "",
+                cardFaces:
+                  data.cards
+                    ?.flatMap((card) => card.cardFaces)
+                    .join(", ") ?? "",
+              };
+
+            case "cat":
+              return {
+                ...commonData,
+                catSimulator: data.catSimulator ?? "",
+                contentAreaCoverage: Array.isArray(data.contentAreaCoverage)
+                  ? data.contentAreaCoverage.join(", ")
+                  : "",
+              };
+
             default:
               return commonData;
           }
-          return commonData;
         })
-      );
-  }, [sectionType]);
-  
+        .filter(
+          (item: any): item is Exclude<typeof item, null> => item !== null
+        );
+    });
+  }, [sectionsList]);
+
   return (
     <section>
       <Box
@@ -147,14 +206,31 @@ export const ProgramSectionManagementEditBlock = () => {
         sectionType={sectionType}
         handleCreateSection={() => handleCreateSection(sectionTitle)}
         sectionTitle={sectionTitle}
-        sectionImage={getSectionTypeIcons(sectionTitle)}
+        sectionImage={getSectionTypeIcons(sectionType)}
       />
 
       <ProgramSectionTable
         onEdit={editSection}
-        onDelete={deleteSection}
+        onDelete={handleShowRemoveDialog}
         tableData={tableData}
         sectionType={sectionType}
+      />
+
+      <DialogBox
+        hideCloseButton
+        handleClose={handleModalClose}
+        open={showModal}
+        borderRadius="16px"
+        children={
+          <RemoveSection
+            sectionId={id}
+            sectionTitle={title}
+            onSubmit={deleteSection}
+            closeModal={handleModalClose}
+            isLoading={deleteSectionCb.loading}
+          />
+        }
+        maxWidth="sm"
       />
     </section>
   );

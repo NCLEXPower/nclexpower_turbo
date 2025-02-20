@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import {
@@ -16,16 +16,20 @@ import {
   SectionListType,
   StandardProgramListType,
 } from "../../../../../../../types/wc/programList";
-import {
-  standardProgramManagementList,
-  fastrackProgramManagementList,
-} from "../../../../../../../core/utils/contants/wc/programs/ProgramListData";
+import { fastrackProgramManagementList } from "../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import Image from "next/image";
 import { getSectionTypeIcons } from "../../../../../../../utils/IconUtils";
 import { useRouter } from "../../../../../../../core";
 import { RemoveProgramDialogContent } from "./components/RemoveProgramDialogContent";
-import { programIDAtom, RemoveProgramFormType } from "./validation";
-import { useExecuteToast } from "../../../../../../../contexts";
+import {
+  programIDAtom,
+  programTypeAtom,
+  RemoveProgramFormType,
+} from "./validation";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../contexts";
 import { useAtom } from "jotai";
 
 interface AccordionHeaderProps {
@@ -288,16 +292,27 @@ export const ProgramManagementListBlock = () => {
     useState<StandardProgramListType | null>(null);
   const { showToast } = useExecuteToast();
   const [, setAtomProgramId] = useAtom(programIDAtom);
-  const [toggleProgramList, setToggleProgramList] = useState<boolean>(true);
+  const [, setAtomProgramType] = useAtom(programTypeAtom);
+  const [toggleProgramList, setToggleProgramList] = useState<number>(0);
 
-  const navigateTo = (path: string) => {
-    router.push(path);
+  const { businessQueryGetAllPrograms } = useBusinessQueryContext();
+  const { data: allProgramsList } = businessQueryGetAllPrograms([
+    "all_programs_api",
+  ]);
+
+  const navigateToSections = () => {
+    router.push((route) => route.program_section_management);
+  };
+
+  const handleCreateProgramList = () => {
+    setAtomProgramType(toggleProgramList);
+    router.push((route) => route.program_management_list_create);
   };
 
   const handleEditProgramList = (item: StandardProgramListType) => {
-    console.log(item.id);
+    setAtomProgramType(toggleProgramList);
     setAtomProgramId(item.id);
-    router.push(`/hub/program/program-management-list/edit`);
+    router.push((route) => route.program_management_list_edit);
   };
 
   const handleModalOpen = (item: StandardProgramListType) => {
@@ -342,17 +357,13 @@ export const ProgramManagementListBlock = () => {
         </Typography>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
           <Button
-            onClick={() =>
-              navigateTo("/hub/program/program-management-list/create")
-            }
+            onClick={handleCreateProgramList}
             sx={{ backgroundColor: "#3b0086", borderRadius: "10px" }}
           >
             Create
           </Button>
           <Button
-            onClick={() =>
-              navigateTo("/hub/program/program-section-management")
-            }
+            onClick={navigateToSections}
             sx={{ backgroundColor: "#3b0086", borderRadius: "10px" }}
           >
             Manage Sections
@@ -362,36 +373,36 @@ export const ProgramManagementListBlock = () => {
 
       <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ mb: 8 }}>
         <Button
-          onClick={() => setToggleProgramList(true)}
+          onClick={() => setToggleProgramList(0)}
           sx={{
-            backgroundColor: `${toggleProgramList ? "#0F2A71" : "white"}`,
+            backgroundColor: `${toggleProgramList === 0 ? "#0F2A71" : "white"}`,
             borderRadius: "20px",
-            color: `${toggleProgramList ? "white" : "black"}`,
+            color: `${toggleProgramList === 0 ? "white" : "black"}`,
             transition: "all 0.3s ease-in-out",
             "&:hover": {
-              backgroundColor: `${toggleProgramList ? "#25408F" : "#F0F0F0"}`,
-              color: `${toggleProgramList ? "white" : "#0F2A71"}`,
+              backgroundColor: `${toggleProgramList === 0 ? "#25408F" : "#F0F0F0"}`,
+              color: `${toggleProgramList === 0 ? "white" : "#0F2A71"}`,
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
             },
           }}
         >
-          Standard (23-day) Program
+          Standard (23-Day) Program
         </Button>
         <Button
-          onClick={() => setToggleProgramList(false)}
+          onClick={() => setToggleProgramList(1)}
           sx={{
-            backgroundColor: `${toggleProgramList ? "white" : "#0F2A71"}`,
+            backgroundColor: `${toggleProgramList === 1 ? "#0F2A71" : "white"}`,
             borderRadius: "20px",
-            color: `${toggleProgramList ? "black" : "white"}`,
+            color: `${toggleProgramList === 1 ? "white" : "black"}`,
             transition: "all 0.3s ease-in-out",
             "&:hover": {
-              backgroundColor: `${toggleProgramList ? "#F0F0F0" : "#25408F"}`,
-              color: `${toggleProgramList ? "#0F2A71" : "white"}`,
+              backgroundColor: `${toggleProgramList === 1 ? "#25408F" : "#F0F0F0"}`,
+              color: `${toggleProgramList === 1 ? "white" : "#0F2A71"}`,
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
             },
           }}
         >
-          Fast Track (8-day) Program
+          Fast Track (8-Day) Program
         </Button>
       </Stack>
       {showModal && selectedProgram && (
@@ -417,9 +428,13 @@ export const ProgramManagementListBlock = () => {
         accordionRadius="16px"
         headerBackgroundColor="rgba(59, 0, 134, 0.05)"
         items={
-          toggleProgramList
-            ? standardProgramManagementList
-            : fastrackProgramManagementList
+          toggleProgramList === 0
+            ? Array.isArray(allProgramsList)
+              ? allProgramsList
+              : []
+            : Array.isArray(fastrackProgramManagementList)
+              ? fastrackProgramManagementList
+              : []
         }
         renderSummary={(item, expanded, onToggle) => (
           <AccordionHeader

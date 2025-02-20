@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import { IconButton, EvaIcon } from "../../../../../../../../../components";
 import { PaginatedTable } from "../../../../../../../../../components/table";
@@ -13,22 +13,30 @@ import { formatSectionTitle } from "../../../../../../../../../utils";
 interface ProgramSectionTableProps {
   tableData: Array<{ [key: string]: any }>;
   sectionType: string;
-  onEdit: (row: string) => void;
-  onDelete: (row: string) => void;
+  onEdit: (sectionId: string, sectionDataId: string) => void;
+  onDelete: (id: string, title: string) => void;
 }
 
 type ActionsCellProps = {
+  sectionId: string;
   sectionDataId: string;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  sectionTitle: string;
+  onEdit: (sectionId: string, sectionDataId: string) => void;
+  onDelete: (id: string, title: string) => void;
 };
 
-const ActionsCell: React.FC<ActionsCellProps> = ({ sectionDataId, onEdit, onDelete }) => {
+const ActionsCell: React.FC<ActionsCellProps> = ({
+  sectionId,
+  sectionDataId,
+  sectionTitle,
+  onEdit,
+  onDelete,
+}) => {
   return (
     <Box className="flex gap-2">
       <IconButton
         data-testid="edit-button"
-        onClick={() => onEdit(sectionDataId)}
+        onClick={() => onEdit(sectionId, sectionDataId)}
         sx={{
           height: "35px",
           background: "#F4C501",
@@ -39,7 +47,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ sectionDataId, onEdit, onDele
         <EvaIcon name="edit-outline" fill="#ffffff" width={18} height={18} />
       </IconButton>
       <IconButton
-        onClick={() => onDelete(sectionDataId)}
+        onClick={() => onDelete(sectionId, sectionTitle)}
         sx={{
           height: "35px",
           background: "#D40000",
@@ -49,7 +57,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ sectionDataId, onEdit, onDele
       >
         <EvaIcon name="trash-outline" fill="#ffffff" width={18} height={18} />
       </IconButton>
-  </Box>
+    </Box>
   );
 };
 
@@ -59,150 +67,260 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
   onEdit,
   onDelete,
 }) => {
-
   const columns: Column<any>[] = useMemo(() => {
     switch (sectionType) {
       case "document":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => <Typography>
-            {String(value)}
-            </Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
       case "video":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
-          },
-          {
-            Header: "Description",
-            accessor: "description",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
       case "simulator":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "ContentArea",
             accessor: "contentArea",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Guided",
             accessor: "guided",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>,
-            minWidth: 40
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+            minWidth: 40,
           },
           {
             Header: "Unguided",
             accessor: "unguided",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>,
-            minWidth: 40
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+            minWidth: 40,
           },
           {
             Header: "Practice",
             accessor: "practice",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>,
-            minWidth: 40
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+            minWidth: 40,
           },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
       case "content-cards":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "Card Topic",
             accessor: "cardTopic",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Card Faces",
             accessor: "cardFaces",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
       case "med-cards":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
           },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
-        case "CAT":
-          return [
-            { Header: "CAT Simulator", accessor: "catSimulator", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
-            {
-              Header: "Content Area Coverage",
-              accessor: "contentAreaCoverage",
-              Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography>
-            },
-            {
-              Header: "Actions",
-              accessor: "actions",
-              Cell: ({ row }: { row: any }) => {
-                const sectionDataId = row.original.sectionDataId;
-                return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
-              },
-            },
-          ];
-      default:
+      case "cat":
         return [
-          { Header: "Title", accessor: "title", Cell: ({ value }: { value: any }) => <Typography>{String(value)}</Typography> },
+          {
+            Header: "CAT Simulator",
+            accessor: "catSimulator",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
+          {
+            Header: "Content Area Coverage",
+            accessor: "contentAreaCoverage",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
           {
             Header: "Actions",
             accessor: "actions",
             Cell: ({ row }: { row: any }) => {
-              const sectionDataId = row.original.sectionDataId;
-              return <ActionsCell sectionDataId={sectionDataId} onEdit={onEdit} onDelete={onDelete} />;
+              const { sectionId, sectionDataId, catSimulator } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={catSimulator}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
+            },
+          },
+        ];
+      default:
+        return [
+          {
+            Header: "Title",
+            accessor: "title",
+            Cell: ({ value }: { value: any }) => (
+              <Typography>{String(value)}</Typography>
+            ),
+          },
+          {
+            Header: "Actions",
+            accessor: "actions",
+            Cell: ({ row }: { row: any }) => {
+              const { sectionId, sectionDataId, title } = row.original;
+              return (
+                <ActionsCell
+                  sectionId={sectionId}
+                  sectionDataId={sectionDataId}
+                  sectionTitle={title}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              );
             },
           },
         ];
@@ -210,8 +328,24 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
   }, [sectionType, onEdit, onDelete]);
 
   return (
-    <Box mt={8} sx={{ background: "rgba(59, 0, 134, 0.05)", borderRadius: "10px", height: "auto", marginX: "50px", paddingBottom: "20px", overflowX: 'auto'}}>
-      <Box sx={{ borderBottom: "2px solid #3B0086", height: "auto", padding: "20px" }}>
+    <Box
+      mt={8}
+      sx={{
+        background: "rgba(59, 0, 134, 0.05)",
+        borderRadius: "10px",
+        height: "auto",
+        marginX: "50px",
+        paddingBottom: "20px",
+        overflowX: "auto",
+      }}
+    >
+      <Box
+        sx={{
+          borderBottom: "2px solid #3B0086",
+          height: "auto",
+          padding: "20px",
+        }}
+      >
         {formatSectionTitle(sectionType)} List
       </Box>
       <PaginatedTable

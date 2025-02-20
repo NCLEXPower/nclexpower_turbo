@@ -5,53 +5,80 @@
  */
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CreateProgramFormType, createProgramSchema } from "../../validation";
-import { programSectionList } from "../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
-import { useMemo, useState } from "react";
+import {
+  CreateProgramFormType,
+  createProgramSchema,
+  programTypeAtom,
+} from "../../validation";
+import { useState } from "react";
 import { useRouter } from "../../../../../../../../../core";
 import { ProgramManagementListCreateField } from "./ProgramManagementListCreateField";
+import { useAtom } from "jotai";
+import {
+  useBusinessQueryContext,
+  useExecuteToast,
+} from "../../../../../../../../../contexts";
+import { useApiCallback } from "../../../../../../../../../hooks";
+import {
+  CreateProgramParams,
+  GetAllSectionsResponseType,
+  Section,
+  SectionData,
+} from "../../../../../../../../../api/types";
+import { sectionTypeAndTitle } from "../../../program-section-management/constants";
 
 export const ProgramManagementListCreateBlock = () => {
   const [selectedSections, setSelectedSections] = useState<
     Record<number, string>
   >({});
-  const router = useRouter();
 
-  const sectionList = useMemo(
-    () =>
-      programSectionList
-        ? programSectionList.map((item) => ({
-            label: item.sectionTitle,
-            value: item.sectionType,
-          }))
-        : [],
-    []
+  const { businessQueryGetAllSections } = useBusinessQueryContext();
+  const { data: allSectionsList, refetch } = businessQueryGetAllSections([
+    "all_sections_api",
+  ]);
+
+  const createProgramCB = useApiCallback(
+    async (api, args: CreateProgramParams) =>
+      await api.webbackoffice.createPrograms(args)
   );
+  const { showToast } = useExecuteToast();
+
+  const router = useRouter();
+  const [atomProgramType] = useAtom(programTypeAtom);
+
+  const sectionList = sectionTypeAndTitle
+    ? sectionTypeAndTitle.map((item) => ({
+        label: item.sectionTitle,
+        value: item.sectionType,
+      }))
+    : [];
 
   const filteredSectionValuesList = (sectionType: string) => {
-    const selectedSectionData = programSectionList.find(
+    if (!Array.isArray(allSectionsList)) return [];
+
+    const selectedSections = allSectionsList.filter(
       (section) => section.sectionType === sectionType
     );
 
-    return (
-      selectedSectionData?.sectionData.map((dataItem) => {
-        if (sectionType === "CAT" && "catSimulator" in dataItem) {
+    return selectedSections.flatMap((section) =>
+      section.sectionData.map((dataItem: GetAllSectionsResponseType) => {
+        if (sectionType === "cat" && "catSimulator" in dataItem) {
           return {
             label: dataItem.catSimulator,
-            value: dataItem.catSimulator,
+            value: section.sectionId,
           };
         }
         if ("title" in dataItem) {
           return {
             label: dataItem.title,
-            value: dataItem.title,
+            value: section.sectionId,
           };
         }
         return {
           label: "Unknown",
-          value: dataItem.sectionDataId,
+          value: section.sectionId ?? "Unknown",
         };
-      }) || []
+      })
     );
   };
 
@@ -83,7 +110,7 @@ export const ProgramManagementListCreateBlock = () => {
     },
   });
 
-  const { control, handleSubmit, setValue, getValues, formState, watch } = form;
+  const { control, handleSubmit, setValue, getValues, watch, reset } = form;
   const { fields, append } = useFieldArray({
     control,
     name: "sections",
@@ -97,7 +124,10 @@ export const ProgramManagementListCreateBlock = () => {
     append({ sectionTitle: "", sectionType: "", sectionValue: "" });
   };
 
-  const handleCreateProgram = (data: CreateProgramFormType | undefined) => {
+  const handleCreateProgram = async (
+    data: CreateProgramFormType | undefined,
+    reset: () => void
+  ) => {
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -109,18 +139,84 @@ export const ProgramManagementListCreateBlock = () => {
       return;
     }
 
-    sections.forEach((section, index) => {
-      const sectionValue =
-        typeof section.sectionValue === "string"
-          ? section.sectionValue
-          : Array.isArray(section.sectionValue)
-            ? section.sectionValue.join(", ")
-            : "Invalid value";
+    if (!Array.isArray(allSectionsList)) {
+      console.error("allSectionsList is not an array.");
+      return;
+    }
 
-      console.log(
-        `Section ${index + 1}: Title - ${section.sectionTitle}, Type - ${section.sectionType}, Value - ${sectionValue}`
+    const stringifiedSections = sections.flatMap((section) => {
+      if (!section.sectionValue) return [];
+
+      const matchingSections = allSectionsList.filter((item) =>
+        Array.isArray(section.sectionValue)
+          ? section.sectionValue.includes(item.sectionId)
+          : item.sectionId === section.sectionValue
       );
+
+      if (matchingSections.length === 0) return [];
+
+      return matchingSections
+        .map((matchingSection) => {
+          const matchedSectionData = matchingSection.sectionData
+            .map((dataItem: SectionData) => {
+              if (
+                section.sectionType === "document" ||
+                section.sectionType === "med-cards"
+              ) {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  link: dataItem.link,
+                };
+              } else if (section.sectionType === "video") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  link: dataItem.link,
+                  authorName: dataItem.authorName,
+                  authorImage: dataItem.authorImage,
+                  videoplaceholder: dataItem.videoPlaceholder,
+                  description: dataItem.description,
+                };
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (matchedSectionData.length === 0) return null;
+
+          return {
+            sectionId: matchingSection.sectionId,
+            sectionType: section.sectionType,
+            sectionTitle: section.sectionTitle,
+            sectionData: matchedSectionData,
+          };
+        })
+        .filter((section): section is Section => section !== null);
     });
+
+    const payload = {
+      title: data.programName,
+      programImage,
+      programType: atomProgramType,
+      stringifiedSections,
+    };
+
+    if (!payload) return;
+
+    try {
+      const result = await createProgramCB.execute(payload);
+      if (result.status === 200) {
+        showToast(`Successfully added ${data.programName}`, "success");
+        reset();
+        refetch();
+      } else {
+        showToast(`Error creating a ${data.programName}`, "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(`Error creating program. Please try again`, "error");
+    }
   };
 
   const handleBack = () => {
@@ -129,7 +225,8 @@ export const ProgramManagementListCreateBlock = () => {
 
   return (
     <ProgramManagementListCreateField
-      onSave={handleSubmit(handleCreateProgram)}
+      isLoading={createProgramCB.loading}
+      onSave={handleSubmit((values) => handleCreateProgram(values, reset))}
       handleBack={handleBack}
       fileName={fileName}
       programImage={programImage}

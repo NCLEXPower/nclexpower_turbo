@@ -1,16 +1,16 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import { Button } from "../../../../../../../components";
 import { useRouter } from "../../../../../../../core";
 import { ProgramSectionHeader } from "./components/ProgramSectionHeader";
-import { programSectionList } from "../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import { getSectionTypeIcons } from "../../../../../../../utils/IconUtils";
 import { useAtom } from "jotai";
 import { SectionTitleAtom, SectionTypeAtom } from "./validation";
+import { sectionTypeAndTitle } from "./constants";
 
 export const ProgramSectionManagementListBlock = () => {
   const [, setAtomSectionTitle] = useAtom(SectionTitleAtom);
@@ -62,7 +62,7 @@ export const ProgramSectionManagementListBlock = () => {
         </Typography>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {programSectionList.map((section) => {
+        {sectionTypeAndTitle.map((section) => {
           const { sectionTitle, sectionType } = section;
           return (
             <ProgramSectionHeader

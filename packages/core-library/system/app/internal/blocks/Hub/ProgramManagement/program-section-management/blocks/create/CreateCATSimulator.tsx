@@ -21,13 +21,15 @@ import { useSelectfieldOptions } from "../../../../Settings/SettingsManagement/s
 interface CreateCATSimulatorProps {
   section?: string;
   contentLoader?: boolean;
-  onSubmit: (values: SectionFormType) => void;
+  onSubmit: (values: SectionFormType, reset: () => void) => void;
+  isLoading?: boolean;
 }
 
 export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const [contentAreaCoverageList, setContentAreaCoverageList] = useState<
     string[]
@@ -43,7 +45,7 @@ export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
     },
   });
 
-  const { control, handleSubmit, setValue } = form;
+  const { control, handleSubmit, setValue, reset } = form;
 
   const handleContentAreaChange = (selectedValue: string, index: number) => {
     const updatedList = [...contentAreaCoverageList];
@@ -153,6 +155,7 @@ export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
               color: "white",
               display: "flex",
             }}
+            disabled={isLoading}
             onClick={handleAddNew}
           >
             <EvaIcon name="plus-outline" fill="#ffffff" />{" "}
@@ -168,7 +171,8 @@ export const CreateCATSimulator: React.FC<CreateCATSimulatorProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
-            onClick={handleSubmit(onSubmit)}
+            loading={isLoading}
+            onClick={handleSubmit((values) => onSubmit(values, reset))}
           >
             Create
           </Button>

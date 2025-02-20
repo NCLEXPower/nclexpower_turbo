@@ -18,14 +18,15 @@ import Image from "next/image";
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { WelcomeProgram } from "../../../../../../../../../assets";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
-import { CreateProgramFormType } from "../../validation";
+import { CreateProgramFormType, programTypeAtom } from "../../validation";
+import { useAtom } from "jotai";
 
 interface Props {
   onSave: (values: any) => void;
   handleBack: () => void;
   fileName: string;
   programImage: File[];
-  control: Control<CreateProgramFormType>
+  control: Control<CreateProgramFormType>;
   fields: FieldArrayWithId<
     {
       sections?: {
@@ -48,6 +49,7 @@ interface Props {
   handleMultipleSelectChange: (index: number, value: string) => void;
   selectedSections: Record<number, string>;
   setValue: UseFormSetValue<any>;
+  isLoading?: boolean;
 }
 
 export const ProgramManagementListCreateField: React.FC<Props> = ({
@@ -64,7 +66,10 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
   handleMultipleSelectChange,
   selectedSections,
   setValue,
+  isLoading,
 }) => {
+  const [atomProgramType] = useAtom(programTypeAtom);
+
   return (
     <Box
       sx={{
@@ -86,7 +91,10 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
             <EvaIcon name="arrow-back-outline" fill="#ffffff" />
           </IconButton>
           <Typography variant="h6" sx={{ color: "white" }}>
-            Create Program
+            Create{" "}
+            {atomProgramType === 0
+              ? "Standard (23-Day) Program"
+              : "Fast Track (8-Day) Program"}
           </Typography>
         </Box>
 
@@ -144,6 +152,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
                   }}
                 ></Box>
                 <FileUploadField
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
                   triggerLabel="Replace Image"
                   control={control}
                   name="programImage"
@@ -318,6 +327,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
               background: "none",
             },
           }}
+          disabled={isLoading}
           onClick={handleAddSection}
           data-testid="add-section-button"
         >
@@ -338,6 +348,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
             mt: "20px",
             borderRadius: "10px",
           }}
+          loading={isLoading}
           onClick={onSave}
           data-testid="submit-button"
         >

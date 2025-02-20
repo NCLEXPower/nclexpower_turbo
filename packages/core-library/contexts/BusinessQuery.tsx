@@ -53,6 +53,9 @@ import {
   useCreateContactUs,
   useGetAllCategories,
   useCommenceEnvMaintenanceMode,
+  useGetSectionsByType,
+  useGetAllSections,
+  useGetAllPrograms
 } from "../core/hooks/useBusinessQueries";
 import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -87,8 +90,11 @@ import {
   GetMenuByIdParams,
   UpdateMenuItemParams,
   ContactFormType,
+  GetSectionParams,
+  GetAllSectionsResponseType
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
+import { StandardProgramListType } from "../types/wc/programList";
 
 interface BusinessQueryContextValue {
   businessQueryLoadPreProcess: (
@@ -342,6 +348,19 @@ interface BusinessQueryContextValue {
     any,
     unknown
   >;
+
+  businessQueryGetAllSections: (
+    queryKey: string[],
+  ) => UseQueryResult<GetAllSectionsResponseType | undefined, any>;
+
+  businessQueryGetSectionsByType: (
+    queryKey: string[],
+    params: GetSectionParams
+  ) => UseQueryResult<GetAllSectionsResponseType | undefined, any>;
+  
+  businessQueryGetAllPrograms: (
+    queryKey: string[],
+  ) => UseQueryResult<StandardProgramListType | undefined, any>;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -396,6 +415,9 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryCreateContactUs = useCreateContactUs;
   const businessQueryGetAllCategory = useGetAllCategories;
   const businessQueryCommenceEnvMaintenanceMode = useCommenceEnvMaintenanceMode;
+  const businessQueryGetSectionsByType = useGetSectionsByType;
+  const businessQueryGetAllSections = useGetAllSections;
+  const businessQueryGetAllPrograms = useGetAllPrograms;
 
   return (
     <BusinessQueryContext.Provider
@@ -442,6 +464,9 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryCreateContactUs,
         businessQueryGetAllCategory,
         businessQueryCommenceEnvMaintenanceMode,
+        businessQueryGetSectionsByType,
+        businessQueryGetAllSections,
+        businessQueryGetAllPrograms
       }}
     >
       {children}

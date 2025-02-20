@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import {
@@ -18,6 +18,7 @@ interface EditDocumentFieldProps {
   control: Control<{ title: string; link: File[] }>;
   onSave: (values: any) => void;
   linkValue?: string;
+  isLoading?: boolean;
 }
 
 export const EditDocumentField: React.FC<EditDocumentFieldProps> = ({
@@ -25,6 +26,7 @@ export const EditDocumentField: React.FC<EditDocumentFieldProps> = ({
   control,
   linkValue,
   onSave,
+  isLoading,
 }) => {
   return (
     <Box
@@ -89,6 +91,7 @@ export const EditDocumentField: React.FC<EditDocumentFieldProps> = ({
             <Typography sx={{ color: "#3B0086", mb: 2 }}>Link*:</Typography>
             <Box sx={{ display: "flex", alignItems: "left", lineHeight: 0 }}>
               <FileUploadField
+                acceptTypes={["pdf"]}
                 triggerLabel={linkValue || "Upload Document"}
                 control={control}
                 name="link"
@@ -105,6 +108,7 @@ export const EditDocumentField: React.FC<EditDocumentFieldProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
+            loading={isLoading}
             onClick={onSave}
           >
             Update

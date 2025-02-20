@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Typography } from "@mui/material";
 import {
   Button,
@@ -18,17 +18,20 @@ import { formatSectionTitle } from "../../../../../../../../../utils";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../assets";
 import { useFileUpload } from "../../../../../../../../../hooks";
+import ReactPlayer from "react-player";
 
 interface CreateVideo {
   section?: string;
   contentLoader?: boolean;
-  onSubmit: (values: SectionFormType) => void;
+  onSubmit: (values: SectionFormType, reset: () => void) => void;
+  isLoading?: boolean;
 }
 
 export const CreateVideo: React.FC<CreateVideo> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const form = useForm({
     mode: "onSubmit",
@@ -36,7 +39,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
     defaultValues: videoSchema.getDefault(),
   });
 
-  const { control, handleSubmit, watch, getValues, setValue } = form;
+  const { control, handleSubmit, watch, getValues, setValue, reset } = form;
   const { handleFileChange } = useFileUpload(setValue);
 
   const videoLink = getValues("link");
@@ -137,19 +140,17 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                   overflow: "hidden",
                 }}
               >
-                <Image
-                  src={
+                <ReactPlayer
+                  url={
                     videoFileName
                       ? URL.createObjectURL(videoLink[0])
                       : noVideoImage
                   }
-                  alt="program thumbnail"
-                  layout="fill"
-                  objectFit="cover"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
-                  }}
+                  playing
+                  controls
+                  width="100%"
+                  height="100%"
+                  style={{ objectFit: "cover" }}
                 />
                 <Box
                   sx={{
@@ -163,6 +164,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                   }}
                 ></Box>
                 <FileUploadField
+                  acceptTypes={["mp4", "webm", "ogg", "avi", "mov", "mkv"]}
                   triggerLabel={linkValue?.[0]?.name || "Upload Video"}
                   control={control}
                   name="link"
@@ -228,6 +230,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                   }}
                 ></Box>
                 <FileUploadField
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
                   triggerLabel={
                     videoPlaceholderValue?.[0]?.name ||
                     "Upload Video Placeholder"
@@ -297,6 +300,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                   }}
                 ></Box>
                 <FileUploadField
+                  acceptTypes={["png", "jpeg", "jpg", "gif", "webp"]}
                   triggerLabel={
                     authorImageValue?.[0]?.name || "Upload Author Image"
                   }
@@ -372,7 +376,8 @@ export const CreateVideo: React.FC<CreateVideo> = ({
               borderRadius: "10px",
               color: "white",
             }}
-            onClick={handleSubmit(onSubmit)}
+            loading={isLoading}
+            onClick={handleSubmit((values) => onSubmit(values, reset))}
           >
             Create
           </Button>

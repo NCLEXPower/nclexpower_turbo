@@ -1434,7 +1434,7 @@ export const programSectionList: ProgramSectionList[] = [
   },
   {
     sectionId: "6",
-    sectionType: "CAT",
+    sectionType: "cat",
     sectionTitle: "CAT",
     sectionData: [
       {

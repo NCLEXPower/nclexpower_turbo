@@ -20,7 +20,8 @@ import { useSelectfieldOptions } from "../../../../Settings/SettingsManagement/s
 interface CreateSimulatorProps {
   section?: string;
   contentLoader?: boolean;
-  onSubmit: (values: SectionFormType) => void;
+  onSubmit: (values: SectionFormType, reset: () => void) => void;
+  isLoading?: boolean;
 }
 
 const checkboxes: {
@@ -36,6 +37,7 @@ export const CreateSimulator: React.FC<CreateSimulatorProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const form = useForm({
     mode: "onSubmit",
@@ -48,7 +50,7 @@ export const CreateSimulator: React.FC<CreateSimulatorProps> = ({
   };
   const { cleanedContentArea } = useSelectfieldOptions();
 
-  const { control, handleSubmit, setValue } = form;
+  const { control, handleSubmit, setValue, reset } = form;
 
   if (contentLoader) {
     return <ComponentLoader />;
@@ -160,7 +162,8 @@ export const CreateSimulator: React.FC<CreateSimulatorProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
-            onClick={handleSubmit(onSubmit)}
+            loading={isLoading}
+            onClick={handleSubmit((values) => onSubmit(values, reset))}
           >
             Create
           </Button>

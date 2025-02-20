@@ -49,3 +49,4 @@ export const createProgramSchema = yup.object({
 export type CreateProgramFormType = yup.InferType<typeof createProgramSchema>;
 
 export const programIDAtom = atom<string>("");
+export const programTypeAtom = atom<number>(0);

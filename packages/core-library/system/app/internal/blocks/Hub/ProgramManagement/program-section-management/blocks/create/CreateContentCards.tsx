@@ -23,13 +23,15 @@ import { noVideoImage } from "../../../../../../../../../assets";
 interface CreateContentCardsProps {
   section?: string;
   contentLoader?: boolean;
-  onSubmit: (values: SectionFormType) => void;
+  onSubmit: (values: SectionFormType, reset: () => void) => void;
+  isLoading?: boolean;
 }
 
 export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const form = useForm({
     mode: "onSubmit",
@@ -41,7 +43,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
     { cardTopic: string; cardFaces: File[] }[]
   >([{ cardTopic: "", cardFaces: [] }]);
 
-  const { control, handleSubmit, getValues, setValue, watch } = form;
+  const { control, handleSubmit, getValues, setValue, watch, reset } = form;
 
   const linkValue = watch("cards");
 
@@ -321,6 +323,13 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                                 }}
                               ></Box>
                               <FileUploadField
+                                acceptTypes={[
+                                  "png",
+                                  "jpeg",
+                                  "jpg",
+                                  "gif",
+                                  "webp",
+                                ]}
                                 triggerLabel={
                                   cardFacesFileName ||
                                   `Select card face ${faceIndex + 1}`
@@ -389,6 +398,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                     borderRadius: "10px",
                     color: "white",
                   }}
+                  disabled={isLoading}
                   onClick={() => handleAddCardFace(topicIndex)}
                 >
                   Add Card
@@ -408,6 +418,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                 color: "white",
               }}
               onClick={handleAddTopic}
+              disabled={isLoading}
             >
               Add Topic
             </Button>
@@ -419,7 +430,8 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                 borderRadius: "10px",
                 color: "white",
               }}
-              onClick={handleSubmit(onSubmit)}
+              loading={isLoading}
+              onClick={handleSubmit((values) => onSubmit(values, reset))}
             >
               Submit
             </Button>

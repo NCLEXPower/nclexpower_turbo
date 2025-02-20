@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { ComponentLoader } from "../../../../../../../../../../components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,17 +10,20 @@ import {
   SectionFormType,
   SectionDataIdAtom,
   videoSchema,
+  SectionTypeAtom,
 } from "../../../validation";
-import { programSectionList } from "../../../../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import { useEffect, useMemo } from "react";
 import { useAtom } from "jotai";
 import * as yup from "yup";
 import { EditVideoField } from "./EditVideoField";
+import { useBusinessQueryContext } from "../../../../../../../../../../contexts";
+import { SectionDataType } from "../../../types";
 
 interface EditVideoProps {
   section?: string;
   contentLoader?: boolean;
   onSubmit: (values: SectionFormType) => void;
+  isLoading?: boolean;
 }
 
 const normalizeLinkValue = (link: string | File[] | undefined): File[] => {
@@ -40,17 +43,29 @@ export const EditVideoBlock: React.FC<EditVideoProps> = ({
   section,
   contentLoader,
   onSubmit,
+  isLoading,
 }) => {
   const [sectionDataId] = useAtom(SectionDataIdAtom);
+  const [sectionType] = useAtom(SectionTypeAtom);
+
+  const { businessQueryGetSectionsByType } = useBusinessQueryContext();
+  const { data: sectionsList } = businessQueryGetSectionsByType(
+    ["section_type_api"],
+    { sectionType }
+  );
 
   const selectedSectionData = useMemo(() => {
-    const sectionData = programSectionList.find(
-      (item) => item.sectionType.toLowerCase() === section?.toLowerCase()
-    );
-    return sectionData?.sectionData.find(
-      (data) => data.sectionDataId === sectionDataId
-    );
-  }, [section, sectionDataId]);
+    if (!Array.isArray(sectionsList)) return null;
+
+    for (const section of sectionsList) {
+      const foundData = section.sectionData.find(
+        (data: SectionDataType) => data.sectionDataId === sectionDataId
+      );
+      if (foundData) return foundData;
+    }
+
+    return null;
+  }, [sectionsList, section, sectionDataId]);
 
   const defaultValues = useMemo(() => {
     if (selectedSectionData && isVideoSectionData(selectedSectionData)) {
@@ -176,15 +191,13 @@ export const EditVideoBlock: React.FC<EditVideoProps> = ({
 
   return (
     <EditVideoField
+      isLoading={isLoading}
       videoFileName={videoFileName}
       videoLink={videoLink}
       videoPlaceholderFileName={videoPlaceholderFileName}
       videoPlaceholderLink={videoPlaceholderLink}
       authorImageFileName={authorImageFileName}
       authorImageLink={authorImageLink}
-      linkValue={linkValue?.[0]?.name}
-      videoPlaceholderValue={videoPlaceholderValue?.[0].name}
-      authorImageValue={authorImageValue?.[0]?.name}
       control={control}
       onSave={handleOnSave}
       section={section}

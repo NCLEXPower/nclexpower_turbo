@@ -27,6 +27,7 @@ interface EditSimulatorFieldProps {
   }>;
   handleChange: (value: string) => void;
   onSave: (values: any) => void;
+  isLoading?: boolean;
 }
 
 const checkboxes: {
@@ -44,6 +45,7 @@ export const EditSimulatorField: React.FC<EditSimulatorFieldProps> = ({
   control,
   handleChange,
   onSave,
+  isLoading,
 }) => {
   return (
     <Box
@@ -152,6 +154,7 @@ export const EditSimulatorField: React.FC<EditSimulatorFieldProps> = ({
               borderRadius: "10px",
               color: "white",
             }}
+            loading={isLoading}
             onClick={onSave}
           >
             Update

@@ -15,7 +15,6 @@ interface ProgramSectionHeaderProps {
   sectionType: string;
   handleCreateSection?: (sectionTitle: string, sectionType: string) => void;
   handleEditSection?: (sectionTitle: string, sectionType: string) => void;
-  handleDeleteSection?: () => void;
   showHeaderButtons?: boolean;
   showAddButton?: boolean;
 }
@@ -26,7 +25,6 @@ export const ProgramSectionHeader: React.FC<ProgramSectionHeaderProps> = ({
   sectionType,
   handleCreateSection,
   handleEditSection,
-  handleDeleteSection,
   showHeaderButtons,
   showAddButton,
 }) => {
@@ -115,12 +113,6 @@ export const ProgramSectionHeader: React.FC<ProgramSectionHeaderProps> = ({
                 "#5ABC36",
                 "plus-outline",
                 "#6FCC48"
-              )}
-              {renderButton(
-                handleDeleteSection,
-                "#D40000",
-                "trash-outline",
-                "#E56666"
               )}
             </Box>
           )}

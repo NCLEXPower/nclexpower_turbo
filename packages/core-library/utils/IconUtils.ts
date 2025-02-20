@@ -27,7 +27,7 @@ const statusIcons = {
     "med-cards": CardsIcon,
     perspective: PerspectiveIcon,
     strategy: StrategyIcon,
-    CAT: CATIcon
+    cat: CATIcon
   } as const;
 
   const sectionStatusIcons = {

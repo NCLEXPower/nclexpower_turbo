@@ -51,8 +51,18 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  CreateSectionResponse,
+  CreateSectionParams,
+  GetAllSectionsResponseType,
+  GetSectionParams,
+  UpdateSectionParams,
+  UpdateSectionResponse,
+  CreateProgramParams,
+  CreateProgramResponse,
+  UpdateProgramParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
+import { StandardProgramListType } from "../../types/wc/programList";
 
 export class WebApiBackOffice {
   constructor(
@@ -451,5 +461,208 @@ export class WebApiBackOffice {
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
+  }
+
+  public async getAllSections(){
+    return await this.axios.get<GetAllSectionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-sections`
+    );
+  }
+  
+  public async getSectionListByType(params: GetSectionParams){
+    return await this.axios.get<GetAllSectionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-sections?${qs.stringify({ ...params })}`);
+  }
+
+  public deleteSectionList(sectionId: string) {
+    return this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
+  }
+
+  public updateSectionById(params: UpdateSectionParams){
+    const form = new FormData();
+    form.append("sectionTitle", params.sectionTitle);
+    form.append("sectionType", params.sectionType);
+
+      form.append("SectionData[0].sectionDataId", params.sectionDataId || "");
+      form.append("SectionData[0].title", params.title || "");
+    
+      if (params.link?.[0]) {
+        form.append("SectionData[0].file", params.link[0]);
+      } else {
+        form.append("SectionData[0].file", "");
+      }
+    
+      form.append("SectionData[0].contentArea", params.contentArea || "");
+
+      if(params.contentArea?.length) {
+        form.append("SectionData[0].guided", params.guided === true ? "true" : "false");
+        form.append("SectionData[0].unguided", params.unguided === true ? "true" : "false");
+        form.append("SectionData[0].practice", params.practice === true ? "true" : "false");
+      }
+    
+      form.append("SectionData[0].catSimulator", params.catSimulator || "");
+
+      if (params.contentAreaCoverage?.length) {
+        params.contentAreaCoverage.forEach((item, index) => {
+          form.append(`SectionData[0].contentAreaCoverage[${index}]`, item);
+        });
+      }
+
+      form.append("SectionData[0].authorName", params.authorName || "");
+    
+      if (params.authorImage?.[0]) {
+        form.append("SectionData[0].authorImage", params.authorImage[0]);
+      } else {
+        form.append("SectionData[0].authorImage", "");
+      }
+    
+      if (params.videoPlaceholder?.[0]) {
+        form.append("SectionData[0].videoPlaceholder", params.videoPlaceholder[0]);
+      } else {
+        form.append("SectionData[0].videoPlaceholder", "");
+      }
+    
+      form.append("SectionData[0].description", params.description || "");
+
+      if (params.cards?.length) {
+        params.cards.forEach((card, cardIndex) => {
+          form.append(`SectionData[0].cards[${cardIndex}].cardTopic`, card.cardTopic || "");
+          if (card.cardFaces?.length) {
+            card.cardFaces.forEach((face) => {
+              form.append(`SectionData[0].cards[${cardIndex}].cardFaces`, face);
+            });
+          } else {
+            form.append(`SectionData[0].cards[${cardIndex}].cardFaces`, "[]");
+          }
+        });
+      } 
+
+    return this.axios.put<UpdateSectionResponse | number>(
+      `/api/v2/content/BaseContent/${params.sectionId}`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }
+
+  public createSection(params: CreateSectionParams) {
+    const form = new FormData();
+    form.append("sectionTitle", params.sectionTitle);
+    form.append("sectionType", params.sectionType);
+
+    if (params.sectionData?.[0]) {
+      const sectionData = params.sectionData[0];
+    
+      form.append("SectionData[0].title", sectionData.title || "");
+    
+      if (sectionData.link?.[0]) {
+        form.append("SectionData[0].file", sectionData.link[0]);
+      } else {
+        form.append("SectionData[0].file", "");
+      }
+    
+      form.append("SectionData[0].contentArea", sectionData.contentArea || "");
+
+      if(sectionData.contentArea?.length) {
+        form.append("SectionData[0].guided", sectionData.guided === true ? "true" : "false");
+        form.append("SectionData[0].unguided", sectionData.unguided === true ? "true" : "false");
+        form.append("SectionData[0].practice", sectionData.practice === true ? "true" : "false");
+      }
+    
+      form.append("SectionData[0].catSimulator", sectionData.catSimulator || "");
+
+      if (sectionData.contentAreaCoverage?.length) {
+        sectionData.contentAreaCoverage.forEach((item, index) => {
+          form.append(`SectionData[0].contentAreaCoverage[${index}]`, item);
+        });
+      }
+
+      form.append("SectionData[0].authorName", sectionData.authorName || "");
+    
+      if (sectionData.authorImage?.[0]) {
+        form.append("SectionData[0].authorImage", sectionData.authorImage[0]);
+      } else {
+        form.append("SectionData[0].authorImage", "");
+      }
+    
+      if (sectionData.videoPlaceholder?.[0]) {
+        form.append("SectionData[0].videoPlaceholder", sectionData.videoPlaceholder[0]);
+      } else {
+        form.append("SectionData[0].videoPlaceholder", "");
+      }
+    
+      form.append("SectionData[0].description", sectionData.description || "");
+
+      if (sectionData.cards?.length) {
+        sectionData.cards.forEach((card, cardIndex) => {
+          form.append(`SectionData[0].cards[${cardIndex}].cardTopic`, card.cardTopic || "");
+          if (card.cardFaces?.length) {
+            card.cardFaces.forEach((face) => {
+              form.append(`SectionData[0].cards[${cardIndex}].cardFaces`, face);
+            });
+          } else {
+            form.append(`SectionData[0].cards[${cardIndex}].cardFaces`, "[]");
+          }
+        });
+      } 
+    }
+    
+    return this.axios.post<CreateSectionResponse | number>(
+      `/api/v2/content/BaseContent/create-section`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }
+
+  public createPrograms(params: CreateProgramParams){
+    const form = new FormData();
+
+    form.append("title", params.title)
+    form.append("programImage", params.programImage[0]);
+    form.append("programType", params.programType.toString());
+    form.append("stringifiedSections", JSON.stringify(params.stringifiedSections));
+
+    return this.axios.post<CreateProgramResponse | number>(
+      `/api/v2/content/BaseContent/create-program`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  }
+
+  public async getAllPrograms(){
+    return await this.axios.get<StandardProgramListType[]>(
+      `/api/v2/content/BaseContent/get-internal-programs`
+    );
+  }
+
+  public updatePrograms(params: UpdateProgramParams){
+    const form = new FormData();
+
+    form.append("id", params.id)
+    form.append("title", params.title)
+    form.append("programImage", params.programImage[0]);
+    form.append("stringifiedSections", JSON.stringify(params.stringifiedSections));
+    form.append("programType", params.programType.toString());
+
+    return this.axios.put<number>(
+      `/api/v2/content/BaseContent/update-program`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
   }
 }
