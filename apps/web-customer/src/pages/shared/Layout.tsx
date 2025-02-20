@@ -87,7 +87,7 @@ const Layout: React.FC<
           <CssBaseline />
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
-              <TourContextProvider steps={HubTourSteps}>
+              <TourContextProvider>
                 <DrawerLayout
                   menu={headerMenu}
                   isAuthenticated={isAuthenticated}

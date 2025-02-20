@@ -11,23 +11,11 @@ import {
   CurrentProgress2,
 } from "./DashboardAnalytics";
 import { userData } from "./DashboardAnalytics/DashboardMock";
-import { useLocalStorage, useSensitiveInformation } from "core-library/hooks";
+import { useSensitiveInformation } from "core-library/hooks";
 import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
-import { useTour } from "@reactour/tour";
-import { useEffect } from "react";
 
 export const Dashboard: React.FC = () => {
   const { customer } = useSensitiveInformation();
-  const { setIsOpen } = useTour();
-  const { getItem, setItem } = useLocalStorage<string>("HubTourKey");
-
-  useEffect(() => {
-    const tour = getItem();
-    if (!tour) {
-      setIsOpen(true);
-      setItem("HubTourKey");
-    }
-  }, [setIsOpen]);
 
   const customerName = formatCustomerName(customer);
 
