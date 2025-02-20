@@ -119,8 +119,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
               Watch <span className='text-darkBlue'> How it Works</span>
             </p>
             <p className='font-ptSansNarroxw lg:text-lg text-md'>
-              See for yourself how to use our system, and how much fun and
-              different it is to learn and prepare for NCLEX!
+            Day-by-day, step-by-step till you succeed! Watch this video on how we lead you throughout the review process - you'll be amazed at how simple yet effective our training method is!
             </p>
           </div>
           <div className=' h-64 lg:w-3/5 px-5 flex justify-center'>

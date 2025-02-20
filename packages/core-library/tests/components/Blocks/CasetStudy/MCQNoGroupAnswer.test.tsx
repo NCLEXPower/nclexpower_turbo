@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "../../../common";
+import { render, screen, fireEvent, waitFor } from "../../../common";
 import { Control } from "react-hook-form";
 import { MCQNoGroupAnswer } from "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQNoGroup/components/MCQNoGroupAnswer";
 import { ContainedCaseStudyQuestionType } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
@@ -8,6 +8,29 @@ jest.mock("../../../../components", () => ({
   TextField: jest.fn(() => <input />),
   EvaIcon: jest.fn(() => <div />),
   Button: jest.fn(({ children, ...props }) => <button {...props}>{children}</button>),
+  ControlledCheckbox: jest.fn(({ onChange, name, control, defaultValue, ...props }) => (
+    <input
+      type="checkbox"
+      onChange={(e) => {
+        onChange && onChange({
+          target: {
+            checked: e.target.checked,
+            name: name
+          }
+        });
+      }}
+      name={name}
+      {...props}
+    />
+  )),
+}));
+
+jest.mock("../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQGroup/components/MCQColumnComponent", () => ({
+  ColumnComponent: jest.fn(() => <div />),
+}));
+
+jest.mock("react-hook-form", () => ({
+  Control: jest.fn(() => <div />),
 }));
 
 jest.mock("../../../../config", () => ({
@@ -89,20 +112,46 @@ describe("MCQNoGroupAnswer", () => {
     expect(defaultProps.handleRemoveColumnHeaders).toHaveBeenCalledWith(3);
   });
 
-  it("should call handleRemoveRow with the correct index", () => {
+  it("should render ControlledCheckbox components for each table row", () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    fireEvent.click(screen.getByTestId("remove-row-1"));
-    expect(defaultProps.handleRemoveRow).toHaveBeenCalledWith(0);
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
   });
 
-
-  it("should render ControlledTextField components for each table row", () => {
+  it("should handle onChange on selected value to be true", async () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
+    const checkboxes = await screen.findAllByRole("checkbox");
+
+    fireEvent.click(checkboxes[0]);
+
+    await waitFor(() => {
+      expect(setValueMock).toHaveBeenCalledWith(
+        "questionnaires.1.rows.0.choices.0.value",
+        true
+      );
+    });
   });
 
-  it("should render RadioGroup components for each table row", () => {
+  it("should call setValue with correct values when another checkbox is clicked", async () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
+    const checkboxes = await screen.findAllByRole("checkbox");
+
+    fireEvent.click(checkboxes[1]);
+
+    await waitFor(() => {
+      expect(setValueMock).toHaveBeenCalledWith("questionnaires.1.rows.0.choices.0.value", false);
+      expect(setValueMock).toHaveBeenCalledWith("questionnaires.1.rows.0.choices.1.value", true);
+    });
+  });
+
+  it("should call setValue with correct values when checkbox is clicked", async () => {
+    render(<MCQNoGroupAnswer {...defaultProps} />);
+    const checkboxes = await screen.findAllByRole("checkbox");
+
+    fireEvent.click(checkboxes[0]);
+
+    await waitFor(() => {
+      expect(setValueMock).toHaveBeenCalledWith("questionnaires.1.rows.0.choices.0.value", true);
+      expect(setValueMock).toHaveBeenCalledWith("questionnaires.1.rows.0.choices.1.value", false);
+    });
   });
 });
