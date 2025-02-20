@@ -51,6 +51,7 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  PolicyFileResponseType,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -452,10 +453,11 @@ export class WebApiBackOffice {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
   }
+
   public async getPdf(policyType: number) {
-    return await this.axios.get(
+    return await this.axios.get<PolicyFileResponseType>(
       `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`,
-      { responseType: "blob" }
+      { responseType: "json" }
     );
   }
 }

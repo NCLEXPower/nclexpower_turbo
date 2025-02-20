@@ -1,87 +1,84 @@
+import axios, { AxiosInstance } from "axios";
+
+jest.mock("axios", () => {
+  const actualAxios = jest.requireActual("axios");
+
+  const axiosMock: jest.Mocked<AxiosInstance> = {
+    ...actualAxios,
+    create: jest.fn(() => axiosMock) as unknown as jest.Mocked<AxiosInstance>,
+    interceptors: {
+      request: { use: jest.fn(), eject: jest.fn() },
+      response: { use: jest.fn(), eject: jest.fn() },
+    },
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+    request: jest.fn(),
+  };
+
+  return axiosMock;
+});
+
 import { renderHook, waitFor } from "../common";
 import { act } from "react";
 import { useDownloadPDF } from "../../hooks/useDownloadPDF";
+
+const mockAxios = axios as jest.Mocked<typeof axios>;
+mockAxios.create = jest.fn(() => mockAxios);
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
 }));
 
-describe("useDownloadPDF hook", () => {
-  let mockAnchor: HTMLAnchorElement | null = null;
+beforeEach(() => {
+  jest.clearAllMocks();
+  global.URL.createObjectURL = jest.fn(() => "blob:http://localhost/test");
+  global.URL.revokeObjectURL = jest.fn(); // Mock revokeObjectURL to prevent errors
+});
 
-  beforeEach(() => {
-    global.fetch = jest.fn();
-    global.URL.createObjectURL = jest.fn(() => "http://localhost/mockObjectURL");
-    global.URL.revokeObjectURL = jest.fn();
+it("should download the correct PDF file when given a policyType", async () => {
+  const mockFileUrl = "https://mockstorage.com/test.pdf";
+  const mockResponseData = { data: { fileUrl: mockFileUrl } };
 
-    const originalCreateElement = document.createElement;
-    jest.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-      if (tagName === "a") {
-        const anchor = originalCreateElement.call(document, "a") as HTMLAnchorElement;
-        jest.spyOn(anchor, "click").mockImplementation(() => { });
-        mockAnchor = anchor;
-        return anchor;
-      }
-      return originalCreateElement.call(document, tagName);
-    });
+  mockAxios.get.mockResolvedValueOnce(mockResponseData);
+
+  global.URL.createObjectURL = jest.fn(() => "blob:http://localhost/test");
+  global.fetch = jest.fn().mockResolvedValueOnce({
+    blob: () => Promise.resolve(new Blob(["PDF content"], { type: "application/pdf" })),
+  } as Response);
+
+  const { result } = renderHook(() => useDownloadPDF());
+
+  await act(async () => {
+    await result.current.downloadPdf(1);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+  expect(mockAxios.get).toHaveBeenCalledTimes(1);
+  expect(mockAxios.get).toHaveBeenCalledWith(
+    expect.stringContaining("/api/v2/content/BaseContent/get-file-url?policy=1"),
+    expect.objectContaining({ responseType: "json" }) // Allow responseType
+  );
+
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(global.fetch).toHaveBeenCalledWith(mockFileUrl);
+});
+
+it("should handle missing file URL errors", async () => {
+  const mockApiResponse = { data: {} }; // No fileUrl
+  (global.fetch as jest.Mock).mockResolvedValueOnce(mockApiResponse);
+
+  const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+  const { result } = renderHook(() => useDownloadPDF());
+
+  act(() => {
+    result.current.downloadPdf(2);
   });
 
-  it("should initiate a file download and show loading state while downloading", async () => {
-    const mockBlob = new Blob(["pdf content"], { type: "application/pdf" });
-    const mockResponse = { ok: true, blob: jest.fn().mockResolvedValue(mockBlob) };
-    global.fetch = jest.fn().mockResolvedValue(mockResponse);
-
-    const { result } = renderHook(() => useDownloadPDF());
-
-    expect(result.current.isLoading).toBe(false);
-
-    act(() => {
-      result.current.downloadFile("mockKey", "test.pdf");
-    });
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(true);
-    });
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
-    });
-
-    expect(global.fetch).toHaveBeenCalledWith("https://api.example.com/get-pdf", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: "mockKey" }),
-    });
-
-    expect(mockAnchor).not.toBeNull();
-    expect(mockAnchor!.download).toBe("test.pdf");
-    expect(mockAnchor!.href).toBe("http://localhost/mockObjectURL");
-    expect(mockAnchor!.click).toHaveBeenCalled();
+  await waitFor(() => {
+    expect(consoleSpy).toHaveBeenCalledWith("Error fetching PDF:", expect.any(Error));
   });
 
-
-  it("should handle errors correctly", async () => {
-    const mockErrorMessage = "Failed to fetch the file. Please try again.";
-
-    const mockResponse = {
-      ok: false,
-      statusText: "Internal Server Error",
-    };
-
-    (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
-
-    const { result } = renderHook(() => useDownloadPDF());
-    expect(result.current.error).toBe(null);
-
-    act(() => {
-      result.current.downloadFile("mockKey", "test.pdf");
-    });
-
-    await waitFor(() => expect(result.current.error).toBe(mockErrorMessage));
-  });
+  consoleSpy.mockRestore();
 });
