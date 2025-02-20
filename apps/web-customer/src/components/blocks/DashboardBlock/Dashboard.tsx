@@ -16,7 +16,6 @@ import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
 
 export const Dashboard: React.FC = () => {
   const { customer } = useSensitiveInformation();
-
   const customerName = formatCustomerName(customer);
 
   const today = new Date();
