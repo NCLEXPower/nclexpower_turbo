@@ -5,22 +5,17 @@ import {
   GenericSelectField,
   MultipleSelectField,
 } from "../../../../../../components";
-import {
-  CountryMockData,
-  mockSelectedCountries,
-  TimezoneMockData,
-} from "./ComingSoonMock";
+import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
-import { contentDateSchema, ContentDateType } from "./validation";
-import { Control, useForm } from "react-hook-form";
-import { useApi, useApiCallback } from "../../../../../../hooks";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Control } from "react-hook-form";
+import { ContentDateType } from "./validation";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
   isSwitchOn: boolean;
   isActive?: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  mappedCountries: Array<{ code: string; name: string; daysLeft: number }>;
 };
 
 const ComingSoonManagement = ({
@@ -28,17 +23,8 @@ const ComingSoonManagement = ({
   isSwitchOn,
   onSwitchChange,
   isActive,
+  mappedCountries,
 }: ComingSoonProps) => {
-  
-  // const getCountryTimezones = useApi((api) =>
-  //   api.webbackoffice.getCountryTimezone({
-  //     countryKey: "AUS",
-  //     goLiveDate:
-  //       "Fri Feb 14 2025 00:00:00 GMT+0800 (Philippine Standard Time)",
-  //   })
-  // );
-
-  
   return (
     <Stack direction={"row"}>
       <Container sx={{ width: 600 }}>
@@ -184,12 +170,11 @@ const ComingSoonManagement = ({
                 marginLeft: "1rem",
               }}
             >
-              Live Countdown of Selected Countries :
+              Live Countdown of Selected Countries:
             </Typography>
           </div>
-
           <div className="mt-4 ml-10 max-h-32 overflow-y-auto flex flex-col space-y-1">
-            {mockSelectedCountries.map((country) => (
+            {mappedCountries.map((country) => (
               <div
                 key={country.code}
                 className="flex items-center justify-between bg-white px-3 py-2 rounded-md inner-shadow"

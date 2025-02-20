@@ -749,17 +749,9 @@ export type DeleteCaseNameParams = {
   id: string;
 };
 
-export type CreateCountryTimezonesParams = {
-  countryKey: string;
-  country: string;
-  timeZones: string[];
-};
-
 export type GetCountryTimezonesParams = {
+  daysRemaining: any;
+  country: any;
   countryKey: string;
   goLiveDate: string;
-};
-
-export type DeleteTimezonesParams = {
-  id: string;
 };

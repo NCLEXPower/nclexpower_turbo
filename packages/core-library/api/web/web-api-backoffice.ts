@@ -52,7 +52,6 @@ import {
   DeleteCaseNameParams,
   CaseNameResponseType,
   GetCountryTimezonesParams,
-  CreateCountryTimezonesParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 

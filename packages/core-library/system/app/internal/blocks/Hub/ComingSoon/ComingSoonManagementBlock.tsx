@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { EmailsNotification } from "./EmailsNotification";
 import { Stack } from "@mui/material";
@@ -6,26 +6,25 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApi, useApiCallback } from "../../../../../../hooks";
+import { useApiCallback } from "../../../../../../hooks";
 
 export const ComingSoonManagementBlock: React.FC = () => {
+  const [mappedCountries, setMappedCountries] = useState<
+    Array<{ code: string; name: string; daysLeft: number }>
+  >([]);
 
   const getCountryTimezones = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
       countryKey: any;
       goLiveDate: any;
     };
-    return api.webbackoffice.getCountryTimezone({ countryKey, goLiveDate });
+    return api.webbackoffice.getCountryTimezone({
+      countryKey,
+      goLiveDate,
+      daysRemaining: undefined,
+      country: undefined,
+    });
   });
-
-  // const mappedData = getCountryTimezones.result?.data?.map((item) => ({
-  //   label: item.countryKey,
-  //   value: item.countryKey,
-  // })) ?? [];
-
-  // console.log("mappedData", getCountryTimezones.result?.data);
-
-
 
   const form = useForm<ContentDateType>({
     mode: "all",
@@ -34,18 +33,43 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
   const { control, handleSubmit, watch, setValue } = form;
 
-  function onSubmit(values: ContentDateType) {
+  function mapResponseToCountry(data: {
+    countryKey: string;
+    country: string;
+    daysRemaining: { hoursRemaining: number; daysRemaining: number }[];
+  }): { code: string; name: string; daysLeft: number } {
+    const bestTimezone = data.daysRemaining.reduce(
+      (prev, curr) => (curr.hoursRemaining > prev.hoursRemaining ? curr : prev),
+      data.daysRemaining[0]
+    );
+    return {
+      code: data.countryKey,
+      name: data.country,
+      daysLeft: bestTimezone.daysRemaining,
+    };
+  }
+
+  async function onSubmit(values: ContentDateType) {
     console.log("go live value", values);
-
     if (Array.isArray(values.countryKey)) {
-      values.countryKey.forEach((key) => {
-        getCountryTimezones.execute({
-          countryKey: key,
-          goLiveDate: values.goLiveDate?.toString() || "",
-        });
-      });
+      try {
+        const responses = await Promise.all(
+          values.countryKey.map((key) =>
+            getCountryTimezones.execute({
+              countryKey: key,
+              goLiveDate: values.goLiveDate?.toString() || "",
+            })
+          )
+        );
+        const flattenedResponses = responses.flatMap((response) =>
+          Array.isArray(response.data) ? response.data : [response.data]
+        );
+        const mapped = flattenedResponses.map(mapResponseToCountry);
+        setMappedCountries(mapped);
+      } catch (error) {
+        console.error("Error fetching timezones:", error);
+      }
     }
-
     setValue("isActive", true);
   }
 
@@ -59,12 +83,12 @@ export const ComingSoonManagementBlock: React.FC = () => {
     setIsSwitchOn(event.target.checked);
     setValue("hasNoSchedule", !event.target.checked);
   };
+
   const watchEventName = watch("eventName");
   const watchEnvironment = watch("TargetEnvironment");
   const watchDescription = watch("description");
   const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
-  
 
   return (
     <Stack direction={"column"} spacing={2}>
@@ -79,6 +103,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
             isSwitchOn={isSwitchOn}
             onSwitchChange={handleSwitchChange}
             isActive={watch("isActive")}
+            mappedCountries={mappedCountries}
           />
           <ComingSoonForm
             control={control}
