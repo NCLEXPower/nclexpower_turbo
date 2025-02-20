@@ -155,7 +155,10 @@ const mcqGroupRow = yup.object().shape({
         choiceIndexPos: yup.number(),
       })
     )
-    .required("Choices are required."),
+    .required("Choices are required.")
+    .test("must-select-one", "You must select at least one choice", (choices) =>
+      choices.some((choice) => choice.value === true)
+    ),
 });
 
 export const mcqGroupAnswerSchema = yup.object({
@@ -197,18 +200,13 @@ const mrsnAnswerSchema = yup
   .when(
     ["maxAnswer", "itemNum", "maxPoints"],
     ([maxAnswer, itemNum, maxPoints], schema) =>
-      schema
-        .test(
-          "answerKey-test",
-          `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
-          (answers) =>
-            Array.isArray(answers) &&
-            answers.filter((answer) => answer.answerKey).length === maxAnswer
-        )
-        .length(
-          maxPoints,
-          `Question No. ${itemNum}: Must have exactly ${maxPoints ?? ""} option(s).`
-        )
+      schema.test(
+        "answerKey-test",
+        `Question No. ${itemNum} ${maxAnswer ?? ""} correct answer(s) must be selected.`,
+        (answers) =>
+          Array.isArray(answers) &&
+          answers.filter((answer) => answer.answerKey).length === maxAnswer
+      )
   );
 
 export const bowtieAnswerOptionsSchema = yup.object({
