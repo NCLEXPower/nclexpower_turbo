@@ -141,17 +141,18 @@ export type QuestionnaireItem = {
   maxPoints: number;
   seqNum: number;
   questionType:
-    | "DDC"
+    | "DDCloze"
+    | "DNDrop"
     | "SATA"
     | "MRSN"
-    | "DDT"
-    | "BOWTIE"
-    | "MCQGROUP"
-    | "HCP"
-    | "MCQNOGROUP"
-    | "DND";
+    | "Highlight"
+    | "MatrixNoGrp"
+    | "MatrixWithGrp"
+    | "DDTable"
+    | "Bowtie";
   itemNum: number;
   itemStem: string;
+  rationale: string;
   transitionHeader: string;
   maxAnswer: number | undefined;
   leftLabelName: string | undefined;

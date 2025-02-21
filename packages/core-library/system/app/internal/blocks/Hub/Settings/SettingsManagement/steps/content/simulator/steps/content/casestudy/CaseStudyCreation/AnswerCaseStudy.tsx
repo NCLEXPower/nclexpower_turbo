@@ -29,7 +29,6 @@ import { memo, useEffect, useRef, useState } from "react";
 import { Instruction } from "./components/Instruction";
 import { CustomFields } from "./components/CustomFields";
 import { useTableInsertion } from "../../hooks/useTableInsertion";
-import { boolean } from "yup";
 
 interface Props {
   index: number;

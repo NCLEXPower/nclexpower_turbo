@@ -53,13 +53,14 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const [, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
   const form = useForm<ContainedCaseStudyQuestionType>({
-    mode: "all",
+    mode: "onSubmit",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
     context: { step: 2 },
     defaultValues: { ...values },
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
+  const [selectItemIndex, setSelectedItemIndex] = useState<number>(0);
   const {
     getValues,
     reset: formReset,
@@ -67,12 +68,11 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     handleSubmit,
     control,
     watch,
+    setValue,
   } = form;
   const { errors } = formState;
   const isStandAlone = watch("caseType") === "STANDALONE";
   const ITEM_LENGTH = isStandAlone ? 1 : 6;
-
-  console.log(watch());
 
   useEffect(() => {
     setContentLoader(true);
@@ -116,6 +116,13 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
       ...getValues(),
     });
   }, [selectedIndex]);
+
+  useEffect(() => {
+    setValue(
+      `questionnaires.${selectItemIndex}`,
+      getValues(`questionnaires.${selectItemIndex}`)
+    );
+  }, [selectItemIndex]);
 
   const { infoTabs, tabsItem } = useMemo(
     () => ({
@@ -222,7 +229,11 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 border: 1,
               }}
             >
-              <Tabs width="fit-content" tabsItem={tabsItem} />
+              <Tabs
+                selectedTabIndex={(value) => setSelectedItemIndex(value)}
+                width="fit-content"
+                tabsItem={tabsItem}
+              />
             </Card>
           </Box>
         </Box>
@@ -235,7 +246,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
               mb: 3,
             }}
           >
-            Rationale
+            Rationale:
           </Typography>
           <Card
             sx={{
@@ -248,9 +259,9 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
             }}
           >
             <ControlledRichTextEditor
-              name="rationale"
-              control={control}
+              name={`questionnaires.${selectItemIndex}.rationale`}
               editorFor="casestudy"
+              control={control}
               placeholder="Add text"
             />
           </Card>

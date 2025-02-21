@@ -23,7 +23,7 @@ export const CustomMenuBar: React.FC<CustomMenuBarPropsType> = memo(
       onInsertTable: (() => boolean) | undefined,
       editor: Editor
     ): void => {
-      if (questionType === "DDT" && onInsertTable?.()) {
+      if (questionType === "DDTable" && onInsertTable?.()) {
         insertTable(editor);
       }
     };

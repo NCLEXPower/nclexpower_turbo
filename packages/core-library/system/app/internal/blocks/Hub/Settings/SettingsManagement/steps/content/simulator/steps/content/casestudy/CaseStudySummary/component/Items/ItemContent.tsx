@@ -4,6 +4,7 @@ import { QuestionnaireItem } from "../../../../../../../../../../../../../types"
 import { Tabs } from "../../../../../../../../../../../../../../../../components";
 import { ContainedCaseStudyQuestionType } from "../../../../../../types";
 import { Items } from "./items";
+import { CaseStudyQuestionSelectionOptions } from "../../../../../../../../../types";
 
 interface ItemProps {
   values: Partial<ContainedCaseStudyQuestionType>;
@@ -23,15 +24,15 @@ export const ItemContent: React.FC<ItemProps> = ({ values }) => {
   };
 
   const VALID_QUESTION_TYPES = [
-    "DDC",
+    "DDCloze",
+    "DNDrop",
     "SATA",
     "MRSN",
-    "BOWTIE",
-    "HCP",
-    "MCQGROUP",
-    "DDT",
-    "DND",
-    "MCQNOGROUP",
+    "Highlight",
+    "MatrixNoGrp",
+    "MatrixWithGrp",
+    "DDTable",
+    "Bowtie",
   ];
 
   const validQuestionnaires =

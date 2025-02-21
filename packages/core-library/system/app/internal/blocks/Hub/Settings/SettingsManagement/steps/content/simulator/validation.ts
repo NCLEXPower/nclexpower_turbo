@@ -308,7 +308,7 @@ export const hcpOptionSchema = yup.object().shape({
 });
 
 const questionOptionsSchemas = {
-  DDC: yup
+  DDCloze: yup
     .array(ddcAnswerOptionsSchema)
     .min(1, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
@@ -316,7 +316,7 @@ const questionOptionsSchemas = {
     .max(10, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
     ),
-  DND: yup
+  DNDrop: yup
     .array(dndAnswerOptionsSchema)
     .min(1, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
@@ -329,7 +329,7 @@ const questionOptionsSchemas = {
     .min(4)
     .default(Array(5).fill(initAnswerValues)),
   MRSN: mrsnAnswerSchema,
-  HCP: yup
+  Highlight: yup
     .array(hcpOptionSchema)
     .required(({ path }) =>
       generateQuestionErrorMessage(path, "Must contained atleast 1 option")
@@ -433,6 +433,11 @@ const caseStudyQuestionnaireSchema = yup.object({
               generateQuestionErrorMessage(path, "Item stem is required.")
             ),
           transitionHeader: yup.string().optional().default(""),
+          rationale: yup
+            .string()
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Rationale is required.")
+            ),
         })
         .concat(answersSchema)
         .concat(hcpContentSchema)
@@ -461,10 +466,6 @@ export const containedCaseStudyQuestionSchema = yup
     orders: yup.array(bgInfoContent).default([]),
     type: yup.mixed<CaseStudyQuestionSelectionOptions>().optional(),
     main_type: yup.mixed<QuestionSelectionOptions>().default("Case Study"),
-    rationale: yup.string().when("$step", {
-      is: 2,
-      then: (schema) => schema.required("Rationale is Required"),
-    }),
     mainText: yup.string().when("$step", {
       is: 2,
       then: (schema) => schema.required("Main Text Field is Required"),
