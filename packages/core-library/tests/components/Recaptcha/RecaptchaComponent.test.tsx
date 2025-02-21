@@ -111,4 +111,17 @@ describe('RecaptchaComponent', () => {
       expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
     });
   });
+
+  it('should append the script when window.grecaptcha is undefined', async () => {
+    delete (window as any).grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      const script = document.querySelector(
+        'script[src="https://www.google.com/recaptcha/api.js"]'
+      );
+      expect(script).toBeInTheDocument();
+    });
+  });
 });
