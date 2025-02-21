@@ -1,10 +1,13 @@
-import { render } from "@testing-library/react";
-import { screen, userEvent } from "../common";
+import { render, screen, userEvent } from "../common";
 import { TourContextProvider, useTourContext } from "../../contexts";
 import { StepType, useTour } from "@reactour/tour";
 
 jest.mock("../../config", () => ({
   config: { value: { BASEAPP: "mockAppName" } },
+}));
+
+jest.mock("../../core/router", () => ({
+  useRouter: jest.fn(),
 }));
 
 jest.mock("@reactour/tour", () => ({
