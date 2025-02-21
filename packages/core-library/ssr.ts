@@ -1,9 +1,18 @@
-import { CreateCustomerDumpParams, CreateCustomerParams } from "./api/types";
-import { config } from "./config";
-import { CmsGlobals, MaintenanceModeType } from "./types/global";
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import {
+  CreateCustomerDumpParams,
+  CreateCustomerParams,
+  ValidateTokenParams,
+} from "./api/types";
+import { ChatBotSsr, CmsGlobals, MaintenanceSsr } from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
+import { config } from "./config";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
@@ -93,5 +102,37 @@ export async function getMaintenanceMode() {
       headers: headers,
     }
   );
-  return ((await response.json()) as MaintenanceModeType) ?? null;
+  return ((await response.json()) as MaintenanceSsr) ?? null;
+}
+
+export async function getHasActiveGoLive() {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/check-active-schedule`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return ((await response.json()) as boolean) ?? null;
+}
+
+export async function getEndpointResources() {
+  const response = await fetch(
+    `${baseUrl}/api/v2/internal/baseInternal/get-all-endpoints`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
+  return (
+    ((await response.json()) as { endpoint: string; keyUrl: string }[]) ?? null
+  );
+}
+
+export async function getHasChatBotWidget() {
+  const response = await fetch(`${baseUrl}/api/v1/Customer/get-helpwidget-status`, {
+    method: "GET",
+    headers: headers,
+  });
+  return ((await response.json()) as ChatBotSsr) ?? null;
 }

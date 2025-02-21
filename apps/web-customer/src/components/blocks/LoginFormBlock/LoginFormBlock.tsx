@@ -44,7 +44,7 @@ export function LoginFormBlock() {
       if (rememberMe) {
         const encryptedPassword = isEncrypted(data.password)
           ? data.password
-          : Encryption(data.password, key ?? "no-secret-key");
+          : await Encryption(data.password, key ?? "no-secret-key");
 
         const obj: SavedDataProps = {
           email: data.email,
@@ -56,7 +56,7 @@ export function LoginFormBlock() {
         removeItem();
       }
 
-      if (savedData && rememberMe) {
+      if (savedData) {
         const decryptedPassword = Decryption(
           savedData.password,
           key ?? "no-secret-key"
@@ -78,7 +78,7 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
-        toast.executeToast("Something went wrong", "top-right", false, {
+        toast.executeToast("Invalid email or password", "top-right", false, {
           toastId: 0,
           type: "error",
         });

@@ -57,6 +57,22 @@ export const useSingleCookie = (): [
   return useCookie<string>(config.value.SCOOKIE);
 };
 
+export const useAccountIdCookie = (): [
+  string | null,
+  (value: string | null, options?: CookieSetOptions) => void,
+  VoidFunction,
+] => {
+  return useCookie<string>(config.value.ACOOKIE);
+};
+
+export const useAnalyticsDetails = (): [
+  string | null,
+  (value: string | null, options?: CookieSetOptions) => void,
+  VoidFunction,
+] => {
+  return useCookie<string>("analytics");
+};
+
 export const useDeviceId = (): [
   string | null,
   (value: string | null, options?: CookieSetOptions) => void,

@@ -41,21 +41,50 @@ describe("SidebarListButton", () => {
   });
 
   it("should render the component with the provided props", () => {
-    render(<SidebarListButton navigation={mockNavigation} pathname="/" isAuthenticated={true} />);
+    render(
+      <SidebarListButton
+        navigation={mockNavigation}
+        pathname="/"
+        isAuthenticated={true}
+        onNavigate={() => {}}
+        isDrawerOpen={false}
+        setDrawerOpen={() => {}}
+      />
+    );
 
     expect(screen.getByText("Test Label")).toBeInTheDocument();
   });
 
   it("should call IconComponent with the correct icon name for FeedIcon", () => {
-    render(<SidebarListButton navigation={mockNavigation} pathname="/" isAuthenticated={true} />);
+    render(
+      <SidebarListButton
+        navigation={mockNavigation}
+        pathname="/"
+        isAuthenticated={true}
+        onNavigate={() => {}}
+        isDrawerOpen={true}
+        setDrawerOpen={() => {}}
+      />
+    );
 
     expect(IconComponent).toHaveBeenCalledWith("FeedIcon", expect.any(Boolean));
   });
 
   it("should call IconComponent with the correct icon name for ChildIcon", () => {
-    render(<SidebarListButton navigation={mockNavigation} pathname="/" isAuthenticated={true} />);
+    render(
+      <SidebarListButton
+        navigation={mockNavigation}
+        pathname="/"
+        isAuthenticated={true}
+        onNavigate={() => {}}
+        isDrawerOpen={true}
+        setDrawerOpen={() => {}}
+      />
+    );
 
-    expect(IconComponent).toHaveBeenCalledWith("ChildIcon", expect.any(Boolean));
+    expect(IconComponent).toHaveBeenCalledWith(
+      "ChildIcon",
+      expect.any(Boolean)
+    );
   });
-
 });

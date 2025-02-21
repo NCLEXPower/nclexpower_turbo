@@ -17,6 +17,7 @@ import { CacheProvider } from "@emotion/react";
 import { CookiesProvider } from "react-cookie";
 import Head from "next/head";
 import { config } from "core-library/config";
+import { SsrTypes } from "core-library/types/global";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -46,7 +47,10 @@ export default function App({ Component, pageProps }: AppProps) {
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        <ParseContents appName={config.value.BASEAPP}>
+        <ParseContents
+          appName={config.value.BASEAPP}
+          data={pageProps?.data as SsrTypes}
+        >
           <Suspense>
             <Component {...pageProps} />
           </Suspense>

@@ -6,7 +6,7 @@
 import React, { ReactElement, ReactNode, useState } from "react";
 import { Button } from "../../../Button/Button";
 import { DialogBox } from "../../DialogBox";
-import { Box, ListItemButton, Typography } from "@mui/material";
+import { Box, ListItemButton, Switch, Typography } from "@mui/material";
 import { EvaIcon } from "../../../EvaIcon";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   handleSubmit: () => void;
   dialogContent: ReactNode;
   confirmButtonText?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 const ContinueModalContent: React.FC<Props> = ({
@@ -94,9 +94,10 @@ interface ConfirmationModalProps {
   customButton: React.ReactElement | React.ReactNode;
   dialogContent: string | ReactElement | ReactNode;
   confirmButtonText?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   disabled?: boolean;
   onClickFn?: () => void;
+  checked?: boolean;
 }
 
 const ConfirmationModal = ({
@@ -107,6 +108,7 @@ const ConfirmationModal = ({
   isLoading,
   disabled,
   onClickFn,
+  checked,
 }: ConfirmationModalProps) => {
   const [open, setOpen] = useState(false);
 
@@ -115,21 +117,21 @@ const ConfirmationModal = ({
   const handleClose = () => setOpen(false);
 
   const handleModalSubmission = () => {
-    handleSubmit()
+    handleSubmit();
     if (!isLoading) {
-      handleClose()
+      handleClose();
     }
-  }
+  };
 
   return (
     <>
-      <Box data-testid="confirm-modal" onClick={handleClickOpen} role="button">
-        <ButtonSelector
-          type={customButton}
-          disabled={disabled}
-          onClickFn={onClickFn}
-        />
-      </Box>
+      <ButtonSelector
+        checked={checked}
+        type={customButton}
+        disabled={disabled}
+        onClickFn={handleClickOpen}
+      />
+
       <DialogBox
         handleClose={handleClose}
         loading={false}
@@ -154,13 +156,19 @@ interface ButtonSelectorProps {
   type: ReactNode;
   disabled?: boolean;
   onClickFn?: () => void;
+  checked?: boolean;
 }
 
-const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
+const ButtonSelector = ({
+  type,
+  disabled,
+  onClickFn,
+  checked,
+}: ButtonSelectorProps) => {
   switch (type) {
     case "Continue":
       return (
-        <Button disabled={disabled} onClick={onClickFn}>
+        <Button disabled={disabled} onClick={onClickFn} sx={{ mt: 5 }}>
           Continue
         </Button>
       );
@@ -182,23 +190,49 @@ const ButtonSelector = ({ type, disabled, onClickFn }: ButtonSelectorProps) => {
 
     case "ListDeleteButton":
       return (
-        <ListItemButton
-          disabled={disabled}
-          onClick={onClickFn}>
+        <ListItemButton disabled={disabled} onClick={onClickFn}>
           Delete
         </ListItemButton>
-      )
+      );
 
     case "SaveChanges":
       return (
         <Button
           onClick={onClickFn}
           disabled={disabled}
-          sx={{ borderRadius: "10px", marginBottom: "10px" }}>
+          sx={{ borderRadius: "10px", marginBottom: "10px" }}
+        >
           Save Changes
         </Button>
-      )
+      );
 
+    case "ToggleButton":
+      return (
+        <Switch
+          data-testid="toggle-button"
+          onChange={onClickFn}
+          disabled={disabled}
+          checked={Boolean(checked)}
+          sx={{ borderRadius: "10px", marginBottom: "10px" }}
+        />
+      );
+
+    case "Cancel":
+      return (
+        <Button
+          sx={{
+            zIndex: 2,
+            bgcolor: "#860000",
+            color: "white",
+            "&:hover": {
+              bgcolor: "#860000",
+            },
+          }}
+          onClick={onClickFn}
+        >
+          <Typography>Cancel</Typography>
+        </Button>
+      );
     default:
       return (
         <Button sx={{ zIndex: 2 }} onClick={onClickFn}>

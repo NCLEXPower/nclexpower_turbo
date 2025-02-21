@@ -12,15 +12,11 @@ import {
 } from "../../../../../../../../../../../../../../components";
 import { Box, Typography } from "@mui/material";
 import { AnswerCaseStudy } from "./AnswerCaseStudy";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { BackgroundInfoTab } from "./components/BackgroundInfoTab";
-import {
-  caseStudyQuestionnaires,
-  initCaseStudyQuestionnaires,
-} from "../../../../../../../constants/constants";
 import { atom, useAtom } from "jotai";
 import { ErrorMapping } from "../../../../../../../../../../../../../../components";
 import { CreateCaseStudyAtom } from "../../../../useAtomic";
@@ -63,6 +59,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const { getValues, reset: formReset, formState, handleSubmit } = form;
+  const { errors } = formState;
 
   useEffect(() => {
     setContentLoader(true);
@@ -70,13 +67,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
       setContentLoader(false);
     }, 6000);
   }, []);
-
-  const updateValues = () => {
-    formReset({
-      ...getValues(),
-    });
-  };
-  const { errors } = formState;
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
     setCaseStudyAtom(values);
@@ -112,8 +102,13 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     });
   }, [selectedIndex]);
 
-  const BGInfoTabs = useMemo(() => generateInfoTabs(), [values]);
-  const TabsItemQuestion = useMemo(() => generateTabsItemQuestion(6), [values]);
+  const { infoTabs, tabsItem } = useMemo(
+    () => ({
+      infoTabs: generateInfoTabs(),
+      tabsItem: generateTabsItemQuestion(6),
+    }),
+    [values]
+  );
 
   if (contentLoader) {
     return <CaseStudyLoader />;
@@ -163,7 +158,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
               <Tabs
                 width="fit-content"
                 selectedTabIndex={(value) => setSelectedIndex(value)}
-                tabsItem={BGInfoTabs}
+                tabsItem={infoTabs}
               />
             </Card>
           </Box>
@@ -187,7 +182,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 border: 1,
               }}
             >
-              <Tabs width="fit-content" tabsItem={TabsItemQuestion} />
+              <Tabs width="fit-content" tabsItem={tabsItem} />
             </Card>
           </Box>
         </Box>

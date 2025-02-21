@@ -6,6 +6,7 @@ import {
   create,
   confirmedCreation,
   getMaintenanceMode,
+  getHasChatBotWidget,
 } from "../../ssr";
 import { config } from "../../config";
 import {
@@ -13,9 +14,9 @@ import {
   CreateCustomerParams,
 } from "../../api/types";
 import { CmsTenant, TenantResponse } from "../../types/tenant";
-import { CmsGlobals, MaintenanceModeType } from "../../types/global";
 import qs from "query-string";
 import { getTimeZone } from "../../utils";
+import { ChatBotSsr, MaintenanceSsr } from "../../types/global";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -34,6 +35,20 @@ const mockHeaders = {
   "X-Time-Zone": getTimeZone(),
 };
 
+const mockMaintenanceStatus = {
+  id: "79a6d3d7-b30a-4eae-a689-0919ddd0d5bd",
+  currentMaintenanceMode: ["dev", "uat"],
+  createdDate: "2024-11-28T23:29:28.2473075",
+  updatedDate: "2024-11-29T03:10:22.5355995",
+};
+
+const mockChatbotMode = {
+  id: "d7c3487b-232f-4464-87ce-c0a87166d915",
+  isEnabled: false,
+  createdDate: "2025-01-09T07:48:01.9335557",
+  updatedDate: "2025-01-09T07:48:01.9335842",
+};
+
 describe("SSR Functions", () => {
   const tenantUrl = "example-tenant";
   const paymentIntentId = "pi_12345";
@@ -45,7 +60,7 @@ describe("SSR Functions", () => {
     orderNumber: "nclex-123",
     productId: "test-productId",
     totalAmount: 100,
-    password: "securePassword123"
+    password: "securePassword123",
   };
 
   beforeEach(() => {
@@ -153,12 +168,7 @@ describe("SSR Functions", () => {
   });
 
   it("should get maintenance mode", async () => {
-    const mockMaintenanceMode: MaintenanceModeType = {
-      id: "1",
-      maintenanceModeType: 1,
-      createdDate: "2024-01-01T00:00:00Z",
-      updatedDate: "2024-01-02T00:00:00Z",
-    };
+    const mockMaintenanceMode: MaintenanceSsr = mockMaintenanceStatus;
 
     (fetch as jest.Mock).mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockMaintenanceMode),
@@ -170,6 +180,20 @@ describe("SSR Functions", () => {
       `${config.value.LOCAL_API_URL}/api/v1/Customer/get-maintenance-mode`,
       { method: "GET", headers: mockHeaders }
     );
-    expect(result).toEqual(mockMaintenanceMode);
+    expect(result).toEqual(mockMaintenanceStatus);
+  });
+
+  it("should get chatbot mode", async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      json: jest.fn().mockResolvedValue(mockChatbotMode),
+    });
+
+    const result = await getHasChatBotWidget();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${config.value.LOCAL_API_URL}/api/v1/Customer/get-helpwidget-status`,
+      { method: "GET", headers: mockHeaders }
+    );
+    expect(result).toEqual(mockChatbotMode);
   });
 });

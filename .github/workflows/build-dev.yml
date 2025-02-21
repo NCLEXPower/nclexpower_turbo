@@ -6,12 +6,14 @@ on:
       - mdev
       - "feature/*"
       - "hotfix/*"
+      - "bugfix/*"
       - "release/*"
   pull_request:
     branches:
       - mdev
       - "feature/*"
       - "hotfix/*"
+      - "bugfix/*"
       - "release/*"
 
 jobs:

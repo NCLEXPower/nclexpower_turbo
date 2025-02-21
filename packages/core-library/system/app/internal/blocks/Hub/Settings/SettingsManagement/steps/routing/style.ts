@@ -47,3 +47,12 @@ export const deleteIconStyle = {
   boxShadow: 2,
   bgcolor: "#bdbdbd",
 };
+
+export const BowtieTitleStyles = {
+  width: "33%",
+  wordBreak: "break-word",
+  textAlign: "center",
+  placeSelf: "center",
+  padding: "10px",
+  fontWeight: 700,
+};

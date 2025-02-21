@@ -9,9 +9,10 @@ import {
   EvaIcon,
   IconButton,
   PasswordToggleAdornment,
+  RecaptchaComponent,
   TextField,
 } from "core-library/components";
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { RegistrationFormType, registrationSchema } from "core-library/system";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,20 +22,28 @@ import Link from "next/link";
 import { useShowPassword } from "../ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
 import { usePreviousValue } from "core-library/hooks";
 import { RegisterBG } from "core-library/assets";
+import ReCAPTCHA from "react-google-recaptcha";
+import { validatePassword } from "@/core/Schema";
+import ValidationIndicators from "../ForgotPasswordBlock/ChangePasswordBlock/ValidationIndicator";
 
 interface RegistrationFormProps {
-  onSubmit: (values: RegistrationFormType) => void;
+  onSubmit: (values: RegistrationFormType, token: string) => void;
   submitLoading?: boolean;
   handleBack: () => void;
+  recaptchaRef: RefObject<ReCAPTCHA>;
+  siteKey: string;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onSubmit,
   submitLoading,
   handleBack,
+  recaptchaRef,
+  siteKey,
 }) => {
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const form = useForm<RegistrationFormType>({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: yupResolver(registrationSchema),
     defaultValues: registrationSchema.getDefault(),
   });
@@ -44,6 +53,31 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   const hasNoMiddleName = watch("hasNoMiddleName");
   const hasNoMiddleNamePrevValue = usePreviousValue(hasNoMiddleName);
+
+  const newPassword = watch("password", "");
+  const confirmPassword = watch("confirmpassword", "");
+
+  const validationChecks = useMemo(
+    () => validatePassword(newPassword),
+    [newPassword]
+  );
+
+  const isPasswordMatching = useMemo(
+    () => newPassword === confirmPassword && newPassword !== "",
+    [newPassword, confirmPassword]
+  );
+
+  const passwordCriteria = useMemo(
+    () => [
+      {
+        isValid: isPasswordMatching,
+        message: isPasswordMatching
+          ? "Passwords match"
+          : "Passwords do not match",
+      },
+    ],
+    [validationChecks, isPasswordMatching]
+  );
 
   useEffect(() => {
     resetField("middlename");
@@ -55,6 +89,15 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     handleClickShowPassword,
     handleClickShowconfirmPassword,
   } = useShowPassword();
+
+  async function onFormSubmit(values: RegistrationFormType) {
+    if (!captchaToken) {
+      console.error("reCAPTCHA verification failed.");
+      return;
+    }
+
+    await onSubmit(values, captchaToken);
+  }
 
   return (
     <React.Fragment>
@@ -73,7 +116,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
             <h4 className="text-[18px] font-regular font-ptSans">
               Already have an account?{" "}
               <span className="text-[18px] font-bold underline font-mainBlue">
-                <Link href="/login">Login</Link>
+                <Link href="/login" style={{ backgroundColor: 'transparent' }}>Login</Link>
               </span>
             </h4>
           </Box>
@@ -170,20 +213,20 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         label="Password"
                         control={control}
                         name="password"
+                        sx={{ borderRadius: "10px", width: "100%" }}
                         type={showPassword ? "text" : "password"}
-                        sx={{
-                          borderRadius: "10px",
-                          width: "100%",
-                        }}
-                        inputProps={{
-                          style: { padding: 15, borderRadius: "10px" },
-                        }}
+                        isregister
                         endAdornment={
                           <PasswordToggleAdornment
                             showPassword={showPassword}
                             onClick={handleClickShowPassword}
                           />
                         }
+                        inputProps={{
+                          style: {
+                            boxShadow: "none",
+                          },
+                        }}
                       />
                     </Box>
 
@@ -192,13 +235,12 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         label="Confirm Password"
                         control={control}
                         name="confirmpassword"
+                        sx={{ borderRadius: "10px", width: "100%" }}
                         type={showconfirmPassword ? "text" : "password"}
-                        sx={{
-                          borderRadius: "10px",
-                          width: "100%",
-                        }}
                         inputProps={{
-                          style: { padding: 15, borderRadius: "10px" },
+                          style: {
+                            boxShadow: "none",
+                          },
                         }}
                         endAdornment={
                           <PasswordToggleAdornment
@@ -207,6 +249,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           />
                         }
                       />
+                      {confirmPassword && (
+                        <ValidationIndicators
+                          criteria={passwordCriteria}
+                          iconSize="small"
+                          invalidColor="red"
+                          validColor="green"
+                        />
+                      )}
                     </Box>
                   </Box>
                 </Box>
@@ -226,7 +276,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </Box>
 
                 <Button
-                  disabled={!isDirty || !isValid || submitLoading}
+                  disabled={
+                    !isDirty || !isValid || submitLoading || !captchaToken
+                  }
                   loading={submitLoading}
                   variant="contained"
                   fullWidth
@@ -240,11 +292,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     },
                     marginY: "10px",
                   }}
-                  onClick={handleSubmit(onSubmit)}
+                  onClick={handleSubmit(onFormSubmit)}
                 >
                   <span className="font-ptSans font-bold">Create Account</span>
                 </Button>
               </Box>
+              <RecaptchaComponent
+                ref={recaptchaRef}
+                sitekey={siteKey}
+                onChange={(token) => {
+                  setCaptchaToken(token);
+                }}
+              />
             </FormProvider>
           </Box>
         </Box>

@@ -46,7 +46,7 @@ export function usePreventDuplicateSession() {
     return () => {
       broadcast.close();
     };
-  }, []);
+  }, [isAuthenticated]);
 
   return {
     duplicate,

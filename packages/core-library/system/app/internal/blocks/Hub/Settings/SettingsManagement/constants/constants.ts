@@ -1,6 +1,16 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SelectOption } from "../../../../../../../../components";
-import { ContainedCaseStudyQuestionType } from '../steps/content/simulator/types';
-import { RegularQuestionSelectionOptions } from "../types";
+import { ContentDateType } from "../../../../../../../../components/Dialog/DialogFormBlocks/contentApproval/validation";
+import { RegularQuestionSelectionOptions, SectionType } from "../types";
+
+export type BowtieFieldGroupType = {
+  key: keyof typeof labelNames;
+  count: number;
+};
 
 const createNumberList = (length: number) => {
   return Array.from({ length: length }, (_, index) => ({
@@ -9,11 +19,63 @@ const createNumberList = (length: number) => {
   }));
 };
 
+export const labelNames = {
+  leftSection: "leftLabelName",
+  centerSection: "centerLabelName",
+  rightSection: "rightLabelName",
+};
+
 export const questionType = [
   { value: "SATA", label: "SATA" },
   { value: "MRSN", label: "MRSN" },
   { value: "DDC", label: "DDC" },
+  { value: "DDT", label: "DDT" },
+  { value: "DND", label: "DND" },
+  { value: "HCP", label: "HCP" },
+  { value: "MCQNOGROUP", label: "MCQ(No Group)" },
+  { value: "MCQGROUP", label: "MCQ(Group)" },
+  { value: "BOWTIE", label: "BOWTIE" },
 ];
+
+export const BowtieFieldGroups: BowtieFieldGroupType[] = [
+  { key: "leftSection", count: 5 },
+  { key: "centerSection", count: 4 },
+  { key: "rightSection", count: 5 },
+];
+
+export const labelMapping: { sectionName: SectionType; labelName: string }[] = [
+  { sectionName: "leftSection", labelName: "leftLabelName" },
+  { sectionName: "centerSection", labelName: "centerLabelName" },
+  { sectionName: "rightSection", labelName: "rightLabelName" },
+];
+
+export const groupLabels = ({
+  LeftLabel,
+  CenterLabel,
+  RightLabel,
+}: {
+  LeftLabel: string;
+  CenterLabel: string;
+  RightLabel: string;
+}) => {
+  return [
+    {
+      label: LeftLabel || "Left Label",
+      section: "leftSection",
+      count: 5,
+    },
+    {
+      label: CenterLabel || "Center Label",
+      section: "centerSection",
+      count: 4,
+    },
+    {
+      label: RightLabel || "Right Label",
+      section: "rightSection",
+      count: 5,
+    },
+  ];
+};
 
 export const tabsSequence: SelectOption[] = Array.from(
   { length: 6 },
@@ -31,6 +93,12 @@ export const initBgValues = { seqNum: 1, seqContent: "" };
 
 export const initAnswerValues = { answer: "", answerKey: false };
 
+export const bowtieInitAnswerValues = {
+  value: "",
+  container: "",
+  isAnswer: false,
+};
+
 export const caseStudyQuestionnaires = {
   maxPoints: 1,
   seqNum: 1,
@@ -39,14 +107,17 @@ export const caseStudyQuestionnaires = {
   transitionHeader: "",
 };
 
-export const questionnairesDefaultValue = Array.from({ length: 6 }, (_, index) => ({
-  ...caseStudyQuestionnaires,
-  itemNum: index + 1,
-}))
+export const questionnairesDefaultValue = Array.from(
+  { length: 6 },
+  (_, index) => ({
+    ...caseStudyQuestionnaires,
+    itemNum: index + 1,
+  })
+);
 
 export const initCaseStudyQuestionnaires = {
   questionnaires: questionnairesDefaultValue,
-}
+};
 
 export const initQuestionsValues = (
   questionnaireType: RegularQuestionSelectionOptions | undefined
@@ -65,4 +136,27 @@ export const initQuestionsValues = (
     contentArea: "",
     answers,
   };
+};
+
+export const actionButtons = [
+  { action: "view", label: "View" },
+  { action: "approval", label: "Approve" },
+  { action: "reject", label: "Reject" },
+];
+
+export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
+
+export const defaultValues: ContentDateType = {
+  approval: [],
+  implementationSchedule: new Date(),
+};
+
+export const initMCQColumn = { label: "" };
+export const initMCQRow = {
+  rowTitle: "",
+  rowId: 0,
+  choices: [
+    { value: false, choiceId: 0 },
+    { value: false, choiceId: 1 },
+  ],
 };

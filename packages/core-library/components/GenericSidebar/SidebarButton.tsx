@@ -14,39 +14,87 @@ export interface SidebarButtonProps extends Partial<WebSidebarStylesType> {
   navigation: MenuItems;
   pathname: string;
   isAuthenticated: boolean;
-};
+  isDrawerOpen: boolean;
+  onNavigate: () => void;
+}
 
 export const SidebarButton: React.FC<SidebarButtonProps> = ({
   navigation,
   pathname,
   isAuthenticated,
   listStyles,
+  isDrawerOpen,
+  onNavigate,
 }) => {
   const router = useRouter();
   const path = router?.pathname;
-
   const isActive = navigation.path === path;
+  const minimizedIndicator = isAuthenticated && isActive && !isDrawerOpen;
 
   const handleNavigate = () => {
     router.push({
       pathname: navigation.path ?? "/",
     });
+    onNavigate();
   };
 
   return (
-    <Box width="100%" p={1} sx={isAuthenticated ? listStyles?.paddingSx : null}>
-      <Box overflow="hidden" borderRadius={3} sx={listStyles?.hovericonSx}>
+    <Box
+      width="100%"
+      whiteSpace="nowrap"
+      sx={isAuthenticated ? listStyles?.paddingSx : null}
+    >
+      <Box
+        overflow="hidden"
+        borderRadius={3}
+        sx={{
+          "&:hover": {
+            backgroundColor: "#ced3de33 !important",
+          },
+          ...(minimizedIndicator && {
+            backgroundImage: "linear-gradient(90deg, #0F2A71 0%, #181E2F 100%)",
+            borderRadius: "8px",
+          }),
+        }}
+      >
         <ListItemButton
-          disabled={navigation.path === path}
+          disabled={isActive}
           component="a"
           onClick={handleNavigate}
-          sx={isAuthenticated && isActive ? listStyles?.activeSx : {}}
+          sx={{
+            whiteSpace: "nowrap",
+            padding: "8px 12px",
+            ...(isAuthenticated && isActive
+              ? listStyles?.activeSx || {
+                  color: "#0F2A71 !important",
+                  opacity: "1 !important",
+                  textDecoration: "underline !important",
+                  ".MuiSvgIcon-root": {
+                    color: "#0F2A71 !important",
+                  },
+                }
+              : {}),
+            "&:focus": {
+              backgroundColor: "transparent !important",
+            },
+            "&:hover": {
+              color: "inherit !important",
+            },
+          }}
         >
-          <ListItemIcon sx={isAuthenticated ? listStyles?.listItemIconSx : null} >
-            {IconComponent(navigation.icon, false)}
+          <ListItemIcon sx={isAuthenticated ? listStyles?.listItemIconSx : {}}>
+            <span
+              className={minimizedIndicator ? "text-white" : "text-[#0F2A71]"}
+            >
+              {IconComponent(navigation.icon, false)}
+            </span>
           </ListItemIcon>
           <ListItemText>
-            <Typography variant="body2" fontSize={13} >
+            <Typography
+              variant="body2"
+              fontSize={13}
+              fontWeight={isActive ? 600 : 0}
+            >
               {navigation.label}
             </Typography>
           </ListItemText>

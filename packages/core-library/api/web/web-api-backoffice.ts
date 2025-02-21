@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { AxiosInstance } from "axios";
 import {
   AccessKey,
@@ -38,7 +43,16 @@ import {
   AuthorizedMenuResponse,
   GetMenuByIdParams,
   UpdateMenuItemParams,
+  LoginResponse,
+  OpenPagesResponse,
+  CreateDndOptionsParams,
+  DndOptionParams,
+  DndOptionsResponseType,
+  CaseNameParams,
+  DeleteCaseNameParams,
+  CaseNameResponseType,
 } from "../types";
+import { CategoryResponseType } from "../../core/hooks/types";
 
 export class WebApiBackOffice {
   constructor(
@@ -72,6 +86,22 @@ export class WebApiBackOffice {
       if (err.response?.status === 404) {
         return { data: null };
       }
+      throw err;
+    }
+  }
+
+  public async openPage(slug: string, contentAccessKey: string | null) {
+    try {
+      const endpoint = contentAccessKey
+        ? `/api/v2/content/BaseContent/authorized-open-pages`
+        : `/api/v2/content/BaseContent/unauthorized-open-pages`;
+
+      const response = await this.axios.get<OpenPagesResponse>(endpoint, {
+        params: { pageRoute: slug },
+      });
+
+      return response.data;
+    } catch (err: any) {
       throw err;
     }
   }
@@ -141,7 +171,14 @@ export class WebApiBackOffice {
   }
 
   public accessKey(tenantUrl: string) {
-    return this.axios.get<AccessKey>(``); //no current access key for content.
+    return this.axios.post<AccessKey>(``); //no current access key for content.
+  }
+
+  public contentAccessKey(params: { accountId?: string; appName: string }) {
+    return this.axios.post<LoginResponse>(
+      `/api/v2/internal/baseInternal/content-access-key`,
+      params
+    ); //no current access key for content.
   }
 
   public async footer(tenantUrl: string, contentAccessKey?: string) {
@@ -278,7 +315,8 @@ export class WebApiBackOffice {
 
   public async getAllInclusions() {
     return await this.axios.get<GetAllInclusionResponse[]>(
-      `/api/v1/product/internal-all-inclusions`)
+      `/api/v1/product/internal-all-inclusions`
+    );
   }
 
   public async delete_route(MenuId: string) {
@@ -289,62 +327,129 @@ export class WebApiBackOffice {
 
   public async createInclusions(params: CreateInclusionParams) {
     return await this.axios.post(
-      `/api/v1/product/internal-add-inclusions`, params)
+      `/api/v1/product/internal-add-inclusions`,
+      params
+    );
   }
 
   public async deleteInclusion(InclusionId: string) {
     return await this.axios.delete(
       `/api/v1/product/internal-delete-inclusion?${qs.stringify({ id: InclusionId })}`
-    )
+    );
   }
 
   public async editInclusion(params: EditInclusionParams) {
     return await this.axios.put(
-      `/api/v1/product/internal-update-inclusion`, params)
+      `/api/v1/product/internal-update-inclusion`,
+      params
+    );
   }
   public async web_create_subsequent(params: SubsequentOptionType) {
     return await this.axios.post<SubsequentOptionType>(
       `/v1/api/Chatbot/create-subsequent-options`,
       params
-    )
+    );
   }
   public async getSelectedApprover() {
     return await this.axios.get<GetDefaultReviewerResponse[]>(
       `/api/v2/content/BaseContent/get-selected-approvers`
-    )
+    );
   }
 
   public async getAllInclusionLists() {
     return await this.axios.get<GetAllInclusionResponse[]>(
       `/api/v1/Product/internal-all-inclusions`
-    )
+    );
   }
 
   public async getSubsequentLists() {
     return await this.axios.get<GetSubsequentLists[]>(
       `/v1/api/Chatbot/get-subsequent-list`
-    )
+    );
   }
   public async createAuthorizedMenus(params: CreateAuthorizedMenusParams) {
     return await this.axios.post(
       `/api/v2/content/BaseContent/create-authorized-menus`,
       params
-    )
+    );
   }
 
   public async getAllMenus() {
     return await this.axios.get<AuthorizedMenuResponse[]>(
       `/api/v2/content/BaseContent/get-all-menus`
-    )
+    );
   }
 
   public async getMenuById(params: GetMenuByIdParams) {
     return await this.axios.get<AuthorizedMenuResponse>(
       `/api/v2/content/BaseContent/get-menu?${qs.stringify({ ...params })}`
-    )
+    );
   }
 
   public async updateMenuItem(params: UpdateMenuItemParams) {
-    return await this.axios.post(`/api/v2/content/BaseContent/update-menu-item`, params)
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/update-menu-item`,
+      params
+    );
+  }
+
+  public async getAllCategory() {
+    return await this.axios.get<CategoryResponseType[]>(
+      "/api/v1/Category/fetch-all-category-type"
+    );
+  }
+
+  public async maintenaceModeByEnv(params: string[]) {
+    return await this.axios.post("/api/v1/Customer/commence-maintenance-mode", {
+      environments: params,
+    });
+  }
+
+  public async getFormId() {
+    return await this.axios.get("/api/v2/content/BaseContent/get-form-id");
+  }
+
+  public async createDndOptions(params: CreateDndOptionsParams) {
+    return await this.axios.post(
+      "/api/v2/content/BaseContent/create-dnd-option",
+      params
+    );
+  }
+
+  public async getDndOptionList(params: DndOptionParams) {
+    return await this.axios.post<DndOptionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-all-dnd-options`,
+      { ...params }
+    );
+  }
+
+  public async deleteDndOption(optionId: string) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-dnd-option?${qs.stringify({ OptionId: optionId })}`
+    );
+  }
+
+  public async updateHelpWidgetStatus(isEnabled: boolean) {
+    return await this.axios.put(`/api/v1/Customer/update-helpwidget-status`, {
+      isEnabled,
+    });
+  }
+
+  public async getAllCaseNames() {
+    return await this.axios.get<CaseNameResponseType[]>(
+      `/api/v2/content/BaseContent/get-case-names`
+    );
+  }
+
+  public async createCaseName(params: CaseNameParams) {
+    return await this.axios.post(
+      `/api/v2/content/BaseContent/create-case-name`,
+      params
+    );
+  }
+
+  public async deleteCaseName(params: DeleteCaseNameParams) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
   }
 }

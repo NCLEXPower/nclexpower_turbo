@@ -1,5 +1,9 @@
 import { ProductDialog } from "./ProductDialog";
 
 export function ProductDialogBlock() {
-  return <ProductDialog />;
+  return (
+    <div data-testid="product-form">
+      <ProductDialog />
+    </div>
+  );
 }

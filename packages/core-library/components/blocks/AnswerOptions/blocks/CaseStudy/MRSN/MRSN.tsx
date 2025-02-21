@@ -3,10 +3,7 @@ import { Card } from "../../../../../Card/Card";
 import { Box } from "@mui/material";
 import { SATA } from "../../Regular/SATA/SATA";
 import { GenericSelectField } from "../../../../../Textfield/GenericSelectField";
-import { ControlledTextField } from "../../../../../Textfield/TextField";
 import { maxAnswer } from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
-import { useFormContext } from "react-hook-form";
-import { ContainedCaseStudyQuestionType } from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 
 type MrsnPropsType = {
   questionIndex: number;
@@ -15,10 +12,12 @@ type MrsnPropsType = {
 export const MRSN: React.FC<MrsnPropsType> = ({ questionIndex }) => {
   const deletionLimit = 0;
 
-
   return (
     <Card>
-      <Box sx={{ display: "flex", justifyContent: "end", p: 2 }}>
+      <Box
+        data-testid="mrsn-form"
+        sx={{ display: "flex", justifyContent: "end", p: 2 }}
+      >
         <GenericSelectField
           name={`questionnaires.${questionIndex}.maxAnswer`}
           label="Max Correct Answer"
@@ -27,7 +26,7 @@ export const MRSN: React.FC<MrsnPropsType> = ({ questionIndex }) => {
           width="50%"
         />
       </Box>
-      <SATA deletionLimit={deletionLimit} questionIndex={questionIndex} />
+      <SATA questionIndex={questionIndex} />
     </Card>
   );
 };

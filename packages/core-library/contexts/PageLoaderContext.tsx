@@ -7,6 +7,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { PageLoader } from "../components";
 import React from "react";
 import { config } from "../config";
+import { useRouter } from "../core";
 
 const context = createContext<{
   isLoading: boolean;
@@ -32,21 +33,29 @@ export const usePageLoaderContext = () => {
 export const PageLoaderContextProvider: React.FC<
   React.PropsWithChildren<Props>
 > = ({ children, loading, isAuthenticated }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCalculationsLoaded, setIsCalculationsLoaded] = useState(true);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(loading ?? router.loading);
+  const [isCalculationsLoaded, setIsCalculationsLoaded] = useState(
+    loading ?? router.loading
+  );
   const [contentLoader, setContentLoader] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
       setIsCalculationsLoaded(false);
-    }, 3000);
-  }, [isLoading, isCalculationsLoaded]);
-
+    }, 6000);
+  }, [
+    isAuthenticated,
+    isLoading,
+    isCalculationsLoaded,
+    loading,
+    router.loading,
+  ]);
   return (
     <context.Provider
       value={{
-        isLoading: isLoading,
+        isLoading: isLoading || router.loading,
         setIsLoading,
         isCalculationsLoaded,
         setIsCalculationsLoaded,
@@ -54,11 +63,14 @@ export const PageLoaderContextProvider: React.FC<
         setContentLoader,
       }}
     >
-      {((!isAuthenticated && isLoading) || isCalculationsLoaded) &&
-      config.value.BASEAPP === "webc_app" ? (
-        <PageLoader />
+      {isAuthenticated ||
+      !(
+        (isLoading || loading || router.loading || isCalculationsLoaded) &&
+        config.value.BASEAPP === "webc_app"
+      ) ? (
+        <div data-testid="children-component">{children}</div>
       ) : (
-        <>{children}</>
+        <PageLoader data-testid="page-loader" />
       )}
     </context.Provider>
   );

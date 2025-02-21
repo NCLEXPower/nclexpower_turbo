@@ -3,11 +3,9 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
-
 import { TableView } from "./component/TableView";
 import TableViewIcon from "@mui/icons-material/TableView";
 import DefaultViewIcon from "@mui/icons-material/ViewList";
@@ -20,6 +18,13 @@ import { ItemContent } from "./component/Items/ItemContent";
 import { BackgroundInfoContent } from "./component/BackgroundInfo/BackgroundInfoContent";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
 import { CaseStudyLoader } from "../../loader";
+import { useExecuteToast } from "../../../../../../../../../../../../../../contexts";
+import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
+import {
+  useApiCallback,
+  useSensitiveInformation,
+} from "../../../../../../../../../../../../../../hooks";
+import { CreateRegularType } from "../../../../../../../../../../../../../../api/types";
 
 interface CaseStudySummaryProps {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -72,6 +77,12 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   const [isTableView, setIsTableView] = useState<boolean>(false);
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
+  const createCaseStudyQuestion = useApiCallback(
+    async (api, args: CreateRegularType) =>
+      await api.webbackoffice.createRegularQuestion(args)
+  );
+  const { internal } = useSensitiveInformation();
+  const toast = useExecuteToast();
 
   useEffect(() => {
     setContentLoader(true);
@@ -84,11 +95,38 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
     setIsTableView((prev) => !prev);
   };
 
-  const onSubmit = async () => {
-    nextStep({});
-    next();
-  };
-
+  async function onSubmit() {
+    try {
+      if (caseStudyAtom) {
+        const result = await createCaseStudyQuestion.execute(
+          convertToCreateCaseStudy(caseStudyAtom, internal)
+        );
+        if (result.status === 200)
+          toast.executeToast(
+            "Case Study created successfully",
+            "top-right",
+            false,
+            {
+              toastId: 0,
+              type: "success",
+            }
+          );
+      }
+    } catch (error) {
+      toast.executeToast(
+        "An error occurred while creating case study.",
+        "top-right",
+        false,
+        {
+          toastId: 0,
+          type: "error",
+        }
+      );
+    } finally {
+      nextStep({});
+      next();
+    }
+  }
   const handlePrevious = () => {
     previousStep();
     previous();
@@ -136,7 +174,6 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
         <ConfirmationModal
           dialogContent="Are you sure you want to continue?"
           customButton="Continue"
-          isLoading={false}
           handleSubmit={onSubmit}
         />
       </Box>

@@ -81,7 +81,15 @@ describe("Web Customer Sidebar", () => {
 
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
 
-    render(<SidebarButton navigation={navigationMock} pathname="/" isAuthenticated={true} />);
+    render(
+      <SidebarButton
+        navigation={navigationMock}
+        pathname="/"
+        isAuthenticated={true}
+        onNavigate={() => {}}
+        isDrawerOpen={true}
+      />
+    );
 
     const button = screen.getByRole("button");
     fireEvent.click(button);

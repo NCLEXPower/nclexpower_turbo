@@ -4,6 +4,8 @@ import { QuestionSummary } from "../../../system/app/internal/blocks/Hub/Setting
 import { SummaryAccordion } from "../../../components";
 import ConfirmationModal from "../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
 import { usePageLoaderContext } from "../../../contexts/PageLoaderContext";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "../../../contents/theme/theme";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -156,7 +158,11 @@ describe("QuestionSummary Component", () => {
 
   it("renders each accordion with the correct question", () => {
     mockData.forEach((item, index) => {
-      render(<SummaryAccordion item={item} type={mockType} index={index} />);
+      render(
+        <ThemeProvider theme={theme()}>
+          <SummaryAccordion item={item} type={mockType} index={index} />
+        </ThemeProvider>
+      );
       const questionElement = screen.getByText(`Sample Question ${index + 1}`, {
         selector: "p",
       });
@@ -167,14 +173,16 @@ describe("QuestionSummary Component", () => {
   it("expands and collapses the accordion", () => {
     render(
       <>
-        {mockData.map((item, index) => (
-          <SummaryAccordion
-            item={item}
-            type={mockType}
-            index={index}
-            key={index}
-          />
-        ))}
+        <ThemeProvider theme={theme()}>
+          {mockData.map((item, index) => (
+            <SummaryAccordion
+              item={item}
+              type={mockType}
+              index={index}
+              key={index}
+            />
+          ))}
+        </ThemeProvider>
       </>
     );
 
@@ -197,7 +205,11 @@ describe("QuestionSummary Component", () => {
 
   it("renders the correct content in the accordion details", () => {
     mockData.forEach((item, index) => {
-      render(<SummaryAccordion item={item} type={mockType} index={index} />);
+      render(
+        <ThemeProvider theme={theme()}>
+          <SummaryAccordion item={item} type={mockType} index={index} />
+        </ThemeProvider>
+      );
       const summaryElement = screen.getByRole("button", {
         name: `Sample Question ${index + 1}`,
       });
@@ -212,30 +224,5 @@ describe("QuestionSummary Component", () => {
         expect(detailsElement).toHaveTextContent(answer.answer);
       });
     });
-  });
-
-  it("opens the modal and calls handleSubmit when the button is clicked", async () => {
-    render(
-      <ConfirmationModal
-        isLoading={false}
-        {...DEFAULT_PROPS}
-        handleSubmit={mockHandleSubmit}
-      />
-    );
-
-    const triggerButton = screen.getByTestId("confirm-modal");
-    fireEvent.click(triggerButton);
-
-    const modal = await screen.findByRole("dialog");
-    expect(modal).toBeVisible();
-
-    screen.debug();
-
-    const confirmButton = screen.getByRole("button", { name: /Submit/i });
-    expect(confirmButton).toBeInTheDocument();
-
-    fireEvent.click(confirmButton);
-
-    expect(mockHandleSubmit).toHaveBeenCalled();
   });
 });

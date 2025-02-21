@@ -5,11 +5,15 @@ import { Logout as LogoutIcon } from "@mui/icons-material";
 import { NavigationType } from "../../types/navigation";
 import { useState } from "react";
 import { Button } from "../Button/Button";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { config } from "../../config";
 import { useRouter } from "../../core";
 import { useResolution } from "../../hooks";
+import { useAccessControl } from "../../hooks/useAccessControl";
+import { getRoleName } from "../../core/utils/permission";
+import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
+import { Menu_Items } from "../UserProfile/Menu-Items";
+import { EvaIcon } from "../EvaIcon";
+
 interface Props {
   label: string;
   icon?: React.ReactNode;
@@ -44,6 +48,15 @@ export const AccountMenu: React.FC<Props> = ({
 
   const { isMobile } = useResolution();
 
+  const { internal, customer } = useSensitiveInformation();
+  const { accessLevel } = useAccessControl();
+  const roleName = getRoleName(accessLevel ?? -1);
+
+  const userName =
+    internal?.firstname && internal?.lastname
+      ? `${internal.firstname} ${internal.lastname}`
+      : `${customer?.firstname} ${customer?.lastname}`;
+
   return (
     <Box>
       <Button
@@ -54,31 +67,77 @@ export const AccountMenu: React.FC<Props> = ({
         data-testid="account-menu-button"
       >
         {icon}
-        <Typography
-          sx={
-            isInWebcHub && {
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              fontSize: "12px",
+              whiteSpace: "nowrap",
               fontFamily: "PT Sans",
-              fontSize: "16px",
-              color: "white",
-            }
-          }
-        >
-          {label}
-        </Typography>
+              fontStyle: "normal",
+              color: isInWebcHub ? "white" : "#3B0086",
+              lineHeight: "13px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {userName}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 700,
+              fontSize: "8.5px",
+              whiteSpace: "nowrap",
+              fontFamily: "PT Sans",
+              fontStyle: "normal",
+              color: "#7C7C7C",
+              lineHeight: "13px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {isInWebcHub ? "" : roleName || "No role assigned"}
+          </Typography>
+        </Box>
+
         {openMenu ? (
-          <KeyboardArrowUpIcon
-            sx={[
-              isInWebcHub && { color: "white" },
-              isMobile && { display: "none" },
-            ]}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              border: isInWebcHub ? "1px solid white" : "1px solid #EBEBEB",
+              borderRadius: "50%",
+              color: isInWebcHub ? "white" : "#3B0086",
+            }}
+          >
+            <EvaIcon
+              id="more-vertical-icon"
+              name="more-vertical"
+              fill={isInWebcHub ? "white" : "#3B0086"}
+              width={20}
+              height={20}
+              ariaHidden
+            />
+          </Box>
         ) : (
-          <KeyboardArrowDownIcon
-            sx={[
-              isInWebcHub && { color: "white" },
-              isMobile && { display: "none" },
-            ]}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              border: isInWebcHub ? "1px solid white" : "1px solid #3B0086",
+              borderRadius: "50%",
+              color: isInWebcHub ? "white" : "#3B0086",
+            }}
+          >
+            <EvaIcon
+              id="more-vertical-icon"
+              name="more-vertical"
+              fill={isInWebcHub ? "white" : "#3B0086"}
+              width={20}
+              height={20}
+              ariaHidden
+            />
+          </Box>
         )}
       </Button>
       <Popper
@@ -90,7 +149,6 @@ export const AccountMenu: React.FC<Props> = ({
         <Box
           sx={{
             boxShadow: 1,
-            bgcolor: "background.paper",
             zIndex: "1500",
             borderRadius: "5px",
             marginTop: 1,
@@ -158,6 +216,37 @@ export const AccountMenu: React.FC<Props> = ({
                   ))}
               </div>
             ))}
+
+          {Menu_Items.map((item) => (
+            <div key={item.id}>
+              <Button
+                fullWidth
+                sx={
+                  isInWebcHub
+                    ? {
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontFamily: "PT Sans",
+                        paddingLeft: 4,
+                        fontSize: "16px",
+                        color: "#00173F",
+                        backgroundColor: "#DBDFEA",
+                        "&:hover": {
+                          backgroundColor: "#DBDFEA",
+                        },
+                      }
+                    : {
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingLeft: 4,
+                      }
+                }
+              >
+                {item.icon}
+                <Typography variant="button">{item.label}</Typography>
+              </Button>
+            </div>
+          ))}
           <Button
             onClick={onLogout}
             fullWidth
@@ -165,10 +254,11 @@ export const AccountMenu: React.FC<Props> = ({
               isInWebcHub
                 ? {
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     fontFamily: "PT Sans",
                     fontSize: "16px",
                     color: "#00173F",
+                    alignItems: "center",
                     backgroundColor: "#DBDFEA",
                     "&:hover": {
                       backgroundColor: "#DBDFEA",

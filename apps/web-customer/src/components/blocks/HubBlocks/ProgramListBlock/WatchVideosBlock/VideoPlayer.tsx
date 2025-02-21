@@ -6,10 +6,12 @@
 import { SectionVideosType } from "core-library/types/wc/programList";
 import ReactPlayer from "react-player";
 import { useResolution } from "core-library/hooks";
+
 interface VideoPlayerProps {
   isWideScreen: boolean;
   selectedVid: SectionVideosType | null;
-  toggleWideScreen: () => void;
+  toggleWideScreen?: () => void;
+  showTheaterMode?: boolean;
 }
 
 const playerDimensions = {
@@ -36,6 +38,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   isWideScreen,
   selectedVid,
   toggleWideScreen,
+  showTheaterMode = true,
 }) => {
 
   const { isMobile, isTablet } = useResolution();
@@ -46,23 +49,24 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     isMobile
   );
 
-    return (
-      <div
-        className={`${isWideScreen ? "col-span-3" : "col-span-3 lg:col-span-2"} flex flex-col gap-4`}
-      >
-        {selectedVid ? (
-          <>
-            <div className="flex rounded-[10px] overflow-hidden">
-              <ReactPlayer
-                url={selectedVid.secVidUrl}
-                controls={true}
-                playsinline={true}
-                pip={true}
-                stopOnUnmount={false}
-                width={playerWidth}
-                height={playerHeight}
-              />
-            </div>
+  return (
+    <div
+      className={`${isWideScreen ? "col-span-3" : "col-span-3 lg:col-span-2"} flex flex-col gap-4`}
+    >
+      {selectedVid ? (
+        <>
+          <div className="flex rounded-[10px] overflow-hidden">
+            <ReactPlayer
+              url={selectedVid.secVidUrl}
+              controls={true}
+              playsinline={true}
+              pip={true}
+              stopOnUnmount={false}
+              width={playerWidth}
+              height={playerHeight}
+            />
+          </div>
+          {showTheaterMode && (
             <div className="hidden lg:flex items-center">
               <p
                 onClick={toggleWideScreen}
@@ -74,12 +78,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 </span>
               </p>
             </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <p className="font-ptSansNarrow">No video selected.</p>
-          </div>
-        )}
-      </div>
-    );
+          )}
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+          <p className="font-ptSansNarrow">No video selected.</p>
+        </div>
+      )}
+    </div>
+  );
 };

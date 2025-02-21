@@ -18,6 +18,9 @@ export interface SidebarListButtonProps extends Partial<WebSidebarStylesType> {
   pathname: string;
   isAuthenticated: boolean;
   showDivider?: boolean;
+  isDrawerOpen: boolean;
+  onNavigate: () => void;
+  setDrawerOpen: () => void;
 }
 
 export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
@@ -26,52 +29,83 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
   isAuthenticated,
   listStyles,
   showDivider = true,
+  isDrawerOpen,
+  onNavigate,
+  setDrawerOpen,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
   const path = router?.pathname;
+  const navPaths = navigation.children.map((c) => c.path);
+  const isActive = !!navPaths.find((p) => path?.startsWith(p));
 
   useEffect(() => {
     if (isAuthenticated) {
       setOpen(true);
     }
-  }, [isAuthenticated]); 
-  
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!isDrawerOpen && !isActive) {
+      setOpen(false);
+    }
+  }, [isDrawerOpen, isActive]);
+
   const handleCollapseButton = () => {
+    if (!isDrawerOpen && open === false) {
+      setDrawerOpen();
+    }
     setOpen((prev) => !prev);
   };
 
   return (
     <Box width="100%">
       <Box sx={isAuthenticated && open ? listStyles?.sidebarSx : {}}>
-        <Box padding={1} sx={isAuthenticated && open ? listStyles?.paddingSx : {}}>
+        <Box sx={isAuthenticated && open ? listStyles?.paddingSx : {}}>
           {!navigation.hide && (
             <Box overflow="hidden" borderRadius={3}>
               <ListItemButton
                 disabled={navigation.path === path}
                 onClick={handleCollapseButton}
+                sx={{
+                  padding: "8px 12px",
+                  "&:hover": {
+                    color: "inherit !important",
+                  },
+                }}
               >
-              <ListItemIcon>{IconComponent(navigation.icon, open)}</ListItemIcon>
+                <ListItemIcon>
+                  {IconComponent(navigation.icon, open)}
+                </ListItemIcon>
+
                 <ListItemText>
-                    <Typography variant="body2" fontWeight={600} fontSize={13}>
-                        {navigation.label}
-                    </Typography>
+                  <Typography
+                    variant="body2"
+                    fontSize={13}
+                    flexGrow={1}
+                    whiteSpace="nowrap"
+                  >
+                    {navigation.label}
+                  </Typography>
                 </ListItemText>
                 <KeyboardArrowDownIcon
                   fontSize="small"
                   sx={{
-                  ...listStyles?.opacitySx,
-                  mr: -1,
-                  opacity: open ? 1 : 0,
-                  transform: open ? "rotate(-180deg)" : "rotate(0)",
-                  transition: "0.2s",
+                    ...listStyles?.opacitySx,
+                    mr: -1,
+                    transform: open ? "rotate(-180deg)" : "rotate(0)",
+                    transition: "0.2s",
                   }}
                 />
               </ListItemButton>
             </Box>
           )}
         </Box>
-        {open && navigation.children && navigation.children.length > 0 && !navigation.hide && (
+        {open &&
+          isDrawerOpen &&
+          navigation.children &&
+          navigation.children.length > 0 &&
+          !navigation.hide &&
           navigation.children.map((childNav, idx) => (
             <SidebarButton
               navigation={childNav}
@@ -79,8 +113,10 @@ export const SidebarListButton: React.FC<SidebarListButtonProps> = ({
               pathname={pathname}
               isAuthenticated={isAuthenticated}
               listStyles={listStyles}
+              isDrawerOpen={isDrawerOpen}
+              onNavigate={onNavigate}
             />
-          )))}
+          ))}
         {open && showDivider && <Divider sx={listStyles?.dividerSx} />}
       </Box>
     </Box>

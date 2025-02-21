@@ -173,6 +173,27 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
     ),
   ];
 
+  const superScript: MenuButtonType[] = [
+    createButton(
+      "Toggle Superscript",
+      () => editor.chain().focus().toggleSuperscript().run(),
+      undefined,
+      editor.isActive('superscript')
+    ),
+    createButton(
+      "Set Superscript",
+      () => editor.chain().focus().setSuperscript().run(),
+      undefined,
+      editor.isActive('superscript')
+    ),
+    createButton(
+      "Unset Superscript",
+      () => editor.chain().focus().unsetSuperscript().run(),
+      undefined,
+      !editor.isActive('superscript')
+    ),
+  ];
+
   const getButtons = () => {
     switch (editorFor) {
       case "default":
@@ -186,6 +207,7 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
           ...listStyles,
           ...tableButtons,
           ...revertButtons,
+          ...superScript
         ];
       default:
         return [];
@@ -193,4 +215,14 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
   };
 
   return getButtons();
+};
+
+export const insertTable = (editor: any) => {
+  editor
+    .chain()
+    .focus()
+    .insertContent(" ")
+    .insertTable({ rows: 4, cols: 2, withHeaderRow: true })
+    .run();
+  editor.commands.setTextSelection(1);
 };

@@ -1,3 +1,4 @@
+import { ContainedCaseStudyQuestionType } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { CreateRegularAtom } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/useAtomic";
 import { QuestionSelectionOptions } from "../system/app/internal/blocks/Hub/Settings/SettingsManagement/types";
 
@@ -14,11 +15,35 @@ export type AccessKeyType = {
   appName: string;
 };
 
+export interface Schedule {
+  id: string;
+  eventName: string;
+  description: string;
+  environment: number;
+}
+export interface ScheduleResponse {
+  success: boolean;
+  daysRemaining: number;
+  schedule: Schedule;
+  error: string;
+}
+
+export interface OpenPagesResponse {
+  pageRoute: string;
+  pageAuthorization: number;
+}
+
 export interface LoginParams {
   email: string;
   password: string;
   appName: string;
   deviceId: string;
+}
+
+export interface NotifyParams {
+  goLiveId?: string | undefined;
+  maintenanceId?: string | undefined;
+  email: string;
 }
 
 export interface SsoLoginParams {
@@ -33,6 +58,7 @@ export interface CreatePaymentIntentParams {
   programTitle: number;
   productId: string;
   pricingId: string;
+  accountId: string | undefined;
 }
 export interface UpdatePaymentIntentParams {
   paymentIntentId: string;
@@ -52,7 +78,7 @@ export interface LoginResponse {
   accessLevel: number;
   sessionId: string;
   fingerprint: string; //deprecated
-  isNewAccount: boolean;
+  isPaid: string;
 }
 
 export interface RefreshTokenResponse {
@@ -102,6 +128,14 @@ export interface ProductListResponse {
   categoryId: string;
   productDescription: string | null;
   programType: number;
+  programTitle: number;
+}
+
+export interface CreateSalesParams {
+  customerAccountId: string | undefined;
+  productId: string;
+  currencyId: string | undefined;
+  country?: string | undefined;
 }
 
 export interface ProductSetStatusParams {
@@ -109,6 +143,13 @@ export interface ProductSetStatusParams {
   productStatus: number;
 }
 
+export type AnalyticsParams = Partial<{
+  accountId: string;
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  status: string;
+}>;
 export interface IrtExamLogsResponse {
   id: string;
   eventLNum: string;
@@ -194,9 +235,13 @@ export interface CreateCustomerParams {
   lastname: string;
   email: string;
   password: string;
-  orderNumber: string;
+  orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+}
+
+export interface CreateCustomerResponse {
+  accountId: string;
 }
 
 export interface CreateCustomerDumpParams {
@@ -260,12 +305,28 @@ export type VerifyCodeParams = {
   email: string;
 };
 
+export type OrderSummaryResponse = {
+  orderId: string;
+  orderNumber: string;
+  productName: string;
+  productDescription: string;
+  currency: string;
+  price: number;
+  categoryName: string;
+  categoryDescription: string;
+  programTitle: number;
+  programType: number;
+  pricingId: string;
+  productId: string;
+  currencyId: string;
+};
+
 export type ResendCodeParams = {
   email: string;
 };
 
 export type ValidateTokenParams = {
-  accessToken: string | undefined;
+  accessToken: string | undefined | null;
   appName: string;
 };
 
@@ -335,11 +396,50 @@ export type MainContentCollectionsDtos = {
 export type CreateRegularType = {
   email: string;
   contentDto: {
-    type: string;
+    type?: string;
     mainType: string;
-    mainContentCollectionsDtos: MainContentCollectionsDtos[];
+    mainContentCollectionsDtos?: MainContentCollectionsDtos[];
+    mainCaseStudyContentCollectionDtos?: CaseStudyContentCollectionDtos[];
   };
 };
+
+export type CaseStudyContentCollectionDtos = {
+  caseName: string[];
+  hxPhy: SequenceContentType[];
+  labs: SequenceContentType[];
+  nurseNotes: SequenceContentType[];
+  orders: SequenceContentType[];
+  questionnaires: QuestionnaireType[];
+};
+
+export type SequenceContentType = {
+  seqContent?: string;
+  seqNum: number;
+};
+
+export type QuestionnaireType = {
+  itemNum: number;
+  itemStem?: string;
+  maxPoints: number;
+  questionType?: string;
+  seqNum: number;
+  transitionHeader: string;
+  maxAnswer?: number;
+  answers?: AnswerCaseStudy;
+};
+
+type Answer = {
+  answer: string;
+  answerKey: boolean;
+};
+
+type OptionWithAnswers = {
+  options?: Answer[];
+  optionName: string;
+};
+
+type AnswerCaseStudy = Answer[] | OptionWithAnswers[] | undefined;
+
 export type credentialsType = {
   id: string;
   username: string;
@@ -598,7 +698,7 @@ export type GetSubsequentLists = {
   id: string;
   optionText: string;
   optionKey: string;
-}
+};
 
 export type ContactFormType = {
   message: string;
@@ -607,4 +707,43 @@ export type ContactFormType = {
   countryCode: string;
   categoryId: string;
   email: string;
-}
+};
+
+export type PriceButtonType = {
+  acronym: "PN" | "RN";
+  label: "Practical Nurse" | "Registered Nurse";
+  value: 0 | 1;
+};
+
+export type CreateDndOptionsParams = {
+  option: string;
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
+
+export type DndOptionParams = {
+  formId: string;
+  accountId: string;
+  itemNo: number;
+};
+
+export type DndOptionsResponseType = {
+  id: string;
+  label: string;
+  value: string;
+};
+
+export type CaseNameParams = {
+  caseName: string;
+};
+
+export type CaseNameResponseType = {
+  id: string;
+  caseName: string;
+  dateCreated: string;
+};
+
+export type DeleteCaseNameParams = {
+  id: string;
+};

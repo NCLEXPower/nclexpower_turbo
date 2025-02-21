@@ -5,121 +5,108 @@ Reuse as a whole or in part is prohibited without permission.
 Created by the Software Strategy & Development Division
 */
 
-import { Button } from "core-library/components";
 import React from "react";
 import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
-import { useStripeContext } from "core-library/contexts";
+import { useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library";
+import { Card, Typography } from "@mui/material";
+import { useResolution } from "core-library/hooks";
 
 type Props = {};
 
 export const OrderSummaryBlock: React.FC<Props> = () => {
   const router = useRouter();
   const orderDetail = useDecryptOrder();
-  const ProgramTitle = orderDetail?.programTitle;
-  const { createPaymentIntentWithClientSecret, getOrderNumber } =
-    useStripeContext();
+  const { isMobile } = useResolution();
 
   if (!orderDetail) {
+    /* can cause flicker */
     router.replace("/");
     return;
   }
 
   return orderDetail ? (
     <div
-      className={`${ProgramTitle == 1 ? "from-[#13565A] to-[#0C8087]" : "from-[#0F2A71] to-[#1D50D7]"} bg-gradient-to-b flex justify-center min-h-screen h-fit w-full items-center pt-28 pb-14`}
+      className="w-full flex justify-center items-center px-4"
     >
-      <div className="max-w-[545px] min-w-[350px] w-2/3 px-10 py-5 rounded-lg pt-sans-regular bg-white h-fit">
+      <Card sx={{
+        maxWidth: '645px',
+        minWidth: isMobile ? "100%" : '350px',
+        width: '66.67%',
+        padding: '10px 2.5rem',
+        borderRadius: '20px',
+        border: '1px solid #E5E5E5',
+        fontFamily: 'PT Sans',
+        height: 'fit-content',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)'
+      }}>
         <div className="p-3">
-          <p className="pt-sans-bold text-4xl mb-5 text-[#0F2A71]">
+          <p className="pt-sans-bold text-4xl mb-5 ">
             Order Summary
           </p>
-          <p className="pt-sans-regular text-sm">
+          <p className="pt-sans-narrow-regular text-lg text-darkGray">
             Thank you for your order! Below are the details of your selected
             plan and the total price you will be charged. Please review all the
             information before confirming your purchase.
           </p>
         </div>
         <div>
-          <div className="pt-2 gap-2 flex flex-col">
-            <div className="flex flex-col gap-2 border border-zinc-300 rounded-md p-2">
-              <p>Plan name:</p>
-              <p className="text-[#0F2A71] font-semibold text-end">
+          <div className="gap-2 flex flex-col">
+            <div className="flex flex-col gap-2 border border-zinc-300 rounded-md p-6">
+              <Typography
+                sx={{
+                  fontFamily: 'PT Sans Narrow',
+                }}
+              >Plan name:
+              </Typography>
+              <Typography sx={{
+                fontFamily: 'PT Sans Narrow',
+                fontWeight: 600,
+                textAlign: 'end',
+                color: '#0F2A71'
+              }} >
                 {orderDetail.productName} (
                 {orderDetail.programTitle == 0 ? "RN" : "PN"})
-              </p>
+              </Typography>
               <div>
-                <p>Duration: </p>
+                <Typography sx={{ fontFamily: "PT Sans Narrow" }}>Duration: </Typography>
                 <div className="text-[#0F2A71] font-semibold text-end">
                   {orderDetail.programType == 0 ? (
-                    <p> 23 Days (Standard)</p>
+                    <Typography sx={{
+                      fontFamily: 'PT Sans Narrow',
+                      fontWeight: 600,
+                      textAlign: 'end',
+                      color: '#0F2A71'
+                    }}> 23 Days (Standard)
+                    </Typography>
                   ) : orderDetail.programType == 1 ? (
-                    <p> 8 Days (Fast Track)</p>
+                    <Typography sx={{
+                      fontFamily: 'PT Sans Narrow',
+                      fontWeight: 600,
+                      textAlign: 'end',
+                      color: '#0F2A71'
+                    }}> 8 Days (Fast Track)
+                    </Typography>
                   ) : null}
                 </div>
               </div>
             </div>
-            <div className="p-4 rounded-md border border-zinc-300">
-              <p>Description : </p>
-              <p>{orderDetail.productDescription}</p>
+            <div className="flex flex-col gap-2 border border-zinc-300 rounded-md p-6">
+              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>Description : </Typography>
+              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>{orderDetail.productDescription}</Typography>
             </div>
           </div>
 
-          <div className="p-2">
-            <div className="text-paragraph flex justify-between">
-              <p>Balance Amount :</p>
-              <p>
-                {orderDetail.amount}.00 {orderDetail.currency}
-              </p>
-            </div>
+          <div className="p-2 my-6 flex flex-col gap-3">
             <div className=" flex justify-between">
-              <p className="font-semibold">Total Amount:</p>
-              <p className="font-semibold">
+              <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>Total Amount:</Typography>
+              <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>
                 {orderDetail.amount}.00 {orderDetail.currency}
-              </p>
+              </Typography>
             </div>
           </div>
         </div>
-        <div className="pt-2">
-          <Button
-            onClick={handleProceedCheckout}
-            disabled={false}
-            sx={{
-              mb: 2,
-              p: 2,
-              minHeight: "fit-content",
-              width: "100%",
-              fontSize: "14px",
-              background: "#0F2A71",
-              borderRadius: "4px",
-              fontWeight: 600,
-              ":focus": {
-                outline: "0 !important"
-              }
-            }}
-          >
-            PROCEED
-          </Button>
-          <p className="pt-sans-regular text-center text-sm">
-            By proceeding, you accept our terms and conditions.
-          </p>
-        </div>
-      </div>
+      </Card>
     </div>
   ) : null;
-
-  async function handleProceedCheckout() {
-    if (!orderDetail) return;
-    await getOrderNumber();
-    await createPaymentIntentWithClientSecret({
-      amount: orderDetail.amount,
-      currency: orderDetail.currency,
-      productDescription: orderDetail.productDescription,
-      productName: orderDetail.productName,
-      programTitle: orderDetail.programTitle,
-      productId: orderDetail.productId,
-      pricingId: orderDetail.pricingId,
-    });
-    await router.push((route) => route.account_registration);
-  }
 };

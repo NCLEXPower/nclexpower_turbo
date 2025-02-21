@@ -1,3 +1,8 @@
+/**
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { createContext, useContext } from "react";
 import { UseMutationResult, UseQueryResult } from "react-query";
 import {
@@ -38,7 +43,6 @@ import {
   useGetAllInclusion,
   useDeleteRoute,
   useCreateInclusion,
-  useDeleteInclusion,
   useUpdateInclusion,
   useCreateSubsequentOptions,
   useGetSubsequentList,
@@ -46,9 +50,11 @@ import {
   useGetAllMenus,
   useGetMenuById,
   useUpdateMenuItem,
-  useCreateContactUs
+  useCreateContactUs,
+  useGetAllCategories,
+  useCommenceEnvMaintenanceMode,
 } from "../core/hooks/useBusinessQueries";
-import { MutOpt } from "../core/hooks/types";
+import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
 import { CategoryListResponse } from "../types/category-response";
 import {
@@ -248,25 +254,22 @@ interface BusinessQueryContextValue {
     args: WebGetContentsParams
   ) => UseQueryResult<AuthorizedContentsResponseType[] | undefined, any>;
 
-  businessQuerySelectedApprovers
-  : (
-    queryKey: string[],
+  businessQuerySelectedApprovers: (
+    queryKey: string[]
   ) => UseQueryResult<DefaultReviewerDto[] | undefined, any>;
 
   businessQueryGetAllInclusion: (
     queryKey: string[]
-  ) => UseQueryResult<GetAllInclusionResponse[] | undefined, any>
+  ) => UseQueryResult<GetAllInclusionResponse[] | undefined, any>;
   businessQueryCreateInclusion: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<
     AxiosResponse<number, AxiosError<unknown, any>>,
     any,
     CreateInclusionParams,
-    unknown>
+    unknown
+  >;
   businessQueryDeleteRoute: (
-    opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>, any, string, unknown>
-  businessQueryDeleteInclusion: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<
     AxiosResponse<number, AxiosError<unknown, any>>,
@@ -286,35 +289,57 @@ interface BusinessQueryContextValue {
 
   businessQueryUpdateInclusion: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
-    any, GetAllInclusionResponse, unknown>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
+    any,
+    GetAllInclusionResponse,
+    unknown
+  >;
 
   businessQueryGetSubsequentList: (
     queryKey: string[]
-  ) => UseQueryResult<GetSubsequentLists[] | undefined, any>
+  ) => UseQueryResult<GetSubsequentLists[] | undefined, any>;
   businessQueryCreateAuthorizedMenus: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
     any,
     CreateAuthorizedMenusParams,
-    unknown>
+    unknown
+  >;
   businessQueryGetAllMenus: (
     queryKey: string[]
-  ) => UseQueryResult<AuthorizedMenuResponse[] | undefined, any>
+  ) => UseQueryResult<AuthorizedMenuResponse[] | undefined, any>;
   businessQueryGetMenuById: (
-    queryKey: string[], params: GetMenuByIdParams
-  ) => UseQueryResult<AuthorizedMenuResponse | undefined, any>
-  businessQueryUpdateMenuItem: (opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<AxiosResponse<number, AxiosError<unknown, any>>,
+    queryKey: string[],
+    params: GetMenuByIdParams
+  ) => UseQueryResult<AuthorizedMenuResponse | undefined, any>;
+  businessQueryUpdateMenuItem: (
+    opt?: MutOpt<AxiosResponse<number, AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<number, AxiosError<unknown, any>>,
     UpdateMenuItemParams,
     any,
-    unknown>
+    unknown
+  >;
   businessQueryCreateContactUs: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
   ) => UseMutationResult<
     AxiosResponse<number, AxiosError<unknown, any>>,
     any,
     ContactFormType,
+    unknown
+  >;
+  businessQueryGetAllCategory: (
+    queryKey: string[]
+  ) => UseQueryResult<CategoryResponseType[] | undefined, any>;
+
+  businessQueryCommenceEnvMaintenanceMode: (
+    opt?: MutOpt<AxiosResponse<string[], AxiosError>>
+  ) => UseMutationResult<
+    AxiosResponse<string[], AxiosError<unknown, any>>,
+    number,
+    any,
     unknown
   >;
 }
@@ -357,19 +382,20 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetAllInternalAccount = useGetAllInternalAccounts;
   const businessQueryCreateRegularQuestion = useCreateRegularQuestion;
   const businessQueryGetContents = useGetContents;
-  const businessQuerySelectedApprovers = useGetSelectedApprovers
+  const businessQuerySelectedApprovers = useGetSelectedApprovers;
   const businessQueryGetAllInclusion = useGetAllInclusion;
   const businessQueryDeleteRoute = useDeleteRoute;
   const businessQueryCreateInclusion = useCreateInclusion;
-  const businessQueryDeleteInclusion = useDeleteInclusion;
   const businessQueryUpdateInclusion = useUpdateInclusion;
   const businessQueryCreateSubsequentOptions = useCreateSubsequentOptions;
   const businessQueryGetSubsequentList = useGetSubsequentList;
   const businessQueryCreateAuthorizedMenus = useCreateAuthorizedMenus;
-  const businessQueryGetAllMenus = useGetAllMenus
-  const businessQueryGetMenuById = useGetMenuById
-  const businessQueryUpdateMenuItem = useUpdateMenuItem
-  const businessQueryCreateContactUs = useCreateContactUs
+  const businessQueryGetAllMenus = useGetAllMenus;
+  const businessQueryGetMenuById = useGetMenuById;
+  const businessQueryUpdateMenuItem = useUpdateMenuItem;
+  const businessQueryCreateContactUs = useCreateContactUs;
+  const businessQueryGetAllCategory = useGetAllCategories;
+  const businessQueryCommenceEnvMaintenanceMode = useCommenceEnvMaintenanceMode;
 
   return (
     <BusinessQueryContext.Provider
@@ -406,7 +432,6 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllInclusion,
         businessQueryDeleteRoute,
         businessQueryCreateInclusion,
-        businessQueryDeleteInclusion,
         businessQueryUpdateInclusion,
         businessQueryCreateSubsequentOptions,
         businessQueryGetSubsequentList,
@@ -414,7 +439,9 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetAllMenus,
         businessQueryGetMenuById,
         businessQueryUpdateMenuItem,
-        businessQueryCreateContactUs
+        businessQueryCreateContactUs,
+        businessQueryGetAllCategory,
+        businessQueryCommenceEnvMaintenanceMode,
       }}
     >
       {children}

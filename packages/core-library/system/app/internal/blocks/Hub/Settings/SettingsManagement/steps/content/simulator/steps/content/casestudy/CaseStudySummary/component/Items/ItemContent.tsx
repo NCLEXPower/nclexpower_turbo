@@ -22,7 +22,17 @@ export const ItemContent: React.FC<ItemProps> = ({ values }) => {
     });
   };
 
-  const VALID_QUESTION_TYPES = ["DDC", "SATA", "MRSN"];
+  const VALID_QUESTION_TYPES = [
+    "DDC",
+    "SATA",
+    "MRSN",
+    "BOWTIE",
+    "HCP",
+    "MCQGROUP",
+    "DDT",
+    "DND",
+    "MCQNOGROUP",
+  ];
 
   const validQuestionnaires =
     values.questionnaires?.filter((item): item is QuestionnaireItem =>
