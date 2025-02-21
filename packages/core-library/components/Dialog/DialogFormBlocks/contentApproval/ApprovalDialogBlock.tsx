@@ -15,8 +15,8 @@ import { defaultValues } from "../../../../system/app/internal/blocks/Hub/Settin
 
 export const ApprovalDialogBlock = () => {
   const { closeDialog } = useDialogContext();
-  const { contentLoader, setContentLoader } = usePageLoaderContext();
-  const [approvalAtom, setApprovalAtom] = useAtom(ContentDateAtom);
+  const { setContentLoader } = usePageLoaderContext();
+  const [approvalAtom] = useAtom(ContentDateAtom);
 
   const { showToast } = useExecuteToast();
 

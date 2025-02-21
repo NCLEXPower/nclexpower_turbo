@@ -14,6 +14,8 @@ interface Content {
   title: string;
   paragraphOne: string;
   paragraphTwo: string;
+  paragraphThree?: string;  
+  bullets?: string[];
   carouselImages?: string[];
   image?: string;
 }
@@ -47,6 +49,8 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         title={content.title}
         paragraphOne={content.paragraphOne}
         paragraphTwo={content.paragraphTwo}
+        paragraphThree={content.paragraphThree}
+        bullets={content.bullets}
       />
       <Box className='absolute right-5 top-5 cursor-pointer z-10'>
         <div
