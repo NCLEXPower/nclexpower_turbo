@@ -1,4 +1,4 @@
-import { Box, Checkbox, SxProps, Typography } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { DDCItem } from "./DDCItem";
 import {
@@ -13,9 +13,9 @@ import { BowtieSummary } from "./BowtieSummary";
 import { MCQGroupSummary } from "./MCQGroupSummary";
 import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
 import { HCPQuestion } from "./HCPQuestion";
-import { DNDQuestion } from './DNDQuestion';
-import { DNDSummary } from './DNDSummary';
-import { DNDAnswerOptionType } from '../../../../../../types';
+import { DNDQuestion } from "./DNDQuestion";
+import { DNDSummary } from "./DNDSummary";
+import { DNDAnswerOptionType } from "../../../../../../types";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -100,7 +100,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
       case "MCQGROUP":
         return <MCQGroupSummary data={data} />;
       case "DND":
-        return <DNDSummary answers={data.answers as DNDAnswerOptionType[]} />
+        return <DNDSummary answers={data.answers as DNDAnswerOptionType[]} />;
       default:
         return null;
     }
@@ -147,7 +147,6 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             >
               {renderQuestionTypeLabel(data)}
             </Typography>
-
             {renderAnswerOption(data)}
           </Box>
         ))
