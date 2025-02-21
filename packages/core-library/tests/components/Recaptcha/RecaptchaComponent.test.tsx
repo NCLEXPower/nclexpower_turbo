@@ -101,4 +101,14 @@ describe('RecaptchaComponent', () => {
       expect(script).toBeInTheDocument();
     });
   });
+
+  it('should not break if window.grecaptcha is undefined', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+  });
 });

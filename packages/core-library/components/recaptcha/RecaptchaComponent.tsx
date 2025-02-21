@@ -25,6 +25,7 @@ export const RecaptchaComponent = forwardRef<ReCAPTCHA, ReCAPTCHAProps>(
         const script = document.createElement('script');
         script.src = recaptchaScriptUrl;
         script.async = true;
+        script.defer = true;
         script.onload = () => setIsScriptLoaded(true);
         document.body.appendChild(script);
       }
