@@ -132,4 +132,36 @@ describe('RecaptchaComponent', () => {
       expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
     });
   });
+
+  it('should handle script load error gracefully', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    document.body.innerHTML = '';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    // Simulating script load failure
+    const script = document.querySelector('script');
+    if (script) {
+      script.dispatchEvent(new Event('error'));
+    }
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalled();
+    });
+
+    (console.error as jest.Mock).mockRestore();
+  });
+
+  it('should not call clearInterval if checkRecaptcha was never set', async () => {
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+
+    expect(clearIntervalSpy).not.toHaveBeenCalledWith(undefined);
+  });
 });
