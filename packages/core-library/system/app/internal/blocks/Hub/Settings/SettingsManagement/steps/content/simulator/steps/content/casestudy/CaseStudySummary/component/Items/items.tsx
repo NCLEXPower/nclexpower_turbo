@@ -1,4 +1,4 @@
-import { Box, Checkbox, SxProps, Typography } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { DDCItem } from "./DDCItem";
 import {
