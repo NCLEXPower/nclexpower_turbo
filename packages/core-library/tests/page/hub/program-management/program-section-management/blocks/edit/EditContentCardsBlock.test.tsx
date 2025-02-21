@@ -16,6 +16,34 @@ jest.mock("../../../../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("../../../../../../../contexts", () => ({
+  useBusinessQueryContext: jest.fn(() => ({
+    businessQueryGetSectionsByType: jest.fn(() => ({
+      data: [
+        {
+          sectionId: "123",
+          sectionType: "simulator",
+          sectionTitle: "Sample Section",
+          sectionData: [
+            {
+              sectionDataId: "456",
+              title: "Simulator Section",
+              contentArea: "Sample Content",
+              guided: "true",
+              unguided: "false",
+              practice: "true",
+            },
+          ],
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: jest.fn(),
+    })),
+  })),
+}));
+
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),
   useForm: jest.fn(),

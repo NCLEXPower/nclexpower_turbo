@@ -15,6 +15,29 @@ jest.mock("../../../../../../../config", () => ({
       businessQueryGetRegularQuestionDDCategory: jest.fn(() => ({
         data: [],
       })),
+      businessQueryGetSectionsByType: jest.fn(() => ({
+        data: [
+          {
+            sectionId: "123",
+            sectionType: "simulator",
+            sectionTitle: "Sample Section",
+            sectionData: [
+              {
+                sectionDataId: "456",
+                title: "Simulator Section",
+                contentArea: "Sample Content",
+                guided: "true",
+                unguided: "false",
+                practice: "true",
+              },
+            ],
+          },
+        ],
+        isLoading: false,
+        isError: false,
+        error: null,
+        refetch: jest.fn(),
+      })),
     })),
   }));
 

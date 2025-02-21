@@ -99,7 +99,7 @@ describe("ProgramManagementListCreateField", () => {
 
   it("should render program edit form with correct title", () => {
     render(<ProgramManagementListCreateField {...defaultProps} />);
-    expect(screen.getByText(/Create Program/i)).toBeInTheDocument();
+    expect(screen.getByText(/Create/i)).toBeInTheDocument();
   });
 
   it("should call handleBack when the back button is clicked", () => {

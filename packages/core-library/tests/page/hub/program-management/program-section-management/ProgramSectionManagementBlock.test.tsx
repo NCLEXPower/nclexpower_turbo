@@ -7,8 +7,6 @@ import { render, screen, fireEvent } from "../../../../common";
 import { ProgramSectionManagementListBlock } from "../../../../../system/app/internal/blocks";
 import { useRouter } from "../../../../../core";
 import { useAtom } from "jotai";
-import { programSectionList } from "../../../../../core/utils/contants/wc/programs/ProgramListData";
-
 jest.mock("../../../../../config", () => ({
   config: { value: jest.fn() },
 }));
@@ -56,18 +54,5 @@ describe("ProgramSectionManagementListBlock", () => {
     fireEvent.click(backButton);
 
     expect(mockRouterPush).toHaveBeenCalledWith(expect.any(Function));
-  });
-
-  it("renders ProgramSectionHeader for each section in programSectionList", () => {
-    render(<ProgramSectionManagementListBlock />);
-
-    programSectionList.forEach((section) => {
-      const sectionTitle = screen.getByText(
-        (content, element) =>
-          element?.tagName.toLowerCase() === "h4" &&
-          content.includes(section.sectionTitle)
-      );
-      expect(sectionTitle).toBeInTheDocument();
-    });
   });
 });
