@@ -9,14 +9,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useApiCallback } from "../../../../../../hooks";
 
 export const ComingSoonManagementBlock: React.FC = () => {
-  const [mappedCountries, setMappedCountries] = useState<
-    Array<{ code: string; name: string; daysLeft: number }>
-  >([]);
+  type MappedCountry = {
+    code: string;
+    name: string;
+    daysLeft: number;
+    timezones: {
+      selectedTimezone: string;
+      daysRemaining: number;
+      hoursRemaining: number;
+    }[];
+  };
+
+  const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
 
   const getCountryTimezones = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
-      countryKey: any;
-      goLiveDate: any;
+      countryKey: string;
+      goLiveDate: string;
     };
     return api.webbackoffice.getCountryTimezone({
       countryKey,
@@ -33,24 +42,29 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
   const { control, handleSubmit, watch, setValue } = form;
 
-  function mapResponseToCountry(data: {
+  const mapResponseToCountry = (data: {
     countryKey: string;
     country: string;
-    daysRemaining: { hoursRemaining: number; daysRemaining: number }[];
-  }): { code: string; name: string; daysLeft: number } {
+    daysRemaining: {
+      selectedTimezone: string;
+      daysRemaining: number;
+      hoursRemaining: number;
+    }[];
+  }): MappedCountry => {
     const bestTimezone = data.daysRemaining.reduce(
-      (prev, curr) => (curr.hoursRemaining > prev.hoursRemaining ? curr : prev),
+      (prev, curr) =>
+        curr.hoursRemaining > prev.hoursRemaining ? curr : prev,
       data.daysRemaining[0]
     );
     return {
       code: data.countryKey,
       name: data.country,
       daysLeft: bestTimezone.daysRemaining,
+      timezones: data.daysRemaining,
     };
-  }
+  };
 
-  async function onSubmit(values: ContentDateType) {
-    console.log("go live value", values);
+  const onSubmit = async (values: ContentDateType) => {
     if (Array.isArray(values.countryKey)) {
       try {
         const responses = await Promise.all(
@@ -71,11 +85,11 @@ export const ComingSoonManagementBlock: React.FC = () => {
       }
     }
     setValue("isActive", true);
-  }
+  };
 
-  function handleDeactivate() {
+  const handleDeactivate = () => {
     setValue("isActive", false);
-  }
+  };
 
   const hasNoSchedule = watch("hasNoSchedule");
   const [isSwitchOn, setIsSwitchOn] = useState(!hasNoSchedule);
@@ -91,12 +105,8 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const watchAnnouncement = watch("announcement");
 
   return (
-    <Stack direction={"column"} spacing={2}>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ height: "550px", width: "auto" }}
-      >
+    <Stack direction="column" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ height: "550px", width: "auto" }}>
         <FormProvider {...form}>
           <ComingSoonManagement
             control={control}

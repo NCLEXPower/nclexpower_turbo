@@ -4,18 +4,29 @@ import {
   DateField,
   GenericSelectField,
   MultipleSelectField,
+  CustomTooltip,
 } from "../../../../../../components";
 import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { Control } from "react-hook-form";
 import { ContentDateType } from "./validation";
+import LiveCountdown from "./LiveCountDown";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
   isSwitchOn: boolean;
   isActive?: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  mappedCountries: Array<{ code: string; name: string; daysLeft: number }>;
+  mappedCountries: Array<{
+    code: string;
+    name: string;
+    daysLeft: number;
+    timezones: {
+      selectedTimezone: string;
+      daysRemaining: number;
+      hoursRemaining: number;
+    }[];
+  }>;
 };
 
 const ComingSoonManagement = ({
@@ -26,7 +37,7 @@ const ComingSoonManagement = ({
   mappedCountries,
 }: ComingSoonProps) => {
   return (
-    <Stack direction={"row"}>
+    <Stack direction="row">
       <Container sx={{ width: 600 }}>
         <Typography
           variant="h6"
@@ -82,9 +93,7 @@ const ComingSoonManagement = ({
                     checked={isSwitchOn}
                     onChange={onSwitchChange}
                     disabled={isActive}
-                    sx={{
-                      flexShrink: 0,
-                    }}
+                    sx={{ flexShrink: 0 }}
                   />
                   <Typography
                     variant="body2"
@@ -100,7 +109,6 @@ const ComingSoonManagement = ({
                 </div>
               </div>
             </div>
-
             <Typography
               sx={{
                 fontWeight: "bold",
@@ -126,7 +134,6 @@ const ComingSoonManagement = ({
               variant="outlined"
               disabled={isActive}
             />
-
             <Typography
               sx={{
                 fontWeight: "bold",
@@ -152,42 +159,7 @@ const ComingSoonManagement = ({
               multiple
             />
           </Container>
-
-          <div
-            className="flex flex-end"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              marginTop: "1rem",
-            }}
-          >
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                fontSize: "1rem",
-                color: "#3B0086",
-                marginLeft: "1rem",
-              }}
-            >
-              Live Countdown of Selected Countries:
-            </Typography>
-          </div>
-          <div className="mt-4 ml-10 max-h-32 overflow-y-auto flex flex-col space-y-1">
-            {mappedCountries.map((country) => (
-              <div
-                key={country.code}
-                className="flex items-center justify-between bg-white px-3 py-2 rounded-md inner-shadow"
-              >
-                <span className="text-[#3B0086] text-[0.9rem]">
-                  {country.name}
-                </span>
-                <span className="text-[#3B0086] text-[0.9rem]">
-                  [ {country.daysLeft} Days ]
-                </span>
-              </div>
-            ))}
-          </div>
+          <LiveCountdown mappedCountries={mappedCountries} />
         </Container>
       </Container>
     </Stack>
