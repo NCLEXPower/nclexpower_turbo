@@ -124,4 +124,12 @@ describe('RecaptchaComponent', () => {
       expect(script).toBeInTheDocument();
     });
   });
+
+  it('should set isScriptLoaded when script loads', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
 });
