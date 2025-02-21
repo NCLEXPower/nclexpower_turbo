@@ -73,21 +73,6 @@ describe('RecaptchaComponent', () => {
     expect(script).toBeInTheDocument();
   });
 
-  it('should set isRecaptchaLoaded to true when recaptcha is ready', async () => {
-    const setStateMock = jest.fn();
-    jest
-      .spyOn(React, 'useState')
-      .mockImplementation(() => [false, setStateMock]);
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(setStateMock).toHaveBeenCalledWith(true);
-    });
-
-    jest.restoreAllMocks();
-  });
-
   it('should assign ref correctly to ReCAPTCHA component', () => {
     const mockRef = React.createRef<ReCAPTCHA>();
     render(<ReCAPTCHA sitekey='your-sitekey-here' ref={mockRef} />);

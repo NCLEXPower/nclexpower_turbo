@@ -2,30 +2,28 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha';
 import { AnimatedBoxSkeleton } from '../AnimatedBoxSkeleton/AnimatedSkeletonBox';
 
-declare global {
-  interface Window {
-    grecaptcha?: {
-      render: (...args: any[]) => void;
-      getResponse: (...args: any[]) => string;
-      reset: (...args: any[]) => void;
-      ready: (callback: () => void) => void;
-    };
-  }
-}
-
 export const RecaptchaComponent = forwardRef<ReCAPTCHA, ReCAPTCHAProps>(
   (props, ref) => {
     const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
     useEffect(() => {
+      const recaptchaScriptUrl = process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL;
+
+      if (!recaptchaScriptUrl) {
+        console.error(
+          'Google reCAPTCHA URL is not defined in environment variables.'
+        );
+        return;
+      }
+
       if (window.grecaptcha) {
         window.grecaptcha.ready(() => {
           setIsRecaptchaLoaded(true);
         });
       } else {
         const script = document.createElement('script');
-        script.src = 'https://www.google.com/recaptcha/api.js';
+        script.src = recaptchaScriptUrl;
         script.async = true;
         script.onload = () => setIsScriptLoaded(true);
         document.body.appendChild(script);

@@ -1,4 +1,4 @@
-import getConfig from "next/config";
+import getConfig from 'next/config';
 
 const {
   publicRuntimeConfig: { processEnv },
@@ -35,6 +35,7 @@ export const config = {
       APIIPKEY: processEnv.NEXT_PRIVATE_APIIP_KEY!,
       APIIPURL: processEnv.NEXT_PRIVATE_APIIP_URL!,
       API64URL: processEnv.NEXT_PRIVATE_API64_URL!,
+      GOOGLE_RECAPTCHA: processEnv.NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL,
     };
   },
 };
