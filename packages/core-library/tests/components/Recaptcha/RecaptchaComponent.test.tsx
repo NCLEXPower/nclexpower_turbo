@@ -140,7 +140,6 @@ describe('RecaptchaComponent', () => {
 
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
 
-    // Simulating script load failure
     const script = document.querySelector('script');
     if (script) {
       script.dispatchEvent(new Event('error'));
