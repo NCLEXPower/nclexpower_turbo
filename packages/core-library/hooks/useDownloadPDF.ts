@@ -26,7 +26,7 @@ interface UseDownloadPDFReturn {
 }
 
 export const useDownloadPDF = (): UseDownloadPDFReturn => {
-  const toast = useExecuteToast();
+  const { showToast } = useExecuteToast();
   const downloadPdfCb = useApiCallback((api, policyType: number) =>
     api.webbackoffice.getPdf(policyType)
   );
@@ -37,16 +37,7 @@ export const useDownloadPDF = (): UseDownloadPDFReturn => {
       const fileUrl = response.data.fileUrl;
 
       if (!fileUrl) {
-        toast.executeToast(
-          "File URL not found!",
-          "top-right",
-          false,
-          {
-            toastId: 0,
-            type: "error",
-          }
-        );
-        return;
+        showToast("File URL not found!", "error");
       }
 
       const fileResponse = await fetch(fileUrl);
@@ -64,7 +55,7 @@ export const useDownloadPDF = (): UseDownloadPDFReturn => {
       setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
 
     } catch (error) {
-      console.error("Error fetching PDF:", error);
+      showToast("Error fetching PDF:", "error");
     }
   }
 
