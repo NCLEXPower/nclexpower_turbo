@@ -38,7 +38,7 @@ jest.mock(
 describe("Items Component", () => {
   const mockContent: QuestionnaireItem[] = [
     {
-      questionType: "DDC",
+      questionType: "DDCloze",
       itemStem: "What is the capital of France?",
       answers: [
         {
@@ -61,6 +61,7 @@ describe("Items Component", () => {
       leftSection: undefined,
       hcpContent: undefined,
       dndAnswer: undefined,
+      rationale: "",
     },
     {
       questionType: "SATA",
@@ -92,9 +93,10 @@ describe("Items Component", () => {
       leftSection: undefined,
       hcpContent: undefined,
       dndAnswer: undefined,
+      rationale: "",
     },
     {
-      questionType: "BOWTIE",
+      questionType: "Bowtie",
       itemStem: "What is the correct answer?",
       answers: [
         {
@@ -119,7 +121,7 @@ describe("Items Component", () => {
       dndAnswer: undefined,
     },
     {
-      questionType: "HCP",
+      questionType: "Highlight",
       itemStem: "A sample HCP Question [[item1]] and [[item2]]",
       answers: [
         {
