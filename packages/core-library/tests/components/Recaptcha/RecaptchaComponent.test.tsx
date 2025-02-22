@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import { RecaptchaComponent } from '../../../components';
-import React from 'react';
+import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 jest.mock('next/config', () => () => ({
@@ -162,5 +162,43 @@ describe('RecaptchaComponent', () => {
     });
 
     expect(clearIntervalSpy).not.toHaveBeenCalledWith(undefined);
+  });
+
+  it('should have isRecaptchaLoaded as false initially', () => {
+    const { result } = renderHook(() => useState(false));
+    expect(result.current[0]).toBe(false);
+  });
+
+  it('should check for grecaptcha availability at intervals when script loads', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+
+    delete global.window.grecaptcha;
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(setIntervalSpy).toHaveBeenCalled();
+    });
+
+    setIntervalSpy.mockRestore();
+  });
+
+  it('should clear the interval when grecaptcha is available', async () => {
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(clearIntervalSpy).toHaveBeenCalled();
+    });
+
+    clearIntervalSpy.mockRestore();
+  });
+
+  it('should render ReCAPTCHA component when isRecaptchaLoaded is true', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
   });
 });
