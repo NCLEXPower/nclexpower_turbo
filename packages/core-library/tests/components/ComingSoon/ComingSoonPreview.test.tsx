@@ -20,7 +20,6 @@ const defaultProps = {
   watchEventName: "Test Event",
   watchEnvironment: "Production",
   watchDescription: "This is a test description.",
-  watchConfetti: false,
   watchAnnouncement: false,
   isSwitchOn: false,
   handleDeactivate: jest.fn(),

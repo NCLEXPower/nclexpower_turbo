@@ -26,7 +26,6 @@ describe("Content Date Schema", () => {
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
       TargetEnvironment: "Dev",
-      confetti: true,
       announcement: false,
       isActive: true,
     };
@@ -61,20 +60,6 @@ describe("Content Date Schema", () => {
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
-  });
-
-  it("should allow optional confetti and announcement fields", async () => {
-    const validData = {
-      eventName: "Valid Title",
-      description: "Valid Description",
-      hasNoSchedule: true,
-      countries: ["USA"],
-      timeZone: "America/New_York",
-      countryKey: ["America/New_York"],
-      TargetEnvironment: "Pre-Prod",
-    };
-
-    await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
   });
 
   it("should return error when goLiveDate is before today", async () => {

@@ -18,11 +18,11 @@ type ComingSoonProps = {
   watchEventName: string;
   watchEnvironment: string;
   watchDescription: string;
-  watchConfetti?: boolean;
   watchAnnouncement?: boolean;
   isActive?: boolean;
   isSwitchOn?: boolean;
   handleDeactivate: () => void;
+  isLoading: boolean;
 };
 
 const ComingSoonForm = ({
@@ -32,11 +32,11 @@ const ComingSoonForm = ({
   watchEventName,
   watchEnvironment,
   watchDescription,
-  watchConfetti,
   watchAnnouncement,
   isActive,
   isSwitchOn,
   handleDeactivate,
+  isLoading,
 }: ComingSoonProps) => {
   return (
     <Container
@@ -54,7 +54,6 @@ const ComingSoonForm = ({
           watchEventName={watchEventName}
           watchEnvironment={watchEnvironment}
           watchDescription={watchDescription}
-          watchConfetti={watchConfetti}
           watchAnnouncement={watchAnnouncement}
           handleDeactivate={handleDeactivate}
           isSwitchOn={isSwitchOn}
@@ -150,17 +149,12 @@ const ComingSoonForm = ({
                 label="Post this as an announcement"
                 sx={{ fontSize: "12px" }}
               />
-              <ControlledCheckbox
-                control={control}
-                label="Enable Confetti on Finish"
-                name="confetti"
-                sx={{ fontSize: "12px" }}
-              />
             </Stack>
             <ConfirmationModal
               dialogContent="Are you sure you want to Activate “Coming Soon”?"
               customButton="Continue"
-              handleSubmit={handleSubmit(onSubmit)}
+                handleSubmit={handleSubmit(onSubmit)}
+                isLoading={isLoading}
             />
           </div>
         </>

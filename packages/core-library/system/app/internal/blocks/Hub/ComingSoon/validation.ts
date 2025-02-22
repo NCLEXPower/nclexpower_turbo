@@ -43,7 +43,6 @@ export const contentDateSchema = yup.object({
     .string()
     .required("Environment is required.")
     .oneOf(["Dev", "Pre-Prod"]),
-  confetti: yup.boolean().optional(),
   announcement: yup.boolean().optional(),
   isActive: yup.boolean().optional(),
 });

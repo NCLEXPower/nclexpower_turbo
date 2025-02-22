@@ -18,9 +18,9 @@ type ComingSoonProps = {
   isActive?: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   mappedCountries: Array<{
-    code: string;
-    name: string;
-    daysLeft: number;
+    countryKey: string;
+    countryName: string;
+    daysRemaining: number;
     timezones: {
       selectedTimezone: string;
       daysRemaining: number;
@@ -76,6 +76,7 @@ const ComingSoonManagement = ({
                 control={control}
                 placeholder="DD - MM - YYYY"
                 disabled={!isSwitchOn || isActive}
+                
               />
               <div>
                 <Typography
@@ -154,7 +155,7 @@ const ComingSoonManagement = ({
               }}
               control={control}
               name="countryKey"
-              options={CountryMockData}
+              options={CountryMockData }
               disabled={isActive}
               multiple
             />
