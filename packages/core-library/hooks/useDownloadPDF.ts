@@ -21,7 +21,11 @@
 import { useApiCallback } from './index';
 import { useExecuteToast } from "./../contexts/ToastContext";
 
-export const useDownloadPDF = () => {
+interface UseDownloadPDFReturn {
+  downloadPdf: (policyType: number) => Promise<void>;
+}
+
+export const useDownloadPDF = (): UseDownloadPDFReturn => {
   const toast = useExecuteToast();
   const downloadPdfCb = useApiCallback((api, policyType: number) =>
     api.webbackoffice.getPdf(policyType)
@@ -66,4 +70,3 @@ export const useDownloadPDF = () => {
 
   return { downloadPdf };
 };
-
