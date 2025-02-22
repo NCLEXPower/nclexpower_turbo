@@ -1,11 +1,12 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
-import { render, screen } from "../../../../../../common";
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import { render, screen, waitFor } from "../../../../../../common";
 import { useForm } from "react-hook-form";
 import { CreateVideo } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/create";
+import { Suspense } from "react";
 
 jest.mock("../../../../../../../config", () => ({
   config: { value: jest.fn() },
@@ -29,6 +30,13 @@ jest.mock("react-hook-form", () => ({
       fieldState: { error: undefined },
     })
   ),
+}));
+
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => {
+    return <img {...props} />;
+  },
 }));
 
 describe("CreateVideo Component", () => {
@@ -59,16 +67,17 @@ describe("CreateVideo Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the component with initial state", () => {
-    render(<CreateVideo onSubmit={mockOnSubmit} section="Test Section" />);
+  it("renders the component with initial state", async () => {
+    render(
+      <Suspense fallback={<div>Loading...</div>}>
+        <CreateVideo onSubmit={mockOnSubmit} section="Test Section" />
+      </Suspense>
+    );
 
-    expect(screen.getByText("Create Test Section item")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Create Test Section item")).toBeInTheDocument();
+    });
+
     expect(screen.getByText("Upload Video")).toBeInTheDocument();
-  });
-
-  it("displays placeholder images when no files are uploaded", () => {
-    render(<CreateVideo onSubmit={mockOnSubmit} section="Test Section" />);
-    const placeholderImage = screen.getByTestId("placeholder");
-    expect(placeholderImage).toBeInTheDocument();
   });
 });

@@ -1,6 +1,7 @@
-import { render, screen, waitFor, fireEvent } from "../../../../../../common";
+import { render, screen, waitFor } from "../../../../../../common";
 import { EditVideoField } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditVideo/EditVideoField";
-import { useForm, FormProvider, Control } from 'react-hook-form';
+import { useForm, FormProvider, Control } from "react-hook-form";
+import { Suspense } from "react";
 
 jest.mock("../../../../../../../config", () => ({
   config: { value: jest.fn() },
@@ -10,8 +11,8 @@ jest.mock("../../../../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock('react-hook-form', () => ({
-  ...jest.requireActual('react-hook-form'),
+jest.mock("react-hook-form", () => ({
+  ...jest.requireActual("react-hook-form"),
   useForm: jest.fn().mockReturnValue({
     control: {},
     handleSubmit: jest.fn(),
@@ -24,7 +25,7 @@ jest.mock('react-hook-form', () => ({
   }),
   useController: jest.fn().mockReturnValue({
     field: {
-      value: '',
+      value: "",
       onChange: jest.fn(),
       onBlur: jest.fn(),
     },
@@ -34,15 +35,34 @@ jest.mock('react-hook-form', () => ({
   }),
 }));
 
-jest.mock('../../../../../../../components', () => ({
-  FileUploadField: ({ triggerLabel }: { triggerLabel: string }) => <button>{triggerLabel}</button>,
-  TextField: ({ name, control, placeholder }: { name: string, control: any, placeholder: string }) => (
-    <input name={name} placeholder={placeholder} />
+jest.mock("../../../../../../../components", () => ({
+  FileUploadField: ({ triggerLabel }: { triggerLabel: string }) => (
+    <button>{triggerLabel}</button>
   ),
-  Button: ({ onClick, children }: { onClick: () => void, children: React.ReactNode }) => (
-    <button onClick={onClick}>{children}</button>
-  ),
-  ControlledRichTextEditor: () => <textarea />
+  TextField: ({
+    name,
+    control,
+    placeholder,
+  }: {
+    name: string;
+    control: any;
+    placeholder: string;
+  }) => <input name={name} placeholder={placeholder} />,
+  Button: ({
+    onClick,
+    children,
+  }: {
+    onClick: () => void;
+    children: React.ReactNode;
+  }) => <button onClick={onClick}>{children}</button>,
+  ControlledRichTextEditor: () => <textarea />,
+}));
+
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => {
+    return <img {...props} />;
+  },
 }));
 
 interface FormValues {
@@ -60,29 +80,35 @@ const setupForm = () => {
 };
 
 beforeAll(() => {
-    global.URL.createObjectURL = jest.fn(() => 'http://dummyurl.com');
-  });
+  global.URL.createObjectURL = jest.fn(() => "http://dummyurl.com");
+});
 
-describe('EditVideoField', () => {
-  it('renders and displays the correct initial content', () => {
+describe("EditVideoField", () => {
+  it("renders and displays the correct initial content", async () => {
     const { methods } = setupForm();
 
     render(
-      <FormProvider {...methods}>
-        <EditVideoField
-          control={methods.control as Control<FormValues>}
-          onSave={jest.fn()}
-          section="test"
-          videoFileName=""
-          videoLink={[]}
-          videoPlaceholderFileName=""
-          videoPlaceholderLink={[]}
-          authorImageFileName=""
-          authorImageLink={[]}
-        />
-      </FormProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FormProvider {...methods}>
+          <EditVideoField
+            control={methods.control as Control<FormValues>}
+            onSave={jest.fn()}
+            section="test"
+            videoFileName=""
+            videoLink={[]}
+            videoPlaceholderFileName=""
+            videoPlaceholderLink={[]}
+            authorImageFileName=""
+            authorImageLink={[]}
+          />
+        </FormProvider>
+      </Suspense>
     );
 
-    expect(screen.getByRole('heading', { name: /edit test item/i })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", { name: /edit test item/i })
+      ).toBeInTheDocument()
+    );
   });
 });
