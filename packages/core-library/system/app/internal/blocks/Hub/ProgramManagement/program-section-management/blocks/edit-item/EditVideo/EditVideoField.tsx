@@ -202,6 +202,8 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                         : URL.createObjectURL(videoPlaceholderLink[0])
                       : noVideoImage
                   }
+                  width={320}
+                  height={320}
                   alt="video placeholder"
                   style={{
                     objectFit: "cover",
@@ -267,6 +269,8 @@ export const EditVideoField: React.FC<EditVideoFieldProps> = ({
                         : URL.createObjectURL(authorImageLink[0])
                       : noVideoImage
                   }
+                  width={320}
+                  height={320}
                   alt="author image"
                   style={{
                     objectFit: "cover",
