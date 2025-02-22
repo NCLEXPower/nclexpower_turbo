@@ -1,4 +1,10 @@
-import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { RecaptchaComponent } from '../../../components';
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -9,7 +15,7 @@ jest.mock('next/config', () => () => ({
   },
 }));
 
-beforeAll(() => {
+beforeEach(() => {
   global.window.grecaptcha = {
     ready: jest.fn((callback) => setTimeout(callback, 500)),
     render: jest.fn(),
@@ -196,6 +202,39 @@ describe('RecaptchaComponent', () => {
 
   it('should render ReCAPTCHA component when isRecaptchaLoaded is true', async () => {
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+
+  it('should render ReCAPTCHA when grecaptcha is ready', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+
+  it('should load the recaptcha script when grecaptcha is not available', async () => {
+    delete (global.window as any).grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      (global.window as any).grecaptcha = {
+        ready: jest.fn((callback) => callback()),
+        render: jest.fn(),
+        getResponse: jest.fn(),
+        reset: jest.fn(),
+      };
+    };
+
+    fireEvent.load(script);
 
     await waitFor(() => {
       expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
