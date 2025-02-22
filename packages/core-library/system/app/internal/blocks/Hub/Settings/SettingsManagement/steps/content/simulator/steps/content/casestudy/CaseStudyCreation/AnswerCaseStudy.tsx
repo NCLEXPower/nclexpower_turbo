@@ -77,12 +77,13 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
 
   useEffect(() => {
     if (
-      questionType === "SATA" ||
-      (questionType === "MRSN" && !questionnaires[index].answers?.length)
+      (questionType === "SATA" || questionType === "MRSN") &&
+      !questionnaires[index].answers?.length
     ) {
-      setValue(`questionnaires.${index}.answers`, [
-        ...Array(5).fill(initAnswerValues),
-      ]);
+      setValue(
+        `questionnaires.${index}.answers`,
+        Array(5).fill(initAnswerValues)
+      );
     }
   }, [questionType]);
 
@@ -189,6 +190,29 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
             </Box>
           </>
         )}
+      </Box>
+      <Box mt={3}>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: "16px",
+            mb: 3,
+          }}
+        >
+          Rationale:
+        </Typography>
+        <Card
+          sx={{
+            width: "100%",
+            borderRadius: "10px",
+          }}
+        >
+          <ControlledRichTextEditor
+            name={`questionnaires.${index}.rationale`}
+            editorFor="casestudy"
+            placeholder="Add text"
+          />
+        </Card>
       </Box>
     </Box>
   );

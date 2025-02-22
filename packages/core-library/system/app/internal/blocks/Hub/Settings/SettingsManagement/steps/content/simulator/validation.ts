@@ -324,10 +324,7 @@ const questionOptionsSchemas = {
     .max(10, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
     ),
-  SATA: yup
-    .array(defaultOptionSchema)
-    .min(4)
-    .default(Array(5).fill(initAnswerValues)),
+  SATA: yup.array(defaultOptionSchema).min(4),
   MRSN: mrsnAnswerSchema,
   Highlight: yup
     .array(hcpOptionSchema)

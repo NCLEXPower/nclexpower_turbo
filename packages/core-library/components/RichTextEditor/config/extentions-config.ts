@@ -12,6 +12,7 @@ import ListItem from "@tiptap/extension-list-item";
 import TextAlign, { TextAlignOptions } from "@tiptap/extension-text-align";
 import { Extension, Node } from "@tiptap/core";
 import { Mark } from "@tiptap/core";
+import Subscript from "@tiptap/extension-subscript";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color, ColorOptions } from "@tiptap/extension-color";
 
@@ -41,6 +42,7 @@ export const extensions: (
     },
   }),
   Superscript,
+  Subscript,
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),

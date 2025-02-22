@@ -61,15 +61,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const [selectItemIndex, setSelectedItemIndex] = useState<number>(0);
-  const {
-    getValues,
-    reset: formReset,
-    formState,
-    handleSubmit,
-    control,
-    watch,
-    setValue,
-  } = form;
+  const { getValues, reset: formReset, formState, handleSubmit, watch } = form;
   const { errors } = formState;
   const isStandAlone = watch("caseType") === "STANDALONE";
   const ITEM_LENGTH = isStandAlone ? 1 : 6;
@@ -82,6 +74,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   }, []);
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
+    console.log(values);
     setCaseStudyAtom(values);
     nextStep({ ...values });
     next();
@@ -117,13 +110,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     });
   }, [selectedIndex]);
 
-  useEffect(() => {
-    setValue(
-      `questionnaires.${selectItemIndex}`,
-      getValues(`questionnaires.${selectItemIndex}`)
-    );
-  }, [selectItemIndex]);
-
   const { infoTabs, tabsItem } = useMemo(
     () => ({
       infoTabs: generateInfoTabs(),
@@ -158,7 +144,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
             gap: 5,
           }}
         >
-          <Box width={"55%"}>
+          <Box flex={1}>
             <Typography
               sx={{
                 fontWeight: 600,
@@ -209,7 +195,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
             </Box>
           </Box>
 
-          <Box height={"90%"} width={"45%"}>
+          <Box height={"90%"} flex={1}>
             <Typography
               sx={{
                 fontWeight: 600,
@@ -236,35 +222,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
               />
             </Card>
           </Box>
-        </Box>
-
-        <Box mt={3}>
-          <Typography
-            sx={{
-              fontWeight: 600,
-              fontSize: "16px",
-              mb: 3,
-            }}
-          >
-            Rationale:
-          </Typography>
-          <Card
-            sx={{
-              width: "100%",
-              overflowY: "auto",
-              position: "relative",
-              borderRadius: "10px",
-              border: 1,
-              borderColor: "#0B225C",
-            }}
-          >
-            <ControlledRichTextEditor
-              name={`questionnaires.${selectItemIndex}.rationale`}
-              editorFor="casestudy"
-              control={control}
-              placeholder="Add text"
-            />
-          </Card>
         </Box>
       </FormProvider>
       <Box

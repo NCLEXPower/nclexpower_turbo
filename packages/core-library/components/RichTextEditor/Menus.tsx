@@ -9,6 +9,7 @@ import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import SubscriptIcon from "@mui/icons-material/Subscript";
 import React from "react";
 import SuperscriptIcon from "@mui/icons-material/Superscript";
 import { Editor } from "@tiptap/react";
@@ -193,6 +194,21 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
     ),
   ];
 
+  const subscript: MenuButtonType[] = [
+    createButton(
+      "Toggle Subscript",
+      () => editor.chain().focus().toggleSubscript().run(),
+      <SubscriptIcon />,
+      editor.isActive("subscript")
+    ),
+    createButton(
+      "Unset Subscript",
+      () => editor.chain().focus().setSubscript().run(),
+      undefined,
+      !editor.isActive("subscript")
+    ),
+  ];
+
   const textAlign: MenuButtonType[] = [
     createButton(
       "Align Left",
@@ -256,6 +272,7 @@ export const MenuButtons = ({ editor, editorFor }: MenuButtonPropsType) => {
           ...listStyles,
           ...tableButtons,
           ...superScript,
+          ...subscript,
           ...revertButtons,
         ];
       default:

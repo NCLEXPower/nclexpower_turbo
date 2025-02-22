@@ -3260,6 +3260,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-strike/-/extension-strike-2.6.6.tgz"
   integrity sha512-Ze8KhGk+wzSJSJRl5fbhTI6AvPu2LmcHYeO3pMEH8u4gV5WTXfmKJVStEIAzkoqvwEQVWzXvy8nDgsFQHiojPg==
 
+"@tiptap/extension-subscript@^2.11.5":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-subscript/-/extension-subscript-2.11.5.tgz#0bdd87c2a87eb99fc548e7a8eaec30f6f6d18acc"
+  integrity sha512-VpaSzxku/Bcvf4SgDB2K5d0E+FNA/56iJHMygg/WXsq2F4tMMUEivQHI/n+17ndUEO4Wybz0wItnM1G2JfRuLQ==
+
 "@tiptap/extension-superscript@^2.11.5":
   version "2.11.5"
   resolved "https://registry.npmjs.org/@tiptap/extension-superscript/-/extension-superscript-2.11.5.tgz"

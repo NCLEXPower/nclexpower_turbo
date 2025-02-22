@@ -30,7 +30,7 @@ export const useTableInsertion = ({
 
   useEffect(() => {
     const currentQuestionType = questionType;
-    if (currentQuestionType !== "DTTable" && insertedIndices.includes(index)) {
+    if (currentQuestionType !== "DDTable" && insertedIndices.includes(index)) {
       setInsertedIndices((prev) => prev.filter((idx) => idx !== index));
     }
   }, [questionType, index, insertedIndices]);
