@@ -240,4 +240,31 @@ describe('RecaptchaComponent', () => {
       expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
     });
   });
+
+  it('should check recaptcha at intervals and clear interval when loaded', async () => {
+    delete (global.window as any).grecaptcha;
+
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(setIntervalSpy).toHaveBeenCalled();
+    });
+
+    (global.window as any).grecaptcha = {
+      ready: jest.fn((callback) => callback()),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    await waitFor(() => {
+      expect(clearIntervalSpy).toHaveBeenCalled();
+    });
+
+    setIntervalSpy.mockRestore();
+    clearIntervalSpy.mockRestore();
+  });
 });
