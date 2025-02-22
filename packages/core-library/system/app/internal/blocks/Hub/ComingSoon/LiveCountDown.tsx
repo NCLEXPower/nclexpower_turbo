@@ -4,9 +4,9 @@ import { CustomTooltip } from "../../../../../../components";
 
 type LiveCountdownProps = {
   mappedCountries: Array<{
-    code: string;
-    name: string;
-    daysLeft: number;
+    countryKey: string;
+    countryName: string;
+    daysRemaining: number;
     timezones: {
       selectedTimezone: string;
       daysRemaining: number;
@@ -46,7 +46,7 @@ const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {
       >
         {mappedCountries.map((country) => (
           <CustomTooltip
-            key={country.code}
+            key={country.countryName}
             placement="bottom"
             arrow
             title={
@@ -132,7 +132,7 @@ const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {
                   fontWeight: "bold",
                 }}
               >
-                {country.name}
+                {country.countryKey}
               </Typography>
               <Typography
                 sx={{
@@ -141,7 +141,7 @@ const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {
                   fontWeight: "bold",
                 }}
               >
-                [ {country.daysLeft} Days ]
+                [ {country.daysRemaining} Days ]
               </Typography>
             </Box>
           </CustomTooltip>

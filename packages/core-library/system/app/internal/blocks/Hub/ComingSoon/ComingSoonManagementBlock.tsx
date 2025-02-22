@@ -6,23 +6,47 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApiCallback } from "../../../../../../hooks";
+import { useApiCallback, useBeforeUnload } from "../../../../../../hooks";
+import { useExecuteToast } from "../../../../../../contexts";
+
+type MappedCountry = {
+  countryKey: string;
+  countryName: string;
+  daysRemaining: number;
+  timezones: {
+    selectedTimezone: string;
+    daysRemaining: number;
+    hoursRemaining: number;
+  }[];
+};
+
+const mapResponseToCountry = (data: {
+  countryKey: string;
+  country: string;
+  daysRemaining: {
+    selectedTimezone: string;
+    daysRemaining: number;
+    hoursRemaining: number;
+  }[];
+}): MappedCountry => {
+  const bestTimezone = data.daysRemaining.reduce(
+    (prev, curr) => (curr.hoursRemaining > prev.hoursRemaining ? curr : prev),
+    data.daysRemaining[0]
+  );
+  return {
+    countryKey: data.countryKey,
+    countryName: data.country,
+    daysRemaining: bestTimezone.daysRemaining,
+    timezones: data.daysRemaining,
+  };
+};
 
 export const ComingSoonManagementBlock: React.FC = () => {
-  type MappedCountry = {
-    code: string;
-    name: string;
-    daysLeft: number;
-    timezones: {
-      selectedTimezone: string;
-      daysRemaining: number;
-      hoursRemaining: number;
-    }[];
-  };
-
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
 
-  const getCountryTimezones = useApiCallback((api, args) => {
+  useBeforeUnload(true);
+
+  const getCountryTimezonesCb = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
       countryKey: string;
       goLiveDate: string;
@@ -35,57 +59,13 @@ export const ComingSoonManagementBlock: React.FC = () => {
     });
   });
 
+  const { showToast } = useExecuteToast();
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
   });
 
   const { control, handleSubmit, watch, setValue } = form;
-
-  const mapResponseToCountry = (data: {
-    countryKey: string;
-    country: string;
-    daysRemaining: {
-      selectedTimezone: string;
-      daysRemaining: number;
-      hoursRemaining: number;
-    }[];
-  }): MappedCountry => {
-    const bestTimezone = data.daysRemaining.reduce(
-      (prev, curr) =>
-        curr.hoursRemaining > prev.hoursRemaining ? curr : prev,
-      data.daysRemaining[0]
-    );
-    return {
-      code: data.countryKey,
-      name: data.country,
-      daysLeft: bestTimezone.daysRemaining,
-      timezones: data.daysRemaining,
-    };
-  };
-
-  const onSubmit = async (values: ContentDateType) => {
-    if (Array.isArray(values.countryKey)) {
-      try {
-        const responses = await Promise.all(
-          values.countryKey.map((key) =>
-            getCountryTimezones.execute({
-              countryKey: key,
-              goLiveDate: values.goLiveDate?.toString() || "",
-            })
-          )
-        );
-        const flattenedResponses = responses.flatMap((response) =>
-          Array.isArray(response.data) ? response.data : [response.data]
-        );
-        const mapped = flattenedResponses.map(mapResponseToCountry);
-        setMappedCountries(mapped);
-      } catch (error) {
-        console.error("Error fetching timezones:", error);
-      }
-    }
-    setValue("isActive", true);
-  };
 
   const handleDeactivate = () => {
     setValue("isActive", false);
@@ -98,15 +78,20 @@ export const ComingSoonManagementBlock: React.FC = () => {
     setValue("hasNoSchedule", !event.target.checked);
   };
 
+  const isLoading = getCountryTimezonesCb.loading;
+
   const watchEventName = watch("eventName");
   const watchEnvironment = watch("TargetEnvironment");
   const watchDescription = watch("description");
-  const watchConfetti = watch("confetti");
   const watchAnnouncement = watch("announcement");
 
   return (
     <Stack direction="column" spacing={2}>
-      <Stack direction="row" spacing={2} sx={{ height: "550px", width: "auto" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ height: "550px", width: "auto" }}
+      >
         <FormProvider {...form}>
           <ComingSoonManagement
             control={control}
@@ -122,15 +107,40 @@ export const ComingSoonManagementBlock: React.FC = () => {
             watchEventName={watchEventName}
             watchEnvironment={watchEnvironment}
             watchDescription={watchDescription}
-            watchConfetti={watchConfetti}
             watchAnnouncement={watchAnnouncement}
             handleDeactivate={handleDeactivate}
             isActive={watch("isActive")}
             isSwitchOn={isSwitchOn}
+            isLoading={isLoading}
           />
         </FormProvider>
       </Stack>
       <EmailsNotification />
     </Stack>
   );
+
+  async function onSubmit(values: ContentDateType) {
+    if (Array.isArray(values.countryKey)) {
+      try {
+        const responses = await Promise.all(
+          values.countryKey.map((key) =>
+            getCountryTimezonesCb.execute({
+              countryKey: key,
+              goLiveDate: values.goLiveDate?.toString() || "",
+            })
+          )
+        );
+        const flattenedResponses = responses.flatMap((response) =>
+          Array.isArray(response.data) ? response.data : [response.data]
+        );
+        const mapped = flattenedResponses.map(mapResponseToCountry);
+        setMappedCountries(mapped);
+        showToast("Succesful", "success");
+      } catch (error) {
+        console.error("Error fetching timezones:", error);
+        showToast("Error fetching timezones", "error");
+      }
+    }
+    setValue("isActive", true);
+  }
 };

@@ -2,25 +2,24 @@ import ComingSoonPreview from "../../../../core-library/system/app/internal/bloc
 import { render, screen } from "../../common";
 
 jest.mock("../../../config", () => ({
-    getConfig: jest
-      .fn()
-      .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
-    config: { value: jest.fn() },
-  }));
-  
-  jest.mock("../../../core/router", () => ({
-    useRouter: jest.fn(),
-  }));
-  
-  jest.mock("console", () => ({
-    time: jest.fn(),
-  }));
+  getConfig: jest
+    .fn()
+    .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+  config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
+
+jest.mock("console", () => ({
+  time: jest.fn(),
+}));
 
 const defaultProps = {
   watchEventName: "Test Event",
   watchEnvironment: "Production",
   watchDescription: "This is a test description.",
-  watchConfetti: false,
   watchAnnouncement: false,
   isSwitchOn: false,
   handleDeactivate: jest.fn(),
