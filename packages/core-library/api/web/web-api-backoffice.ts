@@ -456,8 +456,6 @@ export class WebApiBackOffice {
 
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(
-      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`,
-      { responseType: "json" }
-    );
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
   }
 }

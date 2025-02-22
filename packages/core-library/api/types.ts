@@ -753,4 +753,3 @@ export type PolicyFileResponseType = {
   fileName: string;
   fileUrl: string;
 }
-

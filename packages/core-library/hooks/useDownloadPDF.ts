@@ -19,19 +19,30 @@
  */
 
 import { useApiCallback } from './index';
+import { useExecuteToast } from "./../contexts/ToastContext";
 
 export const useDownloadPDF = () => {
+  const toast = useExecuteToast();
   const downloadPdfCb = useApiCallback((api, policyType: number) =>
     api.webbackoffice.getPdf(policyType)
   );
 
   const downloadPdf = async (policyType: number) => {
-    try{
+    try {
       const response = await downloadPdfCb.execute(policyType);
       const fileUrl = response.data.fileUrl;
-      
+
       if (!fileUrl) {
-        throw new Error("File URL not found!");
+        toast.executeToast(
+          "File URL not found!",
+          "top-right",
+          false,
+          {
+            toastId: 0,
+            type: "error",
+          }
+        );
+        return;
       }
 
       const fileResponse = await fetch(fileUrl);
@@ -48,7 +59,7 @@ export const useDownloadPDF = () => {
 
       setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
 
-    } catch(error){
+    } catch (error) {
       console.error("Error fetching PDF:", error);
     }
   }
