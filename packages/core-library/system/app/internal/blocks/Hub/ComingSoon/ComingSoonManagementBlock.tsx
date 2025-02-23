@@ -159,8 +159,8 @@ export const ComingSoonManagementBlock: React.FC = () => {
         countries: values.countryKey as string[],
         timeZone: values.timeZone,
         targetEnvironment: values.TargetEnvironment,
-        selectedCountriesTimezones: mappedCountries.map(
-          (country) => country.countryKey
+        selectedCountriesTimezones: mappedCountries.flatMap((country) =>
+          country.timezones.map((tz) => tz.selectedTimezone)
         ),
       });
       showToast("Successful", "success");
