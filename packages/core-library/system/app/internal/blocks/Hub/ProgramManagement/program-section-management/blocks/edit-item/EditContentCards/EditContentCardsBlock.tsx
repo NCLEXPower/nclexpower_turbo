@@ -252,14 +252,6 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
     }
   };
 
-  const handleSave = async (values: SectionFormType) => {
-    onSubmit(values);
-  };
-
-  const handleSaveWrapper = () => {
-    handleSubmit((values: SectionFormType) => handleSave(values))();
-  };
-
   return (
     <EditContentCardsField
       isLoading={isLoading}
@@ -272,7 +264,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
       handleRemoveTopic={handleRemoveTopic}
       handleAddCardFace={handleAddCardFace}
       handleRemoveCardFace={handleRemoveCardFace}
-      onSave={handleSaveWrapper}
+      onSave={handleSubmit(onSubmit)}
     />
   );
 };

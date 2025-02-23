@@ -16,7 +16,6 @@ import {
 } from "../../../../../../../../../../components";
 import Image from "next/image";
 import { noVideoImage } from "../../../../../../../../../../assets";
-import { SectionFormType } from "../../../validation";
 
 interface EditContentCardsFieldProps {
   topics: { cardTopic: string; cardFaces: File[] }[];
@@ -29,7 +28,7 @@ interface EditContentCardsFieldProps {
   handleRemoveCardFace: (topicIndex: number, faceIndex: number) => void;
   handleAddTopic: () => void;
   handleRemoveTopic: (topicIndex: number) => void;
-  onSave: (values: SectionFormType) => void;
+  onSave: () => void;
   handleFileChange?: (
     fileList: FileList | null,
     topicIndex: number,
@@ -52,10 +51,6 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
   handleRemoveCardFace,
   isLoading,
 }) => {
-  const handleSaveClick = () => {
-    const values = getValues();
-    onSave(values);
-  };
   return (
     <Box
       sx={{
@@ -368,7 +363,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                 color: "white",
               }}
               loading={isLoading}
-              onClick={handleSaveClick}
+              onClick={onSave}
             >
               Update
             </Button>

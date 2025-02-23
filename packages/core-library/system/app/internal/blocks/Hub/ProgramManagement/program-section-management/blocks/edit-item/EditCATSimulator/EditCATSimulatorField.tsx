@@ -20,7 +20,7 @@ interface EditCATSimulatorFieldProps {
   section?: string;
   control: Control<{ catSimulator: string; contentAreaCoverage: string[] }>;
   handleChange: (selectedValue: string, index: number) => void;
-  onSave: (values: any) => void;
+  onSave: () => void;
   handleAddNew: () => void;
   coverageList: string[];
   isLoading?: boolean;

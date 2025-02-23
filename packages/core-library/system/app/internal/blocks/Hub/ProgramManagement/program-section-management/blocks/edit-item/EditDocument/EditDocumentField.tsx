@@ -16,7 +16,7 @@ import { Control } from "react-hook-form";
 interface EditDocumentFieldProps {
   section?: string;
   control: Control<{ title: string; link: File[] }>;
-  onSave: (values: any) => void;
+  onSave: () => void;
   linkValue?: string;
   isLoading?: boolean;
 }

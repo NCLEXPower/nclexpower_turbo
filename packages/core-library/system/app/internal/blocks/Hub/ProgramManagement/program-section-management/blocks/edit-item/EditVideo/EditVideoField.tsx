@@ -27,7 +27,7 @@ interface EditVideoFieldProps {
     authorImage: File[];
     description: string;
   }>;
-  onSave: (values: any) => void;
+  onSave: () => void;
   videoFileName: string;
   videoLink: File[];
   videoPlaceholderFileName: string;

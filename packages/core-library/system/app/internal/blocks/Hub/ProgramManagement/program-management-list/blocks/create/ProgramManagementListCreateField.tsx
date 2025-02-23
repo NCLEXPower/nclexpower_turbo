@@ -22,7 +22,7 @@ import { CreateProgramFormType, programTypeAtom } from "../../validation";
 import { useAtom } from "jotai";
 
 interface Props {
-  onSave: (values: any) => void;
+  onSave: () => void;
   handleBack: () => void;
   fileName: string;
   programImage: File[];

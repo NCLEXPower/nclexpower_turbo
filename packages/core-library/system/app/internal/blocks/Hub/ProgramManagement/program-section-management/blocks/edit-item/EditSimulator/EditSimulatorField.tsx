@@ -26,7 +26,7 @@ interface EditSimulatorFieldProps {
     practice: boolean;
   }>;
   handleChange: (value: string) => void;
-  onSave: (values: any) => void;
+  onSave: () => void;
   isLoading?: boolean;
 }
 

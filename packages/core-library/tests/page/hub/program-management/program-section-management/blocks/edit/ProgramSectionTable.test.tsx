@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { ProgramSectionTable } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit/ProgramSectionTable";
 import { useAtom } from "jotai";
 
@@ -16,7 +16,7 @@ jest.mock("../../../../../../../core/router", () => ({
 }));
 
 const programSectionList = [
-  { sectionType: "document", title: "Sample Title", id: 1 },
+  { sectionType: "document", title: "Sample Title", id: 1, link: "https://example.com" },
   { sectionType: "other", title: "Another Title", id: 2 },
 ];
 
@@ -60,5 +60,33 @@ describe("ProgramSectionTable", () => {
 
     const tableRows = screen.queryAllByRole("row");
     expect(tableRows.length).toBe(2);
+  });
+
+  it("should render the correct column headers", () => {
+    render(
+      <ProgramSectionTable
+        onEdit={mockEdit}
+        onDelete={mockDelete}
+        tableData={programSectionList}
+        sectionType="document"
+      />
+    );
+
+    expect(screen.getByText("Title")).toBeInTheDocument();
+    expect(screen.getByText("Link")).toBeInTheDocument();
+    expect(screen.getByText("Actions")).toBeInTheDocument();
+  });
+
+  it("should show 'No data found' message when tableData is empty", () => {
+    render(
+      <ProgramSectionTable
+        onEdit={mockEdit}
+        onDelete={mockDelete}
+        tableData={[]}
+        sectionType="document"
+      />
+    );
+
+    expect(screen.getByText("No data found")).toBeInTheDocument();
   });
 });

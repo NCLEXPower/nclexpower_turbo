@@ -74,14 +74,14 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
@@ -107,14 +107,14 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
@@ -140,21 +140,21 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "ContentArea",
             accessor: "contentArea",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Guided",
             accessor: "guided",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: boolean }) => (
               <Typography>{String(value)}</Typography>
             ),
             minWidth: 40,
@@ -162,7 +162,7 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Unguided",
             accessor: "unguided",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: boolean }) => (
               <Typography>{String(value)}</Typography>
             ),
             minWidth: 40,
@@ -170,7 +170,7 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Practice",
             accessor: "practice",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: boolean }) => (
               <Typography>{String(value)}</Typography>
             ),
             minWidth: 40,
@@ -197,21 +197,21 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Card Topic",
             accessor: "cardTopic",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Card Faces",
             accessor: "cardFaces",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
@@ -237,14 +237,14 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Link",
             accessor: "link",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
@@ -270,14 +270,14 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "CAT Simulator",
             accessor: "catSimulator",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
           {
             Header: "Content Area Coverage",
             accessor: "contentAreaCoverage",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
@@ -303,7 +303,7 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Title",
             accessor: "title",
-            Cell: ({ value }: { value: any }) => (
+            Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
           },
