@@ -52,6 +52,7 @@ import {
   DeleteCaseNameParams,
   CaseNameResponseType,
   GetCountryTimezonesParams,
+  CreateGoliveSchedule,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -451,9 +452,16 @@ export class WebApiBackOffice {
 
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
-      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
+      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`
+    );
   }
 
+  public async createGoliveSchedule(params: CreateGoliveSchedule) {
+    return await this.axios.post(
+      `/api/v2/internal/baseInternal/create-schedule`,
+      params
+    );
+  }
 
   public async getCountryTimezone(params: GetCountryTimezonesParams) {
     return await this.axios.post<GetCountryTimezonesParams[]>(

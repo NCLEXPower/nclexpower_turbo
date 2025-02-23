@@ -753,6 +753,16 @@ export type DeleteCaseNameParams = {
   id: string;
 };
 
+export type CreateGoliveSchedule = {
+  eventName: string;
+  endDate: string;
+  targetEnvironment: string;
+  timeZone: string;
+  countries: string[];
+  selectedCountriesTimezones: string[];
+  description: string;
+};
+
 export type GetCountryTimezonesParams = {
   daysRemaining: any;
   country: any;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { contentDateSchema, ContentDateType } from "./validation";
 import { EmailsNotification } from "./EmailsNotification";
 import { Stack } from "@mui/material";
@@ -6,7 +6,8 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApiCallback, useBeforeUnload } from "../../../../../../hooks";
+import { useApiCallback } from "../../../../../../hooks";
+import { CreateGoliveSchedule } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
 
 type MappedCountry = {
@@ -44,9 +45,7 @@ const mapResponseToCountry = (data: {
 export const ComingSoonManagementBlock: React.FC = () => {
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
 
-  useBeforeUnload(true);
-
-  const getCountryTimezonesCb = useApiCallback((api, args) => {
+  const getCountryTimezones = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
       countryKey: string;
       goLiveDate: string;
@@ -59,7 +58,13 @@ export const ComingSoonManagementBlock: React.FC = () => {
     });
   });
 
+  const createGoliveScheduleCb = useApiCallback(
+    (api, args: CreateGoliveSchedule) =>
+      api.webbackoffice.createGoliveSchedule(args)
+  );
+
   const { showToast } = useExecuteToast();
+
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
@@ -78,12 +83,38 @@ export const ComingSoonManagementBlock: React.FC = () => {
     setValue("hasNoSchedule", !event.target.checked);
   };
 
-  const isLoading = getCountryTimezonesCb.loading;
+  const selectedCountries = watch("countryKey");
+  const goLiveDate = watch("goLiveDate");
+
+  useEffect(() => {
+    if (selectedCountries && selectedCountries.length > 0 && goLiveDate) {
+      Promise.all(
+        selectedCountries.map((key) =>
+          getCountryTimezones.execute({
+            countryKey: key,
+            goLiveDate: goLiveDate.toString() || "",
+          })
+        )
+      )
+        .then((responses) => {
+          const flattenedResponses = responses.flatMap((response) =>
+            Array.isArray(response.data) ? response.data : [response.data]
+          );
+          const mapped = flattenedResponses.map(mapResponseToCountry);
+          setMappedCountries(mapped);
+        })
+        .catch((error) => {
+          console.error("Error fetching timezones:", error);
+          showToast("Error fetching timezones", "error");
+        });
+    }
+  }, [selectedCountries, goLiveDate]);
 
   const watchEventName = watch("eventName");
   const watchEnvironment = watch("TargetEnvironment");
   const watchDescription = watch("description");
   const watchAnnouncement = watch("announcement");
+  console.log(watch());
 
   return (
     <Stack direction="column" spacing={2}>
@@ -111,7 +142,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
             handleDeactivate={handleDeactivate}
             isActive={watch("isActive")}
             isSwitchOn={isSwitchOn}
-            isLoading={isLoading}
+            isLoading={createGoliveScheduleCb.loading}
           />
         </FormProvider>
       </Stack>
@@ -120,26 +151,22 @@ export const ComingSoonManagementBlock: React.FC = () => {
   );
 
   async function onSubmit(values: ContentDateType) {
-    if (Array.isArray(values.countryKey)) {
-      try {
-        const responses = await Promise.all(
-          values.countryKey.map((key) =>
-            getCountryTimezonesCb.execute({
-              countryKey: key,
-              goLiveDate: values.goLiveDate?.toString() || "",
-            })
-          )
-        );
-        const flattenedResponses = responses.flatMap((response) =>
-          Array.isArray(response.data) ? response.data : [response.data]
-        );
-        const mapped = flattenedResponses.map(mapResponseToCountry);
-        setMappedCountries(mapped);
-        showToast("Succesful", "success");
-      } catch (error) {
-        console.error("Error fetching timezones:", error);
-        showToast("Error fetching timezones", "error");
-      }
+    try {
+      createGoliveScheduleCb.execute({
+        eventName: values.eventName,
+        description: values.description,
+        endDate: values.goLiveDate?.toISOString() || "",
+        countries: values.countryKey as string[],
+        timeZone: values.timeZone,
+        targetEnvironment: values.TargetEnvironment,
+        selectedCountriesTimezones: mappedCountries.map(
+          (country) => country.countryKey
+        ),
+      });
+      showToast("Successful", "success");
+    } catch (error) {
+      console.error("Submission error:", error);
+      showToast("Submission failed", "error");
     }
     setValue("isActive", true);
   }
