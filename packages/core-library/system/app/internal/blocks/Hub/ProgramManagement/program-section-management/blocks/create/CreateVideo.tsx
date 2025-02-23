@@ -376,6 +376,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
               borderRadius: "10px",
               color: "white",
             }}
+            data-testid="create-video"
             loading={isLoading}
             onClick={handleSubmit((values) => onSubmit(values, reset))}
           >

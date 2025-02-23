@@ -46,6 +46,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({
         <EvaIcon name="edit-outline" fill="#ffffff" width={18} height={18} />
       </IconButton>
       <IconButton
+        data-testid="delete-button"
         onClick={() => onDelete(sectionId, sectionTitle)}
         sx={{
           height: "35px",

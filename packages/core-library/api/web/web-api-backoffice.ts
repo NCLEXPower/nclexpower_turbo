@@ -474,11 +474,11 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/get-sections?${qs.stringify({ ...params })}`);
   }
 
-  public deleteSectionList(sectionId: string) {
-    return this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
+  public async deleteSectionList(sectionId: string) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
   }
 
-  public updateSectionById(params: UpdateSectionParams){
+  public async updateSectionById(params: UpdateSectionParams){
     const form = new FormData();
     form.append("sectionTitle", params.sectionTitle);
     form.append("sectionType", params.sectionType);
@@ -537,7 +537,7 @@ export class WebApiBackOffice {
         });
       } 
 
-    return this.axios.put<UpdateSectionResponse | number>(
+    return await this.axios.put<UpdateSectionResponse | number>(
       `/api/v2/content/BaseContent/${params.sectionId}`,
       form,
       {
@@ -548,7 +548,7 @@ export class WebApiBackOffice {
     );
   }
 
-  public createSection(params: CreateSectionParams) {
+  public async createSection(params: CreateSectionParams) {
     const form = new FormData();
     form.append("sectionTitle", params.sectionTitle);
     form.append("sectionType", params.sectionType);
@@ -610,7 +610,7 @@ export class WebApiBackOffice {
       } 
     }
     
-    return this.axios.post<CreateSectionResponse | number>(
+    return await this.axios.post<CreateSectionResponse | number>(
       `/api/v2/content/BaseContent/create-section`,
       form,
       {
@@ -621,7 +621,7 @@ export class WebApiBackOffice {
     );
   }
 
-  public createPrograms(params: CreateProgramParams){
+  public async createPrograms(params: CreateProgramParams){
     const form = new FormData();
 
     form.append("title", params.title)
@@ -629,7 +629,7 @@ export class WebApiBackOffice {
     form.append("programType", params.programType.toString());
     form.append("stringifiedSections", JSON.stringify(params.stringifiedSections));
 
-    return this.axios.post<CreateProgramResponse | number>(
+    return await this.axios.post<CreateProgramResponse | number>(
       `/api/v2/content/BaseContent/create-program`,
       form,
       {
@@ -640,13 +640,13 @@ export class WebApiBackOffice {
     )
   }
 
-  public async getAllPrograms(){
+  public async getAllPrograms(){  
     return await this.axios.get<StandardProgramListType[]>(
       `/api/v2/content/BaseContent/get-internal-programs`
     );
   }
 
-  public updatePrograms(params: UpdateProgramParams){
+  public async updatePrograms(params: UpdateProgramParams){
     const form = new FormData();
 
     form.append("id", params.id)
@@ -655,7 +655,7 @@ export class WebApiBackOffice {
     form.append("stringifiedSections", JSON.stringify(params.stringifiedSections));
     form.append("programType", params.programType.toString());
 
-    return this.axios.put<number>(
+    return await this.axios.put<number>(
       `/api/v2/content/BaseContent/update-program`,
       form,
       {

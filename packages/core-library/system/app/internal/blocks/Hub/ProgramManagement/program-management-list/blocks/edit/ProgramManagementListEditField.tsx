@@ -21,9 +21,10 @@ import { getSectionTypeIcons } from "../../../../../../../../../utils/IconUtils"
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { SectionListType } from "../../../../../../../../../types/wc/programList";
 import { CreateProgramFormType } from "../../validation";
+import { SectionDataType, SectionListTypes } from "./ProgramManagementListEditBlock";
 
 interface Props {
-  onSave: (values: any) => void;
+  onSave: () => void;
   handleBack: () => void;
   fileName: string | File[];
   programImage: File[];
@@ -47,13 +48,13 @@ interface Props {
   filteredSectionValuesList: (
     sectionType: string
   ) => { label: string; value: string }[];
-  handleMultipleSelectChange: (index: number, value: any) => void;
+  handleMultipleSelectChange: (index: number, value: string) => void;
   selectedSections: Record<number, string>;
-  setValue: UseFormSetValue<any>;
+  setValue: UseFormSetValue<CreateProgramFormType>;
   showAddSection: boolean;
   sections: SectionListType[] | undefined;
   editingSectionId: string | null;
-  editingSectionData: any;
+  editingSectionData: SectionDataType | null;
   handleEditProgramSection: (section: any) => void;
   handleDeleteProgramSection: (sectionId: string) => void;
   handleRemoveSection: (index: number) => void;
@@ -250,7 +251,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
         >
           {sections &&
             Array.isArray(sections) &&
-            sections.map((section: any) => {
+            sections.map((section: SectionListType) => {
               if (section.sectionId === editingSectionId) {
                 return null;
               }
@@ -274,7 +275,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                   </Box>
                   <Box sx={{ display: "flex" }}>
                     <IconButton
-                      disabled={fields.length > 0 || editingSectionData}
+                      disabled={fields.length > 0 || Boolean(editingSectionData)}
                       onClick={() => handleEditProgramSection(section)}
                       data-testid="edit-section-button"
                     >

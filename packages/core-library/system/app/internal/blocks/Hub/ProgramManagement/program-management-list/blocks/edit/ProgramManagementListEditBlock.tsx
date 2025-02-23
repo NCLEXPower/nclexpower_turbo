@@ -30,6 +30,29 @@ import {
 } from "../../../../../../../../../api/types";
 import { useApiCallback } from "../../../../../../../../../hooks";
 
+export type SectionDataType = {
+  sectionTitle: string;
+  sectionType: string;
+  sectionValue: string; 
+}
+
+type SectionDataItem = {
+  sectionDataId: string;
+  title: string;
+  link: string;
+  secVidTitle?: string;
+  catSimulator?: string;
+  vid?: string;
+}
+
+export type SectionListTypes = {
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+  sectionData?: SectionDataItem[];
+  sectionValue?: string | string[];
+};
+
 export const ProgramManagementListEditBlock = () => {
   const [selectedSections, setSelectedSections] = useState<
     Record<number, string>
@@ -39,7 +62,7 @@ export const ProgramManagementListEditBlock = () => {
   const [atomProgramType] = useAtom(programTypeAtom);
   const router = useRouter();
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
-  const [editingSectionData, setEditingSectionData] = useState<any>(null);
+  const [editingSectionData, setEditingSectionData] = useState<SectionDataType | null>(null);
   const { showToast } = useExecuteToast();
 
   const { businessQueryGetAllPrograms } = useBusinessQueryContext();
@@ -127,7 +150,7 @@ export const ProgramManagementListEditBlock = () => {
     });
   };
 
-  const handleMultipleSelectChange = (index: number, value: any) => {
+  const handleMultipleSelectChange = (index: number, value: string) => {
     const selectedValues = Array.isArray(value) ? value : [value];
     setValue(`sections.${index}.sectionValue`, selectedValues);
   };
@@ -265,7 +288,7 @@ export const ProgramManagementListEditBlock = () => {
     reset();
   };
 
-  const handleEditProgramSection = (section: any) => {
+  const handleEditProgramSection = (section: SectionListTypes) => {
     setSelectedSections((prev) => ({
       ...prev,
       [0]: section.sectionType,
@@ -275,12 +298,14 @@ export const ProgramManagementListEditBlock = () => {
     setShowAddSection(false);
 
     const getSectionValue = () => {
+      if (!section.sectionData) return [];
+
       if (section.sectionType === "video") {
-        return section.sectionData.map((item: any) => item.secVidTitle);
+        return section.sectionData?.map((item: SectionDataItem) => item.secVidTitle);
       }
 
-      return section.sectionData.map((item: any) => {
-        if (section.sectionType === "CAT") {
+      return section.sectionData?.map((item: SectionDataItem) => {
+        if (section.sectionType === "cat") {
           return item.catSimulator;
         }
         if (section.sectionType === "video") {
@@ -292,11 +317,18 @@ export const ProgramManagementListEditBlock = () => {
 
     const sectionValue = getSectionValue();
 
+
+
     const updateFormAndData = () => {
+
+      const formattedSectionValue = Array.isArray(sectionValue) 
+    ? sectionValue.join(", ")
+    : sectionValue ?? "";
+    
       append({
         sectionTitle: section.sectionTitle,
         sectionType: section.sectionType,
-        sectionValue,
+        sectionValue: formattedSectionValue
       });
 
       setValue(`sections.0.sectionValue`, sectionValue);
@@ -304,7 +336,7 @@ export const ProgramManagementListEditBlock = () => {
       setEditingSectionData({
         sectionTitle: section.sectionTitle,
         sectionType: section.sectionType,
-        sectionValue: section.sectionValue,
+        sectionValue: formattedSectionValue,
       });
     };
 
@@ -312,7 +344,7 @@ export const ProgramManagementListEditBlock = () => {
       "document",
       "med-cards",
       "simulator",
-      "CAT",
+      "cat",
       "video",
       "content-cards",
     ];
