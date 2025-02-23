@@ -88,6 +88,8 @@ describe("convertToCreateCaseStudy", () => {
         mainType: "Case Study",
         mainCaseStudyContentCollectionDtos: [
           {
+            mainText: undefined,
+            caseNum: 0,
             caseName: ["Test Case Study"],
             nurseNotes: [
               { seqContent: "Nurse note 1", seqNum: 1 },
@@ -130,6 +132,17 @@ describe("convertToCreateCaseStudy", () => {
                     ],
                   },
                 ],
+                centerLabelName: undefined,
+                centerSection: undefined,
+                columns: undefined,
+                dndAnswer: undefined,
+                highlightingContent: undefined,
+                leftLabelName: undefined,
+                leftSection: undefined,
+                rationale: "",
+                rightLabelName: undefined,
+                rightSection: undefined,
+                rows: undefined,
               },
             ],
           },
@@ -167,6 +180,8 @@ describe("convertToCreateCaseStudy", () => {
       labs: [],
       orders: [],
       questionnaires: [],
+      caseNum: 0,
+      mainText: undefined,
     });
   });
 });
