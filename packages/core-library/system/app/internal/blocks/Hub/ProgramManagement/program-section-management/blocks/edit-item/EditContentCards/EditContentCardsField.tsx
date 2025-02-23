@@ -228,9 +228,9 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                       : noVideoImage
                                   }
                                   alt={`Card Face ${faceIndex + 1}`}
-                                  layout="fill"
-                                  objectFit="cover"
+                                  fill
                                   style={{
+                                    objectFit: "cover",
                                     background:
                                       "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
                                   }}

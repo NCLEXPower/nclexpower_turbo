@@ -23,7 +23,7 @@ import {
   useExecuteToast,
 } from "../../../../../../../../../contexts";
 import { RemoveSection } from "./RemoveSection";
-import { CardsType, SectionDataTypes } from "../../types";
+import { SectionDataTypes } from "../../types";
 
 export const ProgramSectionManagementEditBlock = () => {
   const router = useRouter();

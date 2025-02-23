@@ -209,8 +209,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                       ? URL.createObjectURL(videoPlaceholderLink[0])
                       : noVideoImage
                   }
-                  width={320}
-                  height={320}
+                  fill
                   alt="program thumbnail"
                   style={{
                     objectFit: "cover",
@@ -281,8 +280,7 @@ export const CreateVideo: React.FC<CreateVideo> = ({
                       ? URL.createObjectURL(authorImageLink[0])
                       : noVideoImage
                   }
-                  width={320}
-                  height={320}
+                  fill
                   alt="program thumbnail"
                   style={{
                     objectFit: "cover",

@@ -6,7 +6,6 @@
 import { Box, Typography } from "@mui/material";
 import { IconButton, EvaIcon } from "../../../../../../../../../components";
 import { PaginatedTable } from "../../../../../../../../../components/table";
-import { Column } from "react-table";
 import { useMemo } from "react";
 import { formatSectionTitle } from "../../../../../../../../../utils";
 
@@ -67,7 +66,7 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const columns: Column<any>[] = useMemo(() => {
+  const columns = useMemo(() => {
     switch (sectionType) {
       case "document":
         return [
@@ -204,13 +203,6 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
           {
             Header: "Card Topic",
             accessor: "cardTopic",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
-            ),
-          },
-          {
-            Header: "Card Faces",
-            accessor: "cardFaces",
             Cell: ({ value }: { value: string }) => (
               <Typography>{String(value)}</Typography>
             ),
