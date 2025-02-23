@@ -23,7 +23,7 @@ export const Instruction = memo(({ questionType }: InstructionProps) => {
   };
   return (
     <Box display="flex" mt={2}>
-      <Box mr={1}>
+      <Box mr={1} data-testid="instruction-block">
         <EvaIcon
           name="alert-circle-outline"
           fill="#6c757d"
