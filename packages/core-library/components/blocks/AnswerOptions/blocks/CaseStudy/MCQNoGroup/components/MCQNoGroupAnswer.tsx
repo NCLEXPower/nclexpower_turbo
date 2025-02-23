@@ -11,7 +11,6 @@ import {
   TextField,
   EvaIcon,
   Button,
-  ControlledCheckbox,
   ControlledRadio,
 } from "../../../../../../";
 import { ContainedCaseStudyQuestionType } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";

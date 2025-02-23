@@ -71,6 +71,8 @@ describe("convertToCreateCaseStudy", () => {
         rationale: "",
       },
     ],
+    caseType: "UNFOLDING",
+    caseNum: 0,
   };
 
   it("should convert ContainedCaseStudyQuestionType to correct format", () => {
@@ -108,7 +110,7 @@ describe("convertToCreateCaseStudy", () => {
                 itemNum: 1,
                 itemStem: "Question 1",
                 maxPoints: 10,
-                questionType: "DDC",
+                questionType: "DDCloze",
                 seqNum: 1,
                 transitionHeader: "Transition 1",
                 maxAnswer: 1,

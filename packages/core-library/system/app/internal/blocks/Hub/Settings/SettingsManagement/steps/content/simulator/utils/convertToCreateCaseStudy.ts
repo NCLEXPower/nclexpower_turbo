@@ -12,6 +12,8 @@ export const convertToCreateCaseStudy = (
 ) => {
   const mainCaseStudyContentCollectionDtos = [
     {
+      caseNum: containedCaseStudyQuestion.caseNum,
+      mainText: containedCaseStudyQuestion.mainText,
       caseName: containedCaseStudyQuestion.caseName,
       nurseNotes: containedCaseStudyQuestion.nurseNotes.map((item) => ({
         seqContent: item?.seqContent,
@@ -49,6 +51,7 @@ export const convertToCreateCaseStudy = (
           rows: questionnairesItem.rows,
           highlightingContent: questionnairesItem.hcpContent,
           dndAnswer: questionnairesItem.dndAnswer,
+          rationale: questionnairesItem.rationale,
         })
       ),
     },

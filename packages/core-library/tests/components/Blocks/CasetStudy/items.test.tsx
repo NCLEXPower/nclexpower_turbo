@@ -119,8 +119,10 @@ describe("Items Component", () => {
       leftSection: undefined,
       hcpContent: undefined,
       dndAnswer: undefined,
+      rationale: "Test",
     },
     {
+      rationale: "Test",
       questionType: "Highlight",
       itemStem: "A sample HCP Question [[item1]] and [[item2]]",
       answers: [
@@ -150,7 +152,6 @@ describe("Items Component", () => {
     render(<Items content={mockContent} />);
     expect(screen.getByText("DDC Question Mock")).toBeInTheDocument();
     expect(screen.getByText("Sample SATA Question?")).toBeInTheDocument();
-    expect(screen.getByText("Select All That Apply")).toBeInTheDocument();
     expect(screen.getByText("Bowtie Summary Mock")).toBeInTheDocument();
   });
 

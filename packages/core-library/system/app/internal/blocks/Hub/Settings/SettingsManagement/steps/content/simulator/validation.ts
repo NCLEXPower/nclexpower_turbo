@@ -364,7 +364,7 @@ const bgInfoContent = yup.object({
 
 const hcpContentSchema = yup.object({
   hcpContent: yup.string().when("questionType", {
-    is: "HCP",
+    is: "Highlight",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "HCP content is required")
