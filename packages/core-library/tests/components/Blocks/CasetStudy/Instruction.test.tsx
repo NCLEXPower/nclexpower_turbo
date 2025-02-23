@@ -17,7 +17,7 @@ describe("Instruction block ", () => {
     expect(block).toBeInTheDocument();
   });
 
-  it("should render the instruction for DDC and DND", () => {
+  it("should render the instruction for DDC ", () => {
     render(<Instruction questionType="DDCloze" />);
 
     expect(
@@ -43,6 +43,16 @@ describe("Instruction block ", () => {
     expect(
       screen.getByText(
         /Complete all blank fields and proceed to another question/i
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("should render the instruction for DragnDrop", () => {
+    render(<Instruction questionType="DNDrop" />);
+
+    expect(
+      screen.getByText(
+        /Write your text with \[\[placeholder\]\] for answer fields, e\.g\., The capital of\[\[country\]\] is \[\[city\]\]\./i
       )
     ).toBeInTheDocument();
   });
