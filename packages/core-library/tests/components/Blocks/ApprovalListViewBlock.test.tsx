@@ -8,8 +8,8 @@ import {
   useExecuteToast,
   useDialogContext,
 } from "../../../contexts";
-import { ApprovalListViewBlock } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListViewBlock";
-import { mockData } from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/mockData";
+import { ApprovalListViewBlock } from "../../../components/blocks/ContentApproval/ApprovalListViewBlock";
+import { mockData } from "../../../components/blocks/ContentApproval/mockData";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -25,6 +25,7 @@ jest.mock("../../../contexts", () => ({
   useExecuteToast: jest.fn(),
   useDialogContext: jest.fn(),
 }));
+
 const mockActiveStepAtom = jest.fn();
 jest.mock("jotai", () => ({
   atom: jest.fn(() => mockActiveStepAtom),
@@ -39,13 +40,16 @@ describe("ApprovalListViewBlock", () => {
   const mockSetApprovalAtom = jest.fn();
 
   beforeEach(() => {
-    jest.resetAllMocks(), jest.useFakeTimers();
+    jest.resetAllMocks();
+    jest.useFakeTimers();
+
     (usePageLoaderContext as jest.Mock).mockReturnValue({
       contentLoader: false,
       setContentLoader: mockSetContentLoader,
     });
 
     (useAtom as jest.Mock).mockReturnValue([undefined, mockSetApprovalAtom]);
+
     (useExecuteToast as jest.Mock).mockReturnValue({
       showToast: mockShowToast,
     });
@@ -67,14 +71,22 @@ describe("ApprovalListViewBlock", () => {
     jest.clearAllMocks();
   });
 
+  const renderComponent = () =>
+    render(
+      <ApprovalListViewBlock
+        nextStep={mockNextStep}
+        data={mockData}
+        isLoading={false}
+      />
+    );
   it("should render ApprovalListViewBlock", () => {
-    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+    renderComponent();
 
-    expect(screen.getByTestId("approval-list-view"));
+    expect(screen.getByTestId("approval-list-view")).toBeInTheDocument();
   });
 
   it("should call setContentLoader with false after 3 seconds", () => {
-    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+    renderComponent();
     jest.advanceTimersByTime(3000);
 
     expect(mockSetContentLoader).toHaveBeenCalledWith(false);
@@ -82,9 +94,9 @@ describe("ApprovalListViewBlock", () => {
   });
 
   it("handles multiple selection toggle", () => {
-    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+    renderComponent();
 
-    const checkbox = screen.getByRole("checkbox");
+    const checkbox = screen.getAllByRole("checkbox")[0]; // Get first checkbox
 
     fireEvent.click(checkbox);
 
@@ -92,7 +104,7 @@ describe("ApprovalListViewBlock", () => {
   });
 
   it("renders the approval list view when data is available", () => {
-    render(<ApprovalListViewBlock nextStep={mockNextStep} />);
+    renderComponent();
 
     expect(screen.getByText("ID")).toBeInTheDocument();
     expect(screen.getByText("ContentID")).toBeInTheDocument();

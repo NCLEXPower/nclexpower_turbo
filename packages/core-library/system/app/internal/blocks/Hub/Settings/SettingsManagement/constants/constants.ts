@@ -147,7 +147,7 @@ export const actionButtons = [
 export const EnvironmentList: string[] = ["dev", "uat", "preprod", "prod"];
 
 export const defaultValues: ContentDateType = {
-  approval: [],
+  data: [],
   implementationSchedule: new Date(),
 };
 
