@@ -14,7 +14,6 @@ import {
   ControlledCheckbox,
 } from "../../../../../";
 import CloseIcon from "@mui/icons-material/Close";
-import { initAnswerValues } from "../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/constants/constants";
 
 type SATAPropsType = {
   questionIndex: number;
@@ -54,8 +53,6 @@ export const SATA: React.FC<SATAPropsType> = ({ questionIndex }) => {
       setValue(`questionnaires.${questionIndex}.maxAnswer`, maxPoint);
     }
   }, [maxPoint]);
-
-  console.log(useWatch());
 
   if (!answerFields) return null;
 

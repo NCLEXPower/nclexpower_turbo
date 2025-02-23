@@ -74,7 +74,6 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   }, []);
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
-    console.log(values);
     setCaseStudyAtom(values);
     nextStep({ ...values });
     next();

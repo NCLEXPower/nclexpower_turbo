@@ -4,10 +4,11 @@ import { useMemo } from "react";
 
 const wordWrapStyles: SxProps = {
   "& *": {
-    margin: 0,
-    padding: 0,
-    lineHeight: 1.5,
+    display: "block",
+    wordWrap: "break-word",
     wordBreak: "break-word",
+    marginTop: "1em",
+    minHeight: "1px",
   },
 };
 
