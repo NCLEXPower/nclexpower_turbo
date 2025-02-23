@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { QuestionnaireItem } from "../../../../../../../../../../../../../types";
-import {
-  ParsedHtml,
-  Tabs,
-} from "../../../../../../../../../../../../../../../../components";
+import { Tabs } from "../../../../../../../../../../../../../../../../components";
 import { ContainedCaseStudyQuestionType } from "../../../../../../types";
 import { Items } from "./items";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../../../types";
 
 interface ItemProps {
   values: Partial<ContainedCaseStudyQuestionType>;
-  selectedQuestion: (itemNum: number) => void;
+  selectedQuestion?: (itemNum: number) => void;
 }
 
 export const ItemContent: React.FC<ItemProps> = ({
@@ -32,7 +29,7 @@ export const ItemContent: React.FC<ItemProps> = ({
   };
 
   useEffect(() => {
-    selectedQuestion(selectedIndex);
+    selectedQuestion && selectedQuestion(selectedIndex);
   }, [selectedIndex]);
 
   const VALID_QUESTION_TYPES = [

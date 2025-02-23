@@ -115,7 +115,7 @@ const dndKeysSchema = yup.object({
     .array()
     .of(dndAnswersSchema)
     .when("questionType", {
-      is: "DND",
+      is: "DNDrop",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Dnd answer options is required")
@@ -127,7 +127,7 @@ const mcqGroupColumn = yup.object({
   label: yup
     .string()
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Column label is required")
@@ -141,7 +141,7 @@ const mcqGroupRow = yup.object().shape({
   rowTitle: yup
     .string()
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Row title is required")
@@ -167,7 +167,7 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupColumn)
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "This is required")
@@ -177,7 +177,7 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupRow)
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "This is required")
@@ -223,21 +223,21 @@ export const bowtieAnswerOptionsSchema = yup.object({
 
 export const bowtieAnswerSchema = yup.object({
   leftLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Left Label is required")
       ),
   }),
   centerLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Center Label is required")
       ),
   }),
   rightLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Right Label is required")
@@ -248,7 +248,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "left-exactly-two-true-isAnswer",
@@ -264,7 +264,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "exactly-one-true-isAnswer",
@@ -280,7 +280,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "right-exactly-two-true-isAnswer",
