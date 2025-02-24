@@ -14,7 +14,7 @@ export const RegistrationWalkthroughForm = () => {
   const { render } = useRegisterWizardSteps();
 
   return (
-    <div className='w-full lg:flex lg:justify-around lg:flex-row md:flex-col'>
+    <div className='w-full lg:flex lg:justify-around lg:flex-row md:flex-col lg:relative lg:items-center'>
       <Image
         src={RegistrationBG}
         alt='Registration Background'
@@ -84,7 +84,7 @@ export const RegistrationWalkthroughForm = () => {
           <span className='h-px flex-1 bg-slate-300'></span>
         </div>
         {render}
-        <h4 className='text-[18px] font-regular font-ptSans'>
+        <h4 className='text-[18px] font-regular font-ptSans text-center'>
           Already have an account?{' '}
           <span className='text-[18px] font-bold underline font-mainBlue'>
             <Link href='/login' style={{ backgroundColor: 'transparent' }}>
