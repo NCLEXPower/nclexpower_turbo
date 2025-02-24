@@ -42,7 +42,7 @@ export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({ dat
 
 }
 
-const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoading: boolean, isEmpty: boolean }) => {
+export const StateStatus = ({ isError, isLoading, isEmpty }: { isError: boolean, isLoading: boolean, isEmpty: boolean }) => {
     if (isEmpty) {
         return (<>
             <Image src={EmptyStateImage} alt='Empty Data' />

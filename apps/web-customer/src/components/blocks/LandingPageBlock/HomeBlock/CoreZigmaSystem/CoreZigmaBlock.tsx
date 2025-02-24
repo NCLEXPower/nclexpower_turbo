@@ -37,7 +37,7 @@ export const CoreZigmaBlock: React.FC<Props> = (props) => {
         <div className="flex flex-col gap-5 items-center">
           <p className="lg:text-4xl text-3xl font-bold text-center">
             Pass the NCLEX® with our
-            <span className="text-darkBlue">CORE-Zigma</span> System
+            <span className="text-darkBlue"> CORE-Zigma</span> System
           </p>
           <p className="font-bold">We believe the power of our synergy!</p>
           <p>
@@ -59,11 +59,14 @@ export const CoreZigmaBlock: React.FC<Props> = (props) => {
               Discover <span className="text-darkBlue"> CORE-Zigma</span>
             </p>
             <p className="font-ptSansNarrow text-lg">
-              Learn how CORE-Zigma empowers your NCLEX preparation with
-              top-notch resources and expert guidance. Our platform offers
-              comprehensive study materials, practice tests, and personalized
-              learning plans to help you succeed. Watch our video to see how we
-              can make your NCLEX journey smoother and more effective.
+            Learn how the CORE-Zigma System empowers 
+            your NCLEX review preparation – in a way you 
+            have not seen before! Our platform engages 
+            learners using an unprecedented delivery method – with various sections interconnected, 
+            integrated, and interdependent. 
+            Peeked your interest yet? Watch this video to 
+            learn more about this amazing, ground-breaking 
+            review method!
             </p>
           </div>
         </div>

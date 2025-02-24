@@ -1,4 +1,4 @@
-import { AuthorizedContentsResponseType } from "../../../../../../../../../../api/types"
+import { AuthorizedContentsResponseType } from "../../../api/types"
 
 export const mockData:AuthorizedContentsResponseType[] =[
     {

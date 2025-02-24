@@ -3,18 +3,10 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import {
-  Alert,
-  Card,
-  ComponentLoader,
-  CustomBadge,
-  EvaIcon,
-  ReactTable,
-  CustomPopover,
-} from "../../../../../../../../../../components";
+import { Card, CustomBadge, EvaIcon, ReactTable, CustomPopover } from "../..";
 import { Box, Container, ListItemButton, Switch, Tooltip } from "@mui/material";
 import { ColumnDef, RowModel } from "@tanstack/react-table";
-import { AuthorizedContentsResponseType } from "../../../../../../../../../../api/types";
+import { AuthorizedContentsResponseType } from "../../../api/types";
 
 export interface ApprovalBlockProps {
   multiple: boolean;
@@ -40,11 +32,6 @@ export const ApprovalListView: React.FC<ApprovalBlockProps> = ({
   return (
     <Box data-testid="approval-list-view">
       <Container>
-        <Alert
-          severity="info"
-          title="Manage Approvals"
-          description="View and manage the approval list, including content revisions and schedules."
-        />
         <Card sx={{ mt: 5, p: 4, width: "100%" }} elevation={5}>
           <Box
             display="flex"

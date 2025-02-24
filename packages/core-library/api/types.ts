@@ -238,6 +238,7 @@ export interface CreateCustomerParams {
   orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+  privacyServicePolicy: boolean;
 }
 
 export interface CreateCustomerResponse {
@@ -411,6 +412,10 @@ export type CaseStudyContentCollectionDtos = {
   orders: SequenceContentType[];
   questionnaires: QuestionnaireType[];
 };
+
+export interface CaseStudyContentCollection extends ContainedCaseStudyQuestionType {
+  id: string;
+}
 
 export type SequenceContentType = {
   seqContent?: string;
