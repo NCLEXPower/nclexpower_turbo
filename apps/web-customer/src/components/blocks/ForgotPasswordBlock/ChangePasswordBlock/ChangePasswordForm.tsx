@@ -4,13 +4,17 @@
  * Created by the Software Strategy & Development Division
  */
 import React, { useMemo } from "react";
-import { Box, Grid, IconButton, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
-import { Button, EvaIcon, TextField } from "core-library/components";
+import {
+  Button,
+  EvaIcon,
+  PasswordToggleAdornment,
+  TextField,
+} from "core-library/components";
 import { useShowPassword } from "./useShowPassword";
 import { ValidationIndicators } from "./ValidationIndicator";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   ChangePasswordSchema,
   ChangePasswordType,
@@ -18,12 +22,9 @@ import {
 } from "@/core/Schema";
 import Image from "next/image";
 import {
-  ChangePasswordBG,
   ChangePasswordLeftColumn,
   ChangePasswordLockIcon,
-  NCLEXBlueLogo,
 } from "core-library/assets";
-import { ChangePasswordLock } from "../../../icons/ChangePasswordLock";
 import Link from "next/link";
 
 interface ChangePasswordFormProps {
@@ -127,13 +128,10 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
                         marginBottom: "12px",
                       }}
                       endAdornment={
-                        <IconButton
-                          aria-label="toggle password visibility"
+                        <PasswordToggleAdornment
+                          showPassword={showPassword}
                           onClick={handleClickShowPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
+                        />
                       }
                       inputProps={{
                         style: { padding: 20, borderRadius: "10px" },
@@ -147,17 +145,10 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
                       type={showconfirmPassword ? "text" : "password"}
                       sx={{ borderRadius: "10px", border: "1px solid #D9D9D9" }}
                       endAdornment={
-                        <IconButton
-                          aria-label="toggle password visibility"
+                        <PasswordToggleAdornment
+                          showPassword={showconfirmPassword}
                           onClick={handleClickShowconfirmPassword}
-                          edge="end"
-                        >
-                          {showconfirmPassword ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
+                        />
                       }
                       inputProps={{
                         style: { padding: 20, borderRadius: "10px" },
