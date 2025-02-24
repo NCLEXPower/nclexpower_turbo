@@ -188,7 +188,6 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
             <Typography
               sx={{
                 ...wordWrap,
-                "& p": { marginBottom: "1em", display: "block" },
               }}
               component="div"
             >

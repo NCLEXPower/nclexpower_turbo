@@ -72,6 +72,7 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
 
   const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
     resetField(`questionnaires.${index}`);
+    setValue(`questionnaires.${index}.answers`, []);
     setValue(`questionnaires.${index}.questionType`, value);
   };
 

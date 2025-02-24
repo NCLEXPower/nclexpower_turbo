@@ -308,13 +308,18 @@ export const hcpOptionSchema = yup.object().shape({
 });
 
 const questionOptionsSchemas = {
+  DDTable: yup
+    .array(ddcAnswerOptionsSchema)
+    .min(1, ({ path }) =>
+      generateQuestionErrorMessage(path, "Add atleast 1 answer option")
+    ),
   DDCloze: yup
     .array(ddcAnswerOptionsSchema)
     .min(1, ({ path }) =>
-      generateQuestionErrorMessage(path, "Maximum answer count")
+      generateQuestionErrorMessage(path, "Add atleast 1 answer option")
     )
     .max(10, ({ path }) =>
-      generateQuestionErrorMessage(path, "Maximum answer count")
+      generateQuestionErrorMessage(path, "Maximum of 10 answer options")
     ),
   DNDrop: yup
     .array(dndAnswerOptionsSchema)

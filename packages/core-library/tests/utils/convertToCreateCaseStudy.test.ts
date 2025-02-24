@@ -136,7 +136,7 @@ describe("convertToCreateCaseStudy", () => {
                 centerSection: undefined,
                 columns: undefined,
                 dndAnswer: undefined,
-                highlightingContent: undefined,
+                hcpContent: undefined,
                 leftLabelName: undefined,
                 leftSection: undefined,
                 rationale: "",

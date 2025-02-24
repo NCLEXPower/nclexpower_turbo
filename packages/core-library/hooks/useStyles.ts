@@ -4,7 +4,6 @@ import { useMemo } from "react";
 
 const wordWrapStyles: SxProps = {
   "& *": {
-    display: "block",
     wordWrap: "break-word",
     wordBreak: "break-word",
     marginTop: "1em",
