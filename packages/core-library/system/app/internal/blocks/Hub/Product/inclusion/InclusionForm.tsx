@@ -37,6 +37,12 @@ export const InclusionForm: React.FC<InclusionFormPropsType> = ({ onSubmit }) =>
                     Add Inclusion
                 </Button>
             </Box>
+            <Box display="flex" gap={2} alignItems="end">
+                <TextField control={control} name='option' label="Add Description" />
+                <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
+                    Add Description
+                </Button>
+            </Box>
         </Card>
     )
 }
