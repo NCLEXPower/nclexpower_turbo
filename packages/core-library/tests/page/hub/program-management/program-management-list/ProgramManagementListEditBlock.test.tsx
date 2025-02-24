@@ -1,4 +1,3 @@
-// import { fireEvent, render, screen, waitFor } from "../../../../common";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { ProgramManagementListEditBlock } from "../../../../../system/app/internal/blocks";
 import { useAtom } from "jotai";
@@ -171,7 +170,9 @@ describe("ProgramManagementListEditBlock", () => {
   let mockAppend: jest.Mock;
   let mockHandleAddSection: jest.Mock;
   let mockHandleEditProgramSection: jest.Mock;
+  let mockOnSave: jest.Mock;
 
+  mockOnSave = jest.fn();
   mockHandleAddSection = jest.fn();
   mockHandleSubmit = jest.fn();
   mockSetValue = jest.fn();
@@ -292,5 +293,12 @@ describe("ProgramManagementListEditBlock", () => {
 
     const addSectionButton = await screen.findByTestId("add-section-button");
     expect(addSectionButton).toBeInTheDocument();
+  });
+
+  it("should render input fields correctly", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    expect(await screen.getByText("Program Name")).toBeInTheDocument();
   });
 });
