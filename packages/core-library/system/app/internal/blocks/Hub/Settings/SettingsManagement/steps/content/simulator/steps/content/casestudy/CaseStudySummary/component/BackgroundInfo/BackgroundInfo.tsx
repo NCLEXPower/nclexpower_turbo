@@ -21,6 +21,7 @@ export const BackgroundInfo: React.FC<{ content: SectionContent[] }> = ({
       height="512px"
       overflow="auto"
       borderRadius="5px"
+      data-testid="test-content"
     >
       {content.length > 0 &&
         content.map((data, index) => {
