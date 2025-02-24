@@ -3,7 +3,12 @@ import { ProgramSectionManagementEditBlock } from "../../../../../../../system/a
 import { useRouter } from "../../../../../../../core";
 import { useApiCallback } from "../../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../../contexts";
-import { useAtom } from "jotai";
+import { useAtom, atom } from "jotai";
+
+const SectionTitleAtom = atom("Mock Title");
+const SectionTypeAtom = atom("Mock Type");
+const SectionIdAtom = atom("123");
+const SectionDataIdAtom = atom("456");
 
 jest.mock("../../../../../../../config", () => ({
     config: { value: jest.fn() },
@@ -69,7 +74,21 @@ describe("ProgramSectionManagementEditBlock", () => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
     (useExecuteToast as jest.Mock).mockReturnValue({ showToast: mockShowToast });
     (useApiCallback as jest.Mock).mockReturnValue(mockDeleteSectionCb);
-    (useAtom as jest.Mock).mockImplementation((atom) => ["test-value", jest.fn()]);
+
+    (useAtom as jest.Mock).mockImplementation((atom) => {
+      switch (atom) {
+        case SectionTitleAtom:
+          return ["Mock Title", jest.fn()];
+        case SectionTypeAtom:
+          return ["Mock Type", jest.fn()];
+        case SectionIdAtom:
+          return ["123", jest.fn()];
+        case SectionDataIdAtom:
+          return ["456", jest.fn()];
+        default:
+          return ["test-value", jest.fn()];
+      }
+    });
   });
 
   it("renders correctly", () => {
