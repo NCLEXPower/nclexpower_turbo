@@ -1,5 +1,4 @@
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import ComingSoonManagement from "../../../system/app/internal/blocks/Hub/ComingSoon/ComingSoonManagement";
 import { render, screen } from "../../common";
 

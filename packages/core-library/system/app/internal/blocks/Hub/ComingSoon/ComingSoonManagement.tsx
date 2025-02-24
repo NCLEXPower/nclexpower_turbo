@@ -11,22 +11,14 @@ import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { Control } from "react-hook-form";
 import { ContentDateType } from "./validation";
 import LiveCountdown from "./LiveCountDown";
+import { MappedCountry } from "./types";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
   isSwitchOn: boolean;
   isActive?: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  mappedCountries: Array<{
-    countryKey: string;
-    countryName: string;
-    daysRemaining: number;
-    timezones: {
-      selectedTimezone: string;
-      daysRemaining: number;
-      hoursRemaining: number;
-    }[];
-  }>;
+  mappedCountries: MappedCountry[];
 };
 
 const ComingSoonManagement = ({

@@ -1,18 +1,10 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import { CustomTooltip } from "../../../../../../components";
+import { MappedCountry } from "./types";
 
 type LiveCountdownProps = {
-  mappedCountries: Array<{
-    countryKey: string;
-    countryName: string;
-    daysRemaining: number;
-    timezones: {
-      selectedTimezone: string;
-      daysRemaining: number;
-      hoursRemaining: number;
-    }[];
-  }>;
+  mappedCountries: MappedCountry[];
 };
 
 const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {

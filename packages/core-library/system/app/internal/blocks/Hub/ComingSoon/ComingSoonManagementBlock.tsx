@@ -9,17 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useApiCallback } from "../../../../../../hooks";
 import { CreateGoliveSchedule } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
-
-type MappedCountry = {
-  countryKey: string;
-  countryName: string;
-  daysRemaining: number;
-  timezones: {
-    selectedTimezone: string;
-    daysRemaining: number;
-    hoursRemaining: number;
-  }[];
-};
+import { MappedCountry } from "./types";
 
 const mapResponseToCountry = (data: {
   countryKey: string;
@@ -114,7 +104,6 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const watchEnvironment = watch("TargetEnvironment");
   const watchDescription = watch("description");
   const watchAnnouncement = watch("announcement");
-  console.log(watch());
 
   return (
     <Stack direction="column" spacing={2}>
