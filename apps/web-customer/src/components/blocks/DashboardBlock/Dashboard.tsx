@@ -10,7 +10,6 @@ import {
   FinalStudyAnalytics,
   CurrentProgress2,
 } from "./DashboardAnalytics";
-import { userData } from "./DashboardAnalytics/DashboardMock";
 import { useSensitiveInformation } from "core-library/hooks";
 import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
 

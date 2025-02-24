@@ -11,7 +11,6 @@ import {
   useAuthContext,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
-  TourContextProvider,
 } from "core-library/contexts";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
 import {
@@ -43,7 +42,6 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
-import { HubTourSteps } from "../../components/blocks/DashboardBlock/hubTourSteps";
 
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
@@ -87,24 +85,22 @@ const Layout: React.FC<
           <CssBaseline />
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
-              <TourContextProvider>
-                <DrawerLayout
-                  menu={headerMenu}
-                  isAuthenticated={isAuthenticated}
-                  headerStyles={headerStyles}
-                  sidebarStyles={sidebarStyles}
-                  onLogout={logout}
-                  isPaid={isPaid}
-                >
-                  <ContentLoader loading={loading || router.loading}>
-                    <LoadablePageContent loading={loading}>
-                      {children}
-                      <Footer info={CompanyInfo} list={list} />
-                      {shouldShowChatBotWidget && <ChatBotWidget />}
-                    </LoadablePageContent>
-                  </ContentLoader>
-                </DrawerLayout>
-              </TourContextProvider>
+              <DrawerLayout
+                menu={headerMenu}
+                isAuthenticated={isAuthenticated}
+                headerStyles={headerStyles}
+                sidebarStyles={sidebarStyles}
+                onLogout={logout}
+                isPaid={isPaid}
+              >
+                <ContentLoader loading={loading || router.loading}>
+                  <LoadablePageContent loading={loading}>
+                    {children}
+                    <Footer info={CompanyInfo} list={list} />
+                    {shouldShowChatBotWidget && <ChatBotWidget />}
+                  </LoadablePageContent>
+                </ContentLoader>
+              </DrawerLayout>
             </FormSubmissionContextProvider>
           </HeaderTitleContextProvider>
         </ThemeProvider>

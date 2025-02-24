@@ -12,7 +12,7 @@ export const HubTourSteps: TourStep[] = [
   {
     selector: "[data-tour='step-2']",
     content:
-      "This is your account menu, you can click this and view your user information and many more.",
+      "This is your user account menu, you can click this and view your user information and many more.",
   },
   {
     selector: "[data-tour='step-3']",
