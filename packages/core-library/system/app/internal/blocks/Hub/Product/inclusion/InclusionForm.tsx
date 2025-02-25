@@ -6,7 +6,7 @@
 
 import React from 'react'
 import { InclusionSchema, InclusionType } from './validation'
-import { Button, Card, TextField } from '../../../../../../../components'
+import { Button, Card, TextField, TextAreaField } from '../../../../../../../components'
 import { Box } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -33,14 +33,16 @@ export const InclusionForm: React.FC<InclusionFormPropsType> = ({ onSubmit }) =>
         <Card sx={{ width: 1, height: "fit-content" }}>
             <Box display="flex" gap={2} alignItems="end">
                 <TextField control={control} name='option' label="Add Inclusion" />
-                <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
-                    Add Inclusion
-                </Button>
+            
             </Box>
             <Box display="flex" gap={2} alignItems="end">
-                <TextField control={control} name='option' label="Add Description" />
-                <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
-                    Add Description
+                <TextAreaField
+                    control={control}
+                    name='description'
+                    placeholder='Add Description...'
+                />
+                  <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
+                    Submit
                 </Button>
             </Box>
         </Card>
