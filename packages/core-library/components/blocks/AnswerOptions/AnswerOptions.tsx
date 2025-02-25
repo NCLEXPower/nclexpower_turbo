@@ -35,22 +35,22 @@ export const AnswerOptions: React.FC<AnswerOptionsType> = ({
     }
   } else if (questionType === "caseStudy") {
     switch (questionnaireType) {
-      case "DDC":
+      case "DDCloze":
         return <DDClozeAndTable questionIndex={questionIndex} />;
-      case "DDT":
+      case "DDTable":
         return <DDClozeAndTable questionIndex={questionIndex} />;
       case "MRSN":
       case "SATA":
         return <SATA questionIndex={questionIndex} />;
-      case "DND":
+      case "DNDrop":
         return <DND questionIndex={questionIndex} />;
-      case "HCP":
+      case "Highlight":
         return <HCP questionIndex={questionIndex} />;
-      case "BOWTIE":
+      case "Bowtie":
         return <Bowtie questionIndex={questionIndex} />;
-      case "MCQGROUP":
+      case "MatrixWithGrp":
         return <MCQGroup questionIndex={questionIndex} />;
-      case "MCQNOGROUP":
+      case "MatrixNoGrp":
         return <MCQNoGroup questionIndex={questionIndex} />;
     }
   }
