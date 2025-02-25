@@ -12,10 +12,10 @@ export const Instruction = memo(({ questionType }: InstructionProps) => {
   if (!questionType) return <></>;
   const getInstruction = () => {
     switch (questionType) {
-      case "DND":
-      case "DDC":
+      case "DNDrop":
+      case "DDCloze":
         return "Write your text with [[placeholder]] for answer fields, e.g., The capital of[[country]] is [[city]].";
-      case "DDT":
+      case "DDTable":
         return "Write your text with [[placeholder]] placed inside table cells, e.g., The capital of country [[city]].";
       default:
         return "Complete all blank fields and proceed to another question";
@@ -23,7 +23,7 @@ export const Instruction = memo(({ questionType }: InstructionProps) => {
   };
   return (
     <Box display="flex" mt={2}>
-      <Box mr={1}>
+      <Box mr={1} data-testid="instruction-block">
         <EvaIcon
           name="alert-circle-outline"
           fill="#6c757d"

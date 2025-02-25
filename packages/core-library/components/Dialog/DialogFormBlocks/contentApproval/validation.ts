@@ -7,7 +7,7 @@ import { atom } from "jotai";
 import * as yup from "yup";
 
 export const contentDateSchema = yup.object({
-  approval: yup.array(
+  data: yup.array(
     yup.object({
       contentId: yup.string().required().default(""),
       contentAuthorId: yup.string().required().default(""),
