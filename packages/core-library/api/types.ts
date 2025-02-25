@@ -413,7 +413,8 @@ export type CaseStudyContentCollectionDtos = {
   questionnaires: QuestionnaireType[];
 };
 
-export interface CaseStudyContentCollection extends ContainedCaseStudyQuestionType {
+export interface CaseStudyContentCollection
+  extends ContainedCaseStudyQuestionType {
   id: string;
 }
 
@@ -751,4 +752,15 @@ export type CaseNameResponseType = {
 
 export type DeleteCaseNameParams = {
   id: string;
+};
+
+export type GetCaseStudyListParams = {
+  accountId: string;
+};
+
+export type CaseStudyListResponse = {
+  caseNum: number;
+  caseName: string;
+  status: number;
+  dateCreated: string;
 };
