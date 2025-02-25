@@ -77,27 +77,30 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const goLiveDate = watch("goLiveDate");
 
   useEffect(() => {
-    if (selectedCountries && selectedCountries.length > 0 && goLiveDate) {
-      Promise.all(
-        selectedCountries.map((key) =>
-          getCountryTimezones.execute({
-            countryKey: key,
-            goLiveDate: goLiveDate.toString() || "",
-          })
-        )
-      )
-        .then((responses) => {
-          const flattenedResponses = responses.flatMap((response) =>
-            Array.isArray(response.data) ? response.data : [response.data]
-          );
-          const mapped = flattenedResponses.map(mapResponseToCountry);
-          setMappedCountries(mapped);
-        })
-        .catch((error) => {
-          console.error("Error fetching timezones:", error);
-          showToast("Error fetching timezones", "error");
-        });
+    async function fetchTimezones() {
+      if (!selectedCountries || !goLiveDate) return;
+
+      try {
+        const responses = [];
+        for (const countryKey of selectedCountries) {
+          const response = await getCountryTimezones.execute({
+            countryKey,
+            goLiveDate: goLiveDate.toString(),
+          });
+          responses.push(response);
+        }
+        const flattenedResponses = responses.flatMap((response) =>
+          Array.isArray(response.data) ? response.data : [response.data]
+        );
+        const mapped = flattenedResponses.map(mapResponseToCountry);
+        setMappedCountries(mapped);
+      } catch (error) {
+        console.error("Error fetching timezones:", error);
+        showToast("Error fetching timezones", "error");
+      }
     }
+
+    fetchTimezones();
   }, [selectedCountries, goLiveDate]);
 
   const watchEventName = watch("eventName");
