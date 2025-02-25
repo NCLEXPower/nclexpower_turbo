@@ -27,6 +27,7 @@ import {
   ComingSoonManagementBlock,
   CaseNameManagementBlock,
   AnalyticsBlock,
+  PolicyManagementBlock
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -72,6 +73,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <DuplicateSessionBlock />;
     case "ChatbotManagement":
       return <ChatbotManagementBlock />;
+    case "PolicyManagementBlock":
+      return <PolicyManagementBlock />;
     case "ContactUsManagementBlock":
       return <ContactUsManagementBlock />;
     case "SalesManagement":
