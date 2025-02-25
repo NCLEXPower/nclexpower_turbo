@@ -6,6 +6,7 @@ import {
 } from "../../../types";
 import { initAnswerValues } from "../../../constants/constants";
 import {
+  CaseStudyType,
   DDCAnswerOptionType,
   DNDAnswerOptionType,
   HCPNAnswerOptionType,
@@ -114,7 +115,7 @@ const dndKeysSchema = yup.object({
     .array()
     .of(dndAnswersSchema)
     .when("questionType", {
-      is: "DND",
+      is: "DNDrop",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Dnd answer options is required")
@@ -126,7 +127,7 @@ const mcqGroupColumn = yup.object({
   label: yup
     .string()
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Column label is required")
@@ -140,7 +141,7 @@ const mcqGroupRow = yup.object().shape({
   rowTitle: yup
     .string()
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "Row title is required")
@@ -166,7 +167,7 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupColumn)
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "This is required")
@@ -176,7 +177,7 @@ export const mcqGroupAnswerSchema = yup.object({
     .array()
     .of(mcqGroupRow)
     .when("questionType", {
-      is: (val: string) => val === "MCQGROUP" || val === "MCQNOGROUP",
+      is: (val: string) => val === "MatrixWithGrp" || val === "MatrixNoGrp",
       then: (schema) =>
         schema.required(({ path }) =>
           generateQuestionErrorMessage(path, "This is required")
@@ -222,21 +223,21 @@ export const bowtieAnswerOptionsSchema = yup.object({
 
 export const bowtieAnswerSchema = yup.object({
   leftLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Left Label is required")
       ),
   }),
   centerLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Center Label is required")
       ),
   }),
   rightLabelName: yup.string().when("questionType", {
-    is: "BOWTIE",
+    is: "Bowtie",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "Right Label is required")
@@ -247,7 +248,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "left-exactly-two-true-isAnswer",
@@ -263,7 +264,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "exactly-one-true-isAnswer",
@@ -279,7 +280,7 @@ export const bowtieAnswerSchema = yup.object({
     .array()
     .of(bowtieAnswerOptionsSchema)
     .when("questionType", {
-      is: "BOWTIE",
+      is: "Bowtie",
       then: (schema) =>
         schema.test(
           "right-exactly-two-true-isAnswer",
@@ -307,15 +308,20 @@ export const hcpOptionSchema = yup.object().shape({
 });
 
 const questionOptionsSchemas = {
-  DDC: yup
+  DDTable: yup
     .array(ddcAnswerOptionsSchema)
     .min(1, ({ path }) =>
-      generateQuestionErrorMessage(path, "Maximum answer count")
+      generateQuestionErrorMessage(path, "Add atleast 1 answer option")
+    ),
+  DDCloze: yup
+    .array(ddcAnswerOptionsSchema)
+    .min(1, ({ path }) =>
+      generateQuestionErrorMessage(path, "Add atleast 1 answer option")
     )
     .max(10, ({ path }) =>
-      generateQuestionErrorMessage(path, "Maximum answer count")
+      generateQuestionErrorMessage(path, "Maximum of 10 answer options")
     ),
-  DND: yup
+  DNDrop: yup
     .array(dndAnswerOptionsSchema)
     .min(1, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
@@ -323,12 +329,9 @@ const questionOptionsSchemas = {
     .max(10, ({ path }) =>
       generateQuestionErrorMessage(path, "Maximum answer count")
     ),
-  SATA: yup
-    .array(defaultOptionSchema)
-    .min(4)
-    .default(Array(5).fill(initAnswerValues)),
+  SATA: yup.array(defaultOptionSchema).min(4),
   MRSN: mrsnAnswerSchema,
-  HCP: yup
+  Highlight: yup
     .array(hcpOptionSchema)
     .required(({ path }) =>
       generateQuestionErrorMessage(path, "Must contained atleast 1 option")
@@ -366,7 +369,7 @@ const bgInfoContent = yup.object({
 
 const hcpContentSchema = yup.object({
   hcpContent: yup.string().when("questionType", {
-    is: "HCP",
+    is: "Highlight",
     then: (schema) =>
       schema.required(({ path }) =>
         generateQuestionErrorMessage(path, "HCP content is required")
@@ -432,6 +435,11 @@ const caseStudyQuestionnaireSchema = yup.object({
               generateQuestionErrorMessage(path, "Item stem is required.")
             ),
           transitionHeader: yup.string().optional().default(""),
+          rationale: yup
+            .string()
+            .required(({ path }) =>
+              generateQuestionErrorMessage(path, "Rationale is required.")
+            ),
         })
         .concat(answersSchema)
         .concat(hcpContentSchema)
@@ -448,14 +456,21 @@ export const containedCaseStudyQuestionSchema = yup
   .object({
     caseName: yup
       .array()
+      .transform((value) => (Array.isArray(value) ? value : [value]))
       .min(1, "Please select at least 1 case name")
       .required("Select at least 1 case name"),
     formId: yup.string(),
+    caseType: yup.mixed<CaseStudyType>().required(),
+    caseNum: yup.number().required(),
     nurseNotes: yup.array(bgInfoContent).default([]),
     hxPhy: yup.array(bgInfoContent).default([]),
     labs: yup.array(bgInfoContent).default([]),
     orders: yup.array(bgInfoContent).default([]),
     type: yup.mixed<CaseStudyQuestionSelectionOptions>().optional(),
     main_type: yup.mixed<QuestionSelectionOptions>().default("Case Study"),
+    mainText: yup.string().when("$step", {
+      is: 2,
+      then: (schema) => schema.required("Main Text Field is Required"),
+    }),
   })
   .concat(caseStudyQuestionnaireSchema);
