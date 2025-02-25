@@ -38,7 +38,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
 
   const renderQuestionType = (data: QuestionnaireItem) => {
     switch (data.questionType) {
-      case "DDC":
+      case "DDCloze":
         return (
           <DDCItem
             ddcData={{
@@ -47,7 +47,7 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             }}
           />
         );
-      case "DDT":
+      case "DDTable":
         return (
           <DDTItem
             ddcData={{
@@ -56,9 +56,9 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
             }}
           />
         );
-      case "HCP":
+      case "Highlight":
         return <HCPQuestion questionData={data} />;
-      case "DND":
+      case "DNDrop":
         return <DNDQuestion questionData={data} />;
       default:
         return (
@@ -69,37 +69,19 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
     }
   };
 
-  const renderQuestionTypeLabel = (data: QuestionnaireItem) => {
-    switch (data.questionType) {
-      case "SATA":
-        return "Select All That Apply";
-      case "MRSN":
-        return `Select ${data.maxAnswer} That Apply`;
-      case "BOWTIE":
-        return `Bowtie`;
-      case "MCQNOGROUP":
-        return `MCQ No Group`;
-      case "MCQGROUP":
-        return `MCQ Group`;
-      case "HCP":
-        return `Phrase Selection`;
-      case "DND":
-    }
-  };
-
   const renderAnswerOption = (data: QuestionnaireItem) => {
     switch (data.questionType) {
-      case "HCP":
+      case "Highlight":
       case "SATA":
       case "MRSN":
         return <AnswerList answers={data.answers as AnswerOption[]} />;
-      case "BOWTIE":
+      case "Bowtie":
         return <BowtieSummary data={data} />;
-      case "MCQNOGROUP":
+      case "MatrixNoGrp":
         return <MCQNoGroupSummary data={data} />;
-      case "MCQGROUP":
+      case "MatrixWithGrp":
         return <MCQGroupSummary data={data} />;
-      case "DND":
+      case "DNDrop":
         return <DNDSummary answers={data.answers as DNDAnswerOptionType[]} />;
       default:
         return null;
@@ -139,14 +121,6 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
                 {renderQuestionType(data)}
               </Box>
             </Box>
-            <Typography
-              marginTop="14px"
-              fontSize="16px"
-              color="#999999"
-              fontWeight="700"
-            >
-              {renderQuestionTypeLabel(data)}
-            </Typography>
             {renderAnswerOption(data)}
           </Box>
         ))
