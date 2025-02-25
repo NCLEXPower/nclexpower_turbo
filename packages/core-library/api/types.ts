@@ -755,7 +755,7 @@ export type DeleteCaseNameParams = {
 };
 
 export type GetCaseStudyListParams = {
-  accountId: string;
+  TokenizeInformationId: string;
 };
 
 export type CaseStudyListResponse = {

@@ -1,19 +1,27 @@
-import React, { useMemo } from "react";
-import { useApi, useColumns } from "../../../../../../hooks";
+import React, { useEffect, useMemo } from "react";
+import {
+  useApi,
+  useApiCallback,
+  useColumns,
+  useSensitiveInformation,
+} from "../../../../../../hooks";
 import { Alert, Card, DataGrid } from "../../../../../../components";
 import { useAccountId } from "../../../../../../contexts/auth/hooks";
 import { Box, Container, Typography } from "@mui/material";
 import { GridToolbar } from "@mui/x-data-grid";
-import Chip from "../../../../../../components/Chip/Chip";
 import { CaseListChip } from "./CaseListChip";
 import { useDateFormat } from "../core/hooks";
 
 export const CaseStudyListViewBlock = () => {
-  const [getAccountId] = useAccountId();
+  const { internal } = useSensitiveInformation();
   const { getFormattedDate } = useDateFormat();
-  const accountId = getAccountId ?? "";
-  const caseStudyListCb = useApi((api) =>
-    api.webbackoffice.caseStudyList({ accountId })
+
+  const caseStudyListCb = useApi(
+    (api) =>
+      api.webbackoffice.caseStudyList({
+        TokenizeInformationId: internal?.id ?? "",
+      }),
+    [internal?.id]
   );
 
   const caseStudyLists = useMemo(
