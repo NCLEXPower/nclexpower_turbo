@@ -606,9 +606,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -753,6 +753,11 @@ export type CaseNameResponseType = {
 export type DeleteCaseNameParams = {
   id: string;
 };
+
+export type PolicyFileResponseType = {
+  fileName: string;
+  fileUrl: string;
+}
 
 export type GetCaseStudyListParams = {
   TokenizeInformationId: string;

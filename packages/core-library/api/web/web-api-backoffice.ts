@@ -51,6 +51,7 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
 } from "../types";
@@ -460,5 +461,10 @@ export class WebApiBackOffice {
     return await this.axios.get<CaseStudyListResponse[]>(
       `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
     );
+  }
+
+  public async getPdf(policyType: number) {
+    return await this.axios.get<PolicyFileResponseType>(
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
   }
 }
