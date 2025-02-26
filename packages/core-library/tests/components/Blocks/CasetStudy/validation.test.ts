@@ -136,7 +136,7 @@ describe("Contained Case Study Question Schema", () => {
 
   it("should return error when columns are missing", async () => {
     const invalidData = {
-      questionType: "MCQGROUP",
+      questionType: "MatrixWithGrp",
       rows: [
         {
           rowId: 1,
@@ -153,7 +153,7 @@ describe("Contained Case Study Question Schema", () => {
 
   it("should return error when rows are missing", async () => {
     const invalidData = {
-      questionType: "MCQGROUP",
+      questionType: "MatrixWithGrp",
       columns: [{ label: "Column 1" }],
     };
 
@@ -192,7 +192,7 @@ describe("Contained Case Study Question Schema", () => {
         {
           maxPoints: 5,
           seqNum: 1,
-          questionType: "DDC",
+          questionType: "DDCloze",
           itemNum: 1,
           itemStem: "What is the capital of France?",
           transitionHeader: "Test Question",
