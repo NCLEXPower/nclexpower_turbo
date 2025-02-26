@@ -60,6 +60,9 @@ import {
   CreateProgramParams,
   CreateProgramResponse,
   UpdateProgramParams,
+  PolicyFileResponseType,
+  GetCaseStudyListParams,
+  CaseStudyListResponse,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -68,7 +71,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -161,8 +164,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-            contentAccessKey: "",
-          })}`
+              contentAccessKey: "",
+            })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -460,7 +463,8 @@ export class WebApiBackOffice {
 
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
-      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
+      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`
+    );
   }
 
   public async getAllSections(){
@@ -664,5 +668,16 @@ export class WebApiBackOffice {
         },
       }
     )
+  }
+
+  public async caseStudyList(params: GetCaseStudyListParams) {
+    return await this.axios.get<CaseStudyListResponse[]>(
+      `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
+    );
+  }
+
+  public async getPdf(policyType: number) {
+    return await this.axios.get<PolicyFileResponseType>(
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
   }
 }

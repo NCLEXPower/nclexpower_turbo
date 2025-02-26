@@ -1,15 +1,21 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import { QuestionnaireItem } from "../../../../../../../../../../../../../types";
 import { Tabs } from "../../../../../../../../../../../../../../../../components";
 import { ContainedCaseStudyQuestionType } from "../../../../../../types";
 import { Items } from "./items";
+import { CaseStudyQuestionSelectionOptions } from "../../../../../../../../../types";
 
 interface ItemProps {
   values: Partial<ContainedCaseStudyQuestionType>;
+  selectedQuestion?: (itemNum: number) => void;
 }
 
-export const ItemContent: React.FC<ItemProps> = ({ values }) => {
+export const ItemContent: React.FC<ItemProps> = ({
+  values,
+  selectedQuestion,
+}) => {
+  const [selectedIndex, setSelectedIndex] = useState<number>(1);
   const generateTabs = (data: QuestionnaireItem[]) => {
     return data.map((item, index) => {
       const title = `Item ${item.itemNum}`;
@@ -22,16 +28,20 @@ export const ItemContent: React.FC<ItemProps> = ({ values }) => {
     });
   };
 
+  useEffect(() => {
+    selectedQuestion && selectedQuestion(selectedIndex);
+  }, [selectedIndex]);
+
   const VALID_QUESTION_TYPES = [
-    "DDC",
+    "DDCloze",
+    "DNDrop",
     "SATA",
     "MRSN",
-    "BOWTIE",
-    "HCP",
-    "MCQGROUP",
-    "DDT",
-    "DND",
-    "MCQNOGROUP",
+    "Highlight",
+    "MatrixNoGrp",
+    "MatrixWithGrp",
+    "DDTable",
+    "Bowtie",
   ];
 
   const validQuestionnaires =
@@ -40,7 +50,12 @@ export const ItemContent: React.FC<ItemProps> = ({ values }) => {
     ) || [];
 
   return validQuestionnaires.length > 0 ? (
-    <Tabs tabsItem={generateTabs(validQuestionnaires)} />
+    <Box>
+      <Tabs
+        tabsItem={generateTabs(validQuestionnaires)}
+        selectedTabIndex={(selected) => setSelectedIndex(selected)}
+      />
+    </Box>
   ) : (
     <Typography>No valid questionnaire data available</Typography>
   );

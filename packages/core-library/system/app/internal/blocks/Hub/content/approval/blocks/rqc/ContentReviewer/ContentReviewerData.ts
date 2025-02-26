@@ -8,7 +8,7 @@ export const author = [
     authorId: "cd81aac5-1793-4190-bd2d-ffe1336c673f",
     author: "John Doe",
     createdDate: "September 14, 2024",
-  }
+  },
 ];
 
 export const mainContent = [
@@ -19,7 +19,7 @@ export const mainContent = [
     mainType: "Regular",
     mainContentCollections: [
       {
-        id:"0c3f073a-a3e1-4639-badb-c6532d46c559",
+        id: "0c3f073a-a3e1-4639-badb-c6532d46c559",
         main_type: "Regular",
         question: "<p>What are the colors in the French flag?</p>",
         clientNeeds: "Geography Knowledge",
@@ -100,7 +100,6 @@ export const mainContent = [
           { answer: "Liechtenstein", answerKey: false },
         ],
       },
-
     ],
     mainCaseStudyContentCollections: [
       {
@@ -138,13 +137,14 @@ export const mainContent = [
         caseName: ["test", "Clear Up All"],
         questionnaires: [
           {
+            rationale: "test-rationale",
             maxPoints: 1,
             seqNum: 1,
             itemNum: 1,
             itemStem:
               "<p>For each client finding below, click or check to specify if the finding is consistent with</p><p>the disease process of Appendicitis, Rhabdomyolysis, or Pneumothorax.</p><p>Each finding may support more than one disease process</p>",
             transitionHeader: "",
-            questionType: "MCQGROUP",
+            questionType: "MatrixWithGrp",
             columns: [
               {
                 label: "Patient Findings",
@@ -253,13 +253,15 @@ export const mainContent = [
             ],
           },
           {
+            rationale: "test-rationale",
+
             maxPoints: 1,
             seqNum: 1,
             itemNum: 1,
             itemStem:
               "<p>Which of the following observational findings in the nurse notes require</p><p>immediate follow-up?</p><p>Select by highlighting the words and/or phrases from the box below.</p>",
             transitionHeader: "",
-            questionType: "HCP",
+            questionType: "Highlight",
             hcpContent:
               '<p><strong>@1420 Nurse’s Notes:</strong></p><p>Client states, “<hcp-highlighter name="highlighted-v6mubiqzapk" class="hcp-highlighter" style=" cursor: pointer;">I feel like I became paralyzed for no reason. </hcp-highlighter><hcp-highlighter name="highlighted-947t9w0rn7" class="hcp-highlighter" style=" cursor: pointer;">I can’t walk without crutches now and I can’t feel the urge to pee and do a</hcp-highlighter></p><p>‘number two.”</p><p>Client reports that he started having tingling sensations and</p><p>numbness on both of his feet which quickly ascended to both of his</p><p>palms within 24 hours, and on the following day when he awoke</p><p><hcp-highlighter name="highlighted-i10eqaukt5h" class="hcp-highlighter" style=" cursor: pointer;">from his sleep, he claimed that he could no longer stand up and</hcp-highlighter></p><p>walk to the bathroom without holding on to surfaces for support.</p><p><hcp-highlighter name="highlighted-k08cih9wh3m" class="hcp-highlighter" style=" cursor: pointer;">After two days, he had lost control of his bladder and bowel sensation.</hcp-highlighter></p><p>H&amp;P Hx of COVID-19 last month.</p><p>V/S:</p><p><hcp-highlighter name="highlighted-eikokgrumvf" class="hcp-highlighter" style=" cursor: pointer;">HR 120 bpm , RR 29 , BP 130/50, Temp 37, O2 Sat 90% on RA</hcp-highlighter></p><p><hcp-highlighter name="highlighted-qxwg9lzoxup" class="hcp-highlighter" style=" cursor: pointer;">Client appears to have difficulty of breathing and malaise.</hcp-highlighter></p>',
             answers: [
@@ -287,25 +289,29 @@ export const mainContent = [
                 attrName: "highlighted-k08cih9wh3m",
               },
               {
-                answer: "HR 120 bpm , RR 29 , BP 130/50, Temp 37, O2 Sat 90% on RA",
+                answer:
+                  "HR 120 bpm , RR 29 , BP 130/50, Temp 37, O2 Sat 90% on RA",
                 answerKey: true,
                 attrName: "highlighted-eikokgrumvf",
               },
               {
-                answer: "Client appears to have difficulty of breathing and malaise.",
+                answer:
+                  "Client appears to have difficulty of breathing and malaise.",
                 answerKey: true,
                 attrName: "highlighted-qxwg9lzoxup",
               },
             ],
           },
           {
+            rationale: "test-rationale",
+
             transitionHeader: "",
             itemStem:
               "<p>Complete the diagram by dragging from the choices below to specify: the primary adverse effect</p><p>of apixaban, two teaching points that the nurse would use to teach the client (left), and two</p><p>statements that indicate client understanding post-teaching (right).</p>",
             itemNum: 3,
             seqNum: 1,
             maxPoints: 1,
-            questionType: "BOWTIE",
+            questionType: "Bowtie",
             answers: [],
             rightSection: [
               {
@@ -376,7 +382,8 @@ export const mainContent = [
                 value: "Headaches are an expected and common side-effect",
               },
               {
-                value: "Persistent tiredness should be reported to the physician",
+                value:
+                  "Persistent tiredness should be reported to the physician",
                 isAnswer: true,
                 container: "Teaching point",
               },
@@ -391,13 +398,15 @@ export const mainContent = [
             leftLabelName: "Teaching point",
           },
           {
+            rationale: "test-rationale",
+
             maxPoints: 1,
             seqNum: 1,
             itemNum: 4,
             itemStem:
               '<p>Complete the following table by choosing the potential nursing intervention per body system that the nurse</p><p>should implement from the lists of options. </p><table style="min-width: 50px" class="tiptap-table"><colgroup><col><col></colgroup><tbody><tr class="tiptap-row"><th rowspan="1" colspan="1" class="tiptap-th"><p>Body System</p></th><th rowspan="1" colspan="1" class="tiptap-th"><p>Potential Intervention</p></th></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Neurologic</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Neuro test q15 mins]]</p></td></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Respiratory</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Incentive Spirometry]]</p></td></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Cardiovascular</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Troponin-T and CKMB]]</p></td></tr></tbody></table>',
             transitionHeader: "",
-            questionType: "DDT",
+            questionType: "DDTable",
             answers: [
               {
                 options: [
@@ -453,13 +462,15 @@ export const mainContent = [
             ],
           },
           {
+            rationale: "test-rationale",
+
             maxPoints: 1,
             seqNum: 1,
             itemNum: 5,
             itemStem:
               "<p>The nurse should recognize that the client is potentially experiencing [[Word Choice 1 ]] and [[Word Choice 2]]</p>",
             transitionHeader: "",
-            questionType: "DND",
+            questionType: "DNDrop",
             dndAnswer: [
               {
                 answerId: "856c80b2-cbed-4de8-dd60-08dd4224f892",
@@ -496,13 +507,15 @@ export const mainContent = [
             ],
           },
           {
+            rationale: "test-rationale",
+
             transitionHeader: "",
             itemStem:
               "<p>Complete the following table by choosing the potential nursing intervention per body system that the nurse</p><p>should implement from the lists of options.</p>",
             itemNum: 6,
             seqNum: 1,
             maxPoints: 1,
-            questionType: "MCQNOGROUP",
+            questionType: "MatrixNoGrp",
             answers: [],
             rows: [
               {
@@ -533,12 +546,10 @@ export const mainContent = [
             ],
           },
         ],
-      }
-    ]
-
+      },
+    ],
   },
 ];
-
 
 export const RadioData = [
   { title: "Approve", value: 0 },

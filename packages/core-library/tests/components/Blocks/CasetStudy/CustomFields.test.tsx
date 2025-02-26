@@ -37,7 +37,7 @@ describe("CustomFields", () => {
   it("Should return HCP custom fields when question  type is HCP", () => {
     render(
       <Wrapper>
-        <CustomFields questionIndex={1} questionType="HCP" />
+        <CustomFields questionIndex={1} questionType="Highlight" />
       </Wrapper>
     );
 
@@ -48,7 +48,7 @@ describe("CustomFields", () => {
   it("Should return DNDBowTie custom fields when question  type is BowTie", () => {
     render(
       <Wrapper>
-        <CustomFields questionIndex={1} questionType="BOWTIE" />
+        <CustomFields questionIndex={1} questionType="Bowtie" />
       </Wrapper>
     );
 

@@ -413,7 +413,8 @@ export type CaseStudyContentCollectionDtos = {
   questionnaires: QuestionnaireType[];
 };
 
-export interface CaseStudyContentCollection extends ContainedCaseStudyQuestionType {
+export interface CaseStudyContentCollection
+  extends ContainedCaseStudyQuestionType {
   id: string;
 }
 
@@ -605,9 +606,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -914,3 +915,18 @@ export interface GetAllProgramsResponseType {
     }[];
   }[]
 }
+export type PolicyFileResponseType = {
+  fileName: string;
+  fileUrl: string;
+}
+
+export type GetCaseStudyListParams = {
+  TokenizeInformationId: string;
+};
+
+export type CaseStudyListResponse = {
+  caseNum: number;
+  caseName: string;
+  status: number;
+  dateCreated: string;
+};

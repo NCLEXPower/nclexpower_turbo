@@ -77,11 +77,11 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
     if (mainType === "Case Study") {
       return baseContent.filter(
         (content) => content.id === data.contentId
-      ) as ContainedCaseStudyQuestionType[];
+      ) as unknown as ContainedCaseStudyQuestionType[];
     } else {
       return baseContent.filter(
         (content) => content.id === data.contentId
-      ) as MainContentCollection[];
+      ) as unknown as MainContentCollection[];
     }
   }, [data, mainType]);
 
