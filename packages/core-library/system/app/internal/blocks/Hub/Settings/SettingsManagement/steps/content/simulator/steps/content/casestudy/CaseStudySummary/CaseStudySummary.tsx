@@ -13,7 +13,10 @@ import { ContainedCaseStudyQuestionType } from "../../../../types";
 import { useAtom } from "jotai";
 import { CreateCaseStudyAtom } from "../../../../useAtomic";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import { Button } from "../../../../../../../../../../../../../../components";
+import {
+  Button,
+  ParsedHtml,
+} from "../../../../../../../../../../../../../../components";
 import { ItemContent } from "./component/Items/ItemContent";
 import { BackgroundInfoContent } from "./component/BackgroundInfo/BackgroundInfoContent";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
@@ -22,7 +25,9 @@ import { useExecuteToast } from "../../../../../../../../../../../../../../conte
 import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
 import {
   useApiCallback,
+  useSanitizedInputs,
   useSensitiveInformation,
+  useStyle,
 } from "../../../../../../../../../../../../../../hooks";
 import { CreateRegularType } from "../../../../../../../../../../../../../../api/types";
 
@@ -37,8 +42,12 @@ interface CaseStudySummaryProps {
 
 interface DefaultViewProps {
   data: Partial<ContainedCaseStudyQuestionType>;
+  selectedQuestion: (value: number) => void;
 }
-const DefaultView: React.FC<DefaultViewProps> = ({ data }) => {
+const DefaultView: React.FC<DefaultViewProps> = ({
+  data,
+  selectedQuestion,
+}) => {
   return (
     <Grid
       sx={{ mt: 3 }}
@@ -46,6 +55,22 @@ const DefaultView: React.FC<DefaultViewProps> = ({ data }) => {
       rowSpacing={1}
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
     >
+      <Grid item xs={12}>
+        <Typography>MAIN TEXT :</Typography>
+        <Box
+          display="flex"
+          flexDirection="column"
+          padding="24px"
+          border="1px solid #0C225C"
+          overflow="auto"
+          borderRadius="5px"
+          mb={5}
+        >
+          <Typography variant="subtitle1" marginBottom="4px">
+            <ParsedHtml html={data.mainText ?? ""} />
+          </Typography>
+        </Box>
+      </Grid>
       <Grid item xs={6}>
         <Typography variant="subtitle1" marginBottom="4px">
           BACKGROUND INFO :
@@ -59,7 +84,7 @@ const DefaultView: React.FC<DefaultViewProps> = ({ data }) => {
           ITEMS :
         </Typography>
         <Box>
-          <ItemContent values={data} />
+          <ItemContent selectedQuestion={selectedQuestion} values={data} />
         </Box>
       </Grid>
     </Grid>
@@ -74,25 +99,33 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   previous,
   reset,
 }) => {
+  const [selectedQuestion, setSelectedQuestion] = useState(0);
   const [isTableView, setIsTableView] = useState<boolean>(false);
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
+  const { purifyInputs } = useSanitizedInputs({});
+  const { wordWrap } = useStyle();
   const createCaseStudyQuestion = useApiCallback(
     async (api, args: CreateRegularType) =>
       await api.webbackoffice.createRegularQuestion(args)
   );
   const { internal } = useSensitiveInformation();
-  const toast = useExecuteToast();
+  const { showToast } = useExecuteToast();
 
   useEffect(() => {
     setContentLoader(true);
     setTimeout(() => {
       setContentLoader(false);
-    }, 6000);
+    }, 3000);
   }, []);
 
   const handleClick = () => {
     setIsTableView((prev) => !prev);
+  };
+
+  const handlePrevious = () => {
+    previousStep();
+    previous();
   };
 
   async function onSubmit() {
@@ -101,36 +134,17 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
         const result = await createCaseStudyQuestion.execute(
           convertToCreateCaseStudy(caseStudyAtom, internal)
         );
-        if (result.status === 200)
-          toast.executeToast(
-            "Case Study created successfully",
-            "top-right",
-            false,
-            {
-              toastId: 0,
-              type: "success",
-            }
-          );
+        if (result.status === 200) {
+          showToast("Case Study created successfully", "success");
+          nextStep({});
+          next();
+        }
       }
     } catch (error) {
-      toast.executeToast(
-        "An error occurred while creating case study.",
-        "top-right",
-        false,
-        {
-          toastId: 0,
-          type: "error",
-        }
-      );
-    } finally {
-      nextStep({});
-      next();
+      handlePrevious();
+      showToast("An error occurred while creating case study.", "error");
     }
   }
-  const handlePrevious = () => {
-    previousStep();
-    previous();
-  };
 
   if (contentLoader) {
     return <CaseStudyLoader />;
@@ -156,7 +170,38 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
       {isTableView ? (
         <TableView data={caseStudyAtom ?? {}} />
       ) : (
-        <DefaultView data={caseStudyAtom ?? {}} />
+        <Box>
+          <DefaultView
+            selectedQuestion={(value) => setSelectedQuestion(value - 1)}
+            data={caseStudyAtom ?? {}}
+          />
+
+          <Typography mt={4}>RATIONALE : </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            padding="24px"
+            border="1px solid #0C225C"
+            overflow="auto"
+            borderRadius="5px"
+          >
+            <Typography
+              sx={{
+                ...wordWrap,
+              }}
+              component="div"
+            >
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: purifyInputs(
+                    caseStudyAtom?.questionnaires[selectedQuestion].rationale ??
+                      ""
+                  ) as TrustedHTML,
+                }}
+              />
+            </Typography>
+          </Box>
+        </Box>
       )}
       <Box
         sx={{

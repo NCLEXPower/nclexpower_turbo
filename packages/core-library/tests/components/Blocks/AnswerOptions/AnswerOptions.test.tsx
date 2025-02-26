@@ -81,7 +81,7 @@ describe("AnswerOptions", () => {
         <AnswerOptions
           questionIndex={1}
           questionType="caseStudy"
-          questionnaireType="MCQNOGROUP"
+          questionnaireType="MatrixNoGrp"
         />
       </FormProvider>
     );
@@ -112,7 +112,7 @@ describe("AnswerOptions", () => {
         <AnswerOptions
           questionIndex={1}
           questionType="caseStudy"
-          questionnaireType="DND"
+          questionnaireType="DNDrop"
         />
       </FormProvider>
     );
@@ -138,7 +138,7 @@ describe("AnswerOptions", () => {
         <AnswerOptions
           questionIndex={1}
           questionType="caseStudy"
-          questionnaireType="HCP"
+          questionnaireType="Highlight"
         />
       </FormProvider>
     );

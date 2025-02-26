@@ -18,9 +18,9 @@ export const CustomFields: React.FC<Props> = ({
   questionType,
 }) => {
   switch (questionType) {
-    case "HCP":
+    case "Highlight":
       return <HCPContentField questionIndex={questionIndex} />;
-    case "BOWTIE":
+    case "Bowtie":
       return <BowtieAnswerArea questionIndex={questionIndex} />;
     default:
       return <></>;
