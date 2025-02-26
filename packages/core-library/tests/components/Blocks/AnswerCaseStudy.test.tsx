@@ -124,7 +124,7 @@ describe("AnswerCaseStudy", () => {
     render(
       <AnswerOptions
         questionType="caseStudy"
-        questionnaireType="DDC"
+        questionnaireType="DDCloze"
         questionIndex={1}
       />
     );
@@ -146,7 +146,7 @@ describe("AnswerCaseStudy", () => {
     render(
       <AnswerOptions
         questionType="caseStudy"
-        questionnaireType="DND"
+        questionnaireType="DNDrop"
         questionIndex={1}
       />
     );
@@ -157,7 +157,7 @@ describe("AnswerCaseStudy", () => {
     render(
       <AnswerOptions
         questionType="caseStudy"
-        questionnaireType="BOWTIE"
+        questionnaireType="Bowtie"
         questionIndex={1}
       />
     );
