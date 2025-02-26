@@ -68,7 +68,7 @@ describe("CSMainContent", () => {
           itemStem:
             "<p>For each client finding below, click or check to specify if the finding is consistent with</p><p>the disease process of Appendicitis, Rhabdomyolysis, or Pneumothorax.</p><p>Each finding may support more than one disease process</p>",
           transitionHeader: "",
-          questionType: "MCQGROUP",
+          questionType: "MatrixWithGrp",
           columns: [
             {
               label: "Patient Findings",
@@ -175,6 +175,7 @@ describe("CSMainContent", () => {
               ],
             },
           ],
+          rationale: "",
         },
         {
           maxPoints: 1,
@@ -183,7 +184,7 @@ describe("CSMainContent", () => {
           itemStem:
             "<p>Which of the following observational findings in the nurse notes require</p><p>immediate follow-up?</p><p>Select by highlighting the words and/or phrases from the box below.</p>",
           transitionHeader: "",
-          questionType: "HCP",
+          questionType: "Highlight",
           hcpContent:
             '<p><strong>@1420 Nurse’s Notes:</strong></p><p>Client states, “<hcp-highlighter name="highlighted-v6mubiqzapk" class="hcp-highlighter" style=" cursor: pointer;">I feel like I became paralyzed for no reason. </hcp-highlighter><hcp-highlighter name="highlighted-947t9w0rn7" class="hcp-highlighter" style=" cursor: pointer;">I can’t walk without crutches now and I can’t feel the urge to pee and do a</hcp-highlighter></p><p>‘number two.”</p><p>Client reports that he started having tingling sensations and</p><p>numbness on both of his feet which quickly ascended to both of his</p><p>palms within 24 hours, and on the following day when he awoke</p><p><hcp-highlighter name="highlighted-i10eqaukt5h" class="hcp-highlighter" style=" cursor: pointer;">from his sleep, he claimed that he could no longer stand up and</hcp-highlighter></p><p>walk to the bathroom without holding on to surfaces for support.</p><p><hcp-highlighter name="highlighted-k08cih9wh3m" class="hcp-highlighter" style=" cursor: pointer;">After two days, he had lost control of his bladder and bowel sensation.</hcp-highlighter></p><p>H&amp;P Hx of COVID-19 last month.</p><p>V/S:</p><p><hcp-highlighter name="highlighted-eikokgrumvf" class="hcp-highlighter" style=" cursor: pointer;">HR 120 bpm , RR 29 , BP 130/50, Temp 37, O2 Sat 90% on RA</hcp-highlighter></p><p><hcp-highlighter name="highlighted-qxwg9lzoxup" class="hcp-highlighter" style=" cursor: pointer;">Client appears to have difficulty of breathing and malaise.</hcp-highlighter></p>',
           answers: [
@@ -223,6 +224,7 @@ describe("CSMainContent", () => {
               attrName: "highlighted-qxwg9lzoxup",
             },
           ],
+          rationale: "",
         },
         {
           transitionHeader: "",
@@ -231,7 +233,7 @@ describe("CSMainContent", () => {
           itemNum: 3,
           seqNum: 1,
           maxPoints: 1,
-          questionType: "BOWTIE",
+          questionType: "Bowtie",
           answers: [],
           rightSection: [
             {
@@ -315,6 +317,7 @@ describe("CSMainContent", () => {
           rightLabelName: "Client Understands",
           centerLabelName: "Primary Adverse Effect",
           leftLabelName: "Teaching point",
+          rationale: "",
         },
         {
           maxPoints: 1,
@@ -323,7 +326,7 @@ describe("CSMainContent", () => {
           itemStem:
             '<p>Complete the following table by choosing the potential nursing intervention per body system that the nurse</p><p>should implement from the lists of options. </p><table style="min-width: 50px" class="tiptap-table"><colgroup><col><col></colgroup><tbody><tr class="tiptap-row"><th rowspan="1" colspan="1" class="tiptap-th"><p>Body System</p></th><th rowspan="1" colspan="1" class="tiptap-th"><p>Potential Intervention</p></th></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Neurologic</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Neuro test q15 mins]]</p></td></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Respiratory</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Incentive Spirometry]]</p></td></tr><tr class="tiptap-row"><td rowspan="1" colspan="1" class="tiptap-cell"><p>Cardiovascular</p></td><td rowspan="1" colspan="1" class="tiptap-cell"><p>[[Troponin-T and CKMB]]</p></td></tr></tbody></table>',
           transitionHeader: "",
-          questionType: "DDT",
+          questionType: "DDTable",
           answers: [
             {
               options: [
@@ -377,6 +380,7 @@ describe("CSMainContent", () => {
               optionName: "Troponin-T and CKMB",
             },
           ],
+          rationale: "",
         },
         {
           transitionHeader: "",
@@ -385,7 +389,7 @@ describe("CSMainContent", () => {
           itemNum: 6,
           seqNum: 1,
           maxPoints: 1,
-          questionType: "MCQNOGROUP",
+          questionType: "MatrixWithGrp",
           answers: [],
           rows: [
             {
@@ -414,8 +418,11 @@ describe("CSMainContent", () => {
               label: "Not Expected",
             },
           ],
+          rationale: "",
         },
       ],
+      caseType: "UNFOLDING",
+      caseNum: 0,
     },
   ];
 

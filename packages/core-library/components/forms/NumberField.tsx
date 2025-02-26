@@ -153,7 +153,6 @@ const NumberFieldComponent = <T extends object>({
               value={String(field.value)}
               name={field.name}
               onValueChange={(values) => {
-                console.log("Values changed:", values);
                 if (field?.onChange) {
                   field.onChange(
                     asStringValue ? values.value : values.floatValue
