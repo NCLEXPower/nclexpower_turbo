@@ -11,11 +11,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import { Controller, FieldValues } from "react-hook-form";
 import { ControlledField } from "../Textfield";
 
-type SingleOption = {
-  label: string;
-  value: string;
-  code: string;
-  name: string;
+export type SingleOption = {
+  label: string | undefined;
+  value: string | undefined;
+  code: string | undefined;
+  name: string | undefined;
 };
 
 export type SingleSelectFieldProps = Omit<
@@ -42,14 +42,18 @@ export function SingleSelectField({
   return (
     <Stack width="100%">
       {label && (
-        <InputLabel error={error} required={required}>
+        <InputLabel
+          sx={{ textAlign: "start" }}
+          error={error}
+          required={required}
+        >
           {label}
         </InputLabel>
       )}
       <Autocomplete
         {...rest}
         options={options}
-        getOptionLabel={(option) => option.label ?? option.code}
+        getOptionLabel={(option) => option.label ?? option.code ?? ""}
         onChange={onChange}
         renderInput={(params) => (
           <TextField
@@ -66,7 +70,12 @@ export function SingleSelectField({
             selected={selected}
           >
             {option.label ?? option.code}
-            {selected ? <CheckIcon key={`check-icon-${option.value ?? option.code}`} color="info" /> : null}
+            {selected ? (
+              <CheckIcon
+                key={`check-icon-${option.value ?? option.code}`}
+                color="info"
+              />
+            ) : null}
           </MenuItem>
         )}
       />
