@@ -8,7 +8,9 @@ import { Box, Typography } from "@mui/material";
 import {
   Button,
   Card,
-  ControlledRichTextEditor, GenericSelectField
+  ControlledRichTextEditor,
+  GenericSelectField,
+  IconButton,
 } from "../../../../../../../../../../../../../../../components";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
@@ -16,20 +18,25 @@ import {
   tabsSequence,
 } from "../../../../../../../../constants/constants";
 import { useMemo } from "react";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 interface Props {
   type: string;
+  isSequenceDisabled: boolean;
 }
 
-export const BackgroundInfoTab = ({ type }: Props) => {
+export const BackgroundInfoTab = ({ type, isSequenceDisabled }: Props) => {
   type bgInfoType = Record<string, { seqNum: number; seqContent: string }[]>;
-  const { control, getValues } = useFormContext<bgInfoType>();
-  const { append } = useFieldArray({
+  const { control, getValues, watch } = useFormContext<bgInfoType>();
+  const { append, remove } = useFieldArray({
     control,
     name: type,
   });
   const value = getValues(`${type}`);
   const valueArray = useMemo(() => value, [value]);
+
+  const handleDelete = (index: number) => {
+    remove(index);
+  };
 
   return (
     <Box
@@ -62,25 +69,40 @@ export const BackgroundInfoTab = ({ type }: Props) => {
                 width: "100%",
                 mb: 3,
               }}
+              justifyContent="space-between"
             >
-              <Typography
+              <Box
                 sx={{
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  color: "#525252",
-                  mr: 5,
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 3,
                 }}
               >
-                Sequence No. :
-              </Typography>
-              <GenericSelectField
-                control={control}
-                name={`${type}.${index}.seqNum`}
-                options={tabsSequence ?? []}
-                width="20%"
-                defaultValue={`${type}.seqNum`}
-              />
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "16px",
+                    color: "#525252",
+                    mr: 5,
+                  }}
+                >
+                  Sequence No. :
+                </Typography>
+                <GenericSelectField
+                  control={control}
+                  disabled={isSequenceDisabled}
+                  name={`${type}.${index}.seqNum`}
+                  options={tabsSequence ?? []}
+                  width="20%"
+                  defaultValue={`${type}.seqNum`}
+                />
+              </Box>
+              <IconButton onClick={() => handleDelete(index)}>
+                <DeleteIcon />
+              </IconButton>
             </Box>
+
             <Box sx={{ textAlign: "start" }}>
               <ControlledRichTextEditor
                 customDependency={type}
