@@ -1,9 +1,7 @@
-import { Dashboard } from "./Dashboard"
+import { Dashboard } from "./Dashboard";
 
 const DashboardBlock = () => {
-  return (
-    <Dashboard />
-  )
-}
+  return <Dashboard />;
+};
 
 export default DashboardBlock;

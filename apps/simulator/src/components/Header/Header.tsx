@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AppBar, Toolbar, Box, Typography, Button, LinearProgress } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
@@ -9,8 +9,6 @@ import { CalculatorModal } from '../CalculatorModal/CalculatorUI';
 import { ReportIssueDialog } from '../Dialog/ReportIssue/ReportIssueDialog';
 import { ToolbarSettings } from '../Toolbar/Toolbar';
 import { IRTsModal } from '../Dialog/IrtModal/IRTModal';
-import { useTour } from '@reactour/tour';
-import { useLocalStorage } from 'core-library/hooks';
 import { useApplicationContext } from '../../core/context/AppContext';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { CustomTooltip } from 'core-library/components';
@@ -30,19 +28,12 @@ type Props = {
 };
 
 export const Header: React.FC<Props> = ({ logout, current }) => {
-  const { timeRemaining, duration: timeDuration } = useCountdown({ timeRemaining: '00:04:00:00', duration: '00:01:00:00' });
+  const { timeRemaining, duration: timeDuration } = useCountdown({
+    timeRemaining: '00:04:00:00',
+    duration: '00:01:00:00',
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setIsOpen } = useTour();
-  const { getItem, setItem } = useLocalStorage<string>('TourKey');
   const { refresh } = useApplicationContext();
-
-  useEffect(() => {
-    const Tour = getItem();
-    if (!Tour) {
-      setIsOpen(true);
-      setItem('true');
-    }
-  }, [setIsOpen]);
 
   const openModal = () => {
     setIsModalOpen(true);
