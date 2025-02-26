@@ -65,6 +65,7 @@ export const AccountMenu: React.FC<Props> = ({
         onClick={handleClick}
         variant={isInWebcHub ? "text" : "outlined"}
         data-testid="account-menu-button"
+        data-tour="step-2"
       >
         {icon}
         <Box sx={{ display: "flex", flexDirection: "column" }}>
