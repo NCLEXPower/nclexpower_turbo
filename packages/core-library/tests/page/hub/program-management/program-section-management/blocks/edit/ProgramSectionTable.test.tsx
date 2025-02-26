@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "../../../../../../common";
 import { ProgramSectionTable } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit/ProgramSectionTable";
 import { useAtom } from "jotai";
 
@@ -16,8 +16,8 @@ jest.mock("../../../../../../../core/router", () => ({
 }));
 
 const programSectionList = [
-  { sectionType: "document", title: "Sample Title", id: 1, link: "https://example.com" },
-  { sectionType: "other", title: "Another Title", id: 2 },
+  { sectionId: "123", sectionDataId: "12345", sectionType: "document", title: "Sample Title", link: "https://example.com" },
+  { sectionId: "456", sectionDataId: "45678", sectionType: "other", title: "Another Title" },
 ];
 
 describe("ProgramSectionTable", () => {

@@ -16,7 +16,7 @@ import {
   SectionIdAtom,
 } from "../../validation";
 import { useAtom } from "jotai";
-import { ProgramSectionTable } from "./ProgramSectionTable";
+import { ProgramSectionTable, TableColumnType } from "./ProgramSectionTable";
 import { useApiCallback } from "../../../../../../../../../hooks";
 import {
   useBusinessQueryContext,
@@ -116,51 +116,49 @@ export const ProgramSectionManagementEditBlock = () => {
 
             case "video":
               return {
-                ...commonData,
-                link: data.link ?? "",
-                videoPlaceholder: data.videoPlaceholder ?? "",
-                authorImage: data.authorImage ?? "",
-                authorName: data.authorName ?? "",
-                description: data.description ?? "",
+                  ...commonData,
+                  link: data.link ?? "",
+                  videoPlaceholder: data.videoPlaceholder ?? "",
+                  authorImage: data.authorImage ?? "",
+                  authorName: data.authorName ?? "",
+                  description: data.description ?? "",
               };
 
             case "simulator":
               return {
-                ...commonData,
-                contentArea: data.contentArea ?? "",
-                guided: data.guided ? "☑" : "☐",
-                unguided: data.unguided ? "☑" : "☐",
-                practice: data.practice ? "☑" : "☐",
+                  ...commonData,
+                  contentArea: data.contentArea ?? "",
+                  guided: data.guided ? "☑" : "☐",
+                  unguided: data.unguided ? "☑" : "☐",
+                  practice: data.practice ? "☑" : "☐",
               };
 
             case "content-cards":
               return {
-                ...commonData,
-                cardTopic:
-                  data.cards?.map((card) => card.cardTopic).join(", ") ??
-                  "",
-                cardFaces:
-                  data.cards
-                    ?.flatMap((card) => card.cardFaces)
-                    .join(", ") ?? "",
+                  ...commonData,
+                  cardTopic:
+                    data.cards?.map((card) => card.cardTopic).join(", ") ??
+                    "",
+                  cardFaces:
+                    data.cards
+                      ?.flatMap((card) => card.cardFaces)
+                      .join(", ") ?? "",
               };
 
             case "cat":
               return {
-                ...commonData,
-                catSimulator: data.catSimulator ?? "",
-                contentAreaCoverage: Array.isArray(data.contentAreaCoverage)
-                  ? data.contentAreaCoverage.join(", ")
-                  : "",
+                  ...commonData,
+                  catSimulator: data.catSimulator ?? "",
+                  contentAreaCoverage: Array.isArray(data.contentAreaCoverage)
+                    ? data.contentAreaCoverage.join(", ")
+                    : "",
               };
 
             default:
-              return commonData;
+              return { original: commonData };
           }
         })
-        .filter(
-          (item: any): item is Exclude<typeof item, null> => item !== null
-        );
+        .filter((item: TableColumnType | null): item is TableColumnType => item !== null);
     });
   }, [sectionsList]);
 

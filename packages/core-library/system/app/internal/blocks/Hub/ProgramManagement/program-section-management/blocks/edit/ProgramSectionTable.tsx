@@ -8,9 +8,25 @@ import { IconButton, EvaIcon } from "../../../../../../../../../components";
 import { PaginatedTable } from "../../../../../../../../../components/table";
 import { useMemo } from "react";
 import { formatSectionTitle } from "../../../../../../../../../utils";
+import { CellProps, Column } from "react-table";
+
+export type TableColumnType = {
+    sectionId: string;
+    sectionDataId: string;
+    sectionType: string;
+    title?: string;
+    link?: string;
+    contentArea?: string;
+    guided?: boolean;
+    unguided?: boolean;
+    practice?: boolean;
+    cardTopic?: string;
+    catSimulator?: string;
+    contentAreaCoverage?: string;
+};
 
 interface ProgramSectionTableProps {
-  tableData: Array<{ [key: string]: any }>;
+  tableData: TableColumnType[];
   sectionType: string;
   onEdit: (sectionId: string, sectionDataId: string) => void;
   onDelete: (id: string, title: string) => void;
@@ -67,34 +83,33 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const columns = useMemo(() => {
+  const columns: Column<TableColumnType>[] = useMemo(() => {
     switch (sectionType) {
       case "document":
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Link",
-            accessor: "link",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.link,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title ?? ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -102,32 +117,31 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
             },
           },
         ];
-      case "video":
+        case "video":
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Link",
-            accessor: "link",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.link,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title || ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -139,52 +153,51 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "ContentArea",
-            accessor: "contentArea",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.contentArea,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Guided",
-            accessor: "guided",
-            Cell: ({ value }: { value: boolean }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.guided,
+            Cell: ({ value }: CellProps<TableColumnType, boolean>) => (
+              <Typography>{value}</Typography>
             ),
             minWidth: 40,
           },
           {
             Header: "Unguided",
-            accessor: "unguided",
-            Cell: ({ value }: { value: boolean }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.unguided,
+            Cell: ({ value }: CellProps<TableColumnType, boolean>) => (
+              <Typography>{value}</Typography>
             ),
             minWidth: 40,
           },
           {
             Header: "Practice",
-            accessor: "practice",
-            Cell: ({ value }: { value: boolean }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.practice,
+            Cell: ({ value }: CellProps<TableColumnType, boolean>) => (
+              <Typography>{value}</Typography>
             ),
             minWidth: 40,
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title || ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -196,28 +209,28 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            id: "title",
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Card Topic",
-            accessor: "cardTopic",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.cardTopic,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title || ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -229,28 +242,27 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Link",
-            accessor: "link",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.link,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title || ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -262,28 +274,27 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         return [
           {
             Header: "CAT Simulator",
-            accessor: "catSimulator",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.catSimulator,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Content Area Coverage",
-            accessor: "contentAreaCoverage",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.contentAreaCoverage,
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, catSimulator } = row.original;
+            accessor: (row) => row,
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={catSimulator}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.catSimulator || ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -295,21 +306,22 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         return [
           {
             Header: "Title",
-            accessor: "title",
-            Cell: ({ value }: { value: string }) => (
-              <Typography>{String(value)}</Typography>
+            accessor: (row) => row.title,
+            id: "title",
+            Cell: ({ value }: CellProps<TableColumnType, string>) => (
+              <Typography>{value}</Typography>
             ),
           },
           {
             Header: "Actions",
-            accessor: "actions",
-            Cell: ({ row }: { row: any }) => {
-              const { sectionId, sectionDataId, title } = row.original;
+            accessor: (row) => row,
+            id: "actions",
+            Cell: ({ row }: CellProps<TableColumnType>) => {
               return (
                 <ActionsCell
-                  sectionId={sectionId}
-                  sectionDataId={sectionDataId}
-                  sectionTitle={title}
+                  sectionId={row.original.sectionId}
+                  sectionDataId={row.original.sectionDataId}
+                  sectionTitle={row.original.title ?? ""}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
@@ -347,7 +359,7 @@ export const ProgramSectionTable: React.FC<ProgramSectionTableProps> = ({
         noDataText="No data found"
         noDataFoundText="No data found"
         mobileFiltersConfig={{
-          alwaysOnFilters: ["description"],
+          alwaysOnFilters: ["title"],
           menuFilters: ["title", "link"],
         }}
       />

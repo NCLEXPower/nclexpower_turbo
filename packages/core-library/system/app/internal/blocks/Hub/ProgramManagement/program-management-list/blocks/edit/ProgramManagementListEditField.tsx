@@ -21,7 +21,13 @@ import { getSectionTypeIcons } from "../../../../../../../../../utils/IconUtils"
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { SectionListType } from "../../../../../../../../../types/wc/programList";
 import { CreateProgramFormType } from "../../validation";
-import { SectionDataType, SectionListTypes } from "./ProgramManagementListEditBlock";
+import { SectionDataType } from "./ProgramManagementListEditBlock";
+
+type SectionParamsType = {
+  sectionId: string, 
+  sectionType: string, 
+  sectionTitle: string
+}
 
 interface Props {
   onSave: () => void;
@@ -55,7 +61,7 @@ interface Props {
   sections: SectionListType[] | undefined;
   editingSectionId: string | null;
   editingSectionData: SectionDataType | null;
-  handleEditProgramSection: (section: any) => void;
+  handleEditProgramSection: (section: SectionParamsType) => void;
   handleDeleteProgramSection: (sectionId: string) => void;
   handleRemoveSection: (index: number) => void;
   isLoading?: boolean;

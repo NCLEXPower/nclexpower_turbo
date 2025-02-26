@@ -33,8 +33,8 @@ import { useApiCallback } from "../../../../../../../../../hooks";
 export type SectionDataType = {
   sectionTitle: string;
   sectionType: string;
-  sectionValue: string; 
-}
+  sectionValue: string;
+};
 
 type SectionDataItem = {
   sectionDataId: string;
@@ -43,7 +43,7 @@ type SectionDataItem = {
   secVidTitle?: string;
   catSimulator?: string;
   vid?: string;
-}
+};
 
 export type SectionListTypes = {
   sectionId: string;
@@ -62,7 +62,8 @@ export const ProgramManagementListEditBlock = () => {
   const [atomProgramType] = useAtom(programTypeAtom);
   const router = useRouter();
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
-  const [editingSectionData, setEditingSectionData] = useState<SectionDataType | null>(null);
+  const [editingSectionData, setEditingSectionData] =
+    useState<SectionDataType | null>(null);
   const { showToast } = useExecuteToast();
 
   const { businessQueryGetAllPrograms } = useBusinessQueryContext();
@@ -301,7 +302,9 @@ export const ProgramManagementListEditBlock = () => {
       if (!section.sectionData) return [];
 
       if (section.sectionType === "video") {
-        return section.sectionData?.map((item: SectionDataItem) => item.secVidTitle);
+        return section.sectionData?.map(
+          (item: SectionDataItem) => item.secVidTitle
+        );
       }
 
       return section.sectionData?.map((item: SectionDataItem) => {
@@ -317,18 +320,15 @@ export const ProgramManagementListEditBlock = () => {
 
     const sectionValue = getSectionValue();
 
-
-
     const updateFormAndData = () => {
+      const formattedSectionValue = Array.isArray(sectionValue)
+        ? sectionValue.join(", ")
+        : sectionValue ?? "";
 
-      const formattedSectionValue = Array.isArray(sectionValue) 
-    ? sectionValue.join(", ")
-    : sectionValue ?? "";
-    
       append({
         sectionTitle: section.sectionTitle,
         sectionType: section.sectionType,
-        sectionValue: formattedSectionValue
+        sectionValue: formattedSectionValue,
       });
 
       setValue(`sections.0.sectionValue`, sectionValue);
