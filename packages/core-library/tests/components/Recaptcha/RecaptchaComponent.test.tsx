@@ -320,4 +320,69 @@ describe('RecaptchaComponent', () => {
 
     expect((global.window as any).grecaptcha.reset).toHaveBeenCalled();
   });
+
+  it('should set isScriptLoaded state when the script loads successfully', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.querySelector(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    script?.dispatchEvent(new Event('load'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+
+  it('should handle script loading failure gracefully', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.querySelector(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    if (script) {
+      script.dispatchEvent(new Event('error'));
+    }
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining('Google reCAPTCHA URL is not defined')
+      );
+    });
+
+    (console.error as jest.Mock).mockRestore();
+  });
+
+  it('should check recaptcha readiness when isScriptLoaded changes', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+
+    (global.window as any).grecaptcha = {
+      ready: jest.fn((callback) => callback()),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+
+  it('should not append duplicate scripts when mounted multiple times', () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const scripts = document.querySelectorAll(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    expect(scripts.length).toBe(1);
+  });
 });
