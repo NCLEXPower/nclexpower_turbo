@@ -55,3 +55,4 @@ export * from "./useDeleteResource";
 export * from "./useDebounce";
 export * from "./useFileUpload";
 export * from "./golive/useScheduleCountdown";
+export * from "./useTourManager";
