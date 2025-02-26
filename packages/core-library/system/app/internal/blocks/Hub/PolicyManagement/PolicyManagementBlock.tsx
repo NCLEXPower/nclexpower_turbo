@@ -24,7 +24,7 @@ export const PolicyManagementBlock = () => {
     <Box>
       <Alert
         severity="info"
-        title="Policy Management "
+        title="Policy Management"
         description="You can create and view all the policy that will be sent to the policy page."
       />
       <Card>
