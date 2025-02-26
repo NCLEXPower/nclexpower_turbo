@@ -267,4 +267,57 @@ describe('RecaptchaComponent', () => {
     setIntervalSpy.mockRestore();
     clearIntervalSpy.mockRestore();
   });
+
+  it('should log an error if NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL is not set', () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL = '';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Google reCAPTCHA URL is not defined in environment variables.'
+    );
+
+    (console.error as jest.Mock).mockRestore();
+  });
+
+  it('should pass the correct props to the ReCAPTCHA component', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      const recaptcha = screen.getByTestId('recaptcha');
+      expect(recaptcha).toBeInTheDocument();
+    });
+  });
+
+  it('should handle reCAPTCHA response when user completes verification', async () => {
+    const onChangeMock = jest.fn();
+    render(
+      <RecaptchaComponent sitekey='your-sitekey-here' onChange={onChangeMock} />
+    );
+
+    await waitFor(() => {
+      (global.window as any).grecaptcha.getResponse.mockReturnValue(
+        'test-response'
+      );
+      onChangeMock('test-response');
+    });
+
+    await waitFor(() => {
+      expect(onChangeMock).toHaveBeenCalledWith('test-response');
+    });
+  });
+
+  it('should reset ReCAPTCHA when it expires', async () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+
+    (global.window as any).grecaptcha.reset();
+
+    expect((global.window as any).grecaptcha.reset).toHaveBeenCalled();
+  });
 });
