@@ -25,16 +25,29 @@ export const labelNames = {
   rightSection: "rightLabelName",
 };
 
-export const questionType = [
-  { value: "SATA", label: "SATA" },
-  { value: "MRSN", label: "MRSN" },
-  { value: "DDC", label: "DDC" },
-  { value: "DDT", label: "DDT" },
-  { value: "DND", label: "DND" },
-  { value: "HCP", label: "HCP" },
-  { value: "MCQNOGROUP", label: "MCQ(No Group)" },
-  { value: "MCQGROUP", label: "MCQ(Group)" },
-  { value: "BOWTIE", label: "BOWTIE" },
+export const questionTypes = {
+  UNFOLDING: [
+    { value: "SATA", label: "Select All That Apply" },
+    { value: "MRSN", label: "Multi-response Select N" },
+    { value: "DDCloze", label: "Drop-down Cloze" },
+    { value: "DDTable", label: "Drop-down Table" },
+    { value: "DNDrop", label: "Drag and Drop" },
+    { value: "Highlight", label: "Highlight Phrases" },
+    { value: "MatrixNoGrp", label: "Matrix MCQ Without Grouping" },
+    { value: "MatrixWithGrp", label: "Matrix MCQ With Grouping" },
+  ],
+  STANDALONE: [{ value: "Bowtie", label: "Bowtie" }],
+};
+
+export const caseStudyType = [
+  {
+    label: "Unfolding Case",
+    value: "UNFOLDING",
+  },
+  {
+    label: "Standalone Case",
+    value: "STANDALONE",
+  },
 ];
 
 export const BowtieFieldGroups: BowtieFieldGroupType[] = [
@@ -105,6 +118,7 @@ export const caseStudyQuestionnaires = {
   itemNum: 1,
   itemStem: "",
   transitionHeader: "",
+  rationale: "",
 };
 
 export const questionnairesDefaultValue = Array.from(
