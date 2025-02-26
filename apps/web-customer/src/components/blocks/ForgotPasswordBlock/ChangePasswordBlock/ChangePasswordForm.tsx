@@ -12,6 +12,7 @@ import {
   EvaIcon,
   PasswordToggleAdornment,
   TextField,
+  Link,
 } from "core-library/components";
 import { useShowPassword } from "./useShowPassword";
 import { ValidationIndicators } from "./ValidationIndicator";
@@ -25,7 +26,6 @@ import {
   ChangePasswordLeftColumn,
   ChangePasswordLockIcon,
 } from "core-library/assets";
-import Link from "next/link";
 
 interface ChangePasswordFormProps {
   submitLoading?: boolean;
