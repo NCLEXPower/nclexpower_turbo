@@ -391,4 +391,29 @@ describe("ProgramManagementListEditBlock", () => {
 
     expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
   });
+
+
+  // new tests
+
+  it("should display section type select field", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const sectionTypeSelect = await screen.findByTestId("section-type-select");
+
+    expect(sectionTypeSelect).toBeInTheDocument();
+  });
+
+  it("should display multiple select field when section type is video", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const sectionTypeSelect = await screen.findByTestId("section-type-select");
+
+    fireEvent.change(sectionTypeSelect, { target: { value: "video" } });
+
+    const multipleSelectField = await screen.findByTestId("multiple-select-field");
+
+    expect(multipleSelectField).toBeInTheDocument();
+  });
 });

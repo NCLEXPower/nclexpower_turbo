@@ -373,6 +373,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                             marginTop: 3,
                           }}
                           onChange={(e) => handleMultipleSelectChange(index, e)}
+                          data-testid="multiple-select-field"
                         />
                         <Divider
                           sx={{
