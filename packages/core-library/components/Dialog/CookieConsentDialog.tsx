@@ -60,8 +60,10 @@ export const CookieConsentDialog: React.FC = () => {
         <Box
           sx={{
             position: "fixed",
-            width: "100%",
             bottom: "0px",
+            left: 0,
+            right: 0,
+            width: "100vw",
             zIndex: "9999999",
             display: "flex",
             flexDirection: "column",
