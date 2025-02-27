@@ -83,4 +83,52 @@ describe("ProgramManagementListCreateBlock", () => {
 
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
+
+  it("navigates back when handleBack is called", () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    fireEvent.click(screen.getByText("Program Management Form"));
+
+    expect(mockHandleBack).toHaveBeenCalled();
+  });
+
+  it("appends a new section when handleAddSection is called", () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    fireEvent.click(screen.getByText("Program Management Form"));
+
+    expect(mockAppend).toHaveBeenCalled();
+  });
+
+  it("sets the value of a section when handleSectionChange is called", () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    const index = 0;
+    const value = "new value";
+
+    fireEvent.change(screen.getByText("Program Management Form"), {
+      target: { value },
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      `sections.${index}.sectionValue`,
+      value
+    );
+  });
+
+  it("sets the value of multiple selected sections when handleMultipleSelectChange is called", () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    const index = 0;
+    const value = ["value1", "value2"];
+
+    fireEvent.change(screen.getByText("Program Management Form"), {
+      target: { value },
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      `sections.${index}.sectionValue`,
+      value
+    );
+  });
 });
