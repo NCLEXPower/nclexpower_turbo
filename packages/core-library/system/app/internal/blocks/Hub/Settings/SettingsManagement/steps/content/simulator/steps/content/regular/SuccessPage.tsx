@@ -31,7 +31,7 @@ export const SuccessPage: React.FC<Props> = (props) => {
   };
 
   const handleGoToList = (value?: string) => {
-    router.push({ pathname: value || "/hub" });
+    router.push({ pathname: `/hub/qm${value}` || "/hub" });
   };
 
   return (
