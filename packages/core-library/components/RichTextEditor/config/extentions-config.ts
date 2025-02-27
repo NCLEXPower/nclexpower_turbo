@@ -6,6 +6,7 @@ import Superscript from "@tiptap/extension-superscript";
 import TableRow, { TableRowOptions } from "@tiptap/extension-table-row";
 import Underline, { UnderlineOptions } from "@tiptap/extension-underline";
 import BulletList from "@tiptap/extension-bullet-list";
+import Gapcursor from "@tiptap/extension-gapcursor";
 import Placeholder, { PlaceholderOptions } from "@tiptap/extension-placeholder";
 import OrderedList from "@tiptap/extension-ordered-list";
 import ListItem from "@tiptap/extension-list-item";
@@ -47,6 +48,7 @@ export const extensions: (
     types: ["heading", "paragraph"],
   }),
   TextStyle,
+  Gapcursor,
   Color,
   OrderedList.configure({
     keepMarks: true,
