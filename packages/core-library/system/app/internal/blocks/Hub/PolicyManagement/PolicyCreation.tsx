@@ -14,10 +14,8 @@ import {
 } from "../../../../../../components"
 import { policySchema, PolicyType } from "./schema"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Box } from "@mui/material"
-import { Accordion, AccordionDetails } from "@mui/material";
 import { useState } from "react";
-import { Typography } from "@mui/material"
+import { Box, Accordion, AccordionDetails, Typography } from "@mui/material"
 
 export const PolicyCreation: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
