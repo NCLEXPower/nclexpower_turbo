@@ -333,6 +333,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     options={sectionList}
                     label="Select Section Type"
                     onChange={(e) => handleSectionChange(index, e)}
+                    data-testid="section-type-select"
                   />
 
                   <IconButton
@@ -390,6 +391,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                             selectedSections[index]
                           )}
                           label={`Select in ${selectedSections[index]} section`}
+                          data-testid="generic-select-field"
                         />
                         <Divider
                           sx={{

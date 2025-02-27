@@ -8,67 +8,67 @@ import { ProgramManagementListEditField } from "../../../../../system/app/intern
 import { useExecuteToast } from "../../../../../contexts";
 
 jest.mock("../../../../../contexts", () => ({
-    useExecuteToast: jest.fn(),
-    useBusinessQueryContext: jest.fn(() => ({
-        businessQueryGetAllPrograms: jest.fn(() => ({
-        data: [
-            {
-                id: "1",
-                title: "Welcome to the Program",
-                programStatus: "available",
-                programImage: {} as StaticImageData,
-                sections: [],
-            },
-        ],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-      })),
-      businessQueryGetAllSections: jest.fn(() => ({
-        data: [
-              {
-                sectionId: "101",
-                sectionType: "video",
-                sectionTitle: "Introduction Video",
-                sectionData: [
-                  {
-                    sectionDataId: "201",
-                    title: "Getting Started",
-                    link: "https://example.com",
-                    contentArea: "Overview",
-                    catSimulator: "Simulator A",
-                    contentAreaCoverage: ["Topic 1", "Topic 2"],
-                    guided: "Yes",
-                    unguided: "No",
-                    practice: "Optional",
-                    authorName: "John Doe",
-                    authorImage: "https://example.com/john-doe.jpg",
-                    videoPlaceholder: "https://example.com/video-placeholder.jpg",
-                    description: "An introduction to the program",
-                    cards: [
-                      {
-                        cardId: "301",
-                        cardTopic: "Module 1",
-                        cardFaces: "Front & Back",
-                      },
-                      {
-                        cardId: "302",
-                        cardTopic: "Module 2",
-                        cardFaces: "Single Side",
-                      },
-                    ],
-                  },
-                ],
-              },
-        ],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-      })),
+  useExecuteToast: jest.fn(),
+  useBusinessQueryContext: jest.fn(() => ({
+    businessQueryGetAllPrograms: jest.fn(() => ({
+      data: [
+        {
+          id: "1",
+          title: "Welcome to the Program",
+          programStatus: "available",
+          programImage: {} as StaticImageData,
+          sections: [],
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: jest.fn(),
     })),
-  }));
+    businessQueryGetAllSections: jest.fn(() => ({
+      data: [
+        {
+          sectionId: "101",
+          sectionType: "video",
+          sectionTitle: "Introduction Video",
+          sectionData: [
+            {
+              sectionDataId: "201",
+              title: "Getting Started",
+              link: "https://example.com",
+              contentArea: "Overview",
+              catSimulator: "Simulator A",
+              contentAreaCoverage: ["Topic 1", "Topic 2"],
+              guided: "Yes",
+              unguided: "No",
+              practice: "Optional",
+              authorName: "John Doe",
+              authorImage: "https://example.com/john-doe.jpg",
+              videoPlaceholder: "https://example.com/video-placeholder.jpg",
+              description: "An introduction to the program",
+              cards: [
+                {
+                  cardId: "301",
+                  cardTopic: "Module 1",
+                  cardFaces: "Front & Back",
+                },
+                {
+                  cardId: "302",
+                  cardTopic: "Module 2",
+                  cardFaces: "Single Side",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: jest.fn(),
+    })),
+  })),
+}));
 
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),
@@ -105,8 +105,17 @@ jest.mock("../../../../../components", () => ({
   FileUploadField: ({ onUpload, ...props }: any) => (
     <input type="file" onChange={(e) => onUpload(e.target.files)} {...props} />
   ),
-  GenericSelectField: ({ onChange, options }: any) => (
-    <select onChange={(e) => onChange(e.target.value)}>
+  GenericSelectField: ({ onChange, options, ...props }: any) => (
+    <select onChange={(e) => onChange(e.target.value)} {...props} data-testid="section-type-select">
+      {options.map((opt: any) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  ),
+  MultipleSelectField: ({ onChange, options, ...props }: any) => (
+    <select onChange={(e) => onChange(e.target.value)} multiple {...props} data-testid="multiple-select-field">
       {options.map((opt: any) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
@@ -143,13 +152,23 @@ const defaultProps = {
   fileName: "",
   programImage: [],
   control: mockUseForm().control,
-  fields: [],
-  sectionList: [],
+  fields: [
+    {
+      id: "1",
+      sectionTitle: "Section 1",
+      sectionType: "video",
+      sectionValue: "Value 1",
+    },
+  ],
+  sectionList: [
+    { label: "Video", value: "video" },
+    { label: "Document", value: "document" },
+  ],
   handleSectionChange: mockHandleSectionChange,
   handleAddSection: mockHandleAddSection,
-  filteredSectionValuesList: () => [],
+  filteredSectionValuesList: () => [{ label: "Topic 1", value: "topic1" }],
   handleMultipleSelectChange: mockHandleMultipleSelectChange,
-  selectedSections: {},
+  selectedSections: { 0: "video" },
   setValue: mockSetValue,
   showAddSection: true,
   sections: [],
@@ -163,6 +182,12 @@ const defaultProps = {
 beforeAll(() => {
   global.URL.createObjectURL = jest.fn(() => 'http://dummyurl.com');
 });
+
+beforeEach(() => {
+  Object.defineProperty(HTMLFormElement.prototype, 'requestSubmit', {
+    value: jest.fn(),
+  });
+})
 
 describe("ProgramManagementListEditBlock", () => {
   let mockHandleSubmit: jest.Mock;
@@ -194,7 +219,14 @@ describe("ProgramManagementListEditBlock", () => {
   (useExecuteToast as jest.Mock).mockReturnValue({ showToast: jest.fn() });
 
   (useFieldArray as jest.Mock).mockReturnValue({
-    fields: [],
+    fields: [
+      {
+        id: "1",
+        sectionTitle: "Section 1",
+        sectionType: "video",
+        sectionValue: "Value 1",
+      },
+    ],
     append: mockAppend,
   });
 
@@ -300,5 +332,63 @@ describe("ProgramManagementListEditBlock", () => {
     render(<ProgramManagementListEditBlock />);
 
     expect(await screen.getByText("Program Name")).toBeInTheDocument();
+  });
+
+  it("should add a new section when Add Section button is clicked", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const addButton = await screen.findByTestId("add-section-button");
+
+    expect(addButton).toBeInTheDocument();
+
+    fireEvent.click(addButton);
+
+    await waitFor(() => expect(mockAppend).toHaveBeenCalled());
+  });
+
+  it("should remove a new section when delete section button is clicked", async () => {
+    setUpMocks("1");
+
+    (useFieldArray as jest.Mock).mockReturnValue({
+      fields: [
+        { id: "1", sectionTitle: "Welcome", sectionType: "document", sectionValue: "test.pdf" },
+      ],
+      append: mockAppend,
+      remove: mockHandleRemoveSection,
+    });
+
+    render(<ProgramManagementListEditBlock />);
+
+    const addButton = await screen.findByTestId("add-section-button");
+
+    expect(addButton).toBeInTheDocument();
+
+    fireEvent.click(addButton);
+
+    const removeButton = await screen.findByTestId("remove-section-button");
+    expect(removeButton).toBeInTheDocument();
+
+    fireEvent.click(removeButton);
+
+    expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
+  });
+
+  
+  it("should call handleRemoveSection when remove button is clicked", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const addButton = await screen.findByTestId("add-section-button");
+
+    fireEvent.click(addButton);
+
+    await waitFor(() => {
+      const removeButton = screen.getByTestId("remove-section-button");
+      expect(removeButton).toBeInTheDocument();
+      fireEvent.click(removeButton);
+    });
+
+    expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
   });
 });

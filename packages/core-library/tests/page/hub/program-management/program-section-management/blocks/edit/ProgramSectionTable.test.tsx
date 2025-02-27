@@ -1,6 +1,10 @@
-import { render, screen } from "../../../../../../common";
+import { render, screen, fireEvent, waitFor } from "../../../../../../common";
 import { ProgramSectionTable } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit/ProgramSectionTable";
 import { useAtom } from "jotai";
+
+jest.mock('next/config', () => () => ({
+  publicRuntimeConfig: {},
+}));
 
 jest.mock("jotai", () => ({
   ...jest.requireActual("jotai"),
@@ -88,5 +92,23 @@ describe("ProgramSectionTable", () => {
     );
 
     expect(screen.getByText("No data found")).toBeInTheDocument();
+  });
+
+  it("should render rows correctly for different section types", () => {
+    const sectionTypes = ["document", "video", "simulator", "content-cards", "med-cards", "cat"];
+    
+    sectionTypes.forEach((type) => {
+      render(
+        <ProgramSectionTable
+          onEdit={mockEdit}
+          onDelete={mockDelete}
+          tableData={programSectionList.map(item => ({ ...item, sectionType: type }))}
+          sectionType={type}
+        />
+      );
+      
+      const tableRows = screen.getAllByRole("row");
+      expect(tableRows.length).toBeGreaterThan(1);
+    });
   });
 });
