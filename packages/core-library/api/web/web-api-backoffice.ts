@@ -51,13 +51,10 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
-<<<<<<< HEAD
   DeleteReportIssuesParams,
-=======
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
->>>>>>> 4a3cbfa2c5d243d3cb3fb27af4ede6328200fe9a
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -460,24 +457,19 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`
     );
   }
-
-<<<<<<< HEAD
   public async deleteReportIssue(params: DeleteReportIssuesParams) {
     return await this.axios.delete(
       `/api/v1/Customer/delete-report-issue?${qs.stringify({ ...params })}`
     )
   }
-}
-=======
   public async caseStudyList(params: GetCaseStudyListParams) {
     return await this.axios.get<CaseStudyListResponse[]>(
       `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
-    );
+    )
   }
-
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(
       `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
   }
 }
->>>>>>> 4a3cbfa2c5d243d3cb3fb27af4ede6328200fe9a
+

@@ -3,19 +3,33 @@ import ReportedIssuesBlock from "../../../system/app/internal/blocks/Hub/Reports
 import { useApi, useApiCallback, useColumns } from "../../../hooks";
 import { useExecuteToast } from "../../../contexts";
 
-jest.mock("../../../../../../hooks", () => ({
-    ...jest.requireActual("../../../../../../hooks"),
-    useApiCallback: jest.fn((asyncFn) => ({
-      execute: jest.fn(async (args) => asyncFn({ webbackoffice: { deleteReportIssue: jest.fn().mockResolvedValue({ success: true }) } }, args)),
-      loading: false,
-    })),
+jest.mock("../../../config", () => ({
+    config: { value: jest.fn() },
+  }));
+
+
+jest.mock("../../../core/router", () => ({
+    useRouter: jest.fn(),
   }));
   
-  jest.mock("../../../../../../contexts", () => ({
-    ...jest.requireActual("../../../../../../contexts"),
-    useExecuteToast: jest.fn(() => ({
-      showToast: jest.fn(),
+jest.mock("../../../contexts", () => ({
+    useExecuteToast: jest.fn,
+  }));
+  
+
+  jest.mock("../../../hooks", () => ({
+    useApi: jest.fn(() => ({
+      loading: false,
+      execute: jest.fn(),
     })),
+    useApiCallback: jest.fn(() => ({
+      loading: false,
+      execute: jest.fn(),
+    })),
+    useColumns: jest.fn(() => ({
+      columns: [],
+    })),
+    useCustomAction: jest.fn(),
   }));
   
   test('renders ReportedIssuesBlock and fetches reported issues', async () => {
