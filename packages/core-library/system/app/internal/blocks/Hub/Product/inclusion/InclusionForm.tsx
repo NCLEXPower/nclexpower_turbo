@@ -7,7 +7,7 @@
 import React from 'react'
 import { InclusionSchema, InclusionType } from './validation'
 import { Button, Card, TextField, TextAreaField } from '../../../../../../../components'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useKeyDown } from '../../../../../../../hooks/useKeyDown'
@@ -18,32 +18,42 @@ type InclusionFormPropsType = {
 
 export const InclusionForm: React.FC<InclusionFormPropsType> = ({ onSubmit }) => {
     const form = useForm<InclusionType>({
-        resolver: yupResolver(InclusionSchema)
+        resolver: yupResolver(InclusionSchema),
+        defaultValues: {
+            option: '',
+            description: ''
+        }
     })
 
     const { control, handleSubmit, reset } = form
     const handleSubmitForm = () => {
-        handleSubmit(onSubmit)()
-        reset()
+        handleSubmit((data) => {
+            onSubmit(data)
+            reset({ option: '', description: '' })
+        })()
     }
 
     useKeyDown("Enter", () => handleSubmitForm());
 
     return (
-        <Card sx={{ width: 1, height: "fit-content" }}>
-            <Box display="flex" gap={2} alignItems="end">
-                <TextField control={control} name='option' label="Add Inclusion" />
-            
-            </Box>
-            <Box display="flex" gap={2} alignItems="end">
+        <Card sx={{ width: 1, height: "fit-content", p: 2 }}>
+            <Box display="flex" flexDirection="column" gap={2}>
+                <TextField 
+                    control={control} 
+                    name='option' 
+                    label="Add Inclusion"
+                />
+                <Typography variant="body1">Add Description</Typography>
                 <TextAreaField
                     control={control}
                     name='description'
-                    placeholder='Add Description...'
+                   
                 />
-                  <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
-                    Submit
-                </Button>
+                <Box display="flex" justifyContent="flex-end">
+                    <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
+                        Submit
+                    </Button>
+                </Box>
             </Box>
         </Card>
     )
