@@ -17,7 +17,7 @@ const overlayStyle: CSSProperties = {
   height: '100%',
   top: '0',
   left: '0',
-  background: 'linear-gradient(90deg, #181818 0%, rgba(24, 24, 24, 0) 100%)',
+  background: 'linear-gradient(90.15deg, #181818  4.55%, rgba(24, 24, 24, 0) 99.87%)',
   zIndex: 1,
 };
 
@@ -25,13 +25,13 @@ export const ImageSection: React.FC<ImageSectionProps> = ({
   image,
   altText,
 }) => (
-  <div className='w-full sm:w-1/2 h-1/2 sm:h-full relative order-1'>
+  <div className='w-full md:w-[clamp(1px,31.25vw,1200px)] h-full md:h-[clamp(1px,28.594vw,1198px)] relative order-0 md:order-1'>
     <div style={overlayStyle}></div>
     <Image
       src={image}
       alt={altText}
       loading='lazy'
-      className='w-full h-full lg:h-[100vh] object-cover'
+      className='w-full h-full  object-cover'
     />
   </div>
 );

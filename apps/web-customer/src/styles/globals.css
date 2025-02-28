@@ -18,16 +18,43 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
+
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .container {
+    max-width: clamp(1px, 70%, 999999px) !important;
+  }
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+
+@media (max-width: 767px) {
+
+  .container {
+    max-width: clamp(1px, 91.386%, 1775px) !important;
+  }
+
+  p {
+    margin-block-start: clamp(1px, 2.325581vw, 32px) !important;
+    margin-block-end: clamp(1px, 2.325581vw, 32px) !important;
   }
 }

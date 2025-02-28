@@ -40,97 +40,97 @@ export const DrawerLayout: React.FC<
   sidebarStyles,
   isPaid,
 }) => {
-  const isHidden = useIsDesignVisible();
-  const { isMobile } = useResolution();
-  const mounted = useIsMounted();
+    const isHidden = useIsDesignVisible();
+    const { isMobile } = useResolution();
+    const mounted = useIsMounted();
 
-  const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(true);
 
-  const { isScrolled } = useScroll();
+    const { isScrolled } = useScroll();
 
-  const router = useRouter();
+    const router = useRouter();
 
-  const isInHub = router.pathname?.startsWith("/hub") || false;
-  const appName = config.value.BASEAPP;
-  const inWebc = appName.includes("c");
-  const isInWebcHub = isAuthenticated && isInHub && inWebc;
-  const parsedIsPaid =
-    isAuthenticated && inWebc
-      ? Decryption(isPaid ?? ":", config.value.SECRET_KEY)
-      : "yes";
+    const isInHub = router.pathname?.startsWith("/hub") || false;
+    const appName = config.value.BASEAPP;
+    const inWebc = appName.includes("c");
+    const isInWebcHub = isAuthenticated && isInHub && inWebc;
+    const parsedIsPaid =
+      isAuthenticated && inWebc
+        ? Decryption(isPaid ?? ":", config.value.SECRET_KEY)
+        : "yes";
 
-  const handleDrawer = () => {
-    setOpen((prev) => !prev);
-  };
+    const handleDrawer = () => {
+      setOpen((prev) => !prev);
+    };
 
-  useEffect(() => {
-    if (isMobile) {
-      setOpen(false);
-    } else if (isAuthenticated) {
-      setOpen(true);
-    } else {
-      setOpen(!inWebc);
-    }
-  }, [inWebc, isAuthenticated, isMobile]);
+    useEffect(() => {
+      if (isMobile) {
+        setOpen(false);
+      } else if (isAuthenticated) {
+        setOpen(true);
+      } else {
+        setOpen(!inWebc);
+      }
+    }, [inWebc, isAuthenticated, isMobile]);
 
-  if (!mounted) return;
+    if (!mounted) return;
 
-  const customHeaderStyles = isInWebcHub
-    ? {
+    const customHeaderStyles = isInWebcHub
+      ? {
         drawerHeader: {
           bgcolor: "#00173F",
           color: "white",
         },
       }
-    : headerStyles;
+      : headerStyles;
 
-  return (
-    <Box display="flex">
-      {menu.length > 0 &&
-        (isAuthenticated || isMobile) &&
-        parsedIsPaid !== "no" && (
-          <Sidebar
-            {...sidebarStyles}
-            isMobile={isMobile}
-            menu={menu}
-            open={open}
-            setOpen={handleDrawer}
-            isAuthenticated={isAuthenticated}
-            onLogout={onLogout}
-          />
-        )}
-      <Main open={open} isMobile={isMobile}>
-        <Box
-          display="flex"
-          height="100vh"
-          flexDirection="column"
-          minHeight="100vh"
-        >
-          <Header
-            {...customHeaderStyles}
-            hidden={isHidden ?? false}
-            drawerButton={
-              ((!open && isAuthenticated) || isMobile) && (
-                <Button
-                  onClick={handleDrawer}
-                  sx={{ color: isInWebcHub && "white" }}
-                  aria-label="toggle-sidebar"
-                >
-                  <MenuIcon
-                    sx={{
-                      color: inWebc && !isScrolled ? "white" : "#00173F",
-                    }}
-                  />
-                </Button>
-              )
-            }
-            menu={menu}
-            isAuthenticated={isAuthenticated}
-            onLogout={onLogout}
-          />
-          <Box height="100%">{children}</Box>
-        </Box>
-      </Main>
-    </Box>
-  );
-};
+    return (
+      <Box display="flex">
+        {menu.length > 0 &&
+          (isAuthenticated || isMobile) &&
+          parsedIsPaid !== "no" && (
+            <Sidebar
+              {...sidebarStyles}
+              isMobile={isMobile}
+              menu={menu}
+              open={open}
+              setOpen={handleDrawer}
+              isAuthenticated={isAuthenticated}
+              onLogout={onLogout}
+            />
+          )}
+        <Main open={open} isMobile={isMobile}>
+          <Box
+            display="flex"
+            height="100vh"
+            flexDirection="column"
+            minHeight="100vh"
+          >
+            <Header
+              {...customHeaderStyles}
+              hidden={isHidden ?? false}
+              drawerButton={
+                ((!open && isAuthenticated) || isMobile) && (
+                  <Button
+                    onClick={handleDrawer}
+                    sx={{ color: isInWebcHub && "white" }}
+                    aria-label="toggle-sidebar"
+                  >
+                    <MenuIcon
+                      sx={{
+                        color: inWebc && !isScrolled ? "white" : "#00173F",
+                      }}
+                    />
+                  </Button>
+                )
+              }
+              menu={menu}
+              isAuthenticated={isAuthenticated}
+              onLogout={onLogout}
+            />
+            <Box height="100%">{children}</Box>
+          </Box>
+        </Main>
+      </Box>
+    );
+  };

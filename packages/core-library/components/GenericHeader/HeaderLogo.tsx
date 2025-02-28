@@ -2,25 +2,26 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { NCLEXBlueLogo, NCLEXYellowLogo } from "../../assets";
 import { useRouter, useScroll } from "../../core";
+import { useResolution } from "../../hooks";
 
-interface Props {}
+interface Props { }
 
-export const HeaderLogo: React.FC<Props> = ({}) => {
+export const HeaderLogo: React.FC<Props> = ({ }) => {
   const router = useRouter();
   const { isScrolled } = useScroll();
+  const { isMobile } = useResolution();
 
   const NCLEXLogo =
     router.pathname === "/404" || isScrolled ? NCLEXBlueLogo : NCLEXYellowLogo;
 
-    const clickHandle = () =>{
-      router.push('/')
-    }
+  const clickHandle = () => {
+    router.push('/')
+  }
 
   return (
     <Box
       position="relative"
       sx={{ cursor: "pointer" }}
-      height={70}
       display="flex"
       alignItems="center"
       role="button"
@@ -38,7 +39,10 @@ export const HeaderLogo: React.FC<Props> = ({}) => {
           md: theme.typography.h3.fontSize,
         })}
       >
-        <Image width={150} src={NCLEXLogo} alt="NCLEX Logo" onClick={clickHandle}/>
+        <Box sx={{ width: isMobile ? "clamp(1px,46.512vw,400px) !important" : "clamp(1px,10.417vw,400px)" }}>
+          <Image src={NCLEXLogo} alt="NCLEX Logo" onClick={clickHandle} />
+        </Box>
+
       </Typography>
     </Box>
   );

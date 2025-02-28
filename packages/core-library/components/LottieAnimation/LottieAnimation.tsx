@@ -11,9 +11,16 @@ interface LottieAnimationProps {
 
 export function LottieAnimation({
   animationData,
-  width = 300,
-  height = 300,
   style = {},
 }: LottieAnimationProps) {
-  return <Lottie animationData={animationData} style={{ width, height, ...style }} />;
+  return (
+    <Lottie
+      animationData={animationData}
+      style={{
+        width: "100%",
+        height: "auto",
+        ...style,
+      }}
+    />
+  );
 }

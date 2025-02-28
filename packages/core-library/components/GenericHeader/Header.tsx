@@ -98,7 +98,6 @@ export const Header: React.FC<Props> = ({
         role="banner"
         component="header"
         width="100%"
-        minHeight={70}
         display="flex"
         data-testid="header"
         justifyContent="center"
@@ -112,143 +111,153 @@ export const Header: React.FC<Props> = ({
         }}
         data-tour="step-1"
       >
-        {menu && menu.length > 0 && drawerButton && (
-          <Grid item>{drawerButton}</Grid>
-        )}
-
-        <Grid
-          container
-          px={8}
-          width="100%"
-          position="relative"
-          display="flex"
-          alignItems="flex-end"
-          justifyContent="flex-end"
+        <Box
+          className="container "
         >
           <Grid
-            item
             container
-            alignItems="flex-center"
-            spacing={6}
-            height="auto"
+            width="100%"
+            minHeight={isMobile ? "clamp(50px, 17.442vw, 220px)" : "clamp(50px, 5.7292vw, 220px)"}
+            position="relative"
+            display="flex"
+            alignItems="flex-end"
+            justifyContent="flex-end"
           >
             <Grid
               item
               container
-              alignItems="center"
-              justifyContent="space-between"
-              xs
+              alignItems="flex-center"
+              height="auto"
             >
-              {!isAuthenticated && (
-                <Grid item>
-                  <HeaderLogo />
-                </Grid>
-              )}
-
-              <Grid item display="flex" alignItems="center">
-                {!isMobile && !isAuthenticated ? (
-                  <Grid container gap={6} direction="row" alignItems="center">
-                    {menu &&
-                      menu.length > 0 &&
-                      menu.map((navigation, index) => (
-                        <Grid item key={index}>
-                          <Button
-                            disabled={navigation.path == path}
-                            sx={
-                              navigation.label === "Login"
-                                ? loginButtonSx
-                                : headerLinkSx
-                            }
-                            onClick={() => handleNavigate(navigation.path)}
-                            data-testid={`menu-item-${navigation.label}`}
-                          >
-                            {navigation.label}
-                          </Button>
-                        </Grid>
-                      ))}
+              <Grid
+                item
+                container
+                alignItems="center"
+                justifyContent="space-between"
+                xs
+              >
+                {!isAuthenticated && (
+                  <Grid item>
+                    <HeaderLogo />
                   </Grid>
-                ) : null}
+                )}
+
+                <Grid item display="flex" alignItems="center">
+                  {!isMobile && !isAuthenticated ? (
+                    <Grid container direction="row" alignItems="center">
+                      {menu &&
+                        menu.length > 0 &&
+                        menu.map((navigation, index) => (
+                          <Grid item key={index}>
+                            <Button
+                              disabled={navigation.path == path}
+                              sx={
+                                navigation.label === "Login"
+                                  ? loginButtonSx
+                                  : headerLinkSx
+
+                              }
+                              onClick={() => handleNavigate(navigation.path)}
+                              data-testid={`menu-item-${navigation.label}`}
+                            >
+                              <Box sx={{
+                                fontSize: "clamp(1px, 1.145831vw, 44px) !important",
+                                fontFamily: "Poppins",
+                              }}>
+                                {navigation.label}
+                              </Box>
+                            </Button>
+                          </Grid>
+                        ))}
+                    </Grid>
+                  ) : null}
+                </Grid>
+
+                {menu && menu.length > 0 && drawerButton && (
+                  <Grid item >{drawerButton}</Grid>
+                )}
               </Grid>
+              {isAuthenticated && <Grid item alignSelf="center"></Grid>}
+              {isAuthenticated && <Grid item alignSelf="center"></Grid>}
+              {isMobile && <Grid item></Grid>}
             </Grid>
-            {isAuthenticated && <Grid item alignSelf="center"></Grid>}
-            {isAuthenticated && <Grid item alignSelf="center"></Grid>}
-            {isMobile && <Grid item></Grid>}
-          </Grid>
-          <Grid item xs={12} position="relative"></Grid>
-          {isInWebcHub && !isMobile && (
-            <Grid
-              item
-              xs={5}
-              sm
-              md
-              lg
-              xl
-              sx={{
-                alignSelf: "center",
-                display: { md: "none", lg: "block", xl: "block" },
-              }}
-            >
-              <BreadCrumbs />
-            </Grid>
-          )}
-          {isInWebcHub && (
-            <Grid
-              item
-              xs
-              sm={5}
-              md={4}
-              lg={3}
-              xl={3}
-              sx={{
-                display: "block",
-                alignSelf: "center",
-              }}
-            >
-              <ClickAwayListener onClickAway={handleClickAway}>
-                <Container
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    gap: "10px",
-                  }}
-                >
-                  <IconButton onClick={toggleSearchField} data-tour="step-3">
-                    <SearchIcon fontSize="large" sx={{ color: "white" }} />
-                  </IconButton>
-                  <Box
+            <Grid item xs={12} position="relative"></Grid>
+            {isInWebcHub && !isMobile && (
+              <Grid
+                item
+                xs={5}
+                sm
+                md
+                lg
+                xl
+                sx={{
+                  alignSelf: "center",
+                  display: { md: "none", lg: "block", xl: "block" },
+                }}
+              >
+                <BreadCrumbs />
+              </Grid>
+            )}
+            {isInWebcHub && (
+              <Grid
+                item
+                xs
+                sm={5}
+                md={4}
+                lg={3}
+                xl={3}
+                sx={{
+                  display: "block",
+                  alignSelf: "center",
+                }}
+              >
+                <ClickAwayListener onClickAway={handleClickAway}>
+                  <Container
                     sx={{
-                      width: showSearch ? "100%" : "0%",
-                      overflow: "hidden",
-                      transition: "width 0.5s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      gap: "10px",
                     }}
                   >
-                    <InputBase placeholder="Search" sx={inputBaseStyles} />
-                  </Box>
-                </Container>
-              </ClickAwayListener>
-            </Grid>
-          )}
+                    <IconButton onClick={toggleSearchField} data-tour="step-3">
+                      <SearchIcon fontSize="large" sx={{ color: "white" }} />
+                    </IconButton>
+                    <Box
+                      sx={{
+                        width: showSearch ? "100%" : "0%",
+                        overflow: "hidden",
+                        transition: "width 0.5s ease",
+                      }}
+                    >
+                      <InputBase placeholder="Search" sx={inputBaseStyles} />
+                    </Box>
+                  </Container>
+                </ClickAwayListener>
+              </Grid>
+            )}
 
-          {isAuthenticated && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                zIndex: 1000,
-                margin: 2,
-              }}
-            >
-              <AccountMenu
-                icon={<Avatar src="/path-to-user-image.jpg" />}
-                label={isMobile ? "" : "User"}
-                accountItem={AccountMenuItem}
-                onLogout={handleLogout}
-              />
-            </Box>
-          )}
-        </Grid>
+            {isAuthenticated && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  zIndex: 1000,
+                  margin: 2,
+                }}
+              >
+                <AccountMenu
+                  icon={<Avatar src="/path-to-user-image.jpg" />}
+                  label={isMobile ? "" : "User"}
+                  accountItem={AccountMenuItem}
+                  onLogout={handleLogout}
+                />
+              </Box>
+            )}
+          </Grid>
+        </Box>
       </Box>
+
     )
   );
 };

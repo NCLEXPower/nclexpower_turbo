@@ -9,23 +9,30 @@ import React, { useState } from 'react';
 import { DialogBox } from 'core-library/components';
 import { ModalContent } from './ModalComponent/ModalContent';
 import { modalContent, sliderConfig } from './ModalComponent/modalData';
+import { Margin } from '@mui/icons-material';
 
-interface Props {}
+interface Props { }
 
 type ModalType = 'WatchVideos' | 'Study' | 'Practice';
 
 const dialogStyles = {
   '& .MuiDialog-paper': {
-    width: '90%',
-    maxWidth: '1050px',
+    width: '100%',
+    maxWidth: {
+      xs: '100%',
+      md: 'clamp(1px,54.688vw,2100px)',
+    },
     height: 'auto',
-    maxHeight: '90vh',
+    maxHeight: {
+      xs: '100%',
+      md: 'clamp(1px,28.594vw,1198px)',
+    },
     overflowY: 'auto',
     color: '#FFFFFF',
     borderRadius: '6px',
-    padding: '1rem',
   },
 };
+
 
 export const HowItWorksBlock: React.FC<Props> = (props) => {
   const [isOpenModal, setIsOpenModal] = useState<{
@@ -48,85 +55,85 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className='bg-softGrayBlue h-fit py-20 items-center justify-center flex'>
-      <div className='w-full flex flex-col items-center'>
-        <div className='flex flex-col gap-5 items-center px-10 text-center'>
-          <p className='lg:text-4xl text-3xl font-bold '>
-            <span className='text-darkBlue'>Step-by-step</span> till you pass!
-          </p>
-          <p className='font-bold'>
-            Elevate your learning and critical thinking like never before!
-          </p>
-          <p>
-            With the CORE-Zigma System, you will build your knowledge,
-            confidence, and test-taking skills - step by step with our proven
-            method!
-          </p>
-        </div>
-        <div className='w-4/6 flex items-center justify-center py-10 flex-wrap gap-5 lg:gap-0 sm:w-[100%]'>
-          <div
-            className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => openModal('WatchVideos')}
+    <div className='bg-softGrayBlue h-fit py-[clamp(1px,11.1628vw,96px)] md:py-[clamp(1px,4.999998vw,96px)] items-center justify-center flex'>
+      <div className='container'>
+        <div className='w-full flex flex-col '>
+          <div className='text-center pb-[clamp(.5rem,6.1111vw,1.5rem)] md:pb-0'>
+            <h2 className='text-[clamp(1px,9.30232vw,70px)] md:text-[clamp(1px,2.5vw,96px)] font-Poppins font-bold '>
+              <span className='text-darkBlue'>Step-by-step</span> till you pass!
+            </h2>
+            <p className='font-Sans font-bold text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)]'>
+              Elevate your learning and critical thinking like never before!
+            </p>
+            <p className='font-Sans font-normal text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)] '>
+              With the CORE-Zigma System, you will build your knowledge,
+              confidence, and test-taking skills - step by step with our proven
+              method!
+            </p>
+          </div>
+          <div className='flex items-end justify-around py-[clamp(1px,2.083331vw,80px)] flex-wrap '>
+            <div
+              className='flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
+              onClick={() => openModal('WatchVideos')}
+            >
+              <Image src={WatchVideos} alt='WatchVideos' className='md:w-[clamp(1px,21.9792vw,844px)]' />
+              <p className='font-Sans font-normal pb-[clamp(.5rem,6.1111vw,1.5rem)] md:pb-[0] text-[clamp(1px,4.18604vw,40px)] md:text-[clamp(1px,1.041665vw,40px)]'>
+                Step 1:<span className='text-darkBlue  font-bold '> By Watching</span>
+              </p>
+            </div>
+            <div
+              className='flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
+              onClick={() => openModal('Study')}
+            >
+              <Image src={StudyCards} alt='StudyCards' className='md:w-[clamp(1px,21.3021vw,818px)]' />
+              <p className='font-Sans font-normal pb-[clamp(.5rem,6.1111vw,1.5rem)] md:pb-[0] text-[clamp(1px,4.18604vw,40px)] md:text-[clamp(1px,1.041665vw,40px)]'>
+                Step 2:<span className='text-darkBlue  font-bold '> By Studying</span>
+              </p>
+            </div>
+            <div
+              className='flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
+              onClick={() => openModal('Practice')}
+            >
+              <Image
+                src={PracticeTest}
+                alt='PracticeTest'
+                className='md:w-[clamp(1px,19.948vw,766px)]'
+              />
+              <p className='font-Sans font-normal text-[clamp(1px,4.18604vw,40px)] md:text-[clamp(1px,1.041665vw,80px)]'>
+                Step 3:<span className='text-darkBlue  font-bold '> By Doing</span>
+              </p>
+            </div>
+          </div>
+          <DialogBox
+            open={isOpenModal.isOpen}
+            handleClose={closeModal}
+            hideCloseButton
+            sx={dialogStyles}
           >
-            <Image src={WatchVideos} alt='WatchVideos' />
-            <p>
-              Step 1 :
-              <span className='text-darkBlue font-bold'>By Watching</span>
-            </p>
-          </div>
-          <div
-            className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => openModal('Study')}
-          >
-            <Image src={StudyCards} alt='StudyCards' />
-            <p>
-              Step 2 :
-              <span className='text-darkBlue font-bold'>By Studying</span>
-            </p>
-          </div>
-          <div
-            className='w-auto min-w-[250px] flex items-center flex-col hover:scale-105 transition-all duration-300 cursor-pointer'
-            onClick={() => openModal('Practice')}
-          >
-            <Image
-              src={PracticeTest}
-              alt='PracticeTest'
-              className='md:h-[460px]'
-            />
-            <p>
-              Step 3 :<span className='text-darkBlue font-bold'>By Doing</span>
-            </p>
-          </div>
-        </div>
-        <DialogBox
-          open={isOpenModal.isOpen}
-          handleClose={closeModal}
-          hideCloseButton
-          sx={dialogStyles}
-        >
-          {isOpenModal.isOpen && modalContent[isOpenModal.modalType] && (
-            <ModalContent
-              type={isOpenModal.modalType}
-              content={modalContent[isOpenModal.modalType]}
-              sliderConfig={sliderConfig}
-              onClose={closeModal}
-            />
-          )}
-        </DialogBox>
-        <div className='lg:flex w-5/6 justify-center pt-10 '>
-          <div className='lg:w-2/5 lg:pl-16 text-center lg:text-left flex flex-col gap-5'>
-            <p className='lg:text-4xl text-3xl font-bold'>
-              Watch <span className='text-darkBlue'> How it Works</span>
-            </p>
-            <p className='font-ptSansNarroxw lg:text-lg text-md'>
-            Day-by-day, step-by-step till you succeed! Watch this video on how we lead you throughout the review process - you'll be amazed at how simple yet effective our training method is!
-            </p>
-          </div>
-          <div className=' h-64 lg:w-3/5 px-5 flex justify-center'>
-            <div className='bg-darkBlue w-full mt-5 lg:w-3/4 h-full rounded-lg' />
+            {isOpenModal.isOpen && modalContent[isOpenModal.modalType] && (
+              <ModalContent
+                type={isOpenModal.modalType}
+                content={modalContent[isOpenModal.modalType]}
+                sliderConfig={sliderConfig}
+                onClose={closeModal}
+              />
+            )}
+          </DialogBox>
+          <div className="flex flex-col md:flex-row justify-between py-[clamp(1px,2.083331vw,80px)]">
+            <div className="w-full md:w-[clamp(1px,24.4792vw,958px)] text-start md:ms-[clamp(1px,4.21875vw,162px)] mb-[clamp(.5rem,5.1vw,2.5rem)] md:mb-0">
+              <p className="text-center md:text-start font-Poppins font-bold text-[clamp(1px,7.44185vw,80px)] md:text-[clamp(1px,2.0833307vw,80px)]">
+                Watch <span className="text-darkBlue">How it Works</span>
+              </p>
+              <p className="font-Sans text-center md:text-start font-normal text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)]">
+                See for yourself how to use our system, and how much fun and different it is to learn and prepare for NCLEX!
+              </p>
+            </div>
+            <div className="w-full md:w-[clamp(1px,29.688vw,1640px)] h-[clamp(1px,47.307vw,640px)] md:h-[clamp(1px,16.667vw,640px)] md:mx-[clamp(1px,2.96875vw,114px)]">
+              <div className="bg-darkBlue w-full h-full rounded-lg" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };

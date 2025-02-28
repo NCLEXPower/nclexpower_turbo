@@ -22,9 +22,9 @@ export default function PricingModal({
   cardData,
 }: PricingModalProps) {
   return (
-    <div className="py-6">
+    <div className="pt-5 pt-md-4">
       <p
-        className="text-base font-normal cursor-pointer underline text-[#717171]"
+        className="!m-0 text-[clamp(1px,3.72092vw,36px)] md:text-[clamp(1px,0.9375vw,36px)] pt-sans-regular cursor-pointer underline text-[#717171]"
         onClick={() => handleClickOpen(cardData)}
       >
         View more details
@@ -35,7 +35,7 @@ export default function PricingModal({
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <div className="min-h-screen">
+        <div className="container ">
           <ProductInformation
             cardData={cardData}
             onClose={handleClose}

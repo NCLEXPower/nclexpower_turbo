@@ -5,6 +5,7 @@
  */
 
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
+import { useResolution } from 'core-library/hooks';
 import Image from 'next/image';
 
 export interface SliderConfig {
@@ -25,6 +26,7 @@ interface CarouselSectionProps {
   type: 'Study' | 'Practice';
 }
 
+
 const backgroundGradients = {
   Study:
     'linear-gradient(269.64deg, #181818 0%, rgba(24, 24, 24, 0) 15%, rgba(24, 24, 24, 0) 100%)',
@@ -32,36 +34,36 @@ const backgroundGradients = {
     'linear-gradient(90deg, #181818 0%, rgba(24, 24, 24, 0) 20%, rgba(24, 24, 24, 0) 100%)',
 };
 
-export const CarouselSection: React.FC<CarouselSectionProps> = ({
-  images,
-  sliderConfig,
-  type,
-}) => (
-  <div
-    className='w-full sm:w-1/2 h-1/2 sm:h-full relative'
-    style={{ order: type === 'Study' ? 0 : 1 }}
-  >
+export const CarouselSection: React.FC<CarouselSectionProps> = ({ images, sliderConfig, type }) => {
+  const { isMobile } = useResolution();
+
+  return (
     <div
-      style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        top: '0',
-        left: '0',
-        background: backgroundGradients[type],
-        zIndex: 1,
-      }}
-    ></div>
-    <ImageCarousel sliderConfig={sliderConfig}>
-      {images.map((image, index) => (
-        <Image
-          key={`carousel-image-${index}`}
-          src={image}
-          alt={`Slide ${index + 1}`}
-          className='w-full h-[33.33vh] sm:h-[50vh] md:h-[66vh] lg:h-[90vh] object-cover'
-          loading='lazy'
-        />
-      ))}
-    </ImageCarousel>
-  </div>
-);
+      className="w-full md:w-[clamp(1px,28.907vw,1100px)] h-full relative z-0"
+      style={{ order: isMobile ? (type === 'Study' ? 1 : 0) : (type === 'Study' ? 0 : 1) }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: '0',
+          left: '0',
+          background: backgroundGradients[type],
+          zIndex: 1,
+        }}
+      ></div>
+      <ImageCarousel sliderConfig={sliderConfig}>
+        {images.map((image, index) => (
+          <Image
+            key={`carousel-image-${index}`}
+            src={image}
+            alt={`Slide ${index + 1}`}
+            className='w-full h-full md:h-[clamp(1px,28.594vw,1198px)] object-cover'
+            loading='lazy'
+          />
+        ))}
+      </ImageCarousel>
+    </div>
+  );
+};
