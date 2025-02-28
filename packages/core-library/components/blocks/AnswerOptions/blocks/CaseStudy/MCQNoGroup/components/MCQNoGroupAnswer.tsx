@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
   FormGroup,
-  Typography
+  RadioGroup,
+  Typography,
 } from "@mui/material";
 import { Control } from "react-hook-form";
 import {
   TextField,
   EvaIcon,
   Button,
-  ControlledCheckbox,
+  ControlledRadio,
 } from "../../../../../../";
 import { ContainedCaseStudyQuestionType } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { ColumnComponent } from "../../MCQGroup/components/MCQColumnComponent";
@@ -30,11 +31,16 @@ type MCQNoGroupType = {
     choices: Array<{
       choiceId?: number;
       value: boolean;
-    }>
+    }>;
   }>;
   setValue: any;
   disableRemoveRow?: boolean;
   disableRemoveColumnHeaders?: boolean;
+};
+
+type SelectedValue = {
+  rowIndex: number;
+  colIndex: number;
 };
 
 export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
@@ -49,8 +55,19 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
   control,
   setValue,
   disableRemoveRow,
-  disableRemoveColumnHeaders
+  disableRemoveColumnHeaders,
 }) => {
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    const { colIndex, rowIndex } = JSON.parse(e.target.value) as SelectedValue;
+    columnHeaderFields.slice(1).forEach((_, index) => {
+      setValue(
+        `questionnaires.${questionIndex}.rows.${rowIndex}.choices.${index}.value`,
+        index === colIndex ? (checked ? true : false) : false
+      );
+    });
+  };
+
   return (
     <Box>
       <Box
@@ -59,10 +76,15 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
           display: "flex",
           justifyContent: "center",
           marginY: 2,
-          gap: 1
+          gap: 1,
         }}
       >
-        <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} width="100%">
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(2, 1fr)"
+          gap={2}
+          width="100%"
+        >
           <Button
             sx={{
               height: "45px",
@@ -75,9 +97,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             onClick={handleAppendColumnHeaders}
             data-testid="append-column-headers"
           >
-            <Typography variant="body2">
-              Add Column
-            </Typography>
+            <Typography variant="body2">Add Column</Typography>
             <EvaIcon
               name="plus-square-outline"
               fill="#fff"
@@ -119,9 +139,11 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               backgroundColor: "#800f2f",
               "&:hover": {
                 backgroundColor: "#800f2f95",
-              }
+              },
             }}
-            onClick={() => handleRemoveColumnHeaders(columnHeaderFields.length - 1)}
+            onClick={() =>
+              handleRemoveColumnHeaders(columnHeaderFields.length - 1)
+            }
             disabled={disableRemoveColumnHeaders}
             data-testid={`remove-column-header-${columnHeaderFields.length}`}
           >
@@ -145,7 +167,7 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
               backgroundColor: "#800f2f",
               "&:hover": {
                 backgroundColor: "#800f2f95",
-              }
+              },
             }}
             onClick={() => handleRemoveRow(tableRowFields.length - 1)}
             data-testid={`remove-row-${tableRowFields.length}`}
@@ -182,37 +204,11 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
             ))}
         </Box>
 
-        {tableRowFields?.length > 0 &&
-          tableRowFields.map((_, rowIndex) => (
-            <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: 0.5,
-                  borderWidth: 0.5,
-                  minWidth: 150,
-                  maxWidth: 150,
-                }}
-              >
-                <TextField
-                  control={control}
-                  name={`questionnaires.${questionIndex}.rows.${rowIndex}.rowTitle`}
-                  sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    minWidth: 150,
-                    maxWidth: 150,
-                    marginTop: -2,
-                  }}
-                  placeholder="Enter Text"
-                />
-              </Box>
-              {columnHeaderFields.slice(1).map((_, colIndex) => (
+        <RadioGroup onChange={handleRadioChange}>
+          {tableRowFields?.length > 0 &&
+            tableRowFields.map((_, rowIndex) => (
+              <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
                 <Box
-                  key={colIndex}
                   sx={{
                     flexGrow: 1,
                     display: "flex",
@@ -224,28 +220,46 @@ export const MCQNoGroupAnswer: React.FC<MCQNoGroupType> = ({
                     maxWidth: 150,
                   }}
                 >
-                  <FormControl>
-                    <FormGroup>
-                      <ControlledCheckbox
-                        control={control}
-                        name={`questionnaires.${questionIndex}.rows.${rowIndex}.choices.${colIndex}.value`}
-                        defaultValue={0}
-                        onChange={(e) => {
-                          const isChecked = e.target.checked;
-                          columnHeaderFields.slice(1).forEach((_, index) => {
-                            setValue(
-                              `questionnaires.${questionIndex}.rows.${rowIndex}.choices.${index}.value`,
-                              index === colIndex ? (isChecked ? true : false) : false
-                            );
-                          });
-                        }}
-                      />
-                    </FormGroup>
-                  </FormControl>
+                  <TextField
+                    control={control}
+                    name={`questionnaires.${questionIndex}.rows.${rowIndex}.rowTitle`}
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      minWidth: 150,
+                      maxWidth: 150,
+                      marginTop: -2,
+                    }}
+                    placeholder="Enter Text"
+                  />
                 </Box>
-              ))}
-            </Box>
-          ))}
+                {columnHeaderFields.slice(1).map((_, colIndex) => (
+                  <Box
+                    key={colIndex}
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      border: 0.5,
+                      borderWidth: 0.5,
+                      minWidth: 150,
+                      maxWidth: 150,
+                    }}
+                  >
+                    <FormControl>
+                      <FormGroup>
+                        <ControlledRadio
+                          name={`questionnaires.${questionIndex}.rows.${rowIndex}.choices.${colIndex}.value`}
+                          value={JSON.stringify({ colIndex, rowIndex })}
+                        />
+                      </FormGroup>
+                    </FormControl>
+                  </Box>
+                ))}
+              </Box>
+            ))}
+        </RadioGroup>
       </Box>
     </Box>
   );

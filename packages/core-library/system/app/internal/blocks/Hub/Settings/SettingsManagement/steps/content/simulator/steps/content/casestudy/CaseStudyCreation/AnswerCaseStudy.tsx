@@ -15,11 +15,14 @@ import { GenericSelectField } from "../../../../../../../../../../../../../../co
 import {
   initAnswerValues,
   maxPoints,
-  questionType as questionTypeOptions,
+  questionTypes as questionTypeOptions,
   tabsSequence,
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
-import { ContainedCaseStudyQuestionType } from "../../../../types";
+import {
+  CaseStudyType,
+  ContainedCaseStudyQuestionType,
+} from "../../../../types";
 import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
 import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
 import { memo, useEffect, useRef, useState } from "react";
@@ -35,12 +38,14 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
   const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
+
   if (!questionnaires) return;
+
   const questionType = watch(`questionnaires.${index}.questionType`);
-
   const { handleTableInsertion } = useTableInsertion({ questionType, index });
-
   const currentSequence = watch(`questionnaires.${index}.seqNum`);
+  const caseType: CaseStudyType = watch("caseType");
+  const isStandAlone = watch("caseType") === "STANDALONE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
@@ -48,19 +53,38 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
     setValue(`questionnaires.${index}.questionType`, questionType);
   }, [index, getValues, questionType]);
 
+  const handleUpdateSeqNumber = (value: string) => {
+    const parsedvalue = parseInt(value);
+    setValue(`questionnaires.${index}.seqNum`, parsedvalue);
+
+    if (questionnaires) {
+      const [question] = questionnaires.filter((q) => q.seqNum === parsedvalue);
+      if (question?.transitionHeader) {
+        setValue(
+          `questionnaires.${index}.transitionHeader`,
+          question.transitionHeader
+        );
+        return;
+      }
+    }
+    setValue(`questionnaires.${index}.transitionHeader`, "");
+  };
+
   const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
     resetField(`questionnaires.${index}`);
+    setValue(`questionnaires.${index}.answers`, []);
     setValue(`questionnaires.${index}.questionType`, value);
   };
 
   useEffect(() => {
     if (
-      questionType === "SATA" ||
-      (questionType === "MRSN" && !questionnaires[index].answers?.length)
+      (questionType === "SATA" || questionType === "MRSN") &&
+      !questionnaires[index].answers?.length
     ) {
-      setValue(`questionnaires.${index}.answers`, [
-        ...Array(5).fill(initAnswerValues),
-      ]);
+      setValue(
+        `questionnaires.${index}.answers`,
+        Array(5).fill(initAnswerValues)
+      );
     }
   }, [questionType]);
 
@@ -85,14 +109,16 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
               label="Question Type:"
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
               onChange={(value) => handleReset(value)}
-              options={questionTypeOptions ?? []}
+              options={questionTypeOptions[caseType] ?? []}
               width="60%"
             />
             <GenericSelectField
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
               name={`questionnaires.${index}.seqNum`}
               label="Sequence No. :"
+              onChange={handleUpdateSeqNumber}
               options={tabsSequence ?? []}
+              disabled={isStandAlone}
               width="35%"
             />
           </Box>
@@ -165,6 +191,29 @@ export const AnswerCaseStudy = memo(({ index }: Props) => {
             </Box>
           </>
         )}
+      </Box>
+      <Box mt={3}>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: "16px",
+            mb: 3,
+          }}
+        >
+          Rationale:
+        </Typography>
+        <Card
+          sx={{
+            width: "100%",
+            borderRadius: "10px",
+          }}
+        >
+          <ControlledRichTextEditor
+            name={`questionnaires.${index}.rationale`}
+            editorFor="casestudy"
+            placeholder="Add text"
+          />
+        </Card>
       </Box>
     </Box>
   );

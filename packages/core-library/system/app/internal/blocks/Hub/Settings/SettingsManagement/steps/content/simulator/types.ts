@@ -29,7 +29,7 @@ export type SATAAnswerOptionType = yup.InferType<typeof defaultOptionSchema>;
 
 export type DNDAnswerOptionType = yup.InferType<typeof dndAnswerOptionsSchema>;
 
-export type DNDAnswersType = yup.InferType<typeof dndAnswersSchema>
+export type DNDAnswersType = yup.InferType<typeof dndAnswersSchema>;
 
 export type MCQNoGroupAnswerOptionType = yup.InferType<
   typeof mcqGroupAnswerSchema
@@ -37,3 +37,5 @@ export type MCQNoGroupAnswerOptionType = yup.InferType<
 export type HCPNAnswerOptionType = yup.InferType<typeof hcpOptionSchema>;
 
 export type tabsTypes = "nurseNotes" | "hxPhy" | "labs" | "orders";
+
+export type CaseStudyType = "UNFOLDING" | "STANDALONE";
