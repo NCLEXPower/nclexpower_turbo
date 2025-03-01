@@ -38,6 +38,7 @@ export type Blocks =
   | "AnnouncementManagementBlock"
   | "ComingSoonManagementBlock"
   | "CaseNameManagementBlock"
+  | "PolicyManagementBlock"
   | "CaseStudyListViewBlock";
 
 type BlockProps = {
@@ -63,6 +64,7 @@ type BlockProps = {
   AnnouncementManagementBlock: {};
   ComingSoonManagementBlock: {};
   CaseNameManagementBlock: {};
+  PolicyManagementBlock: {};
   CaseStudyListViewBlock: {};
 };
 
