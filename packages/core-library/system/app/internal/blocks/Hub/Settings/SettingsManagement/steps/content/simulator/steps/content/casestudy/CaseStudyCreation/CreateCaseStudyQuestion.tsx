@@ -25,6 +25,7 @@ import { CreateCaseStudyAtom } from "../../../../useAtomic";
 import { InfoTabs } from "./constant/constant";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
 import { CaseStudyLoader } from "../../loader";
+import { useBeforeUnload } from "../../../../../../../../../../../../../../hooks";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -50,6 +51,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   previous,
   reset,
 }) => {
+  useBeforeUnload(true);
   const [, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
   const form = useForm<ContainedCaseStudyQuestionType>({
