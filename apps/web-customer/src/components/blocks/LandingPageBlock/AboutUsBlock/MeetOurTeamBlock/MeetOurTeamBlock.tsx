@@ -49,31 +49,31 @@ export const MeetOurTeamBlock = () => {
       id='myTeam'
       className='w-full h-auto overflow-hidden bg-darkBlue pb-10'
     >
-      <Box className='flex flex-col w-full items-center p-10 gap-10'>
-        <div className='flex flex-col gap-4 items-center'>
-          <h4 className='font-ptSans text-[26px] md:text-[38px] text-yellow font-bold'>
-            Meet our Core Team
-          </h4>
-          <div className='flex flex-col lg:flex-row gap-2 lg:gap-8 text-center'>
-            {executivesMockData.map((item) => {
-              const { id, name, division } = item;
-              return (
-                <>
+      <div className='container'>
+        <Box className='flex flex-col w-full items-center'>
+          <div className='flex flex-col items-center'>
+            <h4 className='font-Poppins text-[clamp(1px,7.44185vw,70px)] md:text-[clamp(1px,2.5vw,96px)] text-yellow font-bold mb-3'>
+              Meet our Core Team
+            </h4>
+            <div className='flex flex-col md:flex-row gap-2 md:gap-8 text-center mb-5'>
+              {executivesMockData.map((item) => {
+                const { id, name, division } = item;
+                return (
                   <div className='flex flex-col' key={id}>
-                    <h4 className='font-ptSansNarrow text-[22px] lg:text-[30px] text-yellow font-bold'>
+                    <h4 className='font-ptSans text-[clamp(1px,5.5814vw,60px)] md:text-[clamp(1px,1.5625vw,60px)] text-yellow font-bold'>
                       {name}
                     </h4>
-                    <h5 className='font-ptSansNarrow text-[18px] lg:text-[24px] text-white font-bold'>
+                    <h5 className='font-ptSans text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)] text-white font-bold'>
                       {division}
                     </h5>
                   </div>
-                </>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-        <Tabs tabsItem={tabs} justifyContent='center' customStyle={tabStyles} />
-      </Box>
+          <Tabs tabsItem={tabs} justifyContent='center' customStyle={tabStyles} />
+        </Box>
+      </div>
     </section>
   );
 };

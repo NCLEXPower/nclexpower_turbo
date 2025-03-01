@@ -43,7 +43,7 @@ export const Tabs: React.FC<Props> = ({
   }, [selected, selectedTabIndex]);
 
   return (
-    <Grid container spacing={12}>
+    <Grid container >
       {!isMobile && (
         <Grid
           container
@@ -53,7 +53,8 @@ export const Tabs: React.FC<Props> = ({
           spacing={3}
         >
           {tabs.map((tab, index) => (
-            <Grid item key={tab.id}>
+            <Grid item key={tab.id} style={{ paddingBottom: 'clamp(1px,2.083331vw,80px)' }}>
+
               <TabButton
                 width={width}
                 ref={(el) => {
@@ -75,6 +76,9 @@ export const Tabs: React.FC<Props> = ({
                     background:
                       selected === tab.id ? customStyle?.background : "default",
                     boxShadow: "none",
+                    color: customStyle?.selectedColor,
+                    border: "none",
+                    borderBottom: customStyle?.borderBottom,
                   },
                   width: "auto",
                   background:
@@ -88,8 +92,7 @@ export const Tabs: React.FC<Props> = ({
                     selected === tab.id
                       ? customStyle?.borderBottom
                       : customStyle?.defaultBorderBottom,
-                  marginLeft: tab.id !== 1 ? "-1px" : "unset",
-                  px: 2,
+                  px: "clamp(1px, 0.8333308vw, 32px)",
                   boxShadow: "none",
                 }}
                 onClick={(e) => handleSelected(e, tab.id)}
@@ -101,64 +104,72 @@ export const Tabs: React.FC<Props> = ({
             </Grid>
           ))}
         </Grid>
-      )}
-      {isMobile ? (
-        <Grid item xs={12}>
-          <Box>
-            {tabs.map((tab) => (
-              <Box key={tab.id} mb={4}>
-                <TabButton
-                  active={selected === tab.id}
-                  onClick={() =>
-                    setSelected((prev) => (prev === tab.id ? null : tab.id))
-                  }
-                  sx={{
-                    "&:focus": {
-                      outline: "none !important",
-                      boxShadow: "none",
+      )
+      }
+      {
+        isMobile ? (
+          <Grid item xs={12}>
+            <Box>
+              {tabs.map((tab) => (
+                <Box key={tab.id} >
+                  <TabButton
+                    active={selected === tab.id}
+                    onClick={() =>
+                      setSelected((prev) => (prev === tab.id ? null : tab.id))
+                    }
+                    sx={{
+                      "&:focus": {
+                        outline: "none !important",
+                        boxShadow: "none",
+                        borderBottom:
+                          selected === tab.id
+                            ? customStyle?.borderBottom
+                            : customStyle?.defaultBorderBottom,
+                      },
+                      "&:hover": {
+                        background:
+                          selected === tab.id
+                            ? customStyle?.background
+                            : "default",
+                        boxShadow: "none",
+                        color: customStyle?.selectedColor,
+                        border: "none",
+                        borderBottom: customStyle?.borderBottom,
+                      },
+                      width: "100%",
+                      background:
+                        selected === tab.id ? customStyle?.background : "default",
+                      border: "none",
+                      color:
+                        selected === tab.id
+                          ? customStyle?.selectedColor
+                          : customStyle?.defaultColor || "default",
                       borderBottom:
                         selected === tab.id
                           ? customStyle?.borderBottom
                           : customStyle?.defaultBorderBottom,
-                    },
-                    "&:hover": {
-                      background:
-                        selected === tab.id
-                          ? customStyle?.background
-                          : "default",
+                      mb: 4,
                       boxShadow: "none",
-                    },
-                    width: "100%",
-                    background:
-                      selected === tab.id ? customStyle?.background : "default",
-                    border: "none",
-                    color:
-                      selected === tab.id
-                        ? customStyle?.selectedColor
-                        : customStyle?.defaultColor || "default",
-                    borderBottom:
-                      selected === tab.id ? customStyle?.borderBottom : "none",
-                    mb: 4,
-                    boxShadow: "none",
-                  }}
-                >
-                  {tab.title}
-                </TabButton>
-                <Collapse in={selected === tab.id} timeout="auto" unmountOnExit>
-                  <Box>{tab.content}</Box>
-                </Collapse>
-              </Box>
-            ))}
-          </Box>
-        </Grid>
-      ) : (
-        selectedTab && (
-          <Grid item xs={12}>
-            {selectedTab.content}
+                    }}
+                  >
+                    {tab.title}
+                  </TabButton>
+                  <Collapse in={selected === tab.id} timeout="auto" unmountOnExit>
+                    <Box>{tab.content}</Box>
+                  </Collapse>
+                </Box>
+              ))}
+            </Box>
           </Grid>
+        ) : (
+          selectedTab && (
+            <Grid item xs={12}>
+              {selectedTab.content}
+            </Grid>
+          )
         )
-      )}
-    </Grid>
+      }
+    </Grid >
   );
 
   function selectedTabId(id: number) {

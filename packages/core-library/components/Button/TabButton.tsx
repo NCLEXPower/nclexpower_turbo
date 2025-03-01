@@ -32,13 +32,20 @@ export const TabButton = forwardRef<HTMLButtonElement, ButtonProps>(
         disableRipple={true}
         sx={{
           position: "relative",
-          minHeight: "42px",
-          height: "42px",
+          minHeight: {
+            xs: "clamp(1px,11.63vw,110px)",
+            md: "clamp(1px,2.917vw,112px)"
+          },
+          height: "100%",
           minWidth: 60,
           typography: "body2",
           width: width ?? "167px",
           px: 1,
           borderRadius: 0,
+          fontSize: {
+            xs: "clamp(1px,3.72092vw,36px)",
+            md: "clamp(1px,0.9375vw,36px)",
+          },
           ...sx,
         }}
         disabled={disabled}

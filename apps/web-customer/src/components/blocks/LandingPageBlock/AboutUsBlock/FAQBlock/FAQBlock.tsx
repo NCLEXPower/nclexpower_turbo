@@ -39,13 +39,15 @@ export const FAQBlock = () => {
   };
 
   const FAQHeader = () => (
-    <div className="flex flex-col text-center mb-14 w-full">
-      <h4 className="font-ptSans font-bold text-[32px] sm:text-[40px] text-darkBlue">
-        Frequently Asked Questions
-      </h4>
-      <p className="font-ptSansNarrow text-[16px] sm:text-[20px] text-black font-regular">
-        Everything you need to know about the NCLEX Power
-      </p>
+    <div className="container">
+      <div className="flex flex-col text-center mb-14 ">
+        <h4 className="font-Poppins font-bold text-[clamp(1px,7.44185vw,70px)] md:text-[clamp(1px,2.5vw,96px)] text-darkBlue">
+          Frequently Asked Questions
+        </h4>
+        <p className="font-ptSans text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)] text-black font-regular">
+          Everything you need to know about the NCLEX Power
+        </p>
+      </div>
     </div>
   );
 
@@ -69,12 +71,14 @@ export const FAQBlock = () => {
   return (
     <section className="w-full relative overflow-visible py-16">
       <BackgroundImages />
-      <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px] relative z-10">
-        <FAQHeader />
-        <Box className="w-full">
-          <Tabs tabsItem={faqTabs} justifyContent="center" customStyle={tabStyles}/>
+      <div className="container">
+        <Box className="flex flex-col items-center justify-center relative z-10">
+          <FAQHeader />
+          <Box className="w-full ">
+            <Tabs tabsItem={faqTabs} justifyContent="center" customStyle={tabStyles} />
+          </Box>
         </Box>
-      </Box>
+      </div>
     </section>
   );
 };

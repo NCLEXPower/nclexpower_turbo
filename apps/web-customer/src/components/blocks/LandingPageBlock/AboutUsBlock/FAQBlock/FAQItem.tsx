@@ -26,7 +26,7 @@ interface FAQItemBlockProps {
 const renderListItems = (items: string[], className: string, marginLeft: string) => (
   <ul style={{ listStyleType: "disc", marginLeft }} className={`flex flex-col gap-2 ${className}`}>
     {items.map((item, idx) => (
-      <li key={idx} className="font-ptSansNarrow text-[14px] lg:text-[16px] font-bold text-[#6C6C6C]">
+      <li key={idx} className="font-ptSans text-[clamp(1px,3.72092vw,36px)] md:text-[clamp(1px,0.9375vw,36px)] font-bold text-[#6C6C6C]">
         {item}
       </li>
     ))}
@@ -35,17 +35,17 @@ const renderListItems = (items: string[], className: string, marginLeft: string)
 
 const AccordionContent: React.FC<AccordionContentProps> = ({ description, subDescription }) => {
   return (
-    <div className="flex flex-col gap-2 py-2">
+    <div className="flex flex-col gap-2 py-4">
       {description && renderListItems(description, "gap-4", "20px")}
       {subDescription && renderListItems(subDescription, "gap-2", "40px")}
     </div>
   );
 };
 
-const AccordionHeader: React.FC<AccordionHeaderProps> = ({id, title, expanded, onToggle}) => {
+const AccordionHeader: React.FC<AccordionHeaderProps> = ({ id, title, expanded, onToggle }) => {
   return (
-    <Box className="w-full flex justify-between px-8 items-center" key={id}>
-      <h4 className="text-[16px] font-ptSans text-darkBlue font-bold">
+    <Box className="w-full flex justify-between px-5 px-md-4 py-2 items-center" key={id}>
+      <h4 className="text-[clamp(1px,3.72092vw,36px)] md:text-[clamp(1px,0.9375vw,36px)] font-ptSans text-darkBlue font-bold">
         {title}
       </h4>
       <Box>
@@ -67,16 +67,14 @@ const AccordionHeader: React.FC<AccordionHeaderProps> = ({id, title, expanded, o
                 id="close-icon"
                 name="minus-square-outline"
                 fill="#0F2A71"
-                width={30}
-                height={30}
+                style={{ width: '30px', height: '30px' }}
                 ariaHidden
               />
               <EvaIcon
                 id="open-icon"
                 name="plus-square-outline"
                 fill="#0F2A71"
-                width={30}
-                height={30}
+                style={{ width: '30px', height: '30px' }}
                 ariaHidden
               />
             </Box>
@@ -97,20 +95,20 @@ export const FAQItemBlock: React.FC<FAQItemBlockProps> = ({ topic }) => {
     }));
 
   return (
-    <section className="mt-0 lg:mt-[-20px] h-auto">
-       <ControlledAccordion
-        accordionRadius="5px"
+    <section className="mb-3">
+      <ControlledAccordion
+        accordionRadius="10px"
         headerBackgroundColor="#dbdfea"
         headerHeight="auto"
         items={accordionItems}
         renderSummary={((item, expanded, onToggle) => {
-         const {id, title} = item;
+          const { id, title } = item;
           return (
-            <AccordionHeader id={id} title={title} expanded={expanded} onToggle={onToggle}/>
+            <AccordionHeader id={id} title={title} expanded={expanded} onToggle={onToggle} />
           );
         })}
         renderDetails={((item) => (
-          <Box className="w-full px-8">{item.content}</Box>
+          <Box className="w-full px-5 px-md-4">{item.content}</Box>
         ))}
       />
     </section>
