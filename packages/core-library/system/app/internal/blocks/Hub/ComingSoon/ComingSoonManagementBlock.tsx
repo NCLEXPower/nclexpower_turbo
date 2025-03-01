@@ -115,7 +115,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
         spacing={2}
         sx={{ height: "550px", width: "auto" }}
       >
-        <FormProvider {...form}>
+        <FormProvider {...form}>    
           <ComingSoonManagement
             control={control}
             isSwitchOn={isSwitchOn}
@@ -154,6 +154,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
         selectedCountriesTimezones: mappedCountries.flatMap((country) =>
           country.timezones.map((tz) => tz.selectedTimezone)
         ),
+        isActive: true,
       });
       setValue("isActive", true);
       showToast("Successful", "success");

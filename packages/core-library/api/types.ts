@@ -762,6 +762,7 @@ export type CreateGoliveSchedule = {
   countries: string[];
   selectedCountriesTimezones: string[];
   description: string;
+  isActive: boolean;
 };
 
 export type GetCountryTimezonesParams = {
