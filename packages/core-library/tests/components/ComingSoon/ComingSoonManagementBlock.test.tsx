@@ -11,9 +11,6 @@ jest.mock("../../../core/router", () => ({
     useRouter: jest.fn(),
 }));
 
-jest.mock("console", () => ({
-    time: jest.fn(),
-}));
 
 const mockGetCountryTimezonesExecute = jest.fn();
 const mockCreateGoliveScheduleExecute = jest.fn();

@@ -48,21 +48,3 @@ export const emailMockData: TableColumns[] = [
     status: "sent",
   },
 ];
-
-  export const mockSelectedCountries = [
-    {
-      code: "US",
-      name: "United States of America",
-      daysLeft: 13,
-    },
-    {
-      code: "CA",
-      name: "Canada",
-      daysLeft: 14,
-    },
-    {
-      code: "AUS",
-      name: "Australia",
-      daysLeft: 13,
-    },
-  ];

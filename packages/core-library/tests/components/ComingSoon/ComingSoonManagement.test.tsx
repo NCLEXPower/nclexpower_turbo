@@ -13,10 +13,6 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("console", () => ({
-  time: jest.fn(),
-}));
-
 jest.mock("../../../components", () => ({
   DateField: (props: any) => (
     <div data-testid="date-field" {...props}>

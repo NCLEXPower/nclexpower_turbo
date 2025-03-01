@@ -12,10 +12,6 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock("console", () => ({
-  time: jest.fn(),
-}));
-
 const defaultProps = {
   watchEventName: "Test Event",
   watchEnvironment: "Production",
