@@ -248,4 +248,75 @@ describe('RecaptchaComponent', () => {
 
     delete global.window.grecaptcha;
   });
+
+  it('should set isScriptLoaded when script is loaded', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.querySelector(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    script?.dispatchEvent(new Event('load'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+
+  it('should check recaptcha at intervals and clear interval when loaded', async () => {
+    delete global.window.grecaptcha;
+
+    const setIntervalSpy = jest
+      .spyOn(global, 'setInterval')
+      .mockImplementation((callback: () => void, ms?: number) => {
+        return setTimeout(callback, ms) as unknown as NodeJS.Timeout;
+      });
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(setIntervalSpy).toHaveBeenCalled();
+    });
+
+    const intervalId = setIntervalSpy.mock.results[0].value;
+
+    (global.window as any).grecaptcha = {
+      ready: jest.fn((callback) => {
+        callback();
+        clearInterval(intervalId);
+      }),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    await waitFor(() => {
+      expect(clearIntervalSpy).toHaveBeenCalledWith(intervalId);
+    });
+
+    setIntervalSpy.mockRestore();
+    clearIntervalSpy.mockRestore();
+  });
+
+  it('should assign ref correctly to ReCAPTCHA component', () => {
+    const mockRef = React.createRef<ReCAPTCHA>();
+    render(<ReCAPTCHA sitekey='your-sitekey-here' ref={mockRef} />);
+    expect(mockRef.current).not.toBeNull();
+  });
+
+  it('should remove interval on unmount', async () => {
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    const { unmount } = render(
+      <RecaptchaComponent sitekey='your-sitekey-here' />
+    );
+
+    unmount();
+
+    await waitFor(() => {
+      expect(clearIntervalSpy).toHaveBeenCalled();
+    });
+  });
 });
