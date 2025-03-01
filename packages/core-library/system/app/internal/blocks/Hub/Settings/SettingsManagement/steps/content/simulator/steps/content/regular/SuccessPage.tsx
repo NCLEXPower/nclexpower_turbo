@@ -4,6 +4,7 @@ import { Button } from "../../../../../../../../../../../../../components";
 import { useRouter } from "../../../../../../../../../../../../../core";
 import { ContainedRegularQuestionType } from "../../../types";
 import { Box, styled, Typography } from "@mui/material";
+import { useBeforeUnload } from "../../../../../../../../../../../../../hooks";
 
 interface Props {
   nextStep(values: Partial<ContainedRegularQuestionType>): void;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export const SuccessPage: React.FC<Props> = (props) => {
+  useBeforeUnload(false);
+
   const { values, nextStep, next, reset, resetStep } = props;
   const type_identifier =
     values.main_type == "Regular" ? "regular" : "case-study";
