@@ -76,30 +76,30 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const selectedCountries = watch("countryKey");
   const goLiveDate = watch("goLiveDate");
 
-  useEffect(() => {
-    async function fetchTimezones() {
-      if (!selectedCountries || !goLiveDate) return;
+  async function fetchTimezones() {
+    if (!selectedCountries || !goLiveDate) return [];
 
-      try {
-        const responses = [];
-        for (const countryKey of selectedCountries) {
-          const response = await getCountryTimezones.execute({
-            countryKey,
-            goLiveDate: goLiveDate.toString(),
-          });
-          responses.push(response);
-        }
-        const flattenedResponses = responses.flatMap((response) =>
-          Array.isArray(response.data) ? response.data : [response.data]
-        );
-        const mapped = flattenedResponses.map(mapResponseToCountry);
-        setMappedCountries(mapped);
-      } catch (error) {
-        console.error("Error fetching timezones:", error);
-        showToast("Error fetching timezones", "error");
+    try {
+      const responses = [];
+      for (const countryKey of selectedCountries) {
+        const response = await getCountryTimezones.execute({
+          countryKey,
+          goLiveDate: goLiveDate.toString(),
+        });
+        responses.push(response);
       }
+      const flattenedResponses = responses.flatMap((response) =>
+        Array.isArray(response.data) ? response.data : [response.data]
+      );
+      const mapped = flattenedResponses.map(mapResponseToCountry);
+      setMappedCountries(mapped);
+    } catch (error) {
+      console.error("Error fetching timezones:", error);
+      showToast("Error fetching timezones", "error");
     }
+  }
 
+  useEffect(() => {
     fetchTimezones();
   }, [selectedCountries, goLiveDate]);
 
@@ -144,7 +144,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
   async function onSubmit(values: ContentDateType) {
     try {
-      createGoliveScheduleCb.execute({
+      await createGoliveScheduleCb.execute({
         eventName: values.eventName,
         description: values.description,
         endDate: values.goLiveDate?.toISOString() || "",
@@ -155,11 +155,11 @@ export const ComingSoonManagementBlock: React.FC = () => {
           country.timezones.map((tz) => tz.selectedTimezone)
         ),
       });
+      setValue("isActive", true);
       showToast("Successful", "success");
     } catch (error) {
       console.error("Submission error:", error);
       showToast("Submission failed", "error");
     }
-    setValue("isActive", true);
   }
 };

@@ -457,8 +457,8 @@ export class WebApiBackOffice {
   }
 
   public async createGoliveSchedule(params: CreateGoliveSchedule) {
-    return await this.axios.post(
-      `/api/v2/internal/baseInternal/create-schedule`,
+    return await this.ssrAxios.post(
+      `/api/go-live/create-schedule`,
       params
     );
   }
