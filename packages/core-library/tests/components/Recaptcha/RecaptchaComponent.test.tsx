@@ -385,4 +385,21 @@ describe('RecaptchaComponent', () => {
     );
     expect(scripts.length).toBe(1);
   });
+
+  it('should handle grecaptcha being present synchronously', async () => {
+    global.window.grecaptcha = {
+      ready: jest.fn((callback) => callback()),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+
+    delete global.window.grecaptcha;
+  });
 });
