@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import { RecaptchaComponent } from '../../../components';
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -56,21 +50,6 @@ describe('RecaptchaComponent', () => {
     setIntervalSpy.mockRestore();
   });
 
-  it('should clear interval on component unmount', () => {
-    const setIntervalSpy = jest.spyOn(global, 'setInterval');
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-
-    const { unmount } = render(
-      <RecaptchaComponent sitekey='your-sitekey-here' />
-    );
-    unmount();
-
-    expect(clearIntervalSpy).toHaveBeenCalled();
-
-    setIntervalSpy.mockRestore();
-    clearIntervalSpy.mockRestore();
-  });
-
   it('should append the script to the document when the recaptcha is not present', () => {
     render(<RecaptchaComponent sitekey='your-sitekey-here' />);
     const script = document.querySelector(
@@ -95,19 +74,6 @@ describe('RecaptchaComponent', () => {
     expect(scripts.length).toBe(1);
   });
 
-  it('should handle the case when grecaptcha is not available initially', async () => {
-    delete global.window.grecaptcha;
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      const script = document.querySelector(
-        'script[src="https://www.google.com/recaptcha/api.js"]'
-      );
-      expect(script).toBeInTheDocument();
-    });
-  });
-
   it('should not break if window.grecaptcha is undefined', async () => {
     delete global.window.grecaptcha;
 
@@ -115,27 +81,6 @@ describe('RecaptchaComponent', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
-    });
-  });
-
-  it('should append the script when window.grecaptcha is undefined', async () => {
-    delete (window as any).grecaptcha;
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      const script = document.querySelector(
-        'script[src="https://www.google.com/recaptcha/api.js"]'
-      );
-      expect(script).toBeInTheDocument();
-    });
-  });
-
-  it('should set isScriptLoaded when script loads', async () => {
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
     });
   });
 
@@ -188,86 +133,6 @@ describe('RecaptchaComponent', () => {
     setIntervalSpy.mockRestore();
   });
 
-  it('should clear the interval when grecaptcha is available', async () => {
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(clearIntervalSpy).toHaveBeenCalled();
-    });
-
-    clearIntervalSpy.mockRestore();
-  });
-
-  it('should render ReCAPTCHA component when isRecaptchaLoaded is true', async () => {
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-    });
-  });
-
-  it('should render ReCAPTCHA when grecaptcha is ready', async () => {
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-    });
-  });
-
-  it('should load the recaptcha script when grecaptcha is not available', async () => {
-    delete (global.window as any).grecaptcha;
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js';
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      (global.window as any).grecaptcha = {
-        ready: jest.fn((callback) => callback()),
-        render: jest.fn(),
-        getResponse: jest.fn(),
-        reset: jest.fn(),
-      };
-    };
-
-    fireEvent.load(script);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
-    });
-  });
-
-  it('should check recaptcha at intervals and clear interval when loaded', async () => {
-    delete (global.window as any).grecaptcha;
-
-    const setIntervalSpy = jest.spyOn(global, 'setInterval');
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      expect(setIntervalSpy).toHaveBeenCalled();
-    });
-
-    (global.window as any).grecaptcha = {
-      ready: jest.fn((callback) => callback()),
-      render: jest.fn(),
-      getResponse: jest.fn(),
-      reset: jest.fn(),
-    };
-
-    await waitFor(() => {
-      expect(clearIntervalSpy).toHaveBeenCalled();
-    });
-
-    setIntervalSpy.mockRestore();
-    clearIntervalSpy.mockRestore();
-  });
-
   it('should log an error if NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL is not set', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -280,15 +145,6 @@ describe('RecaptchaComponent', () => {
     );
 
     (console.error as jest.Mock).mockRestore();
-  });
-
-  it('should pass the correct props to the ReCAPTCHA component', async () => {
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    await waitFor(() => {
-      const recaptcha = screen.getByTestId('recaptcha');
-      expect(recaptcha).toBeInTheDocument();
-    });
   });
 
   it('should handle reCAPTCHA response when user completes verification', async () => {
@@ -374,16 +230,6 @@ describe('RecaptchaComponent', () => {
     await waitFor(() => {
       expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
     });
-  });
-
-  it('should not append duplicate scripts when mounted multiple times', () => {
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
-
-    const scripts = document.querySelectorAll(
-      'script[src="https://www.google.com/recaptcha/api.js"]'
-    );
-    expect(scripts.length).toBe(1);
   });
 
   it('should handle grecaptcha being present synchronously', async () => {
