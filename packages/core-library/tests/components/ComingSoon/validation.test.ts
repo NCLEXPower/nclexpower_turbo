@@ -25,7 +25,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
       announcement: false,
       isActive: true,
     };
@@ -41,7 +41,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
@@ -56,7 +56,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
@@ -71,7 +71,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
@@ -85,7 +85,7 @@ describe("Content Date Schema", () => {
       countries: [],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
@@ -113,7 +113,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
@@ -126,7 +126,7 @@ describe("Content Date Schema", () => {
       hasNoSchedule: true,
       countries: ["USA"],
       countryKey: ["America/New_York"],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
@@ -140,7 +140,7 @@ describe("Content Date Schema", () => {
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: [],
-      TargetEnvironment: "Dev",
+      TargetEnvironment: "dev",
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
