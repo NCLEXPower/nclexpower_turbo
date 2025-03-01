@@ -93,6 +93,7 @@
 .tiptap-cell {
   border: 1px solid #b4a6a6;
   padding: 6px 8px !important;
+  white-space: pre-wrap;
 }
 
 .tiptap-field {

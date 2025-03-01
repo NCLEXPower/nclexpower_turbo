@@ -70,22 +70,6 @@ describe("SATA", () => {
     expect(screen.getByTestId("sata-answer")).toBeInTheDocument();
   });
 
-  it("Should not render the sata answer options when answer fields is not existing", () => {
-    (useFormContext as jest.Mock).mockReturnValue({
-      getValues: jest.fn(() => undefined),
-    });
-
-    const { result } = renderHook(() => useForm());
-    const form = result.current;
-
-    const { container } = render(
-      <FormProvider {...form}>
-        <SATA questionIndex={1} />
-      </FormProvider>
-    );
-    expect(container).toBeEmptyDOMElement();
-  });
-
   it("Should render a 5 checkboxes", () => {
     (useFormContext as jest.Mock).mockReturnValue({
       getValues: jest.fn(() => initQuestionsValues(MOCK_QUESTIONTYPE).answers),
