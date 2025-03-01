@@ -44,18 +44,20 @@ describe("ProgramManagementListCreateBlock", () => {
   let mockHandleBack: jest.Mock;
   let mockSetValue: jest.Mock;
   let mockAppend: jest.Mock;
+  let mockGetValues: jest.Mock;
 
   beforeEach(() => {
     mockHandleSubmit = jest.fn();
     mockHandleBack = jest.fn();
     mockSetValue = jest.fn();
     mockAppend = jest.fn();
+    mockGetValues = jest.fn();
 
     (useForm as jest.Mock).mockReturnValue({
       control: {},
       handleSubmit: mockHandleSubmit,
       setValue: mockSetValue,
-      getValues: jest.fn(),
+      getValues: mockGetValues,
       watch: jest.fn(),
       formState: { errors: {} },
     });
@@ -77,6 +79,14 @@ describe("ProgramManagementListCreateBlock", () => {
   });
 
   it("calls handleSubmit when form is submitted", async () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    fireEvent.submit(screen.getByText("Program Management Form"));
+
+    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("calls handleCreateProgram when form is submitted with valid data", async () => {
     render(<ProgramManagementListCreateBlock />);
 
     fireEvent.submit(screen.getByText("Program Management Form"));
