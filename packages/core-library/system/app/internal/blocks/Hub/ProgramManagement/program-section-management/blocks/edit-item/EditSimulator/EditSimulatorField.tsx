@@ -34,10 +34,10 @@ const checkboxes: {
   label: string;
   name: "guided" | "unguided" | "practice";
 }[] = [
-  { label: "Guided", name: "guided" },
-  { label: "Unguided", name: "unguided" },
-  { label: "Practice", name: "practice" },
-];
+    { label: "Guided", name: "guided" },
+    { label: "Unguided", name: "unguided" },
+    { label: "Practice", name: "practice" },
+  ];
 
 export const EditSimulatorField: React.FC<EditSimulatorFieldProps> = ({
   lists,
@@ -156,6 +156,7 @@ export const EditSimulatorField: React.FC<EditSimulatorFieldProps> = ({
             }}
             loading={isLoading}
             onClick={onSave}
+            data-testid="edit-simulator-save-button"
           >
             Update
           </Button>
