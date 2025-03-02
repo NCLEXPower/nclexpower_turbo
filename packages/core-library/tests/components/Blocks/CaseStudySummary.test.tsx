@@ -13,6 +13,10 @@ jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("../../../hooks/useBeforeUnload.ts", () => ({
+  useBeforeUnload: jest.fn(),
+}));
+
 jest.mock("../../../contexts/PageLoaderContext", () => ({
   usePageLoaderContext: jest.fn(),
 }));
