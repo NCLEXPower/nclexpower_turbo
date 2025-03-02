@@ -1,7 +1,6 @@
 import React from 'react';
-import { screen, render, fireEvent, waitFor } from "../../../common";
+import { act, screen, render, fireEvent, waitFor } from "../../../common";
 import { InclusionForm } from '../../../../system/app/internal/blocks/Hub/Product/inclusion/InclusionForm';
-import { act } from 'react-dom/test-utils';
 
 
 jest.mock('next/router', () => ({
@@ -69,7 +68,7 @@ describe('InclusionForm', () => {
 
  
     const inclusionInput = screen.getByLabelText(/Add Inclusion/i);
-    const descriptionTextarea = screen.getAllByRole('textbox')[1]; // Second textbox is the description
+    const descriptionTextarea = screen.getAllByRole('textbox')[1]; 
     const submitButton = screen.getByRole('button', { name: /Submit/i });
     
 
