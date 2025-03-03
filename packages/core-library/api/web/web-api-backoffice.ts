@@ -633,10 +633,10 @@ export class WebApiBackOffice {
     form.append("programType", params.programType.toString());
     form.append("stringifiedSections", JSON.stringify(params.stringifiedSections));
 
-    return await this.axios.post<CreateProgramResponse | number>(
-      `/api/v2/content/BaseContent/create-program`,
+    return await this.ssrAxios.post<CreateProgramResponse | number>(
+      `/api/programs/create-program`,
       form,
-      {
+      { 
         headers: {
           "Content-Type": "multipart/form-data",
         },
