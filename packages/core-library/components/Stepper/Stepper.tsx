@@ -17,9 +17,11 @@ const StepIcon: React.FC<StepIconProps> = ({ active, completed }) => {
       sx={{
         borderRadius: "100%",
         backgroundColor: (theme) =>
-          active ? "#0F2A71" :
-            completed ? theme.palette.success.main : "#0F2A71"
-        ,
+          active
+            ? "#0F2A71"
+            : completed
+              ? theme.palette.success.main
+              : "#0F2A71",
         width: [15, 20],
         height: [15, 20],
         display: "flex",
@@ -126,11 +128,7 @@ export const Stepper: React.FC<AppStepperProps> = ({
               </Typography>
             </Box>
           </StepLabel>
-          {stepContent ? (
-            <StepContent>
-              {stepContent}
-            </StepContent>
-          ) : null}
+          {stepContent ? <StepContent>{stepContent}</StepContent> : null}
         </Step>
       ))}
     </MuiStepper>
