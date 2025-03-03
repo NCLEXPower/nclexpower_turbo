@@ -66,14 +66,15 @@ export const TextareaComponent = <T extends object>({
           data-testid={props["data-testid"]}
           style={{
             width: "100%",
-            fontSize: theme.typography.body1.fontSize,
-            padding: "12px 16px",
+            fontSize: isMobile ? "clamp(1px, 3.72092vw, 36px)" : "clamp(1px, 0.9375vw, 36px)",
+            padding: isMobile ? "clamp(1px,3.48837vw,30px)" : "clamp(1px,0.78125vw,30px)",
             fontFamily: theme.typography.fontFamily,
             color: theme.palette.appColors.essential["800"],
             borderRadius: "5px",
             resize: "none",
+            minHeight: isMobile ? "clamp(1px, 10.466vw, 110px)" : "clamp(1px, 7.917vw, 304px)",
           }}
-          minRows={isMobile ? 10 : 5}
+          minRows={isMobile ? "100%" : "100^%"}
           {...props}
         />
       </Grid>

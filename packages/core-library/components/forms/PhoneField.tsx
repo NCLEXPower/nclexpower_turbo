@@ -115,7 +115,7 @@ export const PhoneFieldComponent = <T extends object>({
     <Grid container spacing={2} direction="column">
       <Grid item>
         {fieldState?.error?.message && (
-          <Typography sx={{fontSize: 15}} color="error">
+          <Typography sx={{ fontSize: 15 }} color="error">
             {fieldState.error.message}
           </Typography>
         )}
@@ -131,9 +131,41 @@ export const PhoneFieldComponent = <T extends object>({
                 <Select
                   data-testid="phone-code-select"
                   fullWidth
-                  style={{
+                  sx={{
+                    height: {
+                      xs: "clamp(1px, 10.466vw, 110px)",
+                      md: "clamp(1px, 2.917vw, 112px)",
+                    },
+                    fontSize: {
+                      xs: "clamp(1px, 3.72092vw, 36px)",
+                      md: "clamp(1px, 0.9375vw, 36px)"
+                    },
+                    padding: {
+                      xs: "0 clamp(1px,3.48837vw,30px)",
+                      md: "0 clamp(1px,0.78125vw,30px)"
+                    },
                     borderRadius: "5px",
-                    padding: "15px",
+                    "& .MuiSelect-select": {
+                      padding: {
+                        xs: "clamp(1px,3.48837vw,30px) 0",
+                        md: "clamp(1px,0.78125vw,30px) 0"
+                      }
+                    },
+                    "& .MuiSvgIcon-root": {
+                      width: {
+                        xs: "clamp(1px,5.814vw,64px)",
+                        md: "clamp(1px,1.667vw,64px)"
+                      },
+                      height: {
+                        xs: "clamp(1px,5.814vw,64px)",
+                        md: "clamp(1px,1.667vw,64px)"
+                      },
+                      margin: {
+                        xs: "clamp(1px,2.3vw,20px) 0",
+                        md: "clamp(1px,0.625vw,16px) 0"
+                      },
+                      top: "0"
+                    }
                   }}
                   inputProps={{ shrink: "false" }}
                   MenuProps={{ sx: { maxHeight: "300px", width: "100%" } }}
@@ -168,10 +200,22 @@ export const PhoneFieldComponent = <T extends object>({
                     borderRadius: "5px",
                   }}
                   sx={{
-                    "& .MuiOutlinedInput-input:focus": {
-                      borderRadius: "5px",
-                      padding: "15px",
+                    borderRadius: "5px",
+                    height: {
+                      xs: "clamp(1px, 10.466vw, 110px)",
+                      md: "clamp(1px, 2.917vw, 112px)",
                     },
+                    fontSize: {
+                      xs: "clamp(1px, 3.72092vw, 36px)",
+                      md: "clamp(1px, 0.9375vw, 36px)"
+                    },
+                    "& .MuiInputBase-input": {
+                      padding: {
+                        xs: "0 clamp(1px,3.48837vw,30px)",
+                        md: "0 clamp(1px,0.78125vw,30px)"
+                      },
+                      borderRadius: "5px",
+                    }
                   }}
                   thousandSeparator={false}
                   allowNegative={true}
