@@ -66,6 +66,7 @@ export const ProgramSectionManagementListBlock = () => {
           const { sectionTitle, sectionType } = section;
           return (
             <ProgramSectionHeader
+              key={sectionTitle}
               showAddButton
               handleCreateSection={() =>
                 handleCreateSection(sectionTitle, sectionType)
