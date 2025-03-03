@@ -7,7 +7,7 @@
 import React from 'react'
 import { InclusionSchema, InclusionType } from './validation'
 import { Button, Card, TextField, TextAreaField } from '../../../../../../../components'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useKeyDown } from '../../../../../../../hooks/useKeyDown'
@@ -43,11 +43,10 @@ export const InclusionForm: React.FC<InclusionFormPropsType> = ({ onSubmit }) =>
                     name='option' 
                     label="Add Inclusion"
                 />
-                <Typography variant="body1">Add Description</Typography>
                 <TextAreaField
                     control={control}
                     name='description'
-                   
+                    label="Add Description"
                 />
                 <Box display="flex" justifyContent="flex-end">
                     <Button onClick={handleSubmitForm} sx={{ fontSize: 'small' }}>
