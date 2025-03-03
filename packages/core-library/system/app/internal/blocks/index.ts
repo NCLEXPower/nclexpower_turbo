@@ -28,4 +28,4 @@ export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlan
 export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";
 export * from "./Hub/QuestionManagement/CaseNameManagementBlock";
 export * from "./Hub/Analytics/AnalyticsBlock";
-export * from "./Hub/IssueTrackingManagemet/IssueTrackingManagementBlock";
+export * from "./Hub/IssueTrackingManagement/IssueTrackingManagementBlock";
