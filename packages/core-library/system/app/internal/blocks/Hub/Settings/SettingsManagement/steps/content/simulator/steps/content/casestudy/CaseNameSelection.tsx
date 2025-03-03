@@ -17,7 +17,7 @@ import { CreateCaseStudyAtom } from "../../../useAtomic";
 import { caseStudyType } from "../../../../../../constants/constants";
 import { CasenameSelectionLoader } from "../loader";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../contexts/PageLoaderContext";
-import { useApi } from "../../../../../../../../../../../../../hooks";
+import { useApi, useBeforeUnload } from "../../../../../../../../../../../../../hooks";
 import { createInitialQuestionnairesValues } from "./CaseStudySummary/utils/CreateInitialValues";
 
 interface Props {
@@ -28,6 +28,7 @@ interface Props {
 }
 
 export const CaseNameSelection: React.FC<Props> = ({ nextStep, next }) => {
+  useBeforeUnload(true);
   const [, setCaseName] = useAtom(CreateCaseStudyAtom);
   const { control, handleSubmit, watch } =
     useForm<ContainedCaseStudyQuestionType>({
@@ -53,11 +54,11 @@ export const CaseNameSelection: React.FC<Props> = ({ nextStep, next }) => {
   const caseNameOptions: SingleOption[] = useMemo(() => {
     return caseNames?.data?.length
       ? caseNames.data.map((name) => ({
-          label: name.caseName,
-          value: name.caseName,
-          code: name.caseName,
-          name: "",
-        }))
+        label: name.caseName,
+        value: name.caseName,
+        code: name.caseName,
+        name: "",
+      }))
       : [];
   }, [caseNames?.data]);
 
