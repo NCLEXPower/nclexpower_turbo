@@ -24,6 +24,10 @@ jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
+jest.mock("../../../hooks/useBeforeUnload.ts", () => ({
+  useBeforeUnload: jest.fn(),
+}));
+
 jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
