@@ -27,5 +27,6 @@ export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAc
 export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsSecurityBlock/SettingsSecurityBlock";
 export * from "./Hub/QuestionManagement/CaseNameManagementBlock";
+export * from "./Hub/QuestionManagement/CaseStudyListViewBlock";
 export * from "./Hub/Analytics/AnalyticsBlock";
-export * from "./Hub/IssueTrackingManagement/IssueTrackingManagementBlock";
+export * from "./Hub/PolicyManagement/PolicyManagementBlock";

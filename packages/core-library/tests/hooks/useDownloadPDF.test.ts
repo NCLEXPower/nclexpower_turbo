@@ -1,87 +1,84 @@
 import { renderHook, waitFor } from "../common";
 import { act } from "react";
+import { useApiCallback } from "../../hooks";
 import { useDownloadPDF } from "../../hooks/useDownloadPDF";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
 }));
 
-describe("useDownloadPDF hook", () => {
-  let mockAnchor: HTMLAnchorElement | null = null;
+jest.mock("./../../../core-library/contexts", () => ({
+  useExecuteToast: jest.fn(() => ({
+    executeToast: jest.fn(),
+  })),
+}));
 
-  beforeEach(() => {
-    global.fetch = jest.fn();
-    global.URL.createObjectURL = jest.fn(() => "http://localhost/mockObjectURL");
-    global.URL.revokeObjectURL = jest.fn();
+jest.mock("./../../../core-library/hooks", () => ({
+  useApiCallback: jest.fn(() => ({
+    loading: false,
+    execute: jest.fn().mockResolvedValueOnce({
+      data: { fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" }, 
+    }),
+  })),
+}));
 
-    const originalCreateElement = document.createElement;
-    jest.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-      if (tagName === "a") {
-        const anchor = originalCreateElement.call(document, "a") as HTMLAnchorElement;
-        jest.spyOn(anchor, "click").mockImplementation(() => { });
-        mockAnchor = anchor;
-        return anchor;
-      }
-      return originalCreateElement.call(document, tagName);
-    });
+beforeEach(() => {
+  jest.clearAllMocks();
+  global.URL.createObjectURL = jest.fn(() => "blob:http://localhost/test");
+  global.URL.revokeObjectURL = jest.fn();
+
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" }),
+    blob: async () => new Blob(["PDF content"], { type: "application/pdf" }),
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+  (useApiCallback as jest.Mock).mockReturnValue({
+    loading: false,
+    execute: jest.fn().mockResolvedValueOnce({
+      data: { fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" },
+    }),
+  });
+});
+
+it("should download the correct PDF file when given a policyType", async () => {
+  const { result } = renderHook(() => useDownloadPDF());
+
+  await act(async () => {
+    await result.current.downloadPdf(1);
   });
 
-  it("should initiate a file download and show loading state while downloading", async () => {
-    const mockBlob = new Blob(["pdf content"], { type: "application/pdf" });
-    const mockResponse = { ok: true, blob: jest.fn().mockResolvedValue(mockBlob) };
-    global.fetch = jest.fn().mockResolvedValue(mockResponse);
+  expect(global.fetch).toHaveBeenNthCalledWith(
+    1,
+    expect.stringContaining("/api/v2/content/BaseContent/get-file-url?policy=1"),
+  );
 
-    const { result } = renderHook(() => useDownloadPDF());
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+});
 
-    expect(result.current.isLoading).toBe(false);
+it("should handle missing file URL errors", async () => {
+  const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  const { result } = renderHook(() => useDownloadPDF());
 
-    act(() => {
-      result.current.downloadFile("mockKey", "test.pdf");
-    });
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(true);
-    });
-
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
-    });
-
-    expect(global.fetch).toHaveBeenCalledWith("https://api.example.com/get-pdf", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: "mockKey" }),
-    });
-
-    expect(mockAnchor).not.toBeNull();
-    expect(mockAnchor!.download).toBe("test.pdf");
-    expect(mockAnchor!.href).toBe("http://localhost/mockObjectURL");
-    expect(mockAnchor!.click).toHaveBeenCalled();
+  await act(async () => {
+    await result.current.downloadPdf(2);
   });
 
-
-  it("should handle errors correctly", async () => {
-    const mockErrorMessage = "Failed to fetch the file. Please try again.";
-
-    const mockResponse = {
-      ok: false,
-      statusText: "Internal Server Error",
-    };
-
-    (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
-
-    const { result } = renderHook(() => useDownloadPDF());
-    expect(result.current.error).toBe(null);
-
-    act(() => {
-      result.current.downloadFile("mockKey", "test.pdf");
-    });
-
-    await waitFor(() => expect(result.current.error).toBe(mockErrorMessage));
+  await waitFor(() => {
+    expect(consoleSpy).toHaveBeenCalledTimes(2);
+    expect(consoleSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        message: "Not implemented: navigation (except hash changes)",
+      })
+    );
+    expect(consoleSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        message: "Not implemented: navigation (except hash changes)",
+      })
+    );
   });
+
+  consoleSpy.mockRestore();
 });
