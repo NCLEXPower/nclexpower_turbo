@@ -2,33 +2,12 @@ import React from 'react';
 import { act, screen, render, fireEvent, waitFor } from "../../../common";
 import { InclusionForm } from '../../../../system/app/internal/blocks/Hub/Product/inclusion/InclusionForm';
 
-
-jest.mock('next/router', () => ({
-  useRouter: jest.fn().mockImplementation(() => ({
-    route: '/',
-    pathname: '',
-    query: {},
-    asPath: '',
-    push: jest.fn(),
-    events: {
-      on: jest.fn(),
-      off: jest.fn(),
-      emit: jest.fn()
-    },
-    replace: jest.fn(),
-    prefetch: jest.fn(() => Promise.resolve()),
-    back: jest.fn(),
-  })),
-}));
-
-
 jest.mock("../../../../config", () => ({
   getConfig: jest.fn().mockReturnValue({
     publicRuntimeConfig: { processEnv: {} },
   }),
   config: { value: jest.fn() },
 }));
-
 
 jest.mock("../../../../core/router", () => ({
   useRouter: jest.fn().mockImplementation(() => ({
@@ -47,7 +26,6 @@ jest.mock("../../../../core/router", () => ({
     loading: false,
   })),
 }));
-
 
 jest.mock("../../../../hooks/useKeyDown", () => ({
   useKeyDown: jest.fn(),
