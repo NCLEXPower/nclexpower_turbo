@@ -6,6 +6,7 @@ import { act, renderHook, waitFor } from "../common";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { clearSession } from "../../hooks";
 import { useAuthSessionIdleTimer } from "../../contexts/auth/hooks/useAuthSessionIdleTimer";
+import { useExecuteToast } from "../../contexts/ToastContext";
 
 jest.mock("../../config", () => ({
   config: {
@@ -69,6 +70,13 @@ jest.mock("../../contexts/auth/hooks/useAuthSessionIdleTimer", () => ({
 
 jest.mock("jwt-decode", () => jest.fn(() => ({ token_id: "mockTokenId" })));
 
+jest.mock("../../contexts/ToastContext", () => ({
+  useExecuteToast: jest.fn(() => ({
+    executeToast: jest.fn(),
+    showToast: jest.fn(),
+  })),
+}));
+
 describe("useAuthContext", () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
     <AuthProvider>{children}</AuthProvider>
@@ -123,6 +131,37 @@ describe("useAuthContext", () => {
       deviceId: "no-device-id",
     });
     expect(result.current.isAuthenticated).toBe(true);
+  });
+
+  test("should show toast message when login fails with 401 error", async () => {
+    const loginCb = jest.fn().mockResolvedValue({
+      status: 401,
+      data: "Unauthorized Access",
+    });
+  
+    jest.mocked(useApiCallback).mockReturnValue({ execute: loginCb } as any);
+  
+    const executeToastMock = jest.fn();
+    jest.mocked(useExecuteToast).mockReturnValue({ executeToast: executeToastMock, showToast: jest.fn() });
+  
+    const { result } = renderHook(() => useAuthContext(), { wrapper });
+  
+    await act(async () => {
+      await result.current.login("test@gmail.com", "wrongpassword");
+    });
+  
+    expect(loginCb).toHaveBeenCalledWith({
+      email: "test@gmail.com",
+      password: "wrongpassword",
+      appName: "mockAppName",
+      deviceId: "no-device-id",
+    });
+    
+    expect(executeToastMock).toHaveBeenCalledTimes(1);
+    expect(executeToastMock).toHaveBeenCalledWith("Unauthorized Access", "top-right", false, {
+      toastId: 0,
+      type: "error",
+    });
   });
 
   test("should handle logout", async () => {
