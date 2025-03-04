@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Box } from "@mui/material";
 import { Alert } from "../../../../../../../components";
 import { useSettingsManagementWizardSteps } from "./steps/useSteps";
-import { useActiveSteps, useBeforeUnload } from "../../../../../../../hooks";
+import { useActiveSteps } from "../../../../../../../hooks";
 import { useResetOnRouteChange } from "../../../../../../../core/hooks/useResetOnRouteChange";
 
 export const SettingsManagementPageForm = () => {
@@ -11,8 +11,6 @@ export const SettingsManagementPageForm = () => {
   const stepLabels = stepKeys.map((step) =>
     step.replace(/([A-Z])/g, " $1").trim()
   );
-
-  useBeforeUnload(true);
 
   const { activeStep, next, previous, reset } = useActiveSteps(
     stepLabels.length
