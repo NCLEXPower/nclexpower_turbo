@@ -25,6 +25,7 @@ import { useExecuteToast } from "../../../../../../../../../../../../../../conte
 import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
 import {
   useApiCallback,
+  useBeforeUnload,
   useSanitizedInputs,
   useSensitiveInformation,
   useStyle,
@@ -99,6 +100,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   previous,
   reset,
 }) => {
+  useBeforeUnload(true);
   const [selectedQuestion, setSelectedQuestion] = useState(0);
   const [isTableView, setIsTableView] = useState<boolean>(false);
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
@@ -195,7 +197,7 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
                 dangerouslySetInnerHTML={{
                   __html: purifyInputs(
                     caseStudyAtom?.questionnaires[selectedQuestion].rationale ??
-                      ""
+                    ""
                   ) as TrustedHTML,
                 }}
               />
