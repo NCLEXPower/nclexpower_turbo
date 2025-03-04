@@ -68,6 +68,8 @@ export const ComingSoon = require("./ComingSoon/ComingSoon.png");
 export const ForgotPasswordImage = require("./forgotpassword/ForgotPasswordImage.json");
 export const ChangePasswordImage = require("./forgotpassword/ChangePasswordImage.json");
 export const ChangePasswordBG = require("./ChangePasswordBG.png");
+export const ChangePasswordLeftColumn = require("./ChangePasswordLeftColumn.png");
+export const ChangePasswordLockIcon = require("./ChangePasswordLockIcon.png");
 
 export const AvailableIcon = require("./programslist/icons/available.svg");
 export const AvailableWhiteIcon = require("./programslist/icons/available-white.svg");
