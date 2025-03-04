@@ -10,6 +10,7 @@ import { useApiCallback } from "../../../../../../hooks";
 import { CreateGoliveSchedule } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
 import { MappedCountry } from "./types";
+import { cacheKeyFor } from "../../../../../../utils/cacheKey";
 
 const mapResponseToCountry = (data: {
   countryKey: string;
@@ -83,11 +84,11 @@ export const ComingSoonManagementBlock: React.FC = () => {
       return;
     }
 
-    const cacheKeyFor = (key: string) => `${goLiveDate.toString()}-${key}`;
+    // const cacheKeyFor = (key: string) => `${goLiveDate.toString()}-${key}`;
 
     const missingKeys = selectedCountries.filter(
       (key): key is string =>
-        key !== undefined && !cache.current.has(cacheKeyFor(key))
+        key !== undefined && !cache.current.has(cacheKeyFor(goLiveDate, key))
     );
 
     if (missingKeys.length > 0) {
@@ -106,7 +107,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
         );
         const newMapped = newFlattenedResponses.map(mapResponseToCountry);
         newMapped.forEach((mapped) => {
-          cache.current.set(cacheKeyFor(mapped.countryKey), mapped);
+          cache.current.set(cacheKeyFor(goLiveDate, mapped.countryKey), mapped);
         });
       } catch (error) {
         console.error("Error fetching timezones:", error);
@@ -116,7 +117,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
     const newMappedCountries = selectedCountries
       .filter((key): key is string => key !== undefined)
-      .map((key) => cache.current.get(cacheKeyFor(key))!);
+      .map((key) => cache.current.get(cacheKeyFor(goLiveDate, key))!);
     setMappedCountries(newMappedCountries);
   }
 
