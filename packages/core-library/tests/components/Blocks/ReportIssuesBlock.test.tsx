@@ -1,9 +1,14 @@
 import { renderHook } from "@testing-library/react";
 import { useBusinessQueryContext } from "../../../contexts";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { useApiCallback } from '../../../hooks'
 import { useExecuteToast } from "../../../contexts";
+import { useColumns } from '../../../hooks';
+
+jest.mock("../../../config", () => ({
+  config: { value: jest.fn() },
+}));
 
 jest.mock("../../../contexts", () => ({
   useBusinessQueryContext: jest.fn(),
@@ -82,6 +87,7 @@ describe("Successful delete operation", () => {
       showToast: mockShowToast,
       executeToast: mockExecuteToast,
     });
+    render(<ReportedIssuesBlock />);
 
     mockRefetch();
     const { showToast } = useExecuteToast();
