@@ -304,4 +304,101 @@ describe('RecaptchaComponent', () => {
 
     jest.useRealTimers();
   });
+
+  it('should clear interval on unmount', () => {
+    const { unmount } = render(
+      <RecaptchaComponent sitekey='your-sitekey-here' />
+    );
+
+    unmount();
+
+    expect(clearInterval).toHaveBeenCalled();
+  });
+
+  it('should not add script again if already present', () => {
+    document.body.innerHTML =
+      '<script src="https://www.google.com/recaptcha/api.js"></script>';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const scripts = document.querySelectorAll(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    expect(scripts.length).toBe(1);
+  });
+
+  it('should not inject multiple recaptcha script tags', () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const scripts = document.querySelectorAll(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    expect(scripts.length).toBe(1);
+  });
+
+  it('should handle grecaptcha not being ready in a timely manner', async () => {
+    (global.window as any).grecaptcha.ready = jest.fn();
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+  });
+
+  it('should clear the interval when component unmounts', () => {
+    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+    const { unmount } = render(
+      <RecaptchaComponent sitekey='your-sitekey-here' />
+    );
+
+    unmount();
+
+    expect(clearIntervalSpy).toHaveBeenCalled();
+  });
+
+  it('should not append script if it already exists in the DOM', () => {
+    document.body.innerHTML =
+      '<script src="https://www.google.com/recaptcha/api.js"></script>';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const scripts = document.querySelectorAll(
+      'script[src="https://www.google.com/recaptcha/api.js"]'
+    );
+    expect(scripts.length).toBe(1);
+  });
+
+  it('should not break if recaptcha is disabled or blocked', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+  });
+
+  it('should check recaptcha readiness when isScriptLoaded changes', async () => {
+    delete global.window.grecaptcha;
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+
+    (global.window as any).grecaptcha = {
+      ready: jest.fn((callback) => callback()),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
 });
