@@ -88,7 +88,7 @@ export const standardProgramList: StandardProgramListType[] = [
           {
             sectionDataId: "f00f8127-fadb-4691-c6cc-08dd4c1b4b40",
             title: "Test Document Updated",
-            link: "https://storage.googleapis.com/nclexpowerdev.appspot.com/sections/document/documents/ebe427b8-2548-46a1-a6b4-6ef04dd32b1d.pdf",
+            link: "https://storage.googleapis.com/nclexpowerdev.appspot.com/sections/med-cards/documents/198495e5-8b76-4a9e-957e-4f3cdeb4e99a.pdf",
             contentArea: null,
             guided: null,
             unguided: null,
@@ -108,7 +108,7 @@ export const standardProgramList: StandardProgramListType[] = [
           {
             sectionDataId: "f00f8127-fadb-4691-c6cc-abcdefghjk",
             title: "Test Document Updated",
-            link: "https://storage.googleapis.com/nclexpowerdev.appspot.com/sections/document/documents/ebe427b8-2548-46a1-a6b4-6ef04dd32b1d.pdf",
+            link: "https://storage.googleapis.com/nclexpowerdev.appspot.com/sections/med-cards/documents/198495e5-8b76-4a9e-957e-4f3cdeb4e99a.pdf",
             contentArea: null,
             guided: null,
             unguided: null,
