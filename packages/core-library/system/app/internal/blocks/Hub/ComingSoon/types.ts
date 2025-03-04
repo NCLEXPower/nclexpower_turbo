@@ -5,6 +5,5 @@ export type MappedCountry = {
     timezones: {
       selectedTimezone: string;
       daysRemaining: number;
-      hoursRemaining: number;
     }[];
   };

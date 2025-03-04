@@ -66,7 +66,7 @@ const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {
                       color: "#3B0086",
                     }}
                   >
-                    Days and Hours Remaining
+                    Days Remaining
                   </Typography>
                 </Box>
                 <Box
@@ -81,7 +81,7 @@ const LiveCountdown: React.FC<LiveCountdownProps> = ({ mappedCountries }) => {
                         {tz.selectedTimezone}
                       </Typography>
                       <Typography sx={{ fontSize: "14px", color: "#3B0086" }}>
-                        {tz.daysRemaining} Days : {tz.hoursRemaining} Hours
+                        {tz.daysRemaining} Days
                       </Typography>
                     </Box>
                   ))}

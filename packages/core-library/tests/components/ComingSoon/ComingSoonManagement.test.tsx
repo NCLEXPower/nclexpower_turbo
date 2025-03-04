@@ -56,8 +56,8 @@ describe("ComingSoonManagement component", () => {
       countryName: "USA",
       daysRemaining: 5,
       timezones: [
-        { selectedTimezone: "EST", daysRemaining: 5, hoursRemaining: 12 },
-        { selectedTimezone: "PST", daysRemaining: 4, hoursRemaining: 10 },
+        { selectedTimezone: "EST", daysRemaining: 5},
+        { selectedTimezone: "PST", daysRemaining: 4},
       ],
     },
   ];

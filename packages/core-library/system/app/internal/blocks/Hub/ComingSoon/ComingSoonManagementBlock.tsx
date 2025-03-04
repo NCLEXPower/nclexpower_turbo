@@ -18,20 +18,17 @@ const mapResponseToCountry = (data: {
   daysRemaining: {
     selectedTimezone: string;
     daysRemaining: number;
-    hoursRemaining: number;
   }[];
 }): MappedCountry => {
-  const bestTimezone = data.daysRemaining.reduce(
-    (prev, curr) => (curr.hoursRemaining > prev.hoursRemaining ? curr : prev),
-    data.daysRemaining[0]
-  );
+  const defaultTimezone = data.daysRemaining[0];
   return {
     countryKey: data.countryKey,
     countryName: data.country,
-    daysRemaining: bestTimezone.daysRemaining,
+    daysRemaining: defaultTimezone.daysRemaining,
     timezones: data.daysRemaining,
   };
 };
+
 
 export const ComingSoonManagementBlock: React.FC = () => {
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
