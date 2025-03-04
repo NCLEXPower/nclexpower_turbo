@@ -87,7 +87,6 @@ describe("Successful delete operation", () => {
       showToast: mockShowToast,
       executeToast: mockExecuteToast,
     });
-    render(<ReportedIssuesBlock />);
 
     mockRefetch();
     const { showToast } = useExecuteToast();
