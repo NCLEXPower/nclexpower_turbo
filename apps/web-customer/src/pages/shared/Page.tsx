@@ -41,7 +41,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   if (error) {
     return <ErrorBox label={error.message} />;
   }
-  
+
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
   }
@@ -54,8 +54,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     <React.Fragment>
       <CSPHead nonce={generatedNonce ?? "no-nonce"} />
       <BusinessQueryContextProvider>
-        <AuthProvider>
-          <ToastProvider>
+        <ToastProvider>
+          <AuthProvider>
             <ClientSecretKeyContextProvider>
               <ControlledToast autoClose={5000} hideProgressBar={false} />
               <Layout
@@ -63,8 +63,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
                 children={children}
               />
             </ClientSecretKeyContextProvider>
-          </ToastProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ToastProvider>
       </BusinessQueryContextProvider>
     </React.Fragment>
   );

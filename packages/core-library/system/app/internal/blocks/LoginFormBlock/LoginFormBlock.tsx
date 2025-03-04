@@ -74,10 +74,7 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
-        toast.executeToast("Invalid email or password", "top-right", false, {
-          toastId: 0,
-          type: "error",
-        });
+        console.error(err);
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, toast]

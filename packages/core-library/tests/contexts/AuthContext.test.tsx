@@ -12,7 +12,7 @@ jest.mock("../../config", () => ({
     value: {
       BASEAPP: "mockAppName",
       SECRET_KEY:
-        "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", // Example hex key
+        "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", 
     },
   },
 }));

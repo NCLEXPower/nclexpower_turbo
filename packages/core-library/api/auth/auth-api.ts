@@ -44,7 +44,10 @@ export class AuthApi {
   public login(params: LoginParams) {
     return this.axios.post<LoginResponse>(
       `/api/v2/internal/baseInternal/login`,
-      params
+      params,
+      {
+        validateStatus: (status) => status < 500,
+      }
     );
   }
 

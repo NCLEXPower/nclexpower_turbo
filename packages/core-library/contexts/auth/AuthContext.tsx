@@ -320,17 +320,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               await router.push((route) => route.account_verification_otp);
               return;
             }
-            if (result.data.responseCode === 404) {
-              toast.executeToast(
-                "Invalid email or password. Please try again.",
-                "top-right",
-                false,
-                {
-                  toastId: 0,
-                  type: "error",
-                }
-              );
-              return;
+            if (result.status === 401) {
+              toast.executeToast(String(result.data), "top-right", false, {
+                toastId: 0,
+                type: "error",
+              });
+              return; 
             }
             setIsPaid(parsedIsPaid);
             setAccountId(parsedAccountId);
