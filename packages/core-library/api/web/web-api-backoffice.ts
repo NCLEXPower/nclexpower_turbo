@@ -614,8 +614,8 @@ export class WebApiBackOffice {
       } 
     }
     
-    return await this.axios.post<CreateSectionResponse | number>(
-      `/api/v2/content/BaseContent/create-section`,
+    return await this.ssrAxios.post<CreateSectionResponse | number>(
+      `/api/programs/create-section`,
       form,
       {
         headers: {

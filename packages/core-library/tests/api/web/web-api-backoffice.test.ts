@@ -56,7 +56,7 @@ describe("Service API Calls", () => {
     const result = await service.createSection(params);
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      "/api/v2/content/BaseContent/create-section",
+      "/api/programs/create-section",
       expect.any(FormData),
       { headers: { "Content-Type": "multipart/form-data" } }
     );
