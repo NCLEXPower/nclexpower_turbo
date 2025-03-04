@@ -2,9 +2,8 @@ import { renderHook } from "@testing-library/react";
 import { useBusinessQueryContext } from "../../../contexts";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import { useApiCallback } from '../../../hooks'
+import { useApiCallback, useColumns } from '../../../hooks'
 import { useExecuteToast } from "../../../contexts";
-import { useColumns } from '../../../hooks';
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -15,7 +14,7 @@ jest.mock("../../../contexts", () => ({
   useExecuteToast: jest.fn(),
 }));
 
-describe("businessQueryGetAllReportedIssues hook", () => {
+describe("Reported Issues Block", () => {
   it("should return mock data and refetch function", () => {
     const mockRefetch = jest.fn();
     const mockData = [{ id: 1, ticketNumber: "TICKET-001" }];
@@ -34,9 +33,6 @@ describe("businessQueryGetAllReportedIssues hook", () => {
     expect(result.current.data).toEqual(mockData);
     expect(result.current.refetch).toBe(mockRefetch);
   });
-});
-
-describe("showToast", () => {
   it("calls showToast with correct message and type", () => {
     const mockShowToast = jest.fn();
     const mockExecuteToast = jest.fn();
@@ -51,9 +47,6 @@ describe("showToast", () => {
 
     expect(mockShowToast).toHaveBeenCalledWith("Test message", "success");
   });
-});
-
-describe("Error handling with showToast", () => {
   it("logs error and calls showToast with error message", () => {
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const mockShowToast = jest.fn();
@@ -75,9 +68,6 @@ describe("Error handling with showToast", () => {
     );
     consoleErrorSpy.mockRestore();
   });
-});
-
-describe("Successful delete operation", () => {
   it("calls refetch and shows success toast", () => {
     const mockRefetch = jest.fn();
     const mockShowToast = jest.fn();
@@ -94,9 +84,6 @@ describe("Successful delete operation", () => {
     expect(mockRefetch).toHaveBeenCalled();
     expect(mockShowToast).toHaveBeenCalledWith("Successfully deleted!", "success");
   });
-});
-
-describe("Loading state for deleteReportedIssuesCb", () => {
   it("should set isLoading to true when loading is true", () => {
     const deleteReportedIssuesCb = { loading: true };
     const isLoading = deleteReportedIssuesCb.loading;
@@ -107,7 +94,6 @@ describe("Loading state for deleteReportedIssuesCb", () => {
   it("should set isLoading to false when loading is false", () => {
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
-
     expect(isLoading).toBe(false);
   });
 });
