@@ -429,4 +429,40 @@ describe('RecaptchaComponent', () => {
     );
     expect(instances.length).toBe(2);
   });
+
+  it('should set isScriptLoaded state when script is loaded', async () => {
+    delete global.window.grecaptcha;
+    document.body.innerHTML = '';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.querySelector('script');
+    script?.dispatchEvent(new Event('load'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument();
+    });
+  });
+
+  it('should set isRecaptchaLoaded state when recaptcha is ready after script load', async () => {
+    delete global.window.grecaptcha;
+    document.body.innerHTML = '';
+
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const script = document.querySelector('script');
+    script?.dispatchEvent(new Event('load'));
+
+    (global.window as any).grecaptcha = {
+      ready: jest.fn((callback) => callback()),
+      render: jest.fn(),
+      getResponse: jest.fn(),
+      reset: jest.fn(),
+    };
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
+    });
+  });
+  
 });
