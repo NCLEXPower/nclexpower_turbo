@@ -3205,6 +3205,11 @@
   dependencies:
     tippy.js "^6.3.7"
 
+"@tiptap/extension-gapcursor@^2.11.5":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-gapcursor/-/extension-gapcursor-2.11.5.tgz#6771e387d90ef85ee834f4572627d76e303e1297"
+  integrity sha512-kcWa+Xq9cb6lBdiICvLReuDtz/rLjFKHWpW3jTTF3FiP3wx4H8Rs6bzVtty7uOVTfwupxZRiKICAMEU6iT0xrQ==
+
 "@tiptap/extension-gapcursor@^2.6.6":
   version "2.6.6"
   resolved "https://registry.npmjs.org/@tiptap/extension-gapcursor/-/extension-gapcursor-2.6.6.tgz"

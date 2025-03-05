@@ -28,6 +28,10 @@ export function useBeforeUnload(enabled: boolean, handler?: VoidFunction) {
       event.preventDefault();
     };
 
+    if (!enabled) {
+      return;
+    }
+
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
@@ -50,7 +54,8 @@ export function useBeforeUnload(enabled: boolean, handler?: VoidFunction) {
       router.events.off("routeChangeStart", handleRouteChangeStart);
 
     if (!enabled || navigationAllowed) {
-      return cleanUp;
+      cleanUp();
+      return;
     }
 
     router.events.on("routeChangeStart", handleRouteChangeStart);
