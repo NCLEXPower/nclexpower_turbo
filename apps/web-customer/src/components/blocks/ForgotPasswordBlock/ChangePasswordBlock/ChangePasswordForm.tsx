@@ -4,10 +4,16 @@
  * Created by the Software Strategy & Development Division
  */
 import React, { useMemo } from "react";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
-import { Button, EvaIcon, TextField } from "core-library/components";
+import {
+  Button,
+  EvaIcon,
+  PasswordToggleAdornment,
+  TextField,
+  Link,
+} from "core-library/components";
 import { useShowPassword } from "./useShowPassword";
 import { ValidationIndicators } from "./ValidationIndicator";
 import {
@@ -16,8 +22,10 @@ import {
   validatePassword,
 } from "@/core/Schema";
 import Image from "next/image";
-import { ChangePasswordBG, NCLEXBlueLogo } from "core-library/assets";
-import { ChangePasswordLock } from "../../../icons/ChangePasswordLock";
+import {
+  ChangePasswordLeftColumn,
+  ChangePasswordLockIcon,
+} from "core-library/assets";
 
 interface ChangePasswordFormProps {
   submitLoading?: boolean;
@@ -30,7 +38,12 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   submitLoading,
   handleBack,
 }) => {
-  const { showPassword, showconfirmPassword } = useShowPassword();
+  const {
+    showPassword,
+    showconfirmPassword,
+    handleClickShowPassword,
+    handleClickShowconfirmPassword,
+  } = useShowPassword();
 
   const form = useForm({
     mode: "onSubmit",
@@ -77,112 +90,149 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   );
 
   return (
-    <div className="w-screen min-h-screen h-fit flex flex-col items-center justify-center">
-      <div className="w-full h-full px-10 pt-20 pb-12 flex items-center justify-start flex-col rounded-md lg:mt-0 lg:px-12 lg:w-2/5 lg:pt-10 lg:h-full">
-        <div
-          className="w-full flex items-center justify-end text-darkBlue text-xl cursor-pointer z-10"
-          onClick={handleBack}
-        >
-          <EvaIcon
-            id="back-icon"
-            name="arrow-ios-back-outline"
-            fill="#0F2A71"
-            width={30}
-            height={30}
-            ariaHidden
+    <div className="w-screen  min-h-screen h-fit flex flex-col items-center lg:justify-center">
+      <div className=" flex w-full h-full">
+        <div className="hidden lg:block p-3 lg:w-4/12 lg:h-screen">
+          <Image
+            src={ChangePasswordLeftColumn}
+            alt="ChangePassword BG..."
+            className="w-full h-full object-fill"
           />
-          <span className="pt-sans-narrow-regular ml-1 underline">
-            Back to login
-          </span>
         </div>
-        <div className="text-center flex items-center justify-center flex-col">
-          <ChangePasswordLock />
-          <h1 className="pt-sans-bold text-3xl font-bold text-[#0F2A71] leading-3 mt-4">
-            Set new password
-          </h1>
-        </div>
-        <div className="text-center text-darkGray">
-          <p className="text-[#606060] pt-sans-narrow-regular text-xl">
-            Please enter a new password. Ensure that your new password is
-            different from the previous one for better security.
-          </p>
-        </div>
-        <div className="w-full h-fit flex flex-col items-center justify-start ">
-          <FormProvider {...form}>
-            <Image
-              src={ChangePasswordBG}
-              alt="ChangePassword BG..."
-              className="w-full lg:w-1/3 scale-125"
-              style={{ position: "absolute", zIndex: 0 }}
-            />
 
-            <Stack className="w-full h-fit  gap-2">
-              <span className="pt-sans-narrow-bold text-[#0F2A71] text-xl">
-                New Password
-              </span>
-              <TextField
-                control={control}
-                name="newPassword"
-                placeholder="Password"
-                type={showPassword ? "text" : "password"}
-                sx={{ borderRadius: "10px", border: "1px solid #0F2A71" }}
-                inputProps={{ style: { padding: 20, borderRadius: "10px" } }}
-              />
-              <span className="pt-sans-narrow-bold text-[#0F2A71] text-xl mt-4">
-                Confirm Password
-              </span>
-              <TextField
-                control={control}
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                type={showconfirmPassword ? "text" : "password"}
-                sx={{ borderRadius: "10px", border: "1px solid #0F2A71" }}
-                inputProps={{ style: { padding: 20, borderRadius: "10px" } }}
-              />
-              <Grid item xs={12} sx={{ marginY: 2 }}>
-                <p className="text-[#E92828] pt-sans-narrow-bold text-xl mb-2">
-                  Must contain at least
+        <div className="flex items-center w-full   flex-col-reverse  lg:w-8/12 lg:min-h-screen">
+          <div className="w-full px-16 lg:p-3 h-full flex items-center justify-center flex-col rounded-md lg:mt-0 lg:px-12  ">
+            <div className="space-y-12 lg:space-y-20 md:w-10/12  lg:w-8/12 xl:w-6/12 ">
+              <div className="text-left  space-y-8">
+                <h1 className="pt-sans-bold text-[40px] text-[#232323] font-bold leading-3 mt-4">
+                  Set New <span className="text-[#0F2A71] ">Password</span>
+                </h1>
+                <p className="text-[#969696] pt-sans-narrow-regular text-lg lg:text-xl">
+                  Set a strong new password to protect your account. Ensure it’s
+                  unique and different from your previous password to maximize
+                  security.
                 </p>
-                <ValidationIndicators
-                  criteria={passwordCriteria}
-                  iconSize="medium"
-                  invalidColor="red"
-                  validColor="green"
-                />
-              </Grid>
-              <Box
-                sx={{
-                  gridColumn: "span 10",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  flexDirection: { xs: "column", md: "row" },
-                }}
-              >
-                <div className="mt-10 w-full">
-                  <Button
-                    disabled={!isValid || submitLoading}
-                    variant="contained"
-                    fullWidth
-                    sx={{
-                      px: 4,
-                      py: 2,
-                      backgroundColor: "#0F2A71",
-                      borderRadius: "0.625rem",
-                    }}
-                    className="hover:bg-hoverBlue"
-                    onClick={handleSubmit(onSubmit)}
-                  >
-                    Change Password
-                  </Button>
-                </div>
-              </Box>
-            </Stack>
-          </FormProvider>
+              </div>
+
+              <div className="w-full h-fit flex flex-col items-center justify-start ">
+                <FormProvider {...form}>
+                  <Stack className="w-full  ">
+                    <TextField
+                      control={control}
+                      name="newPassword"
+                      placeholder="New Password"
+                      type={showPassword ? "text" : "password"}
+                      sx={{
+                        borderRadius: "10px",
+                        border: " 1px solid #D9D9D9",
+                        marginBottom: "12px",
+                      }}
+                      endAdornment={
+                        <PasswordToggleAdornment
+                          showPassword={showPassword}
+                          onClick={handleClickShowPassword}
+                        />
+                      }
+                      inputProps={{
+                        style: { padding: 20, borderRadius: "10px" },
+                      }}
+                    />
+
+                    <TextField
+                      control={control}
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      type={showconfirmPassword ? "text" : "password"}
+                      sx={{ borderRadius: "10px", border: "1px solid #D9D9D9" }}
+                      endAdornment={
+                        <PasswordToggleAdornment
+                          showPassword={showconfirmPassword}
+                          onClick={handleClickShowconfirmPassword}
+                        />
+                      }
+                      inputProps={{
+                        style: { padding: 20, borderRadius: "10px" },
+                      }}
+                    />
+                    <Box>
+                      <h2 className="block lg:hidden my-6 font-normal font-ptSansNarrow text-[#969696]">
+                        Passowrd Requirements
+                      </h2>
+                      <ValidationIndicators
+                        criteria={passwordCriteria}
+                        iconSize="medium"
+                        invalidColor="red"
+                        validColor="green"
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        gridColumn: "span 10",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        flexDirection: { xs: "column", md: "row" },
+                      }}
+                    >
+                      <div className="w-full mt-6 space-y-6">
+                        <Button
+                          disabled={!isValid || submitLoading}
+                          variant="contained"
+                          fullWidth
+                          sx={{
+                            px: 4,
+                            py: 2,
+                            backgroundColor: "#0F2A71",
+                            borderRadius: "10px",
+                          }}
+                          className="hover:bg-hoverBlue"
+                          onClick={handleSubmit(onSubmit)}
+                        >
+                          Submit
+                        </Button>
+
+                        <p className="text-lg text-center text-[#6E6E6E] font-ptSansNarrow">
+                          If you need assistance,{" "}
+                          <Link
+                            href="/contact"
+                            className="text-[#0F2A71] font-bold underline"
+                          >
+                            contact
+                          </Link>{" "}
+                          our support team for help.
+                        </p>
+                      </div>
+                    </Box>
+                  </Stack>
+                </FormProvider>
+              </div>
+            </div>
+          </div>
+
+          <Image
+            src={ChangePasswordLockIcon}
+            alt="ChangePassword BG..."
+            className="block lg:hidden w-[97px] mt-6 mb-12 h-[74px] "
+          />
+          <div
+            className="w-full flex py-6 pr-12 lg:pr-24 items-start   justify-end text-darkBlue text-xl cursor-pointer z-10"
+            onClick={handleBack}
+          >
+            <div className="flex items-center justify-center ">
+              <EvaIcon
+                id="back-icon"
+                name="arrow-ios-back-outline"
+                fill="#0F2A71"
+                width={30}
+                height={30}
+                ariaHidden
+              />
+              <span className="pt-sans-narrow-regular ml-1 underline text-[#0F2A71]">
+                Back
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="hidden items-end h-fit justify-end lg:flex lg:w-full self-end px-10 py-5">
-        <Image src={NCLEXBlueLogo} alt="ChangePassword BG..." />
       </div>
     </div>
   );

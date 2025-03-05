@@ -413,6 +413,11 @@ export type CaseStudyContentCollectionDtos = {
   questionnaires: QuestionnaireType[];
 };
 
+export interface CaseStudyContentCollection
+  extends ContainedCaseStudyQuestionType {
+  id: string;
+}
+
 export type SequenceContentType = {
   seqContent?: string;
   seqNum: number;
@@ -601,9 +606,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -747,4 +752,38 @@ export type CaseNameResponseType = {
 
 export type DeleteCaseNameParams = {
   id: string;
+};
+
+export type CreateGoliveSchedule = {
+  eventName: string;
+  endDate: string;
+  targetEnvironment: string;
+  timeZone: string;
+  countries: string[];
+  selectedCountriesTimezones: string[];
+  description: string;
+  isActive: boolean;
+};
+
+export type GetCountryTimezonesParams = {
+  daysRemaining: any;
+  country: any;
+  countryKey: string;
+  goLiveDate: string;
+};
+
+export type PolicyFileResponseType = {
+  fileName: string;
+  fileUrl: string;
+}
+
+export type GetCaseStudyListParams = {
+  TokenizeInformationId: string;
+};
+
+export type CaseStudyListResponse = {
+  caseNum: number;
+  caseName: string;
+  status: number;
+  dateCreated: string;
 };

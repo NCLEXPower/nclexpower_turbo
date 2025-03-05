@@ -15,6 +15,7 @@ jest.mock("../../../hooks", () => ({
   useApiCallback: jest.fn(),
   useCustomAction: jest.fn(),
   useApi: jest.fn(),
+  useBeforeUnload: jest.fn(),
 }));
 
 jest.mock("../../../contexts/PageLoaderContext", () => ({

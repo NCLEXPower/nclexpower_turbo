@@ -24,6 +24,10 @@ jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
 }));
 
+jest.mock("../../../hooks/useBeforeUnload.ts", () => ({
+  useBeforeUnload: jest.fn(),
+}));
+
 jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
@@ -80,7 +84,9 @@ describe("Success Page", () => {
     );
 
     fireEvent.click(screen.getByTestId("create-new"));
-    expect(mockFn).toHaveBeenCalledWith({ pathname: "/regular-question-list" });
+    expect(mockFn).toHaveBeenCalledWith({
+      pathname: "/hub/qm/regular-question-list",
+    });
   });
 
   it("should go to case study question list", () => {
@@ -96,7 +102,9 @@ describe("Success Page", () => {
     );
 
     fireEvent.click(screen.getByTestId("create-new"));
-    expect(mockFn).toHaveBeenCalledWith({ pathname: "/case-study-list" });
+    expect(mockFn).toHaveBeenCalledWith({
+      pathname: "/hub/qm/case-study-list",
+    });
   });
 
   it("should proceed to create new (regular)", () => {
