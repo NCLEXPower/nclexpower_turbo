@@ -26,6 +26,9 @@ import {
   useGetAllCategories,
   useCommenceEnvMaintenanceMode,
   useAppMutation,
+  useGetSectionsByType,
+  useGetAllSections,
+  useGetAllPrograms,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -50,11 +53,14 @@ import {
   MenuItems,
   GetMenuByIdParams,
   ContactFormType,
+  GetAllSectionsResponseType,
+  GetSectionParams,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
 import { EditMenuItemsType } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types";
 import { CategoryResponseType } from "../../../core/hooks/types";
 import { MaintenanceSsr } from "../../../types/global";
+import { StandardProgramListType } from "../../../types/wc/programList";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -1940,5 +1946,239 @@ describe("useGetAllCategories", () => {
 
     expect(result.current.data).toEqual(mockData);
     expect(result.current.isLoading).toBe(false);
+  });
+});
+
+// new tests
+
+describe("useGetSectionsByType", () => {
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+  });
+
+  it("should fetch and return sections by type", async () => {
+    const mockData: GetAllSectionsResponseType = {
+      sectionId: "test-id",
+      sectionType: "test-type",
+      sectionTitle: "test-title",
+      sectionData: [
+        {
+          sectionDataId: "data-id",
+          title: "data-title",
+        },
+      ],
+    };
+    mockExecute.mockResolvedValue({ data: mockData });
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const sectionType: GetSectionParams = {
+      sectionType: "document",
+    };
+
+    const { result } = renderHook(() =>
+      useGetSectionsByType(["getSectionsByType"], sectionType)
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(["getSectionsByType"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    const sectionType: GetSectionParams = {
+      sectionType: "document",
+    };
+    const { result } = renderHook(() =>
+      useGetSectionsByType(["getSectionsByType"], sectionType)
+    );
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const sectionType: GetSectionParams = {
+      sectionType: "document",
+    };
+
+    const { result } = renderHook(() =>
+      useGetSectionsByType(["getSectionsByType"], sectionType)
+    );
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
+  });
+});
+
+describe("useGetAllSections", () => {
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+  });
+
+  it("should fetch and return all sections", async () => {
+    const mockData: GetAllSectionsResponseType = {
+      sectionId: "test-id",
+      sectionType: "test-type",
+      sectionTitle: "test-title",
+      sectionData: [
+        {
+          sectionDataId: "data-id",
+          title: "data-title",
+        },
+      ],
+    };
+    mockExecute.mockResolvedValue({ data: mockData });
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() => useGetAllSections(["getAllSections"]));
+
+    expect(useQuery).toHaveBeenCalledWith(["getAllSections"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    const { result } = renderHook(() => useGetAllSections(["getAllSections"]));
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const { result } = renderHook(() => useGetAllSections(["getAllSections"]));
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
+  });
+});
+
+describe("useGetAllPrograms", () => {
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+  });
+
+  it("should fetch and return all programs", async () => {
+    const mockData: StandardProgramListType = {
+      id: "test-program-id",
+      title: "test-program",
+      programStatus: "active",
+      programImage: {
+        src: "test-src",
+        height: 100,
+        width: 100,
+        blurDataURL: "test-blur-url",
+      },
+      sections: [
+        {
+          sectionId: "section-id",
+          sectionType: "section-type",
+          sectionTitle: "section-title",
+          sectionStatus: "active",
+        },
+      ],
+    };
+    mockExecute.mockResolvedValue({ data: mockData });
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const { result } = renderHook(() => useGetAllPrograms(["getAllPrograms"]));
+
+    expect(useQuery).toHaveBeenCalledWith(["getAllPrograms"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    const { result } = renderHook(() => useGetAllPrograms(["getAllPrograms"]));
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const { result } = renderHook(() => useGetAllPrograms(["getAllPrograms"]));
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
   });
 });
