@@ -1,26 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography, Container, Stack } from "@mui/material";
 import {
   DateField,
   GenericSelectField,
   MultipleSelectField,
+  CustomTooltip,
 } from "../../../../../../components";
 import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
-import { ContentDateType } from "./validation";
 import { Control } from "react-hook-form";
+import { ContentDateType } from "./validation";
+import LiveCountdown from "./LiveCountDown";
+import { MappedCountry } from "./types";
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
   isSwitchOn: boolean;
   isActive?: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  mappedCountries: MappedCountry[];
 };
 
-const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }: ComingSoonProps) => {
-
+const ComingSoonManagement = ({
+  control,
+  isSwitchOn,
+  onSwitchChange,
+  isActive,
+  mappedCountries,
+}: ComingSoonProps) => {
   return (
-    <Stack direction={"row"}>
+    <Stack direction="row">
       <Container sx={{ width: 600 }}>
         <Typography
           variant="h6"
@@ -50,14 +59,15 @@ const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }:
                 marginTop: "1rem",
                 opacity: isSwitchOn ? 1 : 0.5,
               }}
-              children={"Go Live Date:"}
-            />
+            >
+              Go Live Date:
+            </Typography>
             <div className="flex flex-row items-center">
               <DateField
-              name="schedule"
-              control={control}
-              placeholder="DD - MM - YYYY"
-              disabled={!isSwitchOn||isActive}
+                name="goLiveDate"
+                control={control}
+                placeholder="DD - MM - YYYY"
+                disabled={!isSwitchOn || isActive}
               />
               <div>
                 <Typography
@@ -75,9 +85,7 @@ const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }:
                     checked={isSwitchOn}
                     onChange={onSwitchChange}
                     disabled={isActive}
-                    sx={{
-                      flexShrink: 0,
-                    }}
+                    sx={{ flexShrink: 0 }}
                   />
                   <Typography
                     variant="body2"
@@ -137,42 +145,13 @@ const ComingSoonManagement = ({ control, isSwitchOn, onSwitchChange, isActive }:
                 marginTop: 2,
               }}
               control={control}
-              name="selectedCountriesTimezones"
+              name="countryKey"
               options={CountryMockData}
               disabled={isActive}
               multiple
             />
           </Container>
-          <div
-            className="flex flex-end"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              marginTop: "1rem",
-            }}
-          >
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                fontSize: "1rem",
-                color: "#3B0086",
-                marginLeft: "1rem",
-              }}
-            >
-              Live Countdown of Selected Countries :
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                fontSize: "10px",
-                color: "#3B0086",
-                marginRight: "2rem",
-              }}
-            >
-              Days : Hours : Minutes : Seconds
-            </Typography>
-          </div>
+          <LiveCountdown mappedCountries={mappedCountries} />
         </Container>
       </Container>
     </Stack>
