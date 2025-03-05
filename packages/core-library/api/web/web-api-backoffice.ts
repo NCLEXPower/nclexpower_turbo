@@ -52,6 +52,8 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  GetCountryTimezonesParams,
+  CreateGoliveSchedule,
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
@@ -455,6 +457,21 @@ export class WebApiBackOffice {
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`
+    
+    );
+  }
+
+  public async createGoliveSchedule(params: CreateGoliveSchedule) {
+    return await this.ssrAxios.post(
+      `/api/go-live/create-schedule`,
+      params
+    );
+  }
+
+  public async getCountryTimezone(params: GetCountryTimezonesParams) {
+    return await this.axios.post<GetCountryTimezonesParams[]>(
+      `/api/v2/content/baseContent/get-country-timezones`,
+      params
     );
   }
 
