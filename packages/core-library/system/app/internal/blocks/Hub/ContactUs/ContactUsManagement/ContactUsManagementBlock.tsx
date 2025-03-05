@@ -4,7 +4,6 @@
 * Created by the Software Strategy & Development Division
 */
 import React from "react";
-import { useMemo } from "react";
 import { Container, Box } from "@mui/material";
 import { Alert, Card, DataGrid } from "../../../../../../../components";
 import { useColumns, useApi } from "../../../../../../../hooks";
@@ -16,11 +15,7 @@ export const ContactUsManagementBlock: React.FC = () => {
 
     const getContacts = useApi((api) => api.webbackoffice.getAllContacts());
 
-    const contacts = useMemo(
-     
-        () => (getContacts.result?.data as unknown as ContactResponseType[]) ?? [],
-        [getContacts.result]
-      );
+    const contacts = (getContacts.result?.data as unknown as ContactResponseType[]) ?? [];
   
     const { columns } = useColumns({
       columns: [
