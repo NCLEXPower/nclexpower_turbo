@@ -1949,8 +1949,6 @@ describe("useGetAllCategories", () => {
   });
 });
 
-// new tests
-
 describe("useGetSectionsByType", () => {
   const mockExecute = jest.fn();
 
@@ -1964,12 +1962,12 @@ describe("useGetSectionsByType", () => {
   it("should fetch and return sections by type", async () => {
     const mockData: GetAllSectionsResponseType = {
       sectionId: "test-id",
-      sectionType: "test-type",
-      sectionTitle: "test-title",
+      sectionType: "document",
+      sectionTitle: "Document",
       sectionData: [
         {
           sectionDataId: "data-id",
-          title: "data-title",
+          title: "Welcome to the Program",
         },
       ],
     };
@@ -2050,12 +2048,12 @@ describe("useGetAllSections", () => {
   it("should fetch and return all sections", async () => {
     const mockData: GetAllSectionsResponseType = {
       sectionId: "test-id",
-      sectionType: "test-type",
-      sectionTitle: "test-title",
+      sectionType: "document",
+      sectionTitle: "Document",
       sectionData: [
         {
           sectionDataId: "data-id",
-          title: "data-title",
+          title: "Welcome to the Program",
         },
       ],
     };
@@ -2120,7 +2118,7 @@ describe("useGetAllPrograms", () => {
     const mockData: StandardProgramListType = {
       id: "test-program-id",
       title: "test-program",
-      programStatus: "active",
+      programStatus: "available",
       programImage: {
         src: "test-src",
         height: 100,
@@ -2130,9 +2128,9 @@ describe("useGetAllPrograms", () => {
       sections: [
         {
           sectionId: "section-id",
-          sectionType: "section-type",
-          sectionTitle: "section-title",
-          sectionStatus: "active",
+          sectionType: "document",
+          sectionTitle: "Document",
+          sectionStatus: "available",
         },
       ],
     };
