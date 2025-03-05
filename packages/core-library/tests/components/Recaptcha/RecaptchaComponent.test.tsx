@@ -401,4 +401,32 @@ describe('RecaptchaComponent', () => {
       expect(screen.getByTestId('recaptcha')).toBeInTheDocument();
     });
   });
+
+  it('should handle onChange callback correctly', async () => {
+    const onChangeMock = jest.fn();
+    render(
+      <RecaptchaComponent sitekey='your-sitekey-here' onChange={onChangeMock} />
+    );
+
+    await waitFor(() => {
+      (global.window as any).grecaptcha.getResponse.mockReturnValue(
+        'test-response'
+      );
+      onChangeMock('test-response');
+    });
+
+    await waitFor(() => {
+      expect(onChangeMock).toHaveBeenCalledWith('test-response');
+    });
+  });
+
+  it('should handle multiple recaptcha instances correctly', () => {
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+    render(<RecaptchaComponent sitekey='your-sitekey-here' />);
+
+    const instances = document.querySelectorAll(
+      '[data-testid="recaptcha"]'
+    );
+    expect(instances.length).toBe(2);
+  });
 });
