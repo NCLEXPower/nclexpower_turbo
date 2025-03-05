@@ -22,6 +22,7 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  ContactResponseType,
   CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
@@ -466,5 +467,11 @@ export class WebApiBackOffice {
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(
       `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
+  }
+
+  public async getAllContacts() {
+    return await this.axios.get<ContactResponseType>(
+         `/api/v2/content/BaseContent/get-contact-us`
+    );
   }
 }

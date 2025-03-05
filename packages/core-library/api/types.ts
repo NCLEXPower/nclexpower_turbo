@@ -769,3 +769,14 @@ export type CaseStudyListResponse = {
   status: number;
   dateCreated: string;
 };
+
+export type ContactResponseType = {
+  id: string;
+  name: string;
+  categoryId: string;
+  refNo: string;
+  email: string;
+  phone: string;
+  message: string;
+  createdAt: string;
+};
