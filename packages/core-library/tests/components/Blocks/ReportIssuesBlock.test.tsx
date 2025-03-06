@@ -22,23 +22,22 @@ jest.mock("date-fns", () => ({
 }));
 
 describe("Reported Issues Block", () => {
-  it("should return mock data and refetch function", () => {
-    render(<ReportedIssuesBlock/>)
-    const mockRefetch = jest.fn();
-    const mockData = [{ id: 1, ticketNumber: "TICKET-001" }];
-
-    (useBusinessQueryContext as jest.Mock).mockReturnValue({
-      businessQueryGetAllReportedIssues: jest.fn(() => ({
-        data: mockData,
-        refetch: mockRefetch,
-      })),
+    it("should return mock data and refetch function", () => {
+      const mockRefetch = jest.fn();
+      const mockData = [{ id: 1, ticketNumber: "TICKET-001" }];
+  
+      (useBusinessQueryContext as jest.Mock).mockReturnValue({
+        businessQueryGetAllReportedIssues: jest.fn(() => ({
+          data: mockData,
+          refetch: mockRefetch,
+        })),
+      });
+      const { result } = renderHook(() => {
+        const { businessQueryGetAllReportedIssues } = useBusinessQueryContext();
+        return businessQueryGetAllReportedIssues(["getAllReportedIssues"]);
+      });
+  
+      expect(result.current.data).toEqual(mockData);
+      expect(result.current.refetch).toBe(mockRefetch);
     });
-    const { result } = renderHook(() => {
-      const { businessQueryGetAllReportedIssues } = useBusinessQueryContext();
-      return businessQueryGetAllReportedIssues(["getAllReportedIssues"]);
-    });
-
-    expect(result.current.data).toEqual(mockData);
-    expect(result.current.refetch).toBe(mockRefetch);
-  });
 });
