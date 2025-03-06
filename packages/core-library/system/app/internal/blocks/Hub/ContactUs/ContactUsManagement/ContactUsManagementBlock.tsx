@@ -7,11 +7,9 @@ import React from "react";
 import { Container, Box } from "@mui/material";
 import { Alert, Card, DataGrid } from "../../../../../../../components";
 import { useColumns, useApi } from "../../../../../../../hooks";
-import { useDateFormat } from "../../core/hooks";
 import { ContactResponseType } from "../../../../../../../api/types";
 
 export const ContactUsManagementBlock: React.FC = () => {
-    const { getFormattedDate } = useDateFormat();
 
     const getContacts = useApi((api) => api.webbackoffice.getAllContacts());
 
