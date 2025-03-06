@@ -131,5 +131,3 @@ export function ReportedIssuesBlock() {
     }
   }
 }
-
-export default ReportedIssuesBlock;
