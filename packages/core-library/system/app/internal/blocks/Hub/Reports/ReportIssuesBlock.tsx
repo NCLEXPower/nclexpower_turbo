@@ -107,6 +107,7 @@ export function ReportedIssuesBlock() {
         />
         <Box bgcolor="white" pt={2}>
           <DataGrid
+            data-testid="data-grid-casename"
             rows={data ?? []}
             columns={columns}
             isLoading={isLoading}
