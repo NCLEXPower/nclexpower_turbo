@@ -29,6 +29,7 @@ import {
   AnalyticsBlock,
   PolicyManagementBlock,
   CaseStudyListViewBlock,
+  IssueTrackingManagementBlock,
 } from "./blocks";
 
 import { ParseBlocksProps } from "./types";
@@ -88,6 +89,8 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <CaseNameManagementBlock />;
     case "CaseStudyListViewBlock":
       return <CaseStudyListViewBlock />;
+    case "IssueTrackingManagementBlock":
+      return <IssueTrackingManagementBlock />;
     default:
       return null;
   }

@@ -769,3 +769,10 @@ export type CaseStudyListResponse = {
   status: number;
   dateCreated: string;
 };
+
+export type UpdateStatusParams = {
+  Proof?: File; 
+  Notes: string;
+  RefNo: string;
+  UpdateStatus: 0 | 1 | 2;
+};

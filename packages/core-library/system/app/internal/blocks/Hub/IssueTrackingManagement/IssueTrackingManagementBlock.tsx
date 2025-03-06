@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Container, Box, Typography, Modal, Backdrop } from "@mui/material";
+import { Container, Box, Typography, Backdrop } from "@mui/material";
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import { InfoCard, Card, DataGrid } from '../../../../../../components';
 import { useColumns, useModal } from "../../../../../../hooks";
 import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
 import { mockRows } from './IssueTrackingMock';
+import { StyledModal } from './StyledModal';
 
 export const IssueTrackingManagementBlock = () => {
   const modal = useModal<{ 
@@ -81,6 +82,7 @@ export const IssueTrackingManagementBlock = () => {
               cursor: "pointer" 
             }}
             onClick={() => modal.open(params.row)} 
+            data-testid={`reference-cell-${params.row.reference}`}
           >
             [{params.value}]
           </Typography>
@@ -185,6 +187,7 @@ export const IssueTrackingManagementBlock = () => {
             initPageSize={10}
             isLoading={isLoading}
             disableColumnResize
+            disableVirtualization 
             sx={{
               backgroundColor: "#fff",
               [`& .MuiDataGrid-cell:focus, 
@@ -234,37 +237,19 @@ export const IssueTrackingManagementBlock = () => {
           />
         </Card>
       </Container>
-      <Modal
-        open={modal.props.isOpen}
+
+      <StyledModal
+        isOpen={modal.props.isOpen}
         onClose={modal.close}
-        aria-labelledby="issue-details-title"
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            sx: {
-              backgroundColor: "rgba(255, 255, 255, 0.6)",
-            },
-          },
-        }}
+        ariaLabelledBy="issue-details-title"
       >
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            willChange: "transform",
-            transform: "translate3d(-50%, -50%, 0)",
-            backgroundColor: "transparent",
-            padding: "16px",
-            borderRadius: "8px",
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-          }}
-        >
-          <IssueDetailsModal modal={modal.props} onClose={modal.close} onStatusChange={handleStatusChange} />
-        </div>
-      </Modal>
+        <IssueDetailsModal
+          modal={modal.props}
+          onClose={modal.close}
+          onStatusChange={handleStatusChange}
+          data-testid="issue-details-modal"
+        />
+      </StyledModal>
     </Box>
   )
 }

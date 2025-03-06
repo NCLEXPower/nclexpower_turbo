@@ -54,6 +54,7 @@ import {
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
+  UpdateStatusParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -467,4 +468,27 @@ export class WebApiBackOffice {
     return await this.axios.get<PolicyFileResponseType>(
       `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
   }
+
+  public async updateStatus(params: UpdateStatusParams) {
+    const form = new FormData();
+
+    form.append("Notes", params.Notes);
+    form.append("RefNo", params.RefNo);
+    form.append("UpdateStatus", params.UpdateStatus.toString());
+
+    if (params.Proof) {
+      form.append("Proof", params.Proof);
+    }
+
+    return this.axios.post<boolean>(
+      `/api/v1/Customer/resolve-report-issue`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }
 }
+

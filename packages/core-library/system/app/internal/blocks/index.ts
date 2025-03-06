@@ -30,3 +30,4 @@ export * from "./Hub/QuestionManagement/CaseNameManagementBlock";
 export * from "./Hub/QuestionManagement/CaseStudyListViewBlock";
 export * from "./Hub/Analytics/AnalyticsBlock";
 export * from "./Hub/PolicyManagement/PolicyManagementBlock";
+export * from "./Hub/IssueTrackingManagement/IssueTrackingManagementBlock";

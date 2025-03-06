@@ -4,9 +4,11 @@ import { Typography } from "@mui/material";
 
 interface CustomDescriptionBoxProps {
   description?: string;
+  "data-testid"?: string; 
 }
 
-export const IssueDescriptionBox: React.FC<CustomDescriptionBoxProps> = ({ description }) => {
+export const IssueDescriptionBox: React.FC<CustomDescriptionBoxProps> = (props) => {
+  const { description, "data-testid": testId } = props;
   const StyledDiv = styled("div")({
     marginTop: "16px",
     width: "100%",
@@ -44,6 +46,7 @@ export const IssueDescriptionBox: React.FC<CustomDescriptionBoxProps> = ({ descr
   return (
     <StyledDiv>
       <Typography
+        data-testid={testId}
         variant="body2"
         sx={{
           backgroundColor: "transparent",

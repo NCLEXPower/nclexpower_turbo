@@ -38,6 +38,7 @@ export const IssueImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage
       <Grid item sm="auto">
         {selectedImage ? (
           <Box
+            data-testid="trigger-file-input"
             sx={{
               width: "60px",
               height: "60px",
@@ -63,6 +64,7 @@ export const IssueImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage
           </Box>
         ) : (
           <Box
+            data-testid="trigger-file-input"
             sx={{
               width: "60px",
               height: "60px",

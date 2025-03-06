@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormControl, Select, MenuItem, Box, Typography } from "@mui/material";
 import { StatusStyles, StatusBadge } from "./StatusBadge";
 
-interface StatusDropdownProps {
+interface StatusDropdownProps extends React.HTMLAttributes<HTMLSelectElement>{
   selectedStatus: string;
   setSelectedStatus: (status: string) => void;
   statusOptions: string[];
@@ -12,8 +12,14 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
   selectedStatus,
   setSelectedStatus,
   statusOptions,
+  ...rest
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { "data-testid": testId, ...otherProps } = rest as { "data-testid"?: string } & Omit<
+    React.HTMLAttributes<HTMLSelectElement>,
+    "data-testid"
+  >;
 
   const handleChange = (event: any) => {
     setSelectedStatus(event.target.value);
