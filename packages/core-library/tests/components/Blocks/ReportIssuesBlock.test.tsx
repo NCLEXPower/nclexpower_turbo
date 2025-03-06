@@ -23,6 +23,7 @@ jest.mock("date-fns", () => ({
 
 describe("Reported Issues Block", () => {
     it("should return mock data and refetch function", () => {
+        render(<ReportedIssuesBlock/>)
       const mockRefetch = jest.fn();
       const mockData = [{ id: 1, ticketNumber: "TICKET-001" }];
   
@@ -40,4 +41,20 @@ describe("Reported Issues Block", () => {
       expect(result.current.data).toEqual(mockData);
       expect(result.current.refetch).toBe(mockRefetch);
     });
+    it("calls showToast with correct message and type", () => {
+        render(<ReportedIssuesBlock/>)
+        const mockShowToast = jest.fn();
+        const mockExecuteToast = jest.fn();
+    
+        (useExecuteToast as jest.Mock).mockReturnValue({
+          showToast: mockShowToast,
+          executeToast: mockExecuteToast,
+        });
+    
+        const { showToast } = useExecuteToast();
+        showToast("Test message", "success");
+    
+        expect(mockShowToast).toHaveBeenCalledWith("Test message", "success");
+      });
+    
 });
