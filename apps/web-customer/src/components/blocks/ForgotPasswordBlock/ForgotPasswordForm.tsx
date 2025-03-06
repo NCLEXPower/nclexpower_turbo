@@ -37,18 +37,17 @@ export const ForgotPasswordForm: React.FC<Props> = ({
   } = form;
 
   return (
-    <section className="h-dvh w-dvw flex items-center justify-center pt-sans-caption ">
+    <section className="h-auto sm:h-screen w-screen flex flex-col items-center justify-center pt-sans-caption overflow-hidden">
       <Box
         sx={{
           display: "flex",
-          p: 5,
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <Link
           href="/"
-          className="flex items-center justify-end xl:px-60 px-40 cursor-pointer text-darkBlue ml-[390px] sm:ml-[470px] pt-12 pl-1"
+          className="flex items-center justify-end xl:px-60 px-40 cursor-pointer text-darkBlue ml-[390px] sm:ml-[470px] pt-8 pl-1"
           style={{ backgroundColor: "transparent" }}
         >
           <ArrowBackIosNewIcon fontSize="small" />
@@ -57,23 +56,24 @@ export const ForgotPasswordForm: React.FC<Props> = ({
           </span>
         </Link>
 
-        <div className="flex items-center justify-center py-14">
+        <div className="flex items-center justify-center py-8">
           <Image
             src={CoreZigmaLogo}
             alt="CoreZigma"
-            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+            className="w-[100px] h-[100px] md:w-[115px] md:h-[115px] lg:w-[130px] lg:h-[130px]"
+            style={{ objectFit: "cover" }}
           />
         </div>
 
-        <h2 className="mb-4 text-[35px] text-center pt-sans-bold text-4xl pt-sans-regular sm:text-[40px]">
+        <h2 className="mb-4 text-[30px] text-center pt-sans-bold text-4xl pt-sans-regular sm:text-[40px]">
           Forgot Your <span className="text-darkBlue">Password?</span>
         </h2>
-        <div className="max-w-96 min-w-[50%] sm:min-w-[550px] pt-10">
-          <p className="pt-sans-narrow-regular font-light text-darkGray text-xl">
+        <div className="max-w-96 min-w-[50%] sm:min-w-[550px] pt-2 px-4">
+          <p className="pt-sans-narrow-regular font-light text-darkGray text-lg sm:text-xl">
             Enter the email address associated with your account and we'll send
             you a link to reset your password.
           </p>
-          <div className="pt-5">
+          <div className="pt-5 px-2">
             <FormProvider {...form}>
               <TextField
                 control={control}
@@ -124,7 +124,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
             </FormProvider>
           </div>
         </div>
-        <div className="flex items-center justify-center mt-20 pt-sans-narrow-regular text-xl">
+        <div className="flex items-center justify-center mt-8 pt-sans-narrow-regular text-lg sm:text-xl">
           <p className="text-darkGray">Don't have an account?</p>
           <Link
             href="/#pricing"
