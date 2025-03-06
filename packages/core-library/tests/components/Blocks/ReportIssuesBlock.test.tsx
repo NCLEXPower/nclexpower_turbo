@@ -4,6 +4,8 @@ import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Rep
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { useApiCallback, useColumns } from '../../../hooks'
 import { useExecuteToast } from "../../../contexts";
+import { useDateFormat } from "../../../system/app/internal/blocks/Hub/core/hooks"; // Adjust path
+import { format, parseISO } from "date-fns";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -12,6 +14,11 @@ jest.mock("../../../config", () => ({
 jest.mock("../../../contexts", () => ({
   useBusinessQueryContext: jest.fn(),
   useExecuteToast: jest.fn(),
+}));
+
+jest.mock("date-fns", () => ({
+  format: jest.fn(),
+  parseISO: jest.fn(),
 }));
 
 describe("Reported Issues Block", () => {
@@ -95,5 +102,39 @@ describe("Reported Issues Block", () => {
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
     expect(isLoading).toBe(false);
+  });
+});
+describe("useDateFormat Hook", () => {
+  it("should return a formatted date", () => {
+    const mockDate = "2025-03-05T14:30:00Z"; // Example ISO date
+    const mockFormat = "MMMM d, yyyy h:mm:ss a";
+    const formattedMockDate = "March 5, 2025 2:30:00 PM";
+
+    // Mock date-fns behavior
+    (parseISO as jest.Mock).mockReturnValue(new Date(mockDate));
+    (format as jest.Mock).mockReturnValue(formattedMockDate);
+
+    // Directly call getFormattedDate instead of useDateFormat()
+    const { getFormattedDate } = useDateFormat();
+    const formattedDate = getFormattedDate(mockDate, mockFormat);
+
+    // Assertions
+    expect(parseISO).toHaveBeenCalledWith(mockDate);
+    expect(format).toHaveBeenCalledWith(new Date(mockDate), mockFormat);
+    expect(formattedDate).toBe(formattedMockDate);
+  });
+
+  it("should handle invalid date input gracefully", () => {
+    console.error = jest.fn(); // Mock console.error to prevent test failures
+
+    (parseISO as jest.Mock).mockImplementation(() => {
+      throw new Error("Invalid date");
+    });
+
+    const { getFormattedDate } = useDateFormat();
+    const result = getFormattedDate("invalid-date");
+
+    expect(console.error).toHaveBeenCalledWith("Invalid date format");
+    expect(result).toBeUndefined();
   });
 });

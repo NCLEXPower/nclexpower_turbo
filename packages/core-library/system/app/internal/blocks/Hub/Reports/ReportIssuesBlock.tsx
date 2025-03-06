@@ -98,7 +98,7 @@ export function ReportedIssuesBlock() {
   });
 
   return (
-    <Box>
+    <Box data-testid="reported-issues-block">
       <Container>
         <Alert
           severity="info"
