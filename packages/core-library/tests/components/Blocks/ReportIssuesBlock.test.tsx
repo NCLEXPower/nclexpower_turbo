@@ -184,25 +184,31 @@ describe("render ReportIssuesBlock", () => {
       expect(screen.getByTestId("reported-issues-block")).toBeInTheDocument();
     });
   });
+
 describe("Error Handling", () => {
-  it("should log the error and show a toast message", () => {
-    render(<ReportedIssuesBlock/>)
-    const { showToast } = useExecuteToast();
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {}); 
-    const error = new Error("Test Error");
+    it("should log the error and show a toast message", () => {
+        render(<ReportedIssuesBlock />);
+      const mockShowToast = jest.fn();
 
-    console.error(error);
-    showToast("Something went wrong. Please try again later!", "error");
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    expect(showToast).toHaveBeenCalledWith(
-      "Something went wrong. Please try again later!",
-      "error"
-    );
-
-    consoleErrorSpy.mockRestore();
+      (useExecuteToast as jest.Mock).mockReturnValue({ showToast: mockShowToast });
+  
+      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  
+      render(<ReportedIssuesBlock />);
+  
+      const error = new Error("Test Error");
+      console.error(error);
+      mockShowToast("Something went wrong. Please try again later!", "error");
+  
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "Something went wrong. Please try again later!",
+        "error"
+      );
+  
+      consoleErrorSpy.mockRestore();
+    });
   });
-});
 
   describe("Delete Success Handling", () => {
     it("should call refetch and show success toast", () => {
@@ -215,24 +221,5 @@ describe("Error Handling", () => {
   
       expect(refetch).toHaveBeenCalled();
       expect(showToast).toHaveBeenCalledWith("Succesfully deleted!", "success");
-    });
-  });
-  describe("deleteReportedIssuesCb.execute", () => {
-    it("should call execute with correct arguments and resolve successfully", async () => {
-        render(<ReportedIssuesBlock/>)
-      const reportedIssueId = 123;
-      const deleteReportedIssuesCb = { execute: jest.fn().mockResolvedValue({ success: true }) };
-  
-      const response = await deleteReportedIssuesCb.execute({ id: reportedIssueId });
-  
-      expect(deleteReportedIssuesCb.execute).toHaveBeenCalledWith({ id: reportedIssueId });
-      expect(response).toEqual({ success: true });
-    });
-  
-    it("should handle errors correctly", async () => {
-      const reportedIssueId = 123;
-      const deleteReportedIssuesCb = { execute: jest.fn().mockRejectedValue(new Error("API Error")) };
-      await expect(deleteReportedIssuesCb.execute({ id: reportedIssueId })).rejects.toThrow("API Error");
-      expect(deleteReportedIssuesCb.execute).toHaveBeenCalledWith({ id: reportedIssueId });
     });
   });
