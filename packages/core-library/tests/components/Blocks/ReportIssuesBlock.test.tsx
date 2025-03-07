@@ -219,6 +219,7 @@ describe("Error Handling", () => {
   });
   describe("deleteReportedIssuesCb.execute", () => {
     it("should call execute with correct arguments and resolve successfully", async () => {
+        render(<ReportedIssuesBlock/>)
       const reportedIssueId = 123;
       const deleteReportedIssuesCb = { execute: jest.fn().mockResolvedValue({ success: true }) };
   
