@@ -324,3 +324,15 @@ code {
 .slick-dots li.slick-active button:before {
   color: #F4C501;
 }
+
+.slick-dots li button {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+.slick-dots li button:focus,
+.slick-dots li button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
