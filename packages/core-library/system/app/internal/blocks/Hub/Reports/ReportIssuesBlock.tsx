@@ -107,7 +107,7 @@ export function ReportedIssuesBlock() {
         />
         <Box bgcolor="white" pt={2}>
           <DataGrid
-            data-testid="data-grid-casename"
+            data-testid="data-grid-reportissues"
             rows={data ?? []}
             columns={columns}
             isLoading={isLoading}
@@ -118,7 +118,7 @@ export function ReportedIssuesBlock() {
       </Container>
     </Box>
   );
-  async function onDelete(reportedIssueId: string){ 
+ async function onDelete(reportedIssueId: string){ 
     try {
       await deleteReportedIssuesCb.execute({
         id: reportedIssueId,

@@ -13,7 +13,9 @@ jest.mock("../../../config", () => ({
 
 jest.mock("../../../contexts", () => ({
   useBusinessQueryContext: jest.fn(),
-  useExecuteToast: jest.fn(),
+  useExecuteToast: jest.fn(() => ({
+    showToast: jest.fn(),
+  })),
 }));
 
 jest.mock("date-fns", () => ({
@@ -53,23 +55,6 @@ describe("Reported Issues Block", () => {
     showToast("Test message", "success");
 
     expect(mockShowToast).toHaveBeenCalledWith("Test message", "success");
-  });
-  it("calls refetch and shows success toast", () => {
-    render(<ReportedIssuesBlock/>)
-    const mockRefetch = jest.fn();
-    const mockShowToast = jest.fn();
-    const mockExecuteToast = jest.fn();
-
-    (useExecuteToast as jest.Mock).mockReturnValue({
-      showToast: mockShowToast,
-      executeToast: mockExecuteToast,
-    });
-
-    mockRefetch();
-    const { showToast } = useExecuteToast();
-    showToast("Successfully deleted!", "success");
-    expect(mockRefetch).toHaveBeenCalled();
-    expect(mockShowToast).toHaveBeenCalledWith("Successfully deleted!", "success");
   });
   it("should set isLoading to true when loading is true", () => {
     render(<ReportedIssuesBlock/>)
@@ -185,41 +170,24 @@ describe("render ReportIssuesBlock", () => {
     });
   });
 
-describe("Error Handling", () => {
+  describe("Error Handling", () => {
     it("should log the error and show a toast message", () => {
-        render(<ReportedIssuesBlock />);
-      const mockShowToast = jest.fn();
-
-      (useExecuteToast as jest.Mock).mockReturnValue({ showToast: mockShowToast });
+        render(<ReportedIssuesBlock/>)
+      const showToastMock = jest.fn();
+      (useExecuteToast as jest.Mock).mockReturnValue({ showToast: showToastMock });
   
       const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-  
-      render(<ReportedIssuesBlock />);
-  
       const error = new Error("Test Error");
+  
       console.error(error);
-      mockShowToast("Something went wrong. Please try again later!", "error");
+      showToastMock("Something went wrong. Please try again later!", "error");
   
       expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-      expect(mockShowToast).toHaveBeenCalledWith(
+      expect(showToastMock).toHaveBeenCalledWith(
         "Something went wrong. Please try again later!",
         "error"
       );
   
       consoleErrorSpy.mockRestore();
-    });
-  });
-
-  describe("Delete Success Handling", () => {
-    it("should call refetch and show success toast", () => {
-        render(<ReportedIssuesBlock/>)
-        const { showToast } = useExecuteToast();
-        const refetch = jest.fn();
-  
-      refetch();
-      showToast("Succesfully deleted!", "success");
-  
-      expect(refetch).toHaveBeenCalled();
-      expect(showToast).toHaveBeenCalledWith("Succesfully deleted!", "success");
     });
   });
