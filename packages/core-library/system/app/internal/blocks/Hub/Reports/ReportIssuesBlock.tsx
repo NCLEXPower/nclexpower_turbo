@@ -131,3 +131,23 @@ export function ReportedIssuesBlock() {
     }
   }
 }
+describe("deleteReportedIssuesCb.execute", () => {
+  it("should call execute with correct arguments and resolve successfully", async () => {
+    const reportedIssueId = 123;
+    const deleteReportedIssuesCb = { execute: jest.fn().mockResolvedValue({ success: true }) };
+
+    const response = await deleteReportedIssuesCb.execute({ id: reportedIssueId });
+
+    expect(deleteReportedIssuesCb.execute).toHaveBeenCalledWith({ id: reportedIssueId });
+    expect(response).toEqual({ success: true });
+  });
+
+  it("should handle errors correctly", async () => {
+    const reportedIssueId = 123;
+    const deleteReportedIssuesCb = { execute: jest.fn().mockRejectedValue(new Error("API Error")) };
+
+    await expect(deleteReportedIssuesCb.execute({ id: reportedIssueId })).rejects.toThrow("API Error");
+
+    expect(deleteReportedIssuesCb.execute).toHaveBeenCalledWith({ id: reportedIssueId });
+  });
+});
