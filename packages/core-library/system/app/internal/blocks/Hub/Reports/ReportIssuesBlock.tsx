@@ -112,7 +112,6 @@ export function ReportedIssuesBlock() {
             columns={columns}
             isLoading={isLoading}
             initPageSize={10}
-            getRowHeight={() => "auto"}
           />
         </Box>
       </Container>

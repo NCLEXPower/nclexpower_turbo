@@ -1,9 +1,8 @@
-import { renderHook } from "@testing-library/react";
-import { useBusinessQueryContext } from "../../../contexts";
+import { render, screen, waitFor, fireEvent, renderHook } from "@testing-library/react";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import { useApiCallback, useColumns } from '../../../hooks'
+import { useBusinessQueryContext } from "../../../contexts";
 import { useExecuteToast } from "../../../contexts";
+import { useApiCallback } from "../../../hooks";
 import { useDateFormat } from "../../../system/app/internal/blocks/Hub/core/hooks";
 import { format, parseISO } from "date-fns";
 
@@ -167,27 +166,5 @@ describe("render ReportIssuesBlock", () => {
       render(<ReportedIssuesBlock />);
   
       expect(screen.getByTestId("reported-issues-block")).toBeInTheDocument();
-    });
-  });
-
-  describe("Error Handling", () => {
-    it("should log the error and show a toast message", () => {
-        render(<ReportedIssuesBlock/>)
-      const showToastMock = jest.fn();
-      (useExecuteToast as jest.Mock).mockReturnValue({ showToast: showToastMock });
-  
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-      const error = new Error("Test Error");
-  
-      console.error(error);
-      showToastMock("Something went wrong. Please try again later!", "error");
-  
-      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-      expect(showToastMock).toHaveBeenCalledWith(
-        "Something went wrong. Please try again later!",
-        "error"
-      );
-  
-      consoleErrorSpy.mockRestore();
     });
   });
