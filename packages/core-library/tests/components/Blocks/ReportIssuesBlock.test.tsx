@@ -54,28 +54,6 @@ describe("Reported Issues Block", () => {
 
     expect(mockShowToast).toHaveBeenCalledWith("Test message", "success");
   });
-  it("logs error and calls showToast with error message", () => {
-    render(<ReportedIssuesBlock/>)
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    const mockShowToast = jest.fn();
-    const mockExecuteToast = jest.fn();
-
-    (useExecuteToast as jest.Mock).mockReturnValue({
-      showToast: mockShowToast,
-      executeToast: mockExecuteToast,
-    });
-
-    const error = new Error("Test error");
-    console.error(error);
-    const { showToast } = useExecuteToast();
-    showToast("Something went wrong. Please try again later!", "error");
-    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    expect(mockShowToast).toHaveBeenCalledWith(
-      "Something went wrong. Please try again later!",
-      "error"
-    );
-    consoleErrorSpy.mockRestore();
-  });
   it("calls refetch and shows success toast", () => {
     render(<ReportedIssuesBlock/>)
     const mockRefetch = jest.fn();
@@ -168,10 +146,74 @@ jest.mock("@mui/x-data-grid", () => {
     },
   };
 });
+jest.mock("@mui/x-data-grid", () => {
+    const actualModule = jest.requireActual("@mui/x-data-grid");
+    return {
+      ...actualModule,
+      DataGrid: (props: {
+        rows: any[];
+        columns: any[];
+        isLoading: boolean;
+        initPageSize: number;
+      }) => {
+        return (
+          <div role="grid" data-testid="data-grid">
+            {props.rows.map((row) => (
+              <div key={row.id} role="row" data-rowid={row.id}>
+                {props.columns.map((col) => (
+                  <div
+                    key={col.field}
+                    role="cell"
+                    data-colid={col.field}
+                    data-testid={`cell-${row.id}-${col.field}`}
+                  >
+                    {col.renderCell ? col.renderCell({ row }) : row[col.field]}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        );
+      },
+    };
+  });
 describe("render ReportIssuesBlock", () => {
     it("Should render the report issues block", () => {
       render(<ReportedIssuesBlock />);
   
       expect(screen.getByTestId("reported-issues-block")).toBeInTheDocument();
+    });
+  });
+describe("Error Handling", () => {
+  it("should log the error and show a toast message", () => {
+    render(<ReportedIssuesBlock/>)
+    const { showToast } = useExecuteToast();
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {}); 
+    const error = new Error("Test Error");
+
+    console.error(error);
+    showToast("Something went wrong. Please try again later!", "error");
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+    expect(showToast).toHaveBeenCalledWith(
+      "Something went wrong. Please try again later!",
+      "error"
+    );
+
+    consoleErrorSpy.mockRestore();
+  });
+});
+
+  describe("Delete Success Handling", () => {
+    it("should call refetch and show success toast", () => {
+        render(<ReportedIssuesBlock/>)
+        const { showToast } = useExecuteToast();
+        const refetch = jest.fn();
+  
+      refetch();
+      showToast("Succesfully deleted!", "success");
+  
+      expect(refetch).toHaveBeenCalled();
+      expect(showToast).toHaveBeenCalledWith("Succesfully deleted!", "success");
     });
   });
