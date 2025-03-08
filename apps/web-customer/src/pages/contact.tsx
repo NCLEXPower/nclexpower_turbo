@@ -9,7 +9,6 @@ const ContactPage: React.FC = () => {
     <div>
       <ContactHero />
       <ContactFormBlock />
-      <Link href="/issue-tracking">Issue Tracking</Link>
       <ScrollTop />
     </div>
   );

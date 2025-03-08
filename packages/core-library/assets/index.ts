@@ -19,6 +19,9 @@ export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
 
 export const EmptyStateImage = require("./EmptyState.svg");
 export const ErrorStateImage = require("./ErrorState.svg");
+export const HelpOutlineTracking = require("./HelpOutlineTracking.png");
+export const StepActive = require("./StepActive.png");
+export const StepCircleOutline = require("./StepCircleOutline.png");
 
 export const WatchVideos = require("./CardOne.png");
 export const StudyCards = require("./CardTwo.png");
