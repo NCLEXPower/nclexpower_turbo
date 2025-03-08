@@ -89,8 +89,7 @@ describe("useDateFormat Hook", () => {
     expect(formattedDate).toBe(formattedMockDate);
   });
 
-    it("should handle invalid date input gracefully", () => {
-    render(<ReportedIssuesBlock/>)
+    it("should handle invalid date input", () => {
     console.error = jest.fn();
 
     (parseISO as jest.Mock).mockImplementation(() => {
