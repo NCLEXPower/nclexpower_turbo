@@ -2,7 +2,7 @@ import { ContactFormBlock } from "../components/blocks/LandingPageBlock/ContactB
 import { ContactHero } from "../components/blocks/LandingPageBlock/ContactBlock/ContactHero";
 import { GetServerSideProps } from "next";
 import { withCSP } from "core-library";
-import { Link, ScrollTop } from "core-library/components";
+import { ScrollTop } from "core-library/components";
 
 const ContactPage: React.FC = () => {
   return (
