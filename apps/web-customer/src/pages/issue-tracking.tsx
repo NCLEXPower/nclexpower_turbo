@@ -248,7 +248,7 @@ const IssueTracking = () => {
               ) : (
                 <div className="mt-24">
                   <div className=" bg-[#F2F2F2D4]  p-3 w-full rounded-2xl">
-                    <h1 className="text-[#001E52] text-center w-full font-bold  font-Poppins text-2xl my-12 lg:text-5xl ">
+                    <h1 className="text-[#001E52] text-center w-full font-bold  font-Poppins text-2xl my-4 lg:my-12 lg:text-5xl ">
                       No Records Found
                     </h1>
                     <div className="text-center w-full bg-[#001E52] text-white text-xs lg:text-sm  py-1 rounded-[10px] relative font-Poppins">
