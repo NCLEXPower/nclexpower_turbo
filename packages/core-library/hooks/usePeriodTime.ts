@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { timePeriod } from "../system/app/internal/blocks/Hub/Analytics/constants";
 
-type PeriodType = "all" | "today" | "weekly" | "monthly" | "ytd";
+export type PeriodType = "all" | "today" | "weekly" | "monthly" | "ytd";
 
-interface UsePeriodDataProps<T> {
-  Data: Record<PeriodType, T>;
+interface UsePeriodDataProps<
+  T extends Record<string, Record<PeriodType, any>>,
+> {
+  Data: T;
   defaultPeriod?: PeriodType;
 }
 
@@ -23,24 +26,46 @@ interface UsePeriodDataProps<T> {
  * });
  */
 
-export const usePeriodTime = <T>({
+export const usePeriodTime = <
+  T extends Record<string, Record<PeriodType, any>>,
+>({
   Data,
   defaultPeriod = "all",
 }: UsePeriodDataProps<T>) => {
   const [selectedPeriod, setSelectedPeriod] =
     useState<PeriodType>(defaultPeriod);
-  const [data, setData] = useState<T>(Data[defaultPeriod]);
+  const [data, setData] = useState(() =>
+    extractPeriodData(Data, defaultPeriod)
+  );
+
+  function extractPeriodData(source: T, period: PeriodType) {
+    if (!source || typeof source !== "object") {
+      console.error(
+        "extractPeriodData: Invalid data structure, expected an object."
+      );
+      return {} as { [K in keyof T]: T[K][PeriodType] };
+    }
+
+    if (!timePeriod.map((s) => s.toLocaleLowerCase()).includes(period)) {
+      console.warn(
+        `extractPeriodData: Invalid period "${period}". Defaulting to "all".`
+      );
+      period = "all";
+    }
+
+    return Object.fromEntries(
+      Object.entries(source).map(([key, value]) => [
+        key,
+        value?.[period] ?? (Array.isArray(value) ? [] : {}),
+      ])
+    ) as { [K in keyof T]: T[K][PeriodType] };
+  }
 
   const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const period = event.target.value as PeriodType;
     setSelectedPeriod(period);
-    setData(Data[period]);
+    setData(extractPeriodData(Data, period));
   };
 
-  const formatRevenue = (value: number) => {
-    const kValue = value / 1000;
-    return `$${kValue.toFixed(0)}k`;
-  };
-
-  return { selectedPeriod, data, handlePeriodChange, formatRevenue };
+  return { selectedPeriod, data, handlePeriodChange };
 };

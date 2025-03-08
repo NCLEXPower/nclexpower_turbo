@@ -8,11 +8,13 @@ import { ContainedCaseStudyQuestionType } from "../../../../types";
 import {
   Button,
   Card,
+  ControlledRichTextEditor,
   Tabs,
+  TextField,
 } from "../../../../../../../../../../../../../../components";
 import { Box, Typography } from "@mui/material";
 import { AnswerCaseStudy } from "./AnswerCaseStudy";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { containedCaseStudyQuestionSchema } from "../../../../validation";
 import ConfirmationModal from "../../../../../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
@@ -23,6 +25,7 @@ import { CreateCaseStudyAtom } from "../../../../useAtomic";
 import { InfoTabs } from "./constant/constant";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../../contexts/PageLoaderContext";
 import { CaseStudyLoader } from "../../loader";
+import { useBeforeUnload } from "../../../../../../../../../../../../../../hooks";
 
 interface Props {
   nextStep(values: Partial<ContainedCaseStudyQuestionType>): void;
@@ -48,24 +51,28 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   previous,
   reset,
 }) => {
+  useBeforeUnload(true);
   const [, setCaseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
   const form = useForm<ContainedCaseStudyQuestionType>({
-    mode: "all",
+    mode: "onSubmit",
     resolver: yupResolver(containedCaseStudyQuestionSchema),
     context: { step: 2 },
     defaultValues: { ...values },
   });
 
   const [selectedIndex, setSelectedIndex] = useState<number>();
-  const { getValues, reset: formReset, formState, handleSubmit } = form;
+  const [selectItemIndex, setSelectedItemIndex] = useState<number>(0);
+  const { getValues, reset: formReset, formState, handleSubmit, watch } = form;
   const { errors } = formState;
+  const isStandAlone = watch("caseType") === "STANDALONE";
+  const ITEM_LENGTH = isStandAlone ? 1 : 6;
 
   useEffect(() => {
     setContentLoader(true);
     setTimeout(() => {
       setContentLoader(false);
-    }, 6000);
+    }, 3000);
   }, []);
 
   const onSubmit = async (values: ContainedCaseStudyQuestionType) => {
@@ -84,7 +91,9 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
     return InfoTabs.map((tab, index) => ({
       id: index,
       title: tab.title,
-      content: <BackgroundInfoTab type={tab.type} />,
+      content: (
+        <BackgroundInfoTab type={tab.type} isSequenceDisabled={isStandAlone} />
+      ),
     }));
   };
 
@@ -105,7 +114,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   const { infoTabs, tabsItem } = useMemo(
     () => ({
       infoTabs: generateInfoTabs(),
-      tabsItem: generateTabsItemQuestion(6),
+      tabsItem: generateTabsItemQuestion(ITEM_LENGTH),
     }),
     [values]
   );
@@ -113,6 +122,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
   if (contentLoader) {
     return <CaseStudyLoader />;
   }
+
   return (
     <Box>
       <FormProvider {...form}>
@@ -135,7 +145,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
             gap: 5,
           }}
         >
-          <Box width={"55%"}>
+          <Box flex={1}>
             <Typography
               sx={{
                 fontWeight: 600,
@@ -143,7 +153,7 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 mb: 3,
               }}
             >
-              Background Info:
+              Main Text:
             </Typography>
             <Card
               sx={{
@@ -155,14 +165,38 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 borderColor: "#0B225C",
               }}
             >
-              <Tabs
-                width="fit-content"
-                selectedTabIndex={(value) => setSelectedIndex(value)}
-                tabsItem={infoTabs}
-              />
+              <ControlledRichTextEditor editorFor="default" name="mainText" />
             </Card>
+            <Box mt={3}>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "16px",
+                  mb: 3,
+                }}
+              >
+                Background Info:
+              </Typography>
+              <Card
+                sx={{
+                  width: "100%",
+                  overflowY: "auto",
+                  position: "relative",
+                  borderRadius: "10px",
+                  border: 1,
+                  borderColor: "#0B225C",
+                }}
+              >
+                <Tabs
+                  width="fit-content"
+                  selectedTabIndex={(value) => setSelectedIndex(value)}
+                  tabsItem={infoTabs}
+                />
+              </Card>
+            </Box>
           </Box>
-          <Box height={"90%"} width={"45%"}>
+
+          <Box height={"90%"} flex={1}>
             <Typography
               sx={{
                 fontWeight: 600,
@@ -182,7 +216,11 @@ export const CreateCaseStudyQuestion: React.FC<Props> = ({
                 border: 1,
               }}
             >
-              <Tabs width="fit-content" tabsItem={tabsItem} />
+              <Tabs
+                selectedTabIndex={(value) => setSelectedItemIndex(value)}
+                width="fit-content"
+                tabsItem={tabsItem}
+              />
             </Card>
           </Box>
         </Box>

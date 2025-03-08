@@ -110,6 +110,7 @@ export const Header: React.FC<Props> = ({
         sx={{
           ...drawerHeader,
         }}
+        data-tour="step-1"
       >
         {menu && menu.length > 0 && drawerButton && (
           <Grid item>{drawerButton}</Grid>
@@ -212,7 +213,7 @@ export const Header: React.FC<Props> = ({
                     gap: "10px",
                   }}
                 >
-                  <IconButton onClick={toggleSearchField}>
+                  <IconButton onClick={toggleSearchField} data-tour="step-3">
                     <SearchIcon fontSize="large" sx={{ color: "white" }} />
                   </IconButton>
                   <Box

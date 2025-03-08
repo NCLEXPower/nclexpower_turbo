@@ -92,6 +92,7 @@ export const CreateCategoryBlock: React.FC = () => {
             initPageSize={10}
             rows={data ?? []}
             isLoading={isLoading}
+            disableColumnResize
           />
         </Card>
       </Container>
