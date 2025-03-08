@@ -201,9 +201,11 @@ const IssueTracking = () => {
                             fontFamily: "Poppins",
                             "&.Mui-active": {
                               color: "#001E52",
+                              fontWeight: "bold",
                             },
                             "&.Mui-completed": {
                               color: "#001E52",
+                              fontWeight: "bold",
                             },
                           },
                           "& .MuiStepIcon-root": {
