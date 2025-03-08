@@ -61,6 +61,7 @@ describe("SSR Functions", () => {
     productId: "test-productId",
     totalAmount: 100,
     password: "securePassword123",
+    privacyServicePolicy: true,
   };
 
   beforeEach(() => {

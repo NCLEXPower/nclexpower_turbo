@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Box } from "@mui/material";
 import { Alert } from "../../../../../../../components";
 import { useSettingsManagementWizardSteps } from "./steps/useSteps";
-import { useActiveSteps, useBeforeUnload } from "../../../../../../../hooks";
+import { useActiveSteps } from "../../../../../../../hooks";
 import { useResetOnRouteChange } from "../../../../../../../core/hooks/useResetOnRouteChange";
 
 export const SettingsManagementPageForm = () => {
@@ -12,8 +12,6 @@ export const SettingsManagementPageForm = () => {
     step.replace(/([A-Z])/g, " $1").trim()
   );
 
-  useBeforeUnload(true);
-
   const { activeStep, next, previous, reset } = useActiveSteps(
     stepLabels.length
   );
@@ -22,19 +20,16 @@ export const SettingsManagementPageForm = () => {
 
   return (
     <Box>
-      <Container>
-        <Alert
-          severity="warning"
-          title="Settings Management"
-          description="Beware of changing some settings because it may cause changes from our products"
-        />
-        {/* we can add content loader here. */}
-        {render({
-          isLoading: true,
-          previous,
-          reset,
-        })}
-      </Container>
+      <Alert
+        severity="warning"
+        title="Settings Management"
+        description="Beware of changing some settings because it may cause changes from our products"
+      />
+      {render({
+        isLoading: true,
+        previous,
+        reset,
+      })}
     </Box>
   );
 };

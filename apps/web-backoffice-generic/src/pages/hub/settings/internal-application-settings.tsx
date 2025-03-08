@@ -12,11 +12,9 @@ const InternalApplicationSettings = ({ routes }: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const PATH = "src/pages/hub";
-
   return {
     props: {
-      routes: getAllRoutes(PATH),
+      routes: getAllRoutes(),
     },
   };
 };

@@ -6,6 +6,8 @@
 import * as yup from 'yup';
 
 export const crbSchema = yup.object({
+  contentId: yup.string().required("Must contain content id"),
+  authorId: yup.string().required("Must contain author id"),
   comment: yup.string().optional(),
   option: yup.number().required("Select at least one option."),
   date: yup.date().required("Date is required.")

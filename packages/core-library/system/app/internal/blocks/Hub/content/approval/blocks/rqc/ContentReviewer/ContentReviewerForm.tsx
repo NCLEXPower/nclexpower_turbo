@@ -12,6 +12,7 @@ import {
   DateField,
   CustomPopover,
   ConfirmationModal,
+  StateStatus,
 } from "../../../../../../../../../../components";
 import {
   Control,
@@ -26,7 +27,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { crbSchema, crbType } from "./validation";
 import { author, mainContent, RadioData } from "./ContentReviewerData";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+import { RegularMainContent } from "./RegularMainContent";
+import { CSMainContent } from "./CSMainContent";
+import { ContainedCaseStudyQuestionType } from "../../../../../Settings/SettingsManagement/steps/content/simulator/types";
+import { MainContentCollection } from "../../../../../../../../../../api/types";
+
+type contentType = {
+  contentId: string;
+  contentAuthorId: string;
+};
 
 interface ContentViewerFormProps {
   control: Control<crbType>;
@@ -38,88 +48,8 @@ interface ContentViewerFormProps {
   showModal?: boolean;
   contentLoader?: boolean;
   onSubmit: (values: crbType) => void;
-}
-
-function MainContent() {
-  return (
-    <Box>
-      {mainContent.map((item) => (
-        <Box key={item.id} sx={{ marginBottom: 4 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "flex-col",
-              alignItems: "center",
-              marginBottom: 4,
-              gap: 2,
-            }}
-          >
-            <Chip
-              sx={{
-                backgroundColor: "appColors.purple",
-                color: "#F3F3F3",
-              }}
-              label={item.type}
-            />
-            <Chip
-              sx={{
-                backgroundColor: "transparent",
-                color: "appColors.purple",
-                border: "1px solid appColors.purple",
-              }}
-              label={item.mainType}
-            />
-          </Box>
-          <Typography
-            sx={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              marginBottom: 4,
-              color: "appColors.purple",
-            }}
-          >
-            {item.question}
-          </Typography>
-          <div className="flex flex-col">
-            <Typography sx={{ fontSize: "1rem", color: "darkgrey" }}>
-              Cognitive Level: {item.cognitiveLevel}
-            </Typography>
-            <Typography sx={{ fontSize: "1rem", color: "darkgrey" }}>
-              Content Area: {item.contentArea}
-            </Typography>
-            <Typography sx={{ fontSize: "1rem", color: "darkgrey" }}>
-              Client Needs: {item.clientNeeds}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-                color: "appColors.purple",
-                marginTop: 4,
-              }}
-            >
-              Answer Options :
-            </Typography>
-            {item.mainContentAnswerCollections.map((answerItem, idx) => (
-              <ol key={idx} className="mb-4">
-                <li>{answerItem.answer}</li>
-              </ol>
-            ))}
-            <Box
-              sx={{
-                backgroundColor: "appColors.purple",
-                padding: 4,
-                color: "#F3F3F3",
-              }}
-            >
-              Correct Answer: {item.answerKey}
-            </Box>
-            <hr className="my-4" />
-          </div>
-        </Box>
-      ))}
-    </Box>
-  );
+  data: contentType;
+  isError?: boolean;
 }
 
 export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
@@ -130,16 +60,81 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
   isApproved,
   onSubmit,
   contentLoader,
+  data,
+  isError,
 }) => {
   const form = useForm<crbType>({
     mode: "all",
     resolver: yupResolver(crbSchema),
   });
 
+  const mainType = mainContent[0].mainType;
+  const baseContent =
+    mainType === "Case Study"
+      ? mainContent[0].mainCaseStudyContentCollections
+      : mainContent[0].mainContentCollections;
+  const filteredMainContent = useMemo(() => {
+    if (mainType === "Case Study") {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as unknown as ContainedCaseStudyQuestionType[];
+    } else {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as unknown as MainContentCollection[];
+    }
+  }, [data, mainType]);
+
+  const filteredAuthor = author.filter(
+    (content) => content.authorId === data.contentAuthorId
+  );
+
   const selectedOption = watch("option");
 
-  if (contentLoader) {
-    return <ComponentLoader />;
+  useEffect(() => {
+    setValue("contentId", data.contentId);
+    setValue("authorId", data.contentAuthorId);
+  }, [data]);
+
+  const renderContent = (
+    content: MainContentCollection[] | ContainedCaseStudyQuestionType[],
+    mainType: string
+  ) => {
+    if (mainType === "Case Study") {
+      return (
+        <CSMainContent
+          mainContent={content as ContainedCaseStudyQuestionType[]}
+        />
+      );
+    } else {
+      return (
+        <RegularMainContent mainContent={content as MainContentCollection[]} />
+      );
+    }
+  };
+
+  if (isError || contentLoader) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          backgroundColor: "white",
+          minWidth: "250px",
+          width: "100%",
+          height: "400px",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        <StateStatus
+          isError={isError as boolean}
+          isLoading={contentLoader as boolean}
+          isEmpty={false}
+        />
+      </Box>
+    );
   }
 
   const selectedDate = watch("date");
@@ -164,14 +159,13 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
               sx={{
                 fontSize: "2rem",
                 fontWeight: "bold",
-                color: "appColors.purple",
               }}
             >
               Content Details:
             </Typography>
-            {author ? (
+            {filteredAuthor ? (
               <React.Fragment>
-                {author.map((item, index) => (
+                {filteredAuthor.map((item, index) => (
                   <Box key={index}>
                     <Typography sx={{ fontSize: "1rem" }}>
                       Author Details:{" "}
@@ -195,15 +189,15 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
           </Box>
           {isApproved ? (
             <Chip
-              sx={{ backgroundColor: "#16db65", color: "#f3f3f3" }}
+              sx={{ backgroundColor: "#0c215c", color: "#f3f3f3" }}
               label="Approved"
             />
           ) : (
             <Chip
               sx={{
                 backgroundColor: "transparent",
-                color: "appColors.purple",
-                border: "1px solid appColors.purple",
+                color: "#0c215c",
+                border: "1px solid #0c215c",
               }}
               label="Pending"
             />
@@ -293,7 +287,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
             </Card>
           </CustomPopover>
         </Box>
-        <MainContent />
+        {renderContent(filteredMainContent, mainType)}
       </FormProvider>
     </Box>
   );

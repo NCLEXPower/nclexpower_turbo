@@ -17,6 +17,7 @@ import {
   ControlledAccordion,
   EvaIcon,
   IconButton,
+  Link,
 } from "core-library/components";
 import Image from "next/image";
 import { ProgressCircle } from "../../../../components/ProgressCircle/ProgressCircle";
@@ -188,6 +189,8 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
 
               const hasVideos = sectionVideos && sectionVideos.length > 0;
               const hasData = sectionData && !!sectionData.length;
+              const isDocumentOrMedCards =
+                sectionType === "document" || sectionType === "med-cards";
 
               const handleClick = () => {
                 if (sectionType === "video") {
@@ -209,12 +212,23 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       width={16}
                       height={16}
                     />
-                    <h4
-                      onClick={handleClick}
-                      className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
-                    >
-                      {sectionTitle}
-                    </h4>
+                    {isDocumentOrMedCards && hasData ? (
+                      <Link
+                        href={sectionData[0].link}
+                        target="_blank"
+                        naked
+                        className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                      >
+                        {sectionTitle}
+                      </Link>
+                    ) : (
+                      <h4
+                        onClick={handleClick}
+                        className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                      >
+                        {sectionTitle}
+                      </h4>
+                    )}
                   </div>
                   <Image
                     src={getSectionStatusIcons(sectionStatus)}
