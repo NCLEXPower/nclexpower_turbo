@@ -250,7 +250,7 @@ const IssueTracking = () => {
                       No Records Found
                     </h1>
                     <div className="text-center w-full bg-[#001E52] text-white text-xs lg:text-sm  py-1 rounded-[10px] relative font-Poppins">
-                      No Record Found
+                      No Record
                       <Image
                         src={HelpOutlineTracking}
                         className="absolute -top-4 -right-4 w-[36px] h-[36px] object-contain"
