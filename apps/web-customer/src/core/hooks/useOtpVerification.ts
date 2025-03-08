@@ -191,6 +191,12 @@ export const useOtpVerification = (): OtpVerificationResult => {
       await initializeAnalyticsUser(parsedAccountId);
       await router.push((route) => route.hub);
     } catch (error) {
+      toast.executeToast(
+        "Invalid verification code. Please try again",
+        "top-right",
+        false,
+        { type: "error" }
+      );
       console.error("Something went wrong", error);
       setError("Something went wrong. Please try again later.");
     }
