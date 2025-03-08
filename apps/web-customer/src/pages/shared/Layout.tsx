@@ -101,7 +101,6 @@ const Layout: React.FC<
                     {!noFooterRoutes.includes(router.pathname) && (
                       <Footer info={CompanyInfo} list={list} />
                     )}
-                    {/* <Footer info={CompanyInfo} list={list} /> */}
                     {shouldShowChatBotWidget && <ChatBotWidget />}
                   </LoadablePageContent>
                 </ContentLoader>
