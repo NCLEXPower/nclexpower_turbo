@@ -125,7 +125,6 @@ export function ReportedIssuesBlock() {
       refetch()
       showToast("Succesfully deleted!", "success");
     } catch (error) {
-      console.error(error);
       showToast("Something went wrong. Please try again later!", "error");
     }
   }

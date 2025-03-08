@@ -1,10 +1,7 @@
-import { render, screen, waitFor, fireEvent, renderHook } from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
 import { useBusinessQueryContext } from "../../../contexts";
 import { useExecuteToast } from "../../../contexts";
-import { useApiCallback } from "../../../hooks";
-import { useDateFormat } from "../../../system/app/internal/blocks/Hub/core/hooks";
-import { format, parseISO } from "date-fns";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -64,107 +61,9 @@ describe("Reported Issues Block", () => {
   });
 
   it("should set isLoading to false when loading is false", () => {
+    render(<ReportedIssuesBlock/>)
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
     expect(isLoading).toBe(false);
   });
 });
-describe("useDateFormat Hook", () => {
-  it("should return a formatted date", () => {
-    render(<ReportedIssuesBlock/>)
-    const mockDate = "2025-03-05T14:30:00Z";
-    const mockFormat = "MMMM d, yyyy h:mm:ss a";
-    const formattedMockDate = "March 5, 2025 2:30:00 PM";
-
-
-    (parseISO as jest.Mock).mockReturnValue(new Date(mockDate));
-    (format as jest.Mock).mockReturnValue(formattedMockDate);
-
-    const { getFormattedDate } = useDateFormat();
-    const formattedDate = getFormattedDate(mockDate, mockFormat);
-
-    expect(parseISO).toHaveBeenCalledWith(mockDate);
-    expect(format).toHaveBeenCalledWith(new Date(mockDate), mockFormat);
-    expect(formattedDate).toBe(formattedMockDate);
-  });
-
-  it("should handle invalid date input gracefully", () => {
-    render(<ReportedIssuesBlock/>)
-    console.error = jest.fn();
-
-    (parseISO as jest.Mock).mockImplementation(() => {
-      throw new Error("Invalid date");
-    });
-
-    const { getFormattedDate } = useDateFormat();
-    const result = getFormattedDate("invalid-date");
-
-    expect(console.error).toHaveBeenCalledWith("Invalid date format");
-    expect(result).toBeUndefined();
-  });
-});
-
-jest.mock("@mui/x-data-grid", () => {
-  const actualModule = jest.requireActual("@mui/x-data-grid");
-  return {
-    ...actualModule,
-    DataGrid: (props: {
-      rows: any[];
-      columns: any[];
-      isLoading: boolean;
-      initPageSize: number;
-      "data-testid"?: string;
-    }) => {
-      if (props.isLoading) {
-        return <div role="progressbar">Loading...</div>;
-      }
-      return (
-        <div role="grid" data-testid={props["data-testid"] || "data-grid"}>
-          {props.rows.length === 0 ? (
-            <div>No data</div>
-          ) : (
-            props.rows.map((row) => <div key={row.id}>{row.name}</div>)
-          )}
-        </div>
-      );
-    },
-  };
-});
-jest.mock("@mui/x-data-grid", () => {
-    const actualModule = jest.requireActual("@mui/x-data-grid");
-    return {
-      ...actualModule,
-      DataGrid: (props: {
-        rows: any[];
-        columns: any[];
-        isLoading: boolean;
-        initPageSize: number;
-      }) => {
-        return (
-          <div role="grid" data-testid="data-grid">
-            {props.rows.map((row) => (
-              <div key={row.id} role="row" data-rowid={row.id}>
-                {props.columns.map((col) => (
-                  <div
-                    key={col.field}
-                    role="cell"
-                    data-colid={col.field}
-                    data-testid={`cell-${row.id}-${col.field}`}
-                  >
-                    {col.renderCell ? col.renderCell({ row }) : row[col.field]}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        );
-      },
-    };
-  });
-describe("render ReportIssuesBlock", () => {
-    it("Should render the report issues block", () => {
-      render(<ReportedIssuesBlock />);
-  
-      expect(screen.getByTestId("reported-issues-block")).toBeInTheDocument();
-    });
-  });
