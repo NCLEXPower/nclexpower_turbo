@@ -2,6 +2,8 @@ import { render, renderHook } from "@testing-library/react";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
 import { useBusinessQueryContext } from "../../../contexts";
 import { useExecuteToast } from "../../../contexts";
+import { format, parseISO } from "date-fns";
+import { useDateFormat } from "../../../system/app/internal/blocks/Hub/core/hooks";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -65,5 +67,40 @@ describe("Reported Issues Block", () => {
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
     expect(isLoading).toBe(false);
+  });
+});
+
+describe("useDateFormat Hook", () => {
+  it("should return a formatted date", () => {
+    render(<ReportedIssuesBlock/>)
+    const mockDate = "2025-03-05T14:30:00Z";
+    const mockFormat = "MMMM d, yyyy h:mm:ss a";
+    const formattedMockDate = "March 5, 2025 2:30:00 PM";
+
+
+    (parseISO as jest.Mock).mockReturnValue(new Date(mockDate));
+    (format as jest.Mock).mockReturnValue(formattedMockDate);
+
+    const { getFormattedDate } = useDateFormat();
+    const formattedDate = getFormattedDate(mockDate, mockFormat);
+
+    expect(parseISO).toHaveBeenCalledWith(mockDate);
+    expect(format).toHaveBeenCalledWith(new Date(mockDate), mockFormat);
+    expect(formattedDate).toBe(formattedMockDate);
+  });
+
+    it("should handle invalid date input gracefully", () => {
+    render(<ReportedIssuesBlock/>)
+    console.error = jest.fn();
+
+    (parseISO as jest.Mock).mockImplementation(() => {
+      throw new Error("Invalid date");
+    });
+
+    const { getFormattedDate } = useDateFormat();
+    const result = getFormattedDate("invalid-date");
+
+    expect(console.error).toHaveBeenCalledWith("Invalid date format");
+    expect(result).toBeUndefined();
   });
 });
