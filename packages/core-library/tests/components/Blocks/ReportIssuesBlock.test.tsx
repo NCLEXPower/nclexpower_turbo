@@ -72,7 +72,6 @@ describe("Reported Issues Block", () => {
 
 describe("useDateFormat Hook", () => {
   it("should return a formatted date", () => {
-    render(<ReportedIssuesBlock/>)
     const mockDate = "2025-03-05T14:30:00Z";
     const mockFormat = "MMMM d, yyyy h:mm:ss a";
     const formattedMockDate = "March 5, 2025 2:30:00 PM";
