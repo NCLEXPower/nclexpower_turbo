@@ -67,6 +67,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
     href,
     naked,
     role: _,
+    target,
     ...other
   },
   ref
@@ -88,6 +89,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
         <Anchor
           className={className}
           href={addTenantSlug(href)}
+          target={target}
           ref={ref}
           {...other}
         />
@@ -110,6 +112,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
         className={className}
         ref={ref}
         to={addTenantSlug(href)}
+        target={target}
         linkAs={linkAs ? addTenantSlug(linkAs) : addTenantSlug(href)}
         {...other}
       />

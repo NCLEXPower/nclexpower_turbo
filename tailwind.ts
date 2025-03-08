@@ -10,6 +10,10 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "../../packages/core-library/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "slick-dots",
+    "slick-active"
+  ],
   darkMode: "class",
   theme: {
     fontFamily: {
