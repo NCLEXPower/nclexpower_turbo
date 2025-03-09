@@ -1,9 +1,10 @@
-import { render, renderHook } from "@testing-library/react";
 import { ReportedIssuesBlock } from "../../../system/app/internal/blocks/Hub/Reports/ReportIssuesBlock";
 import { useBusinessQueryContext } from "../../../contexts";
 import { useExecuteToast } from "../../../contexts";
-import { format, parseISO } from "date-fns";
+import { render, screen, waitFor, fireEvent, renderHook } from "@testing-library/react";
+import { useApiCallback } from "../../../hooks";
 import { useDateFormat } from "../../../system/app/internal/blocks/Hub/core/hooks";
+import { format, parseISO } from "date-fns";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -41,6 +42,7 @@ describe("Reported Issues Block", () => {
     expect(result.current.refetch).toBe(mockRefetch);
   });
   it("calls showToast with correct message and type", () => {
+    render(<ReportedIssuesBlock/>)
     const mockShowToast = jest.fn();
     const mockExecuteToast = jest.fn();
 
@@ -62,6 +64,7 @@ describe("Reported Issues Block", () => {
   });
 
   it("should set isLoading to false when loading is false", () => {
+    render(<ReportedIssuesBlock/>)
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
     expect(isLoading).toBe(false);
@@ -70,6 +73,7 @@ describe("Reported Issues Block", () => {
 
 describe("useDateFormat Hook", () => {
   it("should return a formatted date", () => {
+    render(<ReportedIssuesBlock/>)
     const mockDate = "2025-03-05T14:30:00Z";
     const mockFormat = "MMMM d, yyyy h:mm:ss a";
     const formattedMockDate = "March 5, 2025 2:30:00 PM";
@@ -86,7 +90,8 @@ describe("useDateFormat Hook", () => {
     expect(formattedDate).toBe(formattedMockDate);
   });
 
-    it("should handle invalid date input", () => {
+  it("should handle invalid date input gracefully", () => {
+    render(<ReportedIssuesBlock/>)
     console.error = jest.fn();
 
     (parseISO as jest.Mock).mockImplementation(() => {
@@ -100,3 +105,77 @@ describe("useDateFormat Hook", () => {
     expect(result).toBeUndefined();
   });
 });
+
+jest.mock("@mui/x-data-grid", () => {
+    const actualModule = jest.requireActual("@mui/x-data-grid");
+    return {
+      ...actualModule,
+      DataGrid: (props: {
+        rows: any[];
+        columns: any[];
+        isLoading: boolean;
+        initPageSize: number;
+      }) => {
+        return (
+          <div role="grid" data-testid="data-grid">
+            {props.rows.map((row) => (
+              <div key={row.id} role="row" data-rowid={row.id}>
+                {props.columns.map((col) => (
+                  <div
+                    key={col.field}
+                    role="cell"
+                    data-colid={col.field}
+                    data-testid={`cell-${row.id}-${col.field}`}
+                  >
+                    {col.renderCell ? col.renderCell({ row }) : row[col.field]}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        );
+      },
+    };
+  });
+describe("render ReportIssuesBlock", () => {
+    it("Should render the report issues block", () => {
+      render(<ReportedIssuesBlock />);
+
+      expect(screen.getByTestId("reported-issues-block")).toBeInTheDocument();
+    });
+  });
+
+// describe("Reported Issues Block", () => {
+//   it("should call onDelete and trigger refetch", async () => {
+    
+//     render(<ReportedIssuesBlock/>)
+//     const mockRefetch = jest.fn();
+//     const mockExecute = jest.fn().mockResolvedValue({});
+//     const mockShowToast = jest.fn();
+
+//     (useBusinessQueryContext as jest.Mock).mockReturnValue({
+//       businessQueryGetAllReportedIssues: jest.fn(() => ({
+//         data: [{ id: "1", ticketNumber: "TICKET-001" }],
+//         refetch: mockRefetch,
+//       })),
+//     });
+
+//     (useApiCallback as jest.Mock).mockImplementation(() => ({
+//       execute: mockExecute,
+//       loading: false,
+//     }));
+
+//     (useExecuteToast as jest.Mock).mockReturnValue({
+//       showToast: mockShowToast,
+//     });
+
+//     fireEvent.click(screen.getByLabelText("Actions"));
+//     fireEvent.click(screen.getByText("ListDeleteButton"));
+
+//     await waitFor(() => {
+//       expect(mockExecute).toHaveBeenCalledWith({ id: "1" });
+//       expect(mockRefetch).toHaveBeenCalled();
+//       expect(mockShowToast).toHaveBeenCalledWith("Succesfully deleted!", "success");
+//     });
+//   });
+// });
