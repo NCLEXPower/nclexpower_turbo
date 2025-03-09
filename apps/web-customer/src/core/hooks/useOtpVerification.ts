@@ -31,6 +31,7 @@ interface OtpVerificationResult {
 }
 
 export const useOtpVerification = (): OtpVerificationResult => {
+  const { showToast } = useExecuteToast();
   const verifyCb = useApiCallback(
     async (api, args: VerifyCodeParams) =>
       await api.web.web_verify_otp_code(args)
@@ -70,39 +71,23 @@ export const useOtpVerification = (): OtpVerificationResult => {
       const result = await verifyCb.execute({ ...props });
       switch (result.data.responseCode) {
         case 404:
-          toast.executeToast(
-            "Account not found please try again.",
-            "top-right",
-            false,
-            { type: "error" }
-          );
+          showToast("Account not found please try again.", "error");
+
           await router.push("/account/forgot-password");
           break;
         case 1017:
-          toast.executeToast(
-            "Account not found please try again.",
-            "top-right",
-            false,
-            { type: "error" }
-          );
+          showToast("Account not found please try again.", "error");
           await router.push("/account/forgot-password");
           break;
         case 508:
           setWaitTime(result.data.waitTimeInMinutes * 60);
-          toast.executeToast(
+          showToast(
             `You've reached the maximum number of sent verification codes. Please wait for ${result.data.waitTimeInMinutes} minutes and try again.`,
-            "top-right",
-            false,
-            { type: "error" }
+            "error"
           );
           break;
         case 500:
-          toast.executeToast(
-            `Invalid verification code. Please try again.`,
-            "top-right",
-            false,
-            { type: "error" }
-          );
+          showToast("Invalid verification code. Please try again.", "error");
           break;
         default:
           toast.executeToast("Verification successful!", "top-right", true, {
@@ -121,12 +106,7 @@ export const useOtpVerification = (): OtpVerificationResult => {
     try {
       const result = await ssoVerify2faCb.execute({ ...props });
       if (result.data.responseCode === 500) {
-        toast.executeToast(
-          "Invalid verification code. Please try again",
-          "top-right",
-          false,
-          { type: "error" }
-        );
+        showToast("Invalid verification code. Please try again", "error");
         return;
       }
       setAccessToken(result.data.accessTokenResponse.accessToken);
@@ -161,12 +141,7 @@ export const useOtpVerification = (): OtpVerificationResult => {
           ? Encryption(result.data.isPaid.toString(), config.value.SECRET_KEY)
           : result.data.isPaid;
       if (result.data.responseCode === 500) {
-        toast.executeToast(
-          "Invalid verification code. Please try again",
-          "top-right",
-          false,
-          { type: "error" }
-        );
+        showToast("Invalid verification code. Please try again", "error");
         return;
       }
       setIsPaid(parsedIsPaid);
@@ -191,6 +166,7 @@ export const useOtpVerification = (): OtpVerificationResult => {
       await initializeAnalyticsUser(parsedAccountId);
       await router.push((route) => route.hub);
     } catch (error) {
+      showToast("Invalid verification code. Please try again", "error");
       console.error("Something went wrong", error);
       setError("Something went wrong. Please try again later.");
     }
@@ -200,39 +176,22 @@ export const useOtpVerification = (): OtpVerificationResult => {
     const result = await resendCb.execute({ ...params });
     switch (result.data.responseCode) {
       case 1017:
-        toast.executeToast(
-          "Account not found please try again.",
-          "top-right",
-          false,
-          { type: "error" }
-        );
+        showToast("Account not found please try again.", "error");
         await router.push("/account/forgot-password");
         break;
       case 1018:
-        toast.executeToast(
-          "Account not found please try again.",
-          "top-right",
-          false,
-          { type: "error" }
-        );
+        showToast("Account not found please try again.", "error");
         await router.push("/account/forgot-password");
         break;
       case 404:
-        toast.executeToast(
-          "Account not found please try again.",
-          "top-right",
-          false,
-          { type: "error" }
-        );
+        showToast("Account not found please try again.", "error");
         await router.push("/account/forgot-password");
         break;
       case 508:
         setWaitTime(result.data.waitTimeInMinutes * 60);
-        toast.executeToast(
+        showToast(
           `You've reached the maximum number of sent verification codes. Please wait for ${result.data.waitTimeInMinutes} minutes and try again.`,
-          "top-right",
-          false,
-          { type: "error" }
+          "error"
         );
         break;
       default:
