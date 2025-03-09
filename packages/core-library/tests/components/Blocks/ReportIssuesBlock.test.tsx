@@ -55,7 +55,6 @@ describe("Reported Issues Block", () => {
     expect(mockShowToast).toHaveBeenCalledWith("Test message", "success");
   });
   it("should set isLoading to true when loading is true", () => {
-    render(<ReportedIssuesBlock/>)
     const deleteReportedIssuesCb = { loading: true };
     const isLoading = deleteReportedIssuesCb.loading;
 
@@ -63,7 +62,6 @@ describe("Reported Issues Block", () => {
   });
 
   it("should set isLoading to false when loading is false", () => {
-    render(<ReportedIssuesBlock/>)
     const deleteReportedIssuesCb = { loading: false };
     const isLoading = deleteReportedIssuesCb.loading;
     expect(isLoading).toBe(false);
