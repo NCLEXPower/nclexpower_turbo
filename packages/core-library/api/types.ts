@@ -915,6 +915,24 @@ export interface GetAllProgramsResponseType {
     }[];
   }[]
 }
+export type CreateGoliveSchedule = {
+  eventName: string;
+  endDate: string;
+  targetEnvironment: string;
+  timeZone: string;
+  countries: string[];
+  selectedCountriesTimezones: string[];
+  description: string;
+  isActive: boolean;
+};
+
+export type GetCountryTimezonesParams = {
+  daysRemaining: any;
+  country: any;
+  countryKey: string;
+  goLiveDate: string;
+};
+
 export type PolicyFileResponseType = {
   fileName: string;
   fileUrl: string;
@@ -929,4 +947,15 @@ export type CaseStudyListResponse = {
   caseName: string;
   status: number;
   dateCreated: string;
+};
+
+export type ContactResponseType = {
+  id: string;
+  name: string;
+  categoryId: string;
+  refNo: string;
+  email: string;
+  phone: string;
+  message: string;
+  createdAt: string;
 };

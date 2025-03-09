@@ -5,7 +5,6 @@ type ComingSoonProps = {
   watchEventName: string;
   watchEnvironment: string;
   watchDescription: string;
-  watchConfetti?: boolean;
   watchAnnouncement?: boolean;
   isActive?: boolean;
   isSwitchOn?: boolean;
@@ -16,7 +15,6 @@ const ComingSoonPreview = ({
   watchEventName,
   watchEnvironment,
   watchDescription,
-  watchConfetti,
   watchAnnouncement,
   isSwitchOn,
   handleDeactivate,
@@ -132,12 +130,6 @@ const ComingSoonPreview = ({
                 label="Post this as an announcement"
                 sx={{ fontSize: "12px" }}
                 checked={watchAnnouncement}
-                disabled
-              />
-              <Checkbox
-                label="Enable Confetti on Finish"
-                sx={{ fontSize: "12px" }}
-                checked={watchConfetti}
                 disabled
               />
             </Stack>
