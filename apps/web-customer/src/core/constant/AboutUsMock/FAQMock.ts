@@ -10,7 +10,7 @@ export const faqMockData: Props[] = [
   {
     id: 1,
     topic: "About NCLEX",
-    question: "What is NCLEXPower? Is it different from CORE-Zigma System?",
+    question: "What is NCLEXPower? Is it different from the CORE-Zigma System?",
     description: [
       "NCLEXPower.com is our website name. The training program that embodies our methodology, philosophy, strategies and components is aptly named as the CORE-Zigma Review System.",
     ],
@@ -18,7 +18,7 @@ export const faqMockData: Props[] = [
   {
     id: 2,
     topic: "About NCLEX",
-    question: "What is NCLEXPower? Is it different from CORE-Zigma System?",
+    question: "Can you tell me more about your CORE-Zigma System?",
     description: [
       "The essence of the CORE-Zigma System is conveyed in its name: CORE is the acronym Content Review , and Zigma is a spelling twist to the Greek letter Sigma S – which is commonly used in mathematics and analytics to symbolize summation or sum total.",
       "The system reveals itself to be literally a whole greater than the sum of its parts. No component stands on its own as a fragment – all components (e.g., videos, content cards, simulator) are carefully designed to seamlessly and dependently work together as an integrated whole.",
@@ -27,7 +27,7 @@ export const faqMockData: Props[] = [
   {
     id: 3,
     topic: "About NCLEX",
-    question: "There are numerous websites and companies already offering their exam reviews. What makes your review program any different",
+    question: "There are numerous websites and companies already offering their exam reviews. What makes your review program any different?",
     description: [
       "Our system was built from the ground-up with the learner at the core – that all components maximally work together to elevate and enhance the learner s level of critical thinking, test-taking skills, and both physical and mental endurance for them to pass the NCLEX.",
       "From the quality of each component, to each component s unique features imbibed, even to the study plan schedule and implemented workflow – no stone was unturned to create the framework that ultimately bring about what matters most – YOU PASSING THE NCLEX.",
@@ -61,7 +61,7 @@ export const faqMockData: Props[] = [
   {
     id: 6,
     topic: "About Program and Access",
-    question: "There are numerous websites and companies already offering their exam reviews. What makes your review program any different",
+    question: "How long can I have access to the Program I purchased?",
     description: [
       "Regardless of which type of program you purchased, both entitle the user to 6 months access time. This means that although one can finish the program within the intended number of training days as scheduled, users are given ample time to refortify their review (e.g., taking any of the simulator tests multiple times, rewatching topic videos needed for recall).",
     ],
@@ -69,9 +69,9 @@ export const faqMockData: Props[] = [
   {
     id: 7,
     topic: "About Payment",
-    question: "I'd like to purchase! How do I do that?",
+    question: "I'd like to purchase your product! How do I do that?",
     description: [
-      "All products are available for purchase only through our official website. Purchasing is as simple as selecting the product type you want – which will lead you to our secured checkout screen. Once your payment (credit/debit card) is successfully processed, you will receive a confirmation email for both the purchase receipt and the login information.",
+      "All products are available for purchase only through our official website. Purchasing is as simple as selecting the product type you want – which will lead you first to our account creation (registration) screen.  Once you register, you will be guided to log-in to the system, then you will complete your payment using our secure checkout.  A receipt will be emailed to you once your payment is successful.",
     ],
   },
   {
@@ -79,7 +79,7 @@ export const faqMockData: Props[] = [
     topic: "About Payment",
     question: "Is there a free trial available?",
     description: [
-      "Instead of a trial access, all the features of the program are shown in-detail in the introductory videos found at our main website and our YouTube channel. These sample videos are the same ones accessible inside the program upon purchase.",
+      "Instead of a trial access, all the features of the program are shown in-detail in the introductory videos found at our main website and our YouTube channel. These sample videos are the same ones that are accessible inside the program upon purchase.",
     ],
   },
   {

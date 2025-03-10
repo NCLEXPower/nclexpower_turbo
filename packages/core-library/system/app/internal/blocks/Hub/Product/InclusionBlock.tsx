@@ -73,6 +73,13 @@ export const InclusionBlock: React.FC<Props> = ({ data }) => {
                 flex: 1,
             },
             {
+                field: "description",
+                sortable: true,
+                headerName: "Description",
+                flex: 1,
+            },
+            
+            {
                 field: "",
                 sortable: true,
                 width: 100,
