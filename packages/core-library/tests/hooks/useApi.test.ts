@@ -47,7 +47,6 @@ describe("useApiCallback", () => {
     });
 
     expect(asyncFn).toHaveBeenCalledTimes(1);
-    // Ensure that the thrown error is the exact error from asyncFn (i.e. not wrapped)
     expect(caughtError).toBe(error);
   });
 });
