@@ -11,8 +11,7 @@ import {
 } from "core-library/hooks";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
-import { useDeviceSession } from "core-library/contexts/auth/hooks";
-import { isAxiosError } from "axios";
+import { AxiosError } from "axios";
 
 export interface SavedDataProps {
   email: string;
@@ -79,8 +78,9 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
-        if (isAxiosError(err)) {
-          toast.executeToast(err.response?.data, "top-right", false, {
+        const error = err as AxiosError;
+        if (error.response?.status == 401) {
+          toast.executeToast(String(error.response?.data), "top-right", false, {
             toastId: 0,
             type: "error",
           });
