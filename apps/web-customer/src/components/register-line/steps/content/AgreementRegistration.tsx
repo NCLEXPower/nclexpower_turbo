@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useRegistrationWalkthroughFormContext } from '../../RegistrationWalkthroughContext';
-import { useDownloadPDF } from '../../../../../../../packages/core-library/hooks/useDownloadPDF';
+import { useDownloadPDF } from 'core-library/hooks/useDownloadPDF';
 
 interface Props {
   nextStep(values: Partial<RegistrationFormType>): void;
@@ -72,7 +72,7 @@ export const AgreementRegistration: React.FC<Props> = ({
 
   const { downloadPdf } = useDownloadPDF();
 
-  const handleDownloadPDF = (policyType: number) => () => {
+  const handleDownloadPDF = (policyType: number) => {
     downloadPdf(policyType);
   };
 
@@ -98,7 +98,7 @@ export const AgreementRegistration: React.FC<Props> = ({
                 href='#'
                 className='!bg-transparent !focus:bg-transparent !active:bg-transparent 
              !ring-0 !focus:outline-none !border-transparent'
-                onClick={handleDownloadPDF(0)}
+                onClick={() => handleDownloadPDF(0)}
               >
                 Terms of Service
               </a>
@@ -109,7 +109,7 @@ export const AgreementRegistration: React.FC<Props> = ({
                 href='#'
                 className='!bg-transparent !focus:bg-transparent !active:bg-transparent 
              !ring-0 !focus:outline-none !border-transparent'
-                onClick={handleDownloadPDF(1)}
+                onClick={() => handleDownloadPDF(1)}
               >
                 Privacy Policy
               </a>
