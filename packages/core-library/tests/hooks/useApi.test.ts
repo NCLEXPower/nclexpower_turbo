@@ -30,4 +30,24 @@ describe("useApiCallback", () => {
 
     expect(returnedValue).toEqual("success");
   });
+
+  it("throws error when asyncFn rejects", async () => {
+    const error = new Error("failure");
+    const asyncFn = jest.fn().mockRejectedValue(error);
+    const { result } = renderHook(() => useApiCallback(asyncFn));
+    const testArgs = { foo: "bar" };
+
+    let caughtError;
+    await act(async () => {
+      try {
+        await result.current.execute(testArgs);
+      } catch (err) {
+        caughtError = err;
+      }
+    });
+
+    expect(asyncFn).toHaveBeenCalledTimes(1);
+    // Ensure that the thrown error is the exact error from asyncFn (i.e. not wrapped)
+    expect(caughtError).toBe(error);
+  });
 });
