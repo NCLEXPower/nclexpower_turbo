@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { EvaIcon, CustomTooltip, CustomPopover, StateStatus } from "../..";
+import { EvaIcon, CustomTooltip, CustomPopover, ComponentState } from "../..";
 import { Box, ListItemButton } from "@mui/material";
 import {
   useDialogContext,
@@ -207,7 +207,7 @@ export const ApprovalListViewBlock: React.FC<ApprovalProps> = ({
           boxShadow: 3,
         }}
       >
-        <StateStatus
+        <ComponentState
           isError={false}
           isLoading={(isLoading as boolean) || contentLoader}
           isEmpty={isEmpty}
