@@ -8,11 +8,10 @@ import {
   ControlledCheckbox,
   TextAreaField,
   Card,
-  ComponentLoader,
   DateField,
   CustomPopover,
   ConfirmationModal,
-  StateStatus,
+  ComponentState,
 } from "../../../../../../../../../../components";
 import {
   Control,
@@ -128,7 +127,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
           textAlign: "center",
         }}
       >
-        <StateStatus
+        <ComponentState
           isError={isError as boolean}
           isLoading={contentLoader as boolean}
           isEmpty={false}

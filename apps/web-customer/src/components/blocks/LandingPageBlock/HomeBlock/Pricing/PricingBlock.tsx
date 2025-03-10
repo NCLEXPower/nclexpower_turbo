@@ -40,8 +40,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
-  const dataStates = { data: dataSource, isLoading, isSuccess, isError };
+  const { dataSource, isLoading, isError } = useDataSource({ url });
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -136,7 +135,6 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
             <ComponentState
               data={dataSource}
               isError={isError}
-              isSuccess={isSuccess}
               isLoading={isLoading}
             >
               {filteredItems &&
