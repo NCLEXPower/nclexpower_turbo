@@ -58,34 +58,7 @@ export const RegistrationWalkthroughForm = () => {
             Register now to prepare for your nursing board exam and succeed in
             your career!
           </Typography>
-          {/* 
-          This is commented for preprod deployment
-          
-          <div className='flex items-center justify-center w-full'>
-            <Button
-              sx={{
-                paddingY: 1.5,
-                borderRadius: '10px',
-                boxShadow: 2,
-                borderColor: 'darkGray',
-              }}
-              fullWidth
-              variant='outlined'
-            >
-              <span className='mr-4 font-ptSansNarrow font-normal text-[18px] lg:text-[20px] text-black normal-case '>
-                Sign up with Google
-              </span>
-              <GoogleIcon />
-            </Button>
-          </div> */}
         </div>
-        {/* <div className="flex items-center my-4">
-          <span className="h-px flex-1 bg-slate-300"></span>
-          <span className="shrink-0 px-3 pt-sans-narrow-regular text-2xl text-slate-500">
-            OR
-          </span>
-          <span className="h-px flex-1 bg-slate-300"></span>
-        </div> */}
         {render}
         <h4 className="text-[18px] font-regular font-ptSans text-center">
           Already have an account?{" "}
