@@ -14,12 +14,15 @@ export const ComponentState: React.FC<PropsWithChildren<unknown | any>> = ({
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
-    if ((data.result?.length === 0 || data.result == null) && isSuccess) {
+    if (
+      !data.result ||
+      (Array.isArray(data.result) && data.result.length === 0)
+    ) {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
     }
-  }, [data.result, data.status]);
+  }, [data]);
 
   if (isLoading) return <LoadingState />;
   if (isError) return <ErrorState />;

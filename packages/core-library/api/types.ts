@@ -238,6 +238,7 @@ export interface CreateCustomerParams {
   orderNumber: string | undefined;
   productId: string;
   totalAmount: number;
+  privacyServicePolicy: boolean;
 }
 
 export interface CreateCustomerResponse {
@@ -411,6 +412,11 @@ export type CaseStudyContentCollectionDtos = {
   orders: SequenceContentType[];
   questionnaires: QuestionnaireType[];
 };
+
+export interface CaseStudyContentCollection
+  extends ContainedCaseStudyQuestionType {
+  id: string;
+}
 
 export type SequenceContentType = {
   seqContent?: string;
@@ -600,9 +606,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User {}
+export interface Approver extends User { }
 
-export interface Author extends User {}
+export interface Author extends User { }
 
 export interface User {
   id: string;
@@ -746,4 +752,49 @@ export type CaseNameResponseType = {
 
 export type DeleteCaseNameParams = {
   id: string;
+};
+
+export type CreateGoliveSchedule = {
+  eventName: string;
+  endDate: string;
+  targetEnvironment: string;
+  timeZone: string;
+  countries: string[];
+  selectedCountriesTimezones: string[];
+  description: string;
+  isActive: boolean;
+};
+
+export type GetCountryTimezonesParams = {
+  daysRemaining: any;
+  country: any;
+  countryKey: string;
+  goLiveDate: string;
+};
+
+export type PolicyFileResponseType = {
+  fileName: string;
+  fileUrl: string;
+}
+
+export type GetCaseStudyListParams = {
+  TokenizeInformationId: string;
+};
+
+export type CaseStudyListResponse = {
+  caseNum: number;
+  caseName: string;
+  status: number;
+  dateCreated: string;
+};
+
+export type ContactResponseType = {
+  id: string;
+  name: string;
+  categoryId: string;
+  refNo: string;
+  email: string;
+  phone: string;
+  message: string;
+  createdAt: string;
 };
