@@ -67,11 +67,13 @@ export const FAQBlock = () => {
   );
 
   return (
-    <section className="w-full h-auto lg:h-screen relative">
+    <section className="w-full relative overflow-visible py-16">
       <BackgroundImages />
-      <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px]">
+      <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px] relative z-10">
         <FAQHeader />
-        <Tabs tabsItem={faqTabs} justifyContent="center" customStyle={tabStyles}/>
+        <Box className="w-full">
+          <Tabs tabsItem={faqTabs} justifyContent="center" customStyle={tabStyles}/>
+        </Box>
       </Box>
     </section>
   );

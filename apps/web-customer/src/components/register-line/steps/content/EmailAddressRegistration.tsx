@@ -33,6 +33,7 @@ export const EmailAddressRegistration = ({
   const [registrationDetails, setRegistrationDetails] = useAtom(RegistrationAtom);
   const {
     passwordCriteria,
+    passwordLimitCriteria,
     showPassword,
     showconfirmPassword,
     handleClickShowPassword,
@@ -49,7 +50,9 @@ export const EmailAddressRegistration = ({
   });
   const { control, handleSubmit, watch } = methods;
 
+  const newPassword = watch("password");
   const confirmPassword = watch("confirmpassword");
+  const passwordLimit = newPassword.length <= 8 && newPassword.length > 1;
   const showError = confirmPassword && confirmPassword !== methods.getValues("password");
 
   async function handleNextStep(values: EmailRegistrationFormType) {
@@ -102,6 +105,14 @@ export const EmailAddressRegistration = ({
               },
             }}
           />
+          {passwordLimit && (
+            <ValidationIndicators
+              criteria={passwordLimitCriteria}
+              iconSize="small"
+              invalidColor="red"
+              validColor="green"
+            />
+          )}
         </Box>
 
         <Box className="w-full">

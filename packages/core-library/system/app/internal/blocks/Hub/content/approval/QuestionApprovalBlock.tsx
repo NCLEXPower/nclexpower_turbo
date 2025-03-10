@@ -7,7 +7,8 @@ import {
   TabsDesktop,
 } from "../../../../../../../components";
 import { Container } from "@mui/material";
-import { RegularQuestionContentsBlock } from "./blocks/rqc/RegularQuestionContentsBlock";
+import { RegularQuestionContentsBlock } from "./blocks/RegularQuestion/RegularQuestionContentsBlock";
+import { CSQuestionContentsBlock } from "./blocks/CaseStudy/CaseStudyQuestionContentsBlock";
 
 interface Props {}
 
@@ -21,7 +22,7 @@ export const QuestionApprovalBlock: React.FC<Props> = () => {
       },
       {
         key: "Case Study Contents",
-        content: <React.Fragment>CSC</React.Fragment>,
+        content: <CSQuestionContentsBlock />,
       },
     ],
     []

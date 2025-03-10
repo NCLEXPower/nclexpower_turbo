@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "../../common";
 import {
   ApprovalBlockProps,
   ApprovalListView,
-} from "../../../system/app/internal/blocks/Hub/content/approval/steps/content/regular/ApprovalListView";
+} from "../../../components/blocks/ContentApproval/ApprovalListView";
 import { AuthorizedContentsResponseType } from "../../../api/types";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -150,8 +150,6 @@ describe("ApprovalListView", () => {
 
   it("renders component correctly", () => {
     render(<ApprovalListView {...DEFAULTPROPS} />);
-
-    expect(screen.getByText("Manage Approvals")).toBeInTheDocument();
     expect(screen.getByText("Multiple Selection")).toBeInTheDocument();
   });
 

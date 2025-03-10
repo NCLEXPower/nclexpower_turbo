@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, IconButton, Typography } from "@mui/material";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import {
   ContainedCaseStudyQuestionType,
   ContainedRegularQuestionType,
@@ -21,6 +21,8 @@ type SATAPropsType = {
 };
 
 export const SATA: React.FC<SATAPropsType> = ({ questionIndex }) => {
+  const MAX_LENGTH = 20;
+
   const { append: appendAnswer, remove: removeAnswer } = useFieldArray<
     ContainedRegularQuestionType | ContainedCaseStudyQuestionType
   >({
@@ -29,14 +31,14 @@ export const SATA: React.FC<SATAPropsType> = ({ questionIndex }) => {
   const { getValues, setValue, watch } = useFormContext<
     ContainedRegularQuestionType | ContainedCaseStudyQuestionType
   >();
-  const answerFields = getValues(`questionnaires.${questionIndex}.answers`);
+  const answerFields =
+    getValues(`questionnaires.${questionIndex}.answers`) ?? [];
   const questionType = getValues(
     `questionnaires.${questionIndex}.questionType`
   );
   const maxPoint = getValues(`questionnaires.${questionIndex}.maxPoints`);
   const isMrsn = useMemo(() => questionType === "MRSN", [questionType]);
   const DELETION_LIMIT = isMrsn ? 0 : 5;
-  const MAX_LENGTH = 20;
 
   const handleAppendFields = () => {
     appendAnswer({ answer: "", answerKey: false });

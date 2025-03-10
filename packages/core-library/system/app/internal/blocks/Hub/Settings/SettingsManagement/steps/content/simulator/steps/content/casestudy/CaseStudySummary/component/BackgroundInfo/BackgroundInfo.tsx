@@ -1,12 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { SectionContent } from "../../../../../../../../../../../../../types";
-import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
-import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import {
+  useSanitizedInputs,
+  useStyle,
+} from "../../../../../../../../../../../../../../../../hooks";
 
 export const BackgroundInfo: React.FC<{ content: SectionContent[] }> = ({
   content,
 }) => {
   const { wordWrap } = useStyle();
+  const { purifyInputs } = useSanitizedInputs({});
 
   return (
     <Box
@@ -18,18 +21,22 @@ export const BackgroundInfo: React.FC<{ content: SectionContent[] }> = ({
       height="512px"
       overflow="auto"
       borderRadius="5px"
+      data-testid="test-content"
     >
       {content.length > 0 &&
-        content.map((data, index) => (
-          <Box key={index} paddingBottom="14px">
-            <Typography fontSize="16px" color="#999999" fontWeight="700">
-              {`SEQUENCE NO. ${data.seqNum}`}
-            </Typography>
-            <Typography sx={wordWrap}>
-              <ParsedHtml html={data.seqContent} />
-            </Typography>
-          </Box>
-        ))}
+        content.map((data, index) => {
+          const cleanHtml = purifyInputs(data.seqContent) as TrustedHTML;
+          return (
+            <Box key={index} paddingBottom="14px">
+              <Typography fontSize="16px" color="#999999" fontWeight="700">
+                {`SEQUENCE NO. ${data.seqNum}`}
+              </Typography>
+              <Typography sx={wordWrap}>
+                <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+              </Typography>
+            </Box>
+          );
+        })}
     </Box>
   );
 };

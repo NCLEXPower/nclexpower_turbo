@@ -4,6 +4,8 @@ import {
   ApprovalSelectionSettingsSteps,
   ApprovalSelectionStepProps,
   ApprovalSelectionTypeStep,
+  CSApprovalSelectionSettingsSteps,
+  CSApprovalSelectionTypeStep,
 } from "../../stepsconfig/regular/ApprovalSelectionSettings";
 
 export const useApprovalSelectionWizardSteps = () => {
@@ -12,6 +14,18 @@ export const useApprovalSelectionWizardSteps = () => {
       ...ApprovalSelectionTypeStep,
     } as WizardFormMap<
       Partial<ApprovalSelectionSettingsSteps>,
+      {},
+      ApprovalSelectionStepProps
+    >;
+  }, []);
+};
+
+export const useCSApprovalSelectionWizardSteps = () => {
+  return useMemo(() => {
+    return {
+      ...CSApprovalSelectionTypeStep,
+    } as WizardFormMap<
+      Partial<CSApprovalSelectionSettingsSteps>,
       {},
       ApprovalSelectionStepProps
     >;
