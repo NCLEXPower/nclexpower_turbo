@@ -12,6 +12,7 @@ import {
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
 import { useDeviceSession } from "core-library/contexts/auth/hooks";
+import { isAxiosError } from "axios";
 
 export interface SavedDataProps {
   email: string;
@@ -78,10 +79,22 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
-        toast.executeToast("Invalid email or password", "top-right", false, {
-          toastId: 0,
-          type: "error",
-        });
+        if (isAxiosError(err)) {
+          toast.executeToast(err.response?.data, "top-right", false, {
+            toastId: 0,
+            type: "error",
+          });
+        } else {
+          toast.executeToast(
+            "Something went wrong, please try again later.",
+            "top-right",
+            false,
+            {
+              toastId: 0,
+              type: "error",
+            }
+          );
+        }
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, router, toast]

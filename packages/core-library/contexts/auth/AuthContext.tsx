@@ -320,13 +320,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
               await router.push((route) => route.account_verification_otp);
               return;
             }
-            if (result.status === 401) {
-              toast.executeToast(String(result.data), "top-right", false, {
-                toastId: 0,
-                type: "error",
-              });
-              return; 
-            }
             setIsPaid(parsedIsPaid);
             setAccountId(parsedAccountId);
             setAccessLevel(result.data.accessLevel);

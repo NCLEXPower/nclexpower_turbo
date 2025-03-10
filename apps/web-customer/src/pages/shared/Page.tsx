@@ -54,8 +54,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     <React.Fragment>
       <CSPHead nonce={generatedNonce ?? "no-nonce"} />
       <BusinessQueryContextProvider>
-        <ToastProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <ToastProvider>
             <ClientSecretKeyContextProvider>
               <ControlledToast autoClose={5000} hideProgressBar={false} />
               <Layout
@@ -63,8 +63,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
                 children={children}
               />
             </ClientSecretKeyContextProvider>
-          </AuthProvider>
-        </ToastProvider>
+          </ToastProvider>
+        </AuthProvider>
       </BusinessQueryContextProvider>
     </React.Fragment>
   );
