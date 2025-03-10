@@ -40,8 +40,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
-  const dataStates = { data: dataSource, isLoading, isSuccess, isError };
+  const { dataSource, isLoading, isError } = useDataSource({ url });
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -132,17 +131,17 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         </div>
         <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
           <div className="flex gap-5 w-full justify-center self-center flex-wrap">
-            {filteredItems && filteredItems.length > 0 && (
-              filteredItems.slice(0, 2).map((item, index) => (
-                <div
-                  className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
-                  key={index}
-                >
-                  <ComponentState
-                    data={dataSource}
-                    isError={isError}
-                    isSuccess={isSuccess}
-                    isLoading={isLoading}
+            <ComponentState
+              data={dataSource}
+              isError={isError}
+              isLoading={isLoading}
+            >
+              {filteredItems &&
+                filteredItems.length > 0 &&
+                filteredItems.slice(0, 2).map((item, index) => (
+                  <div
+                    className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
+                    key={index}
                   >
                     <PricingCard
                       cardData={item as unknown as ProductCardType}
