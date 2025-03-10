@@ -1,55 +1,42 @@
- /**
+/**
 * Property of the NCLEX Power.
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
 */
 import React from "react";
-import { Container, Box, Typography, Chip, Button } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { Alert, Card, DataGrid } from "../../../../../../../components";
-import { useColumns } from "../../../../../../../hooks";
-import { useDateFormat } from "../../core/hooks";
+import { useColumns, useApi } from "../../../../../../../hooks";
+import { ContactResponseType } from "../../../../../../../api/types";
 
 export const ContactUsManagementBlock: React.FC = () => {
-    const { getFormattedDate } = useDateFormat();
+
+    const getContacts = useApi((api) => api.webbackoffice.getAllContacts());
+
+    const contacts = (getContacts.result?.data as unknown as ContactResponseType[]) ?? [];
   
     const { columns } = useColumns({
       columns: [
         {
-          field: "tokenizeInformation.name",
+          field: "name",
           headerName: "Name",
           minWidth: 250,
           flex: 1,
-          renderCell: (rows) => {
-            const { tokenizeInformation } = rows.row;
-            return tokenizeInformation.name;
-          },
         },
         {
-          field: "tokenizeInformation.email",
+          field: "email",
           headerName: "Email",
           flex: 1,
-          renderCell: (rows) => {
-            const { tokenizeInformation } = rows.row;
-            return tokenizeInformation.email;
-          },
         },
         {
-          field: "tokenizeInformation.phone",
+          field: "phone",
           headerName: "Phone",
           flex: 1,
-          renderCell: (rows) => {
-            const { tokenizeInformation } = rows.row;
-            return tokenizeInformation.phone;
-          },
         },
         {
-          field: "tokenizeInformation.message",
+          field: "message",
           headerName: "Message",
           flex: 1,
-          renderCell: (rows) => {
-            const { tokenizeInformation } = rows.row;
-            return tokenizeInformation.message;
-          },
         },
         {
           field: "createdAt",
@@ -57,7 +44,6 @@ export const ContactUsManagementBlock: React.FC = () => {
           flex: 1,
           sortable: true,
           minWidth: 200,
-          valueGetter: (date) => getFormattedDate(date),
         },
       ],
     });
@@ -74,9 +60,10 @@ export const ContactUsManagementBlock: React.FC = () => {
             <DataGrid
               columns={columns}
               initPageSize={10}
-              rows={[]}
-              isLoading={false}
+              rows={contacts}
+              isLoading={getContacts.loading}
               data-testid="data-grid"
+              disableColumnResize
             />
           </Card>
         </Container>
