@@ -17,7 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useRegistrationWalkthroughFormContext } from '../../RegistrationWalkthroughContext';
-import { useDownloadPDF } from 'core-library/hooks/useDownloadPDF';
+import { useDownloadPDF } from 'core-library/hooks';
 
 interface Props {
   nextStep(values: Partial<RegistrationFormType>): void;
