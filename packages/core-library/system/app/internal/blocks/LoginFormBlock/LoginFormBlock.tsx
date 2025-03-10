@@ -14,6 +14,7 @@ import { getItem } from "../../../../../session-storage";
 import { useLocalStorage } from "../../../../../hooks";
 import { config } from "../../../../../config";
 import { Decryption, Encryption } from "../../../../../utils";
+import { useDownloadPDF } from "../../../../../hooks/useDownloadPDF";
 
 export interface SavedDataProps {
   email: string;
@@ -22,6 +23,7 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
+  const { downloadPdf } = useDownloadPDF();
   const { login, loading } = useAuthContext();
   const toast = useExecuteToast();
   const [rememberMe, setRememberMe] = useState(false);
@@ -112,6 +114,7 @@ export function LoginFormBlock() {
         height: "100%",
       }}
     >
+      <button onClick={async () => await downloadPdf(1)}></button>
       <LoginForm
         onSubmit={handleSubmit}
         submitLoading={loading}
