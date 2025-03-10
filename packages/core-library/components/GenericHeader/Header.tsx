@@ -5,16 +5,7 @@ Reuse as a whole or in part is prohibited without permission.
 Created by the Software Strategy & Development Division
 */
 
-import {
-  Box,
-  Grid,
-  Avatar,
-  InputBase,
-  Container,
-  IconButton,
-  Button,
-  ClickAwayListener,
-} from "@mui/material";
+import { Box, Grid, Avatar, Button } from "@mui/material";
 import { useResolution } from "../../hooks";
 import { HeaderLogo } from "./HeaderLogo";
 import { useRouter } from "../../core";
@@ -22,9 +13,7 @@ import { AccountMenu, BreadCrumbs } from "../index";
 import { WebHeaderStylesType } from "../../types/web-header-style";
 import { AccountMenuItem } from ".";
 import { MenuItems } from "../../api/types";
-import SearchIcon from "@mui/icons-material/Search";
 import { config } from "../../config";
-import { useState } from "react";
 
 export interface Props extends Partial<WebHeaderStylesType> {
   menu?: Array<MenuItems>;
@@ -71,16 +60,6 @@ export const Header: React.FC<Props> = ({
   const appName = config.value.BASEAPP;
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const isInWebcHub = isAuthenticated && isInHub && appName.includes("c");
-
-  const [showSearch, setShowSearch] = useState(false);
-
-  const toggleSearchField = () => {
-    setShowSearch((prev) => !prev);
-  };
-
-  const handleClickAway = () => {
-    setShowSearch(false);
-  };
 
   const handleNavigate = (path: string) => {
     router.push({ pathname: path });
@@ -189,44 +168,6 @@ export const Header: React.FC<Props> = ({
               }}
             >
               <BreadCrumbs />
-            </Grid>
-          )}
-          {isInWebcHub && (
-            <Grid
-              item
-              xs
-              sm={5}
-              md={4}
-              lg={3}
-              xl={3}
-              sx={{
-                display: "block",
-                alignSelf: "center",
-              }}
-            >
-              <ClickAwayListener onClickAway={handleClickAway}>
-                <Container
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    gap: "10px",
-                  }}
-                >
-                  <IconButton onClick={toggleSearchField} data-tour="step-3">
-                    <SearchIcon fontSize="large" sx={{ color: "white" }} />
-                  </IconButton>
-                  <Box
-                    sx={{
-                      width: showSearch ? "100%" : "0%",
-                      overflow: "hidden",
-                      transition: "width 0.5s ease",
-                    }}
-                  >
-                    <InputBase placeholder="Search" sx={inputBaseStyles} />
-                  </Box>
-                </Container>
-              </ClickAwayListener>
             </Grid>
           )}
 
