@@ -30,6 +30,7 @@ export interface RegistrationFormContextValue {
   handleClickShowPassword: () => void;
   handleClickShowconfirmPassword: () => void;
   passwordCriteria: { isValid: boolean; message: string }[];
+  passwordLimitCriteria: { isValid: boolean; message: string }[];
   recaptchaRef?: React.MutableRefObject<any>;
   siteKey: string;
 }
@@ -46,6 +47,7 @@ const RegistrationWizardFormContext =
     handleClickShowPassword: () => null,
     handleClickShowconfirmPassword: () => null,
     passwordCriteria: [],
+    passwordLimitCriteria: [],
     recaptchaRef: undefined,
     siteKey: "",
   });
@@ -146,28 +148,23 @@ export const RegistrationWizardFormContextProvider: React.FC<
 
   const newPassword = watch("password", "");
   const confirmPassword = watch("confirmpassword", "");
-
-  const validationChecks = useMemo(
-    () => validatePassword(newPassword),
-    [newPassword]
-  );
-
-  const isPasswordMatching = useMemo(
-    () => newPassword === confirmPassword && newPassword !== "",
-    [newPassword, confirmPassword]
-  );
-
-  const passwordCriteria = useMemo(
-    () => [
-      {
-        isValid: isPasswordMatching,
-        message: isPasswordMatching
-          ? "Passwords match"
-          : "Passwords do not match",
-      },
-    ],
-    [validationChecks, isPasswordMatching]
-  );
+  
+  const isPasswordLongEnough = newPassword.length >= 8;
+  const isPasswordMatching = newPassword === confirmPassword && newPassword !== "";
+  
+  const passwordLimitCriteria = [
+    {
+      isValid: isPasswordLongEnough,
+      message: isPasswordLongEnough ? "" : "Password must be at least 8 characters",
+    },
+  ];
+  
+  const passwordCriteria = [
+    {
+      isValid: isPasswordMatching,
+      message: isPasswordMatching ? "Passwords match" : "Passwords do not match",
+    },
+  ];
 
   const { isDirty, setIsDirty } = useFormDirtyState(methods.formState);
 
@@ -187,6 +184,7 @@ export const RegistrationWizardFormContextProvider: React.FC<
             handleClickShowPassword,
             handleClickShowconfirmPassword,
             passwordCriteria,
+            passwordLimitCriteria,
             recaptchaRef,
             siteKey,
           }),
@@ -201,6 +199,7 @@ export const RegistrationWizardFormContextProvider: React.FC<
             handleClickShowPassword,
             handleClickShowconfirmPassword,
             passwordCriteria,
+            passwordLimitCriteria,
             recaptchaRef,
             siteKey,
           ]

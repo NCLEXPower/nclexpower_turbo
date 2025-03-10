@@ -24,7 +24,6 @@ export const registrationSchema = yup.object({
     .default(""),
   termsofservice: yup
     .boolean()
-    .oneOf([true], "You must accept the Terms of Service")
     .default(false)
     .required(),
 });

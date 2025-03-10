@@ -13,6 +13,7 @@ import { getRoleName } from "../../core/utils/permission";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { Menu_Items } from "../UserProfile/Menu-Items";
 import { EvaIcon } from "../EvaIcon";
+import { AcountMenuLoader } from "../GenericHeader/acoountMenuLoader";
 
 interface Props {
   label: string;
@@ -48,9 +49,11 @@ export const AccountMenu: React.FC<Props> = ({
 
   const { isMobile } = useResolution();
 
-  const { internal, customer } = useSensitiveInformation();
+  const { internal, customer, loading } = useSensitiveInformation();
   const { accessLevel } = useAccessControl();
   const roleName = getRoleName(accessLevel ?? -1);
+
+  if (loading) return <AcountMenuLoader />;
 
   const userName =
     internal?.firstname && internal?.lastname
@@ -60,7 +63,7 @@ export const AccountMenu: React.FC<Props> = ({
   return (
     <Box>
       <Button
-        sx={{ gap: 2 }}
+        sx={{ gap: 2, "&:focus": { outline: "none !important" } }}
         aria-describedby={id}
         onClick={handleClick}
         variant={isInWebcHub ? "text" : "outlined"}
@@ -106,14 +109,14 @@ export const AccountMenu: React.FC<Props> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              border: isInWebcHub ? "1px solid white" : "1px solid #EBEBEB",
+              border: isInWebcHub ? "" : "1px solid #EBEBEB",
               borderRadius: "50%",
               color: isInWebcHub ? "white" : "#3B0086",
             }}
           >
             <EvaIcon
-              id="more-vertical-icon"
-              name="more-vertical"
+              id="chevron-down-outline-icon"
+              name="chevron-down-outline"
               fill={isInWebcHub ? "white" : "#3B0086"}
               width={20}
               height={20}
@@ -125,14 +128,14 @@ export const AccountMenu: React.FC<Props> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              border: isInWebcHub ? "1px solid white" : "1px solid #3B0086",
+              border: isInWebcHub ? "" : "1px solid #3B0086",
               borderRadius: "50%",
               color: isInWebcHub ? "white" : "#3B0086",
             }}
           >
             <EvaIcon
-              id="more-vertical-icon"
-              name="more-vertical"
+              id="chevron-down-outline-icon"
+              name="chevron-down-outline"
               fill={isInWebcHub ? "white" : "#3B0086"}
               width={20}
               height={20}
