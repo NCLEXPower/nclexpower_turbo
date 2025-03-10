@@ -606,9 +606,9 @@ export interface ContentApprover {
   approver: Approver;
 }
 
-export interface Approver extends User { }
+export interface Approver extends User {}
 
-export interface Author extends User { }
+export interface Author extends User {}
 
 export interface User {
   id: string;
@@ -754,10 +754,28 @@ export type DeleteCaseNameParams = {
   id: string;
 };
 
+export type CreateGoliveSchedule = {
+  eventName: string;
+  endDate: string;
+  targetEnvironment: string;
+  timeZone: string;
+  countries: string[];
+  selectedCountriesTimezones: string[];
+  description: string;
+  isActive: boolean;
+};
+
+export type GetCountryTimezonesParams = {
+  daysRemaining: any;
+  country: any;
+  countryKey: string;
+  goLiveDate: string;
+};
+
 export type PolicyFileResponseType = {
   fileName: string;
   fileUrl: string;
-}
+};
 
 export type GetCaseStudyListParams = {
   TokenizeInformationId: string;
@@ -771,8 +789,18 @@ export type CaseStudyListResponse = {
 };
 
 export type UpdateStatusParams = {
-  proof: File; 
+  proof: File;
   notes: string;
   refNo: string;
   updateStatus: 0 | 1 | 2;
+};
+export type ContactResponseType = {
+  id: string;
+  name: string;
+  categoryId: string;
+  refNo: string;
+  email: string;
+  phone: string;
+  message: string;
+  createdAt: string;
 };

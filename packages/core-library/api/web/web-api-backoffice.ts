@@ -22,6 +22,7 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  ContactResponseType,
   CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
@@ -51,6 +52,8 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  GetCountryTimezonesParams,
+  CreateGoliveSchedule,
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
@@ -458,6 +461,17 @@ export class WebApiBackOffice {
     );
   }
 
+  public async createGoliveSchedule(params: CreateGoliveSchedule) {
+    return await this.ssrAxios.post(`/api/go-live/create-schedule`, params);
+  }
+
+  public async getCountryTimezone(params: GetCountryTimezonesParams) {
+    return await this.axios.post<GetCountryTimezonesParams[]>(
+      `/api/v2/content/baseContent/get-country-timezones`,
+      params
+    );
+  }
+
   public async caseStudyList(params: GetCaseStudyListParams) {
     return await this.axios.get<CaseStudyListResponse[]>(
       `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
@@ -466,7 +480,13 @@ export class WebApiBackOffice {
 
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(
-      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`
+    );
+  }
+
+  public async getAllContacts() {
+    return await this.axios.get<ContactResponseType>(
+      `/api/v2/content/BaseContent/get-contact-us`
+    );
   }
 }
-

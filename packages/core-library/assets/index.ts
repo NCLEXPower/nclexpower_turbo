@@ -11,6 +11,7 @@ export const LoginBG = require("./LoginBG.png");
 
 export const CarouselOne = require("./CarouselOne.png");
 export const CarouselTwo = require("./CarouselTwo.png");
+export const CarouselTwoTablet = require("./CarouselTwoTablet.png");
 export const CarouselThree = require("./CarouselThree.png");
 
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
