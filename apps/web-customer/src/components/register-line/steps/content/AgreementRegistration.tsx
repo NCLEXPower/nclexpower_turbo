@@ -50,8 +50,10 @@ export const AgreementRegistration: React.FC<Props> = ({
     }
   });
 
-  const { control, formState, handleSubmit } = form;
+  const { control, formState, handleSubmit, watch } = form;
   const { isDirty, isValid } = formState;
+
+  const agreement = watch("termsofservice");
 
   async function onFormSubmit(values: RegistrationFormType) {
     const data = { ...registrationDetails, ...values };
@@ -73,7 +75,8 @@ export const AgreementRegistration: React.FC<Props> = ({
 
   return (
     <div>
-      <Box className="flex items-center ">
+      <Box className="flex flex-col">
+        <Box className="flex items-center">
         <ControlledCheckbox
           control={control}
           name="termsofservice"
@@ -81,6 +84,12 @@ export const AgreementRegistration: React.FC<Props> = ({
         <Typography sx={{ fontFamily: "PT Sans Narrow", fontSize: "18px", fontStyle: "normal", fontWeight: 400, lineHeight: "2.25rem", color: "#0F2A71", marginLeft: -3 }}>
           I accept <span className='text-darkBlue font-bold underline'>Terms of Service</span> and <span className='text-darkBlue font-bold underline'>Privacy Policy</span>
         </Typography>
+        </Box>
+        {!agreement && (
+           <Typography sx={{ color: "#bd321c", fontFamily: "PT Sans Narrow", fontSize: "14px", fontStyle: "normal", fontWeight: 400}}>
+            You must read and accept the Terms of Service and Privacy Policy
+          </Typography>
+        )}
       </Box>
       <div className="flex items-center w-full gap-2">
         <IconButton
@@ -104,7 +113,7 @@ export const AgreementRegistration: React.FC<Props> = ({
         </IconButton>
         <Button
           disabled={
-            !isDirty || !isValid || !captchaToken
+            !isDirty || !isValid || !captchaToken || !agreement
           }
           loading={isLoading}
           variant="contained"
