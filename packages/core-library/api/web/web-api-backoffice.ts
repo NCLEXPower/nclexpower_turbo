@@ -22,6 +22,7 @@ import {
   AuthorizedMenuParams,
   AuthorizedRoutes,
   CategoryFormParams,
+  ContactResponseType,
   CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
@@ -51,6 +52,11 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  GetCountryTimezonesParams,
+  CreateGoliveSchedule,
+  PolicyFileResponseType,
+  GetCaseStudyListParams,
+  CaseStudyListResponse,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 
@@ -58,7 +64,7 @@ export class WebApiBackOffice {
   constructor(
     private readonly axios: AxiosInstance,
     private readonly ssrAxios: AxiosInstance
-  ) { }
+  ) {}
   public tokenInformation() {
     /* get tokenize informations */
     return this.axios.get<CmsTokens>("");
@@ -151,8 +157,8 @@ export class WebApiBackOffice {
       return await this.axios.get<CmsGlobals>(
         contentAccessKey
           ? `/api/content-api/api/v2/content/authorized-globals?${qs.stringify({
-            contentAccessKey: "",
-          })}`
+              contentAccessKey: "",
+            })}`
           : `/api/v2/content/BaseContent/unauthorized-globals?${qs.stringify({ tenantUrl })}`,
         { headers: { ENV: "dev2" } }
       );
@@ -450,6 +456,39 @@ export class WebApiBackOffice {
 
   public async deleteCaseName(params: DeleteCaseNameParams) {
     return await this.axios.delete(
-      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`);
+      `/api/v2/content/BaseContent/delete-case-name?${qs.stringify({ ...params })}`
+    
+    );
+  }
+
+  public async createGoliveSchedule(params: CreateGoliveSchedule) {
+    return await this.ssrAxios.post(
+      `/api/go-live/create-schedule`,
+      params
+    );
+  }
+
+  public async getCountryTimezone(params: GetCountryTimezonesParams) {
+    return await this.axios.post<GetCountryTimezonesParams[]>(
+      `/api/v2/content/baseContent/get-country-timezones`,
+      params
+    );
+  }
+
+  public async caseStudyList(params: GetCaseStudyListParams) {
+    return await this.axios.get<CaseStudyListResponse[]>(
+      `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
+    );
+  }
+
+  public async getPdf(policyType: number) {
+    return await this.axios.get<PolicyFileResponseType>(
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
+  }
+
+  public async getAllContacts() {
+    return await this.axios.get<ContactResponseType>(
+         `/api/v2/content/BaseContent/get-contact-us`
+    );
   }
 }

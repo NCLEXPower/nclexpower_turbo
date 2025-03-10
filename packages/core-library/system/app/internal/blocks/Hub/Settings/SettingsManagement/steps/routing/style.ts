@@ -56,3 +56,17 @@ export const BowtieTitleStyles = {
   padding: "10px",
   fontWeight: 700,
 };
+
+export const ComponentStateStyles = {
+  display: "flex",
+  backgroundColor: "white",
+  borderRadius: "15px",
+  minWidth: "250px",
+  width: "350px",
+  height: "400px",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  boxShadow: 2,
+};

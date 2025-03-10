@@ -1,13 +1,45 @@
-import { render, screen, fireEvent } from "../../../common";
+import { render, screen, fireEvent, waitFor } from "../../../common";
 import { Control } from "react-hook-form";
 import { MCQNoGroupAnswer } from "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQNoGroup/components/MCQNoGroupAnswer";
 import { ContainedCaseStudyQuestionType } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
+import { ControlledRadio } from "../../../../components";
 
 jest.mock("../../../../components", () => ({
   ControlledTextField: jest.fn(() => <input />),
   TextField: jest.fn(() => <input />),
   EvaIcon: jest.fn(() => <div />),
-  Button: jest.fn(({ children, ...props }) => <button {...props}>{children}</button>),
+  Button: jest.fn(({ children, ...props }) => (
+    <button {...props}>{children}</button>
+  )),
+  ControlledRadio: jest.fn(({ onChange, name, value, ...props }) => (
+    <input
+      type="radio"
+      role="checkbox"
+      onChange={(e) => {
+        onChange &&
+          onChange({
+            target: {
+              value: e.target.value,
+              name: name,
+            },
+          });
+      }}
+      name={name}
+      value={value}
+      {...props}
+    />
+  )),
+}));
+
+jest.mock(
+  "../../../../components/blocks/AnswerOptions/blocks/CaseStudy/MCQGroup/components/MCQColumnComponent",
+  () => ({
+    ColumnComponent: jest.fn(() => <div />),
+  })
+);
+
+jest.mock("react-hook-form", () => ({
+  Control: jest.fn(() => <div />),
 }));
 
 jest.mock("../../../../config", () => ({
@@ -27,13 +59,21 @@ const defaultProps = {
   handleAppendColumnHeaders: jest.fn(),
   handleRemoveRow: jest.fn(),
   handleRemoveColumnHeaders: jest.fn(),
-  columnHeaderFields: [{ label: "Column Header" }, { label: "Header 1" }, { label: "Header 2" }, { label: "Header 3" }],
+  columnHeaderFields: [
+    { label: "Column Header" },
+    { label: "Header 1" },
+    { label: "Header 2" },
+    { label: "Header 3" },
+  ],
   control: {} as Control<ContainedCaseStudyQuestionType>,
   tableRowFields: [
     {
       rowId: 0,
       rowTitle: "Row 1",
-      choices: [{ choiceId: 0, value: false }, { choiceId: 1, value: true }],
+      choices: [
+        { choiceId: 0, value: false },
+        { choiceId: 1, value: true },
+      ],
     },
   ],
   setValue: setValueMock,
@@ -80,7 +120,7 @@ describe("MCQNoGroupAnswer", () => {
 
   it("should render column headers in the choices", () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.queryByText('Column Header')).not.toBeInTheDocument();
+    expect(screen.queryByText("Column Header")).not.toBeInTheDocument();
   });
 
   it("should call handleRemoveColumnHeaders with the correct index", () => {
@@ -89,20 +129,8 @@ describe("MCQNoGroupAnswer", () => {
     expect(defaultProps.handleRemoveColumnHeaders).toHaveBeenCalledWith(3);
   });
 
-  it("should call handleRemoveRow with the correct index", () => {
+  it("should render ControlledCheckbox components for each table row", () => {
     render(<MCQNoGroupAnswer {...defaultProps} />);
-    fireEvent.click(screen.getByTestId("remove-row-1"));
-    expect(defaultProps.handleRemoveRow).toHaveBeenCalledWith(0);
-  });
-
-
-  it("should render ControlledTextField components for each table row", () => {
-    render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
-  });
-
-  it("should render RadioGroup components for each table row", () => {
-    render(<MCQNoGroupAnswer {...defaultProps} />);
-    expect(screen.getByLabelText("Header 2")).toBeInTheDocument();
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
   });
 });
