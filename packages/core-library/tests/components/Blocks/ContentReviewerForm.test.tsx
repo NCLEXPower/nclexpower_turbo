@@ -14,7 +14,7 @@ jest.mock("../../../core", () => ({
 }));
 
 jest.mock("../../../components", () => ({
-  StateStatus: () => <div data-testid="state-status">StateStatus</div>,
+  ComponentState: () => <div data-testid="state-status">ComponentState</div>,
   DateField: () => <input data-testid="date-field" />,
   TextAreaField: () => <textarea data-testid="text-area-field" />,
   ControlledCheckbox: () => <input data-testid="controlled-checkbox" />,

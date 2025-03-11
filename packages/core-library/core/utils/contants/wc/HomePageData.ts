@@ -15,9 +15,11 @@ export const list = [
   },
   {
     items: [
-      { label: "Facebook", path: "/help_center" },
-      { label: "Twitter", path: "/faqs" },
-      { label: "Instagram", path: "/faqs" },
+      {
+        label: "Facebook",
+        path: "https://www.facebook.com/profile.php?id=61573493806921",
+      },
+      { label: "Instagram", path: "https://www.instagram.com/ncpreview/" },
     ],
   },
 ];
@@ -172,12 +174,12 @@ export const AuthorizedHeader: MenuItems[] = [
     ],
   },
   {
-    id: '12',
-    label: 'Billing Summary',
-    path: '/hub/billing-summary',
-    icon: 'TRDSquare',
-    menuId: 'menu12',
-    parentId: '',
+    id: "12",
+    label: "Billing Summary",
+    path: "/hub/billing-summary",
+    icon: "TRDSquare",
+    menuId: "menu12",
+    parentId: "",
     children: [],
   },
 ];

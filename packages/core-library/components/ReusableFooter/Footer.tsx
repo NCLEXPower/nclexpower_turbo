@@ -155,9 +155,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
                           <li key={index}>
                             <a
                               href={item.path}
-                              className="text-white "
+                              className="text-white hover:text-[#eec609]"
                               style={{
                                 fontSize: `clamp(0.75rem, 1vw + 0.3rem, 1.1rem)`,
+                                backgroundColor: "transparent",
                               }}
                             >
                               {item.label}
