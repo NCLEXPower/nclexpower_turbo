@@ -71,6 +71,7 @@ const ContinueModalContent: React.FC<Props> = ({
           Cancel
         </Button>
         <Button
+          data-testid="confirm-button"
           loading={isLoading}
           onClick={handleSubmit}
           size="medium"
@@ -190,7 +191,7 @@ const ButtonSelector = ({
 
     case "ListDeleteButton":
       return (
-        <ListItemButton disabled={disabled} onClick={onClickFn}>
+        <ListItemButton disabled={disabled} onClick={onClickFn} data-testid="delete-button">
           Delete
         </ListItemButton>
       );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@mui/material";
+import { IconButton, Box, Container } from "@mui/material";
 import { useDateFormat, useSystemProduct } from "../core/hooks";
 import { useColumns } from '../../../../../../hooks';
 import { useBusinessQueryContext } from '../../../../../../contexts';
@@ -76,6 +76,7 @@ export function ReportedIssuesBlock() {
         width: 100,
         renderCell: ({ row }) => {
           return (
+
             <Box display="flex" alignItems="center" height={1}>
               <CustomPopover
                 open
@@ -125,7 +126,6 @@ export function ReportedIssuesBlock() {
       refetch()
       showToast("Succesfully deleted!", "success");
     } catch (error) {
-
       showToast("Something went wrong. Please try again later!", "error");
     }
   }
