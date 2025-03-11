@@ -30,6 +30,7 @@ const HTTP_OPTIONS: HttpOptions = {
     console.error(
       `Error on response: ${JSON.stringify(error)}. User ${JSON.stringify(user)}`
     );
+    throw error;
   },
 };
 
@@ -79,7 +80,7 @@ export const useApiCallback = <R, A extends unknown>(
       const api = createApi(httpClient.client, httpSsrClient.client);
       return await asyncFn(api, args as A);
     } catch (error: any) {
-      throw new Error(error);
+      throw error;
     }
   });
 };
