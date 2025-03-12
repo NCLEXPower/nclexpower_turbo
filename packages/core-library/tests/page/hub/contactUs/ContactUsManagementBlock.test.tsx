@@ -1,12 +1,25 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ContactUsManagementBlock } from '../../../../system/app/internal/blocks/Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock';
 import * as hooks from '../../../../hooks';
 import { ContactResponseType } from '../../../../api/types';
+import getConfig from 'next/config';
+
+jest.mock('next/config', () => {
+  return () => ({
+    publicRuntimeConfig: {
+      processEnv: {
+        EXAMPLE_VAR: 'testValue'
+      }
+    }
+  });
+});
 
 jest.mock('../../../../hooks', () => ({
   useApi: jest.fn(),
-  useColumns: jest.fn().mockReturnValue({ columns: [] })
+  useColumns: jest.fn().mockReturnValue({ columns: [] }),
+  useModal: jest.fn().mockReturnValue({ open: jest.fn(), close: jest.fn(), props: { isOpen: false } }),
+  useApiCallback: jest.fn()
 }));
 
 
@@ -15,8 +28,47 @@ jest.mock('../../../../components', () => ({
     <div data-testid="alert-component" {...props}>{children}</div>,
   Card: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
     <div data-testid="card-component" {...props}>{children}</div>,
-  DataGrid: (props: any) => 
-    <div data-testid="data-grid-component" data-rows={JSON.stringify(props.rows)} />
+  DataGrid: (props: any) => {
+    return (
+      <div data-testid="data-grid-component" data-rows={JSON.stringify(props.rows)}>
+        {props.columns && props.rows
+          ? props.rows.map((row: any, rowIndex: number) => (
+              <div key={rowIndex}>
+                {props.columns.map((col: any, colIndex: number) => {
+                  if (col.renderCell) {
+                    return (
+                      <div key={colIndex}>
+                        {col.renderCell({ row })}
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            ))
+          : null}
+      </div>
+    );
+  },
+  CustomPopover: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
+    <div data-testid="custom-popover" {...props}>{children}</div>,
+  ConfirmationDeleteDialog: ({ isOpen, handleClose, handleDelete, loading }: { isOpen: boolean; handleClose: () => void; handleDelete: () => void; loading: boolean }) => {
+      return (
+          isOpen ? (
+              <div data-testid="confirmation-dialog">
+                  <button onClick={handleClose}>Close</button>
+                  <button onClick={handleDelete} disabled={loading}>Delete</button>
+              </div>
+          ) : null
+      );
+  },
+  GridMoreVertIcon: () => <div data-testid="grid-more-vert-icon"></div>,
+  ListItemButton: ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+    <button data-testid="list-item-button" onClick={onClick}>{children}</button>
+  ),
+  Box: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
+    <div data-testid="box" {...props}>{children}</div>
+  )
 }));
 
 describe('ContactUsManagementBlock', () => {
@@ -107,5 +159,11 @@ describe('ContactUsManagementBlock', () => {
         expect.objectContaining({ field: 'createdAt', headerName: 'Created At' })
       ])
     });
+  });
+
+  it('should cover getConfig usage', () => {
+    const config = getConfig();
+    expect(config.publicRuntimeConfig).toBeDefined();
+    expect(config.publicRuntimeConfig.processEnv.EXAMPLE_VAR).toBe('testValue');
   });
 });

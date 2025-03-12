@@ -494,8 +494,7 @@ export class WebApiBackOffice {
   
   public async deleteContact(id: string) {
     return await this.axios.delete(
-      `/api/v2/content/BaseContent/delete-contact-us`, 
-      { data: { id } }
+      `/api/v2/content/BaseContent/delete-contact-us`, { data: { id } }
     );
   }
 }
