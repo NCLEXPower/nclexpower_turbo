@@ -45,16 +45,16 @@ export const ContactForm: React.FC<FormValues> = ({
   const { purifyInputs } = useSanitizedInputs({});
 
   return (
-    <section className="relative flex justify-center mt-0 lg:mt-[-180px] mb-0 lg:mb-20">
-      <div className="h-auto w-full lg:w-[1120px] flex flex-col lg:flex-row justify-between drop-shadow-lg">
-        <div className="flex flex-col w-full lg:w-1/2 bg-white p-6 sm:p-8 lg:p-16 rounded-l-none lg:rounded-l-[20px]">
-          <p className="text-xl sm:text-2xl lg:text-3xl font-bold font-ptSans text-[#232323]">
+    <section className="relative flex justify-center mt-0 lg:mt-[clamp(-360px,-9.4vw,1px)] mb-0 lg:mb-20">
+      <div className="h-auto w-full lg:w-[clamp(1px,57.917vw,2240px)] flex flex-col lg:flex-row justify-between drop-shadow-lg">
+        <div className="flex flex-col w-full lg:w-1/2 bg-white p-5 rounded-l-none lg:rounded-l-[20px]">
+          <h3 className="text-[clamp(1px,5.5814vw,60px)] lg:text-[clamp(1px,1.5625vw,35px)] font-bold font-Poppins text-[#232323]">
             Send us a{" "}
-            <span className="text-xl sm:text-2xl lg:text-3xl font-bold font-ptSans text-darkBlue">
+            <span className="text-darkBlue">
               message
             </span>
-          </p>
-          <p className="text-sm sm:text-md lg:text-lg font-normal font-ptSans text-darkGray mt-2">
+          </h3>
+          <p className="lg:text-[clamp(1px,1.041665vw,40px)] text-[clamp(1px,4.18604vw,40px)] font-normal font-ptSans text-darkGray mt-2">
             Fill out the form below, and we’ll get back to you soon.
           </p>
 
@@ -102,15 +102,49 @@ export const ContactForm: React.FC<FormValues> = ({
                 control={control}
                 label="Concern Category"
                 sx={{
+                  height: {
+                    xs: 'clamp(1px, 10.466vw, 50px)',
+                    md: 'clamp(1px, 3.911vw, 112px)',
+                    lg: 'clamp(1px, 2.917vw, 112px)'
+
+                  },
                   width: "100%",
-                  borderRadius: "5px",
                   "& .MuiOutlinedInput-root": {
-                    borderRadius: "5px",
+                    height: {
+                      xs: 'clamp(1px, 10.466vw, 50px)',
+                      md: 'clamp(1px, 3.911vw, 112px)',
+                      lg: 'clamp(1px, 2.917vw, 112px)'
+
+                    },
+                    borderRadius: {
+                      xs: "clamp(1px, 2vw, 20px)",
+                      sm: "clamp(1px, 1vw, 20px)",
+                      md: "clamp(1px, 0.5vw, 20px)"
+                    }
                   },
                   "& .MuiInputBase-input": {
-                    borderRadius: "5px",
-                    padding: "15px",
+                    minHeight: {
+                      xs: 'clamp(1px, 10.466vw, 50px)',
+                      md: 'clamp(1px, 3.911vw, 112px)',
+                      lg: 'clamp(1px, 2.917vw, 112px)'
+                    },
+
+                    padding: "0"
                   },
+                  "& .MuiFormLabel-root": {
+                    fontSize: {
+                      xs: "clamp(1px, 3.72092vw, 18px)",
+                      md: "clamp(1px, 1.36852vw, 36px)",
+                      lg: "clamp(1px, 0.9375vw, 36px)"
+
+                    },
+                    top:
+                    {
+                      xs: 'clamp(-20px,-0.6vw,1px)',
+                      md: 'clamp(-20px,-0.6vw,1px)',
+                      lg: '0'
+                    }
+                  }
                 }}
                 data-testid="concernCategory-select"
               />
@@ -124,6 +158,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 onCountryCodeChanged={(code) => handleSetCountryCode(code)}
                 data-testid="phone-input"
                 sx={{
+
                   "& .MuiOutlinedInput-input:focus": {
                     borderRadius: "5px",
                     padding: "13px",
@@ -145,12 +180,25 @@ export const ContactForm: React.FC<FormValues> = ({
                 variant="contained"
                 fullWidth
                 sx={{
-                  px: 4,
-                  fontSize: "14px",
+                  fontSize: {
+                    xs: "clamp(1px, 3.72092vw, 18px)",
+                    md: "clamp(1px, 1.36852vw, 36px)",
+                    lg: "clamp(1px, 0.9375vw, 36px)"
+
+                  },
                   fontWeight: 600,
-                  py: 2,
+                  height: {
+                    xs: 'clamp(1px, 10.466vw, 50px)',
+                    md: 'clamp(1px, 3.911vw, 112px)',
+                    lg: 'clamp(1px, 2.917vw, 112px)'
+
+                  },
                   backgroundColor: "#0F2A71",
-                  borderRadius: "5px",
+                  borderRadius: {
+                    xs: "clamp(1px, 2vw, 20px)",
+                    sm: "clamp(1px, 1vw, 20px)",
+                    md: "clamp(1px, 0.5vw, 20px)"
+                  }
                 }}
                 data-testid="contactus-button"
               >
@@ -162,21 +210,20 @@ export const ContactForm: React.FC<FormValues> = ({
 
         <div
           className="
-        flex flex-col w-full lg:w-1/2 bg-hoverBlue p-6 sm:p-8 lg:p-16 space-y-6 sm:space-y-8 lg:space-y-16 relative rounded-r-none lg:rounded-r-[20px]"
+        flex flex-col w-full lg:w-1/2 bg-hoverBlue p-5  space-y-6 sm:space-y-8 lg:space-y-16 relative rounded-r-none lg:rounded-r-[20px]"
         >
-          <p className="text-xl sm:text-2xl  mx-0 my-1 lg:text-3xl font-bold font-ptSans text-white">
+          <p className="text-[clamp(1px,5.5814vw,60px)] lg:text-[clamp(1px,1.5625vw,35px)] font-bold font-Poppins text-white">
             Contact Info
           </p>
-          <div className="flex flex-col gap-6 sm:gap-8">
+          <div className="flex flex-col gap-6 sm:gap-8 ">
             {ContactMock.map((item, index) => (
-              <div className="flex gap-4 sm:gap-8 items-center" key={index}>
+              <div className="flex gap-4 sm:gap-8 items-center " key={index}>
                 <Image
                   src={item.icon}
                   alt={item.title}
-                  width={24}
-                  height={32}
+                  className="lg:w-[clamp(1px,1.25vw,48px)] h-auto"
                 />
-                <ParsedHtml color="white" html={item.subTitle} />
+                <ParsedHtml color="white" html={item.subTitle} className=" !text-[clamp(1px,3.72092vw,36px)] lg:!text-[clamp(1px,0.9375vw,36px)] " />
               </div>
             ))}
           </div>
@@ -191,8 +238,7 @@ export const ContactForm: React.FC<FormValues> = ({
                 <Image
                   src={item.icon}
                   alt={item.title}
-                  width={24}
-                  height={24}
+                  className="lg:w-[clamp(1px,1.25vw,48px)] h-auto"
                 />
               </Link>
             ))}

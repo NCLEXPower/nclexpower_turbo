@@ -78,57 +78,19 @@ export const AgreementRegistration: React.FC<Props> = ({
 
   return (
     <div>
-      <Box className='flex flex-col'>
-        <Box className='flex items-center'>
-          <ControlledCheckbox control={control} name='termsofservice' />
-          <Typography
-            sx={{
-              fontFamily: 'PT Sans Narrow',
-              fontSize: '18px',
-              fontStyle: 'normal',
-              fontWeight: 400,
-              lineHeight: '2.25rem',
-              color: '#0F2A71',
-              marginLeft: -3,
-            }}
-          >
-            I accept{' '}
-            <span className='text-darkBlue font-bold underline'>
-              <a
-                href='#'
-                className='!bg-transparent !focus:bg-transparent !active:bg-transparent 
-             !ring-0 !focus:outline-none !border-transparent'
-                onClick={() => handleDownloadPDF(0)}
-              >
-                Terms of Service
-              </a>
-            </span>{' '}
-            and{' '}
-            <span className='text-darkBlue font-bold underline'>
-              <a
-                href='#'
-                className='!bg-transparent !focus:bg-transparent !active:bg-transparent 
-             !ring-0 !focus:outline-none !border-transparent'
-                onClick={() => handleDownloadPDF(1)}
-              >
-                Privacy Policy
-              </a>
-            </span>
-          </Typography>
-        </Box>
-        {!agreement && (
-          <Typography
-            sx={{
-              color: '#bd321c',
-              fontFamily: 'PT Sans Narrow',
-              fontSize: '14px',
-              fontStyle: 'normal',
-              fontWeight: 400,
-            }}
-          >
-            You must read and accept the Terms of Service and Privacy Policy
-          </Typography>
-        )}
+      <Box className="flex items-center ">
+        <ControlledCheckbox
+          control={control}
+          name="termsofservice"
+        />
+        <Typography sx={{
+          fontFamily: "PT Sans", fontSize: {
+            xs: 'clamp(1px, 4.18604vw, 40px)',
+            md: ' clamp(1px, 1.041665vw, 40px)'
+          }, fontStyle: "normal", fontWeight: 400, lineHeight: "2.25rem", color: "#0F2A71", marginLeft: -3
+        }}>
+          I accept <span className='text-darkBlue font-bold underline'>Terms of Service</span> and <span className='text-darkBlue font-bold underline'>Privacy Policy</span>
+        </Typography>
       </Box>
       <div className='flex items-center w-full gap-2'>
         <IconButton

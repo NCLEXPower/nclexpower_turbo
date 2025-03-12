@@ -22,12 +22,15 @@ export const useWebHeaderStyles = () => {
   const headerLinkSx: SxProps<Theme> = {
     color: !isScrolledOrRoute ? "white" : "black",
     fontFamily: "PT Sans, sans-serif",
+    px: "clamp(1px,0.332447vw,10px)",
+    mx: "clamp(.1rem, 0.84vw, 2rem)",
     textTransform: "none",
+    minWidth: "fit-content",
     outline: 0,
-    fontSize: "15px",
     ":disabled": {
-      color: !isScrolledOrRoute ? "white" : "black",
-      textDecoration: "underline",
+      color: !isScrolledOrRoute ? "#f3c402" : "black",
+      borderBottom: !isScrolledOrRoute ? "2px solid #f3c402" : "2px solid black",
+      fontWeight: 600,
     },
     ":focus": {
       border: "none",
@@ -41,10 +44,10 @@ export const useWebHeaderStyles = () => {
     bgcolor: isScrolledOrRoute ? "#0f2a71" : "#f3c402",
     color: isScrolledOrRoute ? "white" : "black",
     textTransform: "none",
-    fontSize: "15px",
-    py: 2,
-    px: 7,
-    borderRadius: "15px",
+    py: "clamp(1px,0.531915vw,16px)",
+    px: "clamp(1px,1.8617vw,56px)",
+    mx: "clamp(.1rem, 0.84vw, 2rem)",
+    borderRadius: "clamp(1px,0.6vw,24px)",
     "&:hover": {
       backgroundColor: isScrolledOrRoute ? "#071c51" : "#cca406",
     },

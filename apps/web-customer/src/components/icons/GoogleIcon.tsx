@@ -2,8 +2,9 @@ export const GoogleIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="30"
+      width="clamp(1px,1.563vw,60px)"
+      height="clamp(1px,1.563vw,60px)"
+      className="google-icon"
       viewBox="-0.5 0 48 48"
     >
       <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">

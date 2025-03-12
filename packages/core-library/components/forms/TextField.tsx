@@ -130,6 +130,37 @@ export const TextFieldComponent = <T extends object>({
                   onBlur={handleBlur}
                   value={field?.value ?? ""}
                   onKeyDown={(e) => e.key === "Enter" && onEnter && onEnter()}
+                  sx={{
+                    height: {
+                      xs: 'clamp(1px, 10.466vw, 50px)',
+                      md: 'clamp(1px, 3.911vw, 112px)',
+                      lg: 'clamp(1px, 2.917vw, 112px)'
+
+                    },
+                    borderRadius: {
+                      xs: "clamp(1px, 2vw, 20px)",
+                      sm: "clamp(1px, 1vw, 20px)",
+                      md: "clamp(1px, 0.5vw, 20px)"
+                    },
+                    "& .MuiInputBase-input": {
+                      height: {
+                        xs: 'clamp(1px, 10.466vw, 50px)',
+                        md: 'clamp(1px, 3.911vw, 112px)',
+                        lg: 'clamp(1px, 2.917vw, 112px)'
+
+                      },
+                      fontSize: {
+                        xs: "clamp(1px, 3.72092vw, 18px)",
+                        md: "clamp(1px, 1.36852vw, 36px)",
+                        lg: "clamp(1px, 0.9375vw, 36px)"
+
+                      },
+                      padding: {
+                        xs: "0 clamp(1px,3.48837vw,30px)",
+                        md: "0 clamp(1px,0.78125vw,30px)"
+                      }
+                    },
+                  }}
                 />
                 {props.icon && props.icon}
                 {props.isregister && <PasswordStrengthMeter result={result} />}

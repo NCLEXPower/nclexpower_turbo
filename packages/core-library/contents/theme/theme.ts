@@ -242,10 +242,10 @@ export const theme = (tenant?: CmsTenant | null) => {
           "& a": {
             color: appColors.primary,
             "&:focus:not(.MuiButton-root, .MuiListItem-root &, .MuiListItemButton-root &)":
-              {
-                backgroundColor: appColors.ui_rag["Amber.400"],
-                outline: "none!important",
-              },
+            {
+              backgroundColor: appColors.ui_rag["Amber.400"],
+              outline: "none!important",
+            },
           },
           "& button:focus, a.MuiButton-root:focus": {
             border: "none",

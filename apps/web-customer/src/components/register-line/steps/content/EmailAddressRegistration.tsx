@@ -70,7 +70,7 @@ export const EmailAddressRegistration = ({
 
   return (
     <div className='flex flex-col w-full gap-2'>
-      <Box className="w-full">
+      <Box className="w-full ">
         <TextField
           label="Email Address"
           control={control}
@@ -78,9 +78,10 @@ export const EmailAddressRegistration = ({
           sx={{
             borderRadius: "10px",
             width: "100%",
+
           }}
           inputProps={{
-            style: { padding: 15, borderRadius: "10px" },
+            style: { borderRadius: "10px" },
           }}
         />
       </Box>

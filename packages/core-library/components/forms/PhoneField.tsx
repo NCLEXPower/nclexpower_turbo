@@ -115,7 +115,7 @@ export const PhoneFieldComponent = <T extends object>({
     <Grid container spacing={2} direction="column">
       <Grid item>
         {fieldState?.error?.message && (
-          <Typography sx={{fontSize: 15}} color="error">
+          <Typography sx={{ fontSize: 15 }} color="error">
             {fieldState.error.message}
           </Typography>
         )}
@@ -131,9 +131,30 @@ export const PhoneFieldComponent = <T extends object>({
                 <Select
                   data-testid="phone-code-select"
                   fullWidth
-                  style={{
-                    borderRadius: "5px",
-                    padding: "15px",
+                  sx={{
+                    height: {
+                      xs: 'clamp(1px, 10.466vw, 50px)',
+                      md: 'clamp(1px, 3.911vw, 112px)',
+                      lg: 'clamp(1px, 2.917vw, 112px)'
+
+                    },
+                    fontSize: {
+                      xs: "clamp(1px, 3.72092vw, 18px)",
+                      md: "clamp(1px, 1.36852vw, 36px)",
+                      lg: "clamp(1px, 0.9375vw, 36px)"
+
+                    },
+                    borderRadius: {
+                      xs: "clamp(1px, 2vw, 20px)",
+                      sm: "clamp(1px, 1vw, 20px)",
+                      md: "clamp(1px, 0.5vw, 20px)"
+                    },
+                    "& .MuiSelect-select": {
+                      padding: {
+                        xs: "0 clamp(1px,3.48837vw,30px)",
+                        md: "0 clamp(1px,0.78125vw,30px)"
+                      }
+                    },
                   }}
                   inputProps={{ shrink: "false" }}
                   MenuProps={{ sx: { maxHeight: "300px", width: "100%" } }}
@@ -168,9 +189,29 @@ export const PhoneFieldComponent = <T extends object>({
                     borderRadius: "5px",
                   }}
                   sx={{
+                    height: {
+                      xs: 'clamp(1px, 10.466vw, 50px)',
+                      md: 'clamp(1px, 3.911vw, 112px)',
+                      lg: 'clamp(1px, 2.917vw, 112px)'
+
+                    },
+                    fontSize: {
+                      xs: "clamp(1px, 3.72092vw, 18px)",
+                      md: "clamp(1px, 1.36852vw, 36px)",
+                      lg: "clamp(1px, 0.9375vw, 36px)"
+
+                    },
+
                     "& .MuiOutlinedInput-input:focus": {
-                      borderRadius: "5px",
-                      padding: "15px",
+                      borderRadius: {
+                        xs: "clamp(1px, 2vw, 20px)",
+                        sm: "clamp(1px, 1vw, 20px)",
+                        md: "clamp(1px, 0.5vw, 20px)"
+                      },
+                      padding: {
+                        xs: "0 clamp(1px,3.48837vw,30px)",
+                        md: "0 clamp(1px,0.78125vw,30px)"
+                      }
                     },
                   }}
                   thousandSeparator={false}
