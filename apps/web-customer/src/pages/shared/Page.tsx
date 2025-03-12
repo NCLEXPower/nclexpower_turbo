@@ -41,7 +41,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   if (error) {
     return <ErrorBox label={error.message} />;
   }
-  
+
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
   }
