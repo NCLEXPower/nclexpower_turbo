@@ -14,53 +14,59 @@ import {
 import Image from "next/image";
 import { useResolution } from "core-library/hooks";
 
-interface Props {}
+interface Props { }
 
 export const RevolutionBannerBlock: React.FC<Props> = () => {
   const { isMobile, isTablet } = useResolution();
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] overflow-hidden">
       <ImageCarousel key={window.innerWidth} sliderConfig={settings}>
-        <div className="h-full w-full relative">
-          <div className="absolute  justify-center h-full w-full flex  flex-col left-0 text-white z-10 pl-[12%] pt-[3%]">
-            <p className="lg:text-6xl md:text-5xl sm:text-4xl text-3xl font-bold font-Rajdhani drop-shadow-xl">
-              Welcome to
-            </p>
-            <p className="lg:text-7xl md:text-6xl sm:text-5xl text-4xl font-bold font-Poppins text-[#f4c501] -mt-4 lg:-mt-5 drop-shadow-xl">
-              NCLEX Power Review
-            </p>
-            <p className="lg:text-2xl sm:text-xl text-md -mt-4 lg:-mt-5">
-              Your Journey to Passing the NCLEX <br /> Begins Now
-            </p>
+        <div className=" h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] w-full relative">
+          <div className="absolute  justify-center h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] w-full flex  flex-col left-0 text-white z-10 ">
+            <div className="container">
+              <h2 className="text-[clamp(1px,7.44185vw,128px)] md:text-[clamp(1px,3.229164vw,124px)] leading-[1] font-bold font-Rajdhani drop-shadow-xl text-white">
+                Welcome to
+              </h2>
+              <h1 className="text-[clamp(1px,11.1628vw,200px)] md:text-[clamp(1px,5.20834vw,200px)] sm:text-5xl text-4xl font-bold font-Poppins text-[#f4c501]  drop-shadow-xl">
+                NCLEX Power Review
+              </h1>
+              <p className="text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)] sm:text-xl text-md ">
+                Your Journey to Passing the NCLEX <br /> Begins Now
+              </p>
+            </div>
           </div>
           <Image
-            className="h-screen object-cover object-top"
+            className="h-full object-cover object-top"
             loading="lazy"
             src={CarouselOne}
             alt="ImageOne"
           />
         </div>
-        <div className="h-full w-full relative">
-          <div className="absolute w-full h-full flex lg:flex-row flex-row-reverse">
-            <div className="items-end lg:items-start justify-start lg:h-full w-1/2 flex flex-col left-0 text-white pl-0 pr-10 lg:pr-0 md:pl-20 pt-[8dvh] lg:pt-[25dvh]">
-              <p className="lg:text-6xl md:text-6xl text-5xl font-bold font-Rajdhani whitespace-nowrap drop-shadow-xl">
-                Train like a
-              </p>
-              <p className="lg:text-7xl md:text-6xl text-4xl font-bold font-Poppins text-[#f4c501] -mt-4 lg:-mt-7 drop-shadow-xl">
-                BOXER
-              </p>
+        <div className="h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] w-full relative">
+          <div className="absolute w-full h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] flex">
+            <div className=" items-start justify-end h-1/2 w-1/2 flex flex-col  text-white ">
+              <div className="m-[clamp(1px,5.20834vw,200px)]">
+                <h2 className="text-[clamp(1px,11.1628vw,200px)]  md:text-[clamp(1px,4.166665vw,160px)] font-bold font-Rajdhani text-white leading-[1]">
+                  Train like a
+                </h2>
+                <h1 className="text-[clamp(1px,11.1628vw,200px)]  md:text-[clamp(1px,4.166665vw,160px)] font-bold font-Poppins text-[#f4c501] leading-[1] mt-[clamp(-24px,-.833331vw,1px)]">
+                  BOXER
+                </h1>
+              </div>
             </div>
-            <div className="items-start lg:items-end justify-end lg:h-full w-1/2 flex flex-col right-0 text-white pr-0 pl-10 lg:pl-20 md:pr-20 pb-[8dvh] lg:pb-[12dvh] ">
-              <p className="lg:text-6xl md:text-6xl text-5xl font-bold font-Rajdhani whitespace-nowrap drop-shadow-xl">
-                Pass like a
-              </p>
-              <p className="lg:text-7xl md:text-6xl text-4xl font-bold font-Poppins text-[#f4c501] -mt-4 lg:-mt-5 drop-shadow-xl">
-                WINNER
-              </p>
+            <div className=" items-end justify-end h-full w-1/2 flex flex-col  text-white  ">
+              <div className="m-[clamp(1px,5.20834vw,200px)] pb-5 ">
+                <h2 className="text-[clamp(1px,11.1628vw,200px)]  md:text-[clamp(1px,4.166665vw,160px)]  font-bold font-Rajdhani whitespace-nowrap leading-[1] text-white">
+                  Pass like a
+                </h2>
+                <h1 className="text-[clamp(1px,11.1628vw,200px)]  md:text-[clamp(1px,4.166665vw,160px)]  font-bold font-Poppins text-[#f4c501] leading-[1] mt-[clamp(-24px,-.833331vw,1px)] text-end">
+                  WINNER
+                </h1>
+              </div>
             </div>
           </div>
           <Image
-            className="h-screen w-screen object-cover object-center"
+            className="h-full w-screen object-cover object-center"
             loading="lazy"
             src={
               isMobile
@@ -72,34 +78,24 @@ export const RevolutionBannerBlock: React.FC<Props> = () => {
             alt="ImageTwo"
           />
         </div>
-
-        <div className="h-full w-full relative">
-          <div className="absolute  justify-center h-full w-full flex flex-col left-0 text-white z-10 pl-[12%] mt-52 md:-mt-5">
-            <p className="text-5xl lg:text-7xl font-bold font-Poppins drop-shadow-xl">
-              Start today!
-            </p>
-            <p className="text-xl lg:text-2xl mt-5 font-medium">
-              Choose our standard
-              <span className="text-[#f4c501]">
-                {" "}
-                <strong>23-days</strong>
-              </span>{" "}
-              or
-              <br />
-              <span className="text-[#f4c501]">
-                {" "}
-                <strong>8-days </strong>
-              </span>{" "}
-              Fast Track program, and start
-              <br /> your path to success
-              <span className="text-[#f4c501]">
-                {" "}
-                <strong>now!</strong>
-              </span>
-            </p>
+        <div className="h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] w-full relative">
+          <div className="absolute  justify-center h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] w-full flex flex-col  text-white z-10">
+            <div className="container">
+              <h1 className="text-[clamp(1px,11.1628vw,200px)] md:text-[clamp(1px,5.20834vw,200px)] font-bold font-Poppins text-white">
+                Start today!
+              </h1>
+              <p className="text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)] mt-5 font-medium">
+                Choose our standard
+                <span className="text-[#f4c501]"> 23-days</span> or
+                <span className="text-[#f4c501]"> 8-days </span> Fast Track
+                program,  <br />
+                and start your path to success
+                <span className="text-[#f4c501]"> now!</span>
+              </p>
+            </div>
           </div>
           <Image
-            className="h-screen object-cover lg:object-top object-[85%]"
+            className="h-[clamp(1px,174.42vw,1870px)] md:h-[clamp(1px,48.698vw,1870px)] object-cover lg:object-top object-[85%]"
             loading="lazy"
             src={CarouselThree}
             alt="ImageThree"

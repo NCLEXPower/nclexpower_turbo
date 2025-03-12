@@ -37,104 +37,137 @@ export const ForgotPasswordForm: React.FC<Props> = ({
   } = form;
 
   return (
-    <section className="h-auto sm:h-screen w-screen flex flex-col items-center justify-center pt-sans-caption overflow-hidden">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Link
-          href="/"
-          className="flex items-center justify-end xl:px-60 px-40 cursor-pointer text-darkBlue ml-[390px] sm:ml-[470px] pt-8 pl-1"
-          style={{ backgroundColor: "transparent" }}
-        >
-          <ArrowBackIosNewIcon fontSize="small" />
-          <span className="pt-sans-narrow-regular ml-1 underline text-[20px]">
-            Back
-          </span>
-        </Link>
-
-        <div className="flex items-center justify-center py-8">
-          <Image
-            src={CoreZigmaLogo}
-            alt="CoreZigma"
-            className="w-[100px] h-[100px] md:w-[115px] md:h-[115px] lg:w-[130px] lg:h-[130px]"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-
-        <h2 className="mb-4 text-[30px] text-center pt-sans-bold text-4xl pt-sans-regular sm:text-[40px]">
-          Forgot Your <span className="text-darkBlue">Password?</span>
-        </h2>
-        <div className="max-w-96 min-w-[50%] sm:min-w-[550px] pt-2 px-4">
-          <p className="pt-sans-narrow-regular font-light text-darkGray text-lg sm:text-xl">
-            Enter the email address associated with your account and we'll send
-            you a link to reset your password.
-          </p>
-          <div className="pt-5 px-2">
-            <FormProvider {...form}>
-              <TextField
-                control={control}
-                label="Email"
-                name="email"
-                sx={{
-                  borderRadius: "10px",
-                  width: "100%",
-                }}
-                inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
-              />
-              {showAlert && (
-                <div className="pt-2">
-                  <Alert
-                    severity="success"
-                    title="Successfully sent to your email"
-                  />
-                </div>
-              )}
-              {isExpired && (
-                <div className="pt-2">
-                  <Alert
-                    severity="error"
-                    title="Account Expired"
-                    description="The account you are trying to access is already expired."
-                  />
-                </div>
-              )}
-              <div className="mt-5">
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    px: 4,
-                    py: 2,
-                    borderRadius: "10px",
-                    backgroundColor: "#0F2A71",
-                  }}
-                  className="hover:bg-hoverBlue"
-                  loading={submitLoading}
-                  onClick={handleSubmit(onSubmit)}
-                  disabled={!isValid || submitLoading || resetTime !== 0}
-                  resetTime={resetTime}
-                >
-                  Continue
-                </Button>
-              </div>
-            </FormProvider>
-          </div>
-        </div>
-        <div className="flex items-center justify-center mt-8 pt-sans-narrow-regular text-lg sm:text-xl">
-          <p className="text-darkGray">Don't have an account?</p>
-          <Link
-            href="/#pricing"
-            className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
-            style={{ backgroundColor: "transparent" }}
+    <div className="container">
+      <div className="md:w-[clamp(1px,40.079vw,900px)] lg:w-[clamp(1px,31.6667vw,1216px)] ">
+        <section className="h-dvh w-dvw flex items-center justify-center pt-sans-caption ">
+          <Box
+            sx={{
+              display: "flex",
+              p: 5,
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            Sign up
-          </Link>
-        </div>
-      </Box>
-    </section>
+            <Link
+              href="/"
+              className="flex items-center justify-end w-full  cursor-pointer text-darkBlue "
+              style={{ backgroundColor: "transparent" }}
+            >
+              <ArrowBackIosNewIcon
+                sx={{
+                  width: {
+                    xs: "clamp(1px,4.187vw,18px)",
+                    md: "clamp(1px,1.467vw,40px)",
+                    lg: "clamp(1px,1.042vw,40px)"
+                  }
+                  ,
+                  height: {
+                    xs: "clamp(1px,4.187vw,18px)",
+                    md: "clamp(1px,1.467vw,40px)",
+                    lg: "clamp(1px,1.042vw,40px)"
+                  }
+                }} />
+              <span className="font-ptSans font-bold text-[clamp(1px,4.18604vw,18px)] md:text-[clamp(1px,1.56403vw,40px)] lg:text-[clamp(1px,1.041665vw,40px)] ml-1 underline">
+                Back
+              </span>
+            </Link>
+
+            <div className="flex items-center justify-center py-14">
+              <Image
+                src={CoreZigmaLogo}
+                className="w-[clamp(1px,27.91vw,120px)] md:w-[clamp(1px,9.776vw,200px)] lg:w-[clamp(1px,6.25vw,240px)] h-[clamp(1px,27.91vw,120px)] md:h-[clamp(1px,9.776vw,200px)] lg:h-[clamp(1px,6.25vw,240px)]"
+                alt="CoreZigma"
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+
+            <h2 className="mb-4 text-[clamp(1px,5.81395vw,36px)] md:text-[clamp(1px,2.54154vw,80px)] lg:text-[clamp(1px,2.083331vw,80px)] text-center font-Poppins font-bold">
+              Forgot Your <span className="text-darkBlue">Password?</span>
+            </h2>
+            <div className="md:w-[clamp(1px,40.079vw,900px)] lg:w-[clamp(1px,31.6667vw,1216px)]">
+              <p className="text-center font-ptSans font-regular text-darkGray text-[clamp(1px,4.18604vw,18px)] md:text-[clamp(1px,1.56403vw,40px)] lg:text-[clamp(1px,1.041665vw,40px)]">
+                Enter the email address associated with your account and we'll send
+                you a link to reset your password.
+              </p>
+              <div className="pt-5">
+                <FormProvider {...form}>
+                  <TextField
+                    control={control}
+                    label="Email"
+                    name="email"
+                    sx={{
+                      borderRadius: "10px",
+                      width: "100%",
+                    }}
+                    inputProps={{ style: { borderRadius: "10px" } }}
+                  />
+                  {showAlert && (
+                    <div className="pt-2">
+                      <Alert
+                        severity="success"
+                        title="Successfully sent to your email"
+                      />
+                    </div>
+                  )}
+                  {isExpired && (
+                    <div className="pt-2">
+                      <Alert
+                        severity="error"
+                        title="Account Expired"
+                        description="The account you are trying to access is already expired."
+                      />
+                    </div>
+                  )}
+                  <div className="mt-3">
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      sx={{
+                        height: {
+                          xs: 'clamp(1px, 10.466vw, 50px)',
+                          md: 'clamp(1px, 3.911vw, 112px)',
+                          lg: 'clamp(1px, 2.917vw, 112px)'
+
+                        },
+                        borderRadius: {
+                          xs: "clamp(1px, 2vw, 20px)",
+                          sm: "clamp(1px, 1vw, 20px)",
+                          md: "clamp(1px, 0.5vw, 20px)"
+                        },
+                        fontSize: {
+                          xs: "clamp(1px, 3.72092vw, 18px)",
+                          md: "clamp(1px, 0.9375vw, 36px)"
+
+                        },
+                        backgroundColor: "#0F2A71",
+                      }}
+                      className="hover:bg-hoverBlue"
+                      loading={submitLoading}
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={!isValid || submitLoading || resetTime !== 0}
+                      resetTime={resetTime}
+                    >
+                      Continue
+                    </Button>
+                  </div>
+                </FormProvider>
+              </div>
+            </div>
+            <div className="flex items-center justify-center pt-5 font-ptSans font-normal text-[clamp(1px,4.18604vw,18px)] md:text-[clamp(1px,1.36852vw,36px)] lg:text-[clamp(1px,0.9375vw,36px)]">
+              <p className="text-darkGray">Don't have an account?</p>
+              <Link
+                href="/#pricing"
+                className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
+                style={{ backgroundColor: "transparent" }}
+              >
+                Sign up
+              </Link>
+            </div>
+          </Box>
+        </section>
+      </div>
+    </div>
   );
 };

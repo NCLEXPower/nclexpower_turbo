@@ -47,7 +47,7 @@ export const MeetOurTeamBlock = () => {
   return (
     <section
       id='myTeam'
-      className='w-full h-auto overflow-hidden bg-darkBlue pb-10'
+      className='w-full h-auto overflow-hidden bg-darkBlue py-[clamp(1px,11.1628vw,96px)] md:py-[clamp(1px,4.999998vw,96px)]'
     >
       <Box className='flex flex-col w-full items-center p-10 gap-10'>
         <div className='flex flex-col gap-4 items-center'>

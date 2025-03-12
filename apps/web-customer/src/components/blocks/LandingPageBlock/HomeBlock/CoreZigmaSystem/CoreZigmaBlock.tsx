@@ -16,61 +16,60 @@ import {
 } from "core-library/assets";
 import { FlipCard } from "../../../../../components/Cards/FlippableCard/FlipCard";
 
-interface Props {}
+interface Props { }
 
 export const CoreZigmaBlock: React.FC<Props> = (props) => {
   return (
-    <div className="w-full py-24 flex justify-center items-center font-ptSans relative">
+    <div className="w-full py-[clamp(1px,11.1628vw,96px)] md:py-[clamp(1px,4.999998vw,96px)] flex justify-center items-center font-ptSans relative">
       <Image
-        width={350}
         src={CroppedCoreZigma}
         alt="CoreZigma"
-        className="absolute top-0 left-0"
+        className="absolute top-0 left-0 w-[clamp(1px,18.2292vw,700px)]"
       />
       <Image
-        width={400}
         src={TransparentCoreZigma}
         alt="CoreZigma"
-        className="absolute bottom-10 right-10"
+        className="absolute m-[clamp(1px,2.083331vw,80px)] bottom-0 right-0 w-[clamp(1px,20.834vw,800px)]"
       />
-      <div className="w-full flex flex-col items-center px-10">
-        <div className="flex flex-col gap-5 items-center">
-          <p className="lg:text-4xl text-3xl font-bold text-center">
-            Pass the NCLEX® with our
-            <span className="text-darkBlue"> CORE-Zigma</span> System
-          </p>
-          <p className="font-bold">We believe the power of our synergy!</p>
-          <p>
-            Designed with the learner in-mind, the CORE-Zigma System takes a
-            unique, integrated approach to exam review and preparation!
-          </p>
-        </div>
-        <div className="w-full flex flex-wrap items-center justify-center py-10">
-          <FlipCard frontImage={FlipCardOne} backImage={FlipCardOneBack} />
-          <FlipCard frontImage={FlipCardTwo} backImage={FlipCardTwoBack} />
-          <FlipCard frontImage={FlipCardThree} backImage={FlipCardThreeBack} />
-        </div>
-        <div className="lg:flex w-5/6 justify-center pt-10">
-          <div className=" h-64 lg:w-1/2 px-5 flex justify-center">
-            <div className="bg-darkBlue lg:w-3/4 w-full h-full rounded-lg" />
+      <div className="container">
+        <div className="">
+          <div className="text-center">
+            <h2 className="text-[clamp(1px,9.30232vw,70px)] md:text-[clamp(1px,2.5vw,96px)] font-Poppins font-bold   text-center ">
+              Pass the NCLEX® with our
+              <span className="text-darkBlue ">  CORE-Zigma</span> System
+            </h2>
+            <p className="font-Sans font-bold text-[clamp(1px,4.65116vw,48px)] !mb-[clamp(1px,4.65116vw,40px)] md:!mb-0 md:text-[clamp(1px,1.25vw,48px)]">We believe the power of our synergy!</p>
+            <p className="font-Sans font-normal text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)]">
+              Designed with the learner in-mind, the CORE-Zigma System takes a
+              unique, integrated approach to exam <br className="hidden md:block" /> review and preparation!
+            </p>
           </div>
-          <div className="lg:w-2/5 pt-10 text-center lg:pl-16 lg:text-right flex flex-col gap-5 items-center">
-            <p className="lg:text-4xl text-3xl font-bold">
-              Discover <span className="text-darkBlue"> CORE-Zigma</span>
-            </p>
-            <p className="font-ptSansNarrow text-lg">
-            Learn how the CORE-Zigma System empowers 
-            your NCLEX review preparation – in a way you 
-            have not seen before! Our platform engages 
-            learners using an unprecedented delivery method – with various sections interconnected, 
-            integrated, and interdependent. 
-            Peeked your interest yet? Watch this video to 
-            learn more about this amazing, ground-breaking 
-            review method!
-            </p>
+          <div className="w-full h-full flex flex-wrap items-center justify-center py-[clamp(1px,2.083331vw,80px)]">
+            <div className="px-[clamp(1px,1.041665vw,40px)]">
+              <FlipCard frontImage={FlipCardOne} backImage={FlipCardOneBack} />
+            </div>
+            <div className="px-[clamp(1px,1.041665vw,40px)]">
+              <FlipCard frontImage={FlipCardTwo} backImage={FlipCardTwoBack} />
+            </div>
+            <div className="px-[clamp(1px,1.041665vw,40px)]">
+              <FlipCard frontImage={FlipCardThree} backImage={FlipCardThreeBack} />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 justify-center pt-[clamp(1px,2.083331vw,80px)] gap-[clamp(1rem,4.105vw,5rem)] items-start mb-5">
+            <div className="h-[clamp(1px,51.63vw,734px)] md:h-[clamp(1px,19.115vw,734px)] w-full md:w-[clamp(1px,31.25vw,1200px)] flex justify-center order-2 md:order-none">
+              <div className="bg-darkBlue w-full h-full rounded-lg" />
+            </div>
+            <div className="w-full text-center lg:text-right items-center md:items-end order-1 md:order-none">
+              <p className="md:text-[clamp(1px,2.0833307vw,80px)] text-[clamp(1px,7.44185vw,80px)] font-Poppins font-bold">
+                Discover <span className="text-darkBlue"> CORE-Zigma</span>
+              </p>
+              <p className="font-Sans font-normal text-[clamp(1px,4.65116vw,48px)] md:text-[clamp(1px,1.25vw,48px)]">
+                Learn how CORE-Zigma empowers your NCLEX preparation with top-notch resources and expert guidance. Our platform offers comprehensive study materials, practice tests, and personalized learning plans to help you succeed. Watch our video to see how we can make your NCLEX journey smoother and more effective.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };

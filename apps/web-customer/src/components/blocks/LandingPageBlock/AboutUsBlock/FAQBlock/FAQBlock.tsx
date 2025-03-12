@@ -67,7 +67,7 @@ export const FAQBlock = () => {
   );
 
   return (
-    <section className="w-full relative overflow-visible py-16">
+    <section className="w-full relative overflow-visible py-[clamp(1px,11.1628vw,96px)] md:py-[clamp(1px,4.999998vw,96px)]">
       <BackgroundImages />
       <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px] relative z-10">
         <FAQHeader />

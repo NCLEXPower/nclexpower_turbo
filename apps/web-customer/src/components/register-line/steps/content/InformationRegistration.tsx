@@ -47,13 +47,12 @@ export const InformationRegistration: React.FC<Props> = ({
           control={control}
           name="firstname"
           sx={{
-            borderRadius: "0.625rem",
             width: "100%",
             backgroundColor: "rgba(15, 42, 113, 0.05);",
-            border: "1px solid rgba(15, 42, 113, 0.05);"
+            border: "1px solid rgba(15, 42, 113, 0.05);",
           }}
           inputProps={{
-            style: { padding: 15, borderRadius: "10px" },
+            style: { borderRadius: "10px", },
           }}
         />
       </Box>
@@ -69,7 +68,7 @@ export const InformationRegistration: React.FC<Props> = ({
             border: "1px solid rgba(15, 42, 113, 0.05);"
           }}
           inputProps={{
-            style: { padding: 15, borderRadius: "10px" },
+            style: { borderRadius: "10px" },
           }}
         />
       </Box>
@@ -85,7 +84,7 @@ export const InformationRegistration: React.FC<Props> = ({
             border: "1px solid rgba(15, 42, 113, 0.05);"
           }}
           inputProps={{
-            style: { padding: 15, borderRadius: "10px" },
+            style: { borderRadius: "10px" },
           }}
         />
       </Box>
@@ -93,12 +92,22 @@ export const InformationRegistration: React.FC<Props> = ({
         <Button
           sx={{
             py: 2,
-            fontFamily: "PT Sans Narrow",
+            fontFamily: "PT Sans",
             fontWeight: "bold",
             backgroundColor: "#0f2a71",
             border: "1px solid #0f2a71",
             color: "#fff",
             borderRadius: "6px",
+            minHeight: {
+              xs: 'clamp(1px, 10.466vw, 50px)',
+              md: 'clamp(1px, 3.911vw, 112px)',
+              lg: 'clamp(1px, 2.917vw, 112px)'
+            },
+            fontSize: {
+              xs: "clamp(1px, 3.72092vw, 16px)",
+              md: "clamp(1px,1.36852vw,36px)",
+              lg: "clamp(1px, 0.9375vw, 36px)"
+            },
             "&:hover": {
               backgroundColor: "#0f2a7195",
               border: "1px solid #ced4da",

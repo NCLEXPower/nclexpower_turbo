@@ -14,7 +14,7 @@ interface Content {
   title: string;
   paragraphOne: string;
   paragraphTwo: string;
-  paragraphThree?: string;  
+  paragraphThree?: string;
   bullets?: string[];
   carouselImages?: string[];
   image?: string;
@@ -26,6 +26,12 @@ interface ModalContentProps {
   sliderConfig: SliderConfig;
   onClose: () => void;
 }
+
+const closeButtonStyles = {
+  WatchVideos: { bg: 'rgb(24,24,24,.5)', fill: '#E5E5E5' },
+  Practice: { bg: 'rgb(24,24,24,.5)', fill: '#E5E5E5' },
+  Study: { bg: '#7E7E7E', fill: '#4B4B4B' },
+};
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   type,
@@ -51,20 +57,22 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         paragraphTwo={content.paragraphTwo}
         paragraphThree={content.paragraphThree}
         bullets={content.bullets}
+        type={type}
       />
       <Box className='absolute right-5 top-5 cursor-pointer z-10'>
         <div
-          className='bg-[#7E7E7E] rounded-full w-full h-full flex items-center justify-center'
+          className='rounded-full w-full h-full flex items-center justify-center'
           style={{
-            width: 'clamp(24px, 5vw, 40px)',
-            height: 'clamp(24px, 5vw, 40px)',
+            background: closeButtonStyles[type].bg,
+            width: 'clamp(30px, 2.084vw, 80px)',
+            height: 'clamp(30px, 2.084vw, 80px)',
           }}
         >
-          <IconButton onClick={onClose} className='w-[100%] h-[100%]'>
+          <IconButton onClick={onClose} className='w-[100%] h-[100%] !p-1'>
             <EvaIcon
               id='close-icon'
               name='close'
-              fill='#4B4B4B'
+              fill={closeButtonStyles[type].fill}
               className='w-[100%] h-[100%]'
               aria-label='Close Modal'
               ariaHidden

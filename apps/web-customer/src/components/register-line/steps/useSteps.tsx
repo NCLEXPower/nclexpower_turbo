@@ -15,8 +15,13 @@ import {
   RegistrationFormType
 } from "./content";
 import { Stepper } from "core-library/components";
+import { useMediaQuery } from "@mui/material";
 
 export const useRegisterWizardSteps = () => {
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isTablet = useMediaQuery('(max-width:1024px)');
+
   const steps = useMemo(() => {
     return {
       EnterYourFullName: {
@@ -73,11 +78,52 @@ export const useRegisterWizardSteps = () => {
             alternativeLabel={false}
             orientation="vertical"
             steps={stepLabels}
-            sx={{ width: "100%", px: 0 }}
+            sx={{
+              width: "100%", px: 0,
+              "& .MuiGrid-root label": {
+                fontSize: {
+                  xs: "clamp(1px, 3.72092vw, 16px)",
+                  md: "clamp(1px,1.36852vw,36px)",
+                  lg: "clamp(1px, 0.9375vw, 36px)"
+                }
+              },
+              "& .css-1x0yzl6": {
+                width: {
+                  xs: "clamp(1px,3.49vw,15px)",
+                  md: "clamp(1px,1.565vw,40px)",
+                  lg: "clamp(1px,1.042vw,40px)"
+                },
+                height: {
+                  xs: "clamp(1px,3.49vw,15px)",
+                  md: "clamp(1px,1.565vw,40px)",
+                  lg: "clamp(1px,1.042vw,40px)"
+                }
+              },
+              "& .MuiStepContent-root": {
+                marginLeft: {
+                  xs: "clamp(1px,1.744185vw,20px)",
+                  sm: "clamp(1px,0.520834vw,20px)"
+                },
+                paddingLeft: {
+                  sm: "clamp(1px,1.041665vw,40px)"
+                }
+              },
+              "& .MuiStepConnector-root": {
+                marginLeft: {
+                  xs: "clamp(1px,1.744185vw,20px)",
+                  sm: "clamp(1px,0.520834vw,20px)"
+                },
+              }
+            }}
             labelStyle={{
-              fontSize: "1.2rem",
+              fontSize: isMobile
+                ? 'clamp(1px, 4.18604vw, 18px)'
+                : isTablet
+                  ? 'clamp(1px, 1.56403vw, 40px)'
+                  : 'clamp(1px, 1.041665vw, 40px)'
+              ,
               fontWeight: "bold",
-              fontFamily: "PT Sans Narrow"
+              fontFamily: "PT Sans",
             }}
             stepContent={
               <React.Fragment>

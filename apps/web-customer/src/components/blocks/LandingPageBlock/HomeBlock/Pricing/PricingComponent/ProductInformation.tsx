@@ -33,7 +33,7 @@ const ProductInformation = ({
   }
 
   return (
-    <div className="w-full min-h-full flex flex-col  p-6  xl:flex-row  xl:gap-24 xl:p-12  ">
+    <div className=" flex flex-col md:flex-row  justify-between ">
       <PricingDetail filteredCardData={filteredCardData} onClose={onClose} />
       <ProductSelection
         cardData={Array.isArray(cardData) ? cardData : [cardData]}

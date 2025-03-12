@@ -2,7 +2,8 @@ import {
   RevolutionBannerBlock,
   CoreZigmaBlock,
   HowItWorksBlock,
-  PricingBlock
+  PricingBlock,
+  HelpWidgetBlock
 } from "@/components";
 import { withCSP } from "core-library";
 import { GetServerSideProps } from "next";
@@ -24,7 +25,7 @@ const Home: React.FC<Props> = ({ data }) => {
   return (
     <React.Fragment>
       <div className="w-screen flex flex-col overflow-y-auto overflow-x-hidden font-ptSans ">
-        <div className="w-full h-screen">
+        <div className="w-full h-full">
           <RevolutionBannerBlock />
         </div>
         <div className="w-full h-fit">
@@ -35,6 +36,9 @@ const Home: React.FC<Props> = ({ data }) => {
         </div>
         <div className="w-full h-fit" id="pricing">
           <PricingBlock url={url} />
+        </div>
+        <div className="w-full h-fit">
+          <HelpWidgetBlock />
         </div>
       </div>
       <ScrollTop />
