@@ -46,7 +46,8 @@ import {
   UpdateMenuItemParams,
   ContactFormType,
   GetSectionParams,
-  GetAllSectionsResponseType
+  GetAllSectionsResponseType,
+  GetProgramParams
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -802,6 +803,22 @@ export const useGetAllPrograms = (
     queryKey,
     async () => {
       const result = await getAllPrograms.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+};
+
+export const useGetAllProgramsByType = (
+  queryKey: string[],
+  programType: GetProgramParams
+): UseQueryResult<StandardProgramListType | undefined, any> => {
+  const getProgramsByType = useApi((api) => api.webbackoffice.getAllProgramsByType(programType));
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getProgramsByType.execute();
       return result.data;
     },
     { staleTime: Infinity }

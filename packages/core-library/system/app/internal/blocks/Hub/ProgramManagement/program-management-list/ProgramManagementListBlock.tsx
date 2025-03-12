@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import {
   Button,
@@ -16,7 +16,6 @@ import {
   SectionListType,
   StandardProgramListType,
 } from "../../../../../../../types/wc/programList";
-import { fastrackProgramManagementList } from "../../../../../../../core/utils/contants/wc/programs/ProgramListData";
 import Image from "next/image";
 import { getSectionTypeIcons } from "../../../../../../../utils/IconUtils";
 import { useRouter } from "../../../../../../../core";
@@ -31,6 +30,7 @@ import {
   useExecuteToast,
 } from "../../../../../../../contexts";
 import { useAtom } from "jotai";
+import { useApiCallback } from "../../../../../../../hooks";
 
 interface AccordionHeaderProps {
   item: StandardProgramListType;
@@ -295,10 +295,15 @@ export const ProgramManagementListBlock = () => {
   const [, setAtomProgramType] = useAtom(programTypeAtom);
   const [toggleProgramList, setToggleProgramList] = useState<number>(0);
 
-  const { businessQueryGetAllPrograms } = useBusinessQueryContext();
-  const { data: allProgramsList } = businessQueryGetAllPrograms([
-    "all_programs_api",
-  ]);
+  const { businessQueryGetAllProgramsByType } = useBusinessQueryContext();
+  const { data: allProgramsList, refetch } = businessQueryGetAllProgramsByType(
+    ["all_programs_api"],
+    { programType: toggleProgramList }
+  );
+
+  const deleteProgramCB = useApiCallback(
+    async (api, args: string) => await api.webbackoffice.deleteProgramById(args)
+  );
 
   const navigateToSections = () => {
     router.push((route) => route.program_section_management);
@@ -325,17 +330,43 @@ export const ProgramManagementListBlock = () => {
     setShowModal(false);
   };
 
-  const handleRemoveProgram = (values: RemoveProgramFormType) => {
+  useEffect(() => {
+    refetch();
+  }, [toggleProgramList]);
+
+  const handleRemoveProgram = async (values: RemoveProgramFormType) => {
     if (selectedProgram?.title) {
       if (values.program !== selectedProgram.title) {
         showToast("Program topic does not match, Please try again..", "error");
         return;
-      } else {
-        showToast(`${selectedProgram.title} removed successfully`, "success");
-        setShowModal(false);
+      }
+
+      try {
+        const deleteSectionResult = await deleteProgramCB.execute(
+          selectedProgram.id
+        );
+
+        if (deleteSectionResult.status === 200) {
+          refetch();
+          showToast(`${selectedProgram.title} removed successfully`, "success");
+          setShowModal(false);
+        } else {
+          showToast(`Error removing ${selectedProgram.title}`, "error");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast(
+          `Error removing ${selectedProgram.title}. Please try again`,
+          "error"
+        );
       }
     }
   };
+
+  const handleToggleProgramList = (programType: number) => {
+    setToggleProgramList(programType);
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box
@@ -373,7 +404,7 @@ export const ProgramManagementListBlock = () => {
 
       <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ mb: 8 }}>
         <Button
-          onClick={() => setToggleProgramList(0)}
+          onClick={() => handleToggleProgramList(0)}
           sx={{
             backgroundColor: `${toggleProgramList === 0 ? "#0F2A71" : "white"}`,
             borderRadius: "20px",
@@ -389,7 +420,7 @@ export const ProgramManagementListBlock = () => {
           Standard (23-Day) Program
         </Button>
         <Button
-          onClick={() => setToggleProgramList(1)}
+          onClick={() => handleToggleProgramList(1)}
           sx={{
             backgroundColor: `${toggleProgramList === 1 ? "#0F2A71" : "white"}`,
             borderRadius: "20px",
@@ -418,6 +449,7 @@ export const ProgramManagementListBlock = () => {
               onSubmit={handleRemoveProgram}
               programTitle={selectedProgram?.title || ""}
               closeModal={handleModalClose}
+              isLoading={deleteProgramCB.loading}
             />
           }
         />
@@ -427,15 +459,7 @@ export const ProgramManagementListBlock = () => {
         accordionMargin="0px 0px 10px 0px"
         accordionRadius="16px"
         headerBackgroundColor="rgba(59, 0, 134, 0.05)"
-        items={
-          toggleProgramList === 0
-            ? Array.isArray(allProgramsList)
-              ? allProgramsList
-              : []
-            : Array.isArray(fastrackProgramManagementList)
-              ? fastrackProgramManagementList
-              : []
-        }
+        items={Array.isArray(allProgramsList) ? allProgramsList : []}
         renderSummary={(item, expanded, onToggle) => (
           <AccordionHeader
             handleEditProgramList={handleEditProgramList}

@@ -66,6 +66,7 @@ import {
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
+  GetProgramParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -496,7 +497,7 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/get-sections?${qs.stringify({ ...params })}`);
   }
 
-  public async deleteSectionList(sectionId: string) {
+  public async deleteSectionList(sectionId: string){
     return await this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
   }
 
@@ -548,6 +549,7 @@ export class WebApiBackOffice {
 
       if (params.cards?.length) {
         params.cards.forEach((card, cardIndex) => {
+          form.append(`SectionData[0].cards[${cardIndex}].cardId`, card.cardId || "");
           form.append(`SectionData[0].cards[${cardIndex}].cardTopic`, card.cardTopic || "");
           if (card.cardFaces?.length) {
             card.cardFaces.forEach((face) => {
@@ -662,10 +664,15 @@ export class WebApiBackOffice {
     )
   }
 
-  public async getAllPrograms(){  
+  public async getAllPrograms(){
     return await this.axios.get<StandardProgramListType[]>(
       `/api/v2/content/BaseContent/get-internal-programs`
     );
+  }
+
+  public async getAllProgramsByType(params: GetProgramParams){
+    return await this.axios.get<StandardProgramListType[]>( 
+      `/api/v2/content/BaseContent/get-internal-programs?${qs.stringify({ ...params })}`);
   }
 
   public async updatePrograms(params: UpdateProgramParams){
@@ -686,6 +693,10 @@ export class WebApiBackOffice {
         },
       }
     )
+  }
+
+  public async deleteProgramById(programId: string){
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-program/${programId}`);
   }
 
   public async caseStudyList(params: GetCaseStudyListParams) {

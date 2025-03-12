@@ -22,6 +22,7 @@ import {
 } from "../../../../../../../../../contexts";
 import { sectionTypeAndTitle } from "../../../program-section-management/constants";
 import {
+  GetAllProgramsResponseType,
   GetAllSectionsResponseType,
   Section,
   SectionData,
@@ -67,7 +68,7 @@ export const ProgramManagementListEditBlock = () => {
   const { showToast } = useExecuteToast();
 
   const { businessQueryGetAllPrograms } = useBusinessQueryContext();
-  const { data: allProgramsList } = businessQueryGetAllPrograms([
+  const { data: allProgramsList, refetch } = businessQueryGetAllPrograms([
     "all_programs_api",
   ]);
 
@@ -90,6 +91,7 @@ export const ProgramManagementListEditBlock = () => {
     return null;
   }, [allProgramsList, programId]);
 
+  console.log(selectedProgram, "selectedProgram")
   const sectionList = sectionTypeAndTitle
     ? sectionTypeAndTitle.map((item) => ({
         label: item.sectionTitle,
@@ -121,13 +123,13 @@ export const ProgramManagementListEditBlock = () => {
         if (sectionType === "cat" && "catSimulator" in dataItem) {
           return {
             label: dataItem.catSimulator,
-            value: section.sectionId,
+            value: section.catSimulator,
           };
         }
         if ("title" in dataItem) {
           return {
             label: dataItem.title,
-            value: section.sectionId,
+            value: section.title,
           };
         }
         return {
@@ -180,7 +182,19 @@ export const ProgramManagementListEditBlock = () => {
     remove(index);
   };
 
+  const sanitizeData = (data: any): any => {
+    if (Array.isArray(data)) {
+      return data.map(sanitizeData);
+    } else if (typeof data === "object" && data !== null) {
+      return Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [key, sanitizeData(value ?? "")])
+      );
+    }
+    return data;
+  };
+
   const handleEditProgram = async (data?: CreateProgramFormType) => {
+    console.log(data, "data");
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -201,12 +215,18 @@ export const ProgramManagementListEditBlock = () => {
     const stringifiedSections = sections.flatMap((section) => {
       if (!section.sectionValue) return [];
 
+      console.log(sections, "sections");
+      
       const matchingSections = allSectionsList.filter((item) =>
         Array.isArray(section.sectionValue)
           ? section.sectionValue.includes(item.sectionId)
           : item.sectionId === section.sectionValue
       );
 
+      console.log(allSectionsList, "all list");
+
+      console.log(matchingSections, " matched sections");
+      
       if (matchingSections.length === 0) return [];
 
       return matchingSections
@@ -232,6 +252,24 @@ export const ProgramManagementListEditBlock = () => {
                   videoplaceholder: dataItem.videoPlaceholder,
                   description: dataItem.description,
                 };
+              }  else if (section.sectionType === "simulator") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  contentArea: dataItem,
+                  guided: dataItem.guided,
+                  unguided: dataItem.unguided,
+                  practice: dataItem.practice,
+                  link: ""
+                }
+              } else if (section.sectionType === "cat") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  catSimulator: dataItem.catSimulator,
+                  contentAreaCoverage: dataItem.contentAreaCoverage,
+                  link: ""
+                }
               }
               return null;
             })
@@ -240,7 +278,7 @@ export const ProgramManagementListEditBlock = () => {
           if (matchedSectionData.length === 0) return null;
 
           return {
-            programSectionId: matchingSection.sectionId,
+            sectionId: matchingSection.sectionId,
             sectionType: section.sectionType,
             sectionTitle: section.sectionTitle,
             sectionStatus: "available",
@@ -250,38 +288,44 @@ export const ProgramManagementListEditBlock = () => {
         .filter((section): section is UpdateSection => section !== null);
     });
 
+    const sanitizedSections = sanitizeData(selectedProgram.sections || []);
+
     const combinedSections = [
       ...stringifiedSections,
-      ...(selectedProgram.sections || []).map(
+      ...(sanitizedSections || []).map(
         ({ sectionId, ...rest }: Section) => ({
           ...rest,
-          programSectionId: sectionId,
+          sectionId,
         })
       ),
     ];
 
+    console.log(combinedSections, "combined sections");
+
     const payload = {
       id: selectedProgram.id,
       title: data.programName,
-      programImage,
+      programImage: data.programImage,
       programType: atomProgramType,
       stringifiedSections: combinedSections,
     };
 
     if (!payload) return;
 
-    try {
-      const result = await updateProgramCB.execute(payload);
-      if (result.status === 200) {
-        showToast(`Successfully updated ${data.programName}`, "success");
-        reset();
-      } else {
-        showToast(`Error creating a ${data.programName}`, "error");
-      }
-    } catch (err) {
-      console.error(err);
-      showToast(`Error updating program. Please try again`, "error");
-    }
+    console.log(payload, "this is the payload");
+    // try {
+    //   const result = await updateProgramCB.execute(payload);
+    //   if (result.status === 200) {
+    //     showToast(`Successfully updated ${data.programName}`, "success");
+    //     refetch();
+    //     reset();
+    //   } else {
+    //     showToast(`Error creating a ${data.programName}`, "error");
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    //   showToast(`Error updating program. Please try again`, "error");
+    // }
 
     setShowAddSection(true);
     setEditingSectionId(null);

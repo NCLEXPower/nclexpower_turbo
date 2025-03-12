@@ -814,6 +814,10 @@ export type GetSectionParams = {
   sectionType: string;
 }
 
+export type GetProgramParams = {
+  programType: number;
+}
+
 export interface UpdateSectionParams {
   sectionId: string;
   sectionType: string;
@@ -832,7 +836,7 @@ export interface UpdateSectionParams {
   videoPlaceholder?: File[] | undefined;
   description?: string | null;
   cards?: {
-  cardId?: string;
+    cardId?: string;
     cardTopic?: string;
     cardFaces?: File[] | undefined;
   }[];
@@ -848,6 +852,12 @@ export type SectionData = {
   authorImage?: File[];
   videoPlaceholder?: File[];
   description?: string;
+  contentArea?: string;
+  guided?: boolean;
+  unguided?: boolean;
+  practice?: boolean;
+  catSimulator?: string;
+  contentAreaCoverage?: string[]
 };
 
 export type Section = {
@@ -866,7 +876,7 @@ export type CreateProgramParams = {
 
 
 export type UpdateSection = {
-  programSectionId: string;
+  sectionId: string;
   sectionType: string;
   sectionTitle: string;
   sectionStatus: string;

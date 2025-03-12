@@ -54,6 +54,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
     { sectionType }
   );
 
+  console.log(sectionsList, "sectionList mock")
   const selectedSectionData = useMemo(() => {
     if (!Array.isArray(sectionsList)) return null;
 
@@ -72,6 +73,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
       return {
         title: selectedSectionData.title,
         cards: selectedSectionData.cards.map((card) => ({
+          cardId: card.cardId,
           cardTopic: card.cardTopic,
           cardFaces: card.cardFaces || [],
         })),
@@ -99,7 +101,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
 
   function isContentCardsSectionData(sectionData: unknown): sectionData is {
     title: string;
-    cards: { cardTopic: string; cardFaces: File[] }[];
+    cards: { cardId: string; cardTopic: string; cardFaces: File[] }[];
   } {
     return (
       typeof sectionData === "object" &&
@@ -108,11 +110,15 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
       "cards" in sectionData &&
       Array.isArray((sectionData as { cards: unknown[] }).cards) &&
       (
-        sectionData as { cards: { cardTopic: unknown; cardFaces: unknown[] }[] }
+        sectionData as {
+          cards: { cardId: unknown; cardTopic: unknown; cardFaces: unknown[] }[];
+        }
       ).cards.every(
         (card) =>
           typeof card === "object" &&
           card !== null &&
+          "cardId" in card &&
+          typeof (card as { cardId: unknown }).cardId === "string" &&
           "cardTopic" in card &&
           typeof (card as { cardTopic: unknown }).cardTopic === "string" &&
           "cardFaces" in card &&
@@ -127,6 +133,7 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
   useEffect(() => {
     if (selectedSectionData && isContentCardsSectionData(selectedSectionData)) {
       const defaultTopics = selectedSectionData.cards.map((card) => ({
+        cardId: card.cardId,
         cardTopic: card.cardTopic,
         cardFaces:
           card.cardFaces

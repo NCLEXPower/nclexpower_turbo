@@ -20,6 +20,7 @@ import { WelcomeProgram } from "../../../../../../../../../assets";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
 import { CreateProgramFormType, programTypeAtom } from "../../validation";
 import { useAtom } from "jotai";
+import { TimerMockData } from "../../constants";
 
 interface Props {
   onSave: () => void;
@@ -66,7 +67,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
   handleMultipleSelectChange,
   selectedSections,
   setValue,
-  isLoading,
+  isLoading
 }) => {
   const [atomProgramType] = useAtom(programTypeAtom);
 
@@ -126,26 +127,27 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
                   overflow: "hidden",
                 }}
               >
-                <Image
-                  src={
-                    fileName
-                      ? URL.createObjectURL(programImage[0])
-                      : WelcomeProgram
-                  }
-                  alt="program thumbnail"
-                  fill
-                  style={{
-                    objectFit: "cover",
-                    background:
-                      "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
-                  }}
-                />
+                  <Image
+                    src={
+                      fileName
+                        ? URL.createObjectURL(programImage[0])
+                        : WelcomeProgram
+                    }
+                    alt="program thumbnail"
+                    fill
+                    style={{
+                      opacity: fileName ? "1" : "0.3",
+                      objectFit: "cover",
+                      background:
+                        "linear-gradient(180deg, rgba(217, 217, 217, 0.00) 0%, rgba(0, 0, 0, 0.58) 100%)",
+                    }}
+                  />
                 <Box
                   sx={{
                     position: "absolute",
                     top: 0,
                     right: 0,
-                    bottom: 0,
+                    bottom: 0, 
                     left: 0,
                     backgroundColor: "rgba(0, 0, 0, 0.3)",
                     mixBlendMode: "multiply",
@@ -278,6 +280,40 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
                               handleMultipleSelectChange(index, e)
                             }
                           />
+                          <Divider
+                            sx={{
+                              my: 4,
+                              width: "100%",
+                              height: "2px",
+                            }}
+                          />
+                        </>
+                      ) : selectedSections[index] === "cat" ? (
+                        <>
+                          <Grid
+                            key={item.id}
+                            sx={{
+                              display: "grid",
+                              gap: 2,
+                              gridTemplateColumns: "1fr 1fr",
+                              alignItems: "center",
+                            }}
+                          >
+                            <GenericSelectField
+                              control={control}
+                              name={`sections.${index}.sectionValue`}
+                              options={filteredSectionValuesList(
+                                selectedSections[index]
+                              )}
+                              label={`Select in ${selectedSections[index]} section`}
+                            />
+                            <GenericSelectField
+                              control={control}
+                              name="timer"
+                              options={TimerMockData}
+                              label="Select CAT Timer"
+                            />
+                          </Grid>
                           <Divider
                             sx={{
                               my: 4,

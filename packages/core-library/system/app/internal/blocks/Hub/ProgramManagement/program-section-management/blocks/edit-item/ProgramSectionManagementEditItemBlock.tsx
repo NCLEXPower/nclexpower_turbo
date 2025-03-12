@@ -135,6 +135,8 @@ export const ProgramSectionManagementEditItemBlock = () => {
     const payload = getPayload();
     if (!payload) return;
 
+    console.log(payload);
+    
     try {
       const result = await updateSectionCB.execute(payload);
       if (result.status === 200) {

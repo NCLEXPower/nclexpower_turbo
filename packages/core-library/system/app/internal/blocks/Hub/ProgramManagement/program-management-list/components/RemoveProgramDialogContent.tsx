@@ -14,11 +14,12 @@ interface RemoveProgramDialogContentProps {
   onSubmit: (values: RemoveProgramFormType) => void;
   closeModal: () => void;
   programTitle: string;
+  isLoading: boolean;
 }
 
 export const RemoveProgramDialogContent: React.FC<
   RemoveProgramDialogContentProps
-> = ({ closeModal, programTitle, onSubmit }) => {
+> = ({ closeModal, programTitle, onSubmit, isLoading }) => {
   const form = useForm({
     mode: "onSubmit",
     resolver: yupResolver(removeProgramSchema),
@@ -123,6 +124,8 @@ export const RemoveProgramDialogContent: React.FC<
                 fullWidth
                 variant="contained"
                 onClick={handleSubmit(onSubmit)}
+                loading={isLoading}
+                disabled={isLoading}
               >
                 Delete
               </Button>

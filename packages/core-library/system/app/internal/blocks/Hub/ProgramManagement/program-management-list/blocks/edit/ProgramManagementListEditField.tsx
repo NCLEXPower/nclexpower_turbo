@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the NCLEX Power.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
@@ -22,12 +22,13 @@ import Divider from "../../../../../../../../../components/Divider/Divider";
 import { SectionListType } from "../../../../../../../../../types/wc/programList";
 import { CreateProgramFormType } from "../../validation";
 import { SectionDataType } from "./ProgramManagementListEditBlock";
+import { TimerMockData } from "../../constants";
 
 type SectionParamsType = {
-  sectionId: string, 
-  sectionType: string, 
-  sectionTitle: string
-}
+  sectionId: string;
+  sectionType: string;
+  sectionTitle: string;
+};
 
 interface Props {
   onSave: () => void;
@@ -145,10 +146,10 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
               >
                 <Image
                   src={
-                    typeof fileName === "string" 
-                      ? fileName.startsWith("http") 
-                        ? fileName 
-                        : URL.createObjectURL(programImage[0]) 
+                    typeof fileName === "string"
+                      ? fileName.startsWith("http")
+                        ? fileName
+                        : URL.createObjectURL(programImage[0])
                       : WelcomeProgram
                   }
                   alt="program thumbnail"
@@ -281,7 +282,9 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                   </Box>
                   <Box sx={{ display: "flex" }}>
                     <IconButton
-                      disabled={fields.length > 0 || Boolean(editingSectionData)}
+                      disabled={
+                        fields.length > 0 || Boolean(editingSectionData)
+                      }
                       onClick={() => handleEditProgramSection(section)}
                       data-testid="edit-section-button"
                     >
@@ -375,6 +378,40 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                           onChange={(e) => handleMultipleSelectChange(index, e)}
                           data-testid="multiple-select-field"
                         />
+                        <Divider
+                          sx={{
+                            my: 4,
+                            width: "100%",
+                            height: "2px",
+                          }}
+                        />
+                      </>
+                    ) : selectedSections[index] === "cat" ? (
+                      <>
+                        <Grid
+                          key={item.id}
+                          sx={{
+                            display: "grid",
+                            gap: 2,
+                            gridTemplateColumns: "1fr 1fr",
+                            alignItems: "center",
+                          }}
+                        >
+                          <GenericSelectField
+                            control={control}
+                            name={`sections.${index}.sectionValue`}
+                            options={filteredSectionValuesList(
+                              selectedSections[index]
+                            )}
+                            label={`Select in ${selectedSections[index]} section`}
+                          />
+                          <GenericSelectField
+                            control={control}
+                            name="timer"
+                            options={TimerMockData}
+                            label="Select CAT Timer"
+                          />
+                        </Grid>
                         <Divider
                           sx={{
                             my: 4,

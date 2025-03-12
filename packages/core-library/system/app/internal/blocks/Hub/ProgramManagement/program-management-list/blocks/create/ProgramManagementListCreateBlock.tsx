@@ -101,12 +101,13 @@ export const ProgramManagementListCreateBlock = () => {
   };
 
   const form = useForm({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: yupResolver(createProgramSchema),
     defaultValues: {
       programName: "",
       programImage: undefined,
       sections: [{ sectionTitle: "", sectionType: "", sectionValue: "" }],
+      timer: ""
     },
   });
 
@@ -128,7 +129,9 @@ export const ProgramManagementListCreateBlock = () => {
     data: CreateProgramFormType | undefined,
     reset: () => void
   ) => {
-    if (!data) {
+    console.log(data, "data")
+
+    if (!data) { 
       console.error("Form data is undefined.");
       return;
     }
@@ -178,6 +181,24 @@ export const ProgramManagementListCreateBlock = () => {
                   videoplaceholder: dataItem.videoPlaceholder,
                   description: dataItem.description,
                 };
+              } else if (section.sectionType === "simulator") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  contentArea: dataItem,
+                  guided: dataItem.guided,
+                  unguided: dataItem.unguided,
+                  practice: dataItem.practice,
+                  link: ""
+                }
+              } else if (section.sectionType === "cat") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  catSimulator: dataItem.catSimulator,
+                  contentAreaCoverage: dataItem.contentAreaCoverage,
+                  link: ""
+                }
               }
               return null;
             })
@@ -200,6 +221,7 @@ export const ProgramManagementListCreateBlock = () => {
       programImage,
       programType: atomProgramType,
       stringifiedSections,
+      timer: data.timer || ""
     };
 
     if (!payload) return;

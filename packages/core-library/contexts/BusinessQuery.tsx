@@ -55,7 +55,8 @@ import {
   useCommenceEnvMaintenanceMode,
   useGetSectionsByType,
   useGetAllSections,
-  useGetAllPrograms
+  useGetAllPrograms,
+  useGetAllProgramsByType
 } from "../core/hooks/useBusinessQueries";
 import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -91,7 +92,8 @@ import {
   UpdateMenuItemParams,
   ContactFormType,
   GetSectionParams,
-  GetAllSectionsResponseType
+  GetAllSectionsResponseType,
+  GetProgramParams
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 import { StandardProgramListType } from "../types/wc/programList";
@@ -361,6 +363,11 @@ interface BusinessQueryContextValue {
   businessQueryGetAllPrograms: (
     queryKey: string[],
   ) => UseQueryResult<StandardProgramListType | undefined, any>;
+
+  businessQueryGetAllProgramsByType: (
+    queryKey: string[],
+    params: GetProgramParams
+  ) => UseQueryResult<StandardProgramListType | undefined, any>;
 }
 
 const BusinessQueryContext = createContext<BusinessQueryContextValue>(
@@ -418,6 +425,7 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetSectionsByType = useGetSectionsByType;
   const businessQueryGetAllSections = useGetAllSections;
   const businessQueryGetAllPrograms = useGetAllPrograms;
+  const businessQueryGetAllProgramsByType = useGetAllProgramsByType;
 
   return (
     <BusinessQueryContext.Provider
@@ -466,7 +474,8 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryCommenceEnvMaintenanceMode,
         businessQueryGetSectionsByType,
         businessQueryGetAllSections,
-        businessQueryGetAllPrograms
+        businessQueryGetAllPrograms,
+        businessQueryGetAllProgramsByType
       }}
     >
       {children}
