@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { ContactUsManagementBlock } from '../../../../system/app/internal/blocks/Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock';
 import * as hooks from '../../../../hooks';
 import { ContactResponseType } from '../../../../api/types';
 import getConfig from 'next/config';
+import * as executeToastContext from '../../../../contexts';
 
 jest.mock('next/config', () => {
   return () => ({
@@ -15,6 +16,10 @@ jest.mock('next/config', () => {
   });
 });
 
+jest.mock('../../../../contexts', () => ({
+  useExecuteToast: jest.fn().mockReturnValue({ executeToast: jest.fn() })
+}));
+
 jest.mock('../../../../hooks', () => ({
   useApi: jest.fn(),
   useColumns: jest.fn().mockReturnValue({ columns: [] }),
@@ -22,54 +27,85 @@ jest.mock('../../../../hooks', () => ({
   useApiCallback: jest.fn()
 }));
 
-
-jest.mock('../../../../components', () => ({
-  Alert: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
-    <div data-testid="alert-component" {...props}>{children}</div>,
-  Card: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
-    <div data-testid="card-component" {...props}>{children}</div>,
-  DataGrid: (props: any) => {
-    return (
-      <div data-testid="data-grid-component" data-rows={JSON.stringify(props.rows)}>
-        {props.columns && props.rows
-          ? props.rows.map((row: any, rowIndex: number) => (
-              <div key={rowIndex}>
-                {props.columns.map((col: any, colIndex: number) => {
-                  if (col.renderCell) {
-                    return (
-                      <div key={colIndex}>
-                        {col.renderCell({ row })}
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
-            ))
-          : null}
-      </div>
-    );
-  },
-  CustomPopover: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
-    <div data-testid="custom-popover" {...props}>{children}</div>,
-  ConfirmationDeleteDialog: ({ isOpen, handleClose, handleDelete, loading }: { isOpen: boolean; handleClose: () => void; handleDelete: () => void; loading: boolean }) => {
-      return (
-          isOpen ? (
-              <div data-testid="confirmation-dialog">
-                  <button onClick={handleClose}>Close</button>
-                  <button onClick={handleDelete} disabled={loading}>Delete</button>
-              </div>
-          ) : null
-      );
-  },
-  GridMoreVertIcon: () => <div data-testid="grid-more-vert-icon"></div>,
-  ListItemButton: ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
-    <button data-testid="list-item-button" onClick={onClick}>{children}</button>
-  ),
-  Box: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
-    <div data-testid="box" {...props}>{children}</div>
-  )
+jest.mock('../../../../utils', () => ({
+  executeToast: jest.fn(),
+  getTimeZone: jest.fn().mockReturnValue('UTC')
 }));
+
+jest.mock('../../../../components', () => {
+  let onDeleteHandler: (id: string) => void;
+  
+  return {
+    Alert: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
+      <div data-testid="alert-component" {...props}>{children}</div>,
+    Card: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
+      <div data-testid="card-component" {...props}>{children}</div>,
+    DataGrid: (props: any) => {
+     
+      if (props.columns) {
+        const actionColumn = props.columns.find((col: any) => col.field === 'actions');
+        if (actionColumn && actionColumn.renderCell) {
+          const tempRow = { id: props.rows?.[0]?.id || '1' };
+          const renderedCell = actionColumn.renderCell({ row: tempRow });
+         
+          if (renderedCell && renderedCell.props && renderedCell.props.onDeleteClick) {
+            onDeleteHandler = renderedCell.props.onDeleteClick;
+          }
+        }
+      }
+      
+      return (
+        <div data-testid="data-grid-component" data-rows={JSON.stringify(props.rows)}>
+        
+          {onDeleteHandler && (
+            <button 
+              data-testid="delete-trigger-button" 
+              onClick={() => onDeleteHandler(props.rows?.[0]?.id || '1')}
+            >
+              Delete Test Trigger
+            </button>
+          )}
+          
+          {props.columns && props.rows
+            ? props.rows.map((row: any, rowIndex: number) => (
+                <div key={rowIndex}>
+                  {props.columns.map((col: any, colIndex: number) => {
+                    if (col.renderCell) {
+                      return (
+                        <div key={colIndex}>
+                          {col.renderCell({ row })}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              ))
+            : null}
+        </div>
+      );
+    },
+    CustomPopover: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => 
+      <div data-testid="custom-popover" {...props}>{children}</div>,
+    ConfirmationDeleteDialog: ({ isOpen, handleClose, handleDelete, loading }: { isOpen: boolean; handleClose: () => void; handleDelete: () => void; loading: boolean }) => {
+      return (
+        isOpen ? (
+          <div data-testid="confirmation-dialog">
+            <button data-testid="close-button" onClick={handleClose}>Close</button>
+            <button data-testid="delete-button" onClick={handleDelete} disabled={loading}>Delete</button>
+          </div>
+        ) : null
+      );
+    },
+    GridMoreVertIcon: () => <div data-testid="grid-more-vert-icon"></div>,
+    ListItemButton: ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+      <button data-testid="list-item-button" onClick={onClick}>{children}</button>
+    ),
+    Box: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
+      <div data-testid="box" {...props}>{children}</div>
+    )
+  };
+});
 
 describe('ContactUsManagementBlock', () => {
   beforeEach(() => {
@@ -165,5 +201,143 @@ describe('ContactUsManagementBlock', () => {
     const config = getConfig();
     expect(config.publicRuntimeConfig).toBeDefined();
     expect(config.publicRuntimeConfig.processEnv.EXAMPLE_VAR).toBe('testValue');
+  });
+
+  it('should handle contact deletion correctly', async () => {
+   
+    const mockContact = {
+      id: '1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '123-456-7890',
+      message: 'Test message',
+      createdAt: '2023-01-01T00:00:00Z',
+      categoryId: 'category-1',
+      refNo: 'reference notes'
+    };
+    
+   
+    const getContactsExecute = jest.fn();
+    (hooks.useApi as jest.Mock).mockReturnValue({
+      loading: false,
+      result: { data: [mockContact] },
+      execute: getContactsExecute
+    });
+    
+   
+    const mockDeleteExecute = jest.fn().mockResolvedValue(true);
+    (hooks.useApiCallback as jest.Mock).mockImplementation((cb) => {
+      const api = { webbackoffice: { deleteContact: jest.fn() } };
+      cb(api);
+      return { execute: mockDeleteExecute, loading: false };
+    });
+    
+   
+    const mockClose = jest.fn();
+    (hooks.useModal as jest.Mock).mockReturnValue({ 
+      open: jest.fn(), 
+      close: mockClose, 
+      props: { isOpen: true } 
+    });
+    
+ 
+    const mockExecuteToast = jest.fn();
+    (executeToastContext.useExecuteToast as jest.Mock).mockReturnValue({ 
+      executeToast: mockExecuteToast 
+    });
+    
+   
+    render(<ContactUsManagementBlock />);
+    
+   
+    const instance = ContactUsManagementBlock({});
+    
+   
+    const cols = (hooks.useColumns as jest.Mock).mock.calls[0][0].columns;
+    const actionsColumn = cols.find((col: any) => col.headerName === 'Actions');
+    
+   
+    await act(async () => {
+    
+      const onDeletePromise = actionsColumn.renderCell({ row: mockContact })
+        .props.children.props.children[1].props.handleDelete();
+      await onDeletePromise;
+    });
+    
+  
+    expect(mockDeleteExecute).toHaveBeenCalledWith('1');
+    expect(getContactsExecute).toHaveBeenCalled();
+    expect(mockExecuteToast).toHaveBeenCalledWith(
+      "Contact deleted successfully", 
+      'top-right', 
+      true, 
+      { type: 'success' }
+    );
+    expect(mockClose).toHaveBeenCalled();
+  });
+  
+  it('should handle delete error correctly', async () => {
+  
+    const mockContact = {
+      id: '1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '123-456-7890',
+      message: 'Test message',
+      createdAt: '2023-01-01T00:00:00Z',
+      categoryId: 'category-1',
+      refNo: 'reference notes'
+    };
+    
+   
+    (hooks.useApi as jest.Mock).mockReturnValue({
+      loading: false,
+      result: { data: [mockContact] },
+      execute: jest.fn()
+    });
+    
+   
+    const mockError = new Error('Delete failed');
+    const mockDeleteExecute = jest.fn().mockRejectedValue(mockError);
+    (hooks.useApiCallback as jest.Mock).mockImplementation((cb) => {
+      const api = { webbackoffice: { deleteContact: jest.fn() } };
+      cb(api);
+      return { execute: mockDeleteExecute, loading: false };
+    });
+    
+   
+    const mockExecuteToast = jest.fn();
+    (executeToastContext.useExecuteToast as jest.Mock).mockReturnValue({ 
+      executeToast: mockExecuteToast 
+    });
+    
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+    
+   
+    render(<ContactUsManagementBlock />);
+    
+  
+    const cols = (hooks.useColumns as jest.Mock).mock.calls[0][0].columns;
+    const actionsColumn = cols.find((col: any) => col.headerName === 'Actions');
+    
+    await act(async () => {
+      try {
+       
+        await actionsColumn.renderCell({ row: mockContact })
+          .props.children.props.children[1].props.handleDelete();
+      } catch (error) {
+      
+      }
+    });
+    
+    expect(consoleSpy).toHaveBeenCalledWith(mockError);
+    expect(mockExecuteToast).toHaveBeenCalledWith(
+      `Something went wrong during deletion Error: Delete failed. Please try again later`, 
+      'top-right', 
+      true, 
+      { type: 'error' }
+    );
+    
+    consoleSpy.mockRestore();
   });
 });
