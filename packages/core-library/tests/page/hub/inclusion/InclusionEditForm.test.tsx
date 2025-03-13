@@ -1,17 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '../../../common';
 import { InclusionEditForm } from '../../../../components/Dialog/DialogFormBlocks/inclusion/InclusionEditForm';
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 
 
-jest.mock('next/config', () => () => ({
-  publicRuntimeConfig: {
-    processEnv: {
-      NODE_ENV: 'test',
-      API_URL: 'http://localhost:3000'
-    }
-  }
+jest.mock("../../../../../config", () => ({
+  config: { value: jest.fn() },
 }));
 
 

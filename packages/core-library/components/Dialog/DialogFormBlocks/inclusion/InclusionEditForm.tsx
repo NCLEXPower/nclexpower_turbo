@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { UpdateInclusionSchema, UpdateInclusionType } from './validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from '@mui/material'
-import { Button, TextField } from '../../..'
+import { Button, TextField, TextAreaField } from '../../..'
 import { useQueryClient } from 'react-query'
 import { InclusionIdAtom } from './useAtomic'
 
@@ -23,11 +23,9 @@ export const InclusionEditForm = () => {
     const { executeToast } = useExecuteToast();
     const queryClient = useQueryClient()
 
-    
     const defaultValues: UpdateInclusionType = {
         id: Inclusion?.id,
         option: Inclusion?.option || '',
-
         description: (Inclusion as any)?.description || ''
     }
 
@@ -36,16 +34,14 @@ export const InclusionEditForm = () => {
         defaultValues
     })
     const { control, handleSubmit, reset } = form
-
     async function onSubmit(values: UpdateInclusionType) {
         try {
-            
-            const apiValues = {
+            const params = {
                 ...values,
                 id: values.id || '' 
             };
             
-            const response = await mutateAsync(apiValues as any)
+            const response = await mutateAsync(params as any)
             if (response.data === 409) {
                 executeToast(
                     "Inclusion already exist",
@@ -70,7 +66,7 @@ export const InclusionEditForm = () => {
             gap={3}
         >
             <TextField label="Inclusion" control={control} name="option" />
-            <TextField label="Description" control={control} name="description" />
+            <TextAreaField label="Description" control={control} name="description" />
             <Box alignSelf="flex-end">
                 <Button onClick={handleSubmit(onSubmit)}>Save</Button>
             </Box>
