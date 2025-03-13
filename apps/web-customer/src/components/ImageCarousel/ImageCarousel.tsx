@@ -33,13 +33,13 @@ export const ImageCarousel: React.FC<
       </Slider>
 
       {showDots && (
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-6">
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-5">
           {Array.from({ length: totalSlides }).map((_, index) => (
             <button
               key={index}
               onClick={() => handleDotClick(index)}
               className={`h-4 w-4 rounded-full transition-all duration-300 hover:bg-[#fff] ${
-                activeSlide === index ? "bg-[#F4C501]" : "bg-[#fff]/20"
+                activeSlide === index ? "bg-[#F4C501]/75" : "bg-[#fff]/25"
               }`}
               onMouseDown={(e) => e.preventDefault()}
             />
