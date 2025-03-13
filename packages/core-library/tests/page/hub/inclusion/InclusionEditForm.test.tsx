@@ -4,7 +4,7 @@ import { InclusionEditForm } from '../../../../components/Dialog/DialogFormBlock
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 
-// Mock Material UI components and functions
+
 jest.mock('@mui/material', () => {
   return {
     Box: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
