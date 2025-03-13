@@ -56,4 +56,4 @@ export * from './useDebounce';
 export * from './golive/useScheduleCountdown';
 export * from './useTourManager';
 export * from './useDownloadPDF';
-export * from './useFetchIpFromIp';
+export * from './useFetchUserIp';

@@ -5,7 +5,7 @@ import axios from "axios";
 const APIIP_BASE_URL = config.value.APIIPURL;
 const GET_IP_URL = `${config.value.API64URL}?format=json`;
 
-interface useFetchIpFromIpProps {
+interface useFetchUserApiProps {
   ip: string | null;
   error: string | null;
   loading: boolean;
@@ -15,7 +15,7 @@ interface useFetchIpFromIpProps {
  * Custom hook to get the user's IP address.
  */
 
-export const useFetchIpFromIp = (apiKey?: string): useFetchIpFromIpProps => {
+export const useFetchUserApi = (apiKey?: string): useFetchUserApiProps => {
   const [ip, setIp] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +32,7 @@ export const useFetchIpFromIp = (apiKey?: string): useFetchIpFromIpProps => {
   async function fetchIp() {
     if (!apiKey) {
       console.warn(
-        "API key for apiip.net is not provided. Defaulting to null country."
+        "API key is not provided. Skipping IP fetch."
       );
       setLoading(false);
       return;
