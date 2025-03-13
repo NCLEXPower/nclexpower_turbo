@@ -4,20 +4,7 @@ import { InclusionEditForm } from '../../../../components/Dialog/DialogFormBlock
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 
-
-jest.mock("../../../../../config", () => ({
-  config: { value: jest.fn() },
-}));
-
-
-jest.mock('../../../../components/Dialog/DialogFormBlocks/inclusion/validation', () => ({
-  UpdateInclusionSchema: {
-    getDefault: jest.fn(() => ({})),
-  },
-  UpdateInclusionType: {}
-}));
-
-
+// Mock Material UI components and functions
 jest.mock('@mui/material', () => {
   return {
     Box: ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => (
@@ -26,6 +13,16 @@ jest.mock('@mui/material', () => {
   };
 });
 
+jest.mock("../../../../config", () => ({
+  config: { value: jest.fn() },
+}));
+
+jest.mock('../../../../components/Dialog/DialogFormBlocks/inclusion/validation', () => ({
+  UpdateInclusionSchema: {
+    getDefault: jest.fn(() => ({})),
+  },
+  UpdateInclusionType: {}
+}));
 
 jest.mock('../../../../components', () => {
   return {
@@ -35,15 +32,16 @@ jest.mock('../../../../components', () => {
     TextField: ({ label, name, control }: { label: string; name: string; control: any }) => (
       <input data-testid={`input-${name}`} placeholder={label} />
     ),
+    TextAreaField: ({ label, name, control }: { label: string; name: string; control: any }) => (
+      <textarea data-testid={`textarea-${name}`} placeholder={label} />
+    ),
   };
 });
-
 
 const mockMutateAsync = jest.fn();
 const mockCloseDialog = jest.fn();
 const mockExecuteToast = jest.fn();
 const mockInvalidateQueries = jest.fn();
-
 
 jest.mock('../../../../contexts', () => ({
   useBusinessQueryContext: () => ({
@@ -59,31 +57,41 @@ jest.mock('../../../../contexts', () => ({
   })
 }));
 
-
+// Updated react-query mock
 jest.mock('react-query', () => ({
-  useQueryClient: () => ({
+  useQueryClient: jest.fn(() => ({
     invalidateQueries: mockInvalidateQueries
-  })
+  }))
 }));
-
 
 jest.mock('@hookform/resolvers/yup', () => ({
   yupResolver: () => ({})
 }));
 
-
 jest.mock('jotai', () => ({
   useAtomValue: jest.fn()
 }));
-
 
 jest.mock('../../../../components/Dialog/DialogFormBlocks/inclusion/useAtomic', () => ({
   InclusionIdAtom: {}
 }));
 
+// Mock for common.js to handle rendering with all providers
+jest.mock('../../../common', () => {
+  // Import the actual testing library to use its functions
+  const testingLibrary = jest.requireActual('@testing-library/react');
+  
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor
+  };
+});
 
 let formSubmitHandler: (data: any) => void;
-
 
 jest.mock('react-hook-form', () => ({
   useForm: jest.fn(({ defaultValues }) => {
