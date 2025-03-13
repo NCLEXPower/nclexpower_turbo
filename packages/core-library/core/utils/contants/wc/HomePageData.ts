@@ -192,8 +192,7 @@ export const settings = {
   speed: 2000,
   autoplaySpeed: 8000,
   cssEase: "ease-in-out",
-  dots: true,
-  dotsClass: "slick-dots",
+  dots: false,
 };
 
 export const FastTrackList = [
