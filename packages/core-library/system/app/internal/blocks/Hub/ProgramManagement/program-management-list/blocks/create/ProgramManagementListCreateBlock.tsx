@@ -199,6 +199,13 @@ export const ProgramManagementListCreateBlock = () => {
                   contentAreaCoverage: dataItem.contentAreaCoverage,
                   link: ""
                 }
+              } else if (section.sectionType === "content-cards") {
+                return {
+                  sectionDataId: dataItem.sectionDataId,
+                  title: dataItem.title,
+                  cards: dataItem.cards,
+                  link: ""
+                }
               }
               return null;
             })

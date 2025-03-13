@@ -25,6 +25,7 @@ export type SectionDataType = {
   cards?: SectionCardsType[] | [];
   catSimulator?: string | null;
   contentAreaCoverage?: string[] | [];
+  secVidTitle?: string;
 };
 
 export type ImageType = {

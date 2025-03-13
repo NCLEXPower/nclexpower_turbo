@@ -31,6 +31,29 @@ jest.mock("../../../../../contexts", () => ({
     businessQueryGetAllPrograms: jest.fn(() => ({
       mutateAsync: jest.fn(),
     })),
+    businessQueryGetAllProgramsByType: jest.fn(() => ({
+      data: [
+        {
+          sectionId: "123",
+          sectionType: "simulator",
+          sectionTitle: "Sample Section",
+          sectionData: [
+            {
+              sectionDataId: "456",
+              title: "Simulator Section",
+              contentArea: "Sample Content",
+              guided: "true",
+              unguided: "false",
+              practice: "true",
+            },
+          ],
+        },
+      ],
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: jest.fn(),
+    })),
   })),
 }));
 

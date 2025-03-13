@@ -858,6 +858,13 @@ export type SectionData = {
   practice?: boolean;
   catSimulator?: string;
   contentAreaCoverage?: string[]
+  cards?: [
+    {
+      cardId?: string,
+      cardTopic?: string,
+      cardFaces?: string[]
+    }
+  ]
 };
 
 export type Section = {
@@ -889,6 +896,11 @@ export type UpdateProgramParams = {
   programImage: File[];
   stringifiedSections: UpdateSection[];
   programType: number;
+}
+
+export type DeleteProgramSectionParams = {
+  programId: string,
+  sectionId: string
 }
 
 export interface CreateProgramResponse extends CreateSectionResponse {}

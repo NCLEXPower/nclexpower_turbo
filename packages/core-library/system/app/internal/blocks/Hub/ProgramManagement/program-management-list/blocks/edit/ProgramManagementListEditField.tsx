@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
 import {
@@ -66,6 +66,7 @@ interface Props {
   handleDeleteProgramSection: (sectionId: string) => void;
   handleRemoveSection: (index: number) => void;
   isLoading?: boolean;
+  isRemovingProgramSection?: boolean;
 }
 
 export const ProgramManagementListEditField: React.FC<Props> = ({
@@ -90,6 +91,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
   handleEditProgramSection,
   handleDeleteProgramSection,
   handleRemoveSection,
+  isRemovingProgramSection,
 }) => {
   return (
     <Box
@@ -262,7 +264,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
               if (section.sectionId === editingSectionId) {
                 return null;
               }
-              const { sectionId, sectionType, sectionTitle } = section;
+              const { sectionId, sectionType, sectionTitle, sectionData } = section;
 
               return (
                 <Box
@@ -278,9 +280,9 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                       src={getSectionTypeIcons(sectionType)}
                       alt={`${sectionType} Icon`}
                     />
-                    <Typography>{sectionTitle}</Typography>
+                    <Typography>{sectionType === "video" ? sectionData?.[0].secVidTitle : sectionTitle}</Typography>
                   </Box>
-                  <Box sx={{ display: "flex" }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <IconButton
                       disabled={
                         fields.length > 0 || Boolean(editingSectionData)
@@ -290,11 +292,22 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     >
                       <EvaIcon name="edit-outline" />
                     </IconButton>
-                    <IconButton
-                      onClick={() => handleDeleteProgramSection(sectionId)}
-                    >
-                      <EvaIcon name="trash-outline" />
-                    </IconButton>
+                    {isRemovingProgramSection ? (
+                      <CircularProgress
+                        size={20}
+                        color="inherit"
+                        id="loader"
+                        aria-live="assertive"
+                        thickness={5}
+                        sx={{ "&:focus": { outline: "none !important" } }}
+                      />
+                    ) : (
+                      <IconButton
+                        onClick={() => handleDeleteProgramSection(sectionId)}
+                      >
+                        <EvaIcon name="trash-outline" />
+                      </IconButton>
+                    )}
                   </Box>
                 </Box>
               );

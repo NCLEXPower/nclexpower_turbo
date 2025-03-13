@@ -22,6 +22,7 @@ describe("RemoveProgramDialogContent", () => {
   beforeEach(() => {
     render(
       <RemoveProgramDialogContent
+        isLoading={false}
         onSubmit={mockOnSubmit}
         closeModal={mockCloseModal}
         programTitle={programTitle}

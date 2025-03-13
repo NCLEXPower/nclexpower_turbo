@@ -67,6 +67,7 @@ import {
   GetCaseStudyListParams,
   CaseStudyListResponse,
   GetProgramParams,
+  DeleteProgramSectionParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -697,6 +698,12 @@ export class WebApiBackOffice {
 
   public async deleteProgramById(programId: string){
     return await this.axios.delete(`/api/v2/content/BaseContent/delete-program/${programId}`);
+  }
+
+  public async deleteProgramSectionById(params: DeleteProgramSectionParams) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-program-section`, {
+      data: params,
+    });
   }
 
   public async caseStudyList(params: GetCaseStudyListParams) {
