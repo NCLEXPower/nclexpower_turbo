@@ -1,4 +1,4 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ProgramSectionManagementEditItemBlock } from "../../../../../../../system/app/internal/blocks";
 import { useRouter } from "../../../../../../../core";
 import { useExecuteToast } from "../../../../../../../contexts";
@@ -144,4 +144,24 @@ describe("ProgramSectionManagementEditItemBlock", () => {
     fireEvent.click(getByText("Back"));
     expect(mockRouter.back).toHaveBeenCalled();
   });
+
+  it("should render ProgramSectionHeader component", () => {
+    const { getByText } = render(<ProgramSectionManagementEditItemBlock />);
+    expect(getByText("ProgramSectionHeader")).toBeInTheDocument();
+  });
+
+  it("should redirect to program_section_management route if sectionType is invalid", async () => {
+    (useAtom as jest.Mock).mockImplementation((atom) => {
+      switch (atom) {
+        case SectionTypeAtom:
+          return [null];
+        default:
+          return [];
+      }
+    });
+
+    render(<ProgramSectionManagementEditItemBlock />);
+    await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith(expect.any(Function)));
+  });
+
 });

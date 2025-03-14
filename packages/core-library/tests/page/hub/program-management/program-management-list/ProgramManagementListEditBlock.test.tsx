@@ -374,7 +374,6 @@ describe("ProgramManagementListEditBlock", () => {
     expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
   });
 
-  
   it("should call handleRemoveSection when remove button is clicked", async () => {
     setUpMocks("1");
     render(<ProgramManagementListEditBlock />);
@@ -391,9 +390,6 @@ describe("ProgramManagementListEditBlock", () => {
 
     expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
   });
-
-
-  // new tests
 
   it("should display section type select field", async () => {
     setUpMocks("1");
@@ -415,5 +411,37 @@ describe("ProgramManagementListEditBlock", () => {
     const multipleSelectField = await screen.findByTestId("multiple-select-field");
 
     expect(multipleSelectField).toBeInTheDocument();
+  });
+
+  it("should handle section change correctly", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const sectionTypeSelect = await screen.findByTestId("section-type-select");
+
+    fireEvent.change(sectionTypeSelect, { target: { value: "document" } });
+
+    expect(mockSetValue).toHaveBeenCalledWith("sections.0.sectionValue", "");
+  });
+
+  it("should call handleEditProgram when form is submitted", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    const submitButton = await screen.findByTestId("submit-button");
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("should initialize the form with correct default values", async () => {
+    setUpMocks("1");
+    render(<ProgramManagementListEditBlock />);
+
+    await waitFor(() => {
+      const programNameInput = screen.getByLabelText("Program Name");
+      expect(programNameInput).toHaveValue("Welcome to the Program");
+    });
   });
 });
