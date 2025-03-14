@@ -129,7 +129,6 @@ export const ProgramManagementListCreateBlock = () => {
     data: CreateProgramFormType | undefined,
     reset: () => void
   ) => {
-    console.log(data, "data")
 
     if (!data) { 
       console.error("Form data is undefined.");

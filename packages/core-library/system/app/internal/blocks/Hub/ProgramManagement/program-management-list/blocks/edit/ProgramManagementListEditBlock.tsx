@@ -121,7 +121,6 @@ export const ProgramManagementListEditBlock = () => {
     return null;
   }, [allProgramsList, programId]);
 
-  console.log(selectedProgram, "selectedProgram sections");
   const sectionList = sectionTypeAndTitle
     ? sectionTypeAndTitle.map((item) => ({
         label: item.sectionTitle,
@@ -148,7 +147,6 @@ export const ProgramManagementListEditBlock = () => {
       (section) => section.sectionType === sectionType
     );
 
-    console.log(selectedSections, "selectedSections")
     return selectedSections.flatMap((section) =>
       section.sectionData.map((dataItem: GetAllSectionsResponseType) => {
         if (sectionType === "cat" && "catSimulator" in dataItem) {
@@ -220,7 +218,6 @@ export const ProgramManagementListEditBlock = () => {
   };
 
   const handleEditProgram = async (data?: CreateProgramFormType) => {
-    console.log(data, "data");
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -233,12 +230,8 @@ export const ProgramManagementListEditBlock = () => {
       return;
     }
 
-    console.log(sections, "section to")
-    console.log(allSectionsList, "all sections list to")
     const stringifiedSections = sections?.flatMap((section) => {
       if (!section.sectionValue) return [];
-
-      console.log(section.sectionValue, "section value");
 
       const matchingSections = allSectionsList.filter((item) =>
         Array.isArray(section.sectionValue)
@@ -246,8 +239,6 @@ export const ProgramManagementListEditBlock = () => {
           : (item.sectionData[0].title === section.sectionValue && item.sectionType === section.sectionType)
       );
       
-      console.log(matchingSections, " matched sections");
-
       if (matchingSections.length === 0) return [];
 
       return matchingSections
@@ -317,7 +308,6 @@ export const ProgramManagementListEditBlock = () => {
         .filter((section): section is UpdateSection => section !== null);
     });
 
-    console.log(selectedProgram.sections, "test")
     const sanitizedSections = sanitizeData(selectedProgram.sections || []) as UpdateSection[];
 
     const filteredSections = [
@@ -333,8 +323,6 @@ export const ProgramManagementListEditBlock = () => {
       })),
     ];
 
-    console.log(combinedSections, "combined sections");
-
     const payload = {
       id: selectedProgram.id,
       title: data.programName,
@@ -346,8 +334,6 @@ export const ProgramManagementListEditBlock = () => {
     };
 
     if (!payload) return;
-
-    console.log(payload, "this is the payload");
 
     try {
       const result = await updateProgramCB.execute(payload);

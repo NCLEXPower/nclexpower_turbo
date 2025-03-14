@@ -54,7 +54,6 @@ export const EditContentCardsBlock: React.FC<EditContentCardsProps> = ({
     { sectionType }
   );
 
-  console.log(sectionsList, "sectionList mock")
   const selectedSectionData = useMemo(() => {
     if (!Array.isArray(sectionsList)) return null;
 
