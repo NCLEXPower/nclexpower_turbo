@@ -94,7 +94,8 @@ export const ProgramManagementListEditBlock = () => {
 
   const { businessQueryGetAllProgramsByType } = useBusinessQueryContext();
   const { data: allProgramsList, refetch } = businessQueryGetAllProgramsByType(
-    ["all_programs_api"], { programType: atomProgramType }
+    ["all_programs_api"],
+    { programType: atomProgramType }
   );
 
   const { businessQueryGetAllSections } = useBusinessQueryContext();
@@ -236,9 +237,12 @@ export const ProgramManagementListEditBlock = () => {
       const matchingSections = allSectionsList.filter((item) =>
         Array.isArray(section.sectionValue)
           ? section.sectionValue.includes(item.sectionId)
-          : (item.sectionData[0].title === section.sectionValue && item.sectionType === section.sectionType)
+          : Array.isArray(item.sectionData) &&
+            item.sectionData.length > 0 &&
+            item.sectionData[0].title === section.sectionValue &&
+            item.sectionType === section.sectionType
       );
-      
+
       if (matchingSections.length === 0) return [];
 
       return matchingSections
@@ -308,15 +312,19 @@ export const ProgramManagementListEditBlock = () => {
         .filter((section): section is UpdateSection => section !== null);
     });
 
-    const sanitizedSections = sanitizeData(selectedProgram.sections || []) as UpdateSection[];
+    const sanitizedSections = sanitizeData(
+      selectedProgram.sections || []
+    ) as UpdateSection[];
 
     const filteredSections = [
-      ...stringifiedSections || [],
-      ...sanitizedSections.filter((section: UpdateSection) => section.sectionId !== editingSectionId),
+      ...(stringifiedSections || []),
+      ...sanitizedSections.filter(
+        (section: UpdateSection) => section.sectionId !== editingSectionId
+      ),
     ];
 
     const combinedSections = [
-      ...stringifiedSections || [],
+      ...(stringifiedSections || []),
       ...sanitizedSections.map(({ sectionId, ...rest }) => ({
         ...rest,
         sectionId,
