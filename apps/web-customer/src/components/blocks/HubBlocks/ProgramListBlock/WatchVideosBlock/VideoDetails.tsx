@@ -26,7 +26,12 @@ export const VideoDetails: React.FC<VideoDetailsProps> = ({
           </h4>
           <hr className="text-[#9A9A9A]" />
           <div className="flex items-center gap-2">
-            <Image src={selectedVid.secVidAuthorImg} alt="author-pic" />
+            <Image
+              src={selectedVid.secVidAuthorImg}
+              alt="author-pic"
+              width={100}
+              height={100}
+            />
             <div className="flex flex-col">
               <h4 className="font-ptSans text-black font-bold text-[14px]">
                 {selectedVid.secVidAuthor}

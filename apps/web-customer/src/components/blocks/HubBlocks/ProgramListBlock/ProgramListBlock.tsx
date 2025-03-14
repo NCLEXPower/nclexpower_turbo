@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box } from "@mui/material";
 import { ProgramHeader } from "./ProgramHeader";
 import { ProgramGridView } from "./ProgramGridView";
@@ -31,8 +31,6 @@ import { useRouter } from "core-library";
 import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
 import { useModal } from "core-library/hooks";
 import { ContentCardsModal } from "./ContentCardsModal/ContentCardsModal";
-import { PhotoSlider } from "react-photo-view";
-
 interface ProgramListBlockProps {
   program: StandardProgramListType[];
   programTitle: string;
@@ -51,6 +49,43 @@ interface AccordionDetailsProps {
   sections?: SectionListType[];
 }
 
+type SectionAccumulator = {
+  videoSections: SectionListType[];
+  otherSections: SectionListType[];
+};
+
+const isVideoSectionType = (
+  item: SectionVideosType[] | SectionDataType[]
+): item is SectionVideosType[] => {
+  return item && typeof item === "object" && "secVidId" in item;
+};
+
+const getVideoSectionStatus = (
+  section: SectionListType[]
+): "available" | "in-progress" | "completed" => {
+  if (!section.length) return "completed";
+  if (section.every((s) => s.sectionStatus === "available")) return "available";
+  if (section.every((s) => s.sectionStatus === "completed")) return "completed";
+  return "in-progress";
+};
+
+const separateSectionType = (section: SectionListType[]) => {
+  return (section || []).reduce<SectionAccumulator>(
+    (acc, s) => {
+      if (s.sectionType === "video") {
+        acc.videoSections.push(s);
+      } else {
+        acc.otherSections.push(s);
+      }
+      return acc;
+    },
+    {
+      videoSections: [],
+      otherSections: [],
+    }
+  );
+};
+
 export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   program,
   programTitle,
@@ -67,10 +102,10 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   const lastPathSegment = router.asPath.split("/").filter(Boolean).pop();
 
   const handleShowVideos = (
-    sectionVids: SectionVideosType[],
+    sectionList: SectionVideosType[],
     programId: string
   ) => {
-    const secVids = JSON.stringify(sectionVids);
+    const secVids = JSON.stringify(sectionList);
     const encodedSecVids = encodeURIComponent(secVids);
 
     router.push(
@@ -90,6 +125,12 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     expanded,
     onToggle,
   }) => {
+    const { videoSections, otherSections } = separateSectionType(
+      item.sections ?? []
+    );
+    const combinedSectionsCount =
+      otherSections.length + (videoSections.length > 0 ? 1 : 0);
+
     return (
       <Box className="flex flex-row gap-4 items-center w-full">
         <div className="h-[162px] flex w-full">
@@ -135,7 +176,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
               </div>
               <div className="flex gap-2 items-center">
                 <h4 className="text-white text-[14px] md:text-[18px] font-regular font-ptSansNarrow">
-                  {item.sections?.length} Sections
+                  {combinedSectionsCount} Sections
                 </h4>
                 <IconButton
                   className={`text-white cursor-pointer transition-transform duration-300 ${expanded ? "rotate-180" : "rotate-0"}`}
@@ -163,6 +204,20 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     id,
     sections,
   }) => {
+    const { videoSections, otherSections } = separateSectionType(
+      sections ?? []
+    );
+
+    const secVidDetails = !!videoSections.length
+      ? {
+          secVidTitle: videoSections[0].sectionTitle,
+          secVidIcon: getSectionTypeIcons(videoSections[0].sectionType),
+          secVidStatusIcon: getSectionStatusIcons(
+            getVideoSectionStatus(videoSections)
+          ),
+        }
+      : null;
+
     return (
       <>
         <Box className="h-auto">
@@ -176,28 +231,56 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
           </div>
         </Box>
         <Box className="flex flex-col space-y-2 bg-white px-10 py-2 pt-4 rounded-b-[16px]">
-          {sections && sections.length > 0 ? (
-            sections.map((item) => {
+          {secVidDetails && (
+            <div className="flex justify-between items-center">
+              <div className="flex gap-2 items-center">
+                <Image
+                  src={secVidDetails.secVidIcon}
+                  alt={videoSections[0].sectionType}
+                  width={16}
+                  height={16}
+                />
+
+                <h4
+                  onClick={() =>
+                    handleShowVideos(
+                      videoSections
+                        .map((s) => s.sectionData as SectionVideosType[])
+                        .flat(),
+                      id
+                    )
+                  }
+                  className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                >
+                  {secVidDetails.secVidTitle}
+                </h4>
+              </div>
+              <Image
+                src={secVidDetails.secVidStatusIcon}
+                alt={getVideoSectionStatus(videoSections)}
+                width={16}
+                height={16}
+              />
+            </div>
+          )}
+          {otherSections && !!otherSections.length ? (
+            otherSections.map((item) => {
               const {
                 sectionId,
                 sectionType,
                 sectionTitle,
                 sectionStatus,
-                sectionVideos,
                 sectionData,
               } = item;
 
-              const hasVideos = sectionVideos && sectionVideos.length > 0;
               const hasData = sectionData && !!sectionData.length;
               const isDocumentOrMedCards =
                 sectionType === "document" || sectionType === "med-cards";
 
               const handleClick = () => {
-                if (sectionType === "video") {
-                  hasVideos && handleShowVideos(sectionVideos, id);
-                } else if (sectionType === "content-cards") {
-                  hasData && handleShowContentCards(sectionData, id);
-                }
+                hasData &&
+                  !isVideoSectionType(sectionData) &&
+                  handleShowContentCards(sectionData, id);
               };
 
               return (
@@ -212,9 +295,15 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                       width={16}
                       height={16}
                     />
-                    {isDocumentOrMedCards && hasData ? (
+                    {isDocumentOrMedCards &&
+                    hasData &&
+                    !isVideoSectionType(sectionData) ? (
                       <Link
-                        href={sectionData[0].link}
+                        href={
+                          sectionData[0].link !== null
+                            ? sectionData[0].link
+                            : ""
+                        }
                         target="_blank"
                         naked
                         className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
