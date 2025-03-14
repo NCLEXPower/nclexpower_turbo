@@ -81,6 +81,7 @@ type AppStepperProps = {
   labelStyle?: React.CSSProperties;
   alternativeLabel?: boolean;
   numberIcon?: boolean;
+  StepIconComponent?: React.ElementType<StepIconProps>;
 };
 
 export const Stepper: React.FC<AppStepperProps> = ({
@@ -92,6 +93,7 @@ export const Stepper: React.FC<AppStepperProps> = ({
   orientation = "horizontal",
   labelStyle,
   numberIcon = false,
+  StepIconComponent,
 }) => {
   return (
     <MuiStepper
@@ -108,13 +110,13 @@ export const Stepper: React.FC<AppStepperProps> = ({
           active={i === activeStep}
         >
           <StepLabel
-            StepIconComponent={(props) =>
+              StepIconComponent={StepIconComponent || ((props) =>
               numberIcon ? (
                 <StepIconNumber {...props} num={i + 1} />
               ) : (
                 <StepIcon {...props} />
               )
-            }
+            )}
           >
             <Box sx={{ mx: "auto" }}>
               <Typography

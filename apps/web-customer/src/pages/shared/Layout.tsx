@@ -75,7 +75,6 @@ const Layout: React.FC<
     return <DuplicateSessionBlock />;
   }
 
-  const noFooterRoutes = ["/issue-tracking"];
 
   return (
     <PageLoaderContextProvider
@@ -98,9 +97,7 @@ const Layout: React.FC<
                 <ContentLoader loading={loading || router.loading}>
                   <LoadablePageContent loading={loading}>
                     {children}
-                    {!noFooterRoutes.includes(router.pathname) && (
-                      <Footer info={CompanyInfo} list={list} />
-                    )}
+                    <Footer info={CompanyInfo} list={list} />
                     {shouldShowChatBotWidget && <ChatBotWidget />}
                   </LoadablePageContent>
                 </ContentLoader>

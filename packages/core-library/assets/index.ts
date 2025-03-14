@@ -16,6 +16,7 @@ export const CarouselThree = require("./CarouselThree.png");
 
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
 export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
+export const IssueTrackingBG = require("./IssueTrackingBG.png")
 
 export const EmptyStateImage = require("./EmptyState.svg");
 export const ErrorStateImage = require("./ErrorState.svg");

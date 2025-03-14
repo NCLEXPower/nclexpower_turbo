@@ -16,8 +16,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const { isAuthenticated } = useAuthContext();
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
+  const { hideFooter } = useIsDesignVisible();
 
-  const isHidden = useIsDesignVisible() || isAuthenticated;
+
+  const isHidden = hideFooter || isAuthenticated;
 
   return (
     !isHidden && (
