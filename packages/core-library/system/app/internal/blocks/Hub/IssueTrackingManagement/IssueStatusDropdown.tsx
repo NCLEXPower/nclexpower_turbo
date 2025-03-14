@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, Select, MenuItem, Box, Typography } from "@mui/material";
 import { StatusStyles, StatusBadge } from "./StatusBadge";
+import { statusDropdownStyle } from "./style"; 
 
 interface StatusDropdownProps extends React.HTMLAttributes<HTMLSelectElement>{
   selectedStatus: string;
@@ -44,20 +45,6 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
           },
         }}
         sx={{
-          width: "145px",
-          height: "30px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderRadius: "6px",
-          padding: "0px",
-          "&:focus, &:focus-visible, &:focus-within": {
-            outline: "none !important",
-            boxShadow: "none !important",
-          },
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: "none !important",
-          },
           "&.Mui-focused": {
             backgroundColor: StatusStyles[selectedStatus]?.backgroundColor || "#6c757d",
             borderRadius: "6px",
@@ -82,6 +69,7 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
             backgroundColor: "transparent",
             borderRadius: "6px",
           },
+          ...statusDropdownStyle,
         }}
         renderValue={(selected) => (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", backgroundColor: "inherit" }}>

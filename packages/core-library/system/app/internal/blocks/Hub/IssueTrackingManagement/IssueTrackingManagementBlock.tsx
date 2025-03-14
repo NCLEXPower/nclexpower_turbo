@@ -7,6 +7,7 @@ import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
 import { mockRows } from './IssueTrackingMock';
 import { StyledModal } from './StyledModal';
+import { tableStyle, titleStyle, rowStyle } from './style';
 
 export const IssueTrackingManagementBlock = () => {
   const modal = useModal<{ 
@@ -34,13 +35,6 @@ export const IssueTrackingManagementBlock = () => {
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
-  };
-
-  const titleStyles = {
-    color: "#3B0086",
-    fontFamily: '"PT Sans Narrow", sans-serif',
-    fontWeight: "bold",
-    marginLeft: "10px",
   };
 
   const { columns } = useColumns({
@@ -72,10 +66,7 @@ export const IssueTrackingManagementBlock = () => {
         renderCell: (params) => (
           <Typography
             sx={{ 
-              display: "flex",
-              alignItems: "center", 
-              height: "100%",
-              color: "#707070", 
+              ...rowStyle,
               fontWeight: "500", 
               fontFamily: '"Poppins", sans-serif',
               fontSize: "16px",
@@ -96,10 +87,7 @@ export const IssueTrackingManagementBlock = () => {
         renderCell: (params) => (
           <Typography
             sx={{ 
-              display: "flex",
-              alignItems: "center", 
-              height: "100%",
-              color: "#707070", 
+              ...rowStyle,
               fontWeight: "700", 
               fontFamily: '"Poppins", sans-serif',
               fontSize: "13px",
@@ -117,10 +105,7 @@ export const IssueTrackingManagementBlock = () => {
         renderCell: (params) => (
           <Typography
             sx={{ 
-              display: "flex",
-              alignItems: "center", 
-              height: "100%",
-              color: "#707070", 
+              ...rowStyle,
               fontWeight: "400", 
               fontFamily: '"PT Sans Narrow", sans-serif',
               fontSize: "16px",
@@ -161,7 +146,7 @@ export const IssueTrackingManagementBlock = () => {
           sx={{
             fontSize: "30px",
             marginTop: "30px",
-            ...titleStyles
+            ...titleStyle
           }}
         >Issue Tracking Management
         </Typography>
@@ -169,14 +154,14 @@ export const IssueTrackingManagementBlock = () => {
           sx={{
             fontSize: "24px",
             marginTop: "40px",
-            ...titleStyles
+            ...titleStyle
           }}
         >Issue List
         </Typography>
         <Typography
           sx={{
             fontSize: "16px",
-            ...titleStyles
+            ...titleStyle
           }}
         >Total: [ {rows.length} ] Concerns
         </Typography>
@@ -188,52 +173,7 @@ export const IssueTrackingManagementBlock = () => {
             isLoading={isLoading}
             disableColumnResize
             disableVirtualization 
-            sx={{
-              backgroundColor: "#fff",
-              [`& .MuiDataGrid-cell:focus, 
-                & .MuiDataGrid-cell:focus-within, 
-                & .MuiDataGrid-columnHeader:focus, 
-                & .MuiDataGrid-columnHeader:focus-within, 
-                & .MuiButtonBase-root:focus, 
-                & .MuiButtonBase-root:focus-visible`]: {
-                outline: "none !important",
-                boxShadow: "none",
-              },
-              "& .MuiDataGrid-row": {
-                minHeight: "60px !important", 
-                maxHeight: "60px !important", 
-                "--height": "60px !important",
-                position: "relative",
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                marginBottom: "8px",
-                backgroundColor: "#0000000A",
-                borderRadius: "8px",
-                "&:hover": {
-                  backgroundColor: "#E6E6E6",
-                },
-              },
-              "& .MuiDataGrid-row:first-of-type": {
-                marginTop: "20px",
-              },
-              "& .MuiDataGrid-columnHeaders": {
-                color: "#8C8C8C",
-                fontFamily: '"PT Sans Narrow", sans-serif',
-                fontWeight: 400,
-                fontSize: "16px",
-                borderBottom: "3px solid #C9C9C9",
-              },
-              "& .MuiDataGrid-columnHeaderTitleContainer": {
-                justifyContent: "left",
-              },
-              "& .MuiDataGrid-columnHeaderTitle": {
-                whiteSpace: "nowrap",
-              },
-            
-              "& .MuiDataGrid-columnHeaders .MuiDataGrid-row": {
-                backgroundColor: "transparent",
-                borderRadius: "0px",
-              },
-            }}
+            sx={ tableStyle }
           />
         </Card>
       </Container>

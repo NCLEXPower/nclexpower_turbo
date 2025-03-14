@@ -7,7 +7,7 @@ interface ImageUploaderProps {
   setSelectedImage: (file: File | null) => void;
 }
 
-export const IssueImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage, setSelectedImage }) => {
+export const ImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage, setSelectedImage }) => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedImage(file);

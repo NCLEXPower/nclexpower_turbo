@@ -15,11 +15,12 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import { SupportTextArea } from "./SupportTextArea";
 import { IssueDescriptionBox } from "./IssueDescriptionBox";
-import { IssueImageUploader } from "./IssueImageUploader";
+import { ImageUploader } from "../../../../../../components/ImageUploader/ImageUploader";
 import { IssueStatusDropdown } from "./IssueStatusDropdown";
 import { UpdateStatusParams } from "../../../../../../api/types";
 import { useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../contexts";
+import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./style";
 
 interface IssueDetailsModalProps {
   modal: {
@@ -38,6 +39,8 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
   const notesRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useExecuteToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  if (!isOpen || !context) return null;
 
   const statusMapping: Record<string, 0 | 1 | 2> = {
     "To Be Reviewed": 0,
@@ -67,15 +70,14 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
 
   const handleSubmit = async () => {
     const currentNotes = notesRef.current?.value || ""; 
+    const statusNumber = statusMapping[selectedStatus];
   
     if (!context?.reference) {
       showToast("Reference number is missing.", "error");
       return;
     }
 
-    const statusNumber = statusMapping[selectedStatus];
-
-    if (statusNumber === undefined) {
+    if (typeof statusNumber === 'undefined') {
       showToast("Please select a valid status.", "error");
       return;
     }
@@ -93,8 +95,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         payload.Proof = selectedImage;
       }
   
-      await updateStatusCb.execute(payload);
-  
+      await updateStatusCb.execute(payload);  
       onStatusChange(context.reference, selectedStatus);
       onClose();
     } catch (error) {
@@ -104,25 +105,9 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     }
   };
 
-  if (!modal.isOpen || !modal.context) return null;
-
   return (
     <Box
-      sx={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "550px",
-        bgcolor: "#F2F2F2",
-        color: "#3B0086",
-        p: 8,
-        pr: 12,
-        boxShadow: 8,
-        borderRadius: "8px",
-        overflow: "hidden",
-        "& > *": { mb: 1 },
-      }}
+      sx={ modalContainerStyle }
     >
       <Grid container justifyContent="space-between" alignItems="center">
         <Typography
@@ -148,24 +133,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         </Typography>
         <IconButton
           onClick={onClose}
-          sx={{
-            width: 20,
-            height: 20,
-            border: "3px solid #3B0086",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-            outline: "none !important",
-            "&:focus, &:focus-visible, &:focus-within": {
-              outline: "none !important",
-              boxShadow: "none",
-            },
-            "&:hover": {
-              backgroundColor: "transparent",
-            },
-          }}
+          sx={ iconButtonStyle }
         >
           <CloseOutlinedIcon
             sx={{
@@ -201,7 +169,6 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
             <Grid item sx={{ ml: 2 }}>
               <IssueStatusDropdown 
                 data-testid="issue-status-dropdown"
-                data-custom="test"
                 selectedStatus={selectedStatus} 
                 setSelectedStatus={setSelectedStatus} 
                 statusOptions={["To Be Reviewed", "In Review", "Resolved"]}
@@ -248,7 +215,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         <Divider sx={{ flexGrow: 1, borderColor: "#3B0086", borderBottomWidth: 1, borderBottomStyle: "solid" }} />
       </Box>
 
-      <IssueImageUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
+      <ImageUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -269,27 +236,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
           <Button
             onClick={handleSubmit}
             variant="contained"
-            sx={{
-              backgroundColor: "#3B0086",
-              color: "#FFFFFF",
-              width: "130px",
-              height: "45px",
-              minHeight: "45px",
-              padding: "0px 8px",
-              fontSize: "16px",
-              fontWeight: 500,
-              fontFamily: '"PT Sans Narrow", sans-serif',
-              textTransform: "none",
-              borderRadius: "6px",
-              transition: "background-color 0.3s ease",
-              "&:focus, &:focus-visible, &:focus-within": {
-                outline: "none !important",
-                boxShadow: "none !important",
-              },
-              "&:hover": {
-                backgroundColor: "#31006E",
-              },
-            }}
+            sx={ submitButtonStyle }
           >
             Submit
           </Button>

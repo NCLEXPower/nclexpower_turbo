@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { fireEvent, screen } from "../../common";
-import { IssueImageUploader } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueImageUploader";
+import { ImageUploader } from "../../../components/ImageUploader/ImageUploader";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -14,7 +14,7 @@ describe("IssueImageUploader", () => {
 
   test("renders IssueImageUploader and file input is present", () => {
     const setSelectedImageMock = jest.fn();
-    render(<IssueImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
+    render(<ImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
   
     const fileInput = document.getElementById("image-upload-input");
     expect(fileInput).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("IssueImageUploader", () => {
   
   test("calls setSelectedImage with file when a file is uploaded", () => {
     const setSelectedImageMock = jest.fn();
-    render(<IssueImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
+    render(<ImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
     
     const fileInput = document.getElementById("image-upload-input") as HTMLInputElement;
     const file = new File(["dummy content"], "example.png", { type: "image/png" });
@@ -34,7 +34,7 @@ describe("IssueImageUploader", () => {
   
   test("calls setSelectedImage with null when no file is uploaded", () => {
     const setSelectedImageMock = jest.fn();
-    render(<IssueImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
+    render(<ImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
     
     const fileInput = document.getElementById("image-upload-input") as HTMLInputElement;
     
@@ -45,7 +45,7 @@ describe("IssueImageUploader", () => {
 
   test("triggerFileInput resets file input value and triggers click", () => {
     const setSelectedImageMock = jest.fn();
-    render(<IssueImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
+    render(<ImageUploader selectedImage={null} setSelectedImage={setSelectedImageMock} />);
     
     const fileInput = document.getElementById("image-upload-input") as HTMLInputElement;
     
