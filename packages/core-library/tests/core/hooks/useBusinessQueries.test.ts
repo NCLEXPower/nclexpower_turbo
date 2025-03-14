@@ -61,6 +61,7 @@ import { EditMenuItemsType } from "../../../system/app/internal/blocks/Hub/Setti
 import { CategoryResponseType } from "../../../core/hooks/types";
 import { MaintenanceSsr } from "../../../types/global";
 import { StandardProgramListType } from "../../../types/wc/programList";
+import { useBusinessQueryContext } from "../../../contexts";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
@@ -2179,4 +2180,28 @@ describe("useGetAllPrograms", () => {
     expect(result.current.error).toEqual(mockError);
     expect(result.current.data).toBeUndefined();
   });
+
+});
+jest.mock("../../../contexts", () => ({
+  useBusinessQueryContext: jest.fn(),
+}));
+
+describe("Reported Issues Block", () => {
+  test("should return mock data and refetch function", () => {
+    const mockData = [{ id: 1, ticketNumber: "TICKET-001" }];
+    const mockRefetch = jest.fn();
+  
+    (useBusinessQueryContext as jest.Mock).mockReturnValue({
+      businessQueryGetAllReportedIssues: jest.fn(() => ({
+        data: mockData,
+        refetch: mockRefetch,
+      })),
+    });
+    const { result } = renderHook(() => {
+      const { businessQueryGetAllReportedIssues } = useBusinessQueryContext();
+      return businessQueryGetAllReportedIssues(["getAllReportedIssues"]);
+    });
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.refetch).toBe(mockRefetch);
+  })
 });
