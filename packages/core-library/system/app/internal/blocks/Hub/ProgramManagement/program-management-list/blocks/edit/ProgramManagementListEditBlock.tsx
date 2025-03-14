@@ -310,6 +310,7 @@ export const ProgramManagementListEditBlock = () => {
             sectionType: section.sectionType,
             sectionTitle: section.sectionTitle,
             sectionStatus: "available",
+            timer: data.timer || "",
             sectionData: matchedSectionData,
           };
         })

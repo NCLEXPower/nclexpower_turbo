@@ -10,7 +10,7 @@ import { useExecuteToast } from "../../../../../contexts";
 jest.mock("../../../../../contexts", () => ({
   useExecuteToast: jest.fn(),
   useBusinessQueryContext: jest.fn(() => ({
-    businessQueryGetAllPrograms: jest.fn(() => ({
+    businessQueryGetAllProgramsByType: jest.fn(() => ({
       data: [
         {
           id: "1",

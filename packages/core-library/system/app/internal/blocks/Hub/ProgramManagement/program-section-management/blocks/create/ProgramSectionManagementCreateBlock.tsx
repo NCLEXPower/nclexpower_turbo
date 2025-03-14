@@ -26,6 +26,7 @@ import { useAtom } from "jotai";
 import { useExecuteToast } from "../../../../../../../../../contexts";
 import { useApiCallback } from "../../../../../../../../../hooks";
 import { CreateSectionParams } from "../../../../../../../../../api/types";
+import { AxiosError } from "axios";
 
 const sectionComponents: Record<string, React.FC<any>> = {
   document: CreateDocument,
@@ -146,7 +147,12 @@ export const ProgramSectionManagementCreateBlock = () => {
         showToast(`Error creating a ${sectionTitle} item`, "error");
       }
     } catch (err) {
-      console.error(err);
+      if (err instanceof AxiosError) {
+        if (err.code && err.status === 409) {
+          showToast("Section Title Already Exist. Please try another one", "error");
+        }
+      }
+      
       showToast(
         `Error creating a ${sectionTitle} item. Please try again`,
         "error"

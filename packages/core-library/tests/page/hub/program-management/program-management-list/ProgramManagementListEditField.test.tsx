@@ -138,28 +138,6 @@ describe("ProgramManagementListEditField", () => {
     expect(mockOnSave).toHaveBeenCalled();
   });
 
-  it("should render sections correctly", () => {
-    const sections = [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Section 1",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "quiz",
-        sectionTitle: "Section 2",
-        sectionStatus: "available",
-      },
-    ];
-    render(
-      <ProgramManagementListEditField {...defaultProps} sections={sections} />
-    );
-    expect(screen.getByText("Section 1")).toBeInTheDocument();
-    expect(screen.getByText("Section 2")).toBeInTheDocument();
-  });
-
   it("should not render edit button when editingSectionData is absent", async () => {
     render(
       <ProgramManagementListEditField

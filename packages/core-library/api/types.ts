@@ -888,6 +888,7 @@ export type UpdateSection = {
   sectionTitle: string;
   sectionStatus: string;
   sectionData: SectionData[];
+  timer: string;
 }
 
 export type UpdateProgramParams = {
