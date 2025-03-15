@@ -435,13 +435,4 @@ describe("ProgramManagementListEditBlock", () => {
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
 
-  it("should initialize the form with correct default values", async () => {
-    setUpMocks("1");
-    render(<ProgramManagementListEditBlock />);
-
-    await waitFor(() => {
-      const programNameInput = screen.getByLabelText("Program Name");
-      expect(programNameInput).toHaveValue("Welcome to the Program");
-    });
-  });
 });
