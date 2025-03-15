@@ -28,7 +28,7 @@ export const CustomPopover: React.FC<React.PropsWithChildren<Props>> = ({ label,
 
   return (
     <div className='z-1'>
-      {withIcon ? <IconButton onClick={handleClick}>
+      {withIcon ? <IconButton data-testid="action-button" onClick={handleClick}>
         {iconButton}
       </IconButton>
         : <Button sx={sx} aria-describedby={id} variant="contained" onClick={handleClick} endIcon={icon}>
