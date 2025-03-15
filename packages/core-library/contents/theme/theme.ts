@@ -1,7 +1,7 @@
+import '@mui/x-data-grid/themeAugmentation';
 import { createTheme } from "@mui/material";
 import { CmsTenant } from "../../types/tenant";
 import { ColorGenerator } from "./color-generator";
-import '@mui/x-data-grid/themeAugmentation';
 import { gridClasses } from '@mui/x-data-grid';
 
 export const DEFAULT_LOGO = {
