@@ -56,7 +56,7 @@ export const useWebHeaderStyles = () => {
 
   const ToTopButtonSx: SxProps = {
     position: "fixed",
-    zIndex: 10000,
+    zIndex: 1299,
     bottom: "50px",
     right: "50px",
     height: "45px",

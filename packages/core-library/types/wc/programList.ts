@@ -18,13 +18,13 @@ export type SectionDataType = {
   sectionDataId: string;
   title?: string;
   link?: string;
-  contentArea?: string;
-  guided?: boolean;
-  unguided?: boolean;
-  practice?: boolean;
-  cards?: SectionCardsType[];
-  catSimulator?: string;
-  contentAreaCoverage?: string[];
+  contentArea?: string | null;
+  guided?: boolean | null;
+  unguided?: boolean | null;
+  practice?: boolean | null;
+  cards?: SectionCardsType[] | [];
+  catSimulator?: string | null;
+  contentAreaCoverage?: string[] | [];
 };
 
 export type ImageType = {

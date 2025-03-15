@@ -40,8 +40,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
-  const { dataSource, isLoading, isSuccess, isError } = useDataSource({ url });
-  const dataStates = { data: dataSource, isLoading, isSuccess, isError };
+  const { dataSource, isLoading, isError } = useDataSource({ url });
   const products: ProductListResponse[] =
     dataSource.result?.data && isProductList(dataSource.result?.data)
       ? dataSource.result.data
@@ -55,7 +54,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     );
     setEncryptedProduct(encyptedData);
     await router.push({
-      pathname: '/account/registration', //temporarily as viewing product details are in progress
+      pathname: "/account/registration",
     });
   };
 
@@ -105,12 +104,13 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                 const isNotSelected =
                   nurseType && nurseType !== nurseItem.value;
 
-
-                const buttonClasses = `max-h-20 ${isSelected
-                  ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                  : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${isNotSelected ? "saturate-0" : ""
-                  } hover:scale-95`
-                  } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
+                const buttonClasses = `max-h-20 ${
+                  isSelected
+                    ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${
+                        isNotSelected ? "saturate-0" : ""
+                      } hover:scale-95`
+                } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
                 return (
                   <button
                     key={index}
@@ -132,26 +132,25 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         </div>
         <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
           <div className="flex gap-5 w-full justify-center self-center flex-wrap">
-            {filteredItems && filteredItems.length > 0 && (
-              filteredItems.slice(0, 2).map((item, index) => (
-                <div
-                  className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
-                  key={index}
-                >
-                  <ComponentState
-                    data={dataSource}
-                    isError={isError}
-                    isSuccess={isSuccess}
-                    isLoading={isLoading}
+            <ComponentState
+              data={dataSource}
+              isError={isError}
+              isLoading={isLoading}
+            >
+              {filteredItems &&
+                filteredItems.length > 0 &&
+                filteredItems.slice(0, 2).map((item, index) => (
+                  <div
+                    className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
+                    key={index}
                   >
                     <PricingCard
                       cardData={item as unknown as ProductCardType}
                       handleSelectProduct={handleSelectProduct}
                     />
-                  </ComponentState>
-                </div>
-              ))
-            )}
+                  </div>
+                ))}
+            </ComponentState>
           </div>
         </div>
 

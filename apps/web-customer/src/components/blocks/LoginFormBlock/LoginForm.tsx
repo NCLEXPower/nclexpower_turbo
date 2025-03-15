@@ -223,29 +223,6 @@ export const LoginForm: React.FC<Props> = ({
                   </span>
                 </Button>
               </div>
-              <div className="flex items-center my-4">
-                <span className="h-px flex-1 bg-slate-300"></span>
-                <span className="shrink-0 px-3 pt-sans-narrow-regular">or</span>
-                <span className="h-px flex-1 bg-slate-300"></span>
-              </div>
-              <div className="flex items-center justify-center w-full">
-                <Button
-                  sx={{
-                    paddingY: 1.5,
-                    borderRadius: "10px",
-                    boxShadow: 2,
-                    borderColor: "darkGray",
-                  }}
-                  fullWidth
-                  variant="outlined"
-                  onClick={signInWithGoogle}
-                >
-                  <span className="mr-4 font-ptSansNarrow font-normal text-[18px] lg:text-[20px] text-black normal-case ">
-                    Sign in with Google
-                  </span>
-                  <GoogleIcon />
-                </Button>
-              </div>
               <div className="flex items-center justify-center mt-2 lg:mt-6 ">
                 <p className="text-darkGray font-ptSansNarrow font-normal text-[18px] lg:text-[20px]">
                   Need an account?
