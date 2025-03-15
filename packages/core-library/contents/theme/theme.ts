@@ -1,6 +1,8 @@
 import { createTheme } from "@mui/material";
 import { CmsTenant } from "../../types/tenant";
 import { ColorGenerator } from "./color-generator";
+import '@mui/x-data-grid/themeAugmentation';
+import { gridClasses } from '@mui/x-data-grid';
 
 export const DEFAULT_LOGO = {
   width: 300,
@@ -250,7 +252,7 @@ export const theme = (tenant?: CmsTenant | null) => {
           "& button:focus, a.MuiButton-root:focus": {
             border: "none",
             outlineOffset: "-1px",
-            outline: `2px solid ${appColors.ui_rag["Amber.400"]}!important`,
+            outline: "none",
           },
           "& #nprogress": {
             "& .bar": {
@@ -278,7 +280,7 @@ export const theme = (tenant?: CmsTenant | null) => {
             boxSizing: "border-box",
             "&.Mui-focused": {
               boxShadow: `0 0 0 2px ${appColors.essential["1000"]}`,
-              outline: `2px solid ${appColors.ui_rag["Amber.400"]}`,
+              outline: "none",
               backgroundColor: appColors.incidental["000"],
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
@@ -289,6 +291,10 @@ export const theme = (tenant?: CmsTenant | null) => {
             },
             input: {
               "&::placeholder": { color: appColors.essential[300], opacity: 1 },
+              "&:focus": {
+                outline: "none",
+                boxShadow: "none",
+              },
             },
             "&.MuiInputBase-multiline": {
               height: "auto",
@@ -315,7 +321,7 @@ export const theme = (tenant?: CmsTenant | null) => {
             "&.Mui-focusVisible": {
               border: "none",
               outlineOffset: "-1px",
-              outline: `2px solid ${appColors.ui_rag["Amber.400"]}`,
+              outline: "none",
             },
             "&.loading": {
               color: "transparent !important",
@@ -540,7 +546,7 @@ export const theme = (tenant?: CmsTenant | null) => {
             "&:focus, &:hover": {
               borderWidth: 2,
               "& svg": {
-                outline: `2px solid ${appColors.ui_rag["Amber.400"]} !important`,
+                outline: "none",
                 "& rect": {
                   stroke: "black !important",
                   strokeWidth: "4px !important",
@@ -575,6 +581,18 @@ export const theme = (tenant?: CmsTenant | null) => {
               "&:hover": {
                 color: appColors.essential[500],
               },
+            },
+          },
+        },
+      },
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {
+            [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
+              outline: 'none',
+            },
+            [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
+              outline: 'none',
             },
           },
         },
