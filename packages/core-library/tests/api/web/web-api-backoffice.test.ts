@@ -134,4 +134,40 @@ describe("Service API Calls", () => {
     );
     expect(result.status).toBe(200);
   });
+
+  it("should fetch all programs by type", async () => {
+    const params = { programType: 1 };
+    const mockResponse = [{ id: "1", title: "Program 1" }];
+    mockedAxios.get.mockResolvedValueOnce({ data: mockResponse });
+
+    const result = await service.getAllProgramsByType(params);
+
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      `/api/v2/content/BaseContent/get-internal-programs?programType=1`
+    );
+    expect(result.data).toEqual(mockResponse);
+  });
+
+  it("should delete a program by ID", async () => {
+    const programId = "1";
+    mockedAxios.delete.mockResolvedValueOnce({ status: 200 });
+
+    const result = await service.deleteProgramById(programId);
+
+    expect(mockedAxios.delete).toHaveBeenCalledWith(`/api/v2/content/BaseContent/delete-program/${programId}`);
+    expect(result.status).toBe(200);
+  });
+
+  it("should delete a program section by ID", async () => {
+    const params = { sectionId: "1", programId: "1" };
+    mockedAxios.delete.mockResolvedValueOnce({ status: 200 });
+
+    const result = await service.deleteProgramSectionById(params);
+
+    expect(mockedAxios.delete).toHaveBeenCalledWith(
+      `/api/v2/content/BaseContent/delete-program-section`,
+      { data: params }
+    );
+    expect(result.status).toBe(200);
+  });
 });

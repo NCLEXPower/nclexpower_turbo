@@ -106,7 +106,11 @@ jest.mock("../../../../../components", () => ({
     <input type="file" onChange={(e) => onUpload(e.target.files)} {...props} />
   ),
   GenericSelectField: ({ onChange, options, ...props }: any) => (
-    <select onChange={(e) => onChange(e.target.value)} {...props} data-testid="section-type-select">
+    <select
+      onChange={(e) => onChange(e.target.value)}
+      {...props}
+      data-testid="section-type-select"
+    >
       {options.map((opt: any) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
@@ -115,7 +119,12 @@ jest.mock("../../../../../components", () => ({
     </select>
   ),
   MultipleSelectField: ({ onChange, options, ...props }: any) => (
-    <select onChange={(e) => onChange(e.target.value)} multiple {...props} data-testid="multiple-select-field">
+    <select
+      onChange={(e) => onChange(e.target.value)}
+      multiple
+      {...props}
+      data-testid="multiple-select-field"
+    >
       {options.map((opt: any) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
@@ -181,14 +190,14 @@ const defaultProps = {
 };
 
 beforeAll(() => {
-  global.URL.createObjectURL = jest.fn(() => 'http://dummyurl.com');
+  global.URL.createObjectURL = jest.fn(() => "http://dummyurl.com");
 });
 
 beforeEach(() => {
-  Object.defineProperty(HTMLFormElement.prototype, 'requestSubmit', {
+  Object.defineProperty(HTMLFormElement.prototype, "requestSubmit", {
     value: jest.fn(),
   });
-})
+});
 
 describe("ProgramManagementListEditBlock", () => {
   let mockHandleSubmit: jest.Mock;
@@ -353,7 +362,12 @@ describe("ProgramManagementListEditBlock", () => {
 
     (useFieldArray as jest.Mock).mockReturnValue({
       fields: [
-        { id: "1", sectionTitle: "Welcome", sectionType: "document", sectionValue: "test.pdf" },
+        {
+          id: "1",
+          sectionTitle: "Welcome",
+          sectionType: "document",
+          sectionValue: "test.pdf",
+        },
       ],
       append: mockAppend,
       remove: mockHandleRemoveSection,
@@ -409,7 +423,9 @@ describe("ProgramManagementListEditBlock", () => {
 
     fireEvent.change(sectionTypeSelect, { target: { value: "video" } });
 
-    const multipleSelectField = await screen.findByTestId("multiple-select-field");
+    const multipleSelectField = await screen.findByTestId(
+      "multiple-select-field"
+    );
 
     expect(multipleSelectField).toBeInTheDocument();
   });
@@ -436,6 +452,15 @@ describe("ProgramManagementListEditBlock", () => {
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
 
+  it("should handle missing program data", async () => {
+    (useAtom as jest.Mock).mockReturnValue([null, jest.fn()]);
+    render(<ProgramManagementListEditBlock />);
+
+    expect(
+      screen.getByText("No program selected. Please go back to previous page.")
+    ).toBeInTheDocument();
+  });
+
   describe("sanitizeData", () => {
     const keyMapping: { [key: string]: string } = {
       secVidId: "sectionDataId",
@@ -446,7 +471,7 @@ describe("ProgramManagementListEditBlock", () => {
       secVidAuthorImg: "authorImage",
       secVidDescription: "description",
     };
-    
+
     const sanitizeData = (data: unknown): unknown => {
       if (Array.isArray(data)) {
         return data.map((item) => sanitizeData(item));
@@ -491,8 +516,28 @@ describe("ProgramManagementListEditBlock", () => {
       expect(sanitizeData("string")).toBe("string");
       expect(sanitizeData(123)).toBe(123);
     });
-  });
 
+    it("should handle nested section data correctly", async () => {
+      const mockShowToast = jest.fn();
+      (useExecuteToast as jest.Mock).mockReturnValue({
+        showToast: mockShowToast,
+      });
+      setUpMocks("1");
+
+      const nestedSectionData = {
+        secVidId: "1",
+        secVidTitle: "Title 1",
+        nested: { secVidId: "2", secVidTitle: "Title 2" },
+      };
+
+      const sanitizedData = sanitizeData(nestedSectionData);
+      expect(sanitizedData).toEqual({
+        sectionDataId: "1",
+        title: "Title 1",
+        nested: { sectionDataId: "2", title: "Title 2" },
+      });
+    });
+  });
 
   describe("API Callbacks", () => {
     const useApiCallback = (callback: any) => {
@@ -502,11 +547,13 @@ describe("ProgramManagementListEditBlock", () => {
     };
 
     const updateProgramCB = useApiCallback(
-      async (api: any, args: any) => await api.webbackoffice.updatePrograms(args)
+      async (api: any, args: any) =>
+        await api.webbackoffice.updatePrograms(args)
     );
 
     const deleteProgramSectionCB = useApiCallback(
-      async (api: any, args: any) => await api.webbackoffice.deleteProgramSectionById(args)
+      async (api: any, args: any) =>
+        await api.webbackoffice.deleteProgramSectionById(args)
     );
 
     it("should call updatePrograms API", async () => {
@@ -524,13 +571,71 @@ describe("ProgramManagementListEditBlock", () => {
     it("should call deleteProgramSectionById API", async () => {
       const api = {
         webbackoffice: {
-          deleteProgramSectionById: jest.fn().mockResolvedValue({ status: 200 }),
+          deleteProgramSectionById: jest
+            .fn()
+            .mockResolvedValue({ status: 200 }),
         },
       };
       const args = { programId: "1", sectionId: "101" };
       const result = await deleteProgramSectionCB.execute(api, args);
-      expect(api.webbackoffice.deleteProgramSectionById).toHaveBeenCalledWith(args);
+      expect(api.webbackoffice.deleteProgramSectionById).toHaveBeenCalledWith(
+        args
+      );
       expect(result).toEqual({ status: 200 });
+    });
+
+    it("should show error message when updatePrograms API call fails", async () => {
+      const api = {
+        webbackoffice: {
+          updatePrograms: jest.fn().mockRejectedValue(new Error("API Error")),
+        },
+      };
+      const args = { id: "1", title: "Test Program" };
+      try {
+        await updateProgramCB.execute(api, args);
+      } catch (error) {
+        expect(api.webbackoffice.updatePrograms).toHaveBeenCalledWith(args);
+        expect(error).toEqual(new Error("API Error"));
+      }
+    });
+
+    it("should show error message when deleteProgramSectionById API call fails", async () => {
+      const api = {
+        webbackoffice: {
+          deleteProgramSectionById: jest
+            .fn()
+            .mockRejectedValue(new Error("API Error")),
+        },
+      };
+      const args = { programId: "1", sectionId: "101" };
+      try {
+        await deleteProgramSectionCB.execute(api, args);
+      } catch (error) {
+        expect(api.webbackoffice.deleteProgramSectionById).toHaveBeenCalledWith(
+          args
+        );
+        expect(error).toEqual(new Error("API Error"));
+      }
+    });
+
+    it("should handle multiple file uploads correctly", async () => {
+      setUpMocks("1");
+      render(<ProgramManagementListEditBlock />);
+
+      const fileInput = await screen.findByTestId("file-upload-input");
+
+      expect(fileInput).toBeInTheDocument();
+      const files = [
+        new File(["dummy content"], "example1.jpg", { type: "image/jpeg" }),
+        new File(["dummy content"], "example2.jpg", { type: "image/jpeg" }),
+      ];
+
+      fireEvent.change(fileInput, { target: { files } });
+
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "programImage",
+        expect.any(Array)
+      );
     });
   });
 });
