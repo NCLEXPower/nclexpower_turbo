@@ -309,7 +309,7 @@ export const ProgramManagementListCreateField: React.FC<Props> = ({
                             />
                             <GenericSelectField
                               control={control}
-                              name="timer"
+                              name="sectionTimer"
                               options={TimerMockData}
                               label="Select CAT Timer"
                             />
