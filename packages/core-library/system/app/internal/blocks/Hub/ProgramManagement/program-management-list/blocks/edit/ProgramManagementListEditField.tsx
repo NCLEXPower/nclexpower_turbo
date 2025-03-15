@@ -20,9 +20,10 @@ import { WelcomeProgram } from "../../../../../../../../../assets";
 import { getSectionTypeIcons } from "../../../../../../../../../utils/IconUtils";
 import Divider from "../../../../../../../../../components/Divider/Divider";
 import { SectionListType } from "../../../../../../../../../types/wc/programList";
-import { CreateProgramFormType } from "../../validation";
+import { CreateProgramFormType, programTypeAtom } from "../../validation";
 import { SectionDataType } from "./ProgramManagementListEditBlock";
 import { TimerMockData } from "../../constants";
+import { useAtom } from "jotai";
 
 type SectionParamsType = {
   sectionId: string;
@@ -67,6 +68,7 @@ interface Props {
   handleRemoveSection: (index: number) => void;
   isLoading?: boolean;
   isRemovingProgramSection?: boolean;
+  removingSectionId: string | null;
 }
 
 export const ProgramManagementListEditField: React.FC<Props> = ({
@@ -91,8 +93,11 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
   handleEditProgramSection,
   handleDeleteProgramSection,
   handleRemoveSection,
-  isRemovingProgramSection
+  isRemovingProgramSection,
+  removingSectionId
 }) => {
+  const [atomProgramType] = useAtom(programTypeAtom);
+  
   return (
     <Box
       sx={{
@@ -114,7 +119,10 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
             <EvaIcon name="arrow-back-outline" fill="#ffffff" />
           </IconButton>
           <Typography variant="h6" sx={{ color: "white" }}>
-            Edit Program
+            Edit{" "}
+            {atomProgramType === 0
+              ? "Standard (23-Day) Program"
+              : "Fast Track (8-Day) Program"}
           </Typography>
         </Box>
 
@@ -292,7 +300,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     >
                       <EvaIcon name="edit-outline" />
                     </IconButton>
-                    {isRemovingProgramSection ? (
+                    {isRemovingProgramSection && removingSectionId === sectionId ? (
                       <CircularProgress
                         size={20}
                         color="inherit"

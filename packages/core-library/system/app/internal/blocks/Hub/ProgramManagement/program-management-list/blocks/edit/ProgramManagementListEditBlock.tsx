@@ -88,6 +88,7 @@ export const ProgramManagementListEditBlock = () => {
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [editingSectionData, setEditingSectionData] =
     useState<SectionDataType | null>(null);
+  const [removingSectionId, setRemovingSectionId] = useState<string | null>(null);
   const { showToast } = useExecuteToast();
 
   const { businessQueryGetAllProgramsByType } = useBusinessQueryContext();
@@ -119,8 +120,6 @@ export const ProgramManagementListEditBlock = () => {
     }
     return null;
   }, [allProgramsList, programId]);
-
-  console.log(selectedProgram, "selected program");
 
   const sectionList = sectionTypeAndTitle
     ? sectionTypeAndTitle.map((item) => ({
@@ -219,7 +218,6 @@ export const ProgramManagementListEditBlock = () => {
   };
 
   const handleEditProgram = async (data?: CreateProgramFormType) => {
-    console.log(data?.sectionTimer, "sectionTimer");
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -235,17 +233,17 @@ export const ProgramManagementListEditBlock = () => {
     const stringifiedSections = sections?.flatMap((section) => {
       if (!section.sectionValue) return [];
 
-      console.log(section.sectionValue, "section value");
       const matchingSections = allSectionsList.filter((item) =>
         Array.isArray(section.sectionValue)
-          ? section.sectionValue.includes(item.sectionId)
+          ? section.sectionType === "cat"
+            ? Array.isArray(item.sectionData) && item.sectionData.length > 0 && section.sectionValue.includes(item.sectionData[0].title)
+            : section.sectionValue.includes(item.sectionId)
           : Array.isArray(item.sectionData) &&
             item.sectionData.length > 0 &&
             item.sectionData[0].title === section.sectionValue &&
             item.sectionType === section.sectionType
       );
 
-      console.log(matchingSections, "matching sections");
       if (matchingSections.length === 0) return [];
 
       return matchingSections
@@ -303,7 +301,6 @@ export const ProgramManagementListEditBlock = () => {
 
           if (matchedSectionData.length === 0) return null;
 
-          console.log(data.sectionTimer, "sectionTimer from matchedsections")
           return {
             sectionId: matchingSection.sectionId,
             sectionType: section.sectionType,
@@ -320,8 +317,6 @@ export const ProgramManagementListEditBlock = () => {
       selectedProgram.sections || []
     ) as UpdateSection[];
 
-    console.log(sanitizedSections, "sanitizedSections");
-
     const filteredSections = [
       ...(stringifiedSections || []),
       ...sanitizedSections.filter(
@@ -337,9 +332,6 @@ export const ProgramManagementListEditBlock = () => {
       })),
     ];
 
-    console.log(filteredSections, "filteredSections");
-    console.log(combinedSections, "combinedSections");
-
     const payload = {
       id: selectedProgram.id,
       title: data.programName,
@@ -352,7 +344,6 @@ export const ProgramManagementListEditBlock = () => {
 
     if (!payload) return;
 
-    console.log(payload)
     try {
       const result = await updateProgramCB.execute(payload);
       if (result.status === 200) {
@@ -450,6 +441,7 @@ export const ProgramManagementListEditBlock = () => {
   }, [selectedProgram, form]);
 
   const handleDeleteProgramSection = async (sectionId: string) => {
+    setRemovingSectionId(sectionId);
     if (!programId) {
       showToast("Program Id unavailable. Please try again", "error");
     }
@@ -471,6 +463,8 @@ export const ProgramManagementListEditBlock = () => {
     } catch (err) {
       console.error(err);
       showToast(`Error removing program section. Please try again`, "error");
+    } finally {
+      setRemovingSectionId(null);
     }
   };
 
@@ -487,6 +481,7 @@ export const ProgramManagementListEditBlock = () => {
   }
   return (
     <ProgramManagementListEditField
+      removingSectionId={removingSectionId}
       isRemovingProgramSection={deleteProgramSectionCB.loading}
       isLoading={updateProgramCB.loading}
       onSave={handleSubmit(handleEditProgram)}

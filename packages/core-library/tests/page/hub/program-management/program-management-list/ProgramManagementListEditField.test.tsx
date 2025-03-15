@@ -74,6 +74,7 @@ beforeAll(() => {
 
 describe("ProgramManagementListEditField", () => {
   const defaultProps = {
+    removingSectionId: "2",
     isLoading: true,
     onSave: mockOnSave,
     handleBack: mockHandleBack,
@@ -105,7 +106,7 @@ describe("ProgramManagementListEditField", () => {
 
   it("should render program edit form with correct title", () => {
     render(<ProgramManagementListEditField {...defaultProps} />);
-    expect(screen.getByText(/Edit Program/i)).toBeInTheDocument();
+    expect(screen.getByText(/Edit/i)).toBeInTheDocument();
   });
 
   it("should call handleBack when the back button is clicked", () => {

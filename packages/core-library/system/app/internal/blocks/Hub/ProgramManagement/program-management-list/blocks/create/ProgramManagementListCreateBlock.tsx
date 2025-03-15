@@ -128,7 +128,6 @@ export const ProgramManagementListCreateBlock = () => {
     data: CreateProgramFormType | undefined,
     reset: () => void
   ) => {
-    console.log(data, "data")
     if (!data) { 
       console.error("Form data is undefined.");
       return;
@@ -229,7 +228,6 @@ export const ProgramManagementListCreateBlock = () => {
       stringifiedSections
     };
 
-    console.log(JSON.stringify(payload), "payload");
     if (!payload) return;
 
     try {
