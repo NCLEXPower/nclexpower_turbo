@@ -91,7 +91,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
   handleEditProgramSection,
   handleDeleteProgramSection,
   handleRemoveSection,
-  isRemovingProgramSection,
+  isRemovingProgramSection
 }) => {
   return (
     <Box
@@ -420,7 +420,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                           />
                           <GenericSelectField
                             control={control}
-                            name="timer"
+                            name="sectionTimer"
                             options={TimerMockData}
                             label="Select CAT Timer"
                           />

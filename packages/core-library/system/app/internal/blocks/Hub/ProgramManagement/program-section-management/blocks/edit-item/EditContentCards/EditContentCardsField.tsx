@@ -350,6 +350,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
               }}
               disabled={isLoading}
               onClick={handleAddTopic}
+              data-testid="add-topic"
             >
               Add Topic
             </Button>

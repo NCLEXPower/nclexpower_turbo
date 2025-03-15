@@ -876,6 +876,7 @@ export type Section = {
   sectionType: string;
   sectionTitle: string;
   sectionData: SectionData[];
+  sectionTimer: string;
 };
 
 export type CreateProgramParams = {
@@ -892,7 +893,7 @@ export type UpdateSection = {
   sectionTitle: string;
   sectionStatus: string;
   sectionData: SectionData[];
-  timer: string;
+  sectionTimer: string;
 }
 
 export type UpdateProgramParams = {

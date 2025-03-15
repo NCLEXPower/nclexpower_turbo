@@ -44,7 +44,7 @@ export const createProgramSchema = yup.object({
       })
     )
     .min(1, "At least one section is required"),
-  timer: yup.string().optional().default("")
+  sectionTimer: yup.string().optional().default("")
 });
 
 export type CreateProgramFormType = yup.InferType<typeof createProgramSchema>;

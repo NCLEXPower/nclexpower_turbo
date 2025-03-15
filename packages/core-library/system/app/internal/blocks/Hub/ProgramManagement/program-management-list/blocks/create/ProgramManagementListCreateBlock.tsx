@@ -107,7 +107,6 @@ export const ProgramManagementListCreateBlock = () => {
       programName: "",
       programImage: undefined,
       sections: [{ sectionTitle: "", sectionType: "", sectionValue: "" }],
-      timer: ""
     },
   });
 
@@ -129,7 +128,7 @@ export const ProgramManagementListCreateBlock = () => {
     data: CreateProgramFormType | undefined,
     reset: () => void
   ) => {
-
+    console.log(data, "data")
     if (!data) { 
       console.error("Form data is undefined.");
       return;
@@ -196,7 +195,7 @@ export const ProgramManagementListCreateBlock = () => {
                   title: dataItem.title,
                   catSimulator: dataItem.catSimulator,
                   contentAreaCoverage: dataItem.contentAreaCoverage,
-                  link: ""
+                  link: "",
                 }
               } else if (section.sectionType === "content-cards") {
                 return {
@@ -217,6 +216,7 @@ export const ProgramManagementListCreateBlock = () => {
             sectionType: section.sectionType,
             sectionTitle: section.sectionTitle,
             sectionData: matchedSectionData,
+            ...(section.sectionType === "cat" && { sectionTimer: data.sectionTimer })
           };
         })
         .filter((section): section is Section => section !== null);
@@ -226,10 +226,10 @@ export const ProgramManagementListCreateBlock = () => {
       title: data.programName,
       programImage,
       programType: atomProgramType,
-      stringifiedSections,
-      timer: data.timer || ""
+      stringifiedSections
     };
 
+    console.log(JSON.stringify(payload), "payload");
     if (!payload) return;
 
     try {

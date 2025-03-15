@@ -69,11 +69,21 @@ jest.mock(
       topics,
       handleAddTopic,
       handleRemoveTopic,
+      handleAddCardFace,
+      handleRemoveCardFace,
       onSave,
     }: any) => (
       <div>
         {topics.map((topic: any, index: number) => (
           <div key={index} data-testid={`topic-${index}`}>
+            <button onClick={() => handleAddCardFace(index)}>Add Card</button>
+            {topic.cardFaces.map((face: any, faceIndex: number) => (
+              <div key={faceIndex} data-testid={`face-${index}-${faceIndex}`}>
+                <button onClick={() => handleRemoveCardFace(index, faceIndex)}>
+                  Remove Face
+                </button>
+              </div>
+            ))}
             <button onClick={() => handleRemoveTopic(index)}>
               Remove Topic
             </button>
@@ -85,6 +95,37 @@ jest.mock(
     ),
   })
 );
+
+function isContentCardsSectionData(sectionData: unknown): sectionData is {
+  title: string;
+  cards: { cardId: string; cardTopic: string; cardFaces: File[] }[];
+} {
+  return (
+    typeof sectionData === "object" &&
+    sectionData !== null &&
+    "title" in sectionData &&
+    "cards" in sectionData &&
+    Array.isArray((sectionData as { cards: unknown[] }).cards) &&
+    (
+      sectionData as {
+        cards: { cardId: unknown; cardTopic: unknown; cardFaces: unknown[] }[];
+      }
+    ).cards.every(
+      (card) =>
+        typeof card === "object" &&
+        card !== null &&
+        "cardId" in card &&
+        typeof (card as { cardId: unknown }).cardId === "string" &&
+        "cardTopic" in card &&
+        typeof (card as { cardTopic: unknown }).cardTopic === "string" &&
+        "cardFaces" in card &&
+        Array.isArray((card as { cardFaces: unknown[] }).cardFaces) &&
+        (card as { cardFaces: unknown[] }).cardFaces.every(
+          (face) => typeof face === "string"
+        )
+    )
+  );
+}
 
 describe("EditContentCardsBlock Component", () => {
   const mockOnSubmit = jest.fn();
@@ -167,4 +208,32 @@ describe("EditContentCardsBlock Component", () => {
     expect(screen.getByTestId("topic-0")).toBeInTheDocument();
     expect(screen.getByTestId("topic-1")).toBeInTheDocument();
   });
+
+  it("correctly identifies content cards section data", () => {
+    const validData = {
+      title: "Sample Title",
+      cards: [
+        {
+          cardId: "1",
+          cardTopic: "Sample Topic",
+          cardFaces: ["face1", "face2"],
+        },
+      ],
+    };
+
+    const invalidData = {
+      title: "Sample Title",
+      cards: [
+        {
+          cardId: 1,
+          cardTopic: "Sample Topic",
+          cardFaces: ["face1", "face2"],
+        },
+      ],
+    };
+
+    expect(isContentCardsSectionData(validData)).toBe(true);
+    expect(isContentCardsSectionData(invalidData)).toBe(false);
+  });
+
 });

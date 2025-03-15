@@ -435,4 +435,101 @@ describe("ProgramManagementListEditBlock", () => {
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
 
+  describe("sanitizeData", () => {
+    const keyMapping: { [key: string]: string } = {
+      secVidId: "sectionDataId",
+      secVidTitle: "title",
+      secVidUrl: "link",
+      secVidPlaceholder: "videoPlaceholder",
+      secVidAuthor: "authorName",
+      secVidAuthorImg: "authorImage",
+      secVidDescription: "description",
+    };
+    
+    const sanitizeData = (data: unknown): unknown => {
+      if (Array.isArray(data)) {
+        return data.map((item) => sanitizeData(item));
+      } else if (typeof data === "object" && data !== null) {
+        return Object.fromEntries(
+          Object.entries(data).map(([key, value]) => [
+            keyMapping[key] || key,
+            sanitizeData(value ?? ""),
+          ])
+        );
+      }
+      return data;
+    };
+
+    it("should sanitize an array of objects", () => {
+      const input = [
+        { secVidId: "1", secVidTitle: "Title 1" },
+        { secVidId: "2", secVidTitle: "Title 2" },
+      ];
+      const output = sanitizeData(input);
+      expect(output).toEqual([
+        { sectionDataId: "1", title: "Title 1" },
+        { sectionDataId: "2", title: "Title 2" },
+      ]);
+    });
+
+    it("should sanitize a nested object", () => {
+      const input = {
+        secVidId: "1",
+        secVidTitle: "Title 1",
+        nested: { secVidId: "2", secVidTitle: "Title 2" },
+      };
+      const output = sanitizeData(input);
+      expect(output).toEqual({
+        sectionDataId: "1",
+        title: "Title 1",
+        nested: { sectionDataId: "2", title: "Title 2" },
+      });
+    });
+
+    it("should return primitive values as is", () => {
+      expect(sanitizeData("string")).toBe("string");
+      expect(sanitizeData(123)).toBe(123);
+    });
+  });
+
+
+  describe("API Callbacks", () => {
+    const useApiCallback = (callback: any) => {
+      return {
+        execute: callback,
+      };
+    };
+
+    const updateProgramCB = useApiCallback(
+      async (api: any, args: any) => await api.webbackoffice.updatePrograms(args)
+    );
+
+    const deleteProgramSectionCB = useApiCallback(
+      async (api: any, args: any) => await api.webbackoffice.deleteProgramSectionById(args)
+    );
+
+    it("should call updatePrograms API", async () => {
+      const api = {
+        webbackoffice: {
+          updatePrograms: jest.fn().mockResolvedValue({ status: 200 }),
+        },
+      };
+      const args = { id: "1", title: "Test Program" };
+      const result = await updateProgramCB.execute(api, args);
+      expect(api.webbackoffice.updatePrograms).toHaveBeenCalledWith(args);
+      expect(result).toEqual({ status: 200 });
+    });
+
+    it("should call deleteProgramSectionById API", async () => {
+      const api = {
+        webbackoffice: {
+          deleteProgramSectionById: jest.fn().mockResolvedValue({ status: 200 }),
+        },
+      };
+      const args = { programId: "1", sectionId: "101" };
+      const result = await deleteProgramSectionCB.execute(api, args);
+      expect(api.webbackoffice.deleteProgramSectionById).toHaveBeenCalledWith(args);
+      expect(result).toEqual({ status: 200 });
+    });
+  });
 });

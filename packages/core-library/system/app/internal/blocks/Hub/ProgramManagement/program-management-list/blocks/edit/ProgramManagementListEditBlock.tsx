@@ -23,9 +23,7 @@ import {
 import { sectionTypeAndTitle } from "../../../program-section-management/constants";
 import {
   DeleteProgramSectionParams,
-  GetAllProgramsResponseType,
   GetAllSectionsResponseType,
-  Section,
   SectionData,
   UpdateProgramParams,
   UpdateSection,
@@ -121,6 +119,8 @@ export const ProgramManagementListEditBlock = () => {
     }
     return null;
   }, [allProgramsList, programId]);
+
+  console.log(selectedProgram, "selected program");
 
   const sectionList = sectionTypeAndTitle
     ? sectionTypeAndTitle.map((item) => ({
@@ -219,6 +219,7 @@ export const ProgramManagementListEditBlock = () => {
   };
 
   const handleEditProgram = async (data?: CreateProgramFormType) => {
+    console.log(data?.sectionTimer, "sectionTimer");
     if (!data) {
       console.error("Form data is undefined.");
       return;
@@ -234,6 +235,7 @@ export const ProgramManagementListEditBlock = () => {
     const stringifiedSections = sections?.flatMap((section) => {
       if (!section.sectionValue) return [];
 
+      console.log(section.sectionValue, "section value");
       const matchingSections = allSectionsList.filter((item) =>
         Array.isArray(section.sectionValue)
           ? section.sectionValue.includes(item.sectionId)
@@ -243,6 +245,7 @@ export const ProgramManagementListEditBlock = () => {
             item.sectionType === section.sectionType
       );
 
+      console.log(matchingSections, "matching sections");
       if (matchingSections.length === 0) return [];
 
       return matchingSections
@@ -300,13 +303,14 @@ export const ProgramManagementListEditBlock = () => {
 
           if (matchedSectionData.length === 0) return null;
 
+          console.log(data.sectionTimer, "sectionTimer from matchedsections")
           return {
             sectionId: matchingSection.sectionId,
             sectionType: section.sectionType,
             sectionTitle: section.sectionTitle,
             sectionStatus: "available",
-            timer: data.timer || "",
             sectionData: matchedSectionData,
+            ...(section.sectionType === "cat" && { sectionTimer: data.sectionTimer })
           };
         })
         .filter((section): section is UpdateSection => section !== null);
@@ -315,6 +319,8 @@ export const ProgramManagementListEditBlock = () => {
     const sanitizedSections = sanitizeData(
       selectedProgram.sections || []
     ) as UpdateSection[];
+
+    console.log(sanitizedSections, "sanitizedSections");
 
     const filteredSections = [
       ...(stringifiedSections || []),
@@ -331,6 +337,9 @@ export const ProgramManagementListEditBlock = () => {
       })),
     ];
 
+    console.log(filteredSections, "filteredSections");
+    console.log(combinedSections, "combinedSections");
+
     const payload = {
       id: selectedProgram.id,
       title: data.programName,
@@ -343,6 +352,7 @@ export const ProgramManagementListEditBlock = () => {
 
     if (!payload) return;
 
+    console.log(payload)
     try {
       const result = await updateProgramCB.execute(payload);
       if (result.status === 200) {
