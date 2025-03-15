@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { ProgramHeader } from "./ProgramHeader";
 import { ProgramGridView } from "./ProgramGridView";
@@ -118,6 +118,10 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     programId: string
   ) => {
     open(sectionData);
+  };
+
+  const handleNonVideoStatusChange = (sectionId: string) => {
+    // call api and update status
   };
 
   const AccordionHeader: React.FC<AccordionHeaderProps> = ({
@@ -307,6 +311,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                         target="_blank"
                         naked
                         className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                        onClick={() => handleNonVideoStatusChange(sectionId)}
                       >
                         {sectionTitle}
                       </Link>
