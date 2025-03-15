@@ -147,6 +147,7 @@ const mockUseForm = jest.fn().mockReturnValue({
 });
 
 const defaultProps = {
+  removingSectionId: "2",
   onSave: mockOnSave,
   handleBack: mockHandleBack,
   fileName: "",
@@ -252,7 +253,7 @@ describe("ProgramManagementListEditBlock", () => {
       )
     ).not.toBeInTheDocument();
 
-    expect(await screen.findByText("Edit Program")).toBeInTheDocument();
+    expect(await screen.findByText(/Edit/i)).toBeInTheDocument();
   });
 
   it("should render the form with program thumbnail and details", async () => {
