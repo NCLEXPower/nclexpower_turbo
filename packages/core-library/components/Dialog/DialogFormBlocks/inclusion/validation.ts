@@ -7,9 +7,14 @@
 import * as yup from 'yup'
 
 export const UpdateInclusionSchema = yup.object({
-    id: yup.string().required().default(''),
-    option: yup.string().required().default('')
-})
+    id: yup.string().optional(),
+    option: yup.string().required('Inclusion is required'),
+    description: yup.string().required('Description is required')
+}).required()
 
-export type UpdateInclusionType = yup.InferType<typeof UpdateInclusionSchema>
+export type UpdateInclusionType = {
+    id?: string;
+    option: string;
+    description: string;
+}
 
