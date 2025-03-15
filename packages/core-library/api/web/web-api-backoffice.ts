@@ -508,15 +508,10 @@ export class WebApiBackOffice {
       }
     );
   }
-}
 
-      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`
-    );
-  }
   public async getAllContacts() {
     return await this.axios.get<ContactResponseType>(
       `/api/v2/content/BaseContent/get-contact-us`
     );
   }
 }
-
