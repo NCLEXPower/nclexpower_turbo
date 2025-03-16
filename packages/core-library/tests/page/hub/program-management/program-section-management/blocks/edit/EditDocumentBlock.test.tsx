@@ -1,6 +1,8 @@
-import { render, screen } from "../../../../../../common";
+import { render, screen, fireEvent, waitFor, renderHook, act } from "../../../../../../common";
 import { EditDocumentBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditDocument/EditDocumentBlock";
 import { useAtom } from "jotai";
+import { useForm } from "react-hook-form";
+import { EditDocumentField } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditDocument/EditDocumentField";
 
 jest.mock("../../../../../../../config", () => ({
   config: { value: jest.fn() },
@@ -44,5 +46,64 @@ describe("EditDocumentBlock", () => {
     render(<EditDocumentBlock contentLoader={false} onSubmit={mockOnSubmit} />);
 
     expect(screen.getByText("Edit Document Field")).toBeInTheDocument();
+  });
+
+  it("calls onSubmit with the correct values", async () => {
+    const { getByText } = render(
+      <EditDocumentBlock contentLoader={false} onSubmit={mockOnSubmit} />
+    );
+
+    fireEvent.click(getByText("Save"));
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalled();
+    });
+  });
+
+  it("sets default values correctly", () => {
+    const defaultValues = { title: "Test Title", link: [] };
+    (useForm as jest.Mock).mockReturnValue({
+      control: {},
+      handleSubmit: (fn: any) => fn,
+      watch: () => defaultValues,
+      setValue: jest.fn(),
+    });
+
+    render(
+      <EditDocumentBlock contentLoader={false} onSubmit={mockOnSubmit} />
+    );
+
+    expect(screen.getByDisplayValue("Test Title")).toBeInTheDocument();
+  });
+
+  it("normalizes link value correctly", () => {
+    const { result } = renderHook(() => useForm());
+    const { setValue } = result.current;
+
+    act(() => {
+      setValue("link", ["link1", "link2"]);
+    });
+
+    expect(result.current.watch("link")).toEqual(["link2"]);
+  });
+
+  it("renders EditDocumentField with correct props", () => {
+    const { getByText } = render(
+      <EditDocumentBlock
+        contentLoader={false}
+        onSubmit={mockOnSubmit}
+        isLoading={true}
+        section="test-section"
+      />
+    );
+
+    expect(screen.getByText("Edit Document Field")).toBeInTheDocument();
+    expect(EditDocumentField).toHaveBeenCalledWith(
+      expect.objectContaining({
+        isLoading: true,
+        section: "test-section",
+      }),
+      {}
+    );
   });
 });

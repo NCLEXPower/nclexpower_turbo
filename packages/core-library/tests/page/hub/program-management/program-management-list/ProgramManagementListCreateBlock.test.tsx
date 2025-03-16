@@ -3,7 +3,13 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { render, screen, fireEvent, waitFor, renderHook } from "@testing-library/react"
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  renderHook,
+} from "@testing-library/react";
 import { ProgramManagementListCreateBlock } from "../../../../../system/app/internal/blocks";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useRouter } from "../../../../../core";
@@ -13,8 +19,8 @@ import { useFormContext } from "react-hook-form";
 
 jest.mock("../../../../../config", () => ({
   getConfig: jest
-  .fn()
-  .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+    .fn()
+    .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
   config: { value: jest.fn() },
 }));
 
@@ -100,13 +106,6 @@ describe("ProgramManagementListCreateBlock", () => {
   let mockAppend: jest.Mock;
   let mockGetValues: jest.Mock;
 
-    const { result } = renderHook(() => useForm());
-    const form = result.current;
-  
-    const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
-      return <FormProvider {...form}>{children}</FormProvider>;
-    };
-  
   beforeEach(() => {
     mockHandleSubmit = jest.fn();
     mockHandleBack = jest.fn();
@@ -123,9 +122,9 @@ describe("ProgramManagementListCreateBlock", () => {
       formState: { errors: {} },
     });
 
-      (useFormContext as jest.Mock).mockReturnValue({
-        setValues: jest.fn(),
-      });
+    (useFormContext as jest.Mock).mockReturnValue({
+      setValues: jest.fn(),
+    });
 
     (useFieldArray as jest.Mock).mockReturnValue({
       fields: [],
@@ -140,7 +139,7 @@ describe("ProgramManagementListCreateBlock", () => {
   });
 
   it("renders the component", () => {
-    render(<Wrapper><ProgramManagementListCreateBlock /></Wrapper>);
+    render(<ProgramManagementListCreateBlock />);
 
     expect(screen.getByText("Program Name")).toBeInTheDocument();
   });
@@ -205,4 +204,17 @@ describe("ProgramManagementListCreateBlock", () => {
     fireEvent.click(screen.getByTestId("submit-button"));
     await waitFor(() => expect(console.error).toHaveBeenCalled());
   });
+
+  it("renders the add section button", () => {
+    render(<ProgramManagementListCreateBlock />);
+    expect(screen.getByTestId("add-section-button")).toBeInTheDocument();
+  });
+
+  it("calls router.back() when back button is clicked", () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    fireEvent.click(screen.getByTestId("back-button"));
+    expect(mockHandleBack).toHaveBeenCalled();
+  });
+
 });

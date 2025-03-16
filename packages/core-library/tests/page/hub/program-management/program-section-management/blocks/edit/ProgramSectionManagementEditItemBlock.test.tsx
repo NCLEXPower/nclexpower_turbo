@@ -164,4 +164,22 @@ describe("ProgramSectionManagementEditItemBlock", () => {
     await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith(expect.any(Function)));
   });
 
+  it("should handle contentLoader state correctly", () => {
+    const { getByText } = render(<ProgramSectionManagementEditItemBlock />);
+    expect(getByText("Program Section Management")).toBeInTheDocument();
+  });
+
+  it("should handle router push on invalid sectionType", async () => {
+    (useAtom as jest.Mock).mockImplementation((atom) => {
+      switch (atom) {
+        case SectionTypeAtom:
+          return [null];
+        default:
+          return [];
+      }
+    });
+
+    render(<ProgramSectionManagementEditItemBlock />);
+    await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith(expect.any(Function)));
+  });
 });
