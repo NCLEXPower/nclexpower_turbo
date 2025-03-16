@@ -53,6 +53,11 @@ export const ProgramGridContent: React.FC<Props> = ({
 
   return (
     <div className="h-full w-full">
+      <ContentCardsModal
+        open={props.isOpen}
+        onClose={close}
+        data={props.context || []}
+      />
       <Box className="absolute top-0 left-0 h-full w-full">
         <div className="flex justify-between items-center w-full bg-gradient-to-r from-mainBlue to-[#181E2F] px-4 py-2">
           <h4 className="font-bold font-ptSansNarrow text-[20px] text-white">
@@ -76,17 +81,17 @@ export const ProgramGridContent: React.FC<Props> = ({
               Status
             </h4>
           </div>
-          {mappedSections.length > 0 ? (
-            mappedSections.map((item, index) => {
-              const { type, title, status, videos } = item;
-
-              const hasVideos = videos && videos.length > 0;
-
-              return (
-                <div className="flex justify-between px-2" key={index}>
+          {!sections?.length ? (
+            <div className="text-center text-gray-500">
+              No available sections
+            </div>
+          ) : (
+            <>
+              {secVidDetails && (
+                <div className="flex justify-between px-2">
                   <div className="flex gap-2 items-center">
                     <Image
-                      src={getSectionTypeIcons(type)}
+                      src={secVidDetails.secVidIcon}
                       alt="icon"
                       width={16}
                       height={16}
@@ -99,7 +104,7 @@ export const ProgramGridContent: React.FC<Props> = ({
                       }
                       className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
-                      {title}
+                      {secVidDetails.secVidTitle}
                     </h4>
                   </div>
                   <Image
