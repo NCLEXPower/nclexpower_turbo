@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { UpdateInclusionSchema, UpdateInclusionType } from './validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from '@mui/material'
-import { Button, TextField } from '../../..'
+import { Button, TextField, TextAreaField } from '../../..'
 import { useQueryClient } from 'react-query'
 import { InclusionIdAtom } from './useAtomic'
 
@@ -23,16 +23,25 @@ export const InclusionEditForm = () => {
     const { executeToast } = useExecuteToast();
     const queryClient = useQueryClient()
 
+    const defaultValues: UpdateInclusionType = {
+        id: Inclusion?.id,
+        option: Inclusion?.option || '',
+        description: (Inclusion as any)?.description || ''
+    }
+
     const form = useForm<UpdateInclusionType>({
         resolver: yupResolver(UpdateInclusionSchema),
-        defaultValues: UpdateInclusionSchema.getDefault(),
-        values: Inclusion
+        defaultValues
     })
     const { control, handleSubmit, reset } = form
-
     async function onSubmit(values: UpdateInclusionType) {
         try {
-            const response = await mutateAsync(values)
+            const params = {
+                ...values,
+                id: values.id || '' 
+            };
+            
+            const response = await mutateAsync(params as any)
             if (response.data === 409) {
                 executeToast(
                     "Inclusion already exist",
@@ -50,10 +59,17 @@ export const InclusionEditForm = () => {
     }
 
     return (
-        <Box display="flex" data-testid="inclusion-edit-form" alignItems="end" gap={3}>
+        <Box 
+            display="flex" 
+            flexDirection="column" 
+            data-testid="inclusion-edit-form" 
+            gap={3}
+        >
             <TextField label="Inclusion" control={control} name="option" />
-            <Button onClick={handleSubmit(onSubmit)}>Save</Button>
+            <TextAreaField label="Description" control={control} name="description" />
+            <Box alignSelf="flex-end">
+                <Button onClick={handleSubmit(onSubmit)}>Save</Button>
+            </Box>
         </Box>
-
     )
 }
