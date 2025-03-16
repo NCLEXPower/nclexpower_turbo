@@ -312,6 +312,7 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     ) : (
                       <IconButton
                         onClick={() => handleDeleteProgramSection(sectionId)}
+                        data-testid="delete-section-button"
                       >
                         <EvaIcon name="trash-outline" />
                       </IconButton>

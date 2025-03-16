@@ -156,6 +156,7 @@ const mockUseForm = jest.fn().mockReturnValue({
 });
 
 const defaultProps = {
+  isRemovingProgramSection: false,
   removingSectionId: "2",
   onSave: mockOnSave,
   handleBack: mockHandleBack,
@@ -636,6 +637,21 @@ describe("ProgramManagementListEditBlock", () => {
         "programImage",
         expect.any(Array)
       );
+    });
+  });
+
+  describe("Form submission", () => {
+    it("should call handleEditProgram when save button is clicked", async () => {
+      setUpMocks("1");
+      render(<ProgramManagementListEditBlock />);
+
+      const saveButton = await screen.findByTestId("submit-button");
+
+      fireEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(mockHandleSubmit).toHaveBeenCalled();
+      });
     });
   });
 });

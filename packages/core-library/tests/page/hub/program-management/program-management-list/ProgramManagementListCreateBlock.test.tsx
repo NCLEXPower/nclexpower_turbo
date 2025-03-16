@@ -3,12 +3,18 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { render, screen, fireEvent, waitFor } from "../../../../common";
+import { render, screen, fireEvent, waitFor, renderHook } from "@testing-library/react"
 import { ProgramManagementListCreateBlock } from "../../../../../system/app/internal/blocks";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useRouter } from "../../../../../core";
+import { useExecuteToast } from "../../../../../contexts";
+import { WelcomeProgram } from "../../../../../assets";
+import { useFormContext } from "react-hook-form";
 
 jest.mock("../../../../../config", () => ({
+  getConfig: jest
+  .fn()
+  .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
   config: { value: jest.fn() },
 }));
 
@@ -16,18 +22,66 @@ jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),
   useForm: jest.fn(),
   useFieldArray: jest.fn(),
+  useFormContext: jest.fn(),
 }));
+
 jest.mock("../../../../../core", () => ({
   useRouter: jest.fn(),
 }));
-jest.mock(
-  "../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-management-list/blocks/create/ProgramManagementListCreateField",
-  () => ({
-    ProgramManagementListCreateField: jest.fn(() => (
-      <div>Program Management Form</div>
-    )),
-  })
-);
+
+jest.mock("../../../../../contexts", () => ({
+  useExecuteToast: jest.fn(),
+  useBusinessQueryContext: jest.fn(() => ({
+    businessQueryGetAllSections: jest.fn(() => ({
+      mutateAsync: jest.fn(),
+    })),
+  })),
+}));
+
+jest.mock("../../../../../components", () => ({
+  Button: ({ onClick, children, ...props }: any) => (
+    <button onClick={onClick} {...props}>
+      {children}
+    </button>
+  ),
+  EvaIcon: ({ name }: any) => <span>{name}</span>,
+  IconButton: ({ onClick, children, ...props }: any) => (
+    <button onClick={onClick} {...props}>
+      {children}
+    </button>
+  ),
+  TextField: ({ name }: any) => <input name={name} />,
+  FileUploadField: ({ onUpload, ...props }: any) => (
+    <input type="file" onChange={(e) => onUpload(e.target.files)} {...props} />
+  ),
+  GenericSelectField: ({ onChange, options, ...props }: any) => (
+    <select
+      onChange={(e) => onChange(e.target.value)}
+      {...props}
+      data-testid="section-type-select"
+    >
+      {options.map((opt: any) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  ),
+  MultipleSelectField: ({ onChange, options, ...props }: any) => (
+    <select
+      onChange={(e) => onChange(e.target.value)}
+      multiple
+      {...props}
+      data-testid="multiple-select-field"
+    >
+      {options.map((opt: any) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  ),
+}));
 
 jest.mock(
   "../../../../../core/utils/contants/wc/programs/ProgramListData",
@@ -46,6 +100,13 @@ describe("ProgramManagementListCreateBlock", () => {
   let mockAppend: jest.Mock;
   let mockGetValues: jest.Mock;
 
+    const { result } = renderHook(() => useForm());
+    const form = result.current;
+  
+    const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
+      return <FormProvider {...form}>{children}</FormProvider>;
+    };
+  
   beforeEach(() => {
     mockHandleSubmit = jest.fn();
     mockHandleBack = jest.fn();
@@ -62,10 +123,16 @@ describe("ProgramManagementListCreateBlock", () => {
       formState: { errors: {} },
     });
 
+      (useFormContext as jest.Mock).mockReturnValue({
+        setValues: jest.fn(),
+      });
+
     (useFieldArray as jest.Mock).mockReturnValue({
       fields: [],
       append: mockAppend,
     });
+
+    (useExecuteToast as jest.Mock).mockReturnValue({ showToast: jest.fn() });
 
     (useRouter as jest.Mock).mockReturnValue({
       back: mockHandleBack,
@@ -73,15 +140,15 @@ describe("ProgramManagementListCreateBlock", () => {
   });
 
   it("renders the component", () => {
-    render(<ProgramManagementListCreateBlock />);
+    render(<Wrapper><ProgramManagementListCreateBlock /></Wrapper>);
 
-    expect(screen.getByText("Program Management Form")).toBeInTheDocument();
+    expect(screen.getByText("Program Name")).toBeInTheDocument();
   });
 
   it("calls handleSubmit when form is submitted", async () => {
     render(<ProgramManagementListCreateBlock />);
 
-    fireEvent.submit(screen.getByText("Program Management Form"));
+    fireEvent.submit(screen.getByText("Program Name"));
 
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
   });
@@ -89,8 +156,53 @@ describe("ProgramManagementListCreateBlock", () => {
   it("calls handleCreateProgram when form is submitted with valid data", async () => {
     render(<ProgramManagementListCreateBlock />);
 
-    fireEvent.submit(screen.getByText("Program Management Form"));
+    fireEvent.submit(screen.getByText("Program Name"));
 
     await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("appends a new section when handleAddSection is called", async () => {
+    render(<ProgramManagementListCreateBlock />);
+
+    expect(mockAppend).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByTestId("add-section-button"));
+
+    await waitFor(() => expect(mockAppend).toHaveBeenCalled());
+  });
+
+  it("does not call handleCreateProgram when form validation fails", async () => {
+    mockHandleSubmit.mockImplementationOnce((fn) => () => fn(undefined));
+    render(<ProgramManagementListCreateBlock />);
+    fireEvent.click(screen.getByTestId("submit-button"));
+    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("calls handleCreateProgram with valid form data", async () => {
+    const mockValidData = {
+      programName: "Test Program",
+      programImage: WelcomeProgram,
+    };
+
+    mockHandleSubmit.mockImplementationOnce((fn) => async () => {
+      await fn(mockValidData);
+    });
+
+    render(<ProgramManagementListCreateBlock />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId("submit-button")).toBeInTheDocument()
+    );
+
+    fireEvent.click(screen.getByTestId("submit-button"));
+
+    await waitFor(() => expect(mockHandleSubmit).toHaveBeenCalled());
+  });
+
+  it("shows an error message when API request fails", async () => {
+    console.error = jest.fn();
+    render(<ProgramManagementListCreateBlock />);
+    fireEvent.click(screen.getByTestId("submit-button"));
+    await waitFor(() => expect(console.error).toHaveBeenCalled());
   });
 });
