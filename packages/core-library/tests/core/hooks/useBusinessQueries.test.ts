@@ -29,6 +29,7 @@ import {
   useGetSectionsByType,
   useGetAllSections,
   useGetAllPrograms,
+  useGetAllProgramsByType,
 } from "../../../core/hooks/useBusinessQueries";
 import { useApiCallback } from "../../../hooks";
 import { CalcItemSelectResponseItem } from "../../../types";
@@ -55,6 +56,7 @@ import {
   ContactFormType,
   GetAllSectionsResponseType,
   GetSectionParams,
+  GetProgramParams,
 } from "../../../api/types";
 import { CategoryListResponse } from "../../../types/category-response";
 import { EditMenuItemsType } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/routing/types/types";
@@ -2185,6 +2187,100 @@ describe("useGetAllPrograms", () => {
 jest.mock("../../../contexts", () => ({
   useBusinessQueryContext: jest.fn(),
 }));
+
+describe("useGetAllProgramsByType", () => {
+  const mockExecute = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useApiCallback as jest.Mock).mockReturnValue({
+      execute: mockExecute,
+    });
+  });
+
+  it("should fetch and return programs by type", async () => {
+    const mockData: StandardProgramListType = {
+      id: "test-program-id",
+      title: "test-program",
+      programStatus: "available",
+      programImage: {
+        src: "test-src",
+        height: 100,
+        width: 100,
+        blurDataURL: "test-blur-url",
+      },
+      sections: [
+        {
+          sectionId: "section-id",
+          sectionType: "document",
+          sectionTitle: "Document",
+          sectionStatus: "available",
+        },
+      ],
+    };
+    mockExecute.mockResolvedValue({ data: mockData });
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: mockData,
+        isLoading: false,
+        error: null,
+      };
+    });
+
+    const programType: GetProgramParams = {
+      programType: 1,
+    };
+
+    const { result } = renderHook(() =>
+      useGetAllProgramsByType(["getProgramsByType"], programType)
+    );
+
+    expect(useQuery).toHaveBeenCalledWith(["getProgramsByType"], expect.any(Function), {
+      staleTime: Infinity,
+    });
+
+    expect(result.current.data).toEqual(mockData);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("should handle loading state", () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    const programType: GetProgramParams = {
+      programType: 1,
+    };
+    const { result } = renderHook(() =>
+      useGetAllProgramsByType(["getProgramsByType"], programType)
+    );
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+  });
+
+  it("should handle error state", async () => {
+    const mockError = new Error("Failed to fetch data");
+    mockExecute.mockRejectedValue(mockError);
+
+    (useQuery as jest.Mock).mockImplementation(() => {
+      return {
+        data: undefined,
+        isLoading: false,
+        error: mockError,
+      };
+    });
+
+    const programType: GetProgramParams = {
+      programType: 1,
+    };
+
+    const { result } = renderHook(() =>
+      useGetAllProgramsByType(["getProgramsByType"], programType)
+    );
+
+    expect(result.current.error).toEqual(mockError);
+    expect(result.current.data).toBeUndefined();
+  });
+});
 
 describe("Reported Issues Block", () => {
   test("should return mock data and refetch function", () => {

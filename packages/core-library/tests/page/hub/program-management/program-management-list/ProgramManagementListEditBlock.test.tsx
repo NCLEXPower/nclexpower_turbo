@@ -654,4 +654,31 @@ describe("ProgramManagementListEditBlock", () => {
       });
     });
   });
+
+  it("should submit the form when submit button is clicked", async () => {
+    render(<ProgramManagementListEditBlock />);
+
+    const submitButton = await waitFor(() => screen.getByTestId("submit-button"));
+    fireEvent.click(submitButton);
+
+    expect(submitButton).toBeInTheDocument();
+  });
+
+  it("should allow adding a new section", async () => {
+    render(<ProgramManagementListEditBlock />);
+
+    const addSectionButton = await waitFor(() => screen.getByTestId("add-section-button"));
+    fireEvent.click(addSectionButton);
+
+    expect(addSectionButton).toBeInTheDocument();
+  });
+
+  it("should allow selecting a section type", async () => {
+    render(<ProgramManagementListEditBlock />);
+
+    const sectionTypeSelect = await waitFor(() => screen.getByTestId("section-type-select"));
+    fireEvent.change(sectionTypeSelect, { target: { value: "video" } });
+
+    expect(sectionTypeSelect).toHaveValue("video");
+  });
 });

@@ -129,12 +129,12 @@ function isContentCardsSectionData(sectionData: unknown): sectionData is {
 
 describe("EditContentCardsBlock Component", () => {
   const mockOnSubmit = jest.fn();
-
+  const setValueMock = jest.fn();
   beforeEach(() => {
     (useForm as jest.Mock).mockReturnValue({
       control: {},
       handleSubmit: (fn: any) => fn,
-      setValue: jest.fn(),
+      setValue: setValueMock,
       getValues: jest.fn(() => ({ cards: [] })),
       watch: jest.fn(() => []),
     });
@@ -236,4 +236,10 @@ describe("EditContentCardsBlock Component", () => {
     expect(isContentCardsSectionData(invalidData)).toBe(false);
   });
 
+  it("sets value correctly when a new topic is added", () => {
+    render(<EditContentCardsBlock onSubmit={mockOnSubmit} />);
+
+    fireEvent.click(screen.getByText("Add Topic"));
+    expect(setValueMock).toHaveBeenCalledWith("cards", expect.any(Array));
+  });
 });
