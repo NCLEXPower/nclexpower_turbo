@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React from "react";
 import { ContactForm } from "./ContactForm";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,7 +17,8 @@ import { GetCategoryType } from "core-library/api/types";
 export function ContactFormBlock() {
   const { showToast } = useExecuteToast();
 
-  const { businessQueryGetReportCategories, businessQueryCreateContactUs } = useBusinessQueryContext();
+  const { businessQueryGetReportCategories, businessQueryCreateContactUs } =
+    useBusinessQueryContext();
   const { data } = businessQueryGetReportCategories(["concern-category"], 5);
   const { mutateAsync } = businessQueryCreateContactUs();
 
@@ -37,10 +38,13 @@ export function ContactFormBlock() {
   async function onSubmit(params: ContactFormType) {
     try {
       await mutateAsync({ ...params });
-      showToast("Your message has been sent. Please check your email for your reference number", "success")
+      showToast(
+        "Your message has been sent. Please check your email for your reference number",
+        "success"
+      );
       reset();
     } catch (error) {
-      showToast("Something went wrong. Please try again later.", "error")
+      showToast("Something went wrong. Please try again later.", "error");
     }
   }
 

@@ -1,23 +1,27 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import { useState, useEffect } from "react";
 import { StandardProgramListType } from "../types/wc/programList";
-import { standardProgramList, fastrackProgramList } from "../core/utils/contants/wc/programs/ProgramListData";
+import {
+  standardProgramList,
+  fastrackProgramList,
+} from "../core/utils/contants/wc/programs/ProgramListData";
 import { useSessionStorage } from "./useSessionStorage";
 
 export const useGetProgramList = () => {
-  const [programList, setProgramList] = useState<StandardProgramListType[] | null>(null);
+  const [programList, setProgramList] = useState<
+    StandardProgramListType[] | null
+  >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [storedProgramList, setProgramListInStorage] = useSessionStorage<StandardProgramListType[]>(
-    "programList",
-    []
-  );
+  const [storedProgramList, setProgramListInStorage] = useSessionStorage<
+    StandardProgramListType[]
+  >("programList", []);
 
   useEffect(() => {
     const fetchProgramList = async () => {
