@@ -81,7 +81,6 @@ describe("ProgramManagementListEditField", () => {
     fileName: "",
     programImage: [],
     control: mockUseForm().control,
-    fields: [],
     sectionList: [],
     handleSectionChange: mockHandleSectionChange,
     handleAddSection: mockHandleAddSection,
@@ -96,6 +95,14 @@ describe("ProgramManagementListEditField", () => {
     handleEditProgramSection: mockHandleEditProgramSection,
     handleDeleteProgramSection: mockHandleDeleteProgramSection,
     handleRemoveSection: mockHandleRemoveSection,
+    fields: [
+      {
+        id: "1",
+        sectionTitle: "Section 1",
+        sectionType: "text",
+        sectionValue: "Value 1",
+      },
+    ],
   };
 
   beforeEach(() => {
@@ -149,5 +156,42 @@ describe("ProgramManagementListEditField", () => {
 
     const editButton = screen.queryByTestId("edit-section-button");
     expect(editButton).toBeNull();
+  });
+
+  it("should call handleDeleteProgramSection when delete button is clicked", () => {
+    render(
+      <ProgramManagementListEditField
+        {...defaultProps}
+        sections={[{ sectionId: "1", sectionType: "text", sectionTitle: "Section 1", sectionData: [], sectionStatus: "available"}]}
+      />
+    );
+
+    const deleteButton = screen.getByTestId("delete-section-button");
+    fireEvent.click(deleteButton);
+    expect(mockHandleDeleteProgramSection).toHaveBeenCalledWith("1");
+  });
+
+  it("should call handleRemoveSection when remove button is clicked", () => {
+    render(
+      <ProgramManagementListEditField
+        {...defaultProps}
+      />
+    );
+
+    const removeButton = screen.getByTestId("remove-section-button");
+    fireEvent.click(removeButton);
+    expect(mockHandleRemoveSection).toHaveBeenCalledWith(0);
+  });
+
+  it("should display the correct program type title based on atomProgramType", () => {
+    render(
+      <ProgramManagementListEditField
+        {...defaultProps}
+        sections={[{ sectionId: "1", sectionType: "text", sectionTitle: "Section 1", sectionData: [], sectionStatus: "available" }]}
+      />
+    );
+
+    const title = screen.getByText(/Standard \(23-Day\) Program/i);
+    expect(title).toBeInTheDocument();
   });
 });

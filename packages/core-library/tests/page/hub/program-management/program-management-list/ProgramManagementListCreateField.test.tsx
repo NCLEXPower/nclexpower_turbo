@@ -31,14 +31,17 @@ jest.mock("../../../../../components", () => ({
   FileUploadField: ({ onUpload }: any) => (
     <input type="file" onChange={(e) => onUpload(e.target.files)} />
   ),
-  GenericSelectField: ({ onChange, options }: any) => (
-    <select onChange={(e) => onChange(e.target.value)}>
-      {options.map((opt: any) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+  GenericSelectField: ({ onChange, options, label, name }: any) => (
+    <>
+      <label htmlFor={name}>{label}</label>
+      <select id={name} onChange={(e) => onChange(e.target.value)}>
+        {options.map((opt: any) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </>
   ),
 }));
 
@@ -97,6 +100,16 @@ describe("ProgramManagementListCreateField", () => {
     mockHandleAddSection.mockClear();
   });
 
+  const originalCreateObjectURL = URL.createObjectURL;
+
+  beforeAll(() => {
+    global.URL.createObjectURL = jest.fn();
+  });
+
+  afterAll(() => {
+    global.URL.createObjectURL = originalCreateObjectURL;
+  });
+
   it("should render program edit form with correct title", () => {
     render(<ProgramManagementListCreateField {...defaultProps} />);
     expect(screen.getByText(/Create/i)).toBeInTheDocument();
@@ -131,4 +144,38 @@ describe("ProgramManagementListCreateField", () => {
     fireEvent.click(submitButton);
     expect(mockOnSave).toHaveBeenCalled();
   });
+
+  it("should display program thumbnail", () => {
+    const propsWithImage = {
+      ...defaultProps,
+      fileName: "test-image.png",
+      programImage: [new File([], "test-image.png")],
+    };
+
+    render(<ProgramManagementListCreateField {...propsWithImage} />);
+    const image = screen.getByAltText("program thumbnail");
+    expect(image).toBeInTheDocument();
+  });
+
+  it("should display 'No sections available' message if fields are empty", () => {
+    render(<ProgramManagementListCreateField {...defaultProps} />);
+    expect(
+      screen.getByText(/No sections available. Please add a section./i)
+    ).toBeInTheDocument();
+  });
+
+  it("should call handleSectionChange when a section type is selected", () => {
+    const propsWithFields = {
+      ...defaultProps,
+      fields: [{ id: "1", sectionTitle: "", sectionType: "", sectionValue: "" }],
+      sectionList: [{ label: "Type1", value: "type1" }],
+    };
+
+    render(<ProgramManagementListCreateField {...propsWithFields} />);
+
+    const select = screen.getByLabelText("Select Section Type");
+    fireEvent.change(select, { target: { value: "type1" } });
+    expect(mockHandleSectionChange).toHaveBeenCalledWith(0, "type1");
+  });
+
 });
