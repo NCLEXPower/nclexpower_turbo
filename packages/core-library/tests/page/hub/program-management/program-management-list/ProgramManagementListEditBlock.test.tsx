@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "../../../../common";
 import { ProgramManagementListEditBlock } from "../../../../../system/app/internal/blocks";
 import { useAtom } from "jotai";
 import { StaticImageData } from "next/image";
@@ -198,6 +198,19 @@ beforeEach(() => {
   Object.defineProperty(HTMLFormElement.prototype, "requestSubmit", {
     value: jest.fn(),
   });
+});
+
+jest.mock("../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
 });
 
 describe("ProgramManagementListEditBlock", () => {

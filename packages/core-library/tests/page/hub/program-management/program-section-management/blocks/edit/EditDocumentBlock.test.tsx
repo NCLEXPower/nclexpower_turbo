@@ -1,6 +1,5 @@
 import { render, screen } from "../../../../../../common";
-import "@testing-library/jest-dom/extend-expect";
-import { EditSimulatorBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditSimulator/EditSimulatorBlock";
+import { EditDocumentBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditDocument/EditDocumentBlock";
 import { useAtom } from "jotai";
 
 jest.mock("next/config", () => () => ({
@@ -17,9 +16,6 @@ jest.mock("../../../../../../../core/router", () => ({
 
 jest.mock("../../../../../../../contexts", () => ({
   useBusinessQueryContext: jest.fn(() => ({
-    businessQueryGetRegularQuestionDDCategory: jest.fn(() => ({
-      data: [],
-    })),
     businessQueryGetSectionsByType: jest.fn(() => ({
       data: [
         {
@@ -55,12 +51,9 @@ jest.mock("../../../../../../../components", () => ({
   ComponentLoader: () => <div>Loading...</div>,
 }));
 
-jest.mock(
-  "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditSimulator/EditSimulatorField",
-  () => ({
-    EditSimulatorField: jest.fn(() => <div>Edit Simulator Field</div>),
-  })
-);
+jest.mock("@hookform/resolvers/yup", () => ({
+  yupResolver: () => ({}),
+}));
 
 jest.mock("../../../../../../common", () => {
   const testingLibrary = jest.requireActual("@testing-library/react");
@@ -75,7 +68,14 @@ jest.mock("../../../../../../common", () => {
   };
 });
 
-describe("EditSimulatorBlock", () => {
+jest.mock(
+  "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditDocument/EditDocumentField",
+  () => ({
+    EditDocumentField: jest.fn(() => <div>Edit Document Field</div>),
+  })
+);
+
+describe("EditDocumentBlock", () => {
   const mockOnSubmit = jest.fn();
 
   beforeEach(() => {
@@ -84,14 +84,12 @@ describe("EditSimulatorBlock", () => {
   });
 
   it("renders loading component when contentLoader is true", () => {
-    render(<EditSimulatorBlock contentLoader={true} onSubmit={mockOnSubmit} />);
+    render(<EditDocumentBlock contentLoader={true} onSubmit={mockOnSubmit} />);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("renders EditSimulatorField when contentLoader is false", () => {
-    render(
-      <EditSimulatorBlock contentLoader={false} onSubmit={mockOnSubmit} />
-    );
-    expect(screen.getByText("Edit Simulator Field")).toBeInTheDocument();
+  it("renders EditDocumentField when contentLoader is false", () => {
+    render(<EditDocumentBlock contentLoader={false} onSubmit={mockOnSubmit} />);
+    expect(screen.getByText("Edit Document Field")).toBeInTheDocument();
   });
 });

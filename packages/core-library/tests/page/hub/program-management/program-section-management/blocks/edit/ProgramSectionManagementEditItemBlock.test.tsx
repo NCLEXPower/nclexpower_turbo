@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "../../../../../../common";
 import { ProgramSectionManagementEditItemBlock } from "../../../../../../../system/app/internal/blocks";
 import { useRouter } from "../../../../../../../core";
 import { useExecuteToast } from "../../../../../../../contexts";
@@ -95,6 +95,19 @@ jest.mock(
 jest.mock("../../../../../../../utils/IconUtils", () => ({
   getSectionTypeIcons: jest.fn(() => "icon"),
 }));
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 const mockRouter = {
   back: jest.fn(),

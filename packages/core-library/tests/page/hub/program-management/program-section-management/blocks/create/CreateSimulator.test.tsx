@@ -3,7 +3,7 @@
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
 */
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "../../../../../../common";
 import { CreateSimulator } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/create";
 import { useForm } from "react-hook-form";
 import { useSelectfieldOptions } from "../../../../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/hooks/useSelectfieldOptions";
@@ -54,6 +54,19 @@ jest.mock("../../../../../../../components", () => ({
   ),
   ComponentLoader: () => <div data-testid="component-loader" />,
 }));
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 describe("CreateSimulator", () => {
   const mockOnSubmit = jest.fn();

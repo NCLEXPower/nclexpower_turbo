@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "../../../../../../common";
 import { ProgramSectionManagementEditBlock } from "../../../../../../../system/app/internal/blocks";
 import { useRouter } from "../../../../../../../core";
 import { useApiCallback } from "../../../../../../../hooks";
@@ -11,17 +11,17 @@ const SectionIdAtom = atom("123");
 const SectionDataIdAtom = atom("456");
 
 jest.mock("../../../../../../../config", () => ({
-    config: { value: jest.fn() },
-  }));
-  
-  jest.mock("../../../../../../../core/router", () => ({
-    useRouter: jest.fn(),
-  }));
+  config: { value: jest.fn() },
+}));
+
+jest.mock("../../../../../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
 
 jest.mock("../../../../../../../hooks", () => ({
   useApiCallback: jest.fn(),
   useCustomAction: jest.fn(),
-  useResolution: jest.fn(() => ({ isMobile: false }))
+  useResolution: jest.fn(() => ({ isMobile: false })),
 }));
 
 jest.mock("../../../../../../../contexts", () => ({
@@ -54,17 +54,29 @@ jest.mock("../../../../../../../contexts", () => ({
 }));
 
 jest.mock("jotai", () => ({
-    atom: jest.fn(),
+  atom: jest.fn(),
   useAtom: jest.fn(),
 }));
 
 jest.mock("next/image", () => ({
-    __esModule: true,
-    default: (props: any) => {
-      return <img {...props} />;
-    },
-  }));
-  
+  __esModule: true,
+  default: (props: any) => {
+    return <img {...props} />;
+  },
+}));
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 describe("ProgramSectionManagementEditBlock", () => {
   const mockRouter = { push: jest.fn(), back: jest.fn() };
   const mockShowToast = jest.fn();
@@ -72,7 +84,9 @@ describe("ProgramSectionManagementEditBlock", () => {
 
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
-    (useExecuteToast as jest.Mock).mockReturnValue({ showToast: mockShowToast });
+    (useExecuteToast as jest.Mock).mockReturnValue({
+      showToast: mockShowToast,
+    });
     (useApiCallback as jest.Mock).mockReturnValue(mockDeleteSectionCb);
 
     (useAtom as jest.Mock).mockImplementation((atom) => {
@@ -102,5 +116,4 @@ describe("ProgramSectionManagementEditBlock", () => {
     fireEvent.click(screen.getByRole("button", { name: /Back/i }));
     expect(mockRouter.back).toHaveBeenCalled();
   });
-
 });

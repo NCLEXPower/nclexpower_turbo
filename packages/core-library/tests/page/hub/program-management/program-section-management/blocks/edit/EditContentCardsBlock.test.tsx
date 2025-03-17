@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "../../../../../../common";
 import { EditContentCardsBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditContentCards/EditContentCardsBlock";
 import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
@@ -95,6 +95,19 @@ jest.mock(
     ),
   })
 );
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 function isContentCardsSectionData(sectionData: unknown): sectionData is {
   title: string;

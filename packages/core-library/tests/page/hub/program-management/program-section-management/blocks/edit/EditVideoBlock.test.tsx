@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../../../../common";
 import { EditVideoBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditVideo/EditVideoBlock";
 import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
@@ -62,6 +62,19 @@ jest.mock("../../../../../../../contexts", () => ({
     })),
   })),
 }));
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 const mockOnSubmit = jest.fn();
 

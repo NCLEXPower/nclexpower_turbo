@@ -3,15 +3,9 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  renderHook,
-} from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "../../../../common";
 import { ProgramManagementListCreateBlock } from "../../../../../system/app/internal/blocks";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useRouter } from "../../../../../core";
 import { useExecuteToast } from "../../../../../contexts";
 import { WelcomeProgram } from "../../../../../assets";
@@ -98,6 +92,19 @@ jest.mock(
     ],
   })
 );
+
+jest.mock("../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 describe("ProgramManagementListCreateBlock", () => {
   let mockHandleSubmit: jest.Mock;
@@ -216,5 +223,4 @@ describe("ProgramManagementListCreateBlock", () => {
     fireEvent.click(screen.getByTestId("back-button"));
     expect(mockHandleBack).toHaveBeenCalled();
   });
-
 });

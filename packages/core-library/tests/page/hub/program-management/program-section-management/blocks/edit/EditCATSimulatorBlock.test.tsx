@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../../../../common";
 import { EditCATSimulatorBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditCATSimulator/EditCATSimulatorBlock";
 import { useAtom } from "jotai";
 
@@ -53,6 +53,19 @@ jest.mock("../../../../../../../components", () => ({
 jest.mock("../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditCATSimulator/EditCATSimulatorField", () => ({
     EditCATSimulatorField: jest.fn(() => <div>Edit CAT Simulator Field</div>),
 }));
+
+jest.mock("../../../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 describe("EditCATSimulatorBlock", () => {
   const mockOnSubmit = jest.fn();

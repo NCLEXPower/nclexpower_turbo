@@ -3,7 +3,7 @@
 * Reuse as a whole or in part is prohibited without permission.
 * Created by the Software Strategy & Development Division
 */
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../../common";
 import { ProgramManagementListBlock } from "../../../../../system/app/internal/blocks";
 import { useRouter } from "next/router";
 import { useExecuteToast } from "../../../../../contexts";
@@ -61,6 +61,19 @@ jest.mock("jotai", () => ({
   useAtom: jest.fn(),
   atom: jest.fn(),
 }));
+
+jest.mock("../../../../common", () => {
+  const testingLibrary = jest.requireActual("@testing-library/react");
+
+  return {
+    render: jest.fn((ui) => {
+      return testingLibrary.render(ui);
+    }),
+    screen: testingLibrary.screen,
+    fireEvent: testingLibrary.fireEvent,
+    waitFor: testingLibrary.waitFor,
+  };
+});
 
 describe("ProgramManagementListBlock", () => {
   const mockPush = jest.fn();
