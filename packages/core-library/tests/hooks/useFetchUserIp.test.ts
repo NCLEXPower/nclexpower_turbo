@@ -1,6 +1,6 @@
 import axios from "axios";
 import { config } from "../../config";
-import { useFetchUserApi } from "../../hooks";
+import { useFetchUserIp } from "../../hooks";
 import { act, renderHook } from "../common";
 
 jest.mock("axios", () => ({
@@ -27,7 +27,7 @@ jest.mock("../../config", () => ({
   },
 }));
 
-describe("useFetchUserApi", () => {
+describe("useFetchUserIp", () => {
   const mockAxios = axios as jest.Mocked<typeof axios>;
   let originalEnv: NodeJS.ProcessEnv;
 
@@ -46,7 +46,7 @@ describe("useFetchUserApi", () => {
 
   it("should initialize with null ip, null error, and loading as true", () => {
     process.env = { ...process.env, NODE_ENV: "production" };
-    const { result } = renderHook(() => useFetchUserApi());
+    const { result } = renderHook(() => useFetchUserIp());
     
     expect(result.current.ip).toBeNull();
     expect(result.current.error).toBeNull();
@@ -62,7 +62,7 @@ describe("useFetchUserApi", () => {
       .mockResolvedValueOnce({ data: { ip: mockIp } })
       .mockResolvedValueOnce({ data: { ip: mockIp } });
 
-    const { result } = renderHook(() => useFetchUserApi(mockApiKey));
+    const { result } = renderHook(() => useFetchUserIp(mockApiKey));
 
     await act(async () => {
       await Promise.resolve();
@@ -78,7 +78,7 @@ describe("useFetchUserApi", () => {
     const errorMessage = "Network Error";
     mockAxios.get.mockRejectedValue(new Error(errorMessage));
 
-    const { result } = renderHook(() => useFetchUserApi("valid-key"));
+    const { result } = renderHook(() => useFetchUserIp("valid-key"));
 
     await act(async () => {
       await Promise.resolve();
@@ -97,7 +97,7 @@ describe("useFetchUserApi", () => {
       .mockResolvedValueOnce({ data: { ip: mockIp } })
       .mockRejectedValue(new Error(errorMessage));
 
-    const { result } = renderHook(() => useFetchUserApi("valid-key"));
+    const { result } = renderHook(() => useFetchUserIp("valid-key"));
 
     await act(async () => {
       await Promise.resolve();
@@ -109,7 +109,7 @@ describe("useFetchUserApi", () => {
 
   it("should not fetch in production environment", async () => {
     process.env = { ...process.env, NODE_ENV: "production" };
-    const { result } = renderHook(() => useFetchUserApi("valid-key"));
+    const { result } = renderHook(() => useFetchUserIp("valid-key"));
 
     await act(async () => {
       await Promise.resolve();
@@ -123,7 +123,7 @@ describe("useFetchUserApi", () => {
     process.env = { ...process.env, NODE_ENV: "development" };
     mockAxios.get.mockResolvedValue({ data: {} });
 
-    const { result } = renderHook(() => useFetchUserApi("valid-key"));
+    const { result } = renderHook(() => useFetchUserIp("valid-key"));
 
     await act(async () => {
       await Promise.resolve();

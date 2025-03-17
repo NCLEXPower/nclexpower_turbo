@@ -15,7 +15,7 @@ interface useFetchUserApiProps {
  * Custom hook to get the user's IP address.
  */
 
-export const useFetchUserApi = (apiKey?: string): useFetchUserApiProps => {
+export const useFetchUserIp = (apiKey?: string): useFetchUserApiProps => {
   const [ip, setIp] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

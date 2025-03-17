@@ -492,4 +492,15 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/get-contact-us`
     );
   }
+
+  public async getTimezoneByIp(ipAddress:string) {
+    return await this.axios.get<string>(
+      `/api/v2/content/BaseContent/get-timezone-by-ip?ipAddress=${ipAddress}`,
+      {
+        headers: {
+          'X-Time-Zone': ''
+        }
+      }
+    );
+  }
 }
