@@ -94,10 +94,10 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
   handleDeleteProgramSection,
   handleRemoveSection,
   isRemovingProgramSection,
-  removingSectionId
+  removingSectionId,
 }) => {
   const [atomProgramType] = useAtom(programTypeAtom);
-  
+
   return (
     <Box
       sx={{
@@ -272,8 +272,15 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
               if (section.sectionId === editingSectionId) {
                 return null;
               }
-              const { sectionId, sectionType, sectionTitle, sectionData } = section;
+              const {
+                sectionId,
+                sectionType,
+                sectionTitle,
+                sectionData,
+                sectionTimer,
+              } = section;
 
+              console.log(section, "sectionData");
               return (
                 <Box
                   key={sectionId}
@@ -288,7 +295,13 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                       src={getSectionTypeIcons(sectionType)}
                       alt={`${sectionType} Icon`}
                     />
-                    <Typography>{sectionType === "video" ? sectionData?.[0].secVidTitle : sectionTitle}</Typography>
+                    <Typography>
+                      {sectionType === "video"
+                        ? sectionData?.[0]?.secVidTitle
+                        : sectionType === "cat"
+                          ? `${sectionTitle} (${sectionTimer ?? 0} ${Number(sectionTimer) > 1 ? "hrs" : "hr"})`
+                          : sectionTitle}
+                    </Typography>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <IconButton
@@ -300,7 +313,8 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                     >
                       <EvaIcon name="edit-outline" />
                     </IconButton>
-                    {isRemovingProgramSection && removingSectionId === sectionId ? (
+                    {isRemovingProgramSection &&
+                    removingSectionId === sectionId ? (
                       <CircularProgress
                         size={20}
                         color="inherit"
