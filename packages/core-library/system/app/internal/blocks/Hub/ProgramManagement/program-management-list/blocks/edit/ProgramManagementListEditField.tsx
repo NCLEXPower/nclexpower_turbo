@@ -280,7 +280,6 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                 sectionTimer,
               } = section;
 
-              console.log(section, "sectionData");
               return (
                 <Box
                   key={sectionId}
