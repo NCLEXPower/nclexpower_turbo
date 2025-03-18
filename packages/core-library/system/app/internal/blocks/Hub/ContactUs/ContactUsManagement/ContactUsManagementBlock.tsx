@@ -8,13 +8,13 @@ import { Container, Box, ListItemButton } from "@mui/material";
 import { Alert, Card, DataGrid, ConfirmationDeleteDialog } from "../../../../../../../components";
 import { useColumns, useApi, useApiCallback, useModal } from "../../../../../../../hooks";
 import { ContactResponseType } from "../../../../../../../api/types";
-import { CustomPopover } from "../../../../../../../components/Popover/Popover";
+import { CustomPopover } from "../../../../../../../components";
 import { GridMoreVertIcon } from "@mui/x-data-grid";
 import { useExecuteToast } from "../../../../../../../contexts";
 
 export const ContactUsManagementBlock: React.FC = () => {
     const { open, close, props } = useModal();
-    const { executeToast } = useExecuteToast();
+    const { showToast } = useExecuteToast();
 
     const getContacts = useApi((api) => api.webbackoffice.getAllContacts());
     const deleteContact = useApiCallback((api, id: string) => api.webbackoffice.deleteContact(id));
@@ -25,11 +25,11 @@ export const ContactUsManagementBlock: React.FC = () => {
         try {
             await deleteContact.execute(id);
             getContacts.execute();
-            executeToast("Contact deleted successfully", 'top-right', true, { type: 'success' });
+            showToast("Contact deleted successfully", 'success');
             close();
         } catch (error) {
             console.error(error);
-            executeToast(`Something went wrong during deletion ${error}. Please try again later`, 'top-right', true, { type: 'error' });
+            showToast(`Something went wrong during deletion ${error}. Please try again later`, 'error');
         }
     }
 
