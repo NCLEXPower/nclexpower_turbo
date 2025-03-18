@@ -1,5 +1,10 @@
+/**
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { Box, Stack, Typography } from "@mui/material";
-import { Button, TextField } from "../../../../../../../../../components";
+import { Button } from "../../../../../../../../../components";
 
 interface RemoveSectionProps {
   closeModal: () => void;

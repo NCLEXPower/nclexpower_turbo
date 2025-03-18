@@ -1,4 +1,9 @@
-import { render, fireEvent, waitFor } from "../../../../../../common";
+/**
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
+import { render } from "../../../../../../common";
 import { CreateDocument } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/create";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

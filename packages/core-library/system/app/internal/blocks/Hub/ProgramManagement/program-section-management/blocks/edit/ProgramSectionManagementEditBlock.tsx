@@ -1,8 +1,8 @@
 /**
- * Property of the NCLEX Power.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { useMemo, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { Button, DialogBox } from "../../../../../../../../../components";

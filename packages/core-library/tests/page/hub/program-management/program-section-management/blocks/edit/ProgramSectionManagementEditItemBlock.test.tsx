@@ -1,3 +1,8 @@
+/**
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { render, fireEvent, waitFor } from "../../../../../../common";
 import { ProgramSectionManagementEditItemBlock } from "../../../../../../../system/app/internal/blocks";
 import { useRouter } from "../../../../../../../core";

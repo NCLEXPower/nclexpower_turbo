@@ -1,8 +1,8 @@
 /**
- * Property of the NCLEX Power.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { render, screen, fireEvent, waitFor } from "../../../../../../common";
 import { EditContentCardsBlock } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditContentCards/EditContentCardsBlock";
 import { useForm } from "react-hook-form";

@@ -1,3 +1,8 @@
+/**
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { render, screen, waitFor, fireEvent } from "../../../../../../common";
 import { useForm } from "react-hook-form";
 import { CreateVideo } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/create";

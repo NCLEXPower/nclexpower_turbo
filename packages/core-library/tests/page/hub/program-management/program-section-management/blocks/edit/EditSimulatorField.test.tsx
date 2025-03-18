@@ -1,3 +1,8 @@
+/**
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 import { render, screen, fireEvent } from "../../../../../../common";
 import { Control } from "react-hook-form";
 import { EditSimulatorField } from "../../../../../../../system/app/internal/blocks/Hub/ProgramManagement/program-section-management/blocks/edit-item/EditSimulator/EditSimulatorField";
