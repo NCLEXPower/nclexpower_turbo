@@ -1,21 +1,21 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useEffect } from 'react';
-import { Box, Grid, Divider } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect } from "react";
+import { Box, Grid, Divider } from "@mui/material";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   SettingsSelectionOptions,
   SettingsSelectionType,
   ChooseSettingsOptions,
-} from '../../types';
-import { Card, InformationTitle } from '../../../../../../../../../components';
-import { AccessLevels } from '../../../../../../../../../core/utils/permission';
-import { useAccessControl } from '../../../../../../../../../hooks/useAccessControl';
+} from "../../types";
+import { Card, InformationTitle } from "../../../../../../../../../components";
+import { AccessLevels } from "../../../../../../../../../core/utils/permission";
+import { useAccessControl } from "../../../../../../../../../hooks/useAccessControl";
 
 interface Props {
   nextStep(values: Partial<SettingsSelectionType>): void;
@@ -27,17 +27,17 @@ interface Props {
 const chooseSettingsStepFormSchema = yup.object({
   selection: yup
     .mixed<SettingsSelectionOptions>()
-    .oneOf(['DBEXCEL', 'QM', 'IARM', 'WEBCUSTOMER'])
+    .oneOf(["DBEXCEL", "QM", "IARM", "WEBCUSTOMER"])
     .required(),
   chosen: yup
     .mixed<ChooseSettingsOptions>()
     .oneOf([
-      'CONFIG',
-      'AUTOMATION',
-      'ROUTER',
-      'MAINTENANCE',
-      'CHATBOT',
-      'MIXPANEL',
+      "CONFIG",
+      "AUTOMATION",
+      "ROUTER",
+      "MAINTENANCE",
+      "CHATBOT",
+      "MIXPANEL",
     ])
     .required(),
 });
@@ -53,8 +53,8 @@ export const ChooseProductsConfigurations = (props: {
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
-    mode: 'all',
-    criteriaMode: 'all',
+    mode: "all",
+    criteriaMode: "all",
   });
 
   const { accessLevel } = useAccessControl();
@@ -67,24 +67,24 @@ export const ChooseProductsConfigurations = (props: {
   }, [props.values.selection, props.values.chosen]);
 
   const handleSelection = (values: ChooseSettingsStepFormType) => {
-    setValue('chosen', values.chosen);
-    setValue('selection', values.selection);
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
 
   return (
     <Box sx={{ mb: 5 }}>
       <InformationTitle
-        text='Configuration Changes'
+        text="Configuration Changes"
         lineWidth={6}
         lineHeight={35}
-        lineColor='#6A5ACD'
+        lineColor="#6A5ACD"
         borderRadius={2}
         containerProps={{ mb: 5 }}
-        textProps={{ color: 'text.primary', fontWeight: 'bold' }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
       <Grid
-        justifyContent='center'
+        justifyContent="center"
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -92,10 +92,10 @@ export const ChooseProductsConfigurations = (props: {
         {accessLevel === AccessLevels.ADMIN && (
           <>
             <Grid item xs={4}>
-              <Card hoverEffect elevation={5} text='Web Customer' />
+              <Card hoverEffect elevation={5} text="Web Customer" />
             </Grid>
             <Grid item xs={4}>
-              <Card hoverEffect elevation={5} text='Web BackOffice' />
+              <Card hoverEffect elevation={5} text="Web BackOffice" />
             </Grid>
           </>
         )}
@@ -104,12 +104,12 @@ export const ChooseProductsConfigurations = (props: {
           <Grid item xs={4}>
             <Card
               onClick={() =>
-                handleSelection({ chosen: 'CONFIG', selection: 'QM' })
+                handleSelection({ chosen: "CONFIG", selection: "QM" })
               }
               hoverEffect
               elevation={5}
-              text='Web Simulator'
-              data-testid='web-simulator-card'
+              text="Web Simulator"
+              data-testid="web-simulator-card"
             />
           </Grid>
         )}
@@ -124,8 +124,8 @@ export const OtherConfigurations = (props: {
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
-    mode: 'all',
-    criteriaMode: 'all',
+    mode: "all",
+    criteriaMode: "all",
   });
 
   useEffect(() => {
@@ -136,24 +136,24 @@ export const OtherConfigurations = (props: {
   }, [props.values.selection, props.values.chosen]);
 
   const handleSelection = (values: ChooseSettingsStepFormType) => {
-    setValue('chosen', values.chosen);
-    setValue('selection', values.selection);
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
 
   return (
     <Box sx={{ mb: 5 }}>
       <InformationTitle
-        text='Server/Automations & Other configurations'
+        text="Server/Automations & Other configurations"
         lineWidth={6}
         lineHeight={35}
-        lineColor='#6A5ACD'
+        lineColor="#6A5ACD"
         borderRadius={2}
         containerProps={{ mb: 5 }}
-        textProps={{ color: 'text.primary', fontWeight: 'bold' }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
       <Grid
-        justifyContent='center'
+        justifyContent="center"
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -162,10 +162,10 @@ export const OtherConfigurations = (props: {
           <Card
             hoverEffect
             onClick={() =>
-              handleSelection({ chosen: 'AUTOMATION', selection: 'DBEXCEL' })
+              handleSelection({ chosen: "AUTOMATION", selection: "DBEXCEL" })
             }
             elevation={5}
-            text='DB & Excel Comparison'
+            text="DB & Excel Comparison"
           />
         </Grid>
         <Grid item xs={4}></Grid>
@@ -181,8 +181,8 @@ export const ContentManagementSystemSettings = (props: {
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
-    mode: 'all',
-    criteriaMode: 'all',
+    mode: "all",
+    criteriaMode: "all",
   });
 
   useEffect(() => {
@@ -193,24 +193,24 @@ export const ContentManagementSystemSettings = (props: {
   }, [props.values.selection, props.values.chosen]);
 
   const handleSelection = (values: ChooseSettingsStepFormType) => {
-    setValue('chosen', values.chosen);
-    setValue('selection', values.selection);
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
 
   return (
     <Box>
       <InformationTitle
-        text='CMS & Reviewers Configurations'
+        text="CMS & Reviewers Configurations"
         lineWidth={6}
         lineHeight={35}
-        lineColor='#6A5ACD'
+        lineColor="#6A5ACD"
         borderRadius={2}
         containerProps={{ mb: 5 }}
-        textProps={{ color: 'text.primary', fontWeight: 'bold' }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
       <Grid
-        justifyContent='center'
+        justifyContent="center"
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -219,10 +219,10 @@ export const ContentManagementSystemSettings = (props: {
           <Card
             hoverEffect
             onClick={() =>
-              handleSelection({ chosen: 'CMS', selection: 'DEFAULTREVIEWER' })
+              handleSelection({ chosen: "CMS", selection: "DEFAULTREVIEWER" })
             }
             elevation={5}
-            text='Default Reviewer Configuration'
+            text="Default Reviewer Configuration"
           />
         </Grid>
         <Grid item xs={4}>
@@ -230,12 +230,12 @@ export const ContentManagementSystemSettings = (props: {
             hoverEffect
             onClick={() =>
               handleSelection({
-                chosen: 'CMS',
-                selection: 'RESOURCEMANAGEMENT',
+                chosen: "CMS",
+                selection: "RESOURCEMANAGEMENT",
               })
             }
             elevation={5}
-            text='Resource Management'
+            text="Resource Management"
           />
         </Grid>
         <Grid item xs={4}></Grid>
@@ -251,8 +251,8 @@ export const InAppManagement = (props: {
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
-    mode: 'all',
-    criteriaMode: 'all',
+    mode: "all",
+    criteriaMode: "all",
   });
 
   useEffect(() => {
@@ -263,24 +263,24 @@ export const InAppManagement = (props: {
   }, [props.values.selection, props.values.chosen]);
 
   const handleSelection = (values: ChooseSettingsStepFormType) => {
-    setValue('chosen', values.chosen);
-    setValue('selection', values.selection);
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
 
   return (
     <Box>
       <InformationTitle
-        text='In App Router Management'
+        text="In App Router Management"
         lineWidth={6}
         lineHeight={35}
-        lineColor='#6A5ACD'
+        lineColor="#6A5ACD"
         borderRadius={2}
         containerProps={{ mb: 5 }}
-        textProps={{ color: 'text.primary', fontWeight: 'bold' }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
       <Grid
-        justifyContent='center'
+        justifyContent="center"
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -289,11 +289,11 @@ export const InAppManagement = (props: {
           <Card
             hoverEffect
             onClick={() =>
-              handleSelection({ chosen: 'ROUTER', selection: 'IARM' })
+              handleSelection({ chosen: "ROUTER", selection: "IARM" })
             }
             elevation={5}
-            data-testid='in-app-router-card'
-            text='In App Router Management'
+            data-testid="in-app-router-card"
+            text="In App Router Management"
           />
         </Grid>
         <Grid item xs={4}></Grid>
@@ -308,8 +308,8 @@ export const MaintenanceMode = (props: {
 }) => {
   const { reset, setValue } = useForm<ChooseSettingsStepFormType>({
     resolver: yupResolver(chooseSettingsStepFormSchema),
-    mode: 'all',
-    criteriaMode: 'all',
+    mode: "all",
+    criteriaMode: "all",
   });
 
   useEffect(() => {
@@ -320,24 +320,24 @@ export const MaintenanceMode = (props: {
   }, [props.values.selection, props.values.chosen]);
 
   const handleSelection = (values: ChooseSettingsStepFormType) => {
-    setValue('chosen', values.chosen);
-    setValue('selection', values.selection);
+    setValue("chosen", values.chosen);
+    setValue("selection", values.selection);
     props.nextStep({ chosen: values.chosen, selection: values.selection });
   };
 
   return (
     <Box>
       <InformationTitle
-        text='Product Maintenance'
+        text="Product Maintenance"
         lineWidth={6}
         lineHeight={35}
-        lineColor='#6A5ACD'
+        lineColor="#6A5ACD"
         borderRadius={2}
         containerProps={{ mb: 5 }}
-        textProps={{ color: 'text.primary', fontWeight: 'bold' }}
+        textProps={{ color: "text.primary", fontWeight: "bold" }}
       />
       <Grid
-        justifyContent='center'
+        justifyContent="center"
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -347,12 +347,12 @@ export const MaintenanceMode = (props: {
             hoverEffect
             onClick={() =>
               handleSelection({
-                chosen: 'MAINTENANCE',
-                selection: 'WEBCUSTOMER',
+                chosen: "MAINTENANCE",
+                selection: "WEBCUSTOMER",
               })
             }
             elevation={5}
-            text='Web Customer'
+            text="Web Customer"
           />
         </Grid>
         <Grid item xs={4}>
@@ -360,13 +360,13 @@ export const MaintenanceMode = (props: {
             hoverEffect
             onClick={() =>
               handleSelection({
-                chosen: 'CHATBOT',
-                selection: 'WEBCUSTOMER',
+                chosen: "CHATBOT",
+                selection: "WEBCUSTOMER",
               })
             }
-            data-testid='chatbot-widget-card'
+            data-testid="chatbot-widget-card"
             elevation={5}
-            text='Chatbot Mode'
+            text="Chatbot Mode"
           />
         </Grid>
         <Grid item xs={4}>
@@ -374,13 +374,13 @@ export const MaintenanceMode = (props: {
             hoverEffect
             onClick={() =>
               handleSelection({
-                chosen: 'MIXPANEL',
-                selection: 'WEBCUSTOMER',
+                chosen: "MIXPANEL",
+                selection: "WEBCUSTOMER",
               })
             }
-            data-testid='mixpanel-card'
+            data-testid="mixpanel-card"
             elevation={5}
-            text='Mix Panel Tracking'
+            text="Mix Panel Tracking"
           />
         </Grid>
         <Grid item xs={4}></Grid>
@@ -393,10 +393,10 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
   const { hasAccess } = useAccessControl();
   return (
     <Card sx={{ mt: 5, p: 5 }}>
-      {hasAccess('ChooseProductsConfigurations') && (
+      {hasAccess("ChooseProductsConfigurations") && (
         <ChooseProductsConfigurations nextStep={nextStep} values={values} />
       )}
-      {hasAccess('OtherConfigurations') && (
+      {hasAccess("OtherConfigurations") && (
         <>
           <Divider>Other Configurations</Divider>
           <OtherConfigurations nextStep={nextStep} values={values} />
@@ -404,7 +404,7 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
         </>
       )}
 
-      {hasAccess('ContentManagementSystemSettings') && (
+      {hasAccess("ContentManagementSystemSettings") && (
         <>
           <ContentManagementSystemSettings
             nextStep={nextStep}
@@ -414,10 +414,10 @@ export const SettingsManagement: React.FC<Props> = ({ nextStep, values }) => {
         </>
       )}
 
-      {hasAccess('InAppManagement') && (
+      {hasAccess("InAppManagement") && (
         <InAppManagement nextStep={nextStep} values={values} />
       )}
-      {hasAccess('MaintenanceMode') && (
+      {hasAccess("MaintenanceMode") && (
         <>
           <Divider>Maintenance Mode</Divider>
           <MaintenanceMode nextStep={nextStep} values={values} />

@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -12,11 +12,11 @@ import { withCSP } from "core-library";
 import { SsrTypes } from "core-library/types/global";
 
 type Props = {
-    data: SsrTypes;
+  data: SsrTypes;
 };
 
 const InclusionMainPage: React.FC<Props> = ({ data }) => {
-    return <ParseBlocks blocks="InclusionBlock" data={data} />;
+  return <ParseBlocks blocks="InclusionBlock" data={data} />;
 };
 
 export const getServerSideProps: GetServerSideProps = withCSP();

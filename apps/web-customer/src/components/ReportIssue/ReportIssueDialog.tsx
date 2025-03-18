@@ -1,16 +1,15 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
-import React, { useState } from 'react';
-import { Button } from '@mui/material';
-import { DialogBox } from 'core-library/components/Dialog/DialogBox';
-import { useBusinessQueryContext } from 'core-library/contexts';
-import { ReportIssueType } from 'core-library/api/types';
-import ReportIssueForm from './ReportIssueForm';
-import { EvaIcon } from 'core-library/components';
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import React, { useState } from "react";
+import { Button } from "@mui/material";
+import { DialogBox } from "core-library/components/Dialog/DialogBox";
+import { useBusinessQueryContext } from "core-library/contexts";
+import { ReportIssueType } from "core-library/api/types";
+import ReportIssueForm from "./ReportIssueForm";
+import { EvaIcon } from "core-library/components";
 
 export default function ReportIssueDialog() {
   const [open, setOpen] = useState(false);
@@ -23,18 +22,18 @@ export default function ReportIssueDialog() {
   async function onSubmit(params: ReportIssueType) {
     await mutateAsync({ ...params });
     handleClose();
-  };
+  }
 
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen} sx={{ color: '#F3F3F3' }}>
-            <EvaIcon
-                name="alert-circle"
-                fill="#F3F3F3"
-                width={40}
-                height={40}
-                ariaHidden
-              />
+      <Button onClick={handleClickOpen} sx={{ color: "#F3F3F3" }}>
+        <EvaIcon
+          name="alert-circle"
+          fill="#F3F3F3"
+          width={40}
+          height={40}
+          ariaHidden
+        />
         Report Issue
       </Button>
       <DialogBox
@@ -42,7 +41,7 @@ export default function ReportIssueDialog() {
         loading={false}
         maxWidth={"md"}
         open={open}
-        header='Report an Issue'
+        header="Report an Issue"
         hideCloseButton={false}
         sx={{ zIndex: 1 }}
       >
