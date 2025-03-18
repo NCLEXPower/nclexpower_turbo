@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -130,9 +130,12 @@ export async function getEndpointResources() {
 }
 
 export async function getHasChatBotWidget() {
-  const response = await fetch(`${baseUrl}/api/v1/Customer/get-helpwidget-status`, {
-    method: "GET",
-    headers: headers,
-  });
+  const response = await fetch(
+    `${baseUrl}/api/v1/Customer/get-helpwidget-status`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
   return ((await response.json()) as ChatBotSsr) ?? null;
 }

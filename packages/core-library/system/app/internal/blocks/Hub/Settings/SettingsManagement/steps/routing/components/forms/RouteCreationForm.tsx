@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -8,23 +8,19 @@ import {
   Button,
   GenericSelectField,
 } from "../../../../../../../../../../../components";
-import {
-  Control,
-  useFormContext,
-} from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 import { RouteManagementSchema } from "../../../../validation";
-import {
-  SystemRequirements,
-} from "../../constant/constant";
-import React, { useMemo } from 'react';
+import { SystemRequirements } from "../../constant/constant";
+import React, { useMemo } from "react";
 
 type RouteCreationFormPropsType = {
   onSubmit: (value: RouteManagementSchema) => void;
-}
+};
 
-export const RouteCreationForm: React.FC<RouteCreationFormPropsType> = ({ onSubmit }) => {
-  const { handleSubmit } =
-    useFormContext<RouteManagementSchema>();
+export const RouteCreationForm: React.FC<RouteCreationFormPropsType> = ({
+  onSubmit,
+}) => {
+  const { handleSubmit } = useFormContext<RouteManagementSchema>();
 
   return (
     <Box

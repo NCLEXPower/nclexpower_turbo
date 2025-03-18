@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -10,14 +10,18 @@ import { IconButton, EvaIcon } from "../components";
 interface PasswordToggleAdornmentProps {
   showPassword: boolean;
   onClick: () => void;
-};
+}
 
-export const PasswordToggleAdornment: React.FC<PasswordToggleAdornmentProps> = ({
-  showPassword,
-  onClick,
-}) => {
+export const PasswordToggleAdornment: React.FC<
+  PasswordToggleAdornmentProps
+> = ({ showPassword, onClick }) => {
   return (
-    <IconButton aria-label="toggle password visibility" onClick={onClick} size="small" edge="end">
+    <IconButton
+      aria-label="toggle password visibility"
+      onClick={onClick}
+      size="small"
+      edge="end"
+    >
       <Box
         sx={{
           position: "relative",
@@ -29,8 +33,20 @@ export const PasswordToggleAdornment: React.FC<PasswordToggleAdornmentProps> = (
           },
         }}
       >
-        <EvaIcon id="close-icon" name="eye-off-outline" width={30} height={30} aria-hidden="true" />
-        <EvaIcon id="open-icon" name="eye-outline" width={30} height={30} aria-hidden="true" />
+        <EvaIcon
+          id="close-icon"
+          name="eye-off-outline"
+          width={30}
+          height={30}
+          aria-hidden="true"
+        />
+        <EvaIcon
+          id="open-icon"
+          name="eye-outline"
+          width={30}
+          height={30}
+          aria-hidden="true"
+        />
       </Box>
     </IconButton>
   );
