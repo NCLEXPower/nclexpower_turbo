@@ -75,11 +75,10 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     router.push(getVideoPagePath(sectionList, programId, lastPathSegment));
   };
 
-  const handleShowContentCards = (
-    sectionData: SectionDataType[],
-    programId: string
-  ) => {
-    open(sectionData);
+  const handleShowContentCards = (sectionData: SectionDataType[]) => {
+    if (sectionData && sectionData.length && !isVideoSectionType(sectionData)) {
+      open(sectionData);
+    }
   };
 
   const handleNonVideoStatusChange = (sectionId: string) => {
@@ -247,15 +246,18 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                     sectionData,
                   } = item;
 
-                  const hasData = sectionData && !!sectionData.length;
                   const isDocumentOrMedCards =
                     sectionType === "document" || sectionType === "med-cards";
 
-                  const handleClick = () => {
-                    hasData &&
-                      !isVideoSectionType(sectionData) &&
-                      handleShowContentCards(sectionData, id);
-                  };
+                  const hasData = sectionData && sectionData.length > 0;
+
+                  const isNonVideoSection =
+                    hasData && !isVideoSectionType(sectionData);
+
+                  const sectionLink =
+                    isNonVideoSection && sectionData[0].link
+                      ? sectionData[0].link
+                      : "";
 
                   return (
                     <div
@@ -269,15 +271,9 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                           width={16}
                           height={16}
                         />
-                        {isDocumentOrMedCards &&
-                        hasData &&
-                        !isVideoSectionType(sectionData) ? (
+                        {isDocumentOrMedCards && isNonVideoSection ? (
                           <Link
-                            href={
-                              sectionData[0].link !== null
-                                ? sectionData[0].link
-                                : ""
-                            }
+                            href={sectionLink}
                             target="_blank"
                             naked
                             className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
@@ -289,7 +285,10 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
                           </Link>
                         ) : (
                           <h4
-                            onClick={handleClick}
+                            onClick={() =>
+                              isNonVideoSection &&
+                              handleShowContentCards(sectionData)
+                            }
                             className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
                           >
                             {sectionTitle}

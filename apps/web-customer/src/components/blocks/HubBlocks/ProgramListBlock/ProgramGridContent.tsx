@@ -37,7 +37,7 @@ export const ProgramGridContent: React.FC<Props> = ({
   closeModal,
   programId,
 }) => {
-  const { videoSections, otherSections } = separateSectionType(sections ?? []);
+  const { videoSections, otherSections } = separateSectionType(sections);
 
   const secVidDetails = !!videoSections.length
     ? {
@@ -54,11 +54,10 @@ export const ProgramGridContent: React.FC<Props> = ({
 
   const lastPathSegment = router.asPath.split("/").filter(Boolean).pop() ?? "";
 
-  const handleShowContentCards = (
-    sectionData: SectionDataType[],
-    programId: string
-  ) => {
-    open(sectionData);
+  const handleShowContentCards = (sectionData: SectionDataType[]) => {
+    if (sectionData && sectionData.length && !isVideoSectionType(sectionData)) {
+      open(sectionData);
+    }
   };
 
   const handleNonVideoStatusChange = (sectionId: string) => {
@@ -150,15 +149,18 @@ export const ProgramGridContent: React.FC<Props> = ({
                     sectionData,
                   } = item;
 
-                  const hasData = sectionData && !!sectionData.length;
                   const isDocumentOrMedCards =
                     sectionType === "document" || sectionType === "med-cards";
 
-                  const handleClick = () => {
-                    hasData &&
-                      !isVideoSectionType(sectionData) &&
-                      handleShowContentCards(sectionData, programId);
-                  };
+                  const hasData = sectionData && sectionData.length > 0;
+
+                  const isNonVideoSection =
+                    hasData && !isVideoSectionType(sectionData);
+
+                  const sectionLink =
+                    isNonVideoSection && sectionData[0].link
+                      ? sectionData[0].link
+                      : "";
 
                   return (
                     <div key={sectionId} className="flex justify-between px-2">
@@ -169,15 +171,9 @@ export const ProgramGridContent: React.FC<Props> = ({
                           width={16}
                           height={16}
                         />
-                        {isDocumentOrMedCards &&
-                        hasData &&
-                        !isVideoSectionType(sectionData) ? (
+                        {isDocumentOrMedCards && isNonVideoSection ? (
                           <Link
-                            href={
-                              sectionData[0].link !== null
-                                ? sectionData[0].link
-                                : ""
-                            }
+                            href={sectionLink}
                             target="_blank"
                             naked
                             className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
@@ -189,7 +185,10 @@ export const ProgramGridContent: React.FC<Props> = ({
                           </Link>
                         ) : (
                           <h4
-                            onClick={handleClick}
+                            onClick={() =>
+                              isNonVideoSection &&
+                              handleShowContentCards(sectionData)
+                            }
                             className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
                           >
                             {sectionTitle}
