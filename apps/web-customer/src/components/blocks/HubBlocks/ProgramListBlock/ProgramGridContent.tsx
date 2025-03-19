@@ -8,11 +8,21 @@ import Box from "@mui/material/Box";
 import { CloseIcon } from "core-library/assets";
 import Image from "next/image";
 import {
+  SectionDataType,
   SectionListType,
   SectionVideosType,
 } from "core-library/types/wc/programList";
 import { getSectionTypeIcons, getSectionStatusIcons } from "../../../../utils";
 import { useRouter } from "core-library";
+import { ContentCardsModal } from "./ContentCardsModal/ContentCardsModal";
+import { useModal } from "core-library/hooks";
+import {
+  getVideoPagePath,
+  getVideoSectionStatus,
+  isVideoSectionType,
+  separateSectionType,
+} from "./ProgramListBlockUtils";
+import { Link } from "core-library/components";
 
 interface Props {
   title: string;
@@ -27,28 +37,39 @@ export const ProgramGridContent: React.FC<Props> = ({
   closeModal,
   programId,
 }) => {
-  const mappedSections =
-    sections.length > 0
-      ? sections.map(
-          ({ sectionType, sectionTitle, sectionStatus, sectionVideos }) => ({
-            type: sectionType,
-            title: sectionTitle,
-            status: sectionStatus,
-            videos: sectionVideos,
-          })
-        )
-      : [];
+  const { videoSections, otherSections } = separateSectionType(sections ?? []);
+
+  const secVidDetails = !!videoSections.length
+    ? {
+        secVidTitle: videoSections[0].sectionTitle,
+        secVidIcon: getSectionTypeIcons(videoSections[0].sectionType),
+        secVidStatusIcon: getSectionStatusIcons(
+          getVideoSectionStatus(videoSections)
+        ),
+      }
+    : null;
+  const { open, close, props } = useModal<SectionDataType[]>();
 
   const router = useRouter();
 
-  const lastPathSegment = router.asPath.split("/").filter(Boolean).pop();
+  const lastPathSegment = router.asPath.split("/").filter(Boolean).pop() ?? "";
 
-  const handleShowVideos = (videos: SectionVideosType[], programId: string) => {
-    const secVids = JSON.stringify(videos);
-    const encodedSecVids = encodeURIComponent(secVids);
-    router.push(
-      `/hub/programs/${lastPathSegment}/watch?secVids=${encodedSecVids}&programId=${programId}`
-    );
+  const handleShowContentCards = (
+    sectionData: SectionDataType[],
+    programId: string
+  ) => {
+    open(sectionData);
+  };
+
+  const handleNonVideoStatusChange = (sectionId: string) => {
+    // call api and update status
+  };
+
+  const handleShowVideos = (
+    sectionList: SectionVideosType[],
+    programId: string
+  ) => {
+    router.push(getVideoPagePath(sectionList, programId, lastPathSegment));
   };
 
   return (
@@ -97,10 +118,13 @@ export const ProgramGridContent: React.FC<Props> = ({
                       height={16}
                     />
                     <h4
-                      onClick={
-                        hasVideos
-                          ? () => handleShowVideos(videos, programId)
-                          : undefined
+                      onClick={() =>
+                        handleShowVideos(
+                          videoSections
+                            .map((s) => s.sectionData as SectionVideosType[])
+                            .flat(),
+                          programId
+                        )
                       }
                       className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
                     >
@@ -114,12 +138,74 @@ export const ProgramGridContent: React.FC<Props> = ({
                     height={16}
                   />
                 </div>
-              );
-            })
-          ) : (
-            <div className="text-center text-gray-500">
-              No available sections
-            </div>
+              )}
+              {otherSections &&
+                !!otherSections.length &&
+                otherSections.map((item) => {
+                  const {
+                    sectionId,
+                    sectionType,
+                    sectionTitle,
+                    sectionStatus,
+                    sectionData,
+                  } = item;
+
+                  const hasData = sectionData && !!sectionData.length;
+                  const isDocumentOrMedCards =
+                    sectionType === "document" || sectionType === "med-cards";
+
+                  const handleClick = () => {
+                    hasData &&
+                      !isVideoSectionType(sectionData) &&
+                      handleShowContentCards(sectionData, programId);
+                  };
+
+                  return (
+                    <div key={sectionId} className="flex justify-between px-2">
+                      <div className="flex gap-2 items-center">
+                        <Image
+                          src={getSectionTypeIcons(sectionType)}
+                          alt={sectionType}
+                          width={16}
+                          height={16}
+                        />
+                        {isDocumentOrMedCards &&
+                        hasData &&
+                        !isVideoSectionType(sectionData) ? (
+                          <Link
+                            href={
+                              sectionData[0].link !== null
+                                ? sectionData[0].link
+                                : ""
+                            }
+                            target="_blank"
+                            naked
+                            className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
+                            onClick={() =>
+                              handleNonVideoStatusChange(sectionId)
+                            }
+                          >
+                            {sectionTitle}
+                          </Link>
+                        ) : (
+                          <h4
+                            onClick={handleClick}
+                            className="font-ptSansNarrow font-regular text-[16px] text-[#6C6C6C] hover:underline cursor-pointer"
+                          >
+                            {sectionTitle}
+                          </h4>
+                        )}
+                      </div>
+                      <Image
+                        src={getSectionStatusIcons(sectionStatus)}
+                        alt={sectionStatus}
+                        width={16}
+                        height={16}
+                      />
+                    </div>
+                  );
+                })}
+            </>
           )}
         </div>
       </Box>

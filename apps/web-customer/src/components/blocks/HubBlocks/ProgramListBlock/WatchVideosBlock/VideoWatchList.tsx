@@ -47,6 +47,8 @@ export const VideoWatchList: React.FC<VideoWatchListProps> = ({
                   src={secVidPlaceholder}
                   alt="placeholder"
                   className="w-[150px] rounded-[8px] drop-shadow-lg"
+                  width={100}
+                  height={100}
                 />
                 <div className="flex flex-col">
                   <h4 className="font-ptSans text-[#232323] font-bold text-[14px]">

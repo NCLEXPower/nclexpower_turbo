@@ -10,7 +10,7 @@ export type SectionListType = {
   sectionType: string;
   sectionTitle: string;
   sectionStatus: string;
-  sectionTimer: string | null;
+  sectionTimer?: string | null;
   sectionData?: SectionDataType[] | SectionVideosType[];
 };
 
