@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -59,14 +59,12 @@ export const CoreZigmaBlock: React.FC<Props> = (props) => {
               Discover <span className="text-darkBlue"> CORE-Zigma</span>
             </p>
             <p className="font-ptSansNarrow text-lg">
-            Learn how the CORE-Zigma System empowers 
-            your NCLEX review preparation – in a way you 
-            have not seen before! Our platform engages 
-            learners using an unprecedented delivery method – with various sections interconnected, 
-            integrated, and interdependent. 
-            Peeked your interest yet? Watch this video to 
-            learn more about this amazing, ground-breaking 
-            review method!
+              Learn how the CORE-Zigma System empowers your NCLEX review
+              preparation – in a way you have not seen before! Our platform
+              engages learners using an unprecedented delivery method – with
+              various sections interconnected, integrated, and interdependent.
+              Peeked your interest yet? Watch this video to learn more about
+              this amazing, ground-breaking review method!
             </p>
           </div>
         </div>

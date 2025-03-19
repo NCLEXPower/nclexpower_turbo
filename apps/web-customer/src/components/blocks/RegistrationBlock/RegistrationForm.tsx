@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -116,7 +116,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
             <h4 className="text-[18px] font-regular font-ptSans">
               Already have an account?{" "}
               <span className="text-[18px] font-bold underline font-mainBlue">
-                <Link href="/login" style={{ backgroundColor: 'transparent' }}>Login</Link>
+                <Link href="/login" style={{ backgroundColor: "transparent" }}>
+                  Login
+                </Link>
               </span>
             </h4>
           </Box>

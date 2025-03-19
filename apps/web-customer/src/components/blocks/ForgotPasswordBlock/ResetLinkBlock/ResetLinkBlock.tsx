@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -61,7 +61,7 @@ export const ResetLinkBlock: React.FC<Props> = () => {
 
   const navigateToContact = () => {
     openInNewTab((route) => route.contact_us);
-  }
+  };
 
   useEffect(() => {
     if (resetTime > 0) {
@@ -112,13 +112,14 @@ export const ResetLinkBlock: React.FC<Props> = () => {
             <div className="flex items-center">
               <p className="text-[16px] text-[#6D7081] font-ptSansNarrow font-regular md:text-left lg:text-[18px]">
                 If you don&apos;t see the email, check other places it might be,
-                like your junk, spam, or social folder, {resetLinkCb.loading ? " " : "or "}
+                like your junk, spam, or social folder,{" "}
+                {resetLinkCb.loading ? " " : "or "}
                 <button
                   disabled={resetTime !== 0 || resetLinkCb.loading}
                   onClick={handleResendEmail}
                   className={`${resetTime !== 0 ? "text-darkGray" : "text-[#0F2A71]"} font-ptSans font-bold text-[16px] lg:text-[16px]`}
                   style={{ outline: "none" }}
-                  onFocus={(e) => e.target.style.outline = "none"}
+                  onFocus={(e) => (e.target.style.outline = "none")}
                   onMouseDown={(e) => e.preventDefault()}
                 >
                   {resetLinkCb.loading ? (
@@ -128,10 +129,10 @@ export const ResetLinkBlock: React.FC<Props> = () => {
                       id="loader"
                       aria-live="assertive"
                       thickness={5}
-                      sx={{ "&:focus": { outline: "none !important" }}}
+                      sx={{ "&:focus": { outline: "none !important" } }}
                     />
                   ) : (
-                    `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ''}`
+                    `send the email again ${resetTime !== 0 ? `in (${resetTime}s)` : ""}`
                   )}
                 </button>
               </p>

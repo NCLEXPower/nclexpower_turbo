@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -76,7 +76,8 @@ export const ControlledAccordion = <T extends ItemProps>({
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
-    (panel: string) => (event?: React.SyntheticEvent, newExpanded?: boolean) => {
+    (panel: string) =>
+    (event?: React.SyntheticEvent, newExpanded?: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
 
@@ -117,7 +118,9 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Header...</h4>
+                    <h4 className="text-[16px] font-ptSans">
+                      No Available Header...
+                    </h4>
                   </Box>
                 )}
               </CustomAccordionSummary>
@@ -133,7 +136,9 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Details...</h4>
+                    <h4 className="text-[16px] font-ptSans">
+                      No Available Details...
+                    </h4>
                   </Box>
                 )}
               </CustomAccordionDetails>

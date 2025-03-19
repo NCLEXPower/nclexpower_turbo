@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -22,7 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactIcon } from "core-library/assets";
 import { useSanitizedInputs } from "core-library/hooks";
-import { CategoryDataType } from "./type"
+import { CategoryDataType } from "./type";
 import { ParsedHtml } from "core-library/components";
 
 interface FormValues {
@@ -207,4 +207,3 @@ export const ContactForm: React.FC<FormValues> = ({
     </section>
   );
 };
-
