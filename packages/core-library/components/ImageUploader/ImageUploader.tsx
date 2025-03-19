@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -8,16 +8,25 @@ interface ImageUploaderProps {
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage, setSelectedImage }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedImage(file);
   };
 
+  // const triggerFileInput = () => {
+  //   const input = document.getElementById("image-upload-input") as HTMLInputElement;
+  //   if (input) {
+  //     input.value = "";
+  //     input.click();
+  //   }
+  // };
+
   const triggerFileInput = () => {
-    const input = document.getElementById("image-upload-input") as HTMLInputElement;
-    if (input) {
-      input.value = "";
-      input.click();
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.click();
     }
   };
 
@@ -101,6 +110,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage, set
           </Box>
         )}
         <input
+          ref={inputRef}
           type="file"
           id="image-upload-input"
           accept="image/*"

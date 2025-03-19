@@ -52,6 +52,7 @@ export * from "./CSPHead";
 export * from "./LottieAnimation/LottieAnimation";
 export * from "./Stepper/ProgressStepper";
 export * from "./Popover/Popover";
+export * from "./ImageUploader/ImageUploader"
 
 export * from "./table/tableRows/category/CategoryOptionsTableRow";
 export * from "./Tabs/Tabs";
@@ -90,5 +91,4 @@ export * from "./Button/StatusButton";
 export * from "./ScrollTop/ScrollTop";
 
 export * from "./ComponentState/ComponentState";
-export * from "./InfoCard/InfoCard";
 

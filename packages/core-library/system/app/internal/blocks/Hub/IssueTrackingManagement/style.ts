@@ -1,3 +1,18 @@
+export const alertStyle = {
+  "& .MuiAlert-icon": {
+    fontSize: "30px",
+    color: "#3B0086A3 !important",
+  },
+  "& .MuiAlertTitle-root": {
+    fontFamily: '"Poppins", sans-serif',
+    fontSize: "18px",
+  },
+  "& .MuiAlert-message": {
+    fontFamily: '"Poppins", sans-serif',
+    fontSize: "14px",
+  },
+}
+
 export const tableStyle = {
   backgroundColor: "#fff",
   [`& .MuiDataGrid-cell:focus, 

@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Container, Box, Typography, Backdrop } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
-import { InfoCard, Card, DataGrid } from '../../../../../../components';
+import { Alert, Card, DataGrid } from '../../../../../../components';
 import { useColumns, useModal } from "../../../../../../hooks";
 import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
 import { mockRows } from './IssueTrackingMock';
 import { StyledModal } from './StyledModal';
-import { tableStyle, titleStyle, rowStyle } from './style';
+import { alertStyle, tableStyle, titleStyle, rowStyle } from './style';
 
 export const IssueTrackingManagementBlock = () => {
   const modal = useModal<{ 
@@ -138,10 +138,24 @@ export const IssueTrackingManagementBlock = () => {
   return (
     <Box data-testid="issue-tracking-block">
       <Container>
-        <InfoCard
-          title="Issue Tracking Management"
-          description="You can view and manage concerns or issues raised from customers."
-        />
+        <Box
+          sx={ alertStyle }
+        >
+          <Alert
+            severity="info"
+            title="Issue Tracking Management"
+            description="You can view and manage concerns or issues raised from customers."
+            style={{
+              backgroundColor: "#BD8FDB4F",
+              color: "#3B0086A3",
+              border: "1px solid #3B0086",
+              borderRadius: "8px",
+              padding: "16px",
+              marginBottom: "16px",
+            }}
+          >
+          </Alert>
+        </Box>
         <Typography
           sx={{
             fontSize: "30px",

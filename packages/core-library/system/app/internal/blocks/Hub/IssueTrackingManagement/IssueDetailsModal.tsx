@@ -1,21 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-  IconButton,
-  Divider,
-  Select,
-  MenuItem,
-  FormControl,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Box, Grid, Typography, Divider, SelectChangeEvent } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import AddIcon from "@mui/icons-material/Add";
+import { ImageUploader, Button, IconButton } from "../../../../../../components";
 import { SupportTextArea } from "./SupportTextArea";
 import { IssueDescriptionBox } from "./IssueDescriptionBox";
-import { ImageUploader } from "../../../../../../components/ImageUploader/ImageUploader";
 import { IssueStatusDropdown } from "./IssueStatusDropdown";
 import { UpdateStatusParams } from "../../../../../../api/types";
 import { useApiCallback } from "../../../../../../hooks";
@@ -100,9 +88,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
       onClose();
     } catch (error) {
       showToast("Failed to update issue status. Please try again.", "error");
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   return (
