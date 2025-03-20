@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { StepIconProps } from "@mui/material";
-
 import {
   HelpOutlineTracking,
   StepActive,
@@ -9,7 +8,6 @@ import {
 } from "core-library/assets";
 import { useApi, useKeyDown} from "core-library/hooks";
 import IssueTracking from "./IssueTracking";
-// import { useKeyDown } from "core-library/hooks/useKeyDown";
 import IssueTrackingSkeletonLoader from "./IssueTrackingSkeletonLoader";
 import { Stepper } from "core-library/components";
 
@@ -92,7 +90,6 @@ const IssueTrackingBlock = () => {
   const renderResults = () => {
     if (!hasSearched) return null;
     if (isLoading) return <IssueTrackingSkeletonLoader />;
-
     if (!issueTrackingData) {
       return (
         <div className="w-full mt-24 ">
@@ -130,7 +127,6 @@ const IssueTrackingBlock = () => {
             <h3 className="text-[27px] lg:px-6  lg:text-[40px] leading-none mb-3 text-[#001E52] font-Poppins">
               {issueTrackingData?.refNo ?? "N/A"}
             </h3>
-
             <Stepper
               activeStep={(issueTrackingData?.reportedIssueStatus || 0) + 1}
               alternativeLabel={true}
