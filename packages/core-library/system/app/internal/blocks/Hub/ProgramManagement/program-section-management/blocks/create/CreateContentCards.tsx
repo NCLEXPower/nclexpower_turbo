@@ -18,7 +18,7 @@ import { contentCardsSchema, SectionFormType } from "../../validation";
 import { formatSectionTitle } from "../../../../../../../../../utils";
 import { useState } from "react";
 import Image from "next/image";
-import { noVideoImage } from "../../../../../../../../../assets";
+import { uploadImage } from "../../../../../../../../../assets";
 
 interface CreateContentCardsProps {
   section?: string;
@@ -301,7 +301,7 @@ export const CreateContentCards: React.FC<CreateContentCardsProps> = ({
                                 src={
                                   cardFacesFileName
                                     ? URL.createObjectURL(cardFaceLink)
-                                    : noVideoImage
+                                    : uploadImage
                                 }
                                 alt="program thumbnail"
                                 fill

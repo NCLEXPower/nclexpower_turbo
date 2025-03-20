@@ -15,7 +15,7 @@ import {
   TextField,
 } from "../../../../../../../../../../components";
 import Image from "next/image";
-import { noVideoImage } from "../../../../../../../../../../assets";
+import { uploadImage } from "../../../../../../../../../../assets";
 
 interface EditContentCardsFieldProps {
   topics: { cardTopic: string; cardFaces: File[] }[];
@@ -225,7 +225,7 @@ export const EditContentCardsField: React.FC<EditContentCardsFieldProps> = ({
                                       ? cardFacesFileName.startsWith("http")
                                         ? cardFacesFileName
                                         : URL.createObjectURL(cardFaceLink)
-                                      : noVideoImage
+                                      : uploadImage
                                   }
                                   alt={`Card Face ${faceIndex + 1}`}
                                   fill

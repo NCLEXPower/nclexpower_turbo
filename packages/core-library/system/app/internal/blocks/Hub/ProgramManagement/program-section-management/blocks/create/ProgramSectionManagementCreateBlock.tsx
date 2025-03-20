@@ -81,7 +81,7 @@ export const ProgramSectionManagementCreateBlock = () => {
                   title: values.title,
                   contentArea: values.contentArea,
                   guided: values.guided,
-                  unguided: values.guided,
+                  unguided: values.unguided,
                   practice: values.practice,
                 },
               ],
