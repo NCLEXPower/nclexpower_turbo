@@ -53,10 +53,8 @@ import {
   DeleteCaseNameParams,
   CaseNameResponseType,
   CreateSectionResponse,
-  CreateSectionParams,
   GetAllSectionsResponseType,
   GetSectionParams,
-  UpdateSectionParams,
   UpdateSectionResponse,
   CreateProgramParams,
   CreateProgramResponse,
@@ -69,7 +67,6 @@ import {
   CaseStudyListResponse,
   GetProgramParams,
   DeleteProgramSectionParams,
-  UpdateStatusParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -501,92 +498,18 @@ export class WebApiBackOffice {
     return await this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
   }
   
-  public async updateSectionById(params: UpdateSectionParams) {
-    const {
-      sectionTitle,
-      sectionType,
-      sectionId,
-      sectionDataId,
-      title,
-      contentArea,
-      catSimulator,
-      authorName,
-      description,
-      guided,
-      unguided,
-      practice,
-      link,
-      authorImage,
-      videoPlaceholder,
-      contentAreaCoverage,
-      cards,
-    } = params;
-    const formObject: Record<string, FormDataEntryValue | FormDataEntryValue[]> = { sectionTitle, sectionType };
-  
-    Object.assign(formObject, {
-      "SectionData[0].sectionDataId": sectionDataId || "",
-      "SectionData[0].title": title || "",
-      "SectionData[0].contentArea": contentArea || "",
-      "SectionData[0].catSimulator": catSimulator || "",
-      "SectionData[0].authorName": authorName || "",
-      "SectionData[0].description": description || "",
-      "SectionData[0].guided": guided ? "true" : "false",
-      "SectionData[0].unguided": unguided ? "true" : "false",
-      "SectionData[0].practice": practice ? "true" : "false",
-      ...(link?.[0] && { "SectionData[0].file": link[0] }),
-      ...(authorImage?.[0] && { "SectionData[0].authorImage": authorImage[0] }),
-      ...(videoPlaceholder?.[0] && { "SectionData[0].videoPlaceholder": videoPlaceholder[0] }),
-    });
-  
-    contentAreaCoverage?.forEach((item, i) => formObject[`SectionData[0].contentAreaCoverage[${i}]`] = item);
-    cards?.forEach((card, i) => {
-      formObject[`SectionData[0].cards[${i}].cardId`] = card.cardId || "";
-      formObject[`SectionData[0].cards[${i}].cardTopic`] = card.cardTopic || "";
-      formObject[`SectionData[0].cards[${i}].cardFaces`] = card.cardFaces?.length ? card.cardFaces : [];
-    });
-  
+  public async updateSectionById(form: FormData) {
     return await this.axios.put<UpdateSectionResponse | number>(
-      `/api/v2/content/BaseContent/${sectionId}`,
-      createFormData(formObject),
+      `/api/v2/content/BaseContent/${form.get("sectionId")}`,
+      form,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
   }
 
-  public async createSection(params: CreateSectionParams) {
-    const { sectionTitle, sectionType, sectionData } = params;
-    const formObject: Record<string, FormDataEntryValue | FormDataEntryValue[]> = { sectionTitle, sectionType };
-  
-    if (sectionData?.[0]) {
-      const {
-        title, contentArea, catSimulator, authorName, description,
-        guided, unguided, practice, link, authorImage, videoPlaceholder,
-        contentAreaCoverage, cards
-      } = sectionData[0];
-  
-      Object.assign(formObject, {
-        "SectionData[0].title": title || "",
-        "SectionData[0].contentArea": contentArea || "",
-        "SectionData[0].catSimulator": catSimulator || "",
-        "SectionData[0].authorName": authorName || "",
-        "SectionData[0].description": description || "",
-        "SectionData[0].guided": guided ? "true" : "false",
-        "SectionData[0].unguided": unguided ? "true" : "false",
-        "SectionData[0].practice": practice ? "true" : "false",
-        ...(link?.[0] && { "SectionData[0].file": link[0] }),
-        ...(authorImage?.[0] && { "SectionData[0].authorImage": authorImage[0] }),
-        ...(videoPlaceholder?.[0] && { "SectionData[0].videoPlaceholder": videoPlaceholder[0] }),
-      });
-  
-      contentAreaCoverage?.forEach((item, i) => formObject[`SectionData[0].contentAreaCoverage[${i}]`] = item);
-      cards?.forEach((card, i) => {
-        formObject[`SectionData[0].cards[${i}].cardTopic`] = card.cardTopic || "";
-        formObject[`SectionData[0].cards[${i}].cardFaces`] = card.cardFaces?.length ? card.cardFaces : [];
-      });
-    }
-  
+  public async createSection(form: FormData) {
     return await this.ssrAxios.post<CreateSectionResponse | number>(
       `/api/programs/create-section`,
-      createFormData(formObject),
+      form,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
   }
