@@ -10,11 +10,21 @@ import { useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../contexts";
 import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./style";
 
+interface IssueContext {
+  email: string;
+  reference: string;
+  description: string;
+  dateCreated: string;
+  status: string;
+}
+
+interface IssueModal {
+  isOpen: boolean;
+  context?: IssueContext;
+}
+
 interface IssueDetailsModalProps {
-  modal: {
-    isOpen: boolean;
-    context?: { email: string; reference: string; description: string; dateCreated: string; status: string };
-  };
+  modal: IssueModal;
   onClose: () => void;
   onStatusChange: (reference: string, newStatus: string) => void;
 }
@@ -41,16 +51,11 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
   useEffect(() => {
     if (context?.status) {
       setSelectedStatus(context.status);
-    }
-    
+    }  
     if (!isOpen) {
       setSelectedImage(null);
     }
   }, [context?.status, isOpen]);
-
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedStatus(event.target.value);
-  };
 
   const handleSubmit = async () => {
     const currentNotes = notesRef.current?.value || ""; 
@@ -77,7 +82,11 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         UpdateStatus: statusNumber,
         Proof: imageProof
       };
-  
+      
+      await updateStatusCb.execute(payload);
+
+      //await getIssueCb.execute(1);
+      
       onStatusChange(context.reference, selectedStatus);
       onClose();
     } catch (error) {
