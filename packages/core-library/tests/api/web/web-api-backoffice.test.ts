@@ -1,5 +1,6 @@
 import axios from "axios";
 import { WebApiBackOffice } from "../../../api/web/web-api-backoffice";
+import { createFormData } from "../../../utils/createFormData";
 
 jest.mock("axios");
 
@@ -51,10 +52,16 @@ describe("Service API Calls", () => {
       sectionData: [{ title: "Test", link: [], contentArea: "Area" }],
     };
 
+    const formData = createFormData({
+      "sectionTitle": params.sectionTitle,
+      "sectionType": params.sectionType,
+      "sectionData": JSON.stringify(params.sectionData),
+    })
+  
     mockedAxios.post.mockResolvedValueOnce({ status: 201 });
-
-    const result = await service.createSection(params);
-
+  
+    const result = await service.createSection(formData);
+  
     expect(mockedAxios.post).toHaveBeenCalledWith(
       "/api/programs/create-section",
       expect.any(FormData),
@@ -71,11 +78,19 @@ describe("Service API Calls", () => {
       sectionDataId: "456",
       title: "Updated Title",
     };
+  
+    const formData = createFormData({
+      "sectionId": params.sectionId,
+      "sectionTitle": params.sectionTitle,
+      "sectionType": params.sectionType,
+      "sectionDataId": params.sectionDataId,
+      "title": params.title,
+    })
 
     mockedAxios.put.mockResolvedValueOnce({ status: 200 });
-
-    const result = await service.updateSectionById(params);
-
+  
+    const result = await service.updateSectionById(formData);
+  
     expect(mockedAxios.put).toHaveBeenCalledWith(
       `/api/v2/content/BaseContent/${params.sectionId}`,
       expect.any(FormData),
