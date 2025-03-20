@@ -7,9 +7,9 @@ import {
   StepActive,
   StepCircleOutline,
 } from "core-library/assets";
-import { useApi } from "core-library/hooks";
+import { useApi, useKeyDown} from "core-library/hooks";
 import IssueTracking from "./IssueTracking";
-import { useKeyDown } from "core-library/hooks/useKeyDown";
+// import { useKeyDown } from "core-library/hooks/useKeyDown";
 import IssueTrackingSkeletonLoader from "./IssueTrackingSkeletonLoader";
 import { Stepper } from "core-library/components";
 
@@ -58,6 +58,36 @@ const IssueTrackingBlock = () => {
       />
     );
   };
+
+
+  const stepperStyles = {
+    "& .MuiStep-root": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      flexDirection: "column",
+    },
+    "& .MuiStepConnector-line": {
+      borderColor: "#001E52",
+      borderWidth: 2,
+      width: "100%",
+      flexGrow: 1,
+    },
+    "& .MuiStepConnector-root": {
+      top: "22%",
+      transform: "translateY(-50%)",
+      marginX: "-8px",
+    },
+    "& .MuiStepLabel-label": {
+      fontSize: { xs: "12px", sm: "14px", md: "1.2rem" }, 
+      fontWeight: "bold",
+      fontFamily: "PT Sans Narrow",
+      color: "#001E52",
+      textAlign: "center",
+      whiteSpace: "nowrap",
+    },
+  }
+
 
   const renderResults = () => {
     if (!hasSearched) return null;
@@ -111,35 +141,8 @@ const IssueTrackingBlock = () => {
                 fontFamily: "PT Sans Narrow",
                 color: "#001E52",
                 width: "100%",
-                
               }}
-              sx={{
-                "& .MuiStep-root": {
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                },
-                "& .MuiStepConnector-line": {
-                  borderColor: "#001E52",
-                  borderWidth: 2,
-                  width: "100%",
-                  flexGrow: 1,
-                },
-                "& .MuiStepConnector-root": {
-                  top: "22%",
-                  transform: "translateY(-50%)",
-                  marginX: "-8px",
-                },
-                "& .MuiStepLabel-label": {
-                  fontSize: { xs: "12px", sm: "14px", md: "1.2rem" }, 
-                  fontWeight: "bold",
-                  fontFamily: "PT Sans Narrow",
-                  color: "#001E52",
-                  textAlign: "center",
-                  whiteSpace: "nowrap",
-                },
-              }}
+              sx={stepperStyles}
               StepIconComponent={CustomStepIcon}
             />
 

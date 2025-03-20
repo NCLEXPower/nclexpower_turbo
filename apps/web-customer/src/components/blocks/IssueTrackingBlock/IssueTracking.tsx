@@ -19,6 +19,41 @@ const IssueTracking = ({
   setSearchReference,
   handleSearchSubmitAsync,
 }: Props) => {
+
+  const inputStyles = {
+    backgroundColor: "#FFFFFF61",
+    border: 2,
+    borderColor: "#001E52",
+    borderRadius: { xs: "6px", md: "10px" },
+    width: "80%",
+    height: { xs: "36px", sm: "54px" },
+    "& input": {
+      fontSize: { xs: "14px", sm: "16px", md: "18px" },
+    },
+    "& input:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "& input::placeholder": {
+      color: "#001E52",
+      fontSize: { xs: "12px", sm: "14px", md: "16px" },
+    },
+  }
+
+  const buttonStyles = {
+    borderRadius: { xs: "6px", md: "10px" },
+    width: { xs: "25%", sm: "30%", md: "20%" },
+    height: { xs: "36px", sm: "54px" },
+    minHeight: { xs: "36px", sm: "54px" },
+    minWidth: "70px",
+    fontSize: { xs: "12px", sm: "14px", md: "16px" },
+    fontWeight: 700,
+    padding: "0px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }
+
   return (
     <div className="relative w-full min-h-screen">
       <Image
@@ -49,43 +84,12 @@ const IssueTracking = ({
             </h1>
             <div className="flex gap-4 w-full mt-4">
               <Input
-                sx={{
-                  backgroundColor: "#FFFFFF61",
-                  border: 2,
-                  borderColor: "#001E52",
-                  borderRadius: { xs: "6px", md: "10px" },
-                  width: "80%",
-                  height: { xs: "36px", sm: "54px" },
-                  "& input": {
-                    fontSize: { xs: "14px", sm: "16px", md: "18px" },
-                  },
-                  "& input:focus": {
-                    outline: "none",
-                    boxShadow: "none",
-                  },
-                  "& input::placeholder": {
-                    color: "#001E52",
-                    fontSize: { xs: "12px", sm: "14px", md: "16px" },
-                  },
-                }}
+                sx={inputStyles}
                 placeholder="Enter your reference number"
                 onChange={(e) => setSearchReference(e.target.value)}
               />
-
               <Button
-                sx={{
-                  borderRadius: { xs: "6px", md: "10px" },
-                  width: { xs: "25%", sm: "30%", md: "20%" },
-                  height: { xs: "36px", sm: "54px" },
-                  minHeight: { xs: "36px", sm: "54px" },
-                  minWidth: "70px",
-                  fontSize: { xs: "12px", sm: "14px", md: "16px" },
-                  fontWeight: 700,
-                  padding: "0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                sx={buttonStyles}
                 onClick={handleSearchSubmitAsync}
                 disabled={getIssueTracking.loading}
                 loading={getIssueTracking.loading}
@@ -94,7 +98,6 @@ const IssueTracking = ({
               </Button>
             </div>
           </div>
-
           {renderResults()}
         </div>
       </div>

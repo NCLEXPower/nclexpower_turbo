@@ -5,6 +5,7 @@
  */
 export * from "./useResolution";
 export * from "./useApi";
+export * from './useKeyDown';
 export * from "./usePreviousValue";
 export * from "./useCustomAction";
 export * from "./useSessionStorage";
