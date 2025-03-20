@@ -21,7 +21,7 @@ interface IssueDetailsModalProps {
 
 export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange }) => {
   const { isOpen, context } = modal;
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const notesRef = useRef<HTMLTextAreaElement>(null);
@@ -71,17 +71,16 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     }
   
     try {
-      setIsLoading(true);
+      updateStatusCb.loading;
+
+      const imageProof = selectedImage ? selectedImage : undefined;
 
       const payload: UpdateStatusParams = {
         Notes: currentNotes,
         RefNo: context.reference,
         UpdateStatus: statusNumber,
+        Proof: imageProof
       };
-  
-      if (selectedImage) {
-        payload.Proof = selectedImage;
-      }
   
       await updateStatusCb.execute(payload);  
       onStatusChange(context.reference, selectedStatus);
@@ -93,7 +92,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
 
   return (
     <Box
-      sx={ modalContainerStyle }
+      sx={modalContainerStyle}
     >
       <Grid container justifyContent="space-between" alignItems="center">
         <Typography
@@ -119,7 +118,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         </Typography>
         <IconButton
           onClick={onClose}
-          sx={ iconButtonStyle }
+          sx={iconButtonStyle}
         >
           <CloseOutlinedIcon
             sx={{
@@ -222,7 +221,8 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
           <Button
             onClick={handleSubmit}
             variant="contained"
-            sx={ submitButtonStyle }
+            loading={isLoading}
+            sx={submitButtonStyle}
           >
             Submit
           </Button>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FormControl, Select, MenuItem, Box, Typography } from "@mui/material";
+import { FormControl, TextField, Autocomplete, Select, MenuItem, Box } from "@mui/material";
 import { StatusStyles, StatusBadge } from "./StatusBadge";
 import { statusDropdownStyle } from "./style"; 
 

@@ -139,7 +139,7 @@ export const IssueTrackingManagementBlock = () => {
     <Box data-testid="issue-tracking-block">
       <Container>
         <Box
-          sx={ alertStyle }
+          sx={alertStyle}
         >
           <Alert
             severity="info"
@@ -187,7 +187,7 @@ export const IssueTrackingManagementBlock = () => {
             isLoading={isLoading}
             disableColumnResize
             disableVirtualization 
-            sx={ tableStyle }
+            sx={tableStyle}
           />
         </Card>
       </Container>
