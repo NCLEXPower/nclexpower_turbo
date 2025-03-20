@@ -120,4 +120,23 @@ describe("ProgramSectionManagementCreateBlock", () => {
       expect(screen.getByText("ProgramSectionHeader")).toBeInTheDocument();
     });
   });
+
+  it("navigates to program section management on invalid section type", () => {
+    (useAtom as jest.Mock).mockImplementation((atom) => {
+      if (atom === SectionTypeAtom) {
+        return [null];
+      }
+      return [undefined, jest.fn()];
+    });
+
+    const mockPush = jest.fn();
+    (useRouter as jest.Mock).mockReturnValue({
+      back: jest.fn(),
+      push: mockPush,
+    });
+
+    render(<ProgramSectionManagementCreateBlock />);
+
+    expect(mockPush).toHaveBeenCalledWith(expect.any(Function));
+  });
 });
