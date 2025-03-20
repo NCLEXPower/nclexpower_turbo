@@ -29,14 +29,6 @@ export const IssueTrackingManagementBlock = () => {
     );
   };
 
-  const truncateByWords = (text: string, wordLimit: number): string => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
-
   const { columns } = useColumns({
     columns: [
       {
@@ -86,14 +78,14 @@ export const IssueTrackingManagementBlock = () => {
         width: 450,
         renderCell: (params) => (
           <Typography
-            sx={{ 
+            sx={{
               ...rowStyle,
-              fontWeight: "700", 
+              fontWeight: "700",
               fontFamily: '"Poppins", sans-serif',
               fontSize: "13px",
             }}
           >
-            [{truncateByWords(params.value as string, 10)}]
+            [<span className="w-[370px] truncate">{params.value}</span>]
           </Typography>
         ),
       },
