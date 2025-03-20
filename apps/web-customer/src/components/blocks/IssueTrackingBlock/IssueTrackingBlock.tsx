@@ -57,7 +57,6 @@ const IssueTrackingBlock = () => {
     );
   };
 
-
   const stepperStyles = {
     "& .MuiStep-root": {
       display: "flex",
@@ -141,7 +140,6 @@ const IssueTrackingBlock = () => {
               sx={stepperStyles}
               StepIconComponent={CustomStepIcon}
             />
-
             <h4 className="text-sm  text-[#001E52] mt-2 font-bold font-Poppins lg:px-6 lg:text-2xl">
               Status:{" "}
               {issueTrackingData?.reportedIssueStatus !== undefined
