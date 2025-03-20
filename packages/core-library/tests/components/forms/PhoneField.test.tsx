@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { render, screen } from "../../common";
 import { PhoneField } from "../../../components";
 import { PhoneFieldComponent } from "../../../components/forms/PhoneField";
@@ -96,42 +96,42 @@ describe("PhoneField Component", () => {
           {"Invalid phone number"}
         </Typography>
       );
-  
+
       const errorMessage = screen.getByText("Invalid phone number");
       expect(errorMessage).toBeInTheDocument();
       expect(errorMessage).toHaveStyle("font-size: 15px");
       expect(errorMessage).toHaveStyle("color: rgb(207, 34, 63)");
     });
-  
+
     it("does not render anything when fieldState.error.message is an empty string", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
           {""}
         </Typography>
       );
-  
+
       const errorMessage = screen.queryByText(/.+/);
       expect(errorMessage).toBeNull();
     });
-  
+
     it("does not render anything when fieldState.error.message is undefined", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
           {undefined}
         </Typography>
       );
-  
+
       const errorMessage = screen.queryByText(/.+/);
       expect(errorMessage).toBeNull();
     });
-  
+
     it("does not render anything when fieldState.error.message is null", () => {
       render(
         <Typography sx={{ fontSize: 15 }} color="error">
           {null}
         </Typography>
       );
-  
+
       const errorMessage = screen.queryByText(/.+/);
       expect(errorMessage).toBeNull();
     });
