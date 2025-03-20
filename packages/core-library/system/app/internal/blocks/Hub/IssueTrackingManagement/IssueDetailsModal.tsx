@@ -22,12 +22,10 @@ interface IssueDetailsModalProps {
 export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange }) => {
   const { isOpen, context } = modal;
   const [selectedStatus, setSelectedStatus] = useState<string>("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const notesRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useExecuteToast();
-  const [isLoading, setIsLoading] = useState(false);
-
+  
   if (!isOpen || !context) return null;
 
   const statusMapping: Record<string, 0 | 1 | 2> = {
@@ -44,13 +42,11 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     if (context?.status) {
       setSelectedStatus(context.status);
     }
-  }, [context?.status]);
-
-  useEffect(() => {
+    
     if (!isOpen) {
       setSelectedImage(null);
     }
-  }, [isOpen]);
+  }, [context?.status, isOpen]);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedStatus(event.target.value);
@@ -82,7 +78,6 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         Proof: imageProof
       };
   
-      await updateStatusCb.execute(payload);  
       onStatusChange(context.reference, selectedStatus);
       onClose();
     } catch (error) {
@@ -221,7 +216,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
           <Button
             onClick={handleSubmit}
             variant="contained"
-            loading={isLoading}
+            loading={false}
             sx={submitButtonStyle}
           >
             Submit
