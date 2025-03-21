@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SectionVideosType } from "core-library/types/wc/programList";
 import ReactPlayer from "react-player";
 import { useResolution } from "core-library/hooks";
@@ -21,7 +21,11 @@ const playerDimensions = {
   default: { width: "700px", height: "386px" },
 };
 
-const getPlayerDimensions = (isWideScreen: boolean, isTablet: boolean, isMobile: boolean) => {
+const getPlayerDimensions = (
+  isWideScreen: boolean,
+  isTablet: boolean,
+  isMobile: boolean
+) => {
   if (isWideScreen) {
     return playerDimensions.wide;
   }
@@ -40,7 +44,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   toggleWideScreen,
   showTheaterMode = true,
 }) => {
-
   const { isMobile, isTablet } = useResolution();
 
   const { width: playerWidth, height: playerHeight } = getPlayerDimensions(
@@ -73,7 +76,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 className="cursor-pointer font-ptSansNarrow text-[14px] text-black font-bold bg-white p-2 rounded-[10px]"
               >
                 Theater Mode {""}
-                <span className={isWideScreen ? "text-red-500" : "text-green-500"}>
+                <span
+                  className={isWideScreen ? "text-red-500" : "text-green-500"}
+                >
                   {isWideScreen ? "OFF" : "ON"}
                 </span>
               </p>
