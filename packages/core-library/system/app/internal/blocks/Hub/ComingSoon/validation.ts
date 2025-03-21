@@ -3,7 +3,6 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { time } from "console";
 import * as yup from "yup";
 
 export const contentDateSchema = yup.object({
@@ -14,31 +13,28 @@ export const contentDateSchema = yup.object({
   description: yup
     .string()
     .required("Description is required.")
-    .max(500, "Title cannot be longer than 100 characters."),
+    .max(500, "Description cannot be longer than 500 characters."),
   hasNoSchedule: yup.boolean().default(false),
-  goLiveDate: yup.date().when("hasNoSchedule", {
-    is: false,
+  goLiveDate: yup.date().when(["hasNoSchedule", "countdownEnabled"], {
+    is: (hasNoSchedule: boolean, countdownEnabled: boolean) =>
+      !hasNoSchedule && countdownEnabled,
     then: () =>
       yup
         .date()
         .required("Date is required.")
-        .min(
-          new Date(new Date().setHours(0, 0, 0, 0)),
-          "Date cannot be before today"
-        ),
-    otherwise: () => yup.string().notRequired(),
+        .min(new Date(), "Date cannot be in the past"),
+    otherwise: () => yup.date().notRequired(),
   }),
-  countries: yup
-    .array()
-    .of(yup.string())
-    .min(1, "Please select at least one country."),
-  countryName: yup.array().of(yup.string()).optional(),
-  timeZone: yup.string().required("Timezone is required."),
   countryKey: yup
     .array()
     .of(yup.string())
-    .min(1, "Please select at least one timezone.")
-    .required("Timezone is required. Please select at least one timezone."),
+    .min(1, "Please select at least one country.")
+    .required("At least one country is required."),
+  timeZone: yup.string().when("hasNoSchedule", {
+    is: false,
+    then: (schema) => schema.required("Timezone is required."),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   TargetEnvironment: yup
     .string()
     .required("Environment is required.")

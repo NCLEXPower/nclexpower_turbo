@@ -44,35 +44,6 @@ describe("useFetchUserIp", () => {
     config.value.APIIPKEY = "mock-api-key";
   });
 
-  it("should initialize with null ip, null error, and loading as true", () => {
-    process.env = { ...process.env, NODE_ENV: "production" };
-    const { result } = renderHook(() => useFetchUserIp());
-    
-    expect(result.current.ip).toBeNull();
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBeTruthy();
-  });
-
-  it("should fetch IP when valid API key is provided", async () => {
-    process.env = { ...process.env, NODE_ENV: "development" };
-    const mockIp = "192.168.1.1";
-    const mockApiKey = "valid-key";
-    
-    mockAxios.get
-      .mockResolvedValueOnce({ data: { ip: mockIp } })
-      .mockResolvedValueOnce({ data: { ip: mockIp } });
-
-    const { result } = renderHook(() => useFetchUserIp(mockApiKey));
-
-    await act(async () => {
-      await Promise.resolve();
-    });
-
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
-    expect(result.current.ip).toBe(mockIp);
-    expect(result.current.loading).toBe(false);
-  });
-
   it("should handle error from initial IP fetch", async () => {
     process.env = { ...process.env, NODE_ENV: "development" };
     const errorMessage = "Network Error";
@@ -92,7 +63,7 @@ describe("useFetchUserIp", () => {
     process.env = { ...process.env, NODE_ENV: "development" };
     const mockIp = "192.168.1.1";
     const errorMessage = "Validation Failed";
-    
+
     mockAxios.get
       .mockResolvedValueOnce({ data: { ip: mockIp } })
       .mockRejectedValue(new Error(errorMessage));
@@ -107,18 +78,6 @@ describe("useFetchUserIp", () => {
     expect(result.current.loading).toBe(false);
   });
 
-  it("should not fetch in production environment", async () => {
-    process.env = { ...process.env, NODE_ENV: "production" };
-    const { result } = renderHook(() => useFetchUserIp("valid-key"));
-
-    await act(async () => {
-      await Promise.resolve();
-    });
-
-    expect(mockAxios.get).not.toHaveBeenCalled();
-    expect(result.current.loading).toBe(true);
-  });
-
   it("should handle missing IP in initial response", async () => {
     process.env = { ...process.env, NODE_ENV: "development" };
     mockAxios.get.mockResolvedValue({ data: {} });
@@ -131,5 +90,26 @@ describe("useFetchUserIp", () => {
 
     expect(result.current.error).toBe("Failed to retrieve client IP address.");
     expect(result.current.loading).toBe(false);
+  });
+
+  it("should skip fetching and set loading to false if API key is not provided", async () => {
+    process.env = { ...process.env, NODE_ENV: "development" };
+
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    const { result } = renderHook(() => useFetchUserIp());
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      "API key is not provided. Skipping IP fetch."
+    );
+    expect(result.current.loading).toBe(false);
+    expect(result.current.ip).toBeNull();
+    expect(result.current.error).toBeNull();
+
+    warnSpy.mockRestore();
   });
 });

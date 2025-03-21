@@ -29,7 +29,6 @@ const mapResponseToCountry = (data: {
   };
 };
 
-
 export const ComingSoonManagementBlock: React.FC = () => {
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
   const cache = useRef<Map<string, MappedCountry>>(new Map());
@@ -70,6 +69,20 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSwitchOn(event.target.checked);
     setValue("hasNoSchedule", !event.target.checked);
+  };
+
+  const [countdownEnabled, setCountdownEnabled] = useState(false);
+
+  const handleCountdownToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setCountdownEnabled(isChecked);
+
+    if (!isChecked) {
+      setValue("goLiveDate", undefined);
+      setValue("timeZone", undefined);
+      cache.current.clear();
+      setMappedCountries([]);
+    }
   };
 
   const selectedCountries = watch("countryKey");
@@ -144,6 +157,8 @@ export const ComingSoonManagementBlock: React.FC = () => {
             onSwitchChange={handleSwitchChange}
             isActive={watch("isActive")}
             mappedCountries={memoizedMappedCountries}
+            isCountdownEnabled={countdownEnabled}
+            onCountdownToggle={(e) => setCountdownEnabled(e.target.checked)}
           />
           <ComingSoonForm
             control={control}
@@ -166,18 +181,26 @@ export const ComingSoonManagementBlock: React.FC = () => {
 
   async function onSubmit(values: ContentDateType) {
     try {
-      await createGoliveScheduleCb.execute({
+      const payload: CreateGoliveSchedule = {
         eventName: values.eventName,
         description: values.description,
-        endDate: values.goLiveDate?.toISOString() || "",
-        countries: values.countryKey as string[],
-        timeZone: values.timeZone,
         targetEnvironment: values.TargetEnvironment,
-        selectedCountriesTimezones: mappedCountries.flatMap((country) =>
-          country.timezones.map((tz) => tz.selectedTimezone)
-        ),
+        countries: values.countryKey as string[],
         isActive: true,
-      });
+      };
+
+      if (countdownEnabled) {
+        payload.endDate = values.goLiveDate?.toISOString() || "";
+        payload.timeZone = values.timeZone;
+        payload.selectedCountriesTimezones = mappedCountries.flatMap(
+          (country) => country.timezones.map((tz) => tz.selectedTimezone)
+        );
+      }
+
+      // Temporary while API is not ready
+      // await createGoliveScheduleCb.execute(payload);
+      console.log("Payload:", payload);
+
       setValue("isActive", true);
       showToast("Successful", "success");
     } catch (error) {

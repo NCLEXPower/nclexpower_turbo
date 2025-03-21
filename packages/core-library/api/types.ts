@@ -760,11 +760,11 @@ export type DeleteCaseNameParams = {
 
 export type CreateGoliveSchedule = {
   eventName: string;
-  endDate: string;
+  endDate?: string;
   targetEnvironment: string;
-  timeZone: string;
+  timeZone?: string;
   countries: string[];
-  selectedCountriesTimezones: string[];
+  selectedCountriesTimezones?: string[];
   description: string;
   isActive: boolean;
 };

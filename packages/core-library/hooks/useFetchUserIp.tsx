@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { config } from "../config";
 import axios from "axios";
 
 const APIIP_BASE_URL = config.value.APIIPURL;
 const GET_IP_URL = `${config.value.API64URL}?format=json`;
 
-interface useFetchUserApiProps {
+interface useFetchUserIpState {
   ip: string | null;
   error: string | null;
   loading: boolean;
@@ -14,26 +14,14 @@ interface useFetchUserApiProps {
 /**
  * Custom hook to get the user's IP address.
  */
-
-export const useFetchUserIp = (apiKey?: string): useFetchUserApiProps => {
+export const useFetchUserIp = (apiKey?: string): useFetchUserIpState => {
   const [ip, setIp] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (
-      process.env.NODE_ENV !== "production" &&
-      Boolean(config.value.APIIPKEY)
-    ) {
-      fetchIp();
-    }
-  }, [apiKey]);
-
-  async function fetchIp() {
+  const fetchIp = useCallback(async () => {
     if (!apiKey) {
-      console.warn(
-        "API key is not provided. Skipping IP fetch."
-      );
+      console.warn("API key is not provided. Skipping IP fetch.");
       setLoading(false);
       return;
     }
@@ -55,6 +43,7 @@ export const useFetchUserIp = (apiKey?: string): useFetchUserApiProps => {
         console.log("ip", response.data);
         setIp(response.data.ip);
       } else {
+        setLoading(false);
         throw new Error("Failed to retrieve client IP address.");
       }
     } catch (err) {
@@ -62,6 +51,18 @@ export const useFetchUserIp = (apiKey?: string): useFetchUserApiProps => {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiKey]);
+
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== "production" &&
+      Boolean(config.value.APIIPKEY)
+    ) {
+      fetchIp();
+    } else {
+      setLoading(false);
+    }
+  }, [fetchIp]);
+
   return { ip, error, loading };
 };
