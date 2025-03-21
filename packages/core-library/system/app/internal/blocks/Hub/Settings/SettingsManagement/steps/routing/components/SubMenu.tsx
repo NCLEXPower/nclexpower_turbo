@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -10,7 +10,10 @@ import {
   TextField,
 } from "../../../../../../../../../../components";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { EditMenuItemsSchema, RouteManagementSchema } from "../../../validation";
+import {
+  EditMenuItemsSchema,
+  RouteManagementSchema,
+} from "../../../validation";
 import {
   IconComponent,
   IconList,

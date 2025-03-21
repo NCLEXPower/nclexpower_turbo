@@ -1,14 +1,23 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
 import React, { useMemo } from "react";
 import { Box, ListItemButton, Typography } from "@mui/material";
-import { AuthorizedMenuResponse, MenuItemsChildren } from "../../../../../../../../../../api/types";
-import { Button, Card, ConfirmationModal, CustomPopover, IconButton } from '../../../../../../../../../../components';
-import { IconComponent } from '../../../../../../../../../../components/GenericDrawerLayout/utils/icon-component';
-import { GridMoreVertIcon } from '@mui/x-data-grid';
+import {
+  AuthorizedMenuResponse,
+  MenuItemsChildren,
+} from "../../../../../../../../../../api/types";
+import {
+  Button,
+  Card,
+  ConfirmationModal,
+  CustomPopover,
+  IconButton,
+} from "../../../../../../../../../../components";
+import { IconComponent } from "../../../../../../../../../../components/GenericDrawerLayout/utils/icon-component";
+import { GridMoreVertIcon } from "@mui/x-data-grid";
 
 interface Props {
   menus: AuthorizedMenuResponse;
@@ -17,23 +26,29 @@ interface Props {
   onDeleteMenu: (MenuId: string) => void;
 }
 
-export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMenu }: Props) => {
-  const menuHolder = useMemo(() => menus.menuItems ?? [], [menus])
+export const RouteCreationSidebar = ({
+  menus,
+  onEditMenu,
+  onAddMenu,
+  onDeleteMenu,
+}: Props) => {
+  const menuHolder = useMemo(() => menus.menuItems ?? [], [menus]);
 
   return (
     <Card
       data-testid="route-creation-sidebar"
       elevation={5}
       sx={{
-        overflow: 'auto',
+        overflow: "auto",
         width: "40%",
         height: "100%",
         borderRadius: "10px",
-      }}>
-
+      }}
+    >
       <Button
         onClick={onAddMenu}
-        sx={{ borderRadius: "10px", marginTop: "20px" }}>
+        sx={{ borderRadius: "10px", marginTop: "20px" }}
+      >
         Add Menu
       </Button>
       <Box
@@ -51,21 +66,31 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
             )
             .map((navigation, index) => (
               <Box key={index} display="flex" marginY={2}>
-                <ListItemButton
-                  onClick={() => onEditMenu(navigation)}
-                >
+                <ListItemButton onClick={() => onEditMenu(navigation)}>
                   <Box key={navigation.id} width={1}>
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <Box display="flex" alignItems="center" gap={2} >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box display="flex" alignItems="center" gap={2}>
                         {IconComponent(navigation.icon, false, "primary")}
                         <Typography sx={{ fontWeight: 700 }}>
                           {navigation.label}
                         </Typography>
                       </Box>
                     </Box>
-                    {navigation.children && navigation.children.length > 0 &&
+                    {navigation.children &&
+                      navigation.children.length > 0 &&
                       navigation.children.map((subMenu, index) => (
-                        <Box key={index} display="flex" alignItems="center" gap={2} >
+                        <Box
+                          key={index}
+                          display="flex"
+                          alignItems="center"
+                          gap={2}
+                        >
                           {IconComponent(subMenu.icon, false, "primary")}
                           <Typography key={index} sx={{ fontSize: "14px" }}>
                             {subMenu.label}
@@ -74,15 +99,20 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
                       ))}
                   </Box>
                 </ListItemButton>
-                <CustomPopover open withIcon={true} label='Actions' iconButton={<GridMoreVertIcon fontSize="small" />}>
+                <CustomPopover
+                  open
+                  withIcon={true}
+                  label="Actions"
+                  iconButton={<GridMoreVertIcon fontSize="small" />}
+                >
                   <ListItemButton
                     onClick={() => onEditMenu(navigation)}
-                    sx={{ color: 'black' }}
+                    sx={{ color: "black" }}
                   >
                     Edit
                   </ListItemButton>
                   <ConfirmationModal
-                    customButton={'ListDeleteButton'}
+                    customButton={"ListDeleteButton"}
                     dialogContent="Are you sure you want to delete this menu?"
                     isLoading={false}
                     handleSubmit={() => onDeleteMenu(navigation.id)}
@@ -91,6 +121,6 @@ export const RouteCreationSidebar = ({ menus, onEditMenu, onAddMenu, onDeleteMen
               </Box>
             ))}
       </Box>
-    </Card >
+    </Card>
   );
 };

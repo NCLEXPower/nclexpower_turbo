@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SectionVideosType } from "core-library/types/wc/programList";
 import Image from "next/image";
 
@@ -31,7 +31,9 @@ export const VideoDetails: React.FC<VideoDetailsProps> = ({
               <h4 className="font-ptSans text-black font-bold text-[14px]">
                 {selectedVid.secVidAuthor}
               </h4>
-              <h4 className="font-ptSans italic text-darkGray text-[14px]">Author</h4>
+              <h4 className="font-ptSans italic text-darkGray text-[14px]">
+                Author
+              </h4>
             </div>
           </div>
           <h4 className="text-black font-ptSans text-[14px] font-regular px-4 lg:px-0">

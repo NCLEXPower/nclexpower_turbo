@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -475,12 +475,12 @@ export class WebApiBackOffice {
   public async deleteReportIssue(params: DeleteReportIssuesParams) {
     return await this.axios.delete(
       `/api/v1/Customer/delete-report-issue?${qs.stringify({ ...params })}`
-    )
+    );
   }
   public async caseStudyList(params: GetCaseStudyListParams) {
     return await this.axios.get<CaseStudyListResponse[]>(
       `/api/v2/content/BaseContent/get-content-by-author?${qs.stringify({ ...params })}`
-    )
+    );
   }
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(

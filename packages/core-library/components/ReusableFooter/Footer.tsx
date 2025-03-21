@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -155,6 +155,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                           <li key={index}>
                             <a
                               href={item.path}
+                              target="_blank"
                               className="text-white hover:text-[#eec609]"
                               style={{
                                 fontSize: `clamp(0.75rem, 1vw + 0.3rem, 1.1rem)`,
