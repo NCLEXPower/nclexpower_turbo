@@ -36,6 +36,13 @@ export type Blocks =
   | "ContactUsManagementBlock"
   | "SalesManagement"
   | "AnnouncementManagementBlock"
+  | "ProgramManagementListBlock"
+  | "ProgramManagementListCreateBlock"
+  | "ProgramManagementListEditBlock"
+  | "ProgramSectionManagementBlock"
+  | "ProgramSectionManagementCreateBlock"
+  | "ProgramSectionManagementEditBlock"
+  | "ProgramSectionManagementEditItemBlock"
   | "ComingSoonManagementBlock"
   | "CaseNameManagementBlock"
   | "PolicyManagementBlock"
@@ -62,6 +69,13 @@ type BlockProps = {
   ContactUsManagementBlock: {};
   SalesManagement: {};
   AnnouncementManagementBlock: {};
+  ProgramManagementListBlock: {};
+  ProgramManagementListCreateBlock: {};
+  ProgramManagementListEditBlock: {}; 
+  ProgramSectionManagementBlock: {};
+  ProgramSectionManagementCreateBlock: {};
+  ProgramSectionManagementEditBlock: {};
+  ProgramSectionManagementEditItemBlock: {};
   ComingSoonManagementBlock: {};
   CaseNameManagementBlock: {};
   PolicyManagementBlock: {};
