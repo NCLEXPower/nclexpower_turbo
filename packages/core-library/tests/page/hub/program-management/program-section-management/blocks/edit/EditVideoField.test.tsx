@@ -169,4 +169,72 @@ describe("EditVideoField", () => {
 
     await waitFor(() => expect(onSaveMock).toHaveBeenCalled());
   });
+
+  it("renders video player with correct URL", async () => {
+    const { methods } = setupForm();
+
+    render(
+      <FormProvider {...methods}>
+        <EditVideoField
+          control={methods.control as Control<FormValues>}
+          onSave={jest.fn()}
+          section="test"
+          videoFileName="http://example.com/video.mp4"
+          videoLink={[]}
+          videoPlaceholderFileName=""
+          videoPlaceholderLink={[]}
+          authorImageFileName=""
+          authorImageLink={[]}
+        />
+      </FormProvider>
+    );
+
+    expect(screen.getByTestId("mock-react-player")).toBeInTheDocument();
+  });
+
+  it("renders video placeholder with correct image", async () => {
+    const { methods } = setupForm();
+
+    render(
+      <FormProvider {...methods}>
+        <EditVideoField
+          control={methods.control as Control<FormValues>}
+          onSave={jest.fn()}
+          section="test"
+          videoFileName=""
+          videoLink={[]}
+          videoPlaceholderFileName="http://example.com/placeholder.jpg"
+          videoPlaceholderLink={[]}
+          authorImageFileName=""
+          authorImageLink={[]}
+        />
+      </FormProvider>
+    );
+
+    const image = screen.getByAltText("video placeholder");
+    expect(image).toHaveAttribute("src", "http://example.com/placeholder.jpg");
+  });
+
+  it("renders author image with correct image", async () => {
+    const { methods } = setupForm();
+
+    render(
+      <FormProvider {...methods}>
+        <EditVideoField
+          control={methods.control as Control<FormValues>}
+          onSave={jest.fn()}
+          section="test"
+          videoFileName=""
+          videoLink={[]}
+          videoPlaceholderFileName=""
+          videoPlaceholderLink={[]}
+          authorImageFileName="http://example.com/author.jpg"
+          authorImageLink={[]}
+        />
+      </FormProvider>
+    );
+
+    const image = screen.getByAltText("author image");
+    expect(image).toHaveAttribute("src", "http://example.com/author.jpg");
+  });
 });

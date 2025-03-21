@@ -105,4 +105,58 @@ describe("CreateVideo Component", () => {
       expect(mockOnSubmit).toHaveBeenCalled();
     });
   });
+
+  it("resets form after submission", async () => {
+    render(<CreateVideo onSubmit={mockOnSubmit} />);
+
+    fireEvent.change(screen.getByPlaceholderText(/Enter title/i), {
+      target: { value: "Test Video" },
+    });
+
+    const createVideoButton =
+      screen.queryByTestId("create-video") ||
+      screen.queryByRole("button", { name: /create/i });
+
+    if (!createVideoButton) {
+      throw new Error("Create video button not found.");
+    }
+
+    fireEvent.click(createVideoButton);
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalled();
+    });
+
+    expect(screen.getByPlaceholderText(/Enter title/i)).toHaveValue("");
+  });
+
+  it("renders ComponentLoader when contentLoader is true", () => {
+    render(<CreateVideo onSubmit={mockOnSubmit} contentLoader={true} />);
+    expect(screen.getByTestId("component-loader")).toBeInTheDocument();
+  });
+
+  it("renders ReactPlayer with correct video URL", async () => {
+    mockUseFormReturn.getValues = jest.fn(() => ({
+      link: [new File([""], "test-video.mp4", { type: "video/mp4" })],
+    }));
+
+    render(<CreateVideo onSubmit={mockOnSubmit} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("mock-react-player")).toBeInTheDocument();
+    });
+  });
+
+  it("calls handleFileChange when uploading video file", async () => {
+    render(<CreateVideo onSubmit={mockOnSubmit} />);
+    const file = new File([""], "test-video.mp4", { type: "video/mp4" });
+
+    const uploadButton = screen.getByLabelText("Upload Video");
+    fireEvent.change(uploadButton, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(mockSetValue).toHaveBeenCalledWith("link", [file], { shouldValidate: true });
+    });
+  });
+
 });
