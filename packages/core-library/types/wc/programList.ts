@@ -10,6 +10,7 @@ export type SectionListType = {
   sectionType: string;
   sectionTitle: string;
   sectionStatus: string;
+  sectionTimer?: string;
   sectionVideos?: SectionVideosType[];
   sectionData?: SectionDataType[];
 };
@@ -25,6 +26,7 @@ export type SectionDataType = {
   cards?: SectionCardsType[] | [];
   catSimulator?: string | null;
   contentAreaCoverage?: string[] | [];
+  secVidTitle?: string;
 };
 
 export type ImageType = {

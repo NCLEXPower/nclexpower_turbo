@@ -251,6 +251,8 @@ export const google = require("./settings/google.svg");
 export const profile = require("./settings/profile.png");
 export const visaIcon = require("./visaIcon.svg");
 export const NotAvailableBG = require("./NotAvailableBG.png");
+export const noVideoImage = require("./programmanagement/noVideoImage.png");
+export const uploadImage = require("./programmanagement/uploadImage.jpg");
 
 export const HTN_01 = require("./content-card-faces/CV01_HTN_01.png");
 export const HTN_02 = require("./content-card-faces/CV01_HTN_02.png");
