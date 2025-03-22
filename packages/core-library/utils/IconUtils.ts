@@ -11,7 +11,7 @@ import {
     PerspectiveIcon,
     StrategyIcon,
     CATIcon,
-  } from "core-library/assets";
+  } from "../assets";
 
 const statusIcons = {
     completed: CompletedWhiteIcon,
@@ -27,7 +27,7 @@ const statusIcons = {
     "med-cards": CardsIcon,
     perspective: PerspectiveIcon,
     strategy: StrategyIcon,
-    CAT: CATIcon
+    cat: CATIcon
   } as const;
 
   const sectionStatusIcons = {
