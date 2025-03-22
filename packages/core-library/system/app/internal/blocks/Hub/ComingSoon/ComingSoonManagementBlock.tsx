@@ -56,6 +56,10 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
+    defaultValues: {
+      hasNoSchedule: false,
+      countdownEnabled: false,
+    },
   });
 
   const { control, handleSubmit, watch, setValue } = form;
@@ -72,11 +76,10 @@ export const ComingSoonManagementBlock: React.FC = () => {
   };
 
   const [countdownEnabled, setCountdownEnabled] = useState(false);
-
   const handleCountdownToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setCountdownEnabled(isChecked);
-
+    setValue("countdownEnabled", isChecked);
     if (!isChecked) {
       setValue("goLiveDate", undefined);
       setValue("timeZone", undefined);
@@ -158,7 +161,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
             isActive={watch("isActive")}
             mappedCountries={memoizedMappedCountries}
             isCountdownEnabled={countdownEnabled}
-            onCountdownToggle={(e) => setCountdownEnabled(e.target.checked)}
+            onCountdownToggle={handleCountdownToggle}
           />
           <ComingSoonForm
             control={control}
@@ -189,7 +192,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
         isActive: true,
       };
 
-      if (countdownEnabled) {
+      if (values.countdownEnabled) {
         payload.endDate = values.goLiveDate?.toISOString() || "";
         payload.timeZone = values.timeZone;
         payload.selectedCountriesTimezones = mappedCountries.flatMap(

@@ -1,8 +1,3 @@
-/**
- * Property of the Arxon Solutions, LLC.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
 import * as yup from "yup";
 
 export const contentDateSchema = yup.object({
@@ -15,6 +10,7 @@ export const contentDateSchema = yup.object({
     .required("Description is required.")
     .max(500, "Description cannot be longer than 500 characters."),
   hasNoSchedule: yup.boolean().default(false),
+  countdownEnabled: yup.boolean().default(false),
   goLiveDate: yup.date().when(["hasNoSchedule", "countdownEnabled"], {
     is: (hasNoSchedule: boolean, countdownEnabled: boolean) =>
       !hasNoSchedule && countdownEnabled,
@@ -30,8 +26,9 @@ export const contentDateSchema = yup.object({
     .of(yup.string())
     .min(1, "Please select at least one country.")
     .required("At least one country is required."),
-  timeZone: yup.string().when("hasNoSchedule", {
-    is: false,
+  timeZone: yup.string().when(["hasNoSchedule", "countdownEnabled"], {
+    is: (hasNoSchedule: boolean, countdownEnabled: boolean) =>
+      !hasNoSchedule && countdownEnabled,
     then: (schema) => schema.required("Timezone is required."),
     otherwise: (schema) => schema.notRequired(),
   }),

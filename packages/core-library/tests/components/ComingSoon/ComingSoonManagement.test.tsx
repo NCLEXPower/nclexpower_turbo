@@ -1,6 +1,6 @@
 import React from "react";
 import ComingSoonManagement from "../../../system/app/internal/blocks/Hub/ComingSoon/ComingSoonManagement";
-import { render, screen } from "../../common";
+import { render, screen, fireEvent } from "../../common";
 
 jest.mock("../../../config", () => ({
   getConfig: jest
@@ -14,11 +14,7 @@ jest.mock("../../../core/router", () => ({
 }));
 
 jest.mock("../../../components", () => ({
-  DateField: (props: any) => (
-    <div data-testid="date-field" {...props}>
-      DateField
-    </div>
-  ),
+  DateField: (props: any) => <input data-testid="date-field" {...props} />,
   GenericSelectField: (props: any) => (
     <div data-testid="generic-select-field" {...props}>
       GenericSelectField
@@ -50,70 +46,98 @@ jest.mock(
 describe("ComingSoonManagement component", () => {
   const control = {} as any;
   const onSwitchChange = jest.fn();
+  const onCountdownToggle = jest.fn();
   const mappedCountries = [
     {
       countryKey: "USA",
       countryName: "USA",
       daysRemaining: 5,
       timezones: [
-        { selectedTimezone: "EST", daysRemaining: 5},
-        { selectedTimezone: "PST", daysRemaining: 4},
+        { selectedTimezone: "EST", daysRemaining: 5 },
+        { selectedTimezone: "PST", daysRemaining: 4 },
       ],
     },
   ];
 
-  it("renders with isSwitchOn true and isActive false (DateField enabled, opacity 1)", () => {
-    render(
-      <ComingSoonManagement
-        control={control}
-        isSwitchOn={true}
-        onSwitchChange={onSwitchChange}
-        isActive={false}
-        mappedCountries={mappedCountries}
-      />
-    );
+  const renderComponent = (
+    props: Partial<React.ComponentProps<typeof ComingSoonManagement>> = {}
+  ) => {
+    const defaultProps = {
+      control,
+      isSwitchOn: true,
+      onSwitchChange,
+      isActive: false,
+      mappedCountries,
+      isCountdownEnabled: true,
+      onCountdownToggle,
+    };
 
-    const goLiveDateLabel = screen.getByText("Go Live Date:");
-    expect(goLiveDateLabel).toBeInTheDocument();
+    return render(<ComingSoonManagement {...defaultProps} {...props} />);
+  };
 
-    const computedStyle = window.getComputedStyle(goLiveDateLabel);
-    expect(computedStyle.opacity).toBe("1");
+  it("renders with countdown enabled and isSwitchOn true", () => {
+    renderComponent();
 
-    const dateField = screen.getByTestId("date-field");
-    expect(dateField.getAttribute("disabled")).toBeNull();
+    expect(screen.getByText("Coming Soon Management")).toBeInTheDocument();
+    expect(screen.getByTestId("live-countdown")).toBeInTheDocument();
+    expect(screen.getByText("Go Live Date:")).toBeInTheDocument();
+
+    const switches = screen.getAllByTestId("switch-button");
+    expect(switches[0]).toBeChecked();
+    expect(switches[1]).toBeChecked();
+
+    expect(screen.getByTestId("date-field")).toBeEnabled();
   });
 
-  it("renders with isSwitchOn false (DateField disabled, opacity 0.5)", () => {
-    render(
+  it("disables fields when isActive is true", () => {
+    renderComponent({ isActive: true });
+
+    const switches = screen.getAllByTestId("switch-button");
+    expect(switches[0]).toBeDisabled();
+    expect(switches[1]).toBeDisabled();
+
+    expect(screen.getByTestId("date-field")).toBeDisabled();
+  });
+
+  it("renders countdown disabled state", () => {
+    renderComponent({ isCountdownEnabled: false });
+
+    expect(screen.queryByTestId("live-countdown")).not.toBeInTheDocument();
+    expect(screen.queryByText("Go Live Date:")).not.toBeInTheDocument();
+    expect(screen.getByTestId("multiple-select-field")).toBeInTheDocument();
+
+    const switches = screen.getAllByTestId("switch-button");
+    expect(switches).toHaveLength(1);
+    expect(switches[0]).not.toBeChecked();
+  });
+
+  it("handles countdown toggle", () => {
+    renderComponent();
+
+    const switches = screen.getAllByTestId("switch-button");
+    fireEvent.click(switches[0]);
+    expect(onCountdownToggle).toHaveBeenCalled();
+  });
+
+  it("adjusts opacity when isSwitchOn changes", () => {
+    const { rerender } = renderComponent({ isSwitchOn: true });
+    expect(
+      window.getComputedStyle(screen.getByText("Go Live Date:")).opacity
+    ).toBe("1");
+
+    rerender(
       <ComingSoonManagement
         control={control}
         isSwitchOn={false}
         onSwitchChange={onSwitchChange}
         isActive={false}
         mappedCountries={mappedCountries}
+        isCountdownEnabled={true}
+        onCountdownToggle={onCountdownToggle}
       />
     );
-
-    const goLiveDateLabel = screen.getByText("Go Live Date:");
-    const computedStyle = window.getComputedStyle(goLiveDateLabel);
-    expect(computedStyle.opacity).toBe("0.5");
-
-    const dateField = screen.getByTestId("date-field");
-    expect(dateField).toHaveAttribute("disabled");
-  });
-
-  it("renders with isActive true (DateField disabled regardless of isSwitchOn)", () => {
-    render(
-      <ComingSoonManagement
-        control={control}
-        isSwitchOn={true}
-        onSwitchChange={onSwitchChange}
-        isActive={true}
-        mappedCountries={mappedCountries}
-      />
-    );
-
-    const dateField = screen.getByTestId("date-field");
-    expect(dateField).toHaveAttribute("disabled");
+    expect(
+      window.getComputedStyle(screen.getByText("Go Live Date:")).opacity
+    ).toBe("0.5");
   });
 });
