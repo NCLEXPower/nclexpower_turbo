@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const tokenId = request.cookies.get("nclex_customer");
   const accountId = request.cookies.get("nclex_account");
-  const analytics = request.cookies.get("analytics");
+  const ipGeo = request.cookies.get("geocountry");
   const proceedToHubUrl = new URL("/hub", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
   const proceed2faUrl = new URL("/account/verification/otp", request.url);
@@ -103,7 +103,7 @@ export async function middleware(request: NextRequest) {
     const params = {
       paymentIntentId: searchParams.get("payment_intent") ?? "",
       accountId: accountId?.value ?? "",
-      analyticsParams: analytics?.value ?? "",
+      country: ipGeo?.value ?? request.geo?.country,
       accessToken: tokenId.value,
     };
     await paymentConfirmed(params, baseUrl);
@@ -204,7 +204,7 @@ async function paymentConfirmed(
   params: {
     paymentIntentId: string;
     accountId: string;
-    analyticsParams: string;
+    country?: string | undefined;
     accessToken: string | undefined | null;
   },
   publicUrl: string | undefined
