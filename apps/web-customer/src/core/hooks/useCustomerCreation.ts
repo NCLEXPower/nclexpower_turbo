@@ -21,14 +21,18 @@ export const useCustomerCreation = () => {
     } catch (error) {
       if (!isAxiosError(error)) {
         console.error(`Something went wrong with customer creation: ${error}.`);
-        return;
+        throw error;
       }
 
-      if (error.response?.status === 409)
+      if (error.response?.status === 409) {
         toast.executeToast("Email address already exists", "top-right", false, {
           toastId: 0,
           type: "error",
         });
+
+        throw new Error("EMAIL_EXISTS");
+      }
+      throw error;
     }
   }
 

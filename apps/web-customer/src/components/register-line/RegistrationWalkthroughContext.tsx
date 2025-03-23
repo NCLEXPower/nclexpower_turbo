@@ -15,7 +15,6 @@ import { SelectedProductType } from "core-library/types/global";
 import { useExecuteToast } from "core-library/contexts";
 import { useCustomerCreation } from "@/core/hooks/useCustomerCreation";
 import { CreateCustomerParams } from "core-library/api/types";
-import { validatePassword } from "@/core";
 import { useShowPassword } from "../blocks/ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
 import { useResetOnRouteChange } from "core-library/core/hooks/useResetOnRouteChange";
 
@@ -100,7 +99,7 @@ export const RegistrationWizardFormContextProvider: React.FC<
   async function onSubmit(values: RegistrationFormType, token: string | null) {
     const { productId, amount } = orderDetail;
 
-    if (!productId || !amount || !token) return reset();
+    if (!productId || !amount || !token) return;
 
     const filteredValues: CreateCustomerParams = {
       firstname: values.firstname,
@@ -118,16 +117,24 @@ export const RegistrationWizardFormContextProvider: React.FC<
       var result = await verifyCb.execute({ token: token });
       if (result.status === 200) {
         const _result = await createCustomerAsync(filteredValues);
+
         const orderSummary = {
           orderNumber: orderNumberCb.result?.data,
           productId,
           accountId: _result?.data.accountId,
           pricingId: orderDetail.pricingId,
         };
-        await createOrderSummaryCb.execute({
-          ...orderSummary,
-        });
+
+        await Promise.all([
+          createOrderSummaryCb.execute({
+            ...orderSummary,
+          }),
+          _result
+        ])
+        
         await router.push((route) => route.login);
+        toast.showToast("Account created successfully. Login your account", "success");
+        resetActiveStep(); 
       }
     } catch (error) {
       toast.showToast(
