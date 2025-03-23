@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -26,7 +26,7 @@ import {
   getSectionStatusIcons,
   getSectionTypeIcons,
   getStatusIcons,
-} from "../../.../../../../utils";
+} from "core-library/utils/IconUtils";
 import { useRouter } from "core-library";
 import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
 import { useModal } from "core-library/hooks";

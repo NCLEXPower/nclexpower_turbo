@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -247,6 +247,8 @@ export const google = require("./settings/google.svg");
 export const profile = require("./settings/profile.png");
 export const visaIcon = require("./visaIcon.svg");
 export const NotAvailableBG = require("./NotAvailableBG.png");
+export const noVideoImage = require("./programmanagement/noVideoImage.png");
+export const uploadImage = require("./programmanagement/uploadImage.jpg");
 
 export const HTN_01 = require("./content-card-faces/CV01_HTN_01.png");
 export const HTN_02 = require("./content-card-faces/CV01_HTN_02.png");

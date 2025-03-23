@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -10,6 +10,7 @@ export type SectionListType = {
   sectionType: string;
   sectionTitle: string;
   sectionStatus: string;
+  sectionTimer?: string;
   sectionVideos?: SectionVideosType[];
   sectionData?: SectionDataType[];
 };
@@ -25,6 +26,7 @@ export type SectionDataType = {
   cards?: SectionCardsType[] | [];
   catSimulator?: string | null;
   contentAreaCoverage?: string[] | [];
+  secVidTitle?: string;
 };
 
 export type ImageType = {

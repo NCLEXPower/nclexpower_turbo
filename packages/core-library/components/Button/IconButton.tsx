@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -35,8 +35,8 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
       onClick={onClick}
       edge={edge}
       className={className}
-      sx={{ "&:focus": { outline: "none !important" }, ...sx }}
       disabled={disabled}
+      sx={{ "&:focus": { outline: "none !important" }, ...sx }}
       disableRipple={disableRipple}
     >
       {children}

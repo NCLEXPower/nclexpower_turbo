@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -191,7 +191,11 @@ const ButtonSelector = ({
 
     case "ListDeleteButton":
       return (
-        <ListItemButton disabled={disabled} onClick={onClickFn} data-testid="delete-button">
+        <ListItemButton
+          disabled={disabled}
+          onClick={onClickFn}
+          data-testid="delete-button"
+        >
           Delete
         </ListItemButton>
       );
