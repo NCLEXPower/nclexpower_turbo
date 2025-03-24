@@ -3,7 +3,10 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { StandardProgramListType } from "../../../../../types/wc/programList";
+import {
+  StandardProgramListType,
+  ProgramSectionList,
+} from "../../../../../types/wc/programList";
 import {
   WelcomeProgram,
   CardioVascular,
@@ -1111,15 +1114,15 @@ export const fastrackProgramList: StandardProgramListType[] = [
     disabled: true,
   },
   {
-    id: "3",
-    title: "02 Pediatrics",
-    programStatus: "unavailable",
-    programImage: Pediatrics,
+    id: "74638192374852",
+    title: "Welcome to the Program",
+    programStatus: "available",
+    programImage: WelcomeProgram,
     sections: [
       {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 2 Videos",
+        sectionId: "827465928412",
+        sectionType: "document",
+        sectionTitle: "Welcome to the CORE Zigma System",
         sectionStatus: "available",
         sectionTimer: "",
       },
@@ -1131,9 +1134,9 @@ export const fastrackProgramList: StandardProgramListType[] = [
         sectionTimer: "",
       },
       {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
+        sectionId: "627485960212",
+        sectionType: "video",
+        sectionTitle: "Day 1 Videos",
         sectionStatus: "available",
         sectionTimer: "",
       },
@@ -1145,18 +1148,18 @@ export const fastrackProgramList: StandardProgramListType[] = [
         sectionTimer: "",
       },
     ],
-    disabled: true,
+    disabled: false,
   },
   {
-    id: "4",
-    title: "03 Medical-Surgical",
-    programStatus: "unavailable",
-    programImage: MedicalSurgical,
+    id: "777222641823",
+    title: "Day 1 Cardio",
+    programStatus: "available",
+    programImage: CardioVascular,
     sections: [
       {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 3 Videos",
+        sectionId: "677653218723",
+        sectionType: "document",
+        sectionTitle: "Welcome to the CORE Zigma System",
         sectionStatus: "available",
         sectionTimer: "",
       },
@@ -1184,9 +1187,9 @@ export const fastrackProgramList: StandardProgramListType[] = [
     programImage: CriticalCare,
     sections: [
       {
-        sectionId: "1",
+        sectionId: "987654237465",
         sectionType: "video",
-        sectionTitle: "Day 4 Videos",
+        sectionTitle: "Day 1 Videos",
         sectionStatus: "available",
         sectionTimer: "",
       },
@@ -1205,7 +1208,7 @@ export const fastrackProgramList: StandardProgramListType[] = [
         sectionTimer: "",
       },
       {
-        sectionId: "4",
+        sectionId: "876952637461",
         sectionType: "med-cards",
         sectionTitle: "DL Med Cards",
         sectionStatus: "available",
@@ -1221,9 +1224,9 @@ export const fastrackProgramList: StandardProgramListType[] = [
     programImage: Emergency,
     sections: [
       {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 5 Videos",
+        sectionId: "246387812345",
+        sectionType: "CAT",
+        sectionTitle: "Body System Simulator",
         sectionStatus: "available",
         sectionTimer: "",
       },
@@ -1349,24 +1352,67 @@ export const fastrackProgramList: StandardProgramListType[] = [
     programImage: FinalCAT,
     sections: [
       {
-        sectionId: "1",
-        sectionType: "CAT",
-        sectionTitle: "Words on the Final CAT",
-        sectionStatus: "available",
+        sectionDataId: "4.1",
+        title: "Cardio",
+        cards: [
+          {
+            cardTopic: "Hypertension",
+            cardFaces: ["https://htncard.face1", "https://htncard.face2"],
+          },
+          {
+            cardTopic: "Congestive Heart Failure",
+            cardFaces: ["https://chfcard.face1", "https://chfcard.face2"],
+          },
+        ],
       },
       {
-        sectionId: "2",
-        sectionType: "CAT",
-        sectionTitle: "Final CAT Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "CAT",
-        sectionTitle: "Post Test: Final Words",
-        sectionStatus: "available",
+        sectionDataId: "4.2",
+        title: "Respiratory",
+        cards: [
+          {
+            cardTopic: "Coronary Artery Disease",
+            cardFaces: ["https://cadcard.face1", "https://cadcard.face2"],
+          },
+          {
+            cardTopic: "Congestive Heart Failure",
+            cardFaces: ["https://chfcard.face1", "https://chfcard.face2"],
+          },
+        ],
       },
     ],
-    disabled: true,
+  },
+  {
+    sectionId: "5",
+    sectionType: "med-cards",
+    sectionTitle: "Med Cards",
+    sectionData: [
+      {
+        sectionDataId: "5.1",
+        title: "Cardio Med Cards",
+        link: "https://medcards.zip1",
+      },
+      {
+        sectionDataId: "5.2",
+        title: "Respiratory Med Cards",
+        link: "https://medcards.zip2",
+      },
+    ],
+  },
+  {
+    sectionId: "6",
+    sectionType: "cat",
+    sectionTitle: "CAT",
+    sectionData: [
+      {
+        sectionDataId: "6.1",
+        catSimulator: "Systems CAT Simulator",
+        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
+      },
+      {
+        sectionDataId: "6.2",
+        catSimulator: "Final CAT Simulator",
+        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
+      },
+    ],
   },
 ];

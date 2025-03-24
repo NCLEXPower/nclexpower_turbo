@@ -26,7 +26,7 @@ import {
   getSectionStatusIcons,
   getSectionTypeIcons,
   getStatusIcons,
-} from "../../.../../../../utils";
+} from "core-library/utils/IconUtils";
 import { useRouter } from "core-library";
 import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
 import { useModal } from "core-library/hooks";

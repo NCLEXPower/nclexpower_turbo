@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
-import { hideHeaderAtom } from "./useDesignVisibility";
+import { visibilityAtom } from "./useDesignVisibility";
 
 export const useIsDesignVisible = () => {
-  return useAtomValue(hideHeaderAtom);
+  return useAtomValue(visibilityAtom);
 };
