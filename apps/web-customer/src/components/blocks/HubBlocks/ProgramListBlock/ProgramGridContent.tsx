@@ -39,10 +39,10 @@ export const ProgramGridContent: React.FC<Props> = ({
 }) => {
   const { videoSections, otherSections } = separateSectionType(sections);
 
-  const secVidDetails = !!videoSections.length
+  const secVidDetails = !!videoSections?.length
     ? {
-        secVidTitle: videoSections[0].sectionTitle,
-        secVidIcon: getSectionTypeIcons(videoSections[0].sectionType),
+        secVidTitle: videoSections[0]?.sectionTitle ?? "",
+        secVidIcon: getSectionTypeIcons(videoSections[0]?.sectionType ?? ""),
         secVidStatusIcon: getSectionStatusIcons(
           getVideoSectionStatus(videoSections)
         ),

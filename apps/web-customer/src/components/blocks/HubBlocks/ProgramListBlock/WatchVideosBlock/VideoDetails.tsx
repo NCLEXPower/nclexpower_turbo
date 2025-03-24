@@ -4,6 +4,7 @@
  * Created by the Software Strategy & Development Division
  */
 import { SectionVideosType } from "core-library/types/wc/programList";
+import { CoreZigmaLogo } from "core-library/assets";
 import Image from "next/image";
 
 interface VideoDetailsProps {
@@ -27,7 +28,7 @@ export const VideoDetails: React.FC<VideoDetailsProps> = ({
           <hr className="text-[#9A9A9A]" />
           <div className="flex items-center gap-2">
             <Image
-              src={selectedVid.secVidAuthorImg}
+              src={selectedVid.secVidAuthorImg ?? CoreZigmaLogo}
               alt="author-pic"
               width={60}
               height={60}
