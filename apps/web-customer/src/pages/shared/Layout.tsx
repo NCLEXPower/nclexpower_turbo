@@ -75,6 +75,7 @@ const Layout: React.FC<
     return <DuplicateSessionBlock />;
   }
 
+
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
