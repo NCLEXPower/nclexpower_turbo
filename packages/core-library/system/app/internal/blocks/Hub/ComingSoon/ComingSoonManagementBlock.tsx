@@ -199,7 +199,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
           (country) => country.timezones.map((tz) => tz.selectedTimezone)
         );
       }
-
+      const {endDate, timeZone, selectedCountriesTimezones} = payload;
       // Temporary while API is not ready
       // await createGoliveScheduleCb.execute(payload);
       console.log("Payload:", payload);
