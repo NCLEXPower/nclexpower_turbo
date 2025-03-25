@@ -39,7 +39,7 @@ import { loadStripe, Stripe, StripeElements } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Encryption } from "core-library";
 import { config } from "core-library/config";
-import { useAnalyticsDetails } from "core-library/hooks/useCookie";
+import { useGeoCountry } from "core-library/hooks/useCookie";
 
 interface Props {
   publishableKey: string;
@@ -92,7 +92,7 @@ export const PaymentWizardFormContextProvider: React.FC<
   const [accountId] = useAccountId();
   const [, setCheckoutIntent] = useCheckoutIntent();
   const [clientSecret, setClientSecret] = useSecretClient();
-  const [, setAnalyticsCookie, clearAnalyticsCookie] = useAnalyticsDetails();
+  const [, setGeoCountry, clearGeoCountry] = useGeoCountry();
   const [paymentIntentId, setPaymentIntentId] = usePaymentIntentId();
   const { geoData } = useCountryFromIp(config.value.APIIPKEY);
   const { tokenValidated, loading: validateLoading } = useValidateToken();
@@ -137,17 +137,7 @@ export const PaymentWizardFormContextProvider: React.FC<
           productName: order?.productName,
           programTitle: order?.programTitle,
         } as CreatePaymentIntentParams;
-        const prepAnalytics = {
-          productId: params.productId,
-          country: geoData?.countryCode,
-          currencyId: order?.currencyId,
-          customerAccountId: accountId,
-        };
-        const encryptedAnalytics = Encryption(
-          JSON.stringify(prepAnalytics),
-          config.value.SECRET_KEY
-        );
-        setAnalyticsCookie(encryptedAnalytics);
+        setGeoCountry(geoData?.countryCode ?? "US");
         const result = await mutateAsync({ ...params });
         setCheckoutIntent(result.data.paymentIntentId);
         setClientSecret(result.data.clientSecret);
@@ -211,7 +201,7 @@ export const PaymentWizardFormContextProvider: React.FC<
 
         if (error) {
           // create another API call to count payment failed -> more than 3 then -> logout
-          clearAnalyticsCookie();
+          clearGeoCountry();
           toast.showToast("Payment failed. Please try again.", "error");
           return;
         }
