@@ -3,10 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import {
-  StandardProgramListType,
-  ProgramSectionList,
-} from "../../../../../types/wc/programList";
+import { StandardProgramListType } from "../../../../../types/wc/programList";
 import {
   WelcomeProgram,
   CardioVascular,
@@ -1344,75 +1341,5 @@ export const fastrackProgramList: StandardProgramListType[] = [
       },
     ],
     disabled: true,
-  },
-  {
-    id: "10",
-    title: "08 Final CAT",
-    programStatus: "unavailable",
-    programImage: FinalCAT,
-    sections: [
-      {
-        sectionDataId: "4.1",
-        title: "Cardio",
-        cards: [
-          {
-            cardTopic: "Hypertension",
-            cardFaces: ["https://htncard.face1", "https://htncard.face2"],
-          },
-          {
-            cardTopic: "Congestive Heart Failure",
-            cardFaces: ["https://chfcard.face1", "https://chfcard.face2"],
-          },
-        ],
-      },
-      {
-        sectionDataId: "4.2",
-        title: "Respiratory",
-        cards: [
-          {
-            cardTopic: "Coronary Artery Disease",
-            cardFaces: ["https://cadcard.face1", "https://cadcard.face2"],
-          },
-          {
-            cardTopic: "Congestive Heart Failure",
-            cardFaces: ["https://chfcard.face1", "https://chfcard.face2"],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    sectionId: "5",
-    sectionType: "med-cards",
-    sectionTitle: "Med Cards",
-    sectionData: [
-      {
-        sectionDataId: "5.1",
-        title: "Cardio Med Cards",
-        link: "https://medcards.zip1",
-      },
-      {
-        sectionDataId: "5.2",
-        title: "Respiratory Med Cards",
-        link: "https://medcards.zip2",
-      },
-    ],
-  },
-  {
-    sectionId: "6",
-    sectionType: "cat",
-    sectionTitle: "CAT",
-    sectionData: [
-      {
-        sectionDataId: "6.1",
-        catSimulator: "Systems CAT Simulator",
-        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
-      },
-      {
-        sectionDataId: "6.2",
-        catSimulator: "Final CAT Simulator",
-        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
-      },
-    ],
   },
 ];

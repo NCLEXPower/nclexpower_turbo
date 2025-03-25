@@ -12,7 +12,6 @@ import {
   SectionListType,
   SectionVideosType,
 } from "core-library/types/wc/programList";
-import { getSectionTypeIcons, getSectionStatusIcons } from "../../../../utils";
 import { useRouter } from "core-library";
 import { ContentCardsModal } from "./ContentCardsModal/ContentCardsModal";
 import { useModal } from "core-library/hooks";
@@ -23,6 +22,10 @@ import {
   separateSectionType,
 } from "./ProgramListBlockUtils";
 import { Link } from "core-library/components";
+import {
+  getSectionStatusIcons,
+  getSectionTypeIcons,
+} from "core-library/utils/IconUtils";
 
 interface Props {
   title: string;
