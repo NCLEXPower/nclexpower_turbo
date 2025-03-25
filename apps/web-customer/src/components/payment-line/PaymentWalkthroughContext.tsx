@@ -164,7 +164,7 @@ export const PaymentWizardFormContextProvider: React.FC<
     geoData,
   ]);
 
-  async function executeChangePaymentStatus(params: PaymentExecutionProps) {
+  async function executeChangePaymentStatus() {
     try {
       const result = await changePaymentStatusCb.execute(accountId);
       const parsedIsPaid =
@@ -176,7 +176,6 @@ export const PaymentWizardFormContextProvider: React.FC<
           : result.data.isPaid;
       if (result.status === 200) {
         setIsPaid(parsedIsPaid);
-        await executePayment({ ...params });
       }
     } catch (error) {}
   }
@@ -186,7 +185,7 @@ export const PaymentWizardFormContextProvider: React.FC<
       const { stripe, elements } = params;
       if (!stripe || !elements || !isAuthenticated) return;
       if (tokenValidated) {
-        const { error } = await stripe.confirmPayment({
+        const { error, paymentIntent } = await stripe.confirmPayment({
           elements,
           confirmParams: {
             return_url: `${window.location.origin}/hub`,
@@ -197,7 +196,16 @@ export const PaymentWizardFormContextProvider: React.FC<
               },
             },
           },
+          redirect: "if_required",
         });
+
+        if (!error) {
+          if (paymentIntent.status === "requires_action") {
+            return;
+          }
+          await executeChangePaymentStatus();
+          window.location.href = `${window.location.origin}/hub`;
+        }
 
         if (error) {
           // create another API call to count payment failed -> more than 3 then -> logout
@@ -237,7 +245,7 @@ export const PaymentWizardFormContextProvider: React.FC<
             clientSecret,
             paymentIntentId,
             stripePromise,
-            execute: executeChangePaymentStatus,
+            execute: executePayment,
           }),
           [
             form,
