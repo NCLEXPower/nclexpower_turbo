@@ -185,7 +185,7 @@ export const PaymentWizardFormContextProvider: React.FC<
       const { stripe, elements } = params;
       if (!stripe || !elements || !isAuthenticated) return;
       if (tokenValidated) {
-        const { error, paymentIntent } = await stripe.confirmPayment({
+        const { error } = await stripe.confirmPayment({
           elements,
           confirmParams: {
             return_url: `${window.location.origin}/hub`,
@@ -199,19 +199,14 @@ export const PaymentWizardFormContextProvider: React.FC<
           redirect: "if_required",
         });
 
-        if (!error) {
-          if (paymentIntent.status === "requires_action") {
-            return;
-          }
-          await executeChangePaymentStatus();
-          window.location.href = `${window.location.origin}/hub`;
-        }
-
         if (error) {
           // create another API call to count payment failed -> more than 3 then -> logout
           clearGeoCountry();
           toast.showToast("Payment failed. Please try again.", "error");
           return;
+        } else {
+          await executeChangePaymentStatus();
+          window.location.href = `${window.location.origin}/hub`;
         }
       }
     } catch (error) {
