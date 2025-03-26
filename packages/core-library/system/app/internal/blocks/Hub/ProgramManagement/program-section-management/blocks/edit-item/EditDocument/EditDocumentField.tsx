@@ -91,7 +91,14 @@ export const EditDocumentField: React.FC<EditDocumentFieldProps> = ({
             <Typography sx={{ color: "#3B0086", mb: 2 }}>Link*:</Typography>
             <Box sx={{ display: "flex", alignItems: "left", lineHeight: 0 }}>
               <FileUploadField
-                acceptTypes={["pdf"]}
+                acceptTypes={[
+                  section === "document" ? "pdf" : "zip",
+                  "x-zip-compressed",
+                  "x-rar-compressed",
+                  "x-7z-compressed",
+                  "x-tar",
+                  "gzip",
+                ]}
                 triggerLabel={linkValue || "Upload Document"}
                 control={control}
                 name="link"
