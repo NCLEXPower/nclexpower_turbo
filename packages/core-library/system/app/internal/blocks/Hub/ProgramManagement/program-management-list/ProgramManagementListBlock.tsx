@@ -1,8 +1,8 @@
 /**
-* Property of the Arxon Solutions, LLC.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import {
@@ -229,10 +229,9 @@ const AccordionDetails: React.FC<AccordionDetailsProps> = ({
       >
         {sections && sections.length > 0 ? (
           sections.map((item) => {
-            const { sectionId, sectionType, sectionTitle, sectionVideos } =
-              item;
+            const { sectionId, sectionType, sectionTitle, sectionData } = item;
 
-            const hasVideos = sectionVideos && sectionVideos.length > 0;
+            const hasVideos = sectionData && sectionData.length > 0;
 
             return (
               <Box

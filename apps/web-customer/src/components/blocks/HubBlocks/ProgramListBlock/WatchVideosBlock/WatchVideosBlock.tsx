@@ -40,8 +40,7 @@ export function WatchVideosBlock() {
 
     if (programId) {
       const programTitle =
-        fetchedProgramList?.find((item) => item.id === programId)?.title ||
-        "Welcome to CORE Zigma System";
+        fetchedProgramList?.find((item) => item.id === programId)?.title ?? "";
       setSectionMainTitle(programTitle);
     }
   }, [router.query]);

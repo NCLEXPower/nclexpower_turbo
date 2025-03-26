@@ -10,47 +10,41 @@ export type SectionListType = {
   sectionType: string;
   sectionTitle: string;
   sectionStatus: string;
-  sectionTimer?: string;
-  sectionVideos?: SectionVideosType[];
-  sectionData?: SectionDataType[];
+  sectionTimer?: string | null;
+  sectionData?: SectionDataType[] | SectionVideosType[];
 };
 
 export type SectionDataType = {
   sectionDataId: string;
   title?: string;
-  link?: string;
+  link?: string | null;
   contentArea?: string | null;
   guided?: boolean | null;
   unguided?: boolean | null;
   practice?: boolean | null;
-  cards?: SectionCardsType[] | [];
+  cards?: SectionCardsType[];
   catSimulator?: string | null;
-  contentAreaCoverage?: string[] | [];
-  secVidTitle?: string;
-};
-
-export type ImageType = {
-  default: {
-    src: string;
-    height: number;
-    width: number;
-    blurDataURL: string;
-  };
+  contentAreaCoverage?: string[];
+  authorName?: string | null;
+  authorImage?: string | null;
+  videoPlaceholder?: string | null;
+  description?: string | null;
 };
 
 export type SectionCardsType = {
+  cardId: string;
   cardTopic: string;
-  cardFaces: ImageType[];
+  cardFaces: string[];
 };
 
 export type SectionVideosType = {
   secVidId: string;
   secVidTitle: string;
   secVidUrl: string;
-  secVidPlaceholder: StaticImageData;
+  secVidPlaceholder: string;
   secVidDuration?: string;
   secVidAuthor: string;
-  secVidAuthorImg: StaticImageData;
+  secVidAuthorImg: string;
   secVidDescription: string;
 };
 
@@ -62,65 +56,3 @@ export type StandardProgramListType = {
   sections?: SectionListType[];
   disabled?: boolean;
 };
-
-export interface ProgramSectionList {
-  sectionId: string;
-  sectionType: string;
-  sectionTitle: string;
-  sectionData: SectionData[];
-}
-
-type SectionData =
-  | DocumentSectionData
-  | VideoSectionData
-  | SimulatorSectionData
-  | ContentCardsSectionData
-  | MedCardsSectionData
-  | CATSectionData;
-
-interface DocumentSectionData {
-  sectionDataId: string;
-  title: string;
-  link: string;
-  description: string;
-}
-
-interface VideoSectionData {
-  sectionDataId: string;
-  title: string;
-  link: string;
-  authorName: string;
-  authorImage: string;
-  videoPlaceholder: string;
-  description: string;
-}
-
-interface SimulatorSectionData {
-  sectionDataId: string;
-  title: string;
-  contentArea: string;
-  guided: boolean;
-  unguided: boolean;
-  practice: boolean;
-}
-
-interface ContentCardsSectionData {
-  sectionDataId: string;
-  title: string;
-  cards: {
-    cardTopic: string;
-    cardFaces: string[];
-  }[];
-}
-
-interface MedCardsSectionData {
-  sectionDataId: string;
-  title: string;
-  link: string;
-}
-
-interface CATSectionData {
-  sectionDataId: string;
-  catSimulator: string;
-  contentAreaCoverage: string[];
-}

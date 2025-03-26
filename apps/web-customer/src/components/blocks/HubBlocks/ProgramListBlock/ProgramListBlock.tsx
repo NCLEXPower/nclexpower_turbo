@@ -3,7 +3,7 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { ProgramHeader } from "./ProgramHeader";
 import { ProgramGridView } from "./ProgramGridView";
@@ -31,8 +31,12 @@ import { useRouter } from "core-library";
 import { ProgramSkeletonLoader } from "@/components/Skeleton/ProgramSkeletonLoader";
 import { useModal } from "core-library/hooks";
 import { ContentCardsModal } from "./ContentCardsModal/ContentCardsModal";
-import { PhotoSlider } from "react-photo-view";
-
+import {
+  getVideoPagePath,
+  getVideoSectionStatus,
+  isVideoSectionType,
+  separateSectionType,
+} from "./ProgramListBlockUtils";
 interface ProgramListBlockProps {
   program: StandardProgramListType[];
   programTitle: string;
@@ -58,31 +62,27 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
   isLoading,
 }) => {
   const [listView, setListView] = useState<boolean>(true);
-
   const toggleView = () => setListView((prev) => !prev);
   const progress = useCalculateProgramProgress(program);
   const { open, close, props } = useModal<SectionDataType[]>();
-
   const router = useRouter();
-  const lastPathSegment = router.asPath.split("/").filter(Boolean).pop();
+  const lastPathSegment = router.asPath.split("/").filter(Boolean).pop() ?? "";
 
   const handleShowVideos = (
-    sectionVids: SectionVideosType[],
+    sectionList: SectionVideosType[],
     programId: string
   ) => {
-    const secVids = JSON.stringify(sectionVids);
-    const encodedSecVids = encodeURIComponent(secVids);
-
-    router.push(
-      `/hub/programs/${lastPathSegment}/watch?secVids=${encodedSecVids}&programId=${programId}`
-    );
+    router.push(getVideoPagePath(sectionList, programId, lastPathSegment));
   };
 
-  const handleShowContentCards = (
-    sectionData: SectionDataType[],
-    programId: string
-  ) => {
-    open(sectionData);
+  const handleShowContentCards = (sectionData: SectionDataType[]) => {
+    if (sectionData && sectionData.length && !isVideoSectionType(sectionData)) {
+      open(sectionData);
+    }
+  };
+
+  const handleNonVideoStatusChange = (sectionId: string) => {
+    // call api and update status
   };
 
   const AccordionHeader: React.FC<AccordionHeaderProps> = ({
@@ -90,6 +90,12 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     expanded,
     onToggle,
   }) => {
+    const { videoSections, otherSections } = separateSectionType(
+      item.sections ?? []
+    );
+    const combinedSectionsCount =
+      otherSections.length + (videoSections.length > 0 ? 1 : 0);
+
     return (
       <Box className="flex flex-row gap-4 items-center w-full">
         <div className="h-[162px] flex w-full">
@@ -135,7 +141,7 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
               </div>
               <div className="flex gap-2 items-center">
                 <h4 className="text-white text-[14px] md:text-[18px] font-regular font-ptSansNarrow">
-                  {item.sections?.length} Sections
+                  {combinedSectionsCount} Sections
                 </h4>
                 <IconButton
                   className={`text-white cursor-pointer transition-transform duration-300 ${expanded ? "rotate-180" : "rotate-0"}`}
@@ -163,6 +169,20 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
     id,
     sections,
   }) => {
+    const { videoSections, otherSections } = separateSectionType(
+      sections ?? []
+    );
+
+    const secVidDetails = !!videoSections.length
+      ? {
+          secVidTitle: videoSections[0].sectionTitle,
+          secVidIcon: getSectionTypeIcons(videoSections[0].sectionType),
+          secVidStatusIcon: getSectionStatusIcons(
+            getVideoSectionStatus(videoSections)
+          ),
+        }
+      : null;
+
     return (
       <>
         <Box className="h-auto">
@@ -176,73 +196,115 @@ export const ProgramListBlock: React.FC<ProgramListBlockProps> = ({
           </div>
         </Box>
         <Box className="flex flex-col space-y-2 bg-white px-10 py-2 pt-4 rounded-b-[16px]">
-          {sections && sections.length > 0 ? (
-            sections.map((item) => {
-              const {
-                sectionId,
-                sectionType,
-                sectionTitle,
-                sectionStatus,
-                sectionVideos,
-                sectionData,
-              } = item;
-
-              const hasVideos = sectionVideos && sectionVideos.length > 0;
-              const hasData = sectionData && !!sectionData.length;
-              const isDocumentOrMedCards =
-                sectionType === "document" || sectionType === "med-cards";
-
-              const handleClick = () => {
-                if (sectionType === "video") {
-                  hasVideos && handleShowVideos(sectionVideos, id);
-                } else if (sectionType === "content-cards") {
-                  hasData && handleShowContentCards(sectionData, id);
-                }
-              };
-
-              return (
-                <div
-                  key={sectionId}
-                  className="flex justify-between items-center"
-                >
+          {!sections?.length ? (
+            <div className="text-center text-gray-500">
+              No available sections
+            </div>
+          ) : (
+            <>
+              {secVidDetails && (
+                <div className="flex justify-between items-center">
                   <div className="flex gap-2 items-center">
                     <Image
-                      src={getSectionTypeIcons(sectionType)}
-                      alt={sectionType}
+                      src={secVidDetails.secVidIcon}
+                      alt={videoSections[0].sectionType}
                       width={16}
                       height={16}
                     />
-                    {isDocumentOrMedCards && hasData ? (
-                      <Link
-                        href={sectionData[0].link}
-                        target="_blank"
-                        naked
-                        className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
-                      >
-                        {sectionTitle}
-                      </Link>
-                    ) : (
-                      <h4
-                        onClick={handleClick}
-                        className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
-                      >
-                        {sectionTitle}
-                      </h4>
-                    )}
+
+                    <h4
+                      onClick={() =>
+                        handleShowVideos(
+                          videoSections
+                            .map((s) => s.sectionData as SectionVideosType[])
+                            .flat(),
+                          id
+                        )
+                      }
+                      className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                    >
+                      {secVidDetails.secVidTitle}
+                    </h4>
                   </div>
                   <Image
-                    src={getSectionStatusIcons(sectionStatus)}
-                    alt={sectionStatus}
+                    src={secVidDetails.secVidStatusIcon}
+                    alt={getVideoSectionStatus(videoSections)}
                     width={16}
                     height={16}
                   />
                 </div>
-              );
-            })
-          ) : (
-            <div className="text-center text-gray-500">
-              No available sections
-            </div>
+              )}
+
+              {otherSections &&
+                !!otherSections.length &&
+                otherSections.map((item) => {
+                  const {
+                    sectionId,
+                    sectionType,
+                    sectionTitle,
+                    sectionStatus,
+                    sectionData,
+                  } = item;
+
+                  const isDocumentOrMedCards =
+                    sectionType === "document" || sectionType === "med-cards";
+
+                  const hasData = sectionData && sectionData.length > 0;
+
+                  const isNonVideoSection =
+                    hasData && !isVideoSectionType(sectionData);
+
+                  const sectionLink =
+                    isNonVideoSection && sectionData[0].link
+                      ? sectionData[0].link
+                      : "";
+
+                  return (
+                    <div
+                      key={sectionId}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="flex gap-2 items-center">
+                        <Image
+                          src={getSectionTypeIcons(sectionType)}
+                          alt={sectionType}
+                          width={16}
+                          height={16}
+                        />
+                        {isDocumentOrMedCards && isNonVideoSection ? (
+                          <Link
+                            href={sectionLink}
+                            target="_blank"
+                            naked
+                            className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                            onClick={() =>
+                              handleNonVideoStatusChange(sectionId)
+                            }
+                          >
+                            {sectionTitle}
+                          </Link>
+                        ) : (
+                          <h4
+                            onClick={() =>
+                              isNonVideoSection &&
+                              handleShowContentCards(sectionData)
+                            }
+                            className="font-ptSansNarrow font-regular text-[18px] text-[#6C6C6C] hover:underline cursor-pointer"
+                          >
+                            {sectionTitle}
+                          </h4>
+                        )}
+                      </div>
+                      <Image
+                        src={getSectionStatusIcons(sectionStatus)}
+                        alt={sectionStatus}
+                        width={16}
+                        height={16}
+                      />
+                    </div>
+                  );
+                })}
+            </>
           )}
         </Box>
       </>

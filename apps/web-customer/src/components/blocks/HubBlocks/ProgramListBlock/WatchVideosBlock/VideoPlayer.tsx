@@ -52,6 +52,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     isMobile
   );
 
+  const handleOnPlay = () => {
+    // call api to changes status to in-progress
+    // if status is available change to in-progress, otherwise no change
+  };
+
+  const handleOnEnded = () => {
+    // call api to changes status to completed
+    // if status is not completed change to completed, otherwise no change
+  };
+
   return (
     <div
       className={`${isWideScreen ? "col-span-3" : "col-span-3 lg:col-span-2"} flex flex-col gap-4`}
@@ -67,6 +77,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
               stopOnUnmount={false}
               width={playerWidth}
               height={playerHeight}
+              onPlay={handleOnPlay}
+              onEnded={handleOnEnded}
             />
           </div>
           {showTheaterMode && (
