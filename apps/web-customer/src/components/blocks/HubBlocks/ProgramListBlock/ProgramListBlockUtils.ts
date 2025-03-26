@@ -28,7 +28,11 @@ export const getVideoPagePath = (
 export const isVideoSectionType = (
   item: SectionVideosType[] | SectionDataType[]
 ): item is SectionVideosType[] => {
-  return item && typeof item === "object" && "secVidId" in item;
+  return (
+    Array.isArray(item) &&
+    !!item.length &&
+    item.every((el) => el && typeof el === "object" && "secVidId" in el)
+  );
 };
 
 export const getVideoSectionStatus = (
