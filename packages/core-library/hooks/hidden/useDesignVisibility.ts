@@ -1,14 +1,30 @@
 import { atom, useSetAtom } from "jotai";
 import { useEffect } from "react";
 
-export const hideHeaderAtom = atom(false);
+interface VisibilityState {
+  hideHeader: boolean;
+  hideFooter: boolean;
+}
 
-export const useDesignVisibility = (hide: boolean = true) => {
-  const setIsHeaderHidden = useSetAtom(hideHeaderAtom);
+export const visibilityAtom = atom<VisibilityState>({
+  hideHeader: false,
+  hideFooter: false,
+});
+
+interface Props {
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+}
+
+export const useDesignVisibility = ({
+  hideHeader = true,
+  hideFooter = true,
+}: Props = {}) => {
+  const setVisibility = useSetAtom(visibilityAtom);
 
   useEffect(() => {
-    setIsHeaderHidden(hide);
+    setVisibility({ hideHeader, hideFooter });
 
-    return () => setIsHeaderHidden(false);
-  }, [hide, setIsHeaderHidden]);
+    return () => setVisibility({ hideHeader: false, hideFooter: false });
+  }, [hideHeader, hideFooter, setVisibility]);
 };

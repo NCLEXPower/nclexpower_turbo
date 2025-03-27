@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -13,6 +13,7 @@ interface HeaderProps {
   headerBackgroundColor?: string;
   headerHeight?: string;
   accordionRadius?: string;
+  accordionMargin?: string;
 }
 
 interface ItemProps {
@@ -39,7 +40,9 @@ interface Props<T> extends HeaderProps {
 const StyledAccordion = styled(Accordion)<{
   expanded: boolean;
   accordionRadius?: string;
-}>(({ expanded, accordionRadius }) => ({
+  accordionMargin?: string;
+}>(({ expanded, accordionRadius, accordionMargin }) => ({
+  margin: accordionMargin ?? "0px",
   borderRadius: accordionRadius ?? "0px",
   "& .MuiAccordion-region": {
     height: expanded ? "auto" : 0,
@@ -68,11 +71,13 @@ export const ControlledAccordion = <T extends ItemProps>({
   headerHeight,
   noAvailableDataText,
   accordionRadius,
+  accordionMargin
 }: Props<T>) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
-    (panel: string) => (event?: React.SyntheticEvent, newExpanded?: boolean) => {
+    (panel: string) =>
+    (event?: React.SyntheticEvent, newExpanded?: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
 
@@ -89,6 +94,7 @@ export const ControlledAccordion = <T extends ItemProps>({
 
           return (
             <StyledAccordion
+              accordionMargin={accordionMargin}
               accordionRadius={accordionRadius}
               disabled={disabled}
               key={panelId}
@@ -112,7 +118,9 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Header...</h4>
+                    <h4 className="text-[16px] font-ptSans">
+                      No Available Header...
+                    </h4>
                   </Box>
                 )}
               </CustomAccordionSummary>
@@ -128,7 +136,9 @@ export const ControlledAccordion = <T extends ItemProps>({
                   )
                 ) : (
                   <Box>
-                    <h4 className="text-[16px] font-ptSans">No Available Details...</h4>
+                    <h4 className="text-[16px] font-ptSans">
+                      No Available Details...
+                    </h4>
                   </Box>
                 )}
               </CustomAccordionDetails>

@@ -1,9 +1,9 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import { StandardProgramListType } from "../../../../../types/wc/programList";
+import { StandardProgramListType, ProgramSectionList } from "../../../../../types/wc/programList";
 import {
   WelcomeProgram,
   CardioVascular,
@@ -981,316 +981,514 @@ export const standardProgramList: StandardProgramListType[] = [
 ];
 
 export const fastrackProgramList: StandardProgramListType[] = [
+    {
+        id: "1",
+        title: 'Welcome to the Program',
+        programStatus: 'available',
+        programImage: WelcomeProgram,
+        sections: [
+            { sectionId: "1", sectionType: 'document', sectionTitle: 'Welcome to the Core Zigma System', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'document', sectionTitle: 'The current NCLEX', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'document', sectionTitle: 'Intro to the Fastrack Program', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'content-cards', sectionTitle: 'View Content Cards for Body Systems', sectionStatus: 'available' },
+            { sectionId: "5", sectionType: 'med-cards', sectionTitle: 'DL Med Cards for Body Systems', sectionStatus: 'available' },
+        ],
+        disabled: false
+    },
+    {
+        id: "2",
+        title: '01 Mother-Baby',
+        programStatus: 'unavailable',
+        programImage: MotherBaby,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 1 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 1 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "3",
+        title: '02 Pediatrics',
+        programStatus: 'unavailable',
+        programImage: Pediatrics,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 2 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 2 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "4",
+        title: '03 Medical-Surgical',
+        programStatus: 'unavailable',
+        programImage: MedicalSurgical,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 3 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 3 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "5",
+        title: '04 Critical Care (ICU)',
+        programStatus: 'unavailable',
+        programImage: CriticalCare,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 4 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 4 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "6",
+        title: '05 Emergency (ER)',
+        programStatus: 'unavailable',
+        programImage: Emergency,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 5 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 5 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "7",
+        title: '06 Mental Health',
+        programStatus: 'unavailable',
+        programImage: MentalHealth,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 20 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 20 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+            { sectionId: "4", sectionType: 'med-cards', sectionTitle: 'DL Med Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "8",
+        title: '06 Nurse Station',
+        programStatus: 'unavailable',
+        programImage: NurseStation,
+        sections: [
+            { sectionId: "1", sectionType: 'video', sectionTitle: 'Day 8 Videos', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'simulator', sectionTitle: 'Day 8 Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'content-cards', sectionTitle: 'View Content Cards', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "9",
+        title: '07 Case Studies',
+        programStatus: 'unavailable',
+        programImage: CaseStudies,
+        sections: [
+            { sectionId: "1", sectionType: 'document', sectionTitle: 'About Case Studies', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'document', sectionTitle: 'Guided Practice for Case Studies', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'simulator', sectionTitle: 'Case Studies Simulator', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+    {
+        id: "10",
+        title: '08 Final CAT',
+        programStatus: 'unavailable',
+        programImage: FinalCAT,
+        sections: [
+            { sectionId: "1", sectionType: 'CAT', sectionTitle: 'Words on the Final CAT', sectionStatus: 'available' },
+            { sectionId: "2", sectionType: 'CAT', sectionTitle: 'Final CAT Simulator', sectionStatus: 'available' },
+            { sectionId: "3", sectionType: 'CAT', sectionTitle: 'Post Test: Final Words', sectionStatus: 'available' },
+        ],
+        disabled: true
+    },
+];
+
+// For Program Management List Standard mock data
+export const standardProgramManagementList: StandardProgramListType[] = [
   {
-    id: "1",
+    id: "74638192374852",
     title: "Welcome to the Program",
     programStatus: "available",
     programImage: WelcomeProgram,
     sections: [
       {
-        sectionId: "1",
+        sectionId: "827465928412",
         sectionType: "document",
-        sectionTitle: "Welcome to the Core Zigma System",
+        sectionTitle: "Welcome to the CORE Zigma System",
         sectionStatus: "available",
+        sectionData: [
+          {
+            sectionDataId: "1.2",
+            title: "General Information Title",
+            link: "https://document1course.com",
+          },
+        ],
       },
       {
-        sectionId: "2",
-        sectionType: "document",
-        sectionTitle: "The current NCLEX",
+        sectionId: "627485960212",
+        sectionType: "video",
+        sectionTitle: "Day 1 Videos",
         sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "document",
-        sectionTitle: "Intro to the Fastrack Program",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards for Body Systems",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "5",
-        sectionType: "med-cards",
-        sectionTitle: "DL Med Cards for Body Systems",
-        sectionStatus: "available",
+        sectionVideos: [
+          {
+            secVidId: "2.1",
+            secVidTitle: "Mastering Cardio Video",
+            secVidUrl: "https://www.youtube.com/watch?v=teRcrjGb5kk",
+            secVidPlaceholder: videoPlaceholder,
+            secVidAuthor: "Arjon Rivera",
+            secVidAuthorImg: authorSample,
+            secVidDescription:
+              "Gain a comprehensive understanding of the intricate parts that make up the cardiovascular system, essential knowledge for every nursing student. This video meticulously explores the anatomy of the heart, detailing its chambers, valves, and major blood vessels. Discover the vital roles played by components like the coronary arteries, veins, and the complex network of capillaries. Learn how each part functions in harmony to facilitate the continuous flow of blood throughout the body. Whether you're a visual learner or seeking to solidify your grasp of cardiac anatomy, this video offers a thorough and engaging exploration.'",
+          },
+          {
+            secVidId: "2.2",
+            secVidTitle: "Mastering Respiratory Video",
+            secVidUrl: "https://www.youtube.com/watch?v=H2jA88pESko",
+            secVidPlaceholder: videoPlaceholder,
+            secVidAuthor: "JM Sevilla",
+            secVidAuthorImg: authorSample,
+            secVidDescription:
+              "'Conduction of the Heart: Cardiac Knowledge for Nursing Students' explains the heart's electrical conduction system, highlighting key components like the sinoatrial (SA) node, atrioventricular (AV) node, bundle of His, and Purkinje fibers. It helps nursing students understand how electrical impulses regulate the heart's rhythm and blood flow, essential for recognizing and managing cardiac conditions like arrhythmias.",
+          },
+        ],
       },
     ],
     disabled: false,
   },
   {
-    id: "2",
-    title: "01 Mother-Baby",
-    programStatus: "unavailable",
-    programImage: MotherBaby,
+    id: "777222641823",
+    title: "Day 1 Cardio",
+    programStatus: "available",
+    programImage: CardioVascular,
     sections: [
       {
-        sectionId: "1",
+        sectionId: "677653218723",
+        sectionType: "document",
+        sectionTitle: "Welcome to the CORE Zigma System",
+        sectionStatus: "available",
+        sectionData: [
+          {
+            sectionDataId: "1.1",
+            title: "What is CORE Zigma",
+            link: "https://document.section2",
+          },
+        ],
+      },
+      {
+        sectionId: "987654237465",
         sectionType: "video",
         sectionTitle: "Day 1 Videos",
         sectionStatus: "available",
+        sectionVideos: [
+          {
+            secVidId: "2.1",
+            secVidTitle: "Mastering Cardio Video",
+            secVidUrl: "https://www.youtube.com/watch?v=teRcrjGb5kk",
+            secVidPlaceholder: videoPlaceholder,
+            secVidAuthor: "Arjon Rivera",
+            secVidAuthorImg: authorSample,
+            secVidDescription:
+              "Gain a comprehensive understanding of the intricate parts that make up the cardiovascular system, essential knowledge for every nursing student. This video meticulously explores the anatomy of the heart, detailing its chambers, valves, and major blood vessels. Discover the vital roles played by components like the coronary arteries, veins, and the complex network of capillaries. Learn how each part functions in harmony to facilitate the continuous flow of blood throughout the body. Whether you're a visual learner or seeking to solidify your grasp of cardiac anatomy, this video offers a thorough and engaging exploration.'",
+          },
+          {
+            secVidId: "2.2",
+            secVidTitle: "Mastering Respiratory Video",
+            secVidUrl: "https://www.youtube.com/watch?v=H2jA88pESko",
+            secVidPlaceholder: videoPlaceholder,
+            secVidAuthor: "JM Sevilla",
+            secVidAuthorImg: authorSample,
+            secVidDescription:
+              "'Conduction of the Heart: Cardiac Knowledge for Nursing Students' explains the heart's electrical conduction system, highlighting key components like the sinoatrial (SA) node, atrioventricular (AV) node, bundle of His, and Purkinje fibers. It helps nursing students understand how electrical impulses regulate the heart's rhythm and blood flow, essential for recognizing and managing cardiac conditions like arrhythmias.",
+          },
+        ],
       },
       {
-        sectionId: "2",
+        sectionId: "445522773845",
         sectionType: "simulator",
         sectionTitle: "Day 1 Simulator",
         sectionStatus: "available",
+        sectionData: [
+            {
+                sectionDataId: "3.1",
+                title: "Simulator Reproductive",
+                contentArea: "Adult Health: Reproductive",
+                guided: true,
+                unguided: true,
+                practice: true,
+            },
+        ],
       },
       {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
+        sectionId: "876952637461",
         sectionType: "med-cards",
         sectionTitle: "DL Med Cards",
         sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "3",
-    title: "02 Pediatrics",
-    programStatus: "unavailable",
-    programImage: Pediatrics,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 2 Videos",
-        sectionStatus: "available",
+        sectionData: [
+            {
+                sectionDataId: "5.1",
+                title: "Cardio Med Cards",
+                link: "https://medcards.zip1",
+            },
+        ],
       },
       {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 2 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
-        sectionType: "med-cards",
-        sectionTitle: "DL Med Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "4",
-    title: "03 Medical-Surgical",
-    programStatus: "unavailable",
-    programImage: MedicalSurgical,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 3 Videos",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 3 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "5",
-    title: "04 Critical Care (ICU)",
-    programStatus: "unavailable",
-    programImage: CriticalCare,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 4 Videos",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 4 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
-        sectionType: "med-cards",
-        sectionTitle: "DL Med Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "6",
-    title: "05 Emergency (ER)",
-    programStatus: "unavailable",
-    programImage: Emergency,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 5 Videos",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 5 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
-        sectionType: "med-cards",
-        sectionTitle: "DL Med Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "7",
-    title: "06 Mental Health",
-    programStatus: "unavailable",
-    programImage: MentalHealth,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 20 Videos",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 20 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "4",
-        sectionType: "med-cards",
-        sectionTitle: "DL Med Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "8",
-    title: "06 Nurse Station",
-    programStatus: "unavailable",
-    programImage: NurseStation,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "video",
-        sectionTitle: "Day 8 Videos",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "simulator",
-        sectionTitle: "Day 8 Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "content-cards",
-        sectionTitle: "View Content Cards",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "9",
-    title: "07 Case Studies",
-    programStatus: "unavailable",
-    programImage: CaseStudies,
-    sections: [
-      {
-        sectionId: "1",
-        sectionType: "document",
-        sectionTitle: "About Case Studies",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "document",
-        sectionTitle: "Guided Practice for Case Studies",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "simulator",
-        sectionTitle: "Case Studies Simulator",
-        sectionStatus: "available",
-      },
-    ],
-    disabled: true,
-  },
-  {
-    id: "10",
-    title: "08 Final CAT",
-    programStatus: "unavailable",
-    programImage: FinalCAT,
-    sections: [
-      {
-        sectionId: "1",
+        sectionId: "246387812345",
         sectionType: "CAT",
-        sectionTitle: "Words on the Final CAT",
+        sectionTitle: "Body System Simulator",
         sectionStatus: "available",
-      },
-      {
-        sectionId: "2",
-        sectionType: "CAT",
-        sectionTitle: "Final CAT Simulator",
-        sectionStatus: "available",
-      },
-      {
-        sectionId: "3",
-        sectionType: "CAT",
-        sectionTitle: "Post Test: Final Words",
-        sectionStatus: "available",
+        sectionData: [
+            {
+                sectionDataId: "6.1",
+                catSimulator: "Systems CAT Simulator 1",
+                contentAreaCoverage: ["Cardiovascular, Respiratory, Gastrointestinal, Nephrology, Hematology, Infectious Diseases"],
+              },
+        ],
       },
     ],
-    disabled: true,
+    disabled: false,
   },
+];
+
+// For Program management list fastrack mock data
+export const fastrackProgramManagementList: StandardProgramListType[] = [
+    {
+      id: "312465786902",
+      title: "Day 1 Fastrack Program",
+      programStatus: "available",
+      programImage: CardioVascular,
+      sections: [
+        {
+          sectionId: "123456782456",
+          sectionType: "document",
+          sectionTitle: "Welcome to the CORE Zigma System",
+          sectionStatus: "available",
+          sectionData: [
+            {
+              sectionDataId: "1.1",
+              title: "General Information Title",
+              link: "https://document1course.com",
+            },
+          ],
+        },
+        {
+          sectionId: "23456789123",
+          sectionType: "video",
+          sectionTitle: "Day 1 Videos",
+          sectionStatus: "available",
+          sectionVideos: [
+            {
+              secVidId: "2.1",
+              secVidTitle: "Essential Parts of Cardiovascular System",
+              secVidUrl: "https://www.youtube.com/watch?v=teRcrjGb5kk",
+              secVidPlaceholder: videoPlaceholder,
+              secVidAuthor: "Arjon Rivera",
+              secVidAuthorImg: authorSample,
+              secVidDescription:
+                "Gain a comprehensive understanding of the intricate parts that make up the cardiovascular system, essential knowledge for every nursing student. This video meticulously explores the anatomy of the heart, detailing its chambers, valves, and major blood vessels. Discover the vital roles played by components like the coronary arteries, veins, and the complex network of capillaries. Learn how each part functions in harmony to facilitate the continuous flow of blood throughout the body. Whether you're a visual learner or seeking to solidify your grasp of cardiac anatomy, this video offers a thorough and engaging exploration.'",
+            },
+            {
+              secVidId: "2.2",
+              secVidTitle: "Conduction of the Heart",
+              secVidUrl: "https://www.youtube.com/watch?v=H2jA88pESko",
+              secVidPlaceholder: videoPlaceholder,
+              secVidAuthor: "JM Sevilla",
+              secVidAuthorImg: authorSample,
+              secVidDescription:
+                "'Conduction of the Heart: Cardiac Knowledge for Nursing Students' explains the heart's electrical conduction system, highlighting key components like the sinoatrial (SA) node, atrioventricular (AV) node, bundle of His, and Purkinje fibers. It helps nursing students understand how electrical impulses regulate the heart's rhythm and blood flow, essential for recognizing and managing cardiac conditions like arrhythmias.",
+            },
+          ],
+        },
+        {
+          sectionId: "3456789123",
+          sectionType: "simulator",
+          sectionTitle: "Day 1 Simulator",
+          sectionStatus: "available",
+          sectionData: [
+              {
+                  sectionDataId: "3.1",
+                  title: "Simulator Reproductive",
+                  contentArea: "Adult Health: Reproductive",
+                  guided: true,
+                  unguided: true,
+                  practice: true,
+              },
+          ],
+        },
+        {
+          sectionId: "56789012",
+          sectionType: "med-cards",
+          sectionTitle: "DL Med Cards",
+          sectionStatus: "available",
+          sectionData: [
+              {
+                  sectionDataId: "5.1",
+                  title: "Cardio Med Cards",
+                  link: "https://medcards.zip1",
+              },
+          ],
+        },
+        {
+          sectionId: "678901234567",
+          sectionType: "CAT",
+          sectionTitle: "Body System Simulator",
+          sectionStatus: "available",
+          sectionData: [
+              {
+                  sectionDataId: "6.1",
+                  catSimulator: "Systems CAT Simulator 1",
+                  contentAreaCoverage: ["Cardiovascular, Respiratory, Gastrointestinal, Nephrology, Hematology, Infectious Diseases"],
+                },
+          ],
+        },
+      ],
+      disabled: false,
+    },
+  ];
+
+// For Program Section Management
+export const programSectionList: ProgramSectionList[] = [
+    
+  {
+    sectionId: "1",
+    sectionType: "document",
+    sectionTitle: "Document",
+    sectionData: [
+      {
+        sectionDataId: "1.1",
+        title: "What is CORE Zigma",
+        link: "https://document.section1",
+      },
+      {
+        sectionDataId: "1.2",
+        title: "General Information Title",
+        link: "https://document.section2",
+      },
+    ],
+  },
+  {
+    sectionId: "2",
+    sectionType: "video",
+    sectionTitle: "Video",
+    sectionData: [
+      {
+        sectionDataId: "2.1",
+        title: "Mastering Cardio Video",
+        link: "https://video1course.com",
+        authorName: "Albert Rivera",
+        authorImage:  "https://authorimage.section1",
+        videoPlaceholder: "https://videoplaceholder.section1",
+        description: "Sample description for cardio video section",
+      },
+      {
+        sectionDataId: "2.2",
+        title: "Mastering Respiratory Video",
+        link: "https://video2course.com",
+        authorName: "Albert Rivera",
+        authorImage:  "https://authorimage.section2",
+        videoPlaceholder: "https://videoplaceholder.section2",
+        description: "Sample description for respiratory video section",
+      },
+    ],
+  },
+  {
+    sectionId: "3",
+    sectionType: "simulator",
+    sectionTitle: "Simulator",
+    sectionData: [
+      {
+        sectionDataId: "3.1",
+        title: "Simulator Reproductive",
+        contentArea: "Content Area 1",
+        guided: true,
+        unguided: true,
+        practice: true,
+      },
+      {
+        sectionDataId: "3.2",
+        title: "Simulator Respiratory",
+        contentArea: "Content Area 2",
+        guided: false,
+        unguided: false,
+        practice: true,
+      },
+    ],
+  },
+  {
+    sectionId: "4",
+    sectionType: "content-cards",
+    sectionTitle: "View Content Cards",
+    sectionData: [
+      {
+        sectionDataId: "4.1",
+        title: "Cardio",
+        cards: [
+            {
+                cardTopic: "Hypertension",
+                cardFaces: ["https://htncard.face1", "https://htncard.face2"]
+                
+            },
+            {
+                cardTopic: "Congestive Heart Failure",
+                cardFaces: ["https://chfcard.face1", "https://chfcard.face2"]
+            }
+        ]
+      },
+      {
+        sectionDataId: "4.2",
+        title: "Respiratory",
+        cards: [
+            {
+                cardTopic: "Coronary Artery Disease",
+                cardFaces: ["https://cadcard.face1", "https://cadcard.face2"]
+                
+            },
+            {
+                cardTopic: "Congestive Heart Failure",
+                cardFaces: ["https://chfcard.face1", "https://chfcard.face2"]
+            }
+        ]
+      },
+    ],
+  },
+  {
+    sectionId: "5",
+    sectionType: "med-cards",
+    sectionTitle: "Med Cards",
+    sectionData: [
+      {
+        sectionDataId: "5.1",
+        title: "Cardio Med Cards",
+        link: "https://medcards.zip1",
+      },
+      {
+        sectionDataId: "5.2",
+        title: "Respiratory Med Cards",
+        link: "https://medcards.zip2",
+      },
+    ],
+  },
+  {
+    sectionId: "6",
+    sectionType: "cat",
+    sectionTitle: "CAT",
+    sectionData: [
+      {
+        sectionDataId: "6.1",
+        catSimulator: "Systems CAT Simulator",
+        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
+      },
+      {
+        sectionDataId: "6.2",
+        catSimulator: "Final CAT Simulator",
+        contentAreaCoverage: ["Content Area 1", "Content Area 2"],
+      },
+    ],
+  }
 ];

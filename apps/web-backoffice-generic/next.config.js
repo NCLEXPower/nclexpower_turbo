@@ -22,6 +22,9 @@ module.exports = {
       ].filter(Boolean),
     },
   },
+  images: {
+    domains: ["storage.googleapis.com"]
+  },
   webpack: (config) => {
     config.module.rules.unshift({
       test: /pdf\.worker\.(min\.)?js/,

@@ -206,6 +206,12 @@ export class WebApi {
     );
   }
 
+  public async getReportIssue(refNo: string) {
+    return await this.axios.post(
+      `/api/v1/Customer/get-report-issue?${qs.stringify({ RefNo: refNo })}`
+    );
+  }
+
   public async changePaymentStatus(accountId: string | undefined) {
     return await this.axios.put(
       `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`

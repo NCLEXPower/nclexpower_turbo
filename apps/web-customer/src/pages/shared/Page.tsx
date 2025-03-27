@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -41,7 +41,7 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   if (error) {
     return <ErrorBox label={error.message} />;
   }
-  
+
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
   }

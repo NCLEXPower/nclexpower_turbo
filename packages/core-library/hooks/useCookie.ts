@@ -80,3 +80,11 @@ export const useDeviceId = (): [
 ] => {
   return useCookie<string>("devid");
 };
+
+export const useGeoCountry = (): [
+  string | null,
+  (value: string | null, options?: CookieSetOptions) => void,
+  VoidFunction,
+] => {
+  return useCookie<string>("geocountry");
+};

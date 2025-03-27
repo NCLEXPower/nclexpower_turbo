@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -192,8 +192,7 @@ export const settings = {
   speed: 2000,
   autoplaySpeed: 8000,
   cssEase: "ease-in-out",
-  dots: true,
-  dotsClass: "slick-dots",
+  dots: false,
 };
 
 export const FastTrackList = [
