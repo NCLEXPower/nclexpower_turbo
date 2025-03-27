@@ -63,7 +63,7 @@ export const faqMockData: Props[] = [
     topic: "About Program and Access",
     question: "How long can I have access to the Program I purchased?",
     description: [
-      "Regardless of which type of program you purchased, both entitle the user to 6 months access time. This means that although one can finish the program within the intended number of training days as scheduled, users are given ample time to refortify their review (e.g., taking any of the simulator tests multiple times, rewatching topic videos needed for recall).",
+      "Regardless of which type of program you purchased, both entitle the user to 6 months access time. This means that although one can finish the program within the intended number of training days as scheduled, users are given ample time to refortify their review (e.g., taking any of the simulator tests multiple times, rewatching topic videos needed for recall).",
     ],
   },
   {
