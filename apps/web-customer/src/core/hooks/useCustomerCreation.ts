@@ -21,7 +21,7 @@ export const useCustomerCreation = () => {
     } catch (error) {
       if (!isAxiosError(error)) {
         console.error(`Something went wrong with customer creation: ${error}.`);
-        throw error;
+        return;
       }
 
       if (error.response?.status === 409) {
@@ -29,10 +29,7 @@ export const useCustomerCreation = () => {
           toastId: 0,
           type: "error",
         });
-
-        throw new Error("EMAIL_EXISTS");
       }
-      throw error;
     }
   }
 

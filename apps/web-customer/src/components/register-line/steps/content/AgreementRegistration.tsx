@@ -17,7 +17,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useRegistrationWalkthroughFormContext } from '../../RegistrationWalkthroughContext';
-import { useDownloadPDF } from 'core-library/hooks';
+import { useActiveSteps, useDownloadPDF } from 'core-library/hooks';
+import { useResetOnRouteChange } from 'core-library/core/hooks/useResetOnRouteChange';
 
 interface Props {
   nextStep(values: Partial<RegistrationFormType>): void;
@@ -32,7 +33,6 @@ interface Props {
 export const AgreementRegistration: React.FC<Props> = ({
   previousStep,
   previous,
-  resetStep,
   reset,
 }) => {
   const [registrationDetails] = useAtom(RegistrationAtom);
@@ -49,19 +49,30 @@ export const AgreementRegistration: React.FC<Props> = ({
 
   const { control, formState, handleSubmit, watch } = form;
   const { isDirty, isValid } = formState;
+  const { reset: resetActiveStep } = useActiveSteps(0);
 
+  useResetOnRouteChange({ resetStep: resetActiveStep });
+  
   const agreement = watch('termsofservice');
 
   async function onFormSubmit(values: RegistrationFormType) {
     const data = { ...registrationDetails, ...values };
+  
     if (!captchaToken) {
-      console.error('reCAPTCHA verification failed.');
+      console.error("reCAPTCHA verification failed.");
       return;
     }
-
-    await onSubmit(data, captchaToken);
-    resetStep();
-    reset();
+  
+    try {
+      const result = await onSubmit(data, captchaToken);
+  
+      if (!result || result.status !== 200) {
+          previous();
+          previousStep();
+      }
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
   }
 
   const handlePrevious = () => {
