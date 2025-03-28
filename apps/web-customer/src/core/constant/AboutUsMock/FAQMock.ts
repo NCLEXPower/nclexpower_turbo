@@ -105,7 +105,7 @@ export const faqMockData: Props[] = [
     topic: "Comments and Feedback",
     question: "I noticed an error in one of your content. How can I bring this to your attention?",
     description: [
-      "Though great care has been made to avoid errors in all sections of the program,  some can inadvertently exist. We are deeply appreciative for calling this to our attention – you can use our form in our Contact Us page, or send us an email at comments@nclexpower.com."
+      "Though great care has been made to avoid errors in all sections of the program,  some can inadvertently exist. We are deeply appreciative for calling this to our attention – you can use our form in our <a href='/contact' target='_blank'>Contact Us</a> page, or send us an email at comments@nclexpower.com."
     ],
   },
 ];

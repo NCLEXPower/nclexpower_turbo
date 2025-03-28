@@ -49,26 +49,8 @@ export const FAQBlock = () => {
     </div>
   );
 
-  const BackgroundImages = () => (
-    <>
-      <Image
-        width={350}
-        src={CroppedCoreZigma}
-        alt="CoreZigma"
-        className="absolute top-0 left-0"
-      />
-      <Image
-        width={400}
-        src={TransparentCoreZigma}
-        alt="CoreZigma"
-        className="absolute bottom-10 right-10"
-      />
-    </>
-  );
-
   return (
     <section className="w-full relative overflow-visible py-16">
-      <BackgroundImages />
       <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px] relative z-10">
         <FAQHeader />
         <Box className="w-full">

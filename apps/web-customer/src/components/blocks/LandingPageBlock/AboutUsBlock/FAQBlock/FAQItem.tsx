@@ -40,8 +40,10 @@ const renderListItems = (
       <li
         key={idx}
         className="font-ptSansNarrow text-[14px] lg:text-[16px] font-bold text-[#6C6C6C]"
+        dangerouslySetInnerHTML={{
+          __html: item,
+        }}
       >
-        {item}
       </li>
     ))}
   </ul>
