@@ -11,7 +11,7 @@ export const FAQBlock = () => {
     {
       id: 1,
       title: "The CORE-Zigma System",
-      content: <FAQItemBlock topic="About NCLEX" />,
+      content: <FAQItemBlock topic="About Arxenius" />,
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ export const FAQBlock = () => {
     selectedColor: "#0F2A71",
     defaultColor: "#000000",
     borderBottom: "2px solid #0F2A71",
-    defaultBorderBottom: "2px solid #000000"
+    defaultBorderBottom: "2px solid #000000",
   };
 
   const FAQHeader = () => (
@@ -72,7 +72,11 @@ export const FAQBlock = () => {
       <Box className="flex flex-col mx-auto items-center justify-center p-12 w-auto lg:w-[1200px] relative z-10">
         <FAQHeader />
         <Box className="w-full">
-          <Tabs tabsItem={faqTabs} justifyContent="center" customStyle={tabStyles}/>
+          <Tabs
+            tabsItem={faqTabs}
+            justifyContent="center"
+            customStyle={tabStyles}
+          />
         </Box>
       </Box>
     </section>

@@ -1,48 +1,36 @@
-import React, { useEffect, useState } from "react";
 import {
   ComingSoon,
   CoreZigmaLogo,
-  NCLEXYellowLogo,
+  ArxeniusYellowLogo,
 } from "core-library/assets";
 import Image from "next/image";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { comingSoonSchema, ComingSoonType } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, TextField } from "core-library/components";
-import {
-  SocialMediaConfig,
-  useSocialMediaIcons,
-} from "core-library/hooks";
+import { SocialMediaConfig, useSocialMediaIcons } from "core-library/hooks";
 import { Schedule } from "core-library/api/types";
 
 interface Props {
-  schedule?: Schedule | undefined
-  daysRemaining?: number | undefined;
+  schedule?: Schedule | undefined;
   onSubmit: (values: ComingSoonType) => void;
   loading: boolean;
 }
 
-const dateData = [
-  {
-    days: "Days To Go",
-  },
-];
-
 const socialMediaConfigs: SocialMediaConfig[] = [
-  { platform: "facebook", link: "https://facebook.com" },
-  { platform: "instagram", link: "https://instagram.com" },
-  { platform: "twitter", link: "https://twitter.com" },
+  {
+    platform: "facebook",
+    link: "https://www.facebook.com/profile.php?id=61573493806921",
+  },
+  { platform: "instagram", link: "https://www.instagram.com/ncpreview/" },
 ];
 
 export const ComingSoonPage: React.FC<Props> = ({
   schedule,
-  daysRemaining,
   onSubmit,
   loading,
 }) => {
-
-
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
   const method = useForm<ComingSoonType>({
@@ -50,15 +38,10 @@ export const ComingSoonPage: React.FC<Props> = ({
     resolver: yupResolver(comingSoonSchema),
   });
 
-
-  const {
-    handleSubmit,
-    control,
-    formState: { isValid },
-  } = method;
+  const { handleSubmit, control } = method;
 
   return (
-    <div className="w-full min-h-screen relative bg-[#0F2A71]">
+    <div className="w-full min-h-screen relative bg-[#0F2A71] pt-10">
       <div className="w-full flex justify-center items-center min-h-screen flex-col">
         <Image
           src={ComingSoon}
@@ -73,23 +56,23 @@ export const ComingSoonPage: React.FC<Props> = ({
             zIndex: 0,
           }}
         />
-        <div className="flex items-center justify-center flex-col z-10 px-8 lg:px-60">
-          <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center flex-col z-10 px-8 w-full max-w-3xl">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10">
             <Image
               src={CoreZigmaLogo}
               alt="CoreZigma"
               style={{
-                width: "50px",
-                height: "50px",
+                width: "80px",
+                height: "80px",
                 objectFit: "cover",
               }}
             />
             <Image
-              src={NCLEXYellowLogo}
+              src={ArxeniusYellowLogo}
               alt="CoreZigma"
               style={{
-                width: "135px",
-                height: "30px",
+                width: "auto",
+                height: "38px",
                 objectFit: "cover",
                 zIndex: 0,
               }}
@@ -100,45 +83,18 @@ export const ComingSoonPage: React.FC<Props> = ({
               fontFamily: "Poppins",
               fontWeight: "bold",
               color: "#CDCDCD",
-              marginBottom: 3,
-              fontSize: "clamp(3rem, 3.5vw, 4rem)",
+              mt: 3,
+              fontSize: "clamp(2.5rem,8vw,4.5rem)",
               textAlign: "center",
               width: "100%",
               display: "flex",
               justifyContent: "center",
             }}
           >
-            {schedule?.eventName}
+            Coming Soon
           </Typography>
-          <div>
-            <div className="flex items-center justify-center gap-4">
-              <Typography
-                sx={{
-                  fontFamily: "Poppins",
-                  fontWeight: "bold",
-                  color: "#CDCDCD",
-                  fontSize: "clamp(7rem, 5cqw, 7rem)",
-                  textAlign: "center",
-                  marginTop: 0,
-                  marginBottom: 0,
-                  lineHeight: 1,
-                }}
-              >
-                {daysRemaining}
-              </Typography>
-              {dateData.length > 0 &&
-                dateData?.map((item, index) => (
-                  <div key={index} className="font-['Poppins'] font-bold text-[#CDCDCD] text-[clamp(1.3rem,4cqw,2.5rem)] flex flex-col items-start leading-none">
-                    <span className="font-[700] text-[clamp(1.2rem,2.5cqw,1.9rem)] font-sans">
-                      {daysRemaining === 1 ? 'Day' : 'Days'}
-                    </span>
-                    <span className="font-[700] text-[clamp(0.9rem,2cqw,1.4rem)] font-sans">To Go</span>
-                  </div>
-                ))}
-            </div>
-          </div>
           <FormProvider {...method}>
-            <div className="flex w-[95%] gap-2 flex-col justify-center lg:items-end lg:flex-row lg:gap-4 mt-4">
+            <div className="flex w-[95%] gap-2 flex-col justify-center md:items-end md:flex-row md:gap-4 mt-4">
               <TextField
                 control={control}
                 name="email"
@@ -146,20 +102,14 @@ export const ComingSoonPage: React.FC<Props> = ({
                 disabled={loading}
                 sx={{
                   borderRadius: "10px",
-                  flexGrow: 3,
+                  flexGrow: 1,
                   height: "56px",
                   border: "2px solid #D9D9D9",
-                  fontSize: {
-                    xs: "12px",
-                    sm: "14px",
-                    lg: "16px",
-                  },
+                  fontSize: "1rem",
                   "& .MuiInputBase-input": {
                     color: "#D9D9D9",
                   },
-                  "& .MuiInputBase-input:focus": {
-                  
-                  },
+                  "& .MuiInputBase-input:focus": {},
                 }}
                 inputProps={{
                   style: {
@@ -170,19 +120,19 @@ export const ComingSoonPage: React.FC<Props> = ({
               />
               <Button
                 onClick={handleSubmit(onSubmit)}
-                disabled={!isValid || loading}
+                disabled={loading}
                 loading={loading}
                 sx={{
                   color: "#0F2A71",
-                  bgcolor: "#FFFFFF",
+                  backgroundColor: "#ffffff !important",
                   borderRadius: "10px",
                   fontFamily: "'Poppins'",
-                  fontSize: "clamp(5px, 3cqw, 14px)",
+                  fontSize: "1rem",
                   fontWeight: "bold",
+                  minWidth: "180px",
                   height: "56px",
                   minHeight: "56px",
                   maxHeight: "56px",
-                  flexGrow: 0.5,
                   zIndex: 1,
                   marginTop: "4px",
                   padding: {
@@ -198,8 +148,11 @@ export const ComingSoonPage: React.FC<Props> = ({
               </Button>
             </div>
           </FormProvider>
-          <p className="font-['Poppins'] text-white text-[clamp(0.4rem,1cqw,1rem)] text-center px-4 flex flex-col mt-8 mb-4">
-            {schedule?.description}
+          <p className="font-['Poppins'] text-white text-base text-center px-4 flex flex-col mt-8 mb-4">
+            Stay tuned as we prepare to unveil a brand-new experience just for
+            you. Our team is working hard behind the scenes to bring something
+            innovative and engaging. Check back soon for updates—you won’t want
+            to miss this!
           </p>
           <div className="flex items-center justify-center space-x-1.5 text-white mt-4">
             {socialMediaIcons}
