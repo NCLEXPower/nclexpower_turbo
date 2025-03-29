@@ -1,4 +1,4 @@
-import { RegistrationFormType, registrationSchema } from "./steps/content";
+import { RegistrationAtom, RegistrationFormType, registrationSchema } from "./steps/content";
 import React, { createContext, useContext, useMemo } from "react";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,16 +15,16 @@ import { SelectedProductType } from "core-library/types/global";
 import { useExecuteToast } from "core-library/contexts";
 import { useCustomerCreation } from "@/core/hooks/useCustomerCreation";
 import { CreateCustomerParams } from "core-library/api/types";
-import { validatePassword } from "@/core";
 import { useShowPassword } from "../blocks/ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
 import { useResetOnRouteChange } from "core-library/core/hooks/useResetOnRouteChange";
+import { useAtom } from "jotai";
 
 export interface RegistrationFormContextValue {
   methods: UseFormReturn<RegistrationFormType>;
   isLoading: boolean;
   isDirty: boolean;
   setIsDirty: (values: boolean) => void;
-  onSubmit: (values: RegistrationFormType, token: string) => void;
+  onSubmit(values: RegistrationFormType, token: string): Promise<{ status: number } | null>;
   showPassword: boolean;
   showconfirmPassword: boolean;
   handleClickShowPassword: () => void;
@@ -41,7 +41,9 @@ const RegistrationWizardFormContext =
     isLoading: false,
     isDirty: false,
     setIsDirty: () => null,
-    onSubmit: () => null,
+    onSubmit: async (values: RegistrationFormType, token: string) => {
+      return null;
+    },
     showPassword: false,
     showconfirmPassword: false,
     handleClickShowPassword: () => null,
@@ -66,7 +68,8 @@ export const RegistrationWizardFormContextProvider: React.FC<
 > = ({ children }) => {
   const router = useRouter();
   const { reset: resetActiveStep } = useActiveSteps(0);
-
+  const [, setRegistrationDetails] = useAtom(RegistrationAtom);
+  
   useBeforeUnload(true);
 
   useResetOnRouteChange({ resetStep: resetActiveStep });
@@ -97,10 +100,13 @@ export const RegistrationWizardFormContextProvider: React.FC<
     handleClickShowconfirmPassword,
   } = useShowPassword();
 
-  async function onSubmit(values: RegistrationFormType, token: string | null) {
+  async function onSubmit(values: RegistrationFormType, token: string | null): Promise<{ status: number } | null> {
     const { productId, amount } = orderDetail;
 
-    if (!productId || !amount || !token) return reset();
+    if (!productId || !amount || !token) {
+      reset();
+      return null;
+    }
 
     const filteredValues: CreateCustomerParams = {
       firstname: values.firstname,
@@ -118,24 +124,36 @@ export const RegistrationWizardFormContextProvider: React.FC<
       var result = await verifyCb.execute({ token: token });
       if (result.status === 200) {
         const _result = await createCustomerAsync(filteredValues);
+
         const orderSummary = {
           orderNumber: orderNumberCb.result?.data,
           productId,
           accountId: _result?.data.accountId,
           pricingId: orderDetail.pricingId,
         };
+
         await createOrderSummaryCb.execute({
           ...orderSummary,
         });
-        await router.push((route) => route.login);
+
+        if (!_result || _result.status !== 200) {
+          console.error("Customer creation failed");
+          return null;
+        }
+
+        if(_result.status === 200) {
+          resetActiveStep();
+          setRegistrationDetails({});
+          await router.push((route) => route.login);
+          toast.showToast("Account created successfully. Login your account", "success");
+          return { status: 200 };
+        }
+
       }
     } catch (error) {
-      toast.showToast(
-        `Something went wrong during submission ${error}`,
-        "error"
-      );
-      return;
+      console.error("Submission failed:", error);
     }
+    return null;
   }
 
   const methods = useForm<RegistrationFormType>({
@@ -174,7 +192,7 @@ export const RegistrationWizardFormContextProvider: React.FC<
         value={useMemo(
           () => ({
             methods,
-            isLoading: isLoading || orderNumberCb.loading,
+            isLoading: isLoading || orderNumberCb.loading || verifyCb.loading,
             isDirty,
             setIsDirty,
             onSubmit,
