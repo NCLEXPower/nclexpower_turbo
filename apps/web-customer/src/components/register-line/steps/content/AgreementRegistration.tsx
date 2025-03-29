@@ -35,7 +35,7 @@ export const AgreementRegistration: React.FC<Props> = ({
   previous,
   reset,
 }) => {
-  const [registrationDetails] = useAtom(RegistrationAtom);
+  const [registrationDetails, setRegistrationDetails] = useAtom(RegistrationAtom);
   const { onSubmit, isLoading, recaptchaRef, siteKey } =
     useRegistrationWalkthroughFormContext();
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -67,6 +67,10 @@ export const AgreementRegistration: React.FC<Props> = ({
       const result = await onSubmit(data, captchaToken);
   
       if (!result || result.status !== 200) {
+          setRegistrationDetails((prev) => ({
+            ...prev,
+            email: "",
+          }));
           previous();
           previousStep();
       }
