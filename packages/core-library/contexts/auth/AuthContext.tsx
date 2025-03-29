@@ -193,11 +193,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } catch (e) {
       console.error(e);
     } finally {
+      clearSingleCookie();
+      clearAccountCookie();
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
-      clearSingleCookie();
-      clearAccountCookie();
       clearAnalyticsCookie();
       await router.push((route) => route.login);
     }
@@ -245,11 +245,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }
 
   const softLogout = useCallback(async () => {
+    clearSingleCookie();
+    clearAccountCookie();
     setIsAuthenticated(false);
     clearSession();
     authSessionIdleTimer.stop();
-    clearSingleCookie();
-    clearAccountCookie();
     await router.push((route) => route.login);
   }, [refreshToken, accessToken]);
 
@@ -263,7 +263,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           console.log(`Analytics result size: ${resultSize}`);
           mixpanelBuildUserProfile(analyticsParamsResult.data);
           mixpanelTrackLogin();
-        } catch (error) {}
+        } catch (error) { }
       }
     },
     [analyticsParamsCb, accessToken]
@@ -292,9 +292,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
             const parsedIsPaid =
               config.value.BASEAPP === "webc_app"
                 ? Encryption(
-                    result.data.isPaid.toString(),
-                    config.value.SECRET_KEY
-                  )
+                  result.data.isPaid.toString(),
+                  config.value.SECRET_KEY
+                )
                 : result.data.isPaid;
             // if (result.data.responseCode === 304) {
             //   setDeviceNotRecognized(true);
