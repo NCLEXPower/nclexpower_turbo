@@ -10,28 +10,34 @@ export const DeniedCountryBlock: React.FC = () => {
     mode: "all",
     resolver: yupResolver(notAvailableSchema),
   });
-  const { control, handleSubmit, formState:{ errors, isValid} } = form;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = form;
   const onSubmit = (data: DeniedCountryType) => {
     console.log("value: ", data); //temporarily log the data as API is not yet available
   };
 
   const socialMediaConfigs: SocialMediaConfig[] = [
-    { platform: "facebook", link: "https://facebook.com" },
-    { platform: "instagram", link: "https://instagram.com" },
-    { platform: "twitter", link: "https://twitter.com" },
+    {
+      platform: "facebook",
+      link: "https://www.facebook.com/profile.php?id=61573493806921",
+    },
+    { platform: "instagram", link: "https://www.instagram.com/ncpreview/" },
   ];
+
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
   return (
     <FormProvider {...form}>
-    <DeniedCountry
-      socialMediaIcons={socialMediaIcons}
-      control={control}
-      onSubmit={onSubmit}
-      handleSubmit={handleSubmit}
-      isValid={isValid}
+      <DeniedCountry
+        socialMediaIcons={socialMediaIcons}
+        control={control}
+        onSubmit={onSubmit}
+        handleSubmit={handleSubmit}
+        isValid={isValid}
       />
     </FormProvider>
-      
   );
 };

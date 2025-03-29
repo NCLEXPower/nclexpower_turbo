@@ -12,7 +12,7 @@ import Link from "next/link";
 import { Button, EvaIcon } from "core-library/components";
 import { useRouter } from "core-library";
 import { useResolution } from "core-library/hooks";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface RenderSubListProps {
   items: SublistItems;
@@ -113,15 +113,26 @@ const RenderSubContent: React.FC<RenderSubContentProps> = ({ block }) => {
 interface Props {
   policy?: TermsAndConditions[];
   forPayment?: boolean;
+  scrollTo?: string;
 }
 
 export const PrivacyPolicy: React.FC<Props> = ({
   policy = tncData,
   forPayment = false,
+  scrollTo,
 }) => {
   const router = useRouter();
   const trimmedPath = `#${router.asPath.split("#")[1]}`;
   const { isMobile } = useResolution();
+
+  useEffect(() => {
+    if (scrollTo) {
+      const el = document.getElementById(scrollTo);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [scrollTo]);
 
   return (
     <div className="w-full flex items-start justify-center flex-col ">

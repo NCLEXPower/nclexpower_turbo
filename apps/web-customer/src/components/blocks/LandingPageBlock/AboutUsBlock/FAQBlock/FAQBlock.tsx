@@ -44,7 +44,7 @@ export const FAQBlock = () => {
         Frequently Asked Questions
       </h4>
       <p className="font-ptSansNarrow text-[16px] sm:text-[20px] text-black font-regular">
-        Everything you need to know about the NCLEX Power
+        Everything you need to know about our NCLEX review
       </p>
     </div>
   );

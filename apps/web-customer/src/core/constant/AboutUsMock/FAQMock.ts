@@ -4,6 +4,7 @@ interface Props {
   question: string;
   description?: string[];
   subDescription?: string[];
+  refundButton?: boolean;
 }
 
 export const faqMockData: Props[] = [
@@ -89,10 +90,11 @@ export const faqMockData: Props[] = [
     id: 9,
     topic: "About Payment",
     question: "Is there a refund?",
+    refundButton: true,
     description: [
       "We are every bit confident that you will both learn and like our review system. If for some reason you are not satisfied and would like to refund your purchase, simply send us an email at accounts@nclexpower.com, and we will process your refund accordingly.",
       "For refund requests, kindly specify what you didn’t like about your experience, so that we can further improve the system.",
-      "For more details of our cancellation and refund policy, click here.",
+      "For more details of our cancellation and refund policy, click ",
     ],
   },
   {
