@@ -37,7 +37,7 @@ import {
 } from "core-library/contexts";
 import { loadStripe, Stripe, StripeElements } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { Encryption } from "core-library";
+import { Encryption, useRouter } from "core-library";
 import { config } from "core-library/config";
 import { useGeoCountry } from "core-library/hooks/useCookie";
 
@@ -82,6 +82,7 @@ export interface PaymentExecutionProps {
 export const usePaymentWalkthroughFormContext = () =>
   useContext(PaymentWizardFormContext);
 
+
 export const PaymentWizardFormContextProvider: React.FC<
   React.PropsWithChildren<Props>
 > = ({ children, publishableKey }) => {
@@ -98,6 +99,7 @@ export const PaymentWizardFormContextProvider: React.FC<
   const { tokenValidated, loading: validateLoading } = useValidateToken();
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
+  const router = useRouter()
   const changePaymentStatusCb = useApiCallback(
     async (api, accountId: string | undefined) =>
       await api.web.changePaymentStatus(accountId)
@@ -170,14 +172,15 @@ export const PaymentWizardFormContextProvider: React.FC<
       const parsedIsPaid =
         config.value.BASEAPP === "webc_app"
           ? Encryption(
-              result.status === 200 ? "yes" : "no",
-              config.value.SECRET_KEY
-            )
+            result.status === 200 ? "yes" : "no",
+            config.value.SECRET_KEY
+          )
           : result.data.isPaid;
       if (result.status === 200) {
         setIsPaid(parsedIsPaid);
+        await router.push((route) => route.hub);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   async function executePayment(params: PaymentExecutionProps) {
@@ -206,7 +209,6 @@ export const PaymentWizardFormContextProvider: React.FC<
           return;
         } else {
           await executeChangePaymentStatus();
-          window.location.href = `${window.location.origin}/hub`;
         }
       }
     } catch (error) {
