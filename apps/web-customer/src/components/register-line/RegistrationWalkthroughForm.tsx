@@ -2,8 +2,6 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useRegisterWizardSteps } from "./steps/useSteps";
 import { OrderSummaryBlock } from "../blocks";
-import { Button } from "core-library/components";
-import { GoogleIcon } from "../icons/GoogleIcon";
 import { useDesignVisibility } from "core-library/hooks";
 import Image from "next/image";
 import { RegistrationBG } from "core-library/assets";
@@ -26,7 +24,8 @@ export const RegistrationWalkthroughForm = () => {
           zIndex: -1,
         }}
       />
-      <Box className="w-full lg:w-3/5 flex items-center justify-center h-screen">
+
+      <Box className="w-full lg:w-3/5 flex flex-col justify-center h-auto">
         <OrderSummaryBlock />
       </Box>
       <Box className="w-full lg:w-2/5 flex flex-col gap-8 px-12 py-8 justify-between h-full">

@@ -10,6 +10,7 @@ import { useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library";
 import { Card, Typography } from "@mui/material";
 import { useResolution } from "core-library/hooks";
+import { EvaIcon } from "core-library/components";
 
 type Props = {};
 
@@ -25,7 +26,18 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
   }
 
   return orderDetail ? (
-    <div className="w-full flex justify-center items-center px-4">
+    <div className="w-full h-auto lg:h-screen relative flex flex-col justify-center items-center px-4">
+      <div
+        className={`${isMobile ? "w-full" : "w-2/3"} flex justify-start py-4`}
+      >
+        <div
+          onClick={() => router.back()}
+          className="relative w-[110px] justify-start cursor-pointer rounded-[15px] bg-white shadow-md flex items-start p-4 gap-2"
+        >
+          <EvaIcon fill="#0F2A71" name="arrow-back-outline" />
+          <Typography sx={{ color: "#0F2A71" }}>Back</Typography>
+        </div>
+      </div>
       <Card
         sx={{
           maxWidth: "645px",
