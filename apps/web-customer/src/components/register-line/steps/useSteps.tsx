@@ -22,6 +22,7 @@ export const useRegisterWizardSteps = () => {
       EnterYourFullName: {
         content: (props) => <InformationRegistration {...props} />,
         nextStep: "EnterYourEmailAndCreateASecurePasswordToRegister",
+        previousStep: "EnterYourFullName",
       },
       EnterYourEmailAndCreateASecurePasswordToRegister: {
         content: (props) => <EmailAddressRegistration {...props} />,
