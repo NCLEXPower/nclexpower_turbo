@@ -1,8 +1,8 @@
 /**
-* Property of the Arxon Solutions, LLC.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { render, screen } from "../../../../common";
 import { ProgramManagementListBlock } from "../../../../../system/app/internal/blocks";
 import { useRouter } from "next/router";
@@ -21,7 +21,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock('next/config', () => () => ({
+jest.mock("next/config", () => () => ({
   publicRuntimeConfig: {},
 }));
 
@@ -34,17 +34,24 @@ jest.mock("../../../../../contexts", () => ({
     businessQueryGetAllProgramsByType: jest.fn(() => ({
       data: [
         {
-          sectionId: "123",
-          sectionType: "simulator",
-          sectionTitle: "Sample Section",
-          sectionData: [
+          id: "p1",
+          title: "Test Program",
+          programImage: "/some-image.jpg",
+          sections: [
             {
-              sectionDataId: "456",
-              title: "Simulator Section",
-              contentArea: "Sample Content",
-              guided: "true",
-              unguided: "false",
-              practice: "true",
+              sectionId: "123",
+              sectionType: "simulator",
+              sectionTitle: "Sample Section",
+              sectionData: [
+                {
+                  sectionDataId: "456",
+                  title: "Simulator Section",
+                  contentArea: "Sample Content",
+                  guided: "true",
+                  unguided: "false",
+                  practice: "true",
+                },
+              ],
             },
           ],
         },
@@ -94,5 +101,15 @@ describe("ProgramManagementListBlock", () => {
 
     expect(screen.getByText("Standard (23-Day) Program")).toBeInTheDocument();
     expect(screen.getByText("Fast Track (8-Day) Program")).toBeInTheDocument();
+  });
+
+  it("renders sections with correct title and styles", async () => {
+    render(<ProgramManagementListBlock />);
+
+    const sectionTitle = await screen.findByText("Sample Section");
+    expect(sectionTitle).toBeInTheDocument();
+
+    expect(sectionTitle).toHaveStyle("text-decoration: underline");
+    expect(sectionTitle).toHaveStyle("cursor: pointer");
   });
 });

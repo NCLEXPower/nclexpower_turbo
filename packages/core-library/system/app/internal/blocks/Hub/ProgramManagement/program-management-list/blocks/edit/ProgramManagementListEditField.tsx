@@ -1,8 +1,8 @@
 /**
-* Property of the Arxon Solutions, LLC.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Control, FieldArrayWithId, UseFormSetValue } from "react-hook-form";
@@ -295,7 +295,9 @@ export const ProgramManagementListEditField: React.FC<Props> = ({
                       alt={`${sectionType} Icon`}
                     />
                     <Typography>
-                      {sectionType === "video"
+                      {sectionType === "video" &&
+                      sectionData &&
+                      "secVidId" in sectionData[0]
                         ? sectionData?.[0]?.secVidTitle
                         : sectionType === "cat"
                           ? `${sectionTitle} (${sectionTimer ?? 0} ${Number(sectionTimer) > 1 ? "hrs" : "hr"})`
