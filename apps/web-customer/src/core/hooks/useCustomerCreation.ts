@@ -24,11 +24,12 @@ export const useCustomerCreation = () => {
         return;
       }
 
-      if (error.response?.status === 409)
+      if (error.response?.status === 409) {
         toast.executeToast("Email address already exists", "top-right", false, {
           toastId: 0,
           type: "error",
         });
+      }
     }
   }
 
