@@ -150,9 +150,9 @@ export const ComingSoonPage: React.FC<Props> = ({
           </FormProvider>
           <p className="font-['Poppins'] text-white text-base text-center px-4 flex flex-col mt-8 mb-4">
             Stay tuned as we prepare to unveil a brand-new experience just for
-            you. Our team is working hard behind the scenes to bring something
-            innovative and engaging. Check back soon for updates—you won’t want
-            to miss this!
+            you! Our team is working hard behind the scenes to bring the most
+            innovative and engaging review for the NCLEX. Check back soon for
+            updates—you won&apos;t want to miss this!
           </p>
           <div className="flex items-center justify-center space-x-1.5 text-white mt-4">
             {socialMediaIcons}
