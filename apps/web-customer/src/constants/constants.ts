@@ -1,5 +1,5 @@
 import { PriceButtonType } from "core-library/api/types";
-import { CoreZigmaLogo, NCLEXBlueLogo } from "core-library/assets";
+import { CoreZigmaLogo, ArxeniusLogoBlue } from "core-library/assets";
 import { DialogContents } from "core-library/components";
 
 export const PriceButtonDetails: PriceButtonType[] = [

@@ -5,7 +5,7 @@
  */
 
 import Image from "next/image";
-import { NCLEXYellowLogo } from "../../assets";
+import { ArxeniusLogoYellow } from "../../assets";
 import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
 import { Box, Grid, Typography } from "@mui/material";
@@ -17,7 +17,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
   const { hideFooter } = useIsDesignVisible();
-
 
   const isHidden = hideFooter || isAuthenticated;
 
@@ -66,7 +65,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             >
               <Image
                 style={{ width: 150 }}
-                src={NCLEXYellowLogo}
+                src={ArxeniusLogoYellow}
                 alt="NCLEXLogo"
               />
             </Grid>

@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useRouter } from "core-library";
-import { DetectDevice, NCLEXBlueLogo } from "core-library/assets";
+import { DetectDevice, ArxeniusLogoBlue } from "core-library/assets";
 import { Button } from "core-library/components";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import {
@@ -92,7 +92,7 @@ export const DeviceEnrollmentBlock: React.FC<Props> = ({ deviceInfo }) => {
             paddingX: "25px",
           }}
         >
-          <Image alt="NCLEX Logo" src={NCLEXBlueLogo} />
+          <Image alt="NCLEX Logo" src={ArxeniusLogoBlue} />
           <Box>
             <Typography variant="h5" fontWeight={600} color="#0d2b71">
               Do you want to enroll this device ?

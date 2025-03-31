@@ -1,5 +1,5 @@
 import { List, ListItem, Typography, ListItemText } from "@mui/material";
-import { CoreZigmaLogo, NCLEXBlueLogo } from "core-library/assets";
+import { CoreZigmaLogo, ArxeniusLogoBlue } from "core-library/assets";
 import Divider from "core-library/components/Divider/Divider";
 import Image from "next/image";
 import {
@@ -177,7 +177,7 @@ export const PrivacyPolicy: React.FC<Props> = ({
               }}
             />
             <Image
-              src={NCLEXBlueLogo}
+              src={ArxeniusLogoBlue}
               alt="CoreZigma"
               style={{
                 width: "11.375rem",
