@@ -63,7 +63,7 @@ export const faqMockData: Props[] = [
     topic: "About Program and Access",
     question: "How long can I have access to the Program I purchased?",
     description: [
-      "Regardless of which type of program you purchased, both entitle the user to 6 months access time. This means that although one can finish the program within the intended number of training days as scheduled, users are given ample time to refortify their review (e.g., taking any of the simulator tests multiple times, rewatching topic videos needed for recall).",
+      "Regardless of which type of program you purchased, both entitle the user to 6 months access time. This means that although one can finish the program within the intended number of training days as scheduled, users are given ample time to refortify their review (e.g., taking any of the simulator tests multiple times, rewatching topic videos needed for recall).",
     ],
   },
   {
@@ -105,7 +105,7 @@ export const faqMockData: Props[] = [
     topic: "Comments and Feedback",
     question: "I noticed an error in one of your content. How can I bring this to your attention?",
     description: [
-      "Though great care has been made to avoid errors in all sections of the program,  some can inadvertently exist. We are deeply appreciative for calling this to our attention – you can use our form in our Contact Us page, or send us an email at comments@nclexpower.com."
+      "Though great care has been made to avoid errors in all sections of the program,  some can inadvertently exist. We are deeply appreciative for calling this to our attention – you can use our form in our <a href='/contact' target='_blank'>Contact Us</a> page, or send us an email at comments@nclexpower.com."
     ],
   },
 ];

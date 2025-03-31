@@ -70,8 +70,8 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           >
             <Image src={WatchVideos} alt="WatchVideos" />
             <p>
-              Step 1 :
-              <span className="text-darkBlue font-bold">By Watching</span>
+              Step 1:
+              <span className="text-darkBlue font-bold"> By Watching</span>
             </p>
           </div>
           <div
@@ -80,8 +80,8 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
           >
             <Image src={StudyCards} alt="StudyCards" />
             <p>
-              Step 2 :
-              <span className="text-darkBlue font-bold">By Studying</span>
+              Step 2:
+              <span className="text-darkBlue font-bold"> By Studying</span>
             </p>
           </div>
           <div
@@ -94,7 +94,7 @@ export const HowItWorksBlock: React.FC<Props> = (props) => {
               className="md:h-[460px]"
             />
             <p>
-              Step 3 :<span className="text-darkBlue font-bold">By Doing</span>
+              Step 3:<span className="text-darkBlue font-bold"> By Doing</span>
             </p>
           </div>
         </div>
