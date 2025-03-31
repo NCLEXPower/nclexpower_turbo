@@ -128,10 +128,10 @@ export const MaintenanceForm: React.FC<Props> = ({ onSubmit }) => {
             >
               If you need immediate assistance, feel free to contact us at{" "}
               <a
-                href="mailto:contact@nclexpower.com"
+                href="mailto:support@arxenius.com"
                 className="font-[700] underline text-darkBlue"
               >
-                contact@nclexpower.com
+                support@arxenius.com
               </a>
             </p>
           </div>

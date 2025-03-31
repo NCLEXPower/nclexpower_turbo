@@ -165,7 +165,7 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
                 top={0}
                 right={0}
                 bottom={0}
-                left="35px"
+                left="30px"
                 bgcolor="white"
                 position="absolute"
               />

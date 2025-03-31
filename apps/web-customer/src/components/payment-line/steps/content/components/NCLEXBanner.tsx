@@ -2,9 +2,12 @@ import { Box, Stack, Typography } from "@mui/material";
 import { CoreZigmaLogo, NCLEXBlueLogo } from "core-library/assets";
 import { useResolution } from "core-library/hooks";
 import Image from "next/image";
+import { useMemo } from "react";
 
 export function NCLEXBanner() {
   const { isMobile } = useResolution();
+  const yearData = new Date().getFullYear();
+  const memoYear = useMemo(() => yearData, [yearData]);
   return (
     <Box
       sx={{
@@ -48,8 +51,10 @@ export function NCLEXBanner() {
           marginTop: "10px",
         }}
       >
-        © 2024 NCLEX POWER. All rights reserved.
+        © {memoYear} Arxenius. All Rights Reserved. Arxenius, the CORE-Zigma
+        System and all logos and trademarks displayed are owned by Arxon
+        Solutions, LLC.
       </Typography>
     </Box>
-  )
+  );
 }

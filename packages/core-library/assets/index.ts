@@ -4,9 +4,10 @@
  * Created by the Software Strategy & Development Division
  */
 
-export const NCLEXBlueLogo = require("./NCLEXBlueLogo.png");
-export const NCLEXYellowLogo = require("./NCLEXYellowLogo.png");
+export const NCLEXBlueLogo = require(".//ArxeniusYellowLogo.png");
+export const NCLEXYellowLogo = require("./ArxeniusYellowLogo.png");
 export const CoreZigmaLogo = require("./CoreZigmaLogo.png");
+export const ArxeniusYellowLogo = require("./ArxeniusYellowLogo.png");
 export const LoginBG = require("./LoginBG.png");
 
 export const CarouselOne = require("./CarouselOne.png");

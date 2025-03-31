@@ -26,7 +26,7 @@ export const list = [
 export const CompanyInfo = {
   address: "1700 Eureka Rd Ste 155 Roseville, California 95661",
   phone: "1-866-800-3030",
-  website: "info@nclexpower.com",
+  website: "info@arxenius.com",
 };
 
 export const UnauthorizedHeader: MenuItems[] = [

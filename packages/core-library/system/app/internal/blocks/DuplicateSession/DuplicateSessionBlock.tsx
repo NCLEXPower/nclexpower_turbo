@@ -11,8 +11,11 @@ import {
 } from "../../../../../assets";
 import Image from "next/image";
 import { useResolution } from "../../../../../hooks";
+import { useMemo } from "react";
 export function DuplicateSessionBlock() {
   const { isMobile } = useResolution();
+  const yearData = new Date().getFullYear();
+  const memoYear = useMemo(() => yearData, [yearData]);
 
   const BorderLine = () => (
     <hr
@@ -125,8 +128,8 @@ export function DuplicateSessionBlock() {
                 mt: 1,
               }}
             >
-              Maintain one tab in a browser when accessing contents from NCLEX
-              Power.
+              Maintain one tab in a browser when accessing contents from
+              Arxenius Review.
             </Typography>
           </Box>
         </Box>
@@ -177,7 +180,9 @@ export function DuplicateSessionBlock() {
             marginTop: "10px",
           }}
         >
-          © 2024 NCLEX POWER. All rights reserved.
+          © {memoYear} Arxenius. All Rights Reserved. Arxenius, the CORE-Zigma
+          System and all logos and trademarks displayed are owned by Arxon
+          Solutions, LLC.
         </Typography>
       </Box>
     </Box>
