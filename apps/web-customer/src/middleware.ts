@@ -31,17 +31,17 @@ export async function middleware(request: NextRequest) {
   ];
   const { pathname, searchParams } = url;
 
-  const hasTwoFactorAuth = await HasTwoFactorAuth(
-    { accountId: accountId?.value ?? "" },
-    baseUrl
-  );
+  // const hasTwoFactorAuth = await HasTwoFactorAuth(
+  //   { accountId: accountId?.value ?? "" },
+  //   baseUrl
+  // );
 
-  if (hasTwoFactorAuth && !tokenId) {
-    if (pathname !== "/account/verification/otp") {
-      return NextResponse.redirect(proceed2faUrl);
-    }
-    return NextResponse.next();
-  }
+  // if (hasTwoFactorAuth && !tokenId) {
+  //   if (pathname !== "/account/verification/otp") {
+  //     return NextResponse.redirect(proceed2faUrl);
+  //   }
+  //   return NextResponse.next();
+  // }
 
   if (!tokenId) {
     if (pathname.startsWith("/hub") || pathname === "/hub/payment-setup") {
