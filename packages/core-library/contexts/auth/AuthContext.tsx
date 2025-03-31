@@ -100,8 +100,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accountId, setAccountId] = useAccountId();
   const [isPaid, setIsPaid] = usePaid();
   const [accessLevel, setAccessLevel] = useAccessLevel();
-  const [, setSingleCookie, clearSingleCookie] = useSingleCookie();
-  const [, setAccountCookie, clearAccountCookie] = useAccountIdCookie();
+  const [singleCookie, setSingleCookie, clearSingleCookie] = useSingleCookie();
+  const [accountCookie, setAccountCookie, clearAccountCookie] = useAccountIdCookie();
   const [, , clearAnalyticsCookie] = useAnalyticsDetails();
   const [refreshToken, setRefreshToken] = useRefreshToken();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -193,15 +193,16 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     } catch (e) {
       console.error(e);
     } finally {
+      clearSingleCookie();
+      clearAccountCookie();
       setIsAuthenticated(false);
       clearSession();
       authSessionIdleTimer.stop();
-      clearSingleCookie();
-      clearAccountCookie();
       clearAnalyticsCookie();
       await router.push((route) => route.login);
     }
-  }, [refreshToken, accessToken, customer, internal]);
+  }, [refreshToken, accessToken, customer, internal, singleCookie,
+    accountCookie]);
 
   const integrateDeviceInUseUpdater = useCallback(
     async (accountId: string, inUse: boolean = true) => {
@@ -245,13 +246,13 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   }
 
   const softLogout = useCallback(async () => {
+    clearSingleCookie();
+    clearAccountCookie();
     setIsAuthenticated(false);
     clearSession();
     authSessionIdleTimer.stop();
-    clearSingleCookie();
-    clearAccountCookie();
     await router.push((route) => route.login);
-  }, [refreshToken, accessToken]);
+  }, [refreshToken, accessToken, singleCookie, accountCookie]);
 
   const initializeAnalyticsUser = useCallback(
     async (accountId?: string) => {
@@ -263,7 +264,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           console.log(`Analytics result size: ${resultSize}`);
           mixpanelBuildUserProfile(analyticsParamsResult.data);
           mixpanelTrackLogin();
-        } catch (error) {}
+        } catch (error) { }
       }
     },
     [analyticsParamsCb, accessToken]
@@ -292,9 +293,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
             const parsedIsPaid =
               config.value.BASEAPP === "webc_app"
                 ? Encryption(
-                    result.data.isPaid.toString(),
-                    config.value.SECRET_KEY
-                  )
+                  result.data.isPaid.toString(),
+                  config.value.SECRET_KEY
+                )
                 : result.data.isPaid;
             // if (result.data.responseCode === 304) {
             //   setDeviceNotRecognized(true);

@@ -104,19 +104,23 @@ const AccordionHeader: React.FC<AccordionHeaderProps> = ({
   expanded,
   onToggle,
 }) => {
+  const toggleItem = (e: React.SyntheticEvent) => {
+    e?.stopPropagation();
+    onToggle(e, !expanded);
+  };
+
   return (
-    <Box className="w-full flex justify-between px-8 items-center" key={id}>
+    <Box
+      className="w-full flex justify-between px-8 items-center cursor-pointer"
+      key={id}
+      onClick={toggleItem}
+    >
       <h4 className="text-[16px] font-ptSans text-darkBlue font-bold">
         {title}
       </h4>
       <Box>
         <React.Fragment>
-          <IconButton
-            onClick={(e) => {
-              e?.stopPropagation();
-              onToggle(e, !expanded);
-            }}
-          >
+          <IconButton onClick={() => toggleItem}>
             <Box
               sx={{
                 position: "relative",
