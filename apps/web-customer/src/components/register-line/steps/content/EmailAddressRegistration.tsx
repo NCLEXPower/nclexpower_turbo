@@ -1,13 +1,12 @@
 import { Box } from '@mui/material'
 import { Button, EvaIcon, IconButton, PasswordToggleAdornment, TextField } from 'core-library/components'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import {
   EmailRegistrationFormType,
   emailRegistrationSchema,
   RegistrationAtom,
   RegistrationFormType,
-  registrationSchema
 } from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ValidationIndicators from '@/components/blocks/ForgotPasswordBlock/ChangePasswordBlock/ValidationIndicator';
@@ -52,8 +51,18 @@ export const EmailAddressRegistration = ({
 
   const newPassword = watch("password");
   const confirmPassword = watch("confirmpassword");
-  const passwordLimit = newPassword.length <= 8 && newPassword.length > 1;
+  const email = watch("email");
+  const passwordLimit = newPassword.length <= 7 && newPassword.length > 1;
   const showError = confirmPassword && confirmPassword !== methods.getValues("password");
+
+  useEffect(() => {
+    setRegistrationDetails((prev) => ({
+      ...prev,
+      email,
+      password: newPassword,
+      confirmpassword: confirmPassword,
+    }));
+  }, [email, newPassword, confirmPassword]);
 
   async function handleNextStep(values: EmailRegistrationFormType) {
     const details = ({ ...values, ...registrationDetails });
