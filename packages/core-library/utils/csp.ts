@@ -49,7 +49,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const csp = generateCSP(generatedNonce);
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
-      const hasGoLiveActive = await getHasActiveGoLive();
+      const hasGoLiveActive = await getHasActiveGoLive("Philippines/Manila");
       const hasChatBotWidget = await getHasChatBotWidget();
 
       setCSPHeader(context.res as ServerResponse, csp);

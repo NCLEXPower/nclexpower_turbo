@@ -10,18 +10,12 @@ import { config } from "core-library/config";
 import { sanitizedEnvironment } from "core-library";
 
 export const GoLiveBlock: React.FC = () => {
-  const { daysRemaining, error, schedule } = useScheduleCountdown();
   const notifyCb = useApiCallback(
     async (api, args: NotifyParams) => await api.web.sendNotify(args)
   );
-  const environment = sanitizedEnvironment(schedule?.environment);
-
+  
   if (error) {
     return <p>Error: {error}</p>;
-  }
-
-  if (config.value.SYSENV !== environment) {
-    return <p>Something went wrong.</p>
   }
 
   return (

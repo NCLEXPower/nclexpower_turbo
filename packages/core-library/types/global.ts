@@ -237,9 +237,14 @@ export type ChatBotSsr = {
   updatedDate: string;
 };
 
+export type GoLiveStatusSsr = { 
+  blocked: false;
+  goLiveStatus: false;
+}
+
 export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
-  hasGoLive: boolean;
+  hasGoLive: GoLiveStatusSsr;
   hasChatBotWidget: ChatBotSsr;
 };

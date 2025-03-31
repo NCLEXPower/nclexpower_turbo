@@ -5,8 +5,9 @@ import { useRouter } from "../../core";
 
 export const useScheduleCountdown = () => {
   const activeSchedule = useApi(
-    async (api) => await api.web.getActiveSchedule()
+    async (api) => await api.web.getActiveSchedule("Philippines/Manila")
   );
+  
   const router = useRouter();
   const [daysRemaining, setDaysRemaining] = useState<number | undefined>(
     undefined

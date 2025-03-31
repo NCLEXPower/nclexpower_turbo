@@ -11,7 +11,7 @@ export const useDateFormat = () => {
     const getFormattedDate = (isoDate: string, dateFormat: string = "MMMM d, yyyy h:mm:ss a") => {
 
         /**
-         * Check this page documentation for formatting dates
+         * Check this page documentation for formating dates
          * https://date-fns.org/v2.29.3/docs/format
          */
 

@@ -139,6 +139,9 @@ export const PaymentWizardFormContextProvider: React.FC<
         } as CreatePaymentIntentParams;
         setGeoCountry(geoData?.countryCode ?? "US");
         const result = await mutateAsync({ ...params });
+
+        console.log(result);
+
         setCheckoutIntent(result.data.paymentIntentId);
         setClientSecret(result.data.clientSecret);
         setPaymentIntentId(result.data.paymentIntentId);
