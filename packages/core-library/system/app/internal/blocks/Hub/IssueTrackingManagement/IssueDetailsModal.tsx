@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, Grid, Typography, Divider, SelectChangeEvent } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { ImageUploader, Button, IconButton } from "../../../../../../components";
+import { createFormData } from "../../../../../../utils/createFormData";
 import { SupportTextArea } from "./SupportTextArea";
 import { IssueDescriptionBox } from "./IssueDescriptionBox";
 import { IssueStatusDropdown } from "./IssueStatusDropdown";
-import { UpdateStatusParams } from "../../../../../../api/types";
 import { useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../contexts";
 import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./style";
@@ -44,8 +44,8 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     "Resolved": 2,
   };
 
-  const updateStatusCb = useApiCallback((api, params: UpdateStatusParams) =>
-    api.webbackoffice.updateStatus(params)
+  const updateStatusCb = useApiCallback((api, args: FormData) =>
+    api.webbackoffice.updateStatus(args)
   );
 
   useEffect(() => {
@@ -59,36 +59,42 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
 
   const handleSubmit = async () => {
     const currentNotes = notesRef.current?.value || ""; 
-    const statusNumber = statusMapping[selectedStatus];
+  
   
     if (!context?.reference) {
       showToast("Reference number is missing.", "error");
       return;
     }
 
+    const statusNumber = statusMapping[selectedStatus];
     if (typeof statusNumber === 'undefined') {
       showToast("Please select a valid status.", "error");
       return;
+    }
+
+    const formObject: Record<string, FormDataEntryValue> = {
+      Notes: notesRef.current?.value || "",
+      RefNo: context.reference,
+      UpdateStatus: statusNumber.toString(),
+    };
+
+    if (selectedImage) {
+      formObject.Proof = selectedImage;
     }
   
     try {
       updateStatusCb.loading;
 
-      const imageProof = selectedImage ? selectedImage : undefined;
+      const form = createFormData(formObject);
+      const result = await updateStatusCb.execute(form);
 
-      const payload: UpdateStatusParams = {
-        Notes: currentNotes,
-        RefNo: context.reference,
-        UpdateStatus: statusNumber,
-        Proof: imageProof
-      };
-      
-      await updateStatusCb.execute(payload);
-
-      //await getIssueCb.execute(1);
-      
-      onStatusChange(context.reference, selectedStatus);
-      onClose();
+      if (result) {
+        showToast("Issue status updated successfully.", "success");
+        onStatusChange(context.reference, selectedStatus);
+        onClose();
+      } else {
+        showToast("Failed to update issue status. Please try again.", "error");
+      }
     } catch (error) {
       showToast("Failed to update issue status. Please try again.", "error");
     } 

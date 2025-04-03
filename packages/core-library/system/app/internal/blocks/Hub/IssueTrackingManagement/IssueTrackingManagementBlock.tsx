@@ -1,24 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, Box, Typography } from "@mui/material";
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import { Alert, Card, DataGrid } from '../../../../../../components';
-import { useColumns, useModal } from "../../../../../../hooks";
+import { useColumns, useModal, useApiCallback } from "../../../../../../hooks";
+import { useExecuteToast } from '../../../../../../contexts';
 import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
-import { mockRows } from './IssueTrackingMock';
 import { StyledModal } from './StyledModal';
 import { alertStyle, tableStyle, titleStyle, rowStyle } from './style';
 
-export const IssueTrackingManagementBlock = () => {
-  const modal = useModal<{ 
-    email: string;
-    reference: string; 
-    description: string; 
-    dateCreated: string; 
-    status: string; 
-  }>();
+interface Ticket {
+  email: string;
+  reference: string;
+  description: string;
+  dateCreated: string;
+  status: string;
+}
 
-  const [rows, setRows] = useState(mockRows);
+export const IssueTrackingManagementBlock = () => {
+  const [rows, setRows] = useState<Ticket[]>([]);
+  const modal = useModal<Ticket>();
+  const { showToast } = useExecuteToast();
+
   const isLoading = false;
 
   const handleStatusChange = (reference: string, newStatus: string) => {
@@ -28,6 +31,27 @@ export const IssueTrackingManagementBlock = () => {
       )
     );
   };
+
+  const getIssueReportCb = useApiCallback((api, issueType: number) =>
+    api.webbackoffice.getIssueReport(issueType)
+  );
+
+  const currentIssueType = 1;
+
+  const fetchTickets = async (issueType: number) => {
+    try {
+      const response = await getIssueReportCb.execute(issueType);
+      console.log("API RESPONSE: ", response);
+
+      //setRows(response);
+    } catch (error) {
+      showToast("Error fetching tickets:", "error");
+    }
+  };
+
+  useEffect(() => {
+    fetchTickets(currentIssueType);
+  }, []);
 
   const { columns } = useColumns({
     columns: [

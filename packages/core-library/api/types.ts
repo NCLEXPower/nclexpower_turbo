@@ -792,13 +792,6 @@ export type CaseStudyListResponse = {
   dateCreated: string;
 };
 
-export type UpdateStatusParams = {
-  Proof?: File; 
-  Notes: string;
-  RefNo: string;
-  UpdateStatus: 0 | 1 | 2;
-};
-
 export type ContactResponseType = {
   id: string;
   name: string;
