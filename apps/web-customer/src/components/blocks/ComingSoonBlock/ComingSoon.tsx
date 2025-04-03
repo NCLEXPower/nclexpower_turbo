@@ -1,7 +1,7 @@
 import {
   ComingSoon,
   CoreZigmaLogo,
-  ArxeniusYellowLogo,
+  ArxeniusLogoYellow,
 } from "core-library/assets";
 import Image from "next/image";
 import { Typography } from "@mui/material";
@@ -68,7 +68,7 @@ export const ComingSoonPage: React.FC<Props> = ({
               }}
             />
             <Image
-              src={ArxeniusYellowLogo}
+              src={ArxeniusLogoYellow}
               alt="CoreZigma"
               style={{
                 width: "auto",

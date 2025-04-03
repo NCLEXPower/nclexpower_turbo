@@ -4,10 +4,9 @@
  * Created by the Software Strategy & Development Division
  */
 
-export const NCLEXBlueLogo = require(".//ArxeniusYellowLogo.png");
-export const NCLEXYellowLogo = require("./ArxeniusYellowLogo.png");
+export const ArxeniusLogoBlue = require("./ArxeniusLogoBlue.png");
+export const ArxeniusLogoYellow = require("./ArxeniusLogoYellow.png");
 export const CoreZigmaLogo = require("./CoreZigmaLogo.png");
-export const ArxeniusYellowLogo = require("./ArxeniusYellowLogo.png");
 export const LoginBG = require("./LoginBG.png");
 
 export const CarouselOne = require("./CarouselOne.png");
@@ -141,8 +140,8 @@ export const RNBackground = require("./RNBackground.png");
 export const DuplicateSession = require("./duplicate_session.svg");
 
 export const ImageLists = [
-  { id: 1, label: "NCLEX Blue Logo", image: NCLEXBlueLogo },
-  { id: 2, label: "NCLEX Yellow Logo", image: NCLEXYellowLogo },
+  { id: 1, label: "NCLEX Blue Logo", image: ArxeniusLogoBlue },
+  { id: 2, label: "NCLEX Yellow Logo", image: ArxeniusLogoYellow },
   { id: 3, label: "Core Zigma Logo", image: CoreZigmaLogo },
   { id: 4, label: "Login Background", image: LoginBG },
   { id: 5, label: "Carousel One", image: CarouselOne },

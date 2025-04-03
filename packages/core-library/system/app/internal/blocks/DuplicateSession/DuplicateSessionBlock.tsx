@@ -7,7 +7,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import {
   CoreZigmaLogo,
   DuplicateSession,
-  NCLEXBlueLogo,
+  ArxeniusLogoBlue,
 } from "../../../../../assets";
 import Image from "next/image";
 import { useResolution } from "../../../../../hooks";
@@ -154,7 +154,7 @@ export function DuplicateSessionBlock() {
             alt="Core Zigma Logo"
           />
           <Image
-            src={NCLEXBlueLogo}
+            src={ArxeniusLogoBlue}
             width={isMobile ? 120 : 180}
             height={isMobile ? 40 : 40}
             alt="NCLEX Blue Logo"

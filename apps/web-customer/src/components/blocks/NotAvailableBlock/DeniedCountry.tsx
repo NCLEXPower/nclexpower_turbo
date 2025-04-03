@@ -1,6 +1,6 @@
 import {
   CoreZigmaLogo,
-  NCLEXYellowLogo,
+  ArxeniusLogoYellow,
   NotAvailableBG,
 } from "core-library/assets";
 import React from "react";
@@ -61,8 +61,8 @@ export const DeniedCountry = ({
             className="w-auto h-[70px] object-cover"
           />
           <Image
-            src={NCLEXYellowLogo}
-            alt="NCLEXYellowLogo"
+            src={ArxeniusLogoYellow}
+            alt="ArxeniusLogoYellow"
             className="w-auto h-[30px] object-cover z-0"
           />
         </div>
