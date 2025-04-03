@@ -67,6 +67,7 @@ import {
   CaseStudyListResponse,
   GetProgramParams,
   DeleteProgramSectionParams,
+  GetInternalProgramParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -533,6 +534,10 @@ export class WebApiBackOffice {
     )
   }
 
+  public async getInternalPrograms(params: GetInternalProgramParams){
+    return await this.axios.get<StandardProgramListType[]>(
+      `/api/v2/content/BaseContent/get-internal-programs?${qs.stringify({ ...params })}`);
+  }
   public async getAllPrograms() {
     return await this.axios.get<StandardProgramListType[]>(
       `/api/v2/content/BaseContent/get-internal-programs`

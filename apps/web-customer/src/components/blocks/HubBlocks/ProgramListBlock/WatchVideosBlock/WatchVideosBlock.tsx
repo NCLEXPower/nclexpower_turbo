@@ -38,10 +38,9 @@ export function WatchVideosBlock() {
       }
     }
 
-    if (programId) {
+    if (programId && programList) {
       const programTitle =
-        fetchedProgramList?.find((item) => item.id === programId)?.title ?? "";
-      setSectionMainTitle(programTitle);
+      setSectionMainTitle(programList.title ?? "");
     }
   }, [router.query]);
 

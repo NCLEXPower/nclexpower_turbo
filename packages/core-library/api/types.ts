@@ -822,6 +822,11 @@ export type GetProgramParams = {
   programType: number;
 }
 
+export type GetInternalProgramParams = {
+  programType: number;
+  accountId?: string;
+}
+
 export interface UpdateSectionParams {
   sectionId: string;
   sectionType: string;

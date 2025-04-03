@@ -12,7 +12,7 @@ import { NCLEXBlueLogo } from "../../assets";
 import Image from "next/image";
 import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
-import { useGetProgramList, useUniqueById } from "../../hooks";
+import { useUniqueById } from "../../hooks";
 import { IconButton, EvaIcon } from "../../components";
 
 interface SideBarPropsType extends Partial<WebSidebarStylesType> {
@@ -86,17 +86,18 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
   listStyles,
 }) => {
   const pathname = usePathname();
-  const { programList } = useGetProgramList();
+  const programType = 0;
 
   const updatedMenu = useUniqueById(menu).map((navigation, index) => {
-    if (programList && programList.length === 10 && index === 1) {
+    if (programType === 0 && index === 2) {
       return { ...navigation, hide: true };
-    } else if (programList && programList.length > 10 && index === 2) {
+    } else if (programType === 1 && index === 1) {
       return { ...navigation, hide: true };
     }
+  
     return navigation;
   });
-
+  
   const handleCloseSidebar = () => {
     if ((!isAuthenticated && isMobile) || (!isAuthenticated && isTablet)) {
       setOpen();

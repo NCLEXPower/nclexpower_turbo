@@ -3,45 +3,37 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-
 import { useState, useEffect } from "react";
 import { StandardProgramListType } from "../types/wc/programList";
-import {
-  standardProgramList,
-  fastrackProgramList,
-} from "../core/utils/contants/wc/programs/ProgramListData";
-import { useSessionStorage } from "./useSessionStorage";
+import { useSensitiveInformation } from "./useSensitiveInformation";
+import { useBusinessQueryContext } from "../contexts";
 
 export const useGetProgramList = () => {
-  const [programList, setProgramList] = useState<
-    StandardProgramListType[] | null
-  >(null);
+  const [programList, setProgramList] = useState<StandardProgramListType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [storedProgramList, setProgramListInStorage] = useSessionStorage<
-    StandardProgramListType[]
-  >("programList", []);
+  const { customer } = useSensitiveInformation();
+  const { businessQueryGetInternalPrograms } = useBusinessQueryContext();
+  
+  const { data: internalProgramList, refetch, isFetching, error: fetchError } = 
+    businessQueryGetInternalPrograms(["internal_programs_api"], {
+      programType: 0,
+      accountId: customer?.id,
+    });
 
   useEffect(() => {
     const fetchProgramList = async () => {
-      if (programList) {
-        return;
-      }
+      if (programList || isFetching) return;
 
       setLoading(true);
       setError(null);
 
       try {
-        if (storedProgramList.length > 0) {
-          setProgramList(storedProgramList);
+        if (internalProgramList) {
+          setProgramList(internalProgramList);
         } else {
-          // Simulate API fetch, change this once the real API is available
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          const list = standardProgramList;
-
-          setProgramListInStorage(list);
-          setProgramList(list);
+          await refetch();
         }
       } catch (err) {
         setError("Failed to load program list.");
@@ -51,7 +43,13 @@ export const useGetProgramList = () => {
     };
 
     fetchProgramList();
-  }, [programList, storedProgramList]);
+  }, [internalProgramList, programList, isFetching, refetch]);
+
+  useEffect(() => {
+    if (fetchError) {
+      setError("Failed to fetch program list from API.");
+    }
+  }, [fetchError]);
 
   return { programList, loading, error };
 };
