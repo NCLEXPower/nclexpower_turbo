@@ -19,6 +19,7 @@ import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 import { GoLiveBlock } from "@/components/blocks/GoLive/GoLiveBlock";
+import { DeniedCountryBlock } from "@/components/blocks/NotAvailableBlock/DeniedCountryBlock";
 
 interface Props {
   slug?: string;
@@ -46,8 +47,8 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     return <MaintenanceBlock />;
   }
 
-  if (data?.hasGoLive) {
-    return <GoLiveBlock />;
+  if (data?.hasGoLive.goLiveStatus) {
+    return <GoLiveBlock data={data.hasGoLive} />;
   }
 
   return (

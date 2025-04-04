@@ -1,4 +1,5 @@
 import { ValidateTokenParams } from "core-library/api/types";
+import { GoLiveStatusSsr } from "core-library/types/global";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -20,7 +21,9 @@ export async function middleware(request: NextRequest) {
   const accountId = request.cookies.get("nclex_account");
   const ipGeo = request.cookies.get("geocountry");
   const proceedToHubUrl = new URL("/hub", request.url);
+  const proceedToHomePage = new URL("/", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
+  const proceedToDeniedCountry = new URL("/blocked", request.url);
   const proceed2faUrl = new URL("/account/verification/otp", request.url);
   const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
   const publicRoutes = [
@@ -28,8 +31,25 @@ export async function middleware(request: NextRequest) {
     "/about",
     "/contact",
     "/account/registration",
+    "blocked",
+    "/",
   ];
   const { pathname, searchParams } = url;
+
+  const goLiveStatus = await IsCountryBlocked(request.geo?.country, baseUrl);
+
+  console.log("Country", request.geo?.country);
+
+  if (
+    pathname.includes("blocked") &&
+    (!goLiveStatus || !goLiveStatus.blocked)
+  ) {
+    return NextResponse.redirect(proceedToHomePage);
+  }
+
+  if (!pathname.includes("blocked") && goLiveStatus && goLiveStatus?.blocked) {
+    return NextResponse.redirect(proceedToDeniedCountry);
+  }
 
   // const hasTwoFactorAuth = await HasTwoFactorAuth(
   //   { accountId: accountId?.value ?? "" },
@@ -128,12 +148,46 @@ export const config = {
     "/about",
     "/contact",
     "/account/registration",
+    "/blocked",
+    "/",
   ],
 };
 
 /**
  * Isolate all functions below to core-library..
  */
+
+export async function IsCountryBlocked(
+  clientCountry: string | undefined,
+  publicUrl: string | undefined
+): Promise<GoLiveStatusSsr | undefined> {
+  try {
+    if (!clientCountry) {
+      return;
+    }
+
+    if (!publicUrl) {
+      return;
+    }
+
+    const encodedCountry = encodeURIComponent(clientCountry);
+    const url = `${publicUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodedCountry}`;
+
+    const requestHeaders: HeadersInit = {
+      ...(headers || {}),
+    };
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: requestHeaders,
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error occurred while checking ispaid:", error);
+  }
+}
 
 export async function IsAccountPaid(
   params: { accountId: string; accessToken: string | undefined | null },
@@ -180,8 +234,6 @@ export async function HasTwoFactorAuth(
         body: JSON.stringify(params),
       }
     );
-
-    console.log("response", response.json());
 
     if (!response.ok) {
       throw new Error(`API call failed with status: ${response.status}`);

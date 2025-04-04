@@ -8,7 +8,12 @@ import {
   CreateCustomerParams,
   ValidateTokenParams,
 } from "./api/types";
-import { ChatBotSsr, CmsGlobals, MaintenanceSsr } from "./types/global";
+import {
+  ChatBotSsr,
+  CmsGlobals,
+  GoLiveStatusSsr,
+  MaintenanceSsr,
+} from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
@@ -107,13 +112,13 @@ export async function getMaintenanceMode() {
 
 export async function getHasActiveGoLive() {
   const response = await fetch(
-    `${baseUrl}/api/v2/internal/baseInternal/check-active-schedule`,
+    `${baseUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=Philippines%2FManila`,
     {
       method: "GET",
       headers: headers,
     }
   );
-  return ((await response.json()) as boolean) ?? null;
+  return ((await response.json()) as GoLiveStatusSsr) ?? null;
 }
 
 export async function getEndpointResources() {

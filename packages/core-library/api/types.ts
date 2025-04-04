@@ -28,6 +28,12 @@ export interface ScheduleResponse {
   error: string;
 }
 
+export interface GoLiveStatusResponse {
+  goLiveStatus: boolean;
+  blocked: boolean;
+  goLive: any;
+}
+
 export interface OpenPagesResponse {
   pageRoute: string;
   pageAuthorization: number;
@@ -752,7 +758,7 @@ export type CaseNameResponseType = {
 
 export type DeleteReportIssuesParams = {
   id: string;
-}
+};
 
 export type DeleteCaseNameParams = {
   id: string;
@@ -781,12 +787,12 @@ export type CreateSectionParams = {
       cardFaces?: File[] | undefined;
     }[];
   }[];
-}
+};
 
 export type CreateSectionResponse = {
   success: boolean;
   sectionId: string;
-}
+};
 
 export interface GetAllSectionsResponseType {
   sectionId: string;
@@ -816,11 +822,11 @@ export interface GetAllSectionsResponseType {
 
 export type GetSectionParams = {
   sectionType: string;
-}
+};
 
 export type GetProgramParams = {
   programType: number;
-}
+};
 
 export interface UpdateSectionParams {
   sectionId: string;
@@ -861,14 +867,14 @@ export type SectionData = {
   unguided?: boolean;
   practice?: boolean;
   catSimulator?: string;
-  contentAreaCoverage?: string[]
+  contentAreaCoverage?: string[];
   cards?: [
     {
-      cardId?: string,
-      cardTopic?: string,
-      cardFaces?: string[]
-    }
-  ]
+      cardId?: string;
+      cardTopic?: string;
+      cardFaces?: string[];
+    },
+  ];
 };
 
 export type Section = {
@@ -886,7 +892,6 @@ export type CreateProgramParams = {
   stringifiedSections: Section[];
 };
 
-
 export type UpdateSection = {
   sectionId: string;
   sectionType: string;
@@ -894,7 +899,7 @@ export type UpdateSection = {
   sectionStatus: string;
   sectionData: SectionData[];
   sectionTimer: string;
-}
+};
 
 export type UpdateProgramParams = {
   id: string;
@@ -902,12 +907,12 @@ export type UpdateProgramParams = {
   programImage: File[];
   stringifiedSections: UpdateSection[];
   programType: number;
-}
+};
 
 export type DeleteProgramSectionParams = {
-  programId: string,
-  sectionId: string
-}
+  programId: string;
+  sectionId: string;
+};
 
 export interface CreateProgramResponse extends CreateSectionResponse {}
 
@@ -941,15 +946,15 @@ export interface GetAllProgramsResponseType {
         cardFaces?: string | null;
       }[];
     }[];
-  }[]
+  }[];
 }
 export type CreateGoliveSchedule = {
   eventName: string;
-  endDate: string;
+  endDate?: string;
   targetEnvironment: string;
-  timeZone: string;
+  timeZone?: string;
   countries: string[];
-  selectedCountriesTimezones: string[];
+  selectedCountriesTimezones?: string[];
   description: string;
   isActive: boolean;
 };
