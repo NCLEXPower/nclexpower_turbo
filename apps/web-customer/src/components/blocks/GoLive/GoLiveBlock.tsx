@@ -1,14 +1,8 @@
 import React from "react";
-import {
-  useApi,
-  useApiCallback,
-  useScheduleCountdown,
-} from "core-library/hooks";
+import { useApiCallback } from "core-library/hooks";
 import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
 import { ComingSoonType } from "../ComingSoonBlock/validation";
 import { NotifyParams } from "core-library/api/types";
-import { config } from "core-library/config";
-import { sanitizedEnvironment } from "core-library";
 import { GoLiveStatusSsr } from "core-library/types/global";
 
 type GoLiveBlockType = {
