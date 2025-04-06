@@ -1,7 +1,5 @@
-import { PrivacyPolicy } from "./PrivacyPolicy"
+import { PrivacyPolicy } from "./PrivacyPolicy";
 
 export const PrivacyPolicyBlock = () => {
-  return (
-    <PrivacyPolicy />
-  )
-}
+  return <PrivacyPolicy />;
+};
