@@ -200,9 +200,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
         );
       }
       const {endDate, timeZone, selectedCountriesTimezones} = payload;
-      // Temporary while API is not ready
-      // await createGoliveScheduleCb.execute(payload);
-      console.log("Payload:", payload);
+      await createGoliveScheduleCb.execute(payload);
 
       setValue("isActive", true);
       showToast("Successful", "success");
