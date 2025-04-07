@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
     "/",
   ];
   const { pathname, searchParams } = url;
-  const country = request.geo?.country ?? "PH";
+  const country = request.geo?.country ?? "";
   const response = withCustomCookie(NextResponse.next(), country);
   const goLiveStatus = await IsCountryBlocked(country, baseUrl);
   const isBlocked = goLiveStatus?.blocked;
