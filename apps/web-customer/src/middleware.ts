@@ -21,9 +21,10 @@ export async function middleware(request: NextRequest) {
   const accountId = request.cookies.get("nclex_account");
   const ipGeo = request.cookies.get("geocountry");
   const proceedToHubUrl = new URL("/hub", request.url);
-  const proceedToHomePage = new URL("/", request.url);
+  const proceedToHome = new URL("/", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
   const proceedToDeniedCountry = new URL("/blocked", request.url);
+  const proceedToComingSoon = new URL("/coming-soon", request.url);
   const proceed2faUrl = new URL("/account/verification/otp", request.url);
   const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
   const publicRoutes = [
@@ -31,24 +32,33 @@ export async function middleware(request: NextRequest) {
     "/about",
     "/contact",
     "/account/registration",
-    "blocked",
     "/",
   ];
   const { pathname, searchParams } = url;
+  const country = request.geo?.country ?? "PH";
+  const response = withCustomCookie(NextResponse.next(), country);
+  const goLiveStatus = await IsCountryBlocked(country, baseUrl);
+  const isBlocked = goLiveStatus?.blocked;
+  const isLive = goLiveStatus?.goLiveStatus;
+  const isComingSoonPage = pathname.includes("coming-soon");
+  const isBlockedPage = pathname.includes("blocked");
 
-  const goLiveStatus = await IsCountryBlocked(request.geo?.country, baseUrl);
-
-  console.log("Country", request.geo?.country);
-
-  if (
-    pathname.includes("blocked") &&
-    (!goLiveStatus || !goLiveStatus.blocked)
-  ) {
-    return NextResponse.redirect(proceedToHomePage);
+  if ((isComingSoonPage && !isLive) || (isBlockedPage && !isBlocked)) {
+    return NextResponse.redirect(proceedToHome);
   }
 
   if (!pathname.includes("blocked") && goLiveStatus && goLiveStatus?.blocked) {
-    return NextResponse.redirect(proceedToDeniedCountry);
+    return withCustomCookie(
+      NextResponse.redirect(proceedToDeniedCountry),
+      country
+    );
+  }
+
+  if (!isComingSoonPage && isLive) {
+    return withCustomCookie(
+      NextResponse.redirect(proceedToComingSoon),
+      country
+    );
   }
 
   // const hasTwoFactorAuth = await HasTwoFactorAuth(
@@ -67,7 +77,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith("/hub") || pathname === "/hub/payment-setup") {
       return NextResponse.redirect(proceedToLoginUrl);
     }
-    return NextResponse.next();
+    return response;
   }
 
   const isTokenValid = await validateTokenSsr(
@@ -138,6 +148,7 @@ export async function middleware(request: NextRequest) {
 
   await userAgentValidation(request);
   await enforceHttpToHttps(request);
+
   return NextResponse.next();
 }
 
@@ -149,9 +160,15 @@ export const config = {
     "/contact",
     "/account/registration",
     "/blocked",
+    "/coming-soon",
     "/",
   ],
 };
+
+function withCustomCookie(res: NextResponse, country: string) {
+  res.cookies.set("client_country", country);
+  return res;
+}
 
 /**
  * Isolate all functions below to core-library..

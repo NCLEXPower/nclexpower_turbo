@@ -47,10 +47,6 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
     return <MaintenanceBlock />;
   }
 
-  if (data?.hasGoLive.goLiveStatus) {
-    return <GoLiveBlock data={data.hasGoLive} />;
-  }
-
   return (
     <React.Fragment>
       <CSPHead nonce={generatedNonce ?? "no-nonce"} />

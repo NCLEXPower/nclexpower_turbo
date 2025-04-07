@@ -36,8 +36,8 @@ export const ComingSoonPage: React.FC<Props> = ({ onSubmit, loading }) => {
   const { handleSubmit, control } = method;
 
   return (
-    <div className="w-full min-h-screen relative bg-[#0F2A71] pt-10">
-      <div className="w-full flex justify-center items-center min-h-screen flex-col">
+    <div className="w-full h-screen relative bg-[#0F2A71] pt-10">
+      <div className="w-full flex h-full justify-center items-center  flex-col">
         <Image
           src={ComingSoon}
           alt="CoreZigma"

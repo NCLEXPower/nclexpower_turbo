@@ -28,10 +28,17 @@ export interface ScheduleResponse {
   error: string;
 }
 
+export interface GoLiveType {
+  id: string;
+  eventName: string;
+  countries: string[];
+  environment: number;
+}
+
 export interface GoLiveStatusResponse {
   goLiveStatus: boolean;
   blocked: boolean;
-  goLive: any;
+  goLive: GoLiveType;
 }
 
 export interface OpenPagesResponse {

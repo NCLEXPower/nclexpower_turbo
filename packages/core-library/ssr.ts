@@ -110,9 +110,9 @@ export async function getMaintenanceMode() {
   return ((await response.json()) as MaintenanceSsr) ?? null;
 }
 
-export async function getHasActiveGoLive() {
+export async function getHasActiveGoLive(clientCountry: string) {
   const response = await fetch(
-    `${baseUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=Philippines%2FManila`,
+    `${baseUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=${clientCountry}`,
     {
       method: "GET",
       headers: headers,
