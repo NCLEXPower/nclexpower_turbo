@@ -20,7 +20,7 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loading } = useAuthContext();
+  const { login, loginLoading } = useAuthContext();
   const { signInWithGoogle } = useGoogleSignIn();
   const { setItem, getItem, removeItem } = useLocalStorage("rm");
   const [rememberMe, setRememberMe] = useState(false);
@@ -118,11 +118,10 @@ export function LoginFormBlock() {
       }
     }
   }, [getItem]);
-
   return (
     <LoginForm
       onSubmit={handleSubmit}
-      submitLoading={loading}
+      submitLoading={loginLoading}
       handleChangeRememberMe={handleChangeRememberMe}
       rememberMe={rememberMe}
       savedData={savedData}

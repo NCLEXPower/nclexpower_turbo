@@ -1,6 +1,6 @@
 import Image from "next/image";
 import {
-  NCLEXBlueLogo,
+  ArxeniusLogoBlue,
   CoreZigmaLogo,
   IssueTrackingBG,
 } from "core-library/assets";
@@ -19,7 +19,6 @@ const IssueTracking = ({
   setSearchReference,
   handleSearchSubmitAsync,
 }: Props) => {
-
   const inputStyles = {
     backgroundColor: "#FFFFFF61",
     border: 2,
@@ -38,7 +37,7 @@ const IssueTracking = ({
       color: "#001E52",
       fontSize: { xs: "12px", sm: "14px", md: "16px" },
     },
-  }
+  };
 
   const buttonStyles = {
     borderRadius: { xs: "6px", md: "10px" },
@@ -52,7 +51,7 @@ const IssueTracking = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  }
+  };
 
   return (
     <div className="relative w-full min-h-screen">
@@ -73,7 +72,7 @@ const IssueTracking = ({
                 alt="Core Zigma Logo"
               />
               <Image
-                src={NCLEXBlueLogo}
+                src={ArxeniusLogoBlue}
                 className="w-[118.21px] h-[28.58px] lg:w-[182px] lg:h-[44px] object-contain"
                 alt="NCLEX Blue Logo"
               />

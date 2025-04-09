@@ -52,6 +52,7 @@ import { clear } from "console";
 
 const context = createContext<{
   loading: boolean;
+  loginLoading: boolean;
   isAuthenticated: boolean;
   login(email: string, password: string): Promise<void>;
   loginFromSso(): Promise<void>;
@@ -161,8 +162,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     async (api, args: internalAccountType) =>
       await api.auth.web_create_internal_account(args)
   );
+  const loginLoading = loginCb.loading;
   const loading =
-    loginCb.loading ||
     registerCb.loading ||
     internalAccountCb.loading ||
     destroySessionCb.loading ||
@@ -275,6 +276,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       value={useMemo(
         () => ({
           loading,
+          loginLoading,
           isAuthenticated,
           login: async (email, password) => {
             const result = await loginCb.execute({
@@ -411,6 +413,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           refreshToken,
           verificationPreparation,
           loading,
+          loginLoading,
           getDeviceDetails,
         ]
       )}
