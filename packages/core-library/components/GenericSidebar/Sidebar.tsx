@@ -91,9 +91,10 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
   const updatedMenu = useUniqueById(menu).map((navigation, index) => {
     if (programType === 0 && index === 2) {
       return { ...navigation, hide: true };
-    } else if (programType === 1 && index === 1) {
-      return { ...navigation, hide: true };
     }
+    // } else if (programType === 1 && index === 1) {
+    //   return { ...navigation, hide: true };
+    // }
   
     return navigation;
   });
