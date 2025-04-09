@@ -15,17 +15,17 @@ jest.mock("../../../core/router", () => ({
 const mockContent: DialogContents[] = [
   {
     id: 1,
-    title: "Welcome to NCLEX Power.",
+    title: "Welcome to Arxenius Review.",
     contentType: "text",
     content: "test-content",
   },
   {
     id: 2,
-    title: "How to use NCLEX Power.",
+    title: "How to use Arxenius Review.",
     contentType: "text",
-    content: "test-content2"
+    content: "test-content2",
   },
-]
+];
 
 const handleClose = jest.fn();
 
@@ -51,8 +51,8 @@ describe("MultiContentDialog", () => {
         />
       );
     });
-    expect(screen.queryByText("Welcome to NCLEX Power.")).toBeNull();
-    expect(screen.queryByText("How to use NCLEX Power.")).toBeNull();
+    expect(screen.queryByText("Welcome to Arxenius Review.")).toBeNull();
+    expect(screen.queryByText("How to use Arxenius Review.")).toBeNull();
   });
 
   it("should display the correct content when the dialog is open", () => {
@@ -65,9 +65,9 @@ describe("MultiContentDialog", () => {
         />
       );
     });
-    expect(screen.getByText("Welcome to NCLEX Power.")).toBeTruthy();
+    expect(screen.getByText("Welcome to Arxenius Review.")).toBeTruthy();
     expect(screen.getByText("test-content")).toBeTruthy();
-  })
+  });
 
   it("should display the correct content when the dialog is open and the next button is clicked", () => {
     act(() => {
@@ -79,12 +79,12 @@ describe("MultiContentDialog", () => {
         />
       );
     });
-    expect(screen.getByText("Welcome to NCLEX Power.")).toBeTruthy();
+    expect(screen.getByText("Welcome to Arxenius Review.")).toBeTruthy();
     expect(screen.getByText("test-content")).toBeTruthy();
     act(() => {
       screen.getByText("Next").click();
     });
-    expect(screen.getByText("How to use NCLEX Power.")).toBeTruthy();
+    expect(screen.getByText("How to use Arxenius Review.")).toBeTruthy();
     expect(screen.getByText("test-content2")).toBeTruthy();
-  })
+  });
 });

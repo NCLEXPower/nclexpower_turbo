@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { NCLEXBlueLogo, NCLEXYellowLogo } from "../../assets";
+import { ArxeniusLogoBlue, ArxeniusLogoYellow } from "../../assets";
 import { useRouter, useScroll } from "../../core";
 
 interface Props {}
@@ -10,11 +10,13 @@ export const HeaderLogo: React.FC<Props> = ({}) => {
   const { isScrolled } = useScroll();
 
   const NCLEXLogo =
-    router.pathname === "/404" || isScrolled ? NCLEXBlueLogo : NCLEXYellowLogo;
+    router.pathname === "/404" || isScrolled
+      ? ArxeniusLogoBlue
+      : ArxeniusLogoYellow;
 
-    const clickHandle = () =>{
-      router.push('/')
-    }
+  const clickHandle = () => {
+    router.push("/");
+  };
 
   return (
     <Box
@@ -38,7 +40,12 @@ export const HeaderLogo: React.FC<Props> = ({}) => {
           md: theme.typography.h3.fontSize,
         })}
       >
-        <Image width={150} src={NCLEXLogo} alt="NCLEX Logo" onClick={clickHandle}/>
+        <Image
+          width={150}
+          src={NCLEXLogo}
+          alt="NCLEX Logo"
+          onClick={clickHandle}
+        />
       </Typography>
     </Box>
   );
