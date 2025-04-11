@@ -47,7 +47,8 @@ import {
   ContactFormType,
   GetSectionParams,
   GetAllSectionsResponseType,
-  GetProgramParams
+  GetProgramParams,
+  GetInternalProgramParams
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -819,6 +820,22 @@ export const useGetAllProgramsByType = (
     queryKey,
     async () => {
       const result = await getProgramsByType.execute();
+      return result.data;
+    },
+    { staleTime: Infinity }
+  );
+};
+
+export const useGetInternalPrograms = (
+  queryKey: string[],
+  args: GetInternalProgramParams
+): UseQueryResult<StandardProgramListType | undefined, any> => {
+  const getInternalPrograms = useApi((api) => api.webbackoffice.getInternalPrograms(args));
+
+  return useQuery<ApiServiceErr>(
+    queryKey,
+    async () => {
+      const result = await getInternalPrograms.execute();
       return result.data;
     },
     { staleTime: Infinity }
