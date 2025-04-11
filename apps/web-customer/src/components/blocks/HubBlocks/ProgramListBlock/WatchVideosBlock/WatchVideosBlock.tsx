@@ -28,7 +28,6 @@ export function WatchVideosBlock() {
 
   useEffect(() => {
     const { secVids, programId } = router.query;
-    const fetchedProgramList = programList ?? [];
 
     if (secVids) {
       const decodedVideos = JSON.parse(decodeURIComponent(secVids as string));
@@ -38,9 +37,9 @@ export function WatchVideosBlock() {
       }
     }
 
-    if (programId && programList) {
-      const programTitle =
-      setSectionMainTitle(programList.title ?? "");
+    if (programId && programList?.length) {
+      const matchedProgram = programList.find((p) => p.id === programId);
+      setSectionMainTitle(matchedProgram?.title ?? "");
     }
   }, [router.query]);
 
