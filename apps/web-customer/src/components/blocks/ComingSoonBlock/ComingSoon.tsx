@@ -1,7 +1,7 @@
 import {
   ComingSoon,
   CoreZigmaLogo,
-  ArxeniusYellowLogo,
+  ArxeniusLogoYellow,
 } from "core-library/assets";
 import Image from "next/image";
 import { Typography } from "@mui/material";
@@ -13,7 +13,6 @@ import { SocialMediaConfig, useSocialMediaIcons } from "core-library/hooks";
 import { Schedule } from "core-library/api/types";
 
 interface Props {
-  schedule?: Schedule | undefined;
   onSubmit: (values: ComingSoonType) => void;
   loading: boolean;
 }
@@ -26,11 +25,7 @@ const socialMediaConfigs: SocialMediaConfig[] = [
   { platform: "instagram", link: "https://www.instagram.com/ncpreview/" },
 ];
 
-export const ComingSoonPage: React.FC<Props> = ({
-  schedule,
-  onSubmit,
-  loading,
-}) => {
+export const ComingSoonPage: React.FC<Props> = ({ onSubmit, loading }) => {
   const socialMediaIcons = useSocialMediaIcons(socialMediaConfigs);
 
   const method = useForm<ComingSoonType>({
@@ -41,8 +36,8 @@ export const ComingSoonPage: React.FC<Props> = ({
   const { handleSubmit, control } = method;
 
   return (
-    <div className="w-full min-h-screen relative bg-[#0F2A71] pt-10">
-      <div className="w-full flex justify-center items-center min-h-screen flex-col">
+    <div className="w-full h-screen relative bg-[#0F2A71] pt-10">
+      <div className="w-full flex h-full justify-center items-center  flex-col">
         <Image
           src={ComingSoon}
           alt="CoreZigma"
@@ -68,7 +63,7 @@ export const ComingSoonPage: React.FC<Props> = ({
               }}
             />
             <Image
-              src={ArxeniusYellowLogo}
+              src={ArxeniusLogoYellow}
               alt="CoreZigma"
               style={{
                 width: "auto",

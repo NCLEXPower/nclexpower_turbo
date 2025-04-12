@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { CoreZigmaLogo, NCLEXBlueLogo } from "core-library/assets";
+import { CoreZigmaLogo, ArxeniusLogoBlue } from "core-library/assets";
 import { useResolution } from "core-library/hooks";
 import Image from "next/image";
 import { useMemo } from "react";
@@ -27,7 +27,7 @@ export function NCLEXBanner() {
           alt="Core Zigma Logo"
         />
         <Image
-          src={NCLEXBlueLogo}
+          src={ArxeniusLogoBlue}
           width={isMobile ? 120 : 180}
           height={isMobile ? 40 : 40}
           alt="NCLEX Blue Logo"

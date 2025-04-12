@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { NCLEXBlueLogo } from "core-library/assets";
+import { ArxeniusLogoBlue } from "core-library/assets";
 import Image from "next/image";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Toolbar } from "@mui/material";
@@ -24,7 +23,7 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
         </Toolbar>
       </Box>
       <div className="ml-8 space-y-6 ">
-        <Image width={150} src={NCLEXBlueLogo} alt="NCLEX Logo" />
+        <Image width={150} src={ArxeniusLogoBlue} alt="NCLEX Logo" />
 
         <h1 className="text-3xl lg:text-5xl font-ptSans font-semibold">
           Detailed Pricing
