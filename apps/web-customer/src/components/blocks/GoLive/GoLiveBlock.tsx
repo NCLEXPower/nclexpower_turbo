@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  useApiCallback,
-  useScheduleCountdown,
-} from "core-library/hooks";
+import { useApiCallback, useScheduleCountdown } from "core-library/hooks";
 import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
 import { ComingSoonType } from "../ComingSoonBlock/validation";
 import { NotifyParams } from "core-library/api/types";
@@ -21,13 +18,12 @@ export const GoLiveBlock: React.FC = () => {
   }
 
   if (config.value.SYSENV !== environment) {
-    return <p>Something went wrong.</p>
+    return <p>Something went wrong.</p>;
   }
 
   return (
     <ComingSoonPage
       schedule={schedule}
-      daysRemaining={daysRemaining}
       onSubmit={handleSubmit}
       loading={notifyCb.loading}
     />

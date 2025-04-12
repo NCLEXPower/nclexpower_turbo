@@ -16,6 +16,7 @@ import useCalculateProgramProgress from "../../../../core/hooks/useCalculateProg
 import { ProgressCircle } from "../../../../components/ProgressCircle/ProgressCircle";
 import { DialogBox } from "core-library/components/Dialog/DialogBox";
 import { ProgramGridContent } from "./ProgramGridContent";
+import { separateSectionType } from "./ProgramListBlockUtils";
 
 interface Props {
   program: StandardProgramListType[];
@@ -57,6 +58,11 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
         ) : (
           program.map((item) => {
             const { id, title, programStatus, programImage, sections } = item;
+            const { videoSections, otherSections } = separateSectionType(
+              sections ?? []
+            );
+            const combinedSectionsCount =
+              otherSections.length + (videoSections.length > 0 ? 1 : 0);
             return (
               <>
                 <Box
@@ -111,7 +117,7 @@ export const ProgramGridView: React.FC<Props> = ({ program }) => {
                       </div>
                       <div className="flex justify-center md:justify-end w-full pr-0 md:pr-4">
                         <h4 className="text-white text-[18px] font-regular font-ptSansNarrow">
-                          {sections ? sections.length : 0} Sections
+                          {combinedSectionsCount} Sections
                         </h4>
                       </div>
                     </div>

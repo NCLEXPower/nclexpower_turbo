@@ -24,6 +24,13 @@ import {
   ChatbotManagementBlock,
   ContactUsManagementBlock,
   AnnouncementManagementBlock,
+  ProgramManagementListBlock,
+  ProgramManagementListCreateBlock,
+  ProgramManagementListEditBlock,
+  ProgramSectionManagementListBlock,
+  ProgramSectionManagementCreateBlock,
+  ProgramSectionManagementEditBlock,
+  ProgramSectionManagementEditItemBlock,
   ComingSoonManagementBlock,
   CaseNameManagementBlock,
   AnalyticsBlock,
@@ -83,6 +90,20 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <AnalyticsBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
+    case "ProgramManagementListBlock":
+      return <ProgramManagementListBlock />;
+    case "ProgramManagementListCreateBlock":
+      return <ProgramManagementListCreateBlock />;
+    case "ProgramManagementListEditBlock":
+      return <ProgramManagementListEditBlock />;
+    case "ProgramSectionManagementBlock":
+      return <ProgramSectionManagementListBlock />;
+    case "ProgramSectionManagementCreateBlock":
+      return <ProgramSectionManagementCreateBlock />;
+    case "ProgramSectionManagementEditBlock":
+      return <ProgramSectionManagementEditBlock />;
+    case "ProgramSectionManagementEditItemBlock":
+      return <ProgramSectionManagementEditItemBlock />
     case "ComingSoonManagementBlock":
       return <ComingSoonManagementBlock />;
     case "CaseNameManagementBlock":

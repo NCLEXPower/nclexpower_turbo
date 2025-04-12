@@ -8,13 +8,15 @@ import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
 import { StyledModal } from './StyledModal';
 import { alertStyle, tableStyle, titleStyle, rowStyle } from './style';
+import { getStatusLabel } from "./statusHelpers";
 
 interface Ticket {
+  id: string;
   email: string;
   reference: string;
   description: string;
   dateCreated: string;
-  status: string;
+  status: number;
 }
 
 export const IssueTrackingManagementBlock = () => {
@@ -24,33 +26,56 @@ export const IssueTrackingManagementBlock = () => {
 
   const isLoading = false;
 
-  const handleStatusChange = (reference: string, newStatus: string) => {
+  const getIssueReportCb = useApiCallback((api) =>
+    api.webbackoffice.getIssueReport()
+  );
+
+  const handleStatusChange = (reference: string, newStatus: number) => {
+    const mappedStatus = statusMapping[newStatus] ? newStatus : 0;
+    
     setRows((prevRows) =>
       prevRows.map((row) =>
-        row.reference === reference ? { ...row, status: newStatus } : row
+        row.reference === reference
+          ? { ...row, status: mappedStatus }
+          : row
       )
     );
   };
 
-  const getIssueReportCb = useApiCallback((api, issueType: number) =>
-    api.webbackoffice.getIssueReport(issueType)
-  );
+  const statusMapping: Record<number, string> = {
+    0: "To Be Reviewed",
+    1: "In Review",
+    2: "Resolved",
+  };
 
-  const currentIssueType = 1;
-
-  const fetchTickets = async (issueType: number) => {
+  const fetchTickets = async () => {
     try {
-      const response = await getIssueReportCb.execute(issueType);
+      const response = await getIssueReportCb.execute();
       console.log("API RESPONSE: ", response);
-
-      //setRows(response);
+  
+      const mappedData: Ticket[] = response.data.map((item) => ({
+        id: item.id,                
+        reference: item.refNo,       
+        description: item.message,   
+        dateCreated: item.createdAt, 
+        status: item.status ?? 0,
+        email: item.email,           
+      }));
+  
+      setRows(mappedData);
     } catch (error) {
       showToast("Error fetching tickets:", "error");
     }
   };
 
   useEffect(() => {
-    fetchTickets(currentIssueType);
+    fetchTickets(); 
+
+    const intervalId = setInterval(() => {
+      fetchTickets();
+    }, 5000); 
+
+    return () => clearInterval(intervalId); 
   }, []);
 
   const { columns } = useColumns({
@@ -144,7 +169,7 @@ export const IssueTrackingManagementBlock = () => {
               height: "100%",
             }}
           >
-            <StatusBadge status={params.value} />
+            <StatusBadge status={getStatusLabel(params.value)} />
           </div>
         ),
       },
@@ -199,6 +224,7 @@ export const IssueTrackingManagementBlock = () => {
           <DataGrid
             rows={rows}
             columns={columns}
+            getRowId={(row) => row.id} 
             initPageSize={10}
             isLoading={isLoading}
             disableColumnResize
@@ -218,6 +244,7 @@ export const IssueTrackingManagementBlock = () => {
           onClose={modal.close}
           onStatusChange={handleStatusChange}
           data-testid="issue-details-modal"
+          fetchTickets={fetchTickets}   // debug
         />
       </StyledModal>
     </Box>

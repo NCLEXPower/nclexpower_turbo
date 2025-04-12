@@ -39,6 +39,7 @@ export const DeniedCountry = ({
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
+        py: "50px",
       }}
     >
       <Image
@@ -52,165 +53,166 @@ export const DeniedCountry = ({
           zIndex: -1,
         }}
       />
-      <div className="flex items-center justify-center gap-4">
-        <Image
-          src={CoreZigmaLogo}
-          alt="CoreZigma"
-          className="w-[70px] h-[70px] sm:w-[90px] sm:h-[90px] md:w-[80px] md:h-[80px] object-cover"
-        />
-        <Image
-          src={NCLEXYellowLogo}
-          alt="NCLEXYellowLogo"
-          className="w-[100px] h-[25px] sm:w-[130px] sm:h-[30px] md:w-[161px] md:h-[40px] object-cover z-0"
-        />
-      </div>
-      <div
-        style={{
-          width: "50%",
-          height: "2px",
-          backgroundColor: "grey",
-          zIndex: 1,
-          marginTop: "15px",
-          marginBottom: isMobile ? "15px" : "0px",
-          opacity: 0.3,
-        }}
-      />
-      <div className="mx-10">
-        <Typography
-          variant="h2"
-          fontWeight={600}
-          color="white"
-          className="opacity-80 lg:pt-10 "
-          fontFamily="Poppins"
-          sx={{
-            fontSize: "clamp(1rem, 5cqw, 3rem)",
-          }}
-        >
-          We&apos;re Sorry
-        </Typography>
-        <Typography
-          variant="h1"
-          fontWeight={700}
-          color="white"
-          className="opacity-90"
-          fontFamily="Poppins"
-          sx={{
-            fontSize: "clamp(1.5rem, 5cqw, 4rem)",
-          }}
-        >
-          NCLEXPower is currently
-        </Typography>
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: "clamp(1.5rem, 5cqw, 4rem)",
-            fontWeight: 700,
-            color: "#FEB900",
-            zIndex: 1,
-          }}
-        >
-          NOT AVAILABLE
-        </Typography>
-        <Typography
-          variant="h2"
-          color="white"
-          fontWeight={600}
-          className="opacity-80 lg:pb-5"
-          sx={{
-            fontSize: "clamp(1rem, 5cqw, 2rem)",
-          }}
-          fontFamily="Poppins"
-        >
-          in your country
-        </Typography>
-        <Typography
-          variant="body1"
-          color="white"
-          className="opacity-90 pt-5"
-          fontFamily="Poppins"
-          sx={{
-            fontSize: "clamp(0.7rem, 2.5vw, 1rem)",
-          }}
-        >
-          Thank you for your patience – we&apos;re looking forward to seeing you
-          here very soon when we open our doors!
-        </Typography>
-      </div>
-      <div className="flex flex-col pt-5 mb-10 lg:mb-10 md:flex-row items-end justify-center gap-4 md:pt-10 md:mb-10">
-      <TextField
-          control={control}
-          name="email"
-          placeholder="Email"
-          sx={{
-            borderRadius: "10px",
-            flexGrow: 1,
-            border: "1px solid #f3f3f3",
-            color: "white",
-            width: isMobile ? "100%" : "500px",
-            fontSize: {
-              xs: "12px",
-              sm: "14px",
-              lg: "16px",
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-              backgroundColor: "transparent",
-            },
-            "& .MuiInputBase-input:focus": {
-              color: "grey",
-            },
-          }}
-          inputProps={{
-            style: {
-              borderRadius: "16px",
-              boxShadow: "none",
-            },
-          }}
-        />
-        <Button
-          sx={{
-            backgroundColor: "white",
-            borderRadius: "10px",
-            color: "#001E52",
-            borderColor: "#001E52",
-            borderWidth: "2px",
-            borderStyle: "solid",
-            width: isMobile ? "100%" : "auto",
-            "&:hover": {
-              backgroundColor: "#001E52",
-              color: "white",
-            },
-          }}
-          onClick={handleSubmit(onSubmit)}
-          disabled={!isValid}
-        >
-          Notify
-        </Button>
-      </div>
-      <div
-        style={{
-          width: "50%",
-          height: "2px",
-          backgroundColor: "grey",
-          zIndex: 1,
-          marginTop: isMobile ? "15px" : "0px",
-          opacity: 0.3,
-        }}
-      />
-      <div className="mb-5">
-        <Typography
-          variant="body1"
-          color="white"
-          className="opacity-80 pt-10 pb-3"
-          fontFamily="Poppins"
-        >
-          Visit us at :
-        </Typography>
+      <div className="max-w-2xl mx-auto py-8 flex flex-col items-center">
+        <div className="flex items-center justify-center gap-4">
+          <Image
+            src={CoreZigmaLogo}
+            alt="CoreZigma"
+            className="w-auto h-[70px] object-cover"
+          />
+          <Image
+            src={NCLEXYellowLogo}
+            alt="NCLEXYellowLogo"
+            className="w-auto h-[30px] object-cover z-0"
+          />
+        </div>
         <div
-          className="flex items-center justify-center pt-[-5px] z-10"
-          style={{ color: "white", gap: "15px" }}
-        >
-          {socialMediaIcons}
+          style={{
+            width: "90%",
+            height: "2px",
+            backgroundColor: "grey",
+            zIndex: 1,
+            marginTop: "15px",
+            marginBottom: "24px",
+            opacity: 0.3,
+          }}
+        />
+        <div className="mx-10">
+          <Typography
+            variant="h2"
+            fontWeight={600}
+            color="white"
+            className="opacity-80 "
+            fontFamily="Poppins"
+            sx={{
+              fontSize: "clamp(1rem, 5cqw, 2rem)",
+            }}
+          >
+            We&apos;re Sorry
+          </Typography>
+          <Typography
+            variant="h1"
+            fontWeight={700}
+            color="white"
+            className="opacity-90"
+            fontFamily="Poppins"
+            sx={{
+              fontSize: "clamp(1.5rem, 5cqw, 3rem)",
+            }}
+          >
+            Arxenius is currently
+          </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: "clamp(1.5rem, 5cqw, 3rem)",
+              fontWeight: 700,
+              color: "#FEB900",
+              zIndex: 1,
+            }}
+          >
+            NOT AVAILABLE
+          </Typography>
+          <Typography
+            variant="h2"
+            color="white"
+            fontWeight={600}
+            className="opacity-80 lg:pb-5"
+            sx={{
+              fontSize: "clamp(1rem, 5cqw, 2rem)",
+            }}
+            fontFamily="Poppins"
+          >
+            in your country
+          </Typography>
+          <Typography
+            variant="body1"
+            color="white"
+            className="opacity-90 pt-5"
+            fontFamily="Poppins"
+            sx={{
+              fontSize: "clamp(0.7rem, 2.5vw, 1rem)",
+            }}
+          >
+            Thank you for your patience – we&apos;re looking forward to seeing
+            you here very soon when we open our doors!
+          </Typography>
+        </div>
+        <div className="flex w-[80%] max-w-3xl gap-2 flex-col justify-center sm:items-end sm:flex-row sm:gap-4 mt-6 sm:mb-6">
+          <TextField
+            control={control}
+            name="email"
+            placeholder="Email"
+            sx={{
+              borderRadius: "10px",
+              flexGrow: 1,
+              height: "56px",
+              border: "2px solid #D9D9D9",
+              fontSize: "1rem",
+              "& .MuiInputBase-input": {
+                color: "#D9D9D9",
+              },
+              "& .MuiInputBase-input:focus": {},
+            }}
+            inputProps={{
+              style: {
+                borderRadius: "16px",
+                boxShadow: "none",
+              },
+            }}
+          />
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            sx={{
+              color: "#0F2A71",
+              backgroundColor: "#ffffff !important",
+              borderRadius: "10px",
+              fontFamily: "'Poppins'",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              minWidth: "180px",
+              height: "56px",
+              minHeight: "56px",
+              maxHeight: "56px",
+              zIndex: 1,
+              marginTop: "4px",
+              padding: {
+                xs: "6px 12px",
+                lg: "8px 16px",
+              },
+              "&:hover": {
+                backgroundColor: "#F3f3f3",
+              },
+            }}
+          >
+            Notify Me
+          </Button>
+        </div>
+        <div
+          style={{
+            width: "90%",
+            height: "2px",
+            backgroundColor: "grey",
+            zIndex: 1,
+            marginTop: "15px",
+            opacity: 0.3,
+          }}
+        />
+        <div className="mb-5">
+          <Typography
+            variant="body1"
+            color="white"
+            className="opacity-80 pt-10 pb-3"
+            fontFamily="Poppins"
+          >
+            Visit us at :
+          </Typography>
+          <div
+            className="flex items-center justify-center pt-[-5px] z-10"
+            style={{ color: "white", gap: "15px" }}
+          >
+            {socialMediaIcons}
+          </div>
         </div>
       </div>
     </Box>

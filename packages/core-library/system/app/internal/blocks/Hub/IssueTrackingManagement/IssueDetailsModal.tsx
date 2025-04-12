@@ -15,7 +15,7 @@ interface IssueContext {
   reference: string;
   description: string;
   dateCreated: string;
-  status: string;
+  status: number;
 }
 
 interface IssueModal {
@@ -26,22 +26,23 @@ interface IssueModal {
 interface IssueDetailsModalProps {
   modal: IssueModal;
   onClose: () => void;
-  onStatusChange: (reference: string, newStatus: string) => void;
+  onStatusChange: (reference: string, newStatus: number) => void;
+  fetchTickets: () => void;   // debug
 }
 
-export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange }) => {
+export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange, fetchTickets }) => {
   const { isOpen, context } = modal;
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const notesRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useExecuteToast();
   
   if (!isOpen || !context) return null;
 
-  const statusMapping: Record<string, 0 | 1 | 2> = {
-    "To Be Reviewed": 0,
-    "In Review": 1,
-    "Resolved": 2,
+  const statusLabelMapping: Record<number, string> = {
+    0: "To Be Reviewed",
+    1: "In Review",
+    2: "Resolved",
   };
 
   const updateStatusCb = useApiCallback((api, args: FormData) =>
@@ -66,7 +67,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
       return;
     }
 
-    const statusNumber = statusMapping[selectedStatus];
+    const statusNumber = selectedStatus;
     if (typeof statusNumber === 'undefined') {
       showToast("Please select a valid status.", "error");
       return;
@@ -81,16 +82,27 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     if (selectedImage) {
       formObject.Proof = selectedImage;
     }
+
+    // debug
+    console.log("Raw formObject being submitted:", formObject);
   
     try {
       updateStatusCb.loading;
 
       const form = createFormData(formObject);
+
+      // debug
+      console.log("Actual FormData being sent:");
+      form.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
       const result = await updateStatusCb.execute(form);
 
       if (result) {
         showToast("Issue status updated successfully.", "success");
         onStatusChange(context.reference, selectedStatus);
+        fetchTickets();   // debug
         onClose();
       } else {
         showToast("Failed to update issue status. Please try again.", "error");
@@ -166,7 +178,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
                 data-testid="issue-status-dropdown"
                 selectedStatus={selectedStatus} 
                 setSelectedStatus={setSelectedStatus} 
-                statusOptions={["To Be Reviewed", "In Review", "Resolved"]}
+                statusOptions={[0, 1, 2]}
               />
             </Grid>
           </Grid>

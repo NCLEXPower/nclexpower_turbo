@@ -23,6 +23,7 @@ import {
   AuthorizedRoutes,
   CategoryFormParams,
   ContactResponseType,
+  ContactResponse,
   CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
@@ -52,14 +53,25 @@ import {
   CaseNameParams,
   DeleteCaseNameParams,
   CaseNameResponseType,
+  CreateSectionResponse,
+  GetAllSectionsResponseType,
+  GetSectionParams,
+  UpdateSectionResponse,
+  CreateProgramParams,
+  CreateProgramResponse,
+  UpdateProgramParams,
   DeleteReportIssuesParams,
   GetCountryTimezonesParams,
   CreateGoliveSchedule,
   PolicyFileResponseType,
   GetCaseStudyListParams,
   CaseStudyListResponse,
+  GetProgramParams,
+  DeleteProgramSectionParams,
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
+import { StandardProgramListType } from "../../types/wc/programList";
+import { createFormData } from "../../utils/createFormData";
 
 export class WebApiBackOffice {
   constructor(
@@ -471,6 +483,98 @@ export class WebApiBackOffice {
       params
     );
   }
+
+  public async getAllSections() {
+    return await this.axios.get<GetAllSectionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-sections`
+    );
+  }
+  
+  public async getSectionListByType(params: GetSectionParams) {
+    return await this.axios.get<GetAllSectionsResponseType[]>(
+      `/api/v2/content/BaseContent/get-sections?${qs.stringify({ ...params })}`);
+  }
+
+  public async deleteSectionList(sectionId: string) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/${sectionId}`);
+  }
+  
+  public async updateSectionById(form: FormData) {
+    return await this.axios.put<UpdateSectionResponse | number>(
+      `/api/v2/content/BaseContent/${form.get("sectionId")}`,
+      form,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  }
+
+  public async createSection(form: FormData) {
+    return await this.ssrAxios.post<CreateSectionResponse | number>(
+      `/api/programs/create-section`,
+      form,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+  }
+
+  public async createPrograms(params: CreateProgramParams) {
+    const form = createFormData({
+      title: params.title,
+      programImage: params.programImage[0],
+      programType: params.programType.toString(),
+      stringifiedSections: JSON.stringify(params.stringifiedSections),
+    });
+
+    return await this.ssrAxios.post<CreateProgramResponse | number>(
+      `/api/programs/create-program`,
+      form,
+      { 
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  }
+
+  public async getAllPrograms() {
+    return await this.axios.get<StandardProgramListType[]>(
+      `/api/v2/content/BaseContent/get-internal-programs`
+    );
+  }
+
+  public async getAllProgramsByType(params: GetProgramParams) {
+    return await this.axios.get<StandardProgramListType[]>( 
+      `/api/v2/content/BaseContent/get-internal-programs?${qs.stringify({ ...params })}`);
+  }
+
+  public async updatePrograms(params: UpdateProgramParams) {
+    const form = createFormData({
+      id: params.id,
+      title: params.title,
+      programImage: params.programImage[0],
+      programType: params.programType.toString(),
+      stringifiedSections: JSON.stringify(params.stringifiedSections),
+    });
+
+    return await this.axios.put<number>(
+      `/api/v2/content/BaseContent/update-program`,
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  }
+
+  public async deleteProgramById(programId: string) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-program/${programId}`);
+  }
+
+  public async deleteProgramSectionById(params: DeleteProgramSectionParams) {
+    return await this.axios.delete(`/api/v2/content/BaseContent/delete-program-section`, {
+      data: params,
+    });
+  }
+
   public async deleteReportIssue(params: DeleteReportIssuesParams) {
     return await this.axios.delete(
       `/api/v1/Customer/delete-report-issue?${qs.stringify({ ...params })}`
@@ -499,11 +603,16 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/get-contact-us`
     );
   }
+  
+  public async deleteContact(id: string) {
+    return await this.axios.delete(
+      `/api/v2/content/BaseContent/delete-contact-us`, { data: { id } }
+    );
+  }
 
-  public async getIssueReport(issueType: number) {
-    return await this.axios.post<ContactResponseType>(
-      "/api/v1/Customer/get-contact-by-category",
-      issueType
+  public async getIssueReport() {
+    return await this.axios.get<ContactResponse>(
+      `/api/v2/content/BaseContent/get-contact-us`
     );
   }
 }

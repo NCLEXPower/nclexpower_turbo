@@ -35,8 +35,8 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
       onClick={onClick}
       edge={edge}
       className={className}
-      sx={{ "&:focus": { outline: "none !important" }, ...sx }}
       disabled={disabled}
+      sx={{ "&:focus": { outline: "none !important" }, ...sx }}
       disableRipple={disableRipple}
     >
       {children}

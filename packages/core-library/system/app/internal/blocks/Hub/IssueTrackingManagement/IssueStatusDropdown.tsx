@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { FormControl, Select, MenuItem, Box } from "@mui/material";
 import { StatusStyles, StatusBadge } from "./StatusBadge";
 import { statusDropdownStyle } from "./style"; 
+import { getStatusLabel } from "./statusHelpers";
 
 interface StatusDropdownProps extends React.HTMLAttributes<HTMLSelectElement>{
-  selectedStatus: string;
-  setSelectedStatus: (status: string) => void;
-  statusOptions: string[];
+  selectedStatus: number;
+  setSelectedStatus: (status: number) => void;
+  statusOptions: number[];
 }
 
 export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
@@ -23,7 +24,7 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
   >;
 
   const handleChange = (event: any) => {
-    setSelectedStatus(event.target.value);
+    setSelectedStatus(parseInt(event.target.value));
   };
 
   return (
@@ -46,7 +47,7 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
         }}
         sx={{
           "&.Mui-focused": {
-            backgroundColor: StatusStyles[selectedStatus]?.backgroundColor || "#6c757d",
+            backgroundColor: StatusStyles[getStatusLabel(selectedStatus)]?.backgroundColor || "#6c757d",
             borderRadius: "6px",
             outline: "none !important",
             boxShadow: "none",
@@ -57,7 +58,7 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
             justifyContent: "space-between",
             padding: "0px 5px 0px 8px !important",
             borderRadius: "6px",
-            backgroundColor: StatusStyles[selectedStatus]?.backgroundColor || "#6c757d",
+            backgroundColor: StatusStyles[getStatusLabel(selectedStatus)]?.backgroundColor || "#6c757d",
           },
           "& .MuiSelect-icon": {
             position: "absolute",
@@ -71,9 +72,9 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
           },
           ...statusDropdownStyle,
         }}
-        renderValue={(selected) => (
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", backgroundColor: "inherit" }}>
-            <StatusBadge status={selected as string} />
+        renderValue={() => (
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <StatusBadge status={getStatusLabel(selectedStatus)} />
             <Box sx={{ width: "24px" }} />
           </Box>
         )}
@@ -96,7 +97,7 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
                 },
               }}
             >
-              <StatusBadge status={status} />
+              <StatusBadge status={getStatusLabel(status)} />
             </MenuItem>
           ))}
       </Select>

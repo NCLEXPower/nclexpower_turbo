@@ -40,7 +40,7 @@ export const DrawerLayout: React.FC<
   sidebarStyles,
   isPaid,
 }) => {
-  const isHidden = useIsDesignVisible();
+  const { hideHeader } = useIsDesignVisible();
   const { isMobile } = useResolution();
   const mounted = useIsMounted();
 
@@ -108,7 +108,7 @@ export const DrawerLayout: React.FC<
         >
           <Header
             {...customHeaderStyles}
-            hidden={isHidden ?? false}
+            hidden={hideHeader ?? false}
             drawerButton={
               ((!open && isAuthenticated) || isMobile) && (
                 <Button

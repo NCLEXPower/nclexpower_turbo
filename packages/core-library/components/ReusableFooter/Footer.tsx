@@ -16,8 +16,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const { isAuthenticated } = useAuthContext();
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
+  const { hideFooter } = useIsDesignVisible();
 
-  const isHidden = useIsDesignVisible() || isAuthenticated;
+
+  const isHidden = hideFooter || isAuthenticated;
 
   return (
     !isHidden && (
@@ -184,7 +186,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
             Council of State Boards of Nursing, Inc (NCSBN®)
           </p>
           <p className="w-full text-center pt-4">
-            © {memoYear} NCLEXPower ™. All rights reserved.
+            © {memoYear} Arxenius. All Rights Reserved. Arxenius, the
+            CORE-Zigma System and all logos and trademarks displayed are owned
+            by Arxon Solutions, LLC.
           </p>
         </div>
       </Box>
