@@ -1,7 +1,7 @@
 import { ValidateTokenParams } from "core-library/api/types";
 import { GoLiveStatusSsr } from "core-library/types/global";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
@@ -59,6 +59,16 @@ export async function middleware(request: NextRequest) {
       NextResponse.redirect(proceedToComingSoon),
       country
     );
+  }
+
+  if (publicRoutes.includes(pathname)) {
+    url.pathname = `/nclex${pathname}`;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith("/nclex")) {
+    url.pathname = pathname.replace(/^\/nclex/, "") || "/";
+    return NextResponse.rewrite(url);
   }
 
   // const hasTwoFactorAuth = await HasTwoFactorAuth(
@@ -120,7 +130,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/login") {
+  if (pathname === "/nclex/login") {
     return NextResponse.next();
   }
 
@@ -162,6 +172,7 @@ export const config = {
     "/blocked",
     "/coming-soon",
     "/",
+    "/nclex/:path*",
   ],
 };
 
