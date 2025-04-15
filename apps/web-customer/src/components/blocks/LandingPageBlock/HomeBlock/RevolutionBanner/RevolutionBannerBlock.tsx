@@ -31,7 +31,7 @@ export const RevolutionBannerBlock: React.FC<Props> = () => {
               Welcome to
             </p>
             <p className="lg:text-7xl md:text-6xl sm:text-5xl text-4xl font-bold font-Poppins text-[#f4c501] -mt-4 lg:-mt-5 drop-shadow-xl">
-              NCLEX Power Review
+              Arxenius NCLEX Review
             </p>
             <p className="lg:text-2xl sm:text-xl text-md -mt-4 lg:-mt-5">
               Your Journey to Passing the NCLEX <br /> Begins Now
