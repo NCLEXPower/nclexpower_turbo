@@ -8,7 +8,8 @@ import { StatusBadge } from "./StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
 import { StyledModal } from './StyledModal';
 import { alertStyle, tableStyle, titleStyle, rowStyle } from './style';
-import { getStatusLabel } from "./statusHelpers";
+import { getStatusLabel } from "./utils/statusHelpers";
+import { formatDate } from './utils/formatDate';
 
 interface Ticket {
   id: string;
@@ -51,8 +52,7 @@ export const IssueTrackingManagementBlock = () => {
   const fetchTickets = async () => {
     try {
       const response = await getIssueReportCb.execute();
-      console.log("API RESPONSE: ", response);
-  
+      
       const mappedData: Ticket[] = response.data.map((item) => ({
         id: item.id,                
         reference: item.refNo,       
@@ -84,7 +84,7 @@ export const IssueTrackingManagementBlock = () => {
         field: "icon",
         headerName: " ",
         sortable: false,
-        width: 100,
+        width: 95,
         renderCell: () => (
           <div
             style={{
@@ -93,6 +93,7 @@ export const IssueTrackingManagementBlock = () => {
               justifyContent: "center",
               gap: "8px",
               height: "100%",
+              width: "100%",
             }}
           >
             <MessageOutlinedIcon sx={{ color: "#3B0086", fontSize: "18px" }} />
@@ -103,7 +104,7 @@ export const IssueTrackingManagementBlock = () => {
         field: "reference",
         headerName: "Reference Number",
         sortable: true,
-        width: 200,
+        width: 260,
         renderCell: (params) => (
           <Typography
             sx={{ 
@@ -124,7 +125,7 @@ export const IssueTrackingManagementBlock = () => {
         field: "description",
         headerName: "Description",
         sortable: false,
-        width: 450,
+        width: 380,
         renderCell: (params) => (
           <Typography
             sx={{
@@ -134,7 +135,7 @@ export const IssueTrackingManagementBlock = () => {
               fontSize: "13px",
             }}
           >
-            [<span className="w-[370px] truncate">{params.value}</span>]
+            [<span className="truncate max-w-[330px] inline-block align-middle">{params.value}</span>]
           </Typography>
         ),
       },
@@ -142,7 +143,7 @@ export const IssueTrackingManagementBlock = () => {
         field: "dateCreated",
         headerName: "Date Created",
         sortable: true,
-        width: 200,
+        width: 220,
         renderCell: (params) => (
           <Typography
             sx={{ 
@@ -152,7 +153,7 @@ export const IssueTrackingManagementBlock = () => {
               fontSize: "16px",
             }}
           >
-            [{params.value}]
+            [{formatDate(params.value)}]
           </Typography>
         ),
       },
@@ -160,7 +161,7 @@ export const IssueTrackingManagementBlock = () => {
         field: "status",
         headerName: "Status",
         sortable: false,
-        width: 180,
+        width: 175,
         renderCell: (params) => (
           <div
             style={{
@@ -229,6 +230,12 @@ export const IssueTrackingManagementBlock = () => {
             isLoading={isLoading}
             disableColumnResize
             disableVirtualization 
+            autoHeight
+            getRowHeight={() => 60}
+            getRowSpacing={(params) => ({
+              top: 0,
+              bottom: params.isLastVisible ? 40 : 8,
+            })}
             sx={tableStyle}
           />
         </Card>
@@ -244,7 +251,6 @@ export const IssueTrackingManagementBlock = () => {
           onClose={modal.close}
           onStatusChange={handleStatusChange}
           data-testid="issue-details-modal"
-          fetchTickets={fetchTickets}   // debug
         />
       </StyledModal>
     </Box>

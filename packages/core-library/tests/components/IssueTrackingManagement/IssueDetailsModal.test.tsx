@@ -55,7 +55,7 @@ describe("IssueDetailsModal", () => {
     reference: "123456",
     description: "Test description",
     dateCreated: "2025-03-01",
-    status: "In Review",
+    status: 1,
   };
 
   let mockOnClose: jest.Mock;

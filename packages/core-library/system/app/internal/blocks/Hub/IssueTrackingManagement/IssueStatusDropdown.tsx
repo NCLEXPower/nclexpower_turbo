@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormControl, Select, MenuItem, Box } from "@mui/material";
 import { StatusStyles, StatusBadge } from "./StatusBadge";
 import { statusDropdownStyle } from "./style"; 
-import { getStatusLabel } from "./statusHelpers";
+import { getStatusLabel } from "./utils/statusHelpers";
 
 interface StatusDropdownProps extends React.HTMLAttributes<HTMLSelectElement>{
   selectedStatus: number;

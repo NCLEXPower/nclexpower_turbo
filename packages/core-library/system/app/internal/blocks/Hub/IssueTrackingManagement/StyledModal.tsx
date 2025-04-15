@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { customModalBackdrop, customModalContent } from './style';
 
 export interface StyledModalProps {
   isOpen: boolean;
@@ -31,32 +32,14 @@ export const StyledModal: React.FC<StyledModalProps> = ({
       <div
         data-testid="custom-modal-backdrop"
         onClick={onClose}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(255, 255, 255, 0.6)',
-          zIndex: 1200,
-        }}
+        style={customModalBackdrop}
       />
       <div
         role="dialog"
         aria-labelledby={ariaLabelledBy}
         data-testid="custom-modal-content"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: '#fff',
-          padding: '16px',
-          borderRadius: '8px',
-          zIndex: 1300,
-          WebkitFontSmoothing: 'antialiased',
-        }}
+        style={customModalContent}
       >
         {children}
       </div>

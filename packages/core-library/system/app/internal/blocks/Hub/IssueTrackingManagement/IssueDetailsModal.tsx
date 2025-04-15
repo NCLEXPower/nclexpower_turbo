@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Box, Grid, Typography, Divider, SelectChangeEvent } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Grid, Typography, Divider } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { ImageUploader, Button, IconButton } from "../../../../../../components";
 import { createFormData } from "../../../../../../utils/createFormData";
@@ -9,6 +9,7 @@ import { IssueStatusDropdown } from "./IssueStatusDropdown";
 import { useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../contexts";
 import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./style";
+import { formatDate } from "./utils/formatDate";
 
 interface IssueContext {
   email: string;
@@ -27,23 +28,16 @@ interface IssueDetailsModalProps {
   modal: IssueModal;
   onClose: () => void;
   onStatusChange: (reference: string, newStatus: number) => void;
-  fetchTickets: () => void;   // debug
 }
 
-export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange, fetchTickets }) => {
+export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange }) => {
   const { isOpen, context } = modal;
   const [selectedStatus, setSelectedStatus] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const notesRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useExecuteToast();
-  
-  if (!isOpen || !context) return null;
+  const [notes, setNotes] = useState("");
 
-  const statusLabelMapping: Record<number, string> = {
-    0: "To Be Reviewed",
-    1: "In Review",
-    2: "Resolved",
-  };
+  if (!isOpen || !context) return null;
 
   const updateStatusCb = useApiCallback((api, args: FormData) =>
     api.webbackoffice.updateStatus(args)
@@ -52,16 +46,15 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
   useEffect(() => {
     if (context?.status) {
       setSelectedStatus(context.status);
-    }  
+    }
     if (!isOpen) {
       setSelectedImage(null);
     }
   }, [context?.status, isOpen]);
 
   const handleSubmit = async () => {
-    const currentNotes = notesRef.current?.value || ""; 
-  
-  
+    const currentNotes = notes;
+
     if (!context?.reference) {
       showToast("Reference number is missing.", "error");
       return;
@@ -74,7 +67,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
     }
 
     const formObject: Record<string, FormDataEntryValue> = {
-      Notes: notesRef.current?.value || "",
+      Notes: currentNotes,
       RefNo: context.reference,
       UpdateStatus: statusNumber.toString(),
     };
@@ -83,33 +76,22 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
       formObject.Proof = selectedImage;
     }
 
-    // debug
-    console.log("Raw formObject being submitted:", formObject);
-  
     try {
       updateStatusCb.loading;
 
       const form = createFormData(formObject);
-
-      // debug
-      console.log("Actual FormData being sent:");
-      form.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
-
       const result = await updateStatusCb.execute(form);
 
       if (result) {
         showToast("Issue status updated successfully.", "success");
         onStatusChange(context.reference, selectedStatus);
-        fetchTickets();   // debug
         onClose();
       } else {
         showToast("Failed to update issue status. Please try again.", "error");
       }
     } catch (error) {
       showToast("Failed to update issue status. Please try again.", "error");
-    } 
+    }
   };
 
   return (
@@ -156,7 +138,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         <Grid item xs={6}>
           <Typography data-testid="issue-email" variant="body2" sx={{ fontFamily: '"PT Sans Narrow", sans-serif' }}>
             <strong>Email:</strong>
-            <span style={{ marginLeft: "40px", fontSize: "12px", fontFamily: '"Poppins", sans-serif' }}>[{context?.email}]</span>
+            <span style={{ marginLeft: "20px", fontSize: "12px", fontFamily: '"Poppins", sans-serif' }}>[{context?.email}]</span>
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -174,10 +156,10 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
               </Typography>
             </Grid>
             <Grid item sx={{ ml: 2 }}>
-              <IssueStatusDropdown 
+              <IssueStatusDropdown
                 data-testid="issue-status-dropdown"
-                selectedStatus={selectedStatus} 
-                setSelectedStatus={setSelectedStatus} 
+                selectedStatus={selectedStatus}
+                setSelectedStatus={setSelectedStatus}
                 statusOptions={[0, 1, 2]}
               />
             </Grid>
@@ -197,7 +179,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
             fontSize: "12px"
           }}
         >
-          [{context?.dateCreated}]
+          [{formatDate(context?.dateCreated)}]
         </span>
       </Typography>
       <Typography
@@ -216,7 +198,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
 
       <Box display="flex" alignItems="center" my={2} >
         <Divider sx={{ flexGrow: 1, borderColor: "#3B0086", borderBottomWidth: 1, borderBottomStyle: "solid" }} />
-        <Typography variant="h6" sx={{ mx: 2, my:"12px", color: "#3B0086", fontFamily: '"PT Sans Narrow", sans-serif', fontWeight: 700 }}>
+        <Typography variant="h6" sx={{ mx: 2, my: "12px", color: "#3B0086", fontFamily: '"PT Sans Narrow", sans-serif', fontWeight: 700 }}>
           Support's Section
         </Typography>
         <Divider sx={{ flexGrow: 1, borderColor: "#3B0086", borderBottomWidth: 1, borderBottomStyle: "solid" }} />
@@ -232,11 +214,9 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
         </Grid>
         <Grid item xs={12}>
           <SupportTextArea
-            key="support-text-area"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             data-testid="support-text-area"
-            placeholder="Enter notes..."
-            defaultValue=""
-            ref={notesRef}
           />
         </Grid>
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>

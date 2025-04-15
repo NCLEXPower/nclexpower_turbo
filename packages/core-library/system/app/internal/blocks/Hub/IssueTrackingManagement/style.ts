@@ -1,3 +1,100 @@
+import { styled } from "@mui/material/styles";
+
+export const DescriptionBoxStyle = styled("div")({
+  marginTop: "16px",
+  width: "100%",
+  height: "90px",
+  maxHeight: "170px",
+  padding: "10px",
+  fontSize: "16px",
+  borderRadius: "5px",
+  backgroundColor: "#F2F2F2",
+  color: "#3B0086",
+  outline: "none",
+  resize: "none",
+  overflowY: "auto",
+  "&::placeholder": {
+    color: "#3B0086", 
+    opacity: 2, 
+  },
+  "&::-webkit-scrollbar": {
+    width: "8px",
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "#d9d3db",
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: "#8F6FB7", 
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: "#7A5C9F", 
+  },
+});
+
+export const StyledTextarea = styled("textarea")({
+  width: "100%",
+  height: "120px",
+  maxHeight: "120px",
+  padding: "10px",
+  fontSize: "12px",
+  fontFamily: '"Poppins", sans-serif',
+  borderRadius: "5px",
+  border: "1px solid #3B00868A",
+  backgroundColor: "#F2F2F2",
+  color: "#3B0086",
+  outline: "none",
+  resize: "none",
+  overflowY: "auto",
+  "&:focus": {
+    border: "1px solid #3B00868A",
+    boxShadow: "0px 0px 6px rgba(123, 92, 159, 0.6)",
+  },
+  "&::placeholder": {
+    color: "#3B0086",
+    opacity: 2,
+  },
+  "&::-webkit-scrollbar": {
+    width: "8px",
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "#d9d3db",
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: "#8F6FB7",
+    borderRadius: "10px",
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: "#7A5C9F",
+  },
+});
+
+export const customModalBackdrop: React.CSSProperties = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  backgroundColor: 'rgba(255, 255, 255, 0.6)',
+  zIndex: 1200,
+};
+
+export const customModalContent: React.CSSProperties = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: '#fff',
+  padding: '16px',
+  borderRadius: '8px',
+  zIndex: 1300,
+  WebkitFontSmoothing: 'antialiased',
+};
+
 export const alertStyle = {
   "& .MuiAlert-icon": {
     fontSize: "30px",
@@ -21,13 +118,16 @@ export const tableStyle = {
     & .MuiDataGrid-columnHeader:focus-within, 
     & .MuiButtonBase-root:focus, 
     & .MuiButtonBase-root:focus-visible`]: {
-    outline: "none !important",
+    outline: "none",
     boxShadow: "none",
   },
+  '& .MuiDataGrid-cell': {
+      display: 'flex',
+      alignItems: 'center',
+    },
   "& .MuiDataGrid-row": {
-    minHeight: "60px !important",
-    maxHeight: "60px !important",
-    "--height": "60px !important",
+    display: 'flex',
+    alignItems: 'center',
     position: "relative",
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     marginBottom: "8px",
@@ -39,6 +139,9 @@ export const tableStyle = {
   },
   "& .MuiDataGrid-row:first-of-type": {
     marginTop: "20px",
+  },
+  "& .MuiDataGrid-row:last-of-type": {
+    marginBottom: "20px",
   },
   "& .MuiDataGrid-columnHeaders": {
     color: "#8C8C8C",
@@ -53,7 +156,6 @@ export const tableStyle = {
   "& .MuiDataGrid-columnHeaderTitle": {
     whiteSpace: "nowrap",
   },
-
   "& .MuiDataGrid-columnHeaders .MuiDataGrid-row": {
     backgroundColor: "transparent",
     borderRadius: "0px",
@@ -69,7 +171,7 @@ export const titleStyle = {
 
 export const rowStyle = {
   display: "flex",
-  alignItems: "center", 
+  alignItems: "center",
   height: "100%",
   color: "#707070",
 };
@@ -101,7 +203,7 @@ export const modalContainerStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "550px",
+  width: "560px",
   bgcolor: "#F2F2F2",
   color: "#3B0086",
   p: 8,

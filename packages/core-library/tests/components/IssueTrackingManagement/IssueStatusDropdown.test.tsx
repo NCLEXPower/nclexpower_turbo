@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { screen, fireEvent, userEvent, waitFor } from "../../common";
+import { screen, userEvent, waitFor } from "../../common";
 import { IssueStatusDropdown } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueStatusDropdown";
 
 jest.mock("../../../config", () => ({
@@ -12,9 +12,9 @@ describe("IssueStatusDropdown", () => {
   });
 
   test("renders IssueStatusDropdown and displays the selected status", () => {
-    const selectedStatus = "In Review";
+    const selectedStatus = 1;
     const setSelectedStatus = jest.fn();
-    const statusOptions = ["To Be Reviewed", "In Review", "Resolved"];
+    const statusOptions = [0, 1, 2];
   
     render(
       <IssueStatusDropdown
@@ -29,8 +29,8 @@ describe("IssueStatusDropdown", () => {
 
   test("updates selectedStatus when option is changed", async () => {
     const setSelectedStatusMock = jest.fn();
-    const initialStatus = "In Review";
-    const statusOptions = ["To Be Reviewed", "In Review", "Resolved"];
+    const initialStatus = 1;
+    const statusOptions = [0, 1, 2];
   
     render(
       <IssueStatusDropdown
