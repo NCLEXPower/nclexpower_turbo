@@ -31,8 +31,7 @@ export const contactSchema = yup.object({
   message: yup
     .string()
     .required("Message is required")
-    .default("")
-    .matches(STRING_REGEX, "Special characters not allowed"),
+    .default(""),
 });
 
 export type ContactFormType = yup.InferType<typeof contactSchema>;
