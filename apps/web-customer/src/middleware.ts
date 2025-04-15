@@ -1,7 +1,7 @@
 import { ValidateTokenParams } from "core-library/api/types";
 import { GoLiveStatusSsr } from "core-library/types/global";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
