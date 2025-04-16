@@ -61,6 +61,16 @@ export async function middleware(request: NextRequest) {
     );
   }
 
+  if (publicRoutes.includes(pathname)) {
+    url.pathname = `/nclex${pathname}`;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith("/nclex")) {
+    url.pathname = pathname.replace(/^\/nclex/, "") || "/";
+    return NextResponse.rewrite(url);
+  }
+
   // const hasTwoFactorAuth = await HasTwoFactorAuth(
   //   { accountId: accountId?.value ?? "" },
   //   baseUrl
@@ -120,7 +130,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/login") {
+  if (pathname === "/nclex/login") {
     return NextResponse.next();
   }
 
@@ -162,6 +172,7 @@ export const config = {
     "/blocked",
     "/coming-soon",
     "/",
+    "/nclex/:path*",
   ],
 };
 
