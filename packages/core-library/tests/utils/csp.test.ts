@@ -4,7 +4,6 @@ import { withCSP, generateCSP, setCSPHeader } from "../../utils";
 import { getEndpointResources, getMaintenanceMode } from "../../ssr";
 import { nonce } from "../../types";
 import { MaintenanceSsr } from "../../types/global";
-import { IncomingMessage } from "http";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -51,17 +50,8 @@ describe("withCSP", () => {
       headersSent: false,
     };
 
-    const mockReq = {
-      cookies: {
-        client_country: "PH",
-      },
-    } as unknown as IncomingMessage & {
-      cookies: Partial<{ [key: string]: string }>;
-    };
-
     mockContext = {
       res: mockRes as ServerResponse,
-      req: mockReq,
     };
 
     (nonce as jest.Mock).mockReturnValue("test-nonce");

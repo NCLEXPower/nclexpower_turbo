@@ -1,31 +1,39 @@
 import React from "react";
-import { useApiCallback } from "core-library/hooks";
+import { useApiCallback, useScheduleCountdown } from "core-library/hooks";
 import { ComingSoonPage } from "../ComingSoonBlock/ComingSoon";
 import { ComingSoonType } from "../ComingSoonBlock/validation";
 import { NotifyParams } from "core-library/api/types";
-import { GoLiveStatusSsr } from "core-library/types/global";
-import { NotFoundBlock } from "../NotFoundBlock/NotFoundBlock";
+import { config } from "core-library/config";
+import { sanitizedEnvironment } from "core-library";
 
-type GoLiveBlockType = {
-  data: GoLiveStatusSsr | undefined;
-};
-
-export const GoLiveBlock: React.FC<GoLiveBlockType> = ({ data }) => {
+export const GoLiveBlock: React.FC = () => {
+  const { daysRemaining, error, schedule } = useScheduleCountdown();
   const notifyCb = useApiCallback(
     async (api, args: NotifyParams) => await api.web.sendNotify(args)
   );
+  const environment = sanitizedEnvironment(schedule?.environment);
 
-  if (!data?.goLive) {
-    return <NotFoundBlock />;
+  if (error) {
+    return <p>Error: {error}</p>;
   }
 
-  return <ComingSoonPage onSubmit={handleSubmit} loading={notifyCb.loading} />;
+  if (config.value.SYSENV !== environment) {
+    return <p>Something went wrong.</p>;
+  }
+
+  return (
+    <ComingSoonPage
+      schedule={schedule}
+      onSubmit={handleSubmit}
+      loading={notifyCb.loading}
+    />
+  );
 
   async function handleSubmit(values: ComingSoonType) {
     try {
       const result = await notifyCb.execute({
         email: values.email,
-        goLiveId: data?.goLive.id,
+        goLiveId: schedule?.id,
       });
       if (result.data === 200 || result.status === 200) {
         alert("Successfully submitted.");

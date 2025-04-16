@@ -3,11 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeniedCountryType, notAvailableSchema } from "./validation";
 import { DeniedCountry } from "./DeniedCountry";
-import {
-  SocialMediaConfig,
-  useDesignVisibility,
-  useSocialMediaIcons,
-} from "core-library/hooks";
+import { SocialMediaConfig, useSocialMediaIcons } from "core-library/hooks";
 
 export const DeniedCountryBlock: React.FC = () => {
   const form = useForm<DeniedCountryType>({
@@ -22,8 +18,6 @@ export const DeniedCountryBlock: React.FC = () => {
   const onSubmit = (data: DeniedCountryType) => {
     console.log("value: ", data); //temporarily log the data as API is not yet available
   };
-
-  useDesignVisibility();
 
   const socialMediaConfigs: SocialMediaConfig[] = [
     {
