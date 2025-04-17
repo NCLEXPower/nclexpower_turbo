@@ -1,3 +1,8 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import {
   BooleanValue,
   ButtonElements,
@@ -146,6 +151,8 @@ export interface SliderConfigType {
     speed: number;
     autoplaySpeed: number;
     cssEase: string;
+    fade?: boolean;
+    arrows?: boolean;
   };
 }
 
@@ -162,6 +169,7 @@ export interface SelectedProductType {
     features: string[];
   };
 }
+
 export interface ProductCardType {
   id: string;
   productName: string;
@@ -179,6 +187,32 @@ export interface ProductCardType {
   };
 }
 
+export interface PricingModalProps {
+  handleClickOpen: (item: ProductCardType) => void;
+  handleClose: () => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
+  open: boolean;
+  cardData: ProductCardType;
+}
+
+export interface ProductInformationProps {
+  onClose: () => void;
+  cardData: ProductCardType;
+  handleSelectProduct: (item: SelectedProductType) => void;
+}
+
+export interface PricingDetailProps {
+  filteredCardData: ProductCardType;
+  onClose: () => void;
+}
+
+export interface ProductSelectionProps {
+  cardData: ProductCardType[];
+  selectedProduct: number;
+  setSelectedProduct: (value: number) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
+}
+
 export type NavigationItemType = {
   id: number;
   label: string;
@@ -188,3 +222,36 @@ export type NavigationItemType = {
 };
 
 export type IntentValueType = string | undefined | null;
+
+export type MaintenanceSsr = {
+  id: string;
+  currentMaintenanceMode: string[];
+  createdDate: string;
+  updatedDate: string;
+};
+
+type MaintenanceMode = string[] | undefined;
+
+export type ChatBotSsr = {
+  isEnabled: boolean;
+  createdDate: string;
+  updatedDate: string;
+};
+
+export type GoLiveStatusSsr = {
+  blocked: false;
+  goLiveStatus: false;
+  goLive: {
+    id: string;
+    eventName: string;
+    countries: string[];
+    environment: number;
+  };
+};
+
+export type SsrTypes = {
+  MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
+  endpoints?: { endpoint: string; keyUrl: string }[];
+  hasGoLive: GoLiveStatusSsr;
+  hasChatBotWidget: ChatBotSsr;
+};

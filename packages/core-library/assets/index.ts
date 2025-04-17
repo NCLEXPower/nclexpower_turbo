@@ -1,24 +1,41 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
 
-export const NCLEXBlueLogo = require("./NCLEXBlueLogo.png");
-export const NCLEXYellowLogo = require("./NCLEXYellowLogo.png");
+export const ArxeniusLogoBlue = require("./ArxeniusLogoBlue.png");
+export const ArxeniusLogoYellow = require("./ArxeniusLogoYellow.png");
 export const CoreZigmaLogo = require("./CoreZigmaLogo.png");
 export const LoginBG = require("./LoginBG.png");
 
 export const CarouselOne = require("./CarouselOne.png");
 export const CarouselTwo = require("./CarouselTwo.png");
+export const CarouselTwoTablet = require("./CarouselTwoTablet.png");
 export const CarouselThree = require("./CarouselThree.png");
 
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
 export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
+export const IssueTrackingBG = require("./IssueTrackingBG.png");
+
+export const EmptyStateImage = require("./EmptyState.svg");
+export const ErrorStateImage = require("./ErrorState.svg");
+export const HelpOutlineTracking = require("./HelpOutlineTracking.png");
+export const StepActive = require("./StepActive.png");
+export const StepCircleOutline = require("./StepCircleOutline.png");
 
 export const WatchVideos = require("./CardOne.png");
 export const StudyCards = require("./CardTwo.png");
 export const PracticeTest = require("./CardThree.png");
+
+export const WatchVideosModal = require("./watchstudypractice/watch/video.gif");
+export const StudyCarouselOne = require("./watchstudypractice/study/studyCarousel1.png");
+export const StudyCarouselTwo = require("./watchstudypractice/study/studyCarousel2.png");
+export const StudyCarouselThree = require("./watchstudypractice/study/studyCarousel3.png");
+export const PracticeCarouselOne = require("./watchstudypractice/practice/practiceCarousel1.png");
+export const PracticeCarouselTwo = require("./watchstudypractice/practice/practiceCarousel2.png");
+export const PracticeCarouselThree = require("./watchstudypractice/practice/practiceCarousel3.png");
+export const CloseButton = require("./watchstudypractice/closebtn.svg");
 
 export const FlipCardOne = require("./FrontOne.png");
 export const FlipCardTwo = require("./FrontTwo.png");
@@ -29,12 +46,18 @@ export const FlipCardThreeBack = require("./BackThree.png");
 export const PaymentBadge = require("./PaymentBadge.png");
 export const NotFoundPage = require("./NotFoundPage.png");
 export const UnderMaintenance = require("./UnderMaintenance.png");
+export const MaintenanceModeBackground = require("./MaintenanceModeBackground.png");
+export const ConstructionWorkerImage = require("./ConstructionWorkerImage.png");
 
 export const AboutUsBanner = require("./aboutus/aboutus-banner.svg");
 export const Arrow = require("./aboutus/arrow.svg");
 export const NurseIcon = require("./aboutus/nurse.png");
 export const EngineerIcon = require("./aboutus/engineer.png");
 
+export const LightBulbBlue = require("./LightBulbBlue.png");
+export const LightBulbGreen = require("./LightBulbGreen.png");
+export const BlueDocument = require("./DocumentBlue.png");
+export const GreenDocument = require("./DocumentGreen.png");
 export const ContactIcon = require("./contact/contactIcon.png");
 export const ContactUsBanner = require("./contact/ContactUsBanner.svg");
 export const ContactFacebook = require("./contact/facebook.png");
@@ -44,9 +67,14 @@ export const ContactLocation = require("./contact/location.png");
 export const ContactMail = require("./contact/mail.png");
 export const ContactPhone = require("./contact/phone.png");
 
+export const RegistrationBG = require("./register/RegistrationBackground.png");
+export const ComingSoon = require("./ComingSoon/ComingSoon.png");
+
 export const ForgotPasswordImage = require("./forgotpassword/ForgotPasswordImage.json");
 export const ChangePasswordImage = require("./forgotpassword/ChangePasswordImage.json");
 export const ChangePasswordBG = require("./ChangePasswordBG.png");
+export const ChangePasswordLeftColumn = require("./ChangePasswordLeftColumn.png");
+export const ChangePasswordLockIcon = require("./ChangePasswordLockIcon.png");
 
 export const AvailableIcon = require("./programslist/icons/available.svg");
 export const AvailableWhiteIcon = require("./programslist/icons/available-white.svg");
@@ -109,9 +137,11 @@ export const Default = require("./DefaultImage.jpg");
 export const PNBackground = require("./PNBackground.png");
 export const RNBackground = require("./RNBackground.png");
 
+export const DuplicateSession = require("./duplicate_session.svg");
+
 export const ImageLists = [
-  { id: 1, label: "NCLEX Blue Logo", image: NCLEXBlueLogo },
-  { id: 2, label: "NCLEX Yellow Logo", image: NCLEXYellowLogo },
+  { id: 1, label: "NCLEX Blue Logo", image: ArxeniusLogoBlue },
+  { id: 2, label: "NCLEX Yellow Logo", image: ArxeniusLogoYellow },
   { id: 3, label: "Core Zigma Logo", image: CoreZigmaLogo },
   { id: 4, label: "Login Background", image: LoginBG },
   { id: 5, label: "Carousel One", image: CarouselOne },
@@ -198,9 +228,28 @@ export const ImageLists = [
   { id: 88, label: "Default", image: Default },
   { id: 88, label: "PNBackground", image: PNBackground },
   { id: 88, label: "RNBackground", image: RNBackground },
+  {
+    id: 89,
+    label: "Maintenance Mode Background",
+    image: MaintenanceModeBackground,
+  },
+  {
+    id: 90,
+    label: "Construction Worker Image",
+    image: ConstructionWorkerImage,
+  },
 ];
 
 export const LottieLists = [
   { id: 34, label: "Forgot Password Image", image: ForgotPasswordImage },
   { id: 35, label: "Change Password Image", image: ChangePasswordImage },
 ];
+
+export const RegisterBG = require("./register/register_bg.jpg");
+export const HelpWidget = require("./home/HelpWidget.json");
+export const google = require("./settings/google.svg");
+export const profile = require("./settings/profile.png");
+export const visaIcon = require("./visaIcon.svg");
+export const NotAvailableBG = require("./NotAvailableBG.png");
+export const noVideoImage = require("./programmanagement/noVideoImage.png");
+export const uploadImage = require("./programmanagement/uploadImage.jpg");

@@ -1,73 +1,107 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ThemeProvider, CssBaseline, useTheme } from "@mui/material";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import { LoadablePageContent } from "@/components/LoadablePageContent";
 import {
-  StripeContextProvider,
   useAuthContext,
   FormSubmissionContextProvider,
   HeaderTitleContextProvider,
 } from "core-library/contexts";
-import { useStripeConfig } from "core-library/core/hooks/stripe/useStripeConfig";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
 import {
   CompanyInfo,
   CustomerMenus,
   list,
 } from "core-library/core/utils/contants/wc/HomePageData";
-import { ChatBotWidget, DrawerLayout } from "core-library/components";
-import { useWebHeaderStyles } from "@/pages/contents/useWebHeaderStyles";
-import { useConfirmedIntent } from "core-library/contexts/auth/hooks";
+import {
+  ChatBotWidget,
+  DrawerLayout,
+  ErrorBox,
+  MultiContentDialog,
+} from "core-library/components";
+import {
+  useConfirmedIntent,
+  useNewAccount,
+} from "core-library/contexts/auth/hooks";
 import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
-import { HideHeader } from "../../core/constant/HideHeader";
 import { theme } from "core-library/contents/theme/theme";
-import { useStyle } from "core-library/hooks";
+import {
+  useAuthInterceptor,
+  usePreventDuplicateSession,
+  useStyle,
+  useWebHeaderStyles,
+} from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
+import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
+import { ContentLoader } from "core-library/router";
+import { useRouter } from "core-library";
+import { dataContent } from "@/constants/constants";
+import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
 
-interface Props {}
-
-const Layout: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
+const Layout: React.FC<
+  React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
+> = ({ children, shouldShowChatBotWidget }) => {
+  const router = useRouter();
   const queryClient = new QueryClient();
-  const { publishableKey } = useStripeConfig();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
   const headerMenu = CustomerMenus(isAuthenticated);
   const headerStyles = useWebHeaderStyles();
   const sidebarStyles = useStyle();
   const [confirmValue] = useConfirmedIntent();
+  const [isNewAccount] = useNewAccount(); //this is a temporary implementation
   usePaymentSuccessRedirect(confirmValue);
+  useAuthInterceptor();
+  const showWelcomeDialog = isAuthenticated && isNewAccount;
+
+  const { duplicate } = usePreventDuplicateSession();
+
+  if (showWelcomeDialog) {
+    return (
+      <MultiContentDialog
+        content={dataContent}
+        open={showWelcomeDialog}
+        handleClose={() => {}}
+        showTour
+      />
+    );
+  }
+
+  if (duplicate) {
+    return <DuplicateSessionBlock />;
+  }
+
 
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
-      loading={false}
+      loading={loading}
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme()}>
           <CssBaseline />
           <HeaderTitleContextProvider>
             <FormSubmissionContextProvider>
-              <StripeContextProvider publishableKey={publishableKey}>
-                <LoadablePageContent>
-                  <DrawerLayout
-                    menu={headerMenu}
-                    isAuthenticated={isAuthenticated}
-                    headerStyles={headerStyles}
-                    sidebarStyles={sidebarStyles}
-                    hiddenHeaderPathnames={HideHeader}
-                    onLogout={logout}
-                  >
+              <DrawerLayout
+                menu={headerMenu}
+                isAuthenticated={isAuthenticated}
+                headerStyles={headerStyles}
+                sidebarStyles={sidebarStyles}
+                onLogout={logout}
+                isPaid={isPaid}
+              >
+                <ContentLoader loading={loading || router.loading}>
+                  <LoadablePageContent loading={loading}>
                     {children}
                     <Footer info={CompanyInfo} list={list} />
-                    {/* dynamic hideHelp should be implemented here */}
-                    {true && <ChatBotWidget />}
-                  </DrawerLayout>
-                </LoadablePageContent>
-              </StripeContextProvider>
+                    {shouldShowChatBotWidget && <ChatBotWidget />}
+                  </LoadablePageContent>
+                </ContentLoader>
+              </DrawerLayout>
             </FormSubmissionContextProvider>
           </HeaderTitleContextProvider>
         </ThemeProvider>

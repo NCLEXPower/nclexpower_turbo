@@ -1,8 +1,8 @@
 /**
- * Property of the NCLEX Power.
- * Reuse as a whole or in part is prohibited without permission.
- * Created by the Software Strategy & Development Division
- */
+* Property of the Arxon Solutions, LLC.
+* Reuse as a whole or in part is prohibited without permission.
+* Created by the Software Strategy & Development Division
+*/
 @font-face {
   font-family: "Inter";
   src: url(./fonts/Inter-Bold.ttf) format("truetype");
@@ -48,15 +48,19 @@
   pointer-events: none;
 }
 
+.tiptap-list,
 .tiptap ul,
+.tiptap-decimal,
 .tiptap ol {
-  margin: 10px 20px;
+  margin: 10px 20px !important;
 }
 
+.tiptap-list,
 .tiptap ul {
   list-style: disc;
 }
 
+.tiptap-decimal,
 .tiptap ol {
   list-style: decimal;
 }
@@ -73,6 +77,7 @@
   font-size: 16px !important;
 }
 
+.tiptap-table,
 .tiptap table {
   border-collapse: collapse;
   margin: 0;
@@ -81,22 +86,47 @@
   width: 100%;
 }
 
+.tiptap p {
+  margin: 0;
+}
+
+.tiptap-cell {
+  border: 1px solid #b4a6a6;
+  padding: 6px 8px !important;
+  white-space: pre-wrap;
+}
+
+.tiptap-field {
+  margin: 10px;
+}
+
 .tiptap td,
+.tiptap-th,
+.tiptap-row,
 .tiptap th {
+  padding: 6px 8px !important;
   border: 1px solid #b4a6a6;
   box-sizing: border-box;
   min-width: 1em;
-  padding: 6px 8px;
   position: relative;
   vertical-align: top;
 }
 
-.tiptap td > *,
-.tiptap th > * {
-  margin-bottom: 0;
+.tiptap-heading,
+.tiptap h2 > * {
+  font-weight: bold;
+  margin: 2;
+  font-size: x-large;
+  font-family: "Inter";
 }
 
-.tiptap th {
+.tiptap td > *,
+.tiptap th > * {
+  margin: 0;
+}
+
+.tiptap th,
+.tiptap-th {
   background-color: #e5f2ff;
   font-weight: bold;
   text-align: left;
@@ -104,7 +134,6 @@
 }
 
 .tiptap .selectedCell:after {
-  /* background: #312e2e; */
   content: "";
   left: 0;
   right: 0;
@@ -142,4 +171,71 @@ input[type="file"] {
 .custom-file-upload {
   display: inline-block;
   cursor: pointer;
+}
+
+.no-background {
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+
+.tiptap:first-child {
+  margin-top: 0;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding: 0 1rem;
+  margin: 1.25rem 1rem 1.25rem 0.4rem;
+}
+
+.tiptap ul li p,
+.tiptap ol li p {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  line-height: 1.1;
+  margin-top: 2.5rem;
+  text-wrap: pretty;
+}
+
+.tiptap h1,
+.tiptap h2 {
+  margin-top: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tiptap h1 {
+  font-size: 1.4rem;
+}
+
+.tiptap h2 {
+  font-size: 1.2rem;
+}
+
+.tiptap h3 {
+  font-size: 1.1rem;
+}
+
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  font-size: 1rem;
+}
+
+.node-hcpHighlighter,
+.hcp-highlight,
+.hcp-answers-content {
+  display: inline;
+}
+
+.highlightable-content,
+.hcp-highlighter {
+  background-color: #e6ff6e;
 }

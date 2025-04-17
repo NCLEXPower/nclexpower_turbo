@@ -1,3 +1,8 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { NextRouter, useRouter as useNextRouter } from "next/router";
 import qs, { ParsedQuery } from "query-string";
 import { useEffect, useMemo, useState } from "react";
@@ -12,7 +17,18 @@ type StaticRoutes = Record<
   | "account_forgot_password"
   | "reset_link_success" //we can register all our static routes here.
   | "about"
-  | "second_tab_redirect",
+  | "second_tab_redirect"
+  | "order_summary"
+  | "account_registration"
+  | "device_not_recognized"
+  | "contact_us"
+  | "program_management_list"
+  | "program_management_list_create"
+  | "program_management_list_edit"
+  | "program_section_management"
+  | "program_section_management_create"
+  | "program_section_management_edit"
+  | "program_section_management_edit_item",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -33,8 +49,19 @@ export const STATIC_ROUTES: StaticRoutes = {
   account_verification_otp: "/account/verification/otp",
   account_forgot_password: "/account/forgot-password",
   reset_link_success: "/account/reset-link",
+  account_registration: "/account/registration",
   about: "/about",
-  second_tab_redirect: "/duplicate-session", //duplicate session page currently does not exist. remove this comment once created.
+  second_tab_redirect: "/duplicate-session",
+  order_summary: "/order-summary",
+  device_not_recognized: "/device-enrollment",
+  contact_us: "/contact",
+  program_management_list: "/hub/program/program-management-list",
+  program_management_list_create: "/hub/program/program-management-list/create",
+  program_management_list_edit: "/hub/program/program-management-list/edit",
+  program_section_management: "/hub/program/program-section-management",
+  program_section_management_create: "/hub/program/program-section-management/create",
+  program_section_management_edit: "/hub/program/program-section-management/edit",
+  program_section_management_edit_item: "/hub/program/program-section-management/edit-item",
 };
 
 const routeTitles: Record<string, string> = {
@@ -48,6 +75,7 @@ const routeTitles: Record<string, string> = {
   "/account/forgot-password": "Forgot Password",
   "/account/reset-link": "Reset Link Success",
   "/about": "About",
+  "/account/registration": "Account Registration",
 };
 
 export const useRouter = () => {
@@ -83,6 +111,7 @@ export const useRouter = () => {
         ...router,
         push: navigate(push),
         replace: navigate(replace),
+        openInNewTab,
       }),
       [router, staticRoutes]
     ),
@@ -170,6 +199,22 @@ export const useRouter = () => {
     };
   }
 };
+
+function openInNewTab(path: string | PathFromRoutes | { pathname: string }) {
+  let resolvedPath: string;
+
+  if (typeof path === "string") {
+    resolvedPath = routeUrl(path);
+  } else if (typeof path === "function") {
+    resolvedPath = path(STATIC_ROUTES);
+  } else if (path && typeof path === "object" && "pathname" in path) {
+    resolvedPath = routeUrl(path.pathname);
+  } else {
+    throw new Error("Invalid path type for openInNewTab");
+  }
+
+  window.open(resolvedPath, "_blank");
+}
 
 export function routeUrl(path: string) {
   return path === STATIC_ROUTES.home ||

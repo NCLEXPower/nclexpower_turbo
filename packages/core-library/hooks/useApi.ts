@@ -16,7 +16,8 @@ const HTTP_OPTIONS: HttpOptions = {
   headers: {
     "x-api-key": config.value.XAPIKEY,
     "Content-Type": "application/json",
-    "X-Environment": config.value.SYSENV,
+    "X-Environment":
+      process.env.NODE_ENV === "development" ? "local" : config.value.SYSENV,
     "X-Time-Zone": getTimeZone(), // we should create a middleware to get the timezone dynamically.
   },
   onRequest: (req) => {
@@ -29,6 +30,7 @@ const HTTP_OPTIONS: HttpOptions = {
     console.error(
       `Error on response: ${JSON.stringify(error)}. User ${JSON.stringify(user)}`
     );
+    throw error;
   },
 };
 
@@ -78,7 +80,7 @@ export const useApiCallback = <R, A extends unknown>(
       const api = createApi(httpClient.client, httpSsrClient.client);
       return await asyncFn(api, args as A);
     } catch (error: any) {
-      throw new Error(error);
+      throw error;
     }
   });
 };

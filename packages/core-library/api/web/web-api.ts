@@ -3,17 +3,25 @@ import { internalAccountType, RegisterParams } from "../../types/types";
 import qs from "query-string";
 import { config } from "../../config";
 import {
+  AnalyticsParams,
   CheckoutSessionParams,
   CheckoutSessionResponse,
   ConfirmPaymentParams,
   ConfirmPaymentResponse,
+  ContactFormType,
   CreateCustomerDumpParams,
   CreateCustomerParams,
+  CreateCustomerResponse,
   CreatePaymentIntentParams,
+  CreateSalesParams,
+  GoLiveStatusResponse,
+  NotifyParams,
+  OrderSummaryResponse,
   PaymentIntentResponse,
   ReportIssueType,
   ResendCodeParams,
   ResetPasswordParams,
+  ScheduleResponse,
   SelectEmailResponse,
   UpdatePaymentIntentParams,
   ValidateResetLinkTokenParams,
@@ -22,6 +30,7 @@ import {
 } from "../types";
 import { Encryption } from "../../utils";
 import { ChatBotOptionResponse } from "../../types/chatbot";
+import { AllSalesProps } from "../../hooks/analytics/types";
 export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
@@ -124,7 +133,10 @@ export class WebApi {
   }
 
   public web_ssr_create_customer(params: CreateCustomerParams) {
-    return this.ssrAxios.post<number>(`/api/customer/create`, params);
+    return this.ssrAxios.post<CreateCustomerResponse>(
+      `/api/customer/create`,
+      params
+    );
   }
 
   public web_create_customer_dump(params: CreateCustomerDumpParams) {
@@ -164,5 +176,97 @@ export class WebApi {
     } catch (err: any) {
       throw err;
     }
+  }
+
+  public web_create_contact_us(params: ContactFormType) {
+    return this.axios.post(`/api/v1/Customer/create-contact-us`, params);
+  }
+
+  public dataSummary<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.get<T>(`/${url}?${qs.stringify(params)}`);
+  }
+
+  public async create_order_summary(props: {
+    orderNumber: string | undefined;
+    productId: string;
+    accountId: string | undefined;
+    pricingId: string | undefined;
+  }) {
+    return await this.axios.post<string>(
+      `/api/v1/Order/create-order-summary`,
+      props
+    );
+  }
+
+  public async getOrderSummary(accountId: string | undefined) {
+    return await this.axios.get<OrderSummaryResponse>(
+      `/api/v1/Order/get-order-summary?${qs.stringify({ accountId })}`
+    );
+  }
+
+  public async getReportIssue(refNo: string) {
+    return await this.axios.post(
+      `/api/v1/Customer/get-report-issue?${qs.stringify({ RefNo: refNo })}`
+    );
+  }
+
+  public async changePaymentStatus(accountId: string | undefined) {
+    return await this.axios.put(
+      `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`
+    );
+  }
+
+  public analyticsParams(accountId: string) {
+    return this.axios.get<AnalyticsParams>(
+      `/api/v1/Customer/analytics?${qs.stringify({ accountId })}`
+    );
+  }
+  public createSales(params: CreateSalesParams) {
+    return this.axios.post(`/api/v1/nclex-analytics/create-sales`, params);
+  }
+
+  public async getInitialAnalytics() {
+    return await this.axios.get<AllSalesProps>(
+      `/api/v1/nclex-analytics/initial-analytics`
+    );
+  }
+
+  public async getActiveGoLiveSchedule() {
+    return await this.axios.get(
+      `/api/v2/internal/BaseInternal/active-schedule`
+    );
+  }
+
+  public async sendNotify(params: NotifyParams) {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notify`,
+      params
+    );
+  }
+
+  public async sendNotification() {
+    return await this.axios.post(
+      `/api/v2/internal/BaseInternal/send-notification`
+    );
+  }
+
+  public async getChatBotMode() {
+    return await this.axios.get<number>(`/api/v1/Customer/get-chatbot-mode`);
+  }
+
+  public deleteResource<T = Record<string, object>>(
+    url: string,
+    params: Record<string, any>
+  ) {
+    return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
+  }
+
+  public async getActiveSchedule(clientCountry: string) {
+    return await this.axios.get<GoLiveStatusResponse>(
+      `/api/v2/internal/baseInternal/active-schedule?${qs.stringify({ clientCountry })}`
+    );
   }
 }

@@ -45,6 +45,7 @@ interface CustomPalette {
     ui_rag: UIRagColors;
     grey: string;
   };
+  purple: string;
   email: {
     header?: string;
     footer: {

@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -25,6 +25,8 @@ interface Props extends DialogProps {
   borderRadius?: string;
   overflowContent?: string;
   ContentHeight?: string;
+  isOverflowing?: boolean;
+  headerStyle?: DialogProps["sx"];
 }
 
 export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
@@ -38,6 +40,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
   borderRadius = "0px",
   overflowContent = "auto",
   ContentHeight = "250px",
+  isOverflowing = true,
+  headerStyle,
   ...props
 }) => {
   return (
@@ -47,13 +51,12 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
       open={open}
       onClose={handleClose}
       sx={{
-        overflowY: overflowContent,
-        zIndex: 1301,
+        overflowY: isOverflowing ? overflowContent : "none",
         "& .MuiDialog-paper": {
           height: ContentHeight,
-          maxHeight: "550px",
+          maxHeight: isOverflowing ? "550px" : "auto",
           borderRadius: borderRadius,
-          overflowY: overflowContent,
+          overflowY: isOverflowing ? overflowContent : "none",
         },
       }}
       {...props}
@@ -65,6 +68,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
           pt: { xs: 6, sm: 12 },
           pb: { xs: 6, sm: 8 },
           textAlign: "center",
+          fontFamily: "PT Sans",
+          ...headerStyle,
         }}
       >
         {!hideCloseButton && (
@@ -75,6 +80,7 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
             justifyContent="flex-end"
           >
             <IconButton
+              data-testid="close-btn"
               color="primary"
               size="small"
               sx={{ height: 32, width: 32, fontSize: 32 }}
@@ -98,8 +104,8 @@ export const DialogBox: React.FC<React.PropsWithChildren<Props>> = ({
         sx={{
           px: { xs: 6, sm: 12 },
           pb: { xs: 6, sm: 12 },
-          overflowY: overflowContent,
-          height: "500px",
+          overflowY: isOverflowing ? overflowContent : "none",
+          height: isOverflowing ? "500px" : "auto",
         }}
       >
         {children}

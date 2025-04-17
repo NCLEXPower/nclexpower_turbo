@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -46,4 +46,27 @@ export const deleteIconStyle = {
   alignItems: "center",
   boxShadow: 2,
   bgcolor: "#bdbdbd",
+};
+
+export const BowtieTitleStyles = {
+  width: "33%",
+  wordBreak: "break-word",
+  textAlign: "center",
+  placeSelf: "center",
+  padding: "10px",
+  fontWeight: 700,
+};
+
+export const ComponentStateStyles = {
+  display: "flex",
+  backgroundColor: "white",
+  borderRadius: "15px",
+  minWidth: "250px",
+  width: "350px",
+  height: "400px",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  boxShadow: 2,
 };

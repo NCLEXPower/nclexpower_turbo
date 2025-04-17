@@ -10,6 +10,7 @@ import { useFormSubmissionBindingHooks } from 'core-library/hooks/index';
 import { Highlighter } from '@/components/blocks/CaseStudy/CaseStudyQuestions/HCP/HCPComponent/HCPHighlighter';
 import { useValidationError } from '@/core/utils/useValidationError';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 interface Props extends SsrData {
   handleSubmit: (values: HCPValidationType) => void;
@@ -114,11 +115,7 @@ export const HCP: React.FC<Props> = ({ questionaire, answer, handleSubmit, hcpAt
                   <div key={answerItem.answerId} className="w-full text-sm mb-4 pr-5 pt-4" style={textZoomStyle}>
                     <p className="flex">
                       <NearMeIcon className="h-6 rotate-45 text-[#86BCEA] mr-2 pb-1" />
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: answerItem.answerInstruction,
-                        }}
-                      />
+                      <ParsedHtml html={answerItem.answerInstruction} />
                     </p>
                   </div>
                   <Paper elevation={3} className="p-5 overflow-auto flex flex-col gap-5">

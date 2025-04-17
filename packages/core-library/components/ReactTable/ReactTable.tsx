@@ -1,3 +1,8 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import {
   Table,
@@ -10,6 +15,7 @@ import {
   TablePagination,
   Box,
   Checkbox,
+  Switch,
 } from "@mui/material";
 import {
   getCoreRowModel,
@@ -21,6 +27,8 @@ import {
   RowSelectionState,
   RowModel,
   getExpandedRowModel,
+  getFilteredRowModel,
+  RowData,
 } from "@tanstack/react-table";
 import { getCommonPinningStyles } from "./content/CommonPinningStyle";
 import { TablePaginationActions } from "./TablePaginationActions";
@@ -38,11 +46,13 @@ interface Props<T> {
   initPageSize?: number;
   isLoading?: boolean;
   expandable?: boolean;
+  searchFilter?: boolean;
 }
 
-export const ReactTable = <T extends { children?: T[] }>({
+export const ReactTable = <T extends unknown>({
   columns,
   data,
+  searchFilter = false,
   ...rest
 }: Props<T>) => {
   const {
@@ -55,11 +65,12 @@ export const ReactTable = <T extends { children?: T[] }>({
     initPageSize,
   } = rest;
 
-  const [filtering, setFiltering] = useState<string>("");
+  const [globalFilter, setGlobalFilter] = useState<string>("");
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rowSelection, setRowSelection] = useState({});
   const [expanded, setExpanded] = useState({});
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const combinedColumns = [...CheckBoxColumn<T>(), ...columns];
   const dataColumns = useMemo(
     () => (!checkBoxSelection ? columns : combinedColumns),
@@ -75,8 +86,8 @@ export const ReactTable = <T extends { children?: T[] }>({
       },
       rowSelection,
       expanded: expanded,
+      globalFilter,
     },
-    getSubRows: (row) => ("children" in row ? row.children : []),
     onExpandedChange: setExpanded,
     enableRowSelection: checkBoxSelection,
     columns: dataColumns ?? [],
@@ -84,7 +95,8 @@ export const ReactTable = <T extends { children?: T[] }>({
     data: data ?? [],
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    onGlobalFilterChange: setFiltering,
+    getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   useEffect(() => {
@@ -101,7 +113,29 @@ export const ReactTable = <T extends { children?: T[] }>({
   };
 
   return (
-    <Box data-testid="react-table">
+    <Box data-testid="react-table" sx={{ position: "relative" }}>
+      {searchFilter && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: -65,
+            left: "60%",
+            transform: "translateX(-50%)",
+            mb: 2,
+          }}
+        >
+          <input
+            value={globalFilter}
+            onChange={(e) => {
+              setGlobalFilter(e.target.value);
+              table.setGlobalFilter(e.target.value);
+            }}
+            placeholder="Search..."
+            style={{ padding: "8px", width: "300px" }}
+          />
+        </Box>
+      )}
+
       <TableContainer>
         <Table sx={{ minWidth: 650, width: "100%", overflow: "auto" }}>
           <TableHead>
@@ -173,8 +207,8 @@ export const ReactTable = <T extends { children?: T[] }>({
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+        count={table.getFilteredRowModel().rows.length}
         colSpan={3}
-        count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
         slotProps={{

@@ -1,17 +1,22 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box, Grid } from "@mui/material";
-import {
-  Button,
-  MultipleSelectField,
-  SelectOption,
-} from "core-library/components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { productSchema, ProductFormType } from "./validation";
-import { TextField } from "core-library/components";
-import { useFormFocusOnError } from "core-library/hooks";
 import React from "react";
-import { useBusinessQueryContext } from "core-library/contexts";
-import { GenericSelectField } from "core-library/components/Textfield/GenericSelectField";
+import { useBusinessQueryContext } from "../../../../../../../contexts";
+import { useFormFocusOnError } from "../../../../../../../hooks";
+import {
+  Button,
+  GenericSelectField,
+  MultipleSelectField,
+  TextField,
+} from "../../../../../../../components";
+import { GetAllInclusionResponse } from "../../../../../../../api/types";
 
 type Props = {
   onSubmit: (values: ProductFormType) => void;
@@ -19,12 +24,19 @@ type Props = {
 };
 
 export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
-  const { businessQueryGetAllPricing, businessQuerySelectAllCategories } =
-    useBusinessQueryContext();
+  const {
+    businessQueryGetAllPricing,
+    businessQuerySelectAllCategories,
+    businessQueryGetAllInclusion,
+  } = useBusinessQueryContext();
   const { data, isLoading } = businessQueryGetAllPricing(["selectAllPricing"]);
   const { data: categoryData } = businessQuerySelectAllCategories([
     "selectAllCategories",
   ]);
+  const { data: inclusionsData } = businessQueryGetAllInclusion([
+    "getAllInternalInclusions",
+  ]);
+
   const form = useForm<ProductFormType>({
     mode: "all",
     resolver: yupResolver(productSchema),
@@ -33,17 +45,13 @@ export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   const { control, handleSubmit, clearErrors, setFocus, formState } = form;
   useFormFocusOnError<ProductFormType>(formState.errors, setFocus);
 
-  // mock inclusions
-  const inclusions: SelectOption[] = [
-    {
-      label: "Inclusions 1 test",
-      value: "Inclusions 1 test",
-    },
-    {
-      label: "Inclusions 2 test",
-      value: "Inclusions 2 test",
-    },
-  ];
+  const inclusions =
+    inclusionsData && inclusionsData.length > 0
+      ? inclusionsData.map((item: GetAllInclusionResponse) => ({
+          label: item.option,
+          value: item.option,
+        }))
+      : [];
 
   return (
     <Box>
@@ -113,7 +121,7 @@ export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
         control={control}
         name="features"
         label="Inclusions"
-        options={inclusions}
+        options={inclusions ?? []}
         multiple
         sx={{ mt: 3, width: "100%" }}
       />

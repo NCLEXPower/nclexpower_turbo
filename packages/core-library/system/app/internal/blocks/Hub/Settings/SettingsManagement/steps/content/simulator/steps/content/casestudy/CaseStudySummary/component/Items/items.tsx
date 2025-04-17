@@ -1,23 +1,32 @@
-import { Box, Checkbox, SxProps, Typography } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import { DDCquestion } from "./DDCQuestion";
+import { DDCItem } from "./DDCItem";
 import {
   AnswerOption,
-  DDCAnswerOption,
+  DDClozeTableAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
-import { useSanitizedInputs } from "../../../../../../../../../../../../../../../../hooks/useSanitizeInputs";
 import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
+import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { DDTItem } from "./DDTItem";
+import { BowtieSummary } from "./BowtieSummary";
+import { MCQGroupSummary } from "./MCQGroupSummary";
+import { MCQNoGroupSummary } from "./MCQNoGroupSummary";
+import { HCPQuestion } from "./HCPQuestion";
+import { DNDQuestion } from "./DNDQuestion";
+import { DNDSummary } from "./DNDSummary";
+import { DNDAnswerOptionType } from "../../../../../../types";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
     <Box marginTop="10px">
-      {answers.map((answer, index) => (
-        <Box display="flex" alignItems="center" paddingX="10px" key={index}>
-          <Checkbox disabled checked={answer.answerKey} />
-          <Typography fontSize="16px">{answer.answer}</Typography>
-        </Box>
-      ))}
+      {answers?.length > 0 &&
+        answers.map((answer, index) => (
+          <Box display="flex" alignItems="center" paddingX="10px" key={index}>
+            <Checkbox disabled checked={answer.answerKey} />
+            <Typography fontSize="16px">{answer.answer}</Typography>
+          </Box>
+        ))}
     </Box>
   );
 };
@@ -25,50 +34,65 @@ const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
 export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
   content,
 }) => {
-  const { purifyInputs } = useSanitizedInputs({
-    config: { RETURN_TRUSTED_TYPE: true },
-  });
-
   const { wordWrap } = useStyle();
 
   const renderQuestionType = (data: QuestionnaireItem) => {
     switch (data.questionType) {
-      case "DDC":
+      case "DDCloze":
         return (
-          <DDCquestion
+          <DDCItem
             ddcData={{
-              answers: data.answers as DDCAnswerOption[],
+              answers: data.answers as DDClozeTableAnswerOption[],
               itemStem: data.itemStem,
             }}
           />
         );
-      default:
+      case "DDTable":
         return (
-          <Typography
-            sx={wordWrap}
-            dangerouslySetInnerHTML={{
-              __html: purifyInputs(data.itemStem) as TrustedHTML,
+          <DDTItem
+            ddcData={{
+              answers: data.answers as DDClozeTableAnswerOption[],
+              itemStem: data.itemStem,
             }}
           />
+        );
+      case "Highlight":
+        return <HCPQuestion questionData={data} />;
+      case "DNDrop":
+        return <DNDQuestion questionData={data} />;
+      default:
+        return (
+          <Typography sx={wordWrap}>
+            <ParsedHtml html={data.itemStem} />
+          </Typography>
         );
     }
   };
 
-  const renderQuestionTypeLabel = (data: QuestionnaireItem) => {
-    if (data.questionType === "SATA") {
-      return "Select All That Apply";
-    } else if (data.questionType === "MRSN") {
-      return `Select ${data.maxAnswer} That Apply`;
+  const renderAnswerOption = (data: QuestionnaireItem) => {
+    switch (data.questionType) {
+      case "Highlight":
+      case "SATA":
+      case "MRSN":
+        return <AnswerList answers={data.answers as AnswerOption[]} />;
+      case "Bowtie":
+        return <BowtieSummary data={data} />;
+      case "MatrixNoGrp":
+        return <MCQNoGroupSummary data={data} />;
+      case "MatrixWithGrp":
+        return <MCQGroupSummary data={data} />;
+      case "DNDrop":
+        return <DNDSummary answers={data.answers as DNDAnswerOptionType[]} />;
+      default:
+        return null;
     }
-    return null;
   };
-
   return (
     <Box
       display="flex"
       flexDirection="column"
       padding="24px"
-      border="1px solid #8E2ADD"
+      border="1px solid #0C225C"
       marginTop="-48px"
       height="512px"
       overflow="auto"
@@ -88,27 +112,16 @@ export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
                       wordBreak: "break-word",
                     },
                   }}
-                  dangerouslySetInnerHTML={{
-                    __html: purifyInputs(data.transitionHeader) as TrustedHTML,
-                  }}
-                />
+                >
+                  <ParsedHtml html={data.transitionHeader} />
+                </Typography>
               )}
               <Box display="flex" gap="10px">
                 <NearMeIcon sx={{ color: "#D4AEF2", rotate: "45deg" }} />
                 {renderQuestionType(data)}
               </Box>
             </Box>
-            <Typography
-              marginTop="14px"
-              fontSize="16px"
-              color="#999999"
-              fontWeight="700"
-            >
-              {renderQuestionTypeLabel(data)}
-            </Typography>
-            {data.questionType !== "DDC" && (
-              <AnswerList answers={data.answers} />
-            )}
+            {renderAnswerOption(data)}
           </Box>
         ))
       ) : (

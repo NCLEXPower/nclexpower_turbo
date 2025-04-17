@@ -1,15 +1,17 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SectionVideosType } from "core-library/types/wc/programList";
 import ReactPlayer from "react-player";
 import { useResolution } from "core-library/hooks";
+
 interface VideoPlayerProps {
   isWideScreen: boolean;
   selectedVid: SectionVideosType | null;
-  toggleWideScreen: () => void;
+  toggleWideScreen?: () => void;
+  showTheaterMode?: boolean;
 }
 
 const playerDimensions = {
@@ -19,7 +21,11 @@ const playerDimensions = {
   default: { width: "700px", height: "386px" },
 };
 
-const getPlayerDimensions = (isWideScreen: boolean, isTablet: boolean, isMobile: boolean) => {
+const getPlayerDimensions = (
+  isWideScreen: boolean,
+  isTablet: boolean,
+  isMobile: boolean
+) => {
   if (isWideScreen) {
     return playerDimensions.wide;
   }
@@ -36,8 +42,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   isWideScreen,
   selectedVid,
   toggleWideScreen,
+  showTheaterMode = true,
 }) => {
-
   const { isMobile, isTablet } = useResolution();
 
   const { width: playerWidth, height: playerHeight } = getPlayerDimensions(
@@ -46,40 +52,56 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     isMobile
   );
 
-    return (
-      <div
-        className={`${isWideScreen ? "col-span-3" : "col-span-3 lg:col-span-2"} flex flex-col gap-4`}
-      >
-        {selectedVid ? (
-          <>
-            <div className="flex rounded-[10px] overflow-hidden">
-              <ReactPlayer
-                url={selectedVid.secVidUrl}
-                controls={true}
-                playsinline={true}
-                pip={true}
-                stopOnUnmount={false}
-                width={playerWidth}
-                height={playerHeight}
-              />
-            </div>
+  const handleOnPlay = () => {
+    // call api to changes status to in-progress
+    // if status is available change to in-progress, otherwise no change
+  };
+
+  const handleOnEnded = () => {
+    // call api to changes status to completed
+    // if status is not completed change to completed, otherwise no change
+  };
+
+  return (
+    <div
+      className={`${isWideScreen ? "col-span-3" : "col-span-3 lg:col-span-2"} flex flex-col gap-4`}
+    >
+      {selectedVid ? (
+        <>
+          <div className="flex rounded-[10px] overflow-hidden">
+            <ReactPlayer
+              url={selectedVid.secVidUrl}
+              controls={true}
+              playsinline={true}
+              pip={true}
+              stopOnUnmount={false}
+              width={playerWidth}
+              height={playerHeight}
+              onPlay={handleOnPlay}
+              onEnded={handleOnEnded}
+            />
+          </div>
+          {showTheaterMode && (
             <div className="hidden lg:flex items-center">
               <p
                 onClick={toggleWideScreen}
                 className="cursor-pointer font-ptSansNarrow text-[14px] text-black font-bold bg-white p-2 rounded-[10px]"
               >
                 Theater Mode {""}
-                <span className={isWideScreen ? "text-red-500" : "text-green-500"}>
+                <span
+                  className={isWideScreen ? "text-red-500" : "text-green-500"}
+                >
                   {isWideScreen ? "OFF" : "ON"}
                 </span>
               </p>
             </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500">
-            <p className="font-ptSansNarrow">No video selected.</p>
-          </div>
-        )}
-      </div>
-    );
+          )}
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+          <p className="font-ptSansNarrow">No video selected.</p>
+        </div>
+      )}
+    </div>
+  );
 };

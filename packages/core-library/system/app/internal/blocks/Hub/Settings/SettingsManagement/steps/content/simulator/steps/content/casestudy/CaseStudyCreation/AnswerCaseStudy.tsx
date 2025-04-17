@@ -1,3 +1,9 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import { Box, Typography } from "@mui/material";
 import {
   AnswerOptions,
@@ -9,38 +15,76 @@ import { GenericSelectField } from "../../../../../../../../../../../../../../co
 import {
   initAnswerValues,
   maxPoints,
-  questionType as questionTypeOptions,
+  questionTypes as questionTypeOptions,
   tabsSequence,
 } from "../../../../../../../constants/constants";
 import { useFormContext, useWatch } from "react-hook-form";
-import { ContainedCaseStudyQuestionType } from "../../../../types";
-import { useEffect, useState } from "react";
+import {
+  CaseStudyType,
+  ContainedCaseStudyQuestionType,
+} from "../../../../types";
+import { BowtieAnswerArea } from "../../../../../../../../../../../../../../components/blocks/AnswerOptions/blocks/CaseStudy/Bowtie/components/BowtieAnswerArea";
+import { CaseStudyQuestionSelectionOptions } from "../../../../../../../types";
+import { memo, useEffect, useRef, useState } from "react";
+import { Instruction } from "./components/Instruction";
+import { CustomFields } from "./components/CustomFields";
+import { useTableInsertion } from "../../hooks/useTableInsertion";
 
 interface Props {
   index: number;
 }
 
-export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
-  const { getValues, setValue, resetField } =
+export const AnswerCaseStudy = memo(({ index }: Props) => {
+  const { getValues, setValue, resetField, watch } =
     useFormContext<ContainedCaseStudyQuestionType>();
   const { questionnaires } = useWatch<ContainedCaseStudyQuestionType>();
+
   if (!questionnaires) return;
-  const questionType = questionnaires[index].questionType;
+
+  const questionType = watch(`questionnaires.${index}.questionType`);
+  const { handleTableInsertion } = useTableInsertion({ questionType, index });
+  const currentSequence = watch(`questionnaires.${index}.seqNum`);
+  const caseType: CaseStudyType = watch("caseType");
+  const isStandAlone = watch("caseType") === "STANDALONE";
 
   useEffect(() => {
     setValue(`questionnaires.${index}`, getValues(`questionnaires.${index}`));
     setValue(`questionnaires.${index}.itemNum`, index + 1);
+    setValue(`questionnaires.${index}.questionType`, questionType);
   }, [index, getValues, questionType]);
 
-  const handleReset = () => {
-    resetField(`questionnaires.${index}.answers`);
+  const handleUpdateSeqNumber = (value: string) => {
+    const parsedvalue = parseInt(value);
+    setValue(`questionnaires.${index}.seqNum`, parsedvalue);
+
+    if (questionnaires) {
+      const [question] = questionnaires.filter((q) => q.seqNum === parsedvalue);
+      if (question?.transitionHeader) {
+        setValue(
+          `questionnaires.${index}.transitionHeader`,
+          question.transitionHeader
+        );
+        return;
+      }
+    }
+    setValue(`questionnaires.${index}.transitionHeader`, "");
+  };
+
+  const handleReset = (value: CaseStudyQuestionSelectionOptions) => {
+    resetField(`questionnaires.${index}`);
+    setValue(`questionnaires.${index}.answers`, []);
+    setValue(`questionnaires.${index}.questionType`, value);
   };
 
   useEffect(() => {
-    if (questionType === "SATA" && !questionnaires[index].answers?.length) {
-      setValue(`questionnaires.${index}.answers`, [
-        ...Array(5).fill(initAnswerValues),
-      ]);
+    if (
+      (questionType === "SATA" || questionType === "MRSN") &&
+      !questionnaires[index].answers?.length
+    ) {
+      setValue(
+        `questionnaires.${index}.answers`,
+        Array(5).fill(initAnswerValues)
+      );
     }
   }, [questionType]);
 
@@ -53,22 +97,28 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         p: 3,
       }}
     >
-      <Box sx={{ display: "flex", width: "100%" }}>
+      <Instruction questionType={questionType} />
+      <Box
+        data-testid="answer-case-study"
+        sx={{ display: "flex", width: "100%", mt: 3 }}
+      >
         <Box sx={{ width: 1 }}>
           <Box display="flex" alignItems="start" justifyContent="space-between">
             <GenericSelectField
               name={`questionnaires.${index}.questionType`}
               label="Question Type:"
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
-              onChange={handleReset}
-              options={questionTypeOptions ?? []}
+              onChange={(value) => handleReset(value)}
+              options={questionTypeOptions[caseType] ?? []}
               width="60%"
             />
             <GenericSelectField
               labelProps={{ sx: { fontSize: "16px", fontWeight: 600 } }}
               name={`questionnaires.${index}.seqNum`}
               label="Sequence No. :"
+              onChange={handleUpdateSeqNumber}
               options={tabsSequence ?? []}
+              disabled={isStandAlone}
               width="35%"
             />
           </Box>
@@ -85,7 +135,7 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
         </Box>
       </Box>
       <Box sx={{ width: "100%" }} mt={3}>
-        {index !== 0 && (
+        {currentSequence > 1 && (
           <Box mt={3}>
             <ControlledTextField
               label="Transition Header : "
@@ -104,41 +154,67 @@ export const AnswerCaseStudy: React.FC<Props> = ({ index }) => {
           <Box
             width={1}
             borderRadius={"5px"}
-            border={1}
-            borderColor="#8E2ADD"
+            boxShadow={2}
             p={4}
             overflow={"hidden"}
           >
             <ControlledRichTextEditor
               editorFor="casestudy"
+              questionType={questionType}
               placeholder="Add question..."
               name={`questionnaires.${index}.itemStem`}
+              onInsertTable={() => handleTableInsertion(index)}
             />
           </Box>
         </Box>
 
         {questionType && (
-          <Box sx={{ textAlign: "start", mt: 3 }}>
-            <Typography color="#525252" fontSize="16px" fontWeight={600}>
-              Answer Options :
-            </Typography>
-            <Box
-              sx={{
-                borderRadius: "5px",
-                border: 1,
-                overflow: "hidden",
-                borderColor: "#8E2ADD",
-              }}
-            >
-              <AnswerOptions
-                questionIndex={index}
-                questionType="caseStudy"
-                questionnaireType={questionType}
-              />
+          <>
+            <CustomFields questionIndex={index} questionType={questionType} />
+            <Box sx={{ textAlign: "start", mt: 3 }}>
+              <Typography color="#525252" fontSize="16px" fontWeight={600}>
+                Answer Options :
+              </Typography>
+              <Box
+                boxShadow={2}
+                sx={{
+                  borderRadius: "5px",
+                  overflow: "hidden",
+                }}
+              >
+                <AnswerOptions
+                  questionIndex={index}
+                  questionType="caseStudy"
+                  questionnaireType={questionType}
+                />
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
+      </Box>
+      <Box mt={3}>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: "16px",
+            mb: 3,
+          }}
+        >
+          Rationale:
+        </Typography>
+        <Card
+          sx={{
+            width: "100%",
+            borderRadius: "10px",
+          }}
+        >
+          <ControlledRichTextEditor
+            name={`questionnaires.${index}.rationale`}
+            editorFor="casestudy"
+            placeholder="Add text"
+          />
+        </Card>
       </Box>
     </Box>
   );
-};
+});

@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -10,7 +10,10 @@ import {
   TextField,
 } from "../../../../../../../../../../components";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { RouteManagementSchema } from "../../../validation";
+import {
+  EditMenuItemsSchema,
+  RouteManagementSchema,
+} from "../../../validation";
 import {
   IconComponent,
   IconList,
@@ -23,13 +26,13 @@ export const SubMenu = ({ nestIndex }: { nestIndex: number }) => {
 
   const { fields, remove, append } = useFieldArray({
     control: formControl,
-    name: `MenuItems.${nestIndex}.children`,
+    name: `menuItems.${nestIndex}.children`,
   });
 
   const watchedIcons = useWatch<RouteManagementSchema | any>({
     control: formControl,
     name: fields.map(
-      (_, index) => `MenuItems.${nestIndex}.children.${index}.icon`
+      (_, index) => `menuItems.${nestIndex}.children.${index}.icon`
     ),
   });
 
@@ -54,7 +57,7 @@ export const SubMenu = ({ nestIndex }: { nestIndex: number }) => {
             </ListItemIcon>
             <GenericSelectField
               control={formControl}
-              name={`MenuItems.${nestIndex}.children.${index}.icon`}
+              name={`menuItems.${nestIndex}.children.${index}.icon`}
               label="Icon"
               options={IconList ?? []}
               onChange={(event) => {
@@ -63,7 +66,7 @@ export const SubMenu = ({ nestIndex }: { nestIndex: number }) => {
                   icon: event,
                 };
                 setValue(
-                  `MenuItems.${nestIndex}.children.${index}`,
+                  `menuItems.${nestIndex}.children.${index}`,
                   updatedItem
                 );
               }}
@@ -71,12 +74,12 @@ export const SubMenu = ({ nestIndex }: { nestIndex: number }) => {
             />
             <TextField
               control={formControl}
-              name={`MenuItems.${nestIndex}.children.${index}.label`}
+              name={`menuItems.${nestIndex}.children.${index}.label`}
               label="Sub menu Label"
             />
             <TextField
               control={formControl}
-              name={`MenuItems.${nestIndex}.children.${index}.path`}
+              name={`menuItems.${nestIndex}.children.${index}.path`}
               label="Sub menu Path"
             />
             {fields.length > 1 && (
@@ -102,7 +105,7 @@ export const SubMenu = ({ nestIndex }: { nestIndex: number }) => {
       })}
       <Button
         sx={{ borderRadius: "10px", marginTop: "10px" }}
-        onClick={() => append({ label: "", path: "" })}
+        onClick={() => append({ ...EditMenuItemsSchema.getDefault() })}
       >
         Add Sub Menu
       </Button>

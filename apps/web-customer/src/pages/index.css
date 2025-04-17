@@ -301,3 +301,38 @@ code {
     @apply text-error;
   }
 }
+
+.slick-dots {
+  z-index: 1000;
+  display: block !important;
+  overflow: initial;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 45px;
+  font-size: 20px;
+  
+}
+.slick-dots li {
+  margin: 0 10px;
+}
+
+.slick-dots li button:before {
+  color: #fff;
+  font-size: 20px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #F4C501;
+}
+
+.slick-dots li button {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+.slick-dots li button:focus,
+.slick-dots li button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}

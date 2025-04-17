@@ -1,17 +1,40 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import { isAxiosError } from "axios";
 import { CreateCustomerParams } from "core-library/api/types";
-import { useBusinessQueryContext } from "core-library/contexts";
-import React from "react";
+import { useExecuteToast } from "core-library/contexts";
+import { useApiCallback } from "core-library/hooks";
 
 export const useCustomerCreation = () => {
-  const { businessQueryCreateCustomer } = useBusinessQueryContext();
-  const { mutateAsync, isLoading } = businessQueryCreateCustomer();
-
+  const createCb = useApiCallback(
+    async (api, args: CreateCustomerParams) =>
+      await api.web.web_ssr_create_customer(args)
+  );
+  const toast = useExecuteToast();
   async function createCustomerAsync(params: CreateCustomerParams) {
-    await mutateAsync({ ...params });
+    try {
+      const result = await createCb.execute({ ...params });
+      return result;
+    } catch (error) {
+      if (!isAxiosError(error)) {
+        console.error(`Something went wrong with customer creation: ${error}.`);
+        return;
+      }
+
+      if (error.response?.status === 409) {
+        toast.executeToast("Email address already exists", "top-right", false, {
+          toastId: 0,
+          type: "error",
+        });
+      }
+    }
   }
 
   return {
     createCustomerAsync,
-    isLoading,
+    isLoading: createCb.loading,
   };
 };

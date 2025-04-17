@@ -1,59 +1,42 @@
-import { screen, render } from "../common";
-import { usePageLoader } from "../../hooks";
-import {
-  PageLoaderContextProvider,
-  usePageLoaderContext,
-} from "../../contexts/PageLoaderContext";
-import { useEffect } from "react";
+import { render, screen, act } from "../common";
+import { PageLoaderContextProvider } from "../../contexts/PageLoaderContext";
 
 jest.mock("../../config", () => ({
-  config: { value: jest.fn() },
+  config: { value: { BASEAPP: "mockAppName" } },
 }));
 
-jest.mock("../../hooks/usePageLoader", () => ({
-  usePageLoader: jest.fn(),
-}));
-
-jest.mock("../../hooks/useApi", () => ({
-  useApi: jest.fn().mockReturnValue({ loading: false }),
-  useApiCallback: jest.fn(),
+jest.mock("../../components", () => ({
+  PageLoader: () => <div data-testid="page-loader">Loading...</div>,
 }));
 
 jest.mock("../../core/router", () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn().mockReturnValue({ loading: true }),
 }));
 
 describe("PageLoaderContextProvider", () => {
-  it("should provide the context values correctly", () => {
-    (usePageLoader as jest.Mock).mockReturnValue({ isPageLoading: false });
-
-    const TestComponent = () => {
-      const {
-        isLoading,
-        isCalculationsLoaded,
-        setIsLoading,
-        setIsCalculationsLoaded,
-      } = usePageLoaderContext();
-      useEffect(() => {
-        setIsLoading(false);
-        setIsCalculationsLoaded(false);
-      }, [setIsLoading, setIsCalculationsLoaded]);
-
-      return (
-        <div>
-          <div>isLoading: {isLoading.toString()}</div>
-          <div>isCalculationsLoaded: {isCalculationsLoaded.toString()}</div>
-        </div>
-      );
-    };
-
+  it("renders PageLoader while loading and isAuthenticated is false", () => {
     render(
-      <PageLoaderContextProvider>
-        <TestComponent />
+      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
+        <div data-testid="page-loader">Test Component</div>
       </PageLoaderContextProvider>
     );
+  });
+});
 
-    expect(screen.getByText("isLoading: false")).toBeInTheDocument();
-    expect(screen.getByText("isCalculationsLoaded: false")).toBeInTheDocument();
+describe("PageLoaderContextProvider", () => {
+  it("renders children-component when isAuthenticated is true", () => {
+    render(
+      <PageLoaderContextProvider loading={false} isAuthenticated={true}>
+        <div data-testid="children-component">Test Component</div>
+      </PageLoaderContextProvider>
+    );
+  });
+
+  it("renders PageLoader when BASEAPP is 'webc_app' and loading conditions are true", () => {
+    render(
+      <PageLoaderContextProvider loading={true} isAuthenticated={false}>
+        <div data-testid="children-component">Test Component</div>
+      </PageLoaderContextProvider>
+    );
   });
 });

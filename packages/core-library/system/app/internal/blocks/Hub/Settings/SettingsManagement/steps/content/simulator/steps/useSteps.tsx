@@ -1,9 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  WizardFormMap,
-  useActiveSteps,
-  useWizardForm,
-} from "core-library/hooks";
+
 import {
   CaseStudyQuestionTypeFormSteps,
   ChooseCaseStudyQuestionType,
@@ -16,7 +12,12 @@ import {
   ContainedCaseStudyQuestionType,
   ContainedRegularQuestionType,
 } from "../types";
-import { Stepper } from "core-library/components";
+import {
+  useActiveSteps,
+  useWizardForm,
+  WizardFormMap,
+} from "../../../../../../../../../../../hooks";
+import { Stepper } from "../../../../../../../../../../../components";
 
 export const useQuestionManagementWizardSteps = () => {
   const steps = useMemo(() => {
@@ -85,7 +86,7 @@ export const useCaseStudyQuestionManagementWizardSteps = () => {
     CaseStudyQuestionTypeFormSteps,
     ContainedCaseStudyQuestionType,
     QuestionTypeStepProps
-  >(steps, formWizardValues, "InitialCaseNameSelection");
+  >(steps, formWizardValues, "CaseSetup");
 
   const stepKeys = Object.keys(steps);
   const stepLabels = stepKeys.map((step) =>

@@ -1,41 +1,42 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
 
-import Image from 'next/image';
-import { NCLEXYellowLogo } from '../../assets';
-import { FooterProps } from '../../types/global';
-import { useMemo } from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { useRouteBasedVisibility } from '../../hooks';
-import { HideFooter } from './HideFooter';
-import { useRouter } from '../../core';
+import Image from "next/image";
+import { ArxeniusLogoYellow } from "../../assets";
+import { FooterProps } from "../../types/global";
+import { useMemo } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import { useIsDesignVisible } from "../../hooks";
+import { useAuthContext } from "../../contexts";
 
 export const Footer: React.FC<FooterProps> = (props) => {
+  const { isAuthenticated } = useAuthContext();
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
-  const router = useRouter();
+  const { hideFooter } = useIsDesignVisible();
 
-  const updatedHideFooter =
-    HideFooter.includes(router.pathname) || router.pathname?.startsWith('/hub')
-      ? [...HideFooter, router.pathname]
-      : HideFooter;
-
-  const { isHidden } = useRouteBasedVisibility(updatedHideFooter);
+  const isHidden = hideFooter || isAuthenticated;
 
   return (
     !isHidden && (
       <Box
         width={1}
         sx={{
-          color: 'white',
-          backgroundColor: '#040814',
-          fontFamily: 'PT Sans',
+          color: "white",
+          backgroundColor: "#040814",
+          fontFamily: "PT Sans",
           flexGrow: 1,
-          paddingX: { xs: '1.5rem', sm: '2.5rem', md: '3rem' },
-          paddingY: { xs: '2.5rem', md: '4rem' },
+          paddingX: {
+            xs: "1.5rem",
+            sm: "6rem",
+            md: "5rem",
+            lg: "10rem",
+            xl: "15rem",
+          },
+          paddingY: { xs: "2rem", md: "4rem" },
         }}
       >
         <Grid
@@ -43,8 +44,8 @@ export const Footer: React.FC<FooterProps> = (props) => {
           spacing={{ xs: 3, md: 2, lg: 4 }}
           columns={{ xs: 2, sm: 2, md: 12 }}
           sx={{
-            display: 'flex',
-            width: '100%',
+            display: "flex",
+            width: "100%",
           }}
         >
           {props.list.length > 0 && (
@@ -54,18 +55,18 @@ export const Footer: React.FC<FooterProps> = (props) => {
               sm={12}
               md={4}
               sx={{
-                display: 'flex',
-                alignItems: 'start',
-                justifyContent: 'center',
-                width: '25%',
+                display: "flex",
+                alignItems: "start",
+                justifyContent: "center",
+                width: "25%",
                 gap: 5,
                 marginBottom: { xs: 3, md: 0 },
               }}
             >
               <Image
                 style={{ width: 150 }}
-                src={NCLEXYellowLogo}
-                alt='NCLEXLogo'
+                src={ArxeniusLogoYellow}
+                alt="NCLEXLogo"
               />
             </Grid>
           )}
@@ -75,10 +76,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
             sm={12}
             md={8}
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: 'start',
-              width: '100%',
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "start",
+              width: "100%",
               gap: { xs: 2, md: 4 },
             }}
           >
@@ -88,47 +89,45 @@ export const Footer: React.FC<FooterProps> = (props) => {
               sm={7}
               md={6}
               sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: { xs: 'center', sm: 'start' },
-                textAlign: { xs: 'center', sm: 'start' },
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: { xs: "center", sm: "start" },
+                textAlign: { xs: "center", sm: "start" },
               }}
             >
               <Typography
                 sx={{
-                  marginBottom: { xs: 5, sm: 6, md: 10 },
-                  fontSize: { xs: '14px', sm: '15px', md: '16px', lg: '17px' },
+                  marginBottom: { xs: 5, sm: 3, md: 2.5 },
+                  fontSize: { xs: "14px", sm: "15px", md: "16px", lg: "17px" },
                 }}
               >
                 {props.info.address}
               </Typography>
               <Grid
                 sx={{
-                  marginBottom: { xs: 2, md: 6 },
+                  marginBottom: { xs: "1px", md: 6 },
                   gap: 3,
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: { xs: 'space-evenly', sm: 'space-between' },
-                  flexDirection: { xs: 'row', sm: 'column' },
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: { xs: "space-evenly", sm: "space-between" },
+                  flexDirection: { xs: "row", sm: "column" },
                 }}
               >
                 <Typography
                   sx={{
-                    fontSize: { xs: '12px', sm: '13px', md: '14px' },
-                    width: 'fit-content',
-                    borderBottom: 2,
-                    borderBlockColor: '#f5c206',
+                    lineHeight: 1,
+                    fontSize: { xs: "12px", sm: "13px", md: "14px" },
+                    width: "fit-content",
                   }}
                 >
                   {props.info.phone}
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: { xs: '12px', sm: '13px', md: '14px' },
-                    width: 'fit-content',
-                    borderBottom: 2,
-                    borderBlockColor: '#f5c206',
+                    lineHeight: 1,
+                    fontSize: { xs: "12px", sm: "13px", md: "14px" },
+                    width: "fit-content",
                   }}
                 >
                   {props.info.website}
@@ -141,11 +140,11 @@ export const Footer: React.FC<FooterProps> = (props) => {
               sm={5}
               md={4}
               sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'start',
-                marginBottom: 2,
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "start",
+                marginBottom: { xs: "0rem", md: 2 },
               }}
             >
               {props.list.length > 0 &&
@@ -157,9 +156,11 @@ export const Footer: React.FC<FooterProps> = (props) => {
                           <li key={index}>
                             <a
                               href={item.path}
-                              className='text-white '
+                              target="_blank"
+                              className="text-white hover:text-[#eec609]"
                               style={{
                                 fontSize: `clamp(0.75rem, 1vw + 0.3rem, 1.1rem)`,
+                                backgroundColor: "transparent",
                               }}
                             >
                               {item.label}
@@ -173,18 +174,20 @@ export const Footer: React.FC<FooterProps> = (props) => {
           </Grid>
         </Grid>
         <div
-          className='text-xs '
+          className="text-xs "
           style={{
             fontSize: `clamp(0.5rem, 1vw + 0.2rem, 0.8rem)`,
             marginTop: 10,
           }}
         >
-          <p className='w-full text-center pt-4'>
+          <p className="w-full text-center pt-4">
             NCLEX-RN® and NCLEX-PN® are registered trademarks of the National
             Council of State Boards of Nursing, Inc (NCSBN®)
           </p>
-          <p className='w-full text-center pt-4'>
-            © {memoYear} NCLEXPower ™. All rights reserved.
+          <p className="w-full text-center pt-4">
+            © {memoYear} Arxenius. All Rights Reserved. Arxenius, the
+            CORE-Zigma System and all logos and trademarks displayed are owned
+            by Arxon Solutions, LLC.
           </p>
         </div>
       </Box>

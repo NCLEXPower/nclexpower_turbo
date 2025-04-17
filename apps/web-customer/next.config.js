@@ -2,7 +2,7 @@
 
 module.exports = {
   reactStrictMode: true,
-  transpilePackages: ["core-library"],
+  transpilePackages: ["core-library", "web-customer"],
   basePath: "",
   productionBrowserSourceMaps: process.env.NODE_ENV === "development",
   poweredByHeader: false,
@@ -21,6 +21,9 @@ module.exports = {
         process.env.NODE_ENV === "development" && "http://localhost:3000",
       ].filter(Boolean),
     },
+  },
+  images: {
+    domains: ["storage.googleapis.com"],
   },
   webpack: (config) => {
     config.module.rules.unshift({

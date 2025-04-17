@@ -1,79 +1,126 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React, { useState } from "react";
-import { Box, IconButton, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { MenuItems } from "../../../../../../../../../../api/types";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
+import React, { useMemo } from "react";
+import { Box, ListItemButton, Typography } from "@mui/material";
+import {
+  AuthorizedMenuResponse,
+  MenuItemsChildren,
+} from "../../../../../../../../../../api/types";
+import {
+  Button,
+  Card,
+  ConfirmationModal,
+  CustomPopover,
+  IconButton,
+} from "../../../../../../../../../../components";
+import { IconComponent } from "../../../../../../../../../../components/GenericDrawerLayout/utils/icon-component";
+import { GridMoreVertIcon } from "@mui/x-data-grid";
 
 interface Props {
-  menus: MenuItems[];
+  menus: AuthorizedMenuResponse;
+  onEditMenu: (navigation: MenuItemsChildren) => void;
+  onAddMenu: () => void;
+  onDeleteMenu: (MenuId: string) => void;
 }
 
-export const RouteCreationSidebar = ({ menus }: Props) => {
-  const [menuHolder, setMenuHolder] = useState<MenuItems[]>(menus);
+export const RouteCreationSidebar = ({
+  menus,
+  onEditMenu,
+  onAddMenu,
+  onDeleteMenu,
+}: Props) => {
+  const menuHolder = useMemo(() => menus.menuItems ?? [], [menus]);
 
   return (
-    <Box
+    <Card
+      data-testid="route-creation-sidebar"
+      elevation={5}
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
+        overflow: "auto",
+        width: "40%",
+        height: "100%",
+        borderRadius: "10px",
       }}
     >
-      {menuHolder.length > 0 &&
-        menuHolder
-          .filter(
-            (menuHolder, index, self) =>
-              self.findIndex((m) => m.id === menuHolder.id) === index
-          )
-          .map((navigation, index) => (
-            <React.Fragment key={index}>
-              {navigation.children && navigation.children.length > 0 ? (
-                <Box
-                  key={index}
-                  sx={{
-                    display: "flex",
-                    alignItems: "start",
-                  }}
-                >
-                  <Box sx={{ marginY: "15px" }}>
-                    <Typography sx={{ fontWeight: 700 }}>
-                      {navigation.label}
-                    </Typography>
-
-                    {navigation.children.length > 0 &&
-                      navigation.children.map((subMenu, index) => (
-                        <Typography key={index} sx={{ fontSize: "14px" }}>
-                          {subMenu.label}
+      <Button
+        onClick={onAddMenu}
+        sx={{ borderRadius: "10px", marginTop: "20px" }}
+      >
+        Add Menu
+      </Button>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        {menuHolder.length > 0 &&
+          menuHolder
+            .filter(
+              (menuHolder, index, self) =>
+                self.findIndex((m) => m.id === menuHolder.id) === index
+            )
+            .map((navigation, index) => (
+              <Box key={index} display="flex" marginY={2}>
+                <ListItemButton onClick={() => onEditMenu(navigation)}>
+                  <Box key={navigation.id} width={1}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box display="flex" alignItems="center" gap={2}>
+                        {IconComponent(navigation.icon, false, "primary")}
+                        <Typography sx={{ fontWeight: 700 }}>
+                          {navigation.label}
                         </Typography>
+                      </Box>
+                    </Box>
+                    {navigation.children &&
+                      navigation.children.length > 0 &&
+                      navigation.children.map((subMenu, index) => (
+                        <Box
+                          key={index}
+                          display="flex"
+                          alignItems="center"
+                          gap={2}
+                        >
+                          {IconComponent(subMenu.icon, false, "primary")}
+                          <Typography key={index} sx={{ fontSize: "14px" }}>
+                            {subMenu.label}
+                          </Typography>
+                        </Box>
                       ))}
                   </Box>
-
-                  <IconButton sx={{ marginTop: "10px" }}>
-                    <AddIcon sx={{ scale: "0.8" }} />
-                  </IconButton>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+                </ListItemButton>
+                <CustomPopover
+                  open
+                  withIcon={true}
+                  label="Actions"
+                  iconButton={<GridMoreVertIcon fontSize="small" />}
                 >
-                  <Typography sx={{ fontWeight: 700 }}>
-                    {navigation.label}
-                  </Typography>
-                  <IconButton sx={{ marginTop: "10px" }}>
-                    <BorderColorIcon sx={{ scale: "0.5" }} />
-                  </IconButton>
-                </Box>
-              )}
-            </React.Fragment>
-          ))}
-    </Box>
+                  <ListItemButton
+                    onClick={() => onEditMenu(navigation)}
+                    sx={{ color: "black" }}
+                  >
+                    Edit
+                  </ListItemButton>
+                  <ConfirmationModal
+                    customButton={"ListDeleteButton"}
+                    dialogContent="Are you sure you want to delete this menu?"
+                    isLoading={false}
+                    handleSubmit={() => onDeleteMenu(navigation.id)}
+                  />
+                </CustomPopover>
+              </Box>
+            ))}
+      </Box>
+    </Card>
   );
 };

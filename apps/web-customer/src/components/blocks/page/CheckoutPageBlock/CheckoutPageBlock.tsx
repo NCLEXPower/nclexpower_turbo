@@ -1,9 +1,8 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -139,7 +138,9 @@ export const CheckoutPageBlock: React.FC<Props> = ({
 
   return (
     <div className="w-full h-full flex flex-col gap-2 form-font font-semibold">
-      <p className="border-b border-slate-400 mb-2 pb-2 text-slate-500">Contact Information</p>
+      <p className="border-b border-slate-400 mb-2 pb-2 text-slate-500">
+        Contact Information
+      </p>
       <LinkAuthenticationElement onChange={handleEmailChange} />
       <ControlledTextField
         name="firstname"
@@ -159,7 +160,7 @@ export const CheckoutPageBlock: React.FC<Props> = ({
             placeholder="Middle Name"
             disabled={hasNoMiddleName}
             className="shadow-sm shadow-zinc-200"
-            sx={{ fontFamily: 'PT Sans' }}
+            sx={{ fontFamily: "PT Sans" }}
           />
           <ControlledCheckbox
             control={control}
@@ -178,21 +179,23 @@ export const CheckoutPageBlock: React.FC<Props> = ({
           />
         </div>
       </div>
-      <p className="border-b border-slate-400 mb-2 pb-2 text-slate-500">Card Information</p>
+      <p className="border-b border-slate-400 mb-2 pb-2 text-slate-500">
+        Card Information
+      </p>
       <PaymentElement />
       <Button
         onClick={handleSubmit(confirmPayment)}
         sx={{
-          background: '#0F2A71',
+          background: "#0F2A71",
           borderRadius: "4px",
           marginTop: 2,
           p: 2,
           fontSize: "14px",
           minHeight: "fit-content",
           ":focus": {
-            outline: "0 !important"
+            outline: "0 !important",
           },
-          fontWeight: 600
+          fontWeight: 600,
         }}
       >
         CONFIRM PAYMENT

@@ -1,9 +1,10 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { SectionVideosType } from "core-library/types/wc/programList";
+import { CoreZigmaLogo } from "core-library/assets";
 import Image from "next/image";
 
 interface VideoDetailsProps {
@@ -26,17 +27,34 @@ export const VideoDetails: React.FC<VideoDetailsProps> = ({
           </h4>
           <hr className="text-[#9A9A9A]" />
           <div className="flex items-center gap-2">
-            <Image src={selectedVid.secVidAuthorImg} alt="author-pic" />
+            <Image
+              src={selectedVid.secVidAuthorImg ?? CoreZigmaLogo}
+              alt="author-pic"
+              width={60}
+              height={60}
+            />
+
             <div className="flex flex-col">
               <h4 className="font-ptSans text-black font-bold text-[14px]">
                 {selectedVid.secVidAuthor}
               </h4>
-              <h4 className="font-ptSans italic text-darkGray text-[14px]">Author</h4>
+              <h4 className="font-ptSans italic text-darkGray text-[14px]">
+                Author
+              </h4>
             </div>
           </div>
-          <h4 className="text-black font-ptSans text-[14px] font-regular px-4 lg:px-0">
-            {selectedVid.secVidDescription || "No description available."}
-          </h4>
+          {selectedVid.secVidDescription ? (
+            <div
+              className="text-black font-ptSans text-[14px] font-regular px-4 lg:px-0"
+              dangerouslySetInnerHTML={{
+                __html: selectedVid.secVidDescription,
+              }}
+            />
+          ) : (
+            <div className="text-black font-ptSans text-[14px] font-regular px-4 lg:px-0">
+              No description available.
+            </div>
+          )}
         </div>
       ) : (
         <>

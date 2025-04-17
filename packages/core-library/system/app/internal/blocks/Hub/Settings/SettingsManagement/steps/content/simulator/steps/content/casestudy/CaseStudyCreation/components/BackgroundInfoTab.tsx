@@ -1,31 +1,46 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import { Box, Typography } from "@mui/material";
 import {
   Button,
   Card,
   ControlledRichTextEditor,
+  GenericSelectField,
+  IconButton,
 } from "../../../../../../../../../../../../../../../components";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import {
   initBgValues,
   tabsSequence,
 } from "../../../../../../../../constants/constants";
-import { GenericSelectField } from "../../../../../../../../../../../../../../../components/Textfield/GenericSelectField";
-
+import { useMemo } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 interface Props {
   type: string;
+  isSequenceDisabled: boolean;
 }
 
-export const BackgroundInfoTab = ({ type }: Props) => {
+export const BackgroundInfoTab = ({ type, isSequenceDisabled }: Props) => {
   type bgInfoType = Record<string, { seqNum: number; seqContent: string }[]>;
-  const { control, getValues, setValue, reset } = useFormContext<bgInfoType>();
-  const { append } = useFieldArray({
+  const { control, getValues, watch } = useFormContext<bgInfoType>();
+  const { append, remove } = useFieldArray({
     control,
     name: type,
   });
-  const valueArray = getValues(`${type}`);
+  const value = getValues(`${type}`);
+  const valueArray = useMemo(() => value, [value]);
+
+  const handleDelete = (index: number) => {
+    remove(index);
+  };
 
   return (
     <Box
+      data-testid="background-info-tab"
       sx={{
         position: "relative",
         maxHeight: "800px",
@@ -54,24 +69,40 @@ export const BackgroundInfoTab = ({ type }: Props) => {
                 width: "100%",
                 mb: 3,
               }}
+              justifyContent="space-between"
             >
-              <Typography
+              <Box
                 sx={{
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  color: "#525252",
-                  mr: 5,
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 3,
                 }}
               >
-                Sequence No. :
-              </Typography>
-              <GenericSelectField
-                name={`${type}.${index}.seqNum`}
-                options={tabsSequence ?? []}
-                width="20%"
-                defaultValue={`${type}.seqNum`}
-              />
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "16px",
+                    color: "#525252",
+                    mr: 5,
+                  }}
+                >
+                  Sequence No. :
+                </Typography>
+                <GenericSelectField
+                  control={control}
+                  disabled={isSequenceDisabled}
+                  name={`${type}.${index}.seqNum`}
+                  options={tabsSequence ?? []}
+                  width="20%"
+                  defaultValue={`${type}.seqNum`}
+                />
+              </Box>
+              <IconButton onClick={() => handleDelete(index)}>
+                <DeleteIcon />
+              </IconButton>
             </Box>
+
             <Box sx={{ textAlign: "start" }}>
               <ControlledRichTextEditor
                 customDependency={type}

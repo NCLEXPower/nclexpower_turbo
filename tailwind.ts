@@ -8,6 +8,11 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/src/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "../../packages/core-library/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  safelist: [
+    "slick-dots",
+    "slick-active"
   ],
   darkMode: "class",
   theme: {
@@ -47,6 +52,7 @@ const config: Config = {
         sideBarTab: "#122c44", // light gray
         sideBarTabHover: "#253d53", // white gray
         blue: "#1a73e8", // blue
+        softGrayBlue: "#f0f2f8", // Light Grayish Blue
         darkBlue: "#0F2A71;", // login blue
         mainBlue: "#102973",
         yellow: "#F4C501", // yellow
@@ -57,6 +63,7 @@ const config: Config = {
           hoverToWhite: "#ffffff", // white
         },
         paragraph: "#878e99",
+        hubBackground: '#e6eaf3'
       },
       backgroundImage: {
         "core-zigma": "url('../assets/CoreZigmaBG.png')",

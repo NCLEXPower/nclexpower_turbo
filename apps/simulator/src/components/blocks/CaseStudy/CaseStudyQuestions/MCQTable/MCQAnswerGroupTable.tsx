@@ -10,6 +10,7 @@ import { FormHelperText } from '@/components/FormHelperText';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { MCQCSProps } from './MCQCSComponents/MCQCS';
 import { useToolbarSettings } from '@/core/context/ToolbarSettingsContext';
+import { ParsedHtml } from 'core-library/components';
 
 type RenderButtonsProps = {
   row?: MCQGValidationType | any;
@@ -115,11 +116,7 @@ export const MCQAnswerGroupTable: React.FC<MCQCSProps> = ({ questionaire, answer
                         {answerItem.answer
                           ? answerItem.answer.length > 0 &&
                             answerItem.answer.map((answerItem: AnswerProps) => (
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: answerItem.answerInstruction,
-                                }}
-                              />
+                              <ParsedHtml html={answerItem.answerInstruction} />
                             ))
                           : null}
                       </p>

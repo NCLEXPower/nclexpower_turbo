@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -11,12 +11,16 @@ import { SectionVideosType } from "core-library/types/wc/programList";
 import { VideoDetails } from "./VideoDetails";
 import { VideoWatchList } from "./VideoWatchList";
 import { VideoPlayer } from "./VideoPlayer";
-import useGetProgramList from "core-library/hooks/useGetProgramList";
+import { useGetProgramList } from "core-library/hooks";
 
 export function WatchVideosBlock() {
   const router = useRouter();
-  const [sectionVideos, setSectionVideos] = useState<SectionVideosType[] | null>(null);
-  const [selectedVid, setSelectedVid] = useState<SectionVideosType | null>(null);
+  const [sectionVideos, setSectionVideos] = useState<
+    SectionVideosType[] | null
+  >(null);
+  const [selectedVid, setSelectedVid] = useState<SectionVideosType | null>(
+    null
+  );
   const [sectionMainTitle, setSectionMainTitle] = useState("");
   const [isWideScreen, setIsWideScreen] = useState(false);
   const { programList } = useGetProgramList();
@@ -35,7 +39,8 @@ export function WatchVideosBlock() {
     }
 
     if (programId) {
-      const programTitle = fetchedProgramList?.find((item) => item.programId === programId)?.title || "Welcome to CORE Zigma System";
+      const programTitle =
+        fetchedProgramList?.find((item) => item.id === programId)?.title ?? "";
       setSectionMainTitle(programTitle);
     }
   }, [router.query]);
@@ -46,7 +51,7 @@ export function WatchVideosBlock() {
 
   return (
     <section className="flex h-auto w-full justify-center bg-[#e7eaf1]">
-      <Box className="flex flex-col w-auto lg:w-[1045px] mt-[120px] mb-[40px] mx-4 gap-6">
+      <Box className="flex flex-col w-auto lg:w-[1045px] mt-[30px] lg:mt-[70px] mb-[40px] mx-4 gap-6">
         <div className="flex gap-2 items-center">
           <ArrowBackIosNewIcon fontSize="inherit" />
           <h4

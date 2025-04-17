@@ -1,18 +1,41 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
-import { Box, Typography, Chip } from '@mui/material';
-import { ControlledCheckbox, TextAreaField, Card, ComponentLoader, DateField } from '../../../../../../../../../../components';
-import { Control, FormProvider, useForm, UseFormClearErrors, UseFormHandleSubmit, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { crbSchema, crbType } from './validation';
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+import { Box, Typography, Chip } from "@mui/material";
+import {
+  ControlledCheckbox,
+  TextAreaField,
+  Card,
+  DateField,
+  CustomPopover,
+  ConfirmationModal,
+  ComponentState,
+} from "../../../../../../../../../../components";
+import {
+  Control,
+  FormProvider,
+  useForm,
+  UseFormClearErrors,
+  UseFormHandleSubmit,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { crbSchema, crbType } from "./validation";
 import { author, mainContent, RadioData } from "./ContentReviewerData";
-import { CustomPopover } from '../../../../../../../../../../components/Popover/Popover';
-import ConfirmationModal from '../../../../../../../../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog';
-import React from 'react';
+import React, { useEffect, useMemo } from "react";
+import { RegularMainContent } from "./RegularMainContent";
+import { CSMainContent } from "./CSMainContent";
+import { ContainedCaseStudyQuestionType } from "../../../../../Settings/SettingsManagement/steps/content/simulator/types";
+import { MainContentCollection } from "../../../../../../../../../../api/types";
+
+type contentType = {
+  contentId: string;
+  contentAuthorId: string;
+};
 
 interface ContentViewerFormProps {
   control: Control<crbType>;
@@ -24,47 +47,8 @@ interface ContentViewerFormProps {
   showModal?: boolean;
   contentLoader?: boolean;
   onSubmit: (values: crbType) => void;
-};
-
-function MainContent() {
-  return (
-    <div className="">
-      {mainContent.map((item, index) => (
-        <Box key={index} sx={{ marginBottom: 4 }}>
-          <Box sx={{ display: 'flex', flexDirection: "flex-col", alignItems: 'center', marginBottom: 4, gap: 2 }}>
-            <Chip sx={{ backgroundColor: '#560bad', color: '#F3F3F3' }} label={item.type} />
-            <Chip sx={{ backgroundColor: 'transparent', color: '#560bad', border: "1px solid #560bad" }} label={item.mainType} />
-          </Box>
-          <Typography sx={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: 4, color: "#560bad" }}>
-            {item.question}
-          </Typography>
-          <div className="flex flex-col">
-            <Typography sx={{ fontSize: '1rem', color: "#606060" }}>
-              Cognitive Level: {item.cognitiveLevel}
-            </Typography>
-            <Typography sx={{ fontSize: '1rem', color: "#606060" }}>
-              Content Area: {item.contentArea}
-            </Typography>
-            <Typography sx={{ fontSize: '1rem', color: "#606060" }}>
-              Client Needs: {item.clientNeeds}
-            </Typography>
-            <Typography sx={{ fontSize: '1.2rem', fontWeight: "bold", color: "#560bad", marginTop: 4 }}>
-              Answer Options :
-            </Typography>
-            {item.mainContentAnswerCollections.map((answerItem, idx) => (
-              <ol key={idx} className='mb-4'>
-                <li>{answerItem.answer}</li>
-              </ol>
-            ))}
-            <Box sx={{ backgroundColor: "#560bad", padding: 4, color: "#F3F3F3" }}>
-              Correct Answer: {item.answerKey}
-            </Box>
-            <hr className='my-4' />
-          </div>
-        </Box>
-      ))}
-    </div>
-  )
+  data: contentType;
+  isError?: boolean;
 }
 
 export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
@@ -74,25 +58,90 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
   watch,
   isApproved,
   onSubmit,
-  contentLoader
+  contentLoader,
+  data,
+  isError,
 }) => {
-
   const form = useForm<crbType>({
     mode: "all",
     resolver: yupResolver(crbSchema),
   });
 
+  const mainType = mainContent[0].mainType;
+  const baseContent =
+    mainType === "Case Study"
+      ? mainContent[0].mainCaseStudyContentCollections
+      : mainContent[0].mainContentCollections;
+  const filteredMainContent = useMemo(() => {
+    if (mainType === "Case Study") {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as unknown as ContainedCaseStudyQuestionType[];
+    } else {
+      return baseContent.filter(
+        (content) => content.id === data.contentId
+      ) as unknown as MainContentCollection[];
+    }
+  }, [data, mainType]);
+
+  const filteredAuthor = author.filter(
+    (content) => content.authorId === data.contentAuthorId
+  );
+
   const selectedOption = watch("option");
 
-  if (contentLoader) {
-    return <ComponentLoader />
+  useEffect(() => {
+    setValue("contentId", data.contentId);
+    setValue("authorId", data.contentAuthorId);
+  }, [data]);
+
+  const renderContent = (
+    content: MainContentCollection[] | ContainedCaseStudyQuestionType[],
+    mainType: string
+  ) => {
+    if (mainType === "Case Study") {
+      return (
+        <CSMainContent
+          mainContent={content as ContainedCaseStudyQuestionType[]}
+        />
+      );
+    } else {
+      return (
+        <RegularMainContent mainContent={content as MainContentCollection[]} />
+      );
+    }
   };
 
-  const selectedDate = watch('date');
+  if (isError || contentLoader) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          backgroundColor: "white",
+          minWidth: "250px",
+          width: "100%",
+          height: "400px",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        <ComponentState
+          isError={isError as boolean}
+          isLoading={contentLoader as boolean}
+          isEmpty={false}
+        />
+      </Box>
+    );
+  }
 
-  const isDateBeforeToday = selectedDate &&
-    new Date(selectedDate).setHours(0, 0, 0, 0)
-    < new Date().setHours(0, 0, 0, 0);
+  const selectedDate = watch("date");
+
+  const isDateBeforeToday =
+    selectedDate &&
+    new Date(selectedDate).setHours(0, 0, 0, 0) <
+      new Date().setHours(0, 0, 0, 0);
 
   return (
     <Box className="relative">
@@ -106,21 +155,24 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
         >
           <Box>
             <Typography
-              sx={{ fontSize: "2rem", fontWeight: "bold", color: "#560bad" }}
+              sx={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+              }}
             >
               Content Details:
             </Typography>
-            {author ? (
+            {filteredAuthor ? (
               <React.Fragment>
-                {author.map((item, index) => (
+                {filteredAuthor.map((item, index) => (
                   <Box key={index}>
-                    <Typography sx={{ fontSize: "1rem", color: "#606060" }}>
+                    <Typography sx={{ fontSize: "1rem" }}>
                       Author Details:{" "}
                     </Typography>
-                    <Typography sx={{ fontSize: "1rem", color: "#606060" }}>
+                    <Typography sx={{ fontSize: "1rem" }}>
                       {item.author}
                     </Typography>
-                    <Typography sx={{ fontSize: "1rem", color: "#606060" }}>
+                    <Typography sx={{ fontSize: "1rem" }}>
                       {item.createdDate}
                     </Typography>
                   </Box>
@@ -128,7 +180,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Typography sx={{ fontSize: "1rem", color: "#606060" }}>
+                <Typography sx={{ fontSize: "1rem" }}>
                   Author details unavailable...
                 </Typography>
               </React.Fragment>
@@ -136,15 +188,15 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
           </Box>
           {isApproved ? (
             <Chip
-              sx={{ backgroundColor: "#16db65", color: "#f3f3f3" }}
+              sx={{ backgroundColor: "#0c215c", color: "#f3f3f3" }}
               label="Approved"
             />
           ) : (
             <Chip
               sx={{
                 backgroundColor: "transparent",
-                color: "#560bad",
-                border: "1px solid #560bad",
+                color: "#0c215c",
+                border: "1px solid #0c215c",
               }}
               label="Pending"
             />
@@ -183,13 +235,21 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
                 zIndex: 1,
               }}
             >
-              <Typography sx={{ fontSize: "1.4rem", color: "#560bad", marginBottom: 4 }}>
+              <Typography
+                sx={{
+                  fontSize: "1.4rem",
+                  color: "appColors.purple",
+                  marginBottom: 4,
+                }}
+              >
                 Write your review
               </Typography>
               <hr />
-              <Typography sx={{ marginTop: 4 }}>Select a date for this content to take effect in simulator.</Typography>
+              <Typography sx={{ marginY: 4 }}>
+                Select a date for this content to take effect in simulator.
+              </Typography>
               <DateField<crbType>
-                name='date'
+                name="date"
                 control={control}
                 placeholder="DD - MM - YYYY"
               />
@@ -197,20 +257,21 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
                 <TextAreaField
                   name="comment"
                   control={control}
-                  style={{ width: '100%' }}
-                  placeholder='Comment here...'
+                  style={{ width: "100%" }}
+                  placeholder="Comment here..."
                 />
-                {RadioData.map((item, index) => (
-                  <ControlledCheckbox
-                    key={index}
-                    name="option"
-                    control={control}
-                    label={item.title}
-                    value={item.value}
-                    checked={selectedOption === item.value}
-                    onChange={() => setValue("option", item.value)}
-                  />
-                ))}
+                {RadioData.length > 0 &&
+                  RadioData.map((item, index) => (
+                    <ControlledCheckbox
+                      key={index}
+                      name="option"
+                      control={control}
+                      label={item.title}
+                      value={item.value}
+                      checked={selectedOption === item.value}
+                      onChange={() => setValue("option", item.value)}
+                    />
+                  ))}
               </div>
               <Box sx={{ zIndex: 4 }}>
                 <ConfirmationModal
@@ -225,7 +286,7 @@ export const ContentReviewerForm: React.FC<ContentViewerFormProps> = ({
             </Card>
           </CustomPopover>
         </Box>
-        <MainContent />
+        {renderContent(filteredMainContent, mainType)}
       </FormProvider>
     </Box>
   );

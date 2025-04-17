@@ -1,12 +1,11 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import React, { useEffect } from "react";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { LoginFormType, loginSchema } from "core-library/system";
@@ -24,6 +23,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { LoginBG } from "core-library/assets";
 import { useKeyDown } from "core-library/hooks/useKeyDown";
+import { useResolution } from "core-library/hooks";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
@@ -71,7 +71,7 @@ export const LoginForm: React.FC<Props> = ({
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
   return (
-    <div className="flex items-center justify-between w-full h-screen">
+    <div className="flex items-center justify-between w-full h-auto md:h-screen">
       <div className="hidden xl:flex lg:flex">
         <Box
           component={Image}
@@ -96,7 +96,7 @@ export const LoginForm: React.FC<Props> = ({
         <Box className="flex z-0 items-center justify-center">
           <div className="flex items-center justify-center h-screen flex-col lg:px-24">
             <h4 className="pt-sans-caption-bold text-[3rem] text-white mb-2 z-1">
-              Welcome to <span className="text-yellow">NCLEX Power</span>
+              Welcome to <span className="text-yellow">Arxenius Review</span>
             </h4>
             <h5 className="pt-sans-regular text-white text-[1.5rem]">
               Pass the NCLEX with our CORE Zigma Review System.
@@ -104,27 +104,34 @@ export const LoginForm: React.FC<Props> = ({
           </div>
         </Box>
       </div>
-      <div className="w-full lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24">
+      <div className="flex flex-col justify-center w-full h-auto lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24 mt-12 md:mt-0">
         <div
           className="flex items-center justify-end cursor-pointer text-darkBlue"
           onClick={handleBack}
         >
           <ArrowBackIosNewIcon fontSize="small" />
-          <span className="pt-sans-narrow-regular ml-1 underline">Back</span>
+          <span className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] ml-1 underline">
+            Back
+          </span>
         </div>
         <div className="w-full">
           <div className="flex items-center justify-center">
             <Image
               src={CoreZigma}
+              className=""
               alt="CoreZigma"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
+              style={{
+                width: "120px",
+                height: "120px",
+                objectFit: "cover",
+              }}
             />
           </div>
-          <div className="">
-            <h5 className="pt-sans-bold text-4xl pt-sans-regular mb-2">
+          <div>
+            <h5 className="font-ptSans font-bold text-[30px] text-[#232323] lg:text-[40px] mb-2">
               Login
             </h5>
-            <p className="pt-sans-narrow-regular font-light text-darkGray text-lg">
+            <p className="font-ptSansNarrow font-light text-[18px] lg:text-[20px] text-darkGray">
               Please login to continue to your account.
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -134,7 +141,7 @@ export const LoginForm: React.FC<Props> = ({
                   control={control}
                   placeholder="Email"
                   sx={{ borderRadius: "10px" }}
-                  inputProps={{ style: { padding: 20, borderRadius: "10px" } }}
+                  inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
                 />
               </Grid>
               <Grid
@@ -153,9 +160,6 @@ export const LoginForm: React.FC<Props> = ({
                     name="password"
                     placeholder="Password"
                     sx={{ borderRadius: "10px", width: "100%" }}
-                    inputProps={{
-                      style: { padding: 20, borderRadius: "10px" },
-                    }}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
                       <IconButton
@@ -166,23 +170,35 @@ export const LoginForm: React.FC<Props> = ({
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     }
+                    inputProps={{
+                      style: {
+                        boxShadow: "none",
+                      },
+                    }}
                   />
                 </Box>
               </Grid>
-              <div className="my-4 flex items-center justify-between">
+              <div className="my-2 flex items-center justify-between ">
                 <Checkbox
                   checked={rememberMe}
                   onChange={handleChangeRememberMe}
                   label="Remember me"
-                  sx={{ borderRadius: 4 }}
+                  sx={{
+                    borderRadius: 4,
+                    "@media (max-width: 400px)": {
+                      fontSize: "12px",
+                    },
+                    "@media (min-width: 500px)": {
+                      fontSize: "16px",
+                    },
+                  }}
                 />
-                <Typography
+                <p
                   onClick={handleForgotPasswordClick}
-                  className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer"
-                  component="span"
+                  className="ml-1 font-ptSansNarrow font-normal underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
                 >
                   Forgot Password?
-                </Typography>
+                </p>
               </div>
               <div className="gap-4 flex items-center">
                 <Button
@@ -201,34 +217,18 @@ export const LoginForm: React.FC<Props> = ({
                   }}
                   onClick={handleSubmit(onSubmit)}
                 >
-                  <span className="pt-sans-narrow-bold text-lg normal-case">
+                  <span className="font-ptSansNarrow font-bold text-[18px] lg:text-[20px] normal-case">
                     Sign In
                   </span>
                 </Button>
               </div>
-              <div className="flex items-center my-4">
-                <span className="h-px flex-1 bg-slate-300"></span>
-                <span className="shrink-0 px-3 pt-sans-narrow-regular">or</span>
-                <span className="h-px flex-1 bg-slate-300"></span>
-              </div>
-              <div className="flex items-center justify-center w-full">
-                <Button
-                  sx={{ paddingY: 1.5, borderRadius: "10px", boxShadow: 2, borderColor: "#1976D2" }}
-                  fullWidth
-                  variant="outlined"
-                  onClick={signInWithGoogle}
-                >
-                  <span className="mr-4 pt-sans-narrow-regular text-lg text-black normal-case ">
-                    Sign in with Google
-                  </span>
-                  <GoogleIcon />
-                </Button>
-              </div>
-              <div className="flex items-center justify-center mt-6 pt-sans-narrow-regular text-xl">
-                <p className="text-darkGray">Need an account?</p>
+              <div className="flex items-center justify-center mt-2 lg:mt-6 ">
+                <p className="text-darkGray font-ptSansNarrow font-normal text-[18px] lg:text-[20px]">
+                  Need an account?
+                </p>
                 <Link
                   href="/#pricing"
-                  className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
+                  className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer no-background "
                 >
                   Create One
                 </Link>

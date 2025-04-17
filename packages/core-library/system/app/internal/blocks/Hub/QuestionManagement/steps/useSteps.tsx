@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useScroll } from "core-library";
-import { WizardFormMap, useModal, useWizardForm } from "core-library/hooks";
 import { CreateRegularQuestionsSteps } from "./CreateRegularQuestion";
 import { RegularQuestionsSteps, RegularQuestionStepProps } from "./types";
 import { RegularQuestionFormType } from "../types";
 import { useActiveSteps } from "./useActiveSteps";
-import { Stepper } from "core-library/components";
+import { useModal, useWizardForm, WizardFormMap } from '../../../../../../../hooks';
+import { useScroll } from '../../../../../../../core';
+import { Stepper } from '../../../../../../../components';
 
 export const useRegularQuestionWizardSteps = (
   onSubmit: VoidFunction,

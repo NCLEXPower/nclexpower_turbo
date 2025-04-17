@@ -5,6 +5,7 @@ import {
   MenuItem,
   FormHelperText,
   TextFieldProps,
+  SxProps,
 } from "@mui/material";
 
 type SelectOption = {
@@ -27,6 +28,7 @@ type BaseSelectFieldProps = {
   variant?: TextFieldProps["variant"];
   placeholder?: TextFieldProps["placeholder"];
   disabled?: boolean;
+  listSx?: SxProps;
 };
 
 export function SelectField({
@@ -38,28 +40,36 @@ export function SelectField({
   onChange,
   value,
   placeholder,
+  listSx,
   ...rest
 }: BaseSelectFieldProps) {
   return (
     <div>
+      {helperText && (
+        <FormHelperText error={error} sx={{ marginBottom: 2 }}>
+          {helperText}
+        </FormHelperText>
+      )}
       <TextField
         select
-        label={label}
+        label={!value ? label : null}
         error={error}
         value={value ?? ""}
         onChange={onChange}
         placeholder={placeholder}
+        InputLabelProps={{ shrink: false }}
         {...rest}
       >
         {options.map((option) => (
-          <MenuItem key={option.xvalue} value={option.xvalue}>
+          <MenuItem
+            key={option.xvalue ?? option.value}
+            value={option.xvalue ?? option.value}
+            sx={{ ...listSx }}
+          >
             {option.label}
           </MenuItem>
         ))}
       </TextField>
-      {helperText && (
-        <FormHelperText error={error}>{helperText}</FormHelperText>
-      )}
     </div>
   );
 }
@@ -74,7 +84,7 @@ export type ControlledSelectFieldProps = {
 export function ControlledSelectField({
   control,
   name,
-  onChange,
+  onChange: parentOnChange,
   shouldUnregister,
   ...rest
 }: ControlledSelectFieldProps) {
@@ -90,7 +100,9 @@ export function ControlledSelectField({
         <SelectField
           error={Boolean(error?.message)}
           helperText={error?.message}
-          onChange={onChange}
+          onChange={(e) => {
+            onChange(e), parentOnChange?.(e);
+          }}
           onBlur={onBlur}
           value={value}
           {...rest}

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, IconButton, Typography } from "@mui/material";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import {
   ContainedCaseStudyQuestionType,
   ContainedRegularQuestionType,
@@ -20,19 +20,25 @@ type SATAPropsType = {
   deletionLimit?: number;
 };
 
-export const SATA: React.FC<SATAPropsType> = ({
-  questionIndex,
-  deletionLimit = 5,
-}) => {
+export const SATA: React.FC<SATAPropsType> = ({ questionIndex }) => {
+  const MAX_LENGTH = 20;
+
   const { append: appendAnswer, remove: removeAnswer } = useFieldArray<
     ContainedRegularQuestionType | ContainedCaseStudyQuestionType
   >({
     name: `questionnaires.${questionIndex}.answers`,
   });
-  const { getValues } = useFormContext<
+  const { getValues, setValue, watch } = useFormContext<
     ContainedRegularQuestionType | ContainedCaseStudyQuestionType
   >();
-  const answerFields = getValues(`questionnaires.${questionIndex}.answers`);
+  const answerFields =
+    getValues(`questionnaires.${questionIndex}.answers`) ?? [];
+  const questionType = getValues(
+    `questionnaires.${questionIndex}.questionType`
+  );
+  const maxPoint = getValues(`questionnaires.${questionIndex}.maxPoints`);
+  const isMrsn = useMemo(() => questionType === "MRSN", [questionType]);
+  const DELETION_LIMIT = isMrsn ? 0 : 5;
 
   const handleAppendFields = () => {
     appendAnswer({ answer: "", answerKey: false });
@@ -41,6 +47,12 @@ export const SATA: React.FC<SATAPropsType> = ({
   const handleRemoveFields = (index: number) => {
     removeAnswer(index);
   };
+
+  useEffect(() => {
+    if (isMrsn) {
+      setValue(`questionnaires.${questionIndex}.maxAnswer`, maxPoint);
+    }
+  }, [maxPoint]);
 
   if (!answerFields) return null;
 
@@ -81,7 +93,7 @@ export const SATA: React.FC<SATAPropsType> = ({
                 placeholder="Enter answer"
               />
             </Box>
-            {index >= deletionLimit && (
+            {index >= DELETION_LIMIT && (
               <IconButton
                 data-testid={`answer-option-remove-${index}`}
                 onClick={() => handleRemoveFields(index)}
@@ -94,8 +106,14 @@ export const SATA: React.FC<SATAPropsType> = ({
       </StyledBox>
       <Button
         data-testid="answer-option-append"
-        sx={{ marginTop: 4 }}
-        disabled={answerFields.length >= 8}
+        sx={{
+          height: "45px",
+          borderRadius: "10px",
+          marginTop: "10px",
+          width: "100%",
+          textTransform: "none",
+        }}
+        disabled={answerFields.length >= MAX_LENGTH}
         onClick={handleAppendFields}
         className="w-full h-10 flex rounded-md text-sm items-center px-5 bg-[#d7f2f4] border-[#37BEC7] border justify-center text-[#37BEC7] font-semibold hover:bg-[#2a98a0] transition-colors duration-150 hover:text-white disabled:saturate-0"
       >

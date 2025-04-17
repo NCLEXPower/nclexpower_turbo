@@ -3,6 +3,8 @@ import {
   TextareaAutosizeProps,
   Grid,
   useTheme,
+  Typography,
+  FormHelperText,
 } from "@mui/material";
 import {
   Control,
@@ -18,6 +20,7 @@ import { FieldError } from "./FieldError";
 interface Props<T extends object> extends TextareaAutosizeProps {
   name: Path<T>;
   control: Control<T, object>;
+  label?: string | JSX.Element | null;
   isLoading?: boolean;
   resizible?: boolean;
   "data-testid"?: string;
@@ -26,15 +29,36 @@ interface Props<T extends object> extends TextareaAutosizeProps {
 export const TextAreaField = <T extends FieldValues>({
   name,
   control,
+  label,
   ...props
 }: Props<T>) => (
   <Controller<T>
     name={name}
     control={control}
-    render={({ formState: _, field, ...controllerProps }) => {
+    render={({ formState: _, field, fieldState, ...controllerProps }) => {
       const { ref, ...nonRefField } = field;
       return (
-        <TextareaComponent {...controllerProps} {...props} {...nonRefField} />
+        <Grid container spacing={1} direction="column">
+          <Grid item>
+            {fieldState?.error?.message ? (
+              <FormHelperText error>{fieldState.error.message}</FormHelperText>
+            ) : (
+              label !== null && (
+                <Typography component="label" htmlFor={field?.name} display="flex">
+                  {label ?? ""}
+                </Typography>
+              )
+            )}
+          </Grid>
+          <Grid item>
+            <TextareaComponent 
+              {...controllerProps} 
+              {...props} 
+              {...nonRefField}
+              fieldState={fieldState} 
+            />
+          </Grid>
+        </Grid>
       );
     }}
   />
@@ -53,30 +77,24 @@ export const TextareaComponent = <T extends object>({
 }: ComponentProps<T>) => {
   const theme = useTheme();
   const { isMobile } = useResolution();
+  const hasError = !!fieldState?.error;
 
   return (
-    <Grid container spacing={2} direction="column">
-      {fieldState?.error?.message && (
-        <Grid item>
-          <FieldError messageKey={fieldState.error.message} />
-        </Grid>
-      )}
-      <Grid item>
-        <TextareaAutosize
-          data-testid={props["data-testid"]}
-          style={{
-            width: "100%",
-            fontSize: theme.typography.body1.fontSize,
-            padding: "12px 16px",
-            fontFamily: theme.typography.fontFamily,
-            color: theme.palette.appColors.incidental["075"],
-            borderRadius: 0,
-            resize: "none",
-          }}
-          minRows={isMobile ? 10 : 5}
-          {...props}
-        />
-      </Grid>
-    </Grid>
+    <TextareaAutosize
+      data-testid={props["data-testid"]}
+      style={{
+        width: "100%",
+        fontSize: theme.typography.body1.fontSize,
+        padding: "12px 16px",
+        fontFamily: theme.typography.fontFamily,
+        color: theme.palette.appColors.essential["800"],
+        borderRadius: "5px",
+        resize: "none",
+        borderColor: hasError ? theme.palette.error.main : undefined,
+      }}
+      minRows={isMobile ? 10 : 5}
+      {...props}
+    />
   );
 };
+

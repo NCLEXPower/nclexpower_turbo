@@ -9,6 +9,7 @@ import {
   Chip,
   InputAdornment,
 } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export type SelectOption = {
   label: string;
@@ -32,6 +33,7 @@ type BaseSelectFieldProps = {
   placeholder?: TextFieldProps["placeholder"];
   multiple?: boolean;
   "data-testid"?: string;
+  disabled?: boolean;
 };
 
 export function MultipleSelect({
@@ -44,6 +46,7 @@ export function MultipleSelect({
   value = [],
   placeholder,
   multiple = false,
+  disabled = false,
   ...rest
 }: BaseSelectFieldProps) {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -92,9 +95,11 @@ export function MultipleSelect({
                     variant="filled"
                     size="medium"
                     color="info"
-                    // onDelete={(event) => handleDelete(val, event)} //has bug please fix.
-                    // deleteIcon={<CancelIcon />}
+                    onDelete={(event) => handleDelete(val, event)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    deleteIcon={<CancelIcon aria-label="delete" />}
                     sx={{ borderRadius: 0, border: "1px solid #ccc" }}
+                    disabled={disabled}
                   />
                 ))}
               </Box>
@@ -105,7 +110,7 @@ export function MultipleSelect({
         {...rest}
       >
         {options.map((option, index) => (
-          <MenuItem key={`${option.value}-${index}`} value={option.value}>
+          <MenuItem key={`${option.value}-${index}`} value={option.value} disabled={disabled}>
             {option.label || option.categoryName}
           </MenuItem>
         ))}
