@@ -1,3 +1,9 @@
+/**
+Property of the Arxon Solutions, LLC.
+Reuse as a whole or in part is prohibited without permission.
+Created by the Software Strategy & Development Division
+*/
+
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";

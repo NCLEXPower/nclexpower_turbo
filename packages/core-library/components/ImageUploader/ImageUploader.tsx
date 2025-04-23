@@ -15,14 +15,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ selectedImage, set
     setSelectedImage(file);
   };
 
-  // const triggerFileInput = () => {
-  //   const input = document.getElementById("image-upload-input") as HTMLInputElement;
-  //   if (input) {
-  //     input.value = "";
-  //     input.click();
-  //   }
-  // };
-
   const triggerFileInput = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
