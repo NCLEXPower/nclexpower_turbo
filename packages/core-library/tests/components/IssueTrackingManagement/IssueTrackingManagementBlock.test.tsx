@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "../../common";
+import { render } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "../../common";
 import { IssueTrackingManagementBlock } from "../../../system/app/internal/blocks";
 
 let openMock: jest.Mock;

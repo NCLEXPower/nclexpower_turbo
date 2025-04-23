@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "../../common";
+import { render } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "../../common";
 import { IssueDetailsModal } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueDetailsModal";
 import { useExecuteToast } from "../../../contexts";
 import { useApiCallback } from "../../../hooks";

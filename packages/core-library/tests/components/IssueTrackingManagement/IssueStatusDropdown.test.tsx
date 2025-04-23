@@ -1,4 +1,5 @@
-import { render, screen, userEvent, waitFor } from "../../common";
+import { render } from "@testing-library/react";
+import { screen, userEvent, waitFor } from "../../common";
 import { IssueStatusDropdown } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueStatusDropdown";
 
 jest.mock("../../../config", () => ({

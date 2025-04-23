@@ -1,4 +1,5 @@
-import { render, screen } from "../../common";
+import { render } from "@testing-library/react";
+import { screen } from "../../common";
 import { IssueDescriptionBox } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueDescriptionBox";
 
 jest.mock("../../../config", () => ({
