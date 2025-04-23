@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, Select, MenuItem, Box } from "@mui/material";
-import { StatusStyles, StatusBadge } from "./StatusBadge";
-import { statusDropdownStyle } from "./style"; 
+import { StatusStyles, StatusBadge } from "./utils/StatusBadge";
+import { statusDropdownStyle, getStatusDropdownStyle } from "./styles/style"; 
 import { getStatusLabel } from "./utils/statusHelpers";
 
 interface StatusDropdownProps extends React.HTMLAttributes<HTMLSelectElement>{
@@ -27,6 +27,9 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
     setSelectedStatus(parseInt(event.target.value));
   };
 
+  const statusLabel = getStatusLabel(selectedStatus);
+  const bgColor = StatusStyles[statusLabel]?.backgroundColor || "#6c757d";
+
   return (
     <FormControl>
       <Select
@@ -46,31 +49,8 @@ export const IssueStatusDropdown: React.FC<StatusDropdownProps> = ({
           },
         }}
         sx={{
-          "&.Mui-focused": {
-            backgroundColor: StatusStyles[getStatusLabel(selectedStatus)]?.backgroundColor || "#6c757d",
-            borderRadius: "6px",
-            outline: "none !important",
-            boxShadow: "none",
-          },
-          "& .MuiSelect-select": {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0px 5px 0px 8px !important",
-            borderRadius: "6px",
-            backgroundColor: StatusStyles[getStatusLabel(selectedStatus)]?.backgroundColor || "#6c757d",
-          },
-          "& .MuiSelect-icon": {
-            position: "absolute",
-            right: "5px",
-            top: "50%",
-            transform: isDropdownOpen ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(-90deg)",
-            transition: "transform 0.3s ease",
-            fill: "white",
-            backgroundColor: "transparent",
-            borderRadius: "6px",
-          },
           ...statusDropdownStyle,
+          ...getStatusDropdownStyle(isDropdownOpen, bgColor),
         }}
         renderValue={() => (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>

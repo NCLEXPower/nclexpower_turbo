@@ -249,3 +249,35 @@ export const statusDropdownStyle = {
     border: "none !important",
   },
 };
+
+export const getStatusDropdownStyle = (
+  isOpen: boolean,
+  bgColor: string = "#6c757d"
+) => ({
+  "&.Mui-focused": {
+    backgroundColor: bgColor,
+    borderRadius: "6px",
+    outline: "none !important",
+    boxShadow: "none",
+  },
+  "& .MuiSelect-select": {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "0px 5px 0px 8px !important",
+    borderRadius: "6px",
+    backgroundColor: bgColor,
+  },
+  "& .MuiSelect-icon": {
+    position: "absolute",
+    right: "5px",
+    top: "50%",
+    transform: isOpen
+      ? "translateY(-50%) rotate(0deg)"
+      : "translateY(-50%) rotate(-90deg)",
+    transition: "transform 0.3s ease",
+    fill: "white",
+    backgroundColor: "transparent",
+    borderRadius: "6px",
+  },
+});

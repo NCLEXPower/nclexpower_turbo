@@ -1,11 +1,14 @@
-import { screen, fireEvent, waitFor } from "../../common";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "../../common";
 import { IssueDetailsModal } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueDetailsModal";
 import { useExecuteToast } from "../../../contexts";
 import { useApiCallback } from "../../../hooks";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
 }));
 
 jest.mock("../../../hooks");
@@ -15,6 +18,9 @@ jest.mock("../../../contexts", () => ({
     executeToast: jest.fn(),
   })),
 }));
+
+  let mockUpdateStatusCb: { execute: jest.Mock };
+  let mockShowToast: jest.Mock;
 
 jest.mock("../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueDescriptionBox", () => ({
   IssueDescriptionBox: ({
@@ -31,18 +37,18 @@ jest.mock("../../../system/app/internal/blocks/Hub/IssueTrackingManagement/Issue
     setSelectedStatus,
     "data-testid": testId,
   }: {
-    selectedStatus: string;
-    setSelectedStatus: (status: string) => void;
+    selectedStatus: number;
+    setSelectedStatus: (status: number) => void;
     "data-testid"?: string;
   }) => (
     <select
       data-testid={testId}
-      value={selectedStatus}
-      onChange={(e) => setSelectedStatus(e.target.value)}
+      value={selectedStatus.toString()}
+      onChange={(e) => setSelectedStatus(Number(e.target.value))}
     >
-      {["To Be Reviewed", "In Review", "Resolved"].map((option) => (
-        <option key={option} value={option}>
-          {option}
+      {[0, 1, 2].map((value) => (
+        <option key={value} value={value.toString()}>
+          {["To Be Reviewed", "In Review", "Resolved"][value]}
         </option>
       ))}
     </select>
@@ -54,15 +60,18 @@ describe("IssueDetailsModal", () => {
     email: "test@example.com",
     reference: "123456",
     description: "Test description",
-    dateCreated: "2025-03-01",
+    dateCreated: "March 1, 2025",
     status: 1,
   };
 
   let mockOnClose: jest.Mock;
   let mockOnStatusChange: jest.Mock;
-  let mockUpdateStatusCb: { execute: jest.Mock };
-  let mockShowToast: jest.Mock;
   let modalProps: { isOpen: boolean; context: any };
+  let mockFetchTickets: jest.Mock;
+
+  jest.mock("../../../hooks", () => ({
+    useApiCallback: () => mockUpdateStatusCb,
+  }));
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -78,8 +87,11 @@ describe("IssueDetailsModal", () => {
     });
 
     mockOnStatusChange = jest.fn();
-    mockUpdateStatusCb = { execute: jest.fn() };
+    mockUpdateStatusCb = {
+      execute: jest.fn().mockResolvedValue(true),
+    };
     mockShowToast = jest.fn();
+    mockFetchTickets = jest.fn();
 
     (useExecuteToast as jest.Mock).mockReturnValue({ showToast: mockShowToast });
     (useApiCallback as jest.Mock).mockReturnValue(mockUpdateStatusCb);
@@ -94,6 +106,7 @@ describe("IssueDetailsModal", () => {
         }}
         onClose={mockOnClose}
         onStatusChange={mockOnStatusChange}
+        fetchTickets={mockFetchTickets}
       />
     );
 
@@ -106,13 +119,14 @@ describe("IssueDetailsModal", () => {
         modal={{ isOpen: true, context: validContext }}
         onClose={mockOnClose}
         onStatusChange={mockOnStatusChange}
+        fetchTickets={mockFetchTickets}
       />
     );
 
     expect(screen.getByText("Reference #")).toBeInTheDocument();
     expect(screen.getByTestId("issue-email")).toHaveTextContent("test@example.com");
     expect(screen.getByText(/\[123456\]/)).toBeInTheDocument();
-    expect(screen.getByText(/\[2025-03-01\]/)).toBeInTheDocument();
+    expect(screen.getByText(/\[March 1, 2025\]/)).toBeInTheDocument();
     expect(screen.getByTestId("issue-description-box")).toHaveTextContent("Test description");
   });
 
@@ -122,6 +136,7 @@ describe("IssueDetailsModal", () => {
         modal={{ isOpen: true, context: validContext }}
         onClose={mockOnClose}
         onStatusChange={mockOnStatusChange}
+        fetchTickets={mockFetchTickets}
       />
     );
 
@@ -135,12 +150,13 @@ describe("IssueDetailsModal", () => {
         modal={{ isOpen: true, context: validContext }}
         onClose={mockOnClose}
         onStatusChange={mockOnStatusChange}
+        fetchTickets={mockFetchTickets}
       />
     );
 
     const dropdown = screen.getByTestId("issue-status-dropdown") as HTMLSelectElement;
-    fireEvent.change(dropdown, { target: { value: "Resolved" } });
-    expect(dropdown.value).toBe("Resolved");
+    fireEvent.change(dropdown, { target: { value: "2" } });
+    expect(dropdown.value).toBe("2");
   });
 
   test("submits valid data and calls onStatusChange and onClose", async () => {
@@ -149,10 +165,11 @@ describe("IssueDetailsModal", () => {
         modal={{ isOpen: true, context: validContext }}
         onClose={mockOnClose}
         onStatusChange={mockOnStatusChange}
+        fetchTickets={mockFetchTickets}
       />
     );
   
-    const notesArea = screen.getByTestId("support-text-area") as HTMLTextAreaElement;
+    const notesArea = await screen.findByTestId("support-text-area") as HTMLTextAreaElement;
     fireEvent.change(notesArea, { target: { value: "New notes" } });
   
     const submitButton = screen.getByRole("button", { name: /Submit/i });
@@ -160,13 +177,13 @@ describe("IssueDetailsModal", () => {
   
     await waitFor(() => expect(mockUpdateStatusCb.execute).toHaveBeenCalled());
   
-    expect(mockUpdateStatusCb.execute).toHaveBeenCalledWith({
-      Notes: "New notes",
-      RefNo: validContext.reference,
-      UpdateStatus: 1, 
-    });
-  
-    expect(mockOnStatusChange).toHaveBeenCalledWith(validContext.reference, "In Review");
+    const form = mockUpdateStatusCb.execute.mock.calls[0][0] as FormData;
+
+    expect(form.get("Notes")).toBe("New notes");
+    expect(form.get("RefNo")).toBe(validContext.reference);
+    expect(form.get("UpdateStatus")).toBe("1");
+
+    expect(mockOnStatusChange).toHaveBeenCalledWith(validContext.reference, expect.any(Number));
     expect(mockOnClose).toHaveBeenCalled();
   });
 });

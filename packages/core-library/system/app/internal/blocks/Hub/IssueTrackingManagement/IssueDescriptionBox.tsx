@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { DescriptionBoxStyle } from "./style";
+import { DescriptionBoxStyle } from "./styles/style";
 
 interface IssueDescriptionBoxProps {
   description?: string;

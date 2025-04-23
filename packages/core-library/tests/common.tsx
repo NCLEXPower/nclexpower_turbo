@@ -2,11 +2,9 @@ import { ThemeProvider } from "@mui/material";
 import { RenderOptions, render as rtlRender } from "@testing-library/react";
 import rtlEvent from "@testing-library/user-event";
 import { ReactElement } from "react";
-import {
-  BusinessQueryContextProvider,
-  FormSubmissionContextProvider,
-  HeaderTitleContextProvider,
-} from "../contexts";
+import { BusinessQueryContextProvider } from "../contexts/BusinessQuery";
+import { HeaderTitleContextProvider } from "../contexts/HeaderTitleContext";
+import { FormSubmissionContextProvider } from "../contexts/FormSubmissionContext";
 import { theme } from "../contents/theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { DndProvider } from "react-dnd";

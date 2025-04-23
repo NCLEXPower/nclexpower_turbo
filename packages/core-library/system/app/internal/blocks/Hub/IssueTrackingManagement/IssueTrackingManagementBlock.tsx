@@ -4,10 +4,10 @@ import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import { Alert, Card, DataGrid } from '../../../../../../components';
 import { useColumns, useModal, useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from '../../../../../../contexts';
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "./utils/StatusBadge";
 import { IssueDetailsModal } from "./IssueDetailsModal";
-import { StyledModal } from './StyledModal';
-import { alertStyle, tableStyle, titleStyle, rowStyle } from './style';
+import { StyledModal } from './styles/StyledModal';
+import { alertStyle, tableStyle, titleStyle, rowStyle } from './styles/style';
 import { getStatusLabel } from "./utils/statusHelpers";
 import { formatDate } from './utils/formatDate';
 
@@ -250,6 +250,7 @@ export const IssueTrackingManagementBlock = () => {
           modal={modal.props}
           onClose={modal.close}
           onStatusChange={handleStatusChange}
+          fetchTickets={fetchTickets}
           data-testid="issue-details-modal"
         />
       </StyledModal>

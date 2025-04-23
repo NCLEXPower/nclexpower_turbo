@@ -1,27 +1,49 @@
-import React from "react";
-import { screen, fireEvent, waitFor } from "../../common";
-import { render } from "@testing-library/react";
-import { useModal } from "../../../hooks";
+import { render, screen, fireEvent, waitFor } from "../../common";
 import { IssueTrackingManagementBlock } from "../../../system/app/internal/blocks";
+
+let openMock: jest.Mock;
+let closeMock: jest.Mock;
+let executeMock: jest.Mock;
+let showToastMock: jest.Mock;
+let isOpenMock: boolean;
+let contextMock: any;
 
 jest.mock("../../../config", () => ({
   getConfig: jest.fn().mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
   config: { value: jest.fn() },
 }));
 
-jest.mock("../../../hooks/useModal", () => {
-  let isOpenMock: boolean = false;
-  let contextMock: any = undefined;
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
+}));
 
-  const openMock = jest.fn((context?: any) => {
+jest.mock("../../../hooks", () => {
+  openMock = jest.fn((context?: any) => {
     contextMock = context;
     isOpenMock = true;
   });
 
-  const closeMock = jest.fn(() => {
+  closeMock = jest.fn(() => {
     contextMock = undefined;
     isOpenMock = false;
   });
+
+  executeMock = jest.fn().mockResolvedValue({
+    data: [
+      {
+        id: "1",
+        refNo: "ABC123",
+        message: "Test issue",
+        createdAt: "2025-04-17",
+        status: 1,
+        email: "test@example.com",
+      },
+    ],
+  });
+
+  showToastMock = jest.fn();
+  isOpenMock = false;
+  contextMock = undefined;
 
   return {
     useModal: jest.fn(() => ({
@@ -35,6 +57,32 @@ jest.mock("../../../hooks/useModal", () => {
           return contextMock;
         },
       },
+    })),
+    useApiCallback: jest.fn(() => ({
+      execute: executeMock,
+    })),
+    useExecuteToast: jest.fn(() => ({
+      showToast: showToastMock,
+    })),
+    useColumns: jest.fn(() => ({
+      columns: [
+        {
+          field: "reference",
+          headerName: "Reference Number",
+          renderCell: (params: any) => (
+            <div
+              data-testid={`reference-cell-${params.row.reference}`}
+              onClick={() => openMock(params.row)} 
+            >
+              [{params.value}]
+            </div>
+          ),
+        },
+        {
+          field: "status",
+          headerName: "Status",
+        },
+      ],
     })),
   };
 });
@@ -78,37 +126,21 @@ jest.mock("../../../system/app/internal/blocks/Hub/IssueTrackingManagement/Issue
 }));
 
 describe("IssueTrackingManagementBlock", () => {
-  let openMock: jest.Mock;
-  let mockClose: jest.Mock;
-  let modalProps: { isOpen: boolean; context: any };
-
+  
   beforeEach(() => {
     jest.clearAllMocks();
 
-    modalProps = {
-      isOpen: false,
-      context: undefined,
-    };
-
-    openMock = jest.fn((context?: any) => {
-      modalProps.context = context;
-      modalProps.isOpen = true;
-    });
-
-    mockClose = jest.fn(() => {
-      modalProps.isOpen = false;
-      modalProps.context = undefined;
-    });
-
-    (useModal as jest.Mock).mockReturnValue({
-      open: openMock,
-      close: mockClose,
-      props: modalProps,
-    });
+    isOpenMock = false;
+    contextMock = undefined;  
   });
 
-  test("renders DataGrid with expected rows", () => {
+  test("renders DataGrid with expected rows", async () => {
     render(<IssueTrackingManagementBlock />);
+
+    await waitFor(() => {
+      expect(executeMock).toHaveBeenCalled();
+    });
+
     const dataGrid = screen.getByTestId("data-grid");
     expect(dataGrid).toBeInTheDocument();
 
@@ -116,17 +148,20 @@ describe("IssueTrackingManagementBlock", () => {
     expect(rows.length).toBeGreaterThan(0);
   });
 
-  test("calls modal.open with correct data when reference cell is clicked", () => {
+  test("calls modal.open with correct data when reference cell is clicked", async () => {
     render(<IssueTrackingManagementBlock />);
 
-    const referenceCells = screen.getAllByTestId(/reference-cell-.*/);
-
+    const referenceCells = await screen.findAllByTestId(/reference-cell-.*/);
     expect(referenceCells.length).toBeGreaterThan(0);
 
     fireEvent.click(referenceCells[0]);
 
     expect(openMock).toHaveBeenCalledWith(expect.objectContaining({
-      reference: expect.any(String),
+      reference: "ABC123",
+      description: "Test issue",
+      dateCreated: "2025-04-17",
+      email: "test@example.com",
+      status: 1,
     }));
   });
 
@@ -141,6 +176,7 @@ describe("IssueTrackingManagementBlock", () => {
     fireEvent.click(referenceCells[0]);
     
     openMock();
+
     rerender(<IssueTrackingManagementBlock />);
 
     const backdrop = await screen.findByTestId("custom-modal-backdrop", {}, { timeout: 3000 });
@@ -151,7 +187,7 @@ describe("IssueTrackingManagementBlock", () => {
     const closeButton = await screen.findByText("Close Modal");
     fireEvent.click(closeButton);
 
-    mockClose();
+    closeMock();
     rerender(<IssueTrackingManagementBlock />);
 
     await waitFor(() => {
@@ -161,4 +197,3 @@ describe("IssueTrackingManagementBlock", () => {
     expect(document.body.style.overflow).toBe("");
   });
 });
-

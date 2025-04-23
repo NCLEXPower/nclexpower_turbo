@@ -1,9 +1,12 @@
-import { render } from "@testing-library/react";
-import { screen, userEvent, waitFor } from "../../common";
+import { render, screen, userEvent, waitFor } from "../../common";
 import { IssueStatusDropdown } from "../../../system/app/internal/blocks/Hub/IssueTrackingManagement/IssueStatusDropdown";
 
 jest.mock("../../../config", () => ({
   config: { value: jest.fn() },
+}));
+
+jest.mock("../../../core/router", () => ({
+  useRouter: jest.fn(),
 }));
 
 describe("IssueStatusDropdown", () => {
@@ -47,7 +50,7 @@ describe("IssueStatusDropdown", () => {
     await userEvent.click(optionElement);
   
     await waitFor(() => {
-      expect(setSelectedStatusMock).toHaveBeenCalledWith("Resolved");
+      expect(setSelectedStatusMock).toHaveBeenCalledWith(2);
     });
   });
 });

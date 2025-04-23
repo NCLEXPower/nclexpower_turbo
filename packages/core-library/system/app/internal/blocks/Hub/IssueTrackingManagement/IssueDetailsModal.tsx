@@ -8,7 +8,7 @@ import { IssueDescriptionBox } from "./IssueDescriptionBox";
 import { IssueStatusDropdown } from "./IssueStatusDropdown";
 import { useApiCallback } from "../../../../../../hooks";
 import { useExecuteToast } from "../../../../../../contexts";
-import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./style";
+import { submitButtonStyle, modalContainerStyle, iconButtonStyle } from "./styles/style";
 import { formatDate } from "./utils/formatDate";
 
 interface IssueContext {
@@ -28,9 +28,10 @@ interface IssueDetailsModalProps {
   modal: IssueModal;
   onClose: () => void;
   onStatusChange: (reference: string, newStatus: number) => void;
+  fetchTickets: () => void;
 }
 
-export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange }) => {
+export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onClose, onStatusChange, fetchTickets }) => {
   const { isOpen, context } = modal;
   const [selectedStatus, setSelectedStatus] = useState<number>(0);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -85,6 +86,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({ modal, onC
       if (result) {
         showToast("Issue status updated successfully.", "success");
         onStatusChange(context.reference, selectedStatus);
+        fetchTickets();
         onClose();
       } else {
         showToast("Failed to update issue status. Please try again.", "error");
