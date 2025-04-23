@@ -2,12 +2,14 @@ import fs from "fs";
 import path from "path";
 
 export const getAllRoutes = (): string[] => {
-  const resolveDir = path.join(__dirname, "..");
 
-  console.log("Resolved Dir:", resolveDir);
+  const projectRoot = process.cwd();
+  const pagesDir = path.join(projectRoot, "src", "pages");
 
-  if (!fs.existsSync(resolveDir)) {
-    console.warn(`Directory does not exist: ${resolveDir}`);
+  console.log("Scanning pages directory:", pagesDir);
+
+  if (!fs.existsSync(pagesDir)) {
+    console.warn(`Directory does not exist: ${pagesDir}`);
     return [];
   }
 
@@ -19,19 +21,28 @@ export const getAllRoutes = (): string[] => {
     for (const entry of entries) {
       const entryPath = path.join(currentDir, entry.name);
 
-      if (entry.isDirectory()) {
-        scanDir(entryPath, `${baseRoute}/${entry.name}`);
-      } else if (entry.isFile()) {
-        const routeName = entry.name.replace(/\.(js|jsx|ts|tsx)$/, "");
-        if (routeName === "index") {
-          routes.push(baseRoute || "/");
-        } else {
-          routes.push(`${baseRoute}/${routeName}`);
-        }
-      }
-    }
-  };
+       if (entry.name.startsWith('_') || entry.name.startsWith('.') || 
+       entry.name === 'api' || entry.name === 'node_modules') {
+     continue;
+   }
 
-  scanDir(resolveDir);
-  return routes;
+   if (entry.isDirectory()) {
+     scanDir(entryPath, `${baseRoute}/${entry.name}`);
+   } else if (entry.isFile() && /\.(js|jsx|ts|tsx)$/.test(entry.name)) {
+
+    const routeName = entry.name.replace(/\.(js|jsx|ts|tsx)$/, "");
+     if (routeName === "index") {
+       routes.push(baseRoute || "/");
+     } else {
+
+       const normalizedRoute = `${baseRoute}/${routeName}`.replace(/\/+/g, '/');
+       routes.push(normalizedRoute);
+     }
+   }
+ }
+};
+
+scanDir(pagesDir);
+console.log(`Found ${routes.length} routes`);
+return routes;
 };
