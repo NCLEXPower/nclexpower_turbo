@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -8,7 +8,12 @@ import {
   CreateCustomerParams,
   ValidateTokenParams,
 } from "./api/types";
-import { ChatBotSsr, CmsGlobals, MaintenanceSsr } from "./types/global";
+import {
+  ChatBotSsr,
+  CmsGlobals,
+  GoLiveStatusSsr,
+  MaintenanceSsr,
+} from "./types/global";
 import { TenantResponse } from "./types/tenant";
 import qs from "query-string";
 import { getTimeZone } from "./utils";
@@ -105,15 +110,15 @@ export async function getMaintenanceMode() {
   return ((await response.json()) as MaintenanceSsr) ?? null;
 }
 
-export async function getHasActiveGoLive() {
+export async function getHasActiveGoLive(clientCountry: string) {
   const response = await fetch(
-    `${baseUrl}/api/v2/internal/baseInternal/check-active-schedule`,
+    `${baseUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=${clientCountry}`,
     {
       method: "GET",
       headers: headers,
     }
   );
-  return ((await response.json()) as boolean) ?? null;
+  return ((await response.json()) as GoLiveStatusSsr) ?? null;
 }
 
 export async function getEndpointResources() {
@@ -130,9 +135,12 @@ export async function getEndpointResources() {
 }
 
 export async function getHasChatBotWidget() {
-  const response = await fetch(`${baseUrl}/api/v1/Customer/get-helpwidget-status`, {
-    method: "GET",
-    headers: headers,
-  });
+  const response = await fetch(
+    `${baseUrl}/api/v1/Customer/get-helpwidget-status`,
+    {
+      method: "GET",
+      headers: headers,
+    }
+  );
   return ((await response.json()) as ChatBotSsr) ?? null;
 }

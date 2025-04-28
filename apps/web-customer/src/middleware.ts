@@ -1,4 +1,5 @@
 import { ValidateTokenParams } from "core-library/api/types";
+import { GoLiveStatusSsr } from "core-library/types/global";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -18,9 +19,12 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const tokenId = request.cookies.get("nclex_customer");
   const accountId = request.cookies.get("nclex_account");
-  const analytics = request.cookies.get("analytics");
+  const ipGeo = request.cookies.get("geocountry");
   const proceedToHubUrl = new URL("/hub", request.url);
+  const proceedToHome = new URL("/", request.url);
   const proceedToLoginUrl = new URL("/login", request.url);
+  const proceedToDeniedCountry = new URL("/blocked", request.url);
+  const proceedToComingSoon = new URL("/coming-soon", request.url);
   const proceed2faUrl = new URL("/account/verification/otp", request.url);
   const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
   const publicRoutes = [
@@ -28,26 +32,62 @@ export async function middleware(request: NextRequest) {
     "/about",
     "/contact",
     "/account/registration",
+    "/",
   ];
   const { pathname, searchParams } = url;
+  const country = request.geo?.country ?? "";
+  const response = withCustomCookie(NextResponse.next(), country);
+  const goLiveStatus = await IsCountryBlocked(country, baseUrl);
+  const isBlocked = goLiveStatus?.blocked;
+  const isLive = goLiveStatus?.goLiveStatus;
+  const isComingSoonPage = pathname.includes("coming-soon");
+  const isBlockedPage = pathname.includes("blocked");
 
-  const hasTwoFactorAuth = await HasTwoFactorAuth(
-    { accountId: accountId?.value ?? "" },
-    baseUrl
-  );
-
-  if (hasTwoFactorAuth && !tokenId) {
-    if (pathname !== "/account/verification/otp") {
-      return NextResponse.redirect(proceed2faUrl);
-    }
-    return NextResponse.next();
+  if ((isComingSoonPage && !isLive) || (isBlockedPage && !isBlocked)) {
+    return NextResponse.redirect(proceedToHome);
   }
+
+  if (!pathname.includes("blocked") && goLiveStatus && goLiveStatus?.blocked) {
+    return withCustomCookie(
+      NextResponse.redirect(proceedToDeniedCountry),
+      country
+    );
+  }
+
+  if (!isComingSoonPage && isLive) {
+    return withCustomCookie(
+      NextResponse.redirect(proceedToComingSoon),
+      country
+    );
+  }
+
+  if (publicRoutes.includes(pathname)) {
+    url.pathname = `/nclex${pathname}`;
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith("/nclex")) {
+    url.pathname = pathname.replace(/^\/nclex/, "") || "/";
+    return NextResponse.rewrite(url);
+  }
+
+  // const hasTwoFactorAuth = await HasTwoFactorAuth(
+  //   { accountId: accountId?.value ?? "" },
+  //   baseUrl
+  // );
+
+  // if (hasTwoFactorAuth && !tokenId) {
+  //   if (pathname !== "/account/verification/otp") {
+  //     return NextResponse.redirect(proceed2faUrl);
+  //   }
+  //   return NextResponse.next();
+  // }
 
   if (!tokenId) {
     if (pathname.startsWith("/hub") || pathname === "/hub/payment-setup") {
       return NextResponse.redirect(proceedToLoginUrl);
     }
-    return NextResponse.next();
+    return response;
   }
 
   const isTokenValid = await validateTokenSsr(
@@ -90,7 +130,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/login") {
+  if (pathname === "/nclex/login") {
     return NextResponse.next();
   }
 
@@ -103,7 +143,7 @@ export async function middleware(request: NextRequest) {
     const params = {
       paymentIntentId: searchParams.get("payment_intent") ?? "",
       accountId: accountId?.value ?? "",
-      analyticsParams: analytics?.value ?? "",
+      country: ipGeo?.value ?? request.geo?.country,
       accessToken: tokenId.value,
     };
     await paymentConfirmed(params, baseUrl);
@@ -118,6 +158,7 @@ export async function middleware(request: NextRequest) {
 
   await userAgentValidation(request);
   await enforceHttpToHttps(request);
+
   return NextResponse.next();
 }
 
@@ -128,12 +169,53 @@ export const config = {
     "/about",
     "/contact",
     "/account/registration",
+    "/blocked",
+    "/coming-soon",
+    "/",
+    "/nclex/:path*",
   ],
 };
+
+function withCustomCookie(res: NextResponse, country: string) {
+  res.cookies.set("client_country", country);
+  return res;
+}
 
 /**
  * Isolate all functions below to core-library..
  */
+
+export async function IsCountryBlocked(
+  clientCountry: string | undefined,
+  publicUrl: string | undefined
+): Promise<GoLiveStatusSsr | undefined> {
+  try {
+    if (!clientCountry) {
+      return;
+    }
+
+    if (!publicUrl) {
+      return;
+    }
+
+    const encodedCountry = encodeURIComponent(clientCountry);
+    const url = `${publicUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodedCountry}`;
+
+    const requestHeaders: HeadersInit = {
+      ...(headers || {}),
+    };
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: requestHeaders,
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error occurred while checking ispaid:", error);
+  }
+}
 
 export async function IsAccountPaid(
   params: { accountId: string; accessToken: string | undefined | null },
@@ -181,8 +263,6 @@ export async function HasTwoFactorAuth(
       }
     );
 
-    console.log("response", response.json());
-
     if (!response.ok) {
       throw new Error(`API call failed with status: ${response.status}`);
     }
@@ -204,7 +284,7 @@ async function paymentConfirmed(
   params: {
     paymentIntentId: string;
     accountId: string;
-    analyticsParams: string;
+    country?: string | undefined;
     accessToken: string | undefined | null;
   },
   publicUrl: string | undefined

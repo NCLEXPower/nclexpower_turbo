@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -8,9 +8,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { productSchema, ProductFormType } from "./validation";
 import React from "react";
-import { useBusinessQueryContext } from '../../../../../../../contexts';
-import { useFormFocusOnError } from '../../../../../../../hooks';
-import { Button, GenericSelectField, MultipleSelectField, TextField } from '../../../../../../../components';
+import { useBusinessQueryContext } from "../../../../../../../contexts";
+import { useFormFocusOnError } from "../../../../../../../hooks";
+import {
+  Button,
+  GenericSelectField,
+  MultipleSelectField,
+  TextField,
+} from "../../../../../../../components";
 import { GetAllInclusionResponse } from "../../../../../../../api/types";
 
 type Props = {
@@ -19,8 +24,11 @@ type Props = {
 };
 
 export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
-  const { businessQueryGetAllPricing, businessQuerySelectAllCategories, businessQueryGetAllInclusion } =
-    useBusinessQueryContext();
+  const {
+    businessQueryGetAllPricing,
+    businessQuerySelectAllCategories,
+    businessQueryGetAllInclusion,
+  } = useBusinessQueryContext();
   const { data, isLoading } = businessQueryGetAllPricing(["selectAllPricing"]);
   const { data: categoryData } = businessQuerySelectAllCategories([
     "selectAllCategories",
@@ -37,12 +45,13 @@ export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   const { control, handleSubmit, clearErrors, setFocus, formState } = form;
   useFormFocusOnError<ProductFormType>(formState.errors, setFocus);
 
-  const inclusions = inclusionsData && inclusionsData.length > 0
-    ? inclusionsData.map((item: GetAllInclusionResponse) => ({
-      label: item.option,
-      value: item.option,
-    }))
-    : [];
+  const inclusions =
+    inclusionsData && inclusionsData.length > 0
+      ? inclusionsData.map((item: GetAllInclusionResponse) => ({
+          label: item.option,
+          value: item.option,
+        }))
+      : [];
 
   return (
     <Box>

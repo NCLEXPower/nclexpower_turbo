@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -24,6 +24,13 @@ import {
   ChatbotManagementBlock,
   ContactUsManagementBlock,
   AnnouncementManagementBlock,
+  ProgramManagementListBlock,
+  ProgramManagementListCreateBlock,
+  ProgramManagementListEditBlock,
+  ProgramSectionManagementListBlock,
+  ProgramSectionManagementCreateBlock,
+  ProgramSectionManagementEditBlock,
+  ProgramSectionManagementEditItemBlock,
   ComingSoonManagementBlock,
   CaseNameManagementBlock,
   AnalyticsBlock,
@@ -82,6 +89,20 @@ const ParseBlocks: React.FC<ParseBlocksProps> = (props) => {
       return <AnalyticsBlock />;
     case "AnnouncementManagementBlock":
       return <AnnouncementManagementBlock />;
+    case "ProgramManagementListBlock":
+      return <ProgramManagementListBlock />;
+    case "ProgramManagementListCreateBlock":
+      return <ProgramManagementListCreateBlock />;
+    case "ProgramManagementListEditBlock":
+      return <ProgramManagementListEditBlock />;
+    case "ProgramSectionManagementBlock":
+      return <ProgramSectionManagementListBlock />;
+    case "ProgramSectionManagementCreateBlock":
+      return <ProgramSectionManagementCreateBlock />;
+    case "ProgramSectionManagementEditBlock":
+      return <ProgramSectionManagementEditBlock />;
+    case "ProgramSectionManagementEditItemBlock":
+      return <ProgramSectionManagementEditItemBlock />
     case "ComingSoonManagementBlock":
       return <ComingSoonManagementBlock />;
     case "CaseNameManagementBlock":

@@ -4,9 +4,9 @@ import {
   InformationRegistrationFormType,
   informationRegistrationSchema,
   RegistrationAtom,
-  RegistrationFormType
+  RegistrationFormType,
 } from "./validation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -19,9 +19,10 @@ interface Props {
 
 export const InformationRegistration: React.FC<Props> = ({
   nextStep,
-  next
+  next,
 }) => {
-  const [registrationDetails, setRegistrationDetails] = useAtom(RegistrationAtom);
+  const [registrationDetails, setRegistrationDetails] =
+    useAtom(RegistrationAtom);
   const methods = useForm<InformationRegistrationFormType>({
     resolver: yupResolver(informationRegistrationSchema),
     defaultValues: {
@@ -30,10 +31,23 @@ export const InformationRegistration: React.FC<Props> = ({
       lastname: registrationDetails.lastname || "",
     },
   });
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, watch } = methods;
+
+  const firstname = watch("firstname");
+  const middlename = watch("middlename");
+  const lastname = watch("lastname");
+
+  useEffect(() => {
+    setRegistrationDetails((prev) => ({
+      ...prev,
+      firstname,
+      middlename,
+      lastname,
+    }));
+  }, [firstname, middlename, lastname, setRegistrationDetails]);
 
   async function handleNextStep(values: InformationRegistrationFormType) {
-    const data = ({ ...values, ...registrationDetails });
+    const data = { ...values, ...registrationDetails };
     setRegistrationDetails(data);
     nextStep(data);
     next();
@@ -50,7 +64,7 @@ export const InformationRegistration: React.FC<Props> = ({
             borderRadius: "0.625rem",
             width: "100%",
             backgroundColor: "rgba(15, 42, 113, 0.05);",
-            border: "1px solid rgba(15, 42, 113, 0.05);"
+            border: "1px solid rgba(15, 42, 113, 0.05);",
           }}
           inputProps={{
             style: { padding: 15, borderRadius: "10px" },
@@ -66,7 +80,7 @@ export const InformationRegistration: React.FC<Props> = ({
             borderRadius: "0.625rem",
             width: "100%",
             backgroundColor: "rgba(15, 42, 113, 0.05);",
-            border: "1px solid rgba(15, 42, 113, 0.05);"
+            border: "1px solid rgba(15, 42, 113, 0.05);",
           }}
           inputProps={{
             style: { padding: 15, borderRadius: "10px" },
@@ -82,7 +96,7 @@ export const InformationRegistration: React.FC<Props> = ({
             borderRadius: "0.625rem",
             width: "100%",
             backgroundColor: "rgba(15, 42, 113, 0.05);",
-            border: "1px solid rgba(15, 42, 113, 0.05);"
+            border: "1px solid rgba(15, 42, 113, 0.05);",
           }}
           inputProps={{
             style: { padding: 15, borderRadius: "10px" },

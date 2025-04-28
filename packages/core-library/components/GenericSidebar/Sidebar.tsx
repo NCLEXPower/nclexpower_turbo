@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -8,7 +8,7 @@ import { Box, List, Drawer, Theme, CSSObject } from "@mui/material";
 import { SidebarListButton } from "./SidebarListButton";
 import { SidebarButton } from "./SidebarButton";
 import { usePathname } from "next/navigation";
-import { NCLEXBlueLogo } from "../../assets";
+import { ArxeniusLogoBlue } from "../../assets";
 import Image from "next/image";
 import { MenuItems } from "../../api/types";
 import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
@@ -159,13 +159,17 @@ export const Sidebar: React.FC<SideBarPropsType> = ({
           height={70}
         >
           <div className="shrink-0 relative">
-            <Image style={{ width: 150 }} src={NCLEXBlueLogo} alt="NCLEXLogo" />
+            <Image
+              style={{ width: 150 }}
+              src={ArxeniusLogoBlue}
+              alt="NCLEXLogo"
+            />
             {!open && (
               <Box
                 top={0}
                 right={0}
                 bottom={0}
-                left="35px"
+                left="30px"
                 bgcolor="white"
                 position="absolute"
               />

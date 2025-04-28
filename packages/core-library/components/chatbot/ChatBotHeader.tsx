@@ -27,7 +27,7 @@ export const ChatBotHeader: React.FC<Props> = ({ onClose }) => {
         variant="h1"
         tabIndex={-1}
       >
-        NCLEXPower Virtual Assistant
+        Arxenius Virtual Assistant
       </Typography>
       <ChatBotLogo width={90} height={40} />
       <Box>

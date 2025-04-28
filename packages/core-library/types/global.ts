@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -169,6 +169,7 @@ export interface SelectedProductType {
     features: string[];
   };
 }
+
 export interface ProductCardType {
   id: string;
   productName: string;
@@ -237,9 +238,20 @@ export type ChatBotSsr = {
   updatedDate: string;
 };
 
+export type GoLiveStatusSsr = {
+  blocked: false;
+  goLiveStatus: false;
+  goLive: {
+    id: string;
+    eventName: string;
+    countries: string[];
+    environment: number;
+  };
+};
+
 export type SsrTypes = {
   MaintenanceStatus: { currentMaintenanceMode: MaintenanceMode };
   endpoints?: { endpoint: string; keyUrl: string }[];
-  hasGoLive: boolean;
+  hasGoLive: GoLiveStatusSsr;
   hasChatBotWidget: ChatBotSsr;
 };

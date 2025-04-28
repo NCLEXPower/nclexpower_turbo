@@ -14,6 +14,7 @@ import {
   CreateCustomerResponse,
   CreatePaymentIntentParams,
   CreateSalesParams,
+  GoLiveStatusResponse,
   NotifyParams,
   OrderSummaryResponse,
   PaymentIntentResponse,
@@ -206,6 +207,12 @@ export class WebApi {
     );
   }
 
+  public async getReportIssue(refNo: string) {
+    return await this.axios.post(
+      `/api/v1/Customer/get-report-issue?${qs.stringify({ RefNo: refNo })}`
+    );
+  }
+
   public async changePaymentStatus(accountId: string | undefined) {
     return await this.axios.put(
       `/api/v1/Customer/change-payment-status?${qs.stringify({ accountId })}`
@@ -257,9 +264,9 @@ export class WebApi {
     return this.axios.delete<T>(`/${url}?${qs.stringify(params)}`);
   }
 
-  public async getActiveSchedule() {
-    return await this.axios.get<ScheduleResponse>(
-      `/api/v2/internal/baseInternal/active-schedule`
+  public async getActiveSchedule(clientCountry: string) {
+    return await this.axios.get<GoLiveStatusResponse>(
+      `/api/v2/internal/baseInternal/active-schedule?${qs.stringify({ clientCountry })}`
     );
   }
 }

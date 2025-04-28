@@ -46,7 +46,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
         }}
       >
         <Link
-          href="/"
+          href="/login"
           className="flex items-center justify-end xl:px-60 px-40 cursor-pointer text-darkBlue ml-[390px] sm:ml-[470px] pt-8 pl-1"
           style={{ backgroundColor: "transparent" }}
         >

@@ -2,7 +2,7 @@ import {
   RevolutionBannerBlock,
   CoreZigmaBlock,
   HowItWorksBlock,
-  PricingBlock
+  PricingBlock,
 } from "@/components";
 import { withCSP } from "core-library";
 import { GetServerSideProps } from "next";

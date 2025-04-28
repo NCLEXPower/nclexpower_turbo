@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -26,7 +26,7 @@ export const list = [
 export const CompanyInfo = {
   address: "1700 Eureka Rd Ste 155 Roseville, California 95661",
   phone: "1-866-800-3030",
-  website: "info@nclexpower.com",
+  website: "info@arxenius.com",
 };
 
 export const UnauthorizedHeader: MenuItems[] = [
@@ -192,8 +192,7 @@ export const settings = {
   speed: 2000,
   autoplaySpeed: 8000,
   cssEase: "ease-in-out",
-  dots: true,
-  dotsClass: "slick-dots",
+  dots: false,
 };
 
 export const FastTrackList = [

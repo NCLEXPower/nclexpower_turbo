@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -20,14 +20,18 @@ export const RevolutionBannerBlock: React.FC<Props> = () => {
   const { isMobile, isTablet } = useResolution();
   return (
     <div className="h-screen overflow-hidden">
-      <ImageCarousel key={window.innerWidth} sliderConfig={settings}>
+      <ImageCarousel
+        key={window.innerWidth}
+        sliderConfig={settings}
+        showDots={true}
+      >
         <div className="h-full w-full relative">
           <div className="absolute  justify-center h-full w-full flex  flex-col left-0 text-white z-10 pl-[12%] pt-[3%]">
             <p className="lg:text-6xl md:text-5xl sm:text-4xl text-3xl font-bold font-Rajdhani drop-shadow-xl">
               Welcome to
             </p>
             <p className="lg:text-7xl md:text-6xl sm:text-5xl text-4xl font-bold font-Poppins text-[#f4c501] -mt-4 lg:-mt-5 drop-shadow-xl">
-              NCLEX Power Review
+              Arxenius NCLEX Review
             </p>
             <p className="lg:text-2xl sm:text-xl text-md -mt-4 lg:-mt-5">
               Your Journey to Passing the NCLEX <br /> Begins Now
