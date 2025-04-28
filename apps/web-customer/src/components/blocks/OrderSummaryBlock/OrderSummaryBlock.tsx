@@ -1,9 +1,8 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import React from "react";
 import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
@@ -11,6 +10,7 @@ import { useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library";
 import { Card, Typography } from "@mui/material";
 import { useResolution } from "core-library/hooks";
+import { EvaIcon } from "core-library/components";
 
 type Props = {};
 
@@ -26,24 +26,33 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
   }
 
   return orderDetail ? (
-    <div
-      className="w-full flex justify-center items-center px-4"
-    >
-      <Card sx={{
-        maxWidth: '645px',
-        minWidth: isMobile ? "100%" : '350px',
-        width: '66.67%',
-        padding: '10px 2.5rem',
-        borderRadius: '20px',
-        border: '1px solid #E5E5E5',
-        fontFamily: 'PT Sans',
-        height: 'fit-content',
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)'
-      }}>
+    <div className="w-full h-auto lg:h-screen relative flex flex-col justify-center items-center px-4">
+      <div
+        className={`${isMobile ? "w-full" : "w-2/3"} flex justify-start py-4`}
+      >
+        <div
+          onClick={() => router.back()}
+          className="relative w-[110px] justify-start cursor-pointer rounded-[15px] bg-white shadow-md flex items-start p-4 gap-2"
+        >
+          <EvaIcon fill="#0F2A71" name="arrow-back-outline" />
+          <Typography sx={{ color: "#0F2A71" }}>Back</Typography>
+        </div>
+      </div>
+      <Card
+        sx={{
+          maxWidth: "645px",
+          minWidth: isMobile ? "100%" : "350px",
+          width: "66.67%",
+          padding: "10px 2.5rem",
+          borderRadius: "20px",
+          border: "1px solid #E5E5E5",
+          fontFamily: "PT Sans",
+          height: "fit-content",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <div className="p-3">
-          <p className="pt-sans-bold text-4xl mb-5 ">
-            Order Summary
-          </p>
+          <p className="pt-sans-bold text-4xl mb-5 ">Order Summary</p>
           <p className="pt-sans-narrow-regular text-lg text-darkGray">
             Thank you for your order! Below are the details of your selected
             plan and the total price you will be charged. Please review all the
@@ -55,52 +64,75 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
             <div className="flex flex-col gap-2 border border-zinc-300 rounded-md p-6">
               <Typography
                 sx={{
-                  fontFamily: 'PT Sans Narrow',
+                  fontFamily: "PT Sans Narrow",
                 }}
-              >Plan name:
+              >
+                Plan name:
               </Typography>
-              <Typography sx={{
-                fontFamily: 'PT Sans Narrow',
-                fontWeight: 600,
-                textAlign: 'end',
-                color: '#0F2A71'
-              }} >
+              <Typography
+                sx={{
+                  fontFamily: "PT Sans Narrow",
+                  fontWeight: 600,
+                  textAlign: "end",
+                  color: "#0F2A71",
+                }}
+              >
                 {orderDetail.productName} (
                 {orderDetail.programTitle == 0 ? "RN" : "PN"})
               </Typography>
               <div>
-                <Typography sx={{ fontFamily: "PT Sans Narrow" }}>Duration: </Typography>
+                <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
+                  Duration:{" "}
+                </Typography>
                 <div className="text-[#0F2A71] font-semibold text-end">
                   {orderDetail.programType == 0 ? (
-                    <Typography sx={{
-                      fontFamily: 'PT Sans Narrow',
-                      fontWeight: 600,
-                      textAlign: 'end',
-                      color: '#0F2A71'
-                    }}> 23 Days (Standard)
+                    <Typography
+                      sx={{
+                        fontFamily: "PT Sans Narrow",
+                        fontWeight: 600,
+                        textAlign: "end",
+                        color: "#0F2A71",
+                      }}
+                    >
+                      {" "}
+                      23 Days (Standard)
                     </Typography>
                   ) : orderDetail.programType == 1 ? (
-                    <Typography sx={{
-                      fontFamily: 'PT Sans Narrow',
-                      fontWeight: 600,
-                      textAlign: 'end',
-                      color: '#0F2A71'
-                    }}> 8 Days (Fast Track)
+                    <Typography
+                      sx={{
+                        fontFamily: "PT Sans Narrow",
+                        fontWeight: 600,
+                        textAlign: "end",
+                        color: "#0F2A71",
+                      }}
+                    >
+                      {" "}
+                      8 Days (Fast Track)
                     </Typography>
                   ) : null}
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-2 border border-zinc-300 rounded-md p-6">
-              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>Description : </Typography>
-              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>{orderDetail.productDescription}</Typography>
+              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
+                Description :{" "}
+              </Typography>
+              <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
+                {orderDetail.productDescription}
+              </Typography>
             </div>
           </div>
 
           <div className="p-2 my-6 flex flex-col gap-3">
             <div className=" flex justify-between">
-              <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>Total Amount:</Typography>
-              <Typography sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}>
+              <Typography
+                sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}
+              >
+                Total Amount:
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}
+              >
                 {orderDetail.amount}.00 {orderDetail.currency}
               </Typography>
             </div>

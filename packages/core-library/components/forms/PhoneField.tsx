@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -115,7 +115,7 @@ export const PhoneFieldComponent = <T extends object>({
     <Grid container spacing={2} direction="column">
       <Grid item>
         {fieldState?.error?.message && (
-          <Typography sx={{fontSize: 15}} color="error">
+          <Typography sx={{ fontSize: 15 }} color="error">
             {fieldState.error.message}
           </Typography>
         )}
@@ -209,4 +209,3 @@ export const PhoneFieldComponent = <T extends object>({
     onBlur && onBlur(e);
   }
 };
-

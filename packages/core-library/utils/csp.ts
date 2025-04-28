@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -45,11 +45,12 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
     try {
+      const country = context.req.cookies["client_country"] || "";
       const generatedNonce = nonce();
       const csp = generateCSP(generatedNonce);
       const endpoints = await getEndpointResources();
       const MaintenanceStatus = await getMaintenanceMode();
-      const hasGoLiveActive = await getHasActiveGoLive();
+      const hasGoLiveActive = await getHasActiveGoLive(country);
       const hasChatBotWidget = await getHasChatBotWidget();
 
       setCSPHeader(context.res as ServerResponse, csp);

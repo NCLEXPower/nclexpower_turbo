@@ -1,9 +1,8 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import React, { useEffect } from "react";
 import { Box, Grid, IconButton } from "@mui/material";
@@ -97,7 +96,7 @@ export const LoginForm: React.FC<Props> = ({
         <Box className="flex z-0 items-center justify-center">
           <div className="flex items-center justify-center h-screen flex-col lg:px-24">
             <h4 className="pt-sans-caption-bold text-[3rem] text-white mb-2 z-1">
-              Welcome to <span className="text-yellow">NCLEX Power</span>
+              Welcome to <span className="text-yellow">Arxenius Review</span>
             </h4>
             <h5 className="pt-sans-regular text-white text-[1.5rem]">
               Pass the NCLEX with our CORE Zigma Review System.

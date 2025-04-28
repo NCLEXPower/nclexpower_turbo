@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -22,6 +22,13 @@ export * from "./DuplicateSession/DuplicateSessionBlock";
 export * from "./Hub/ChatbotManagement/ChatbotManagementBlock";
 export * from "./Hub/ContactUs/ContactUsManagement/ContactUsManagementBlock";
 export * from "./Hub/Announcement/AnnouncementManagementBlock";
+export * from "./Hub/ProgramManagement/program-management-list/ProgramManagementListBlock";
+export * from "./Hub/ProgramManagement/program-management-list/blocks/create/ProgramManagementListCreateBlock";
+export * from "./Hub/ProgramManagement/program-management-list/blocks/edit/ProgramManagementListEditBlock";
+export * from "./Hub/ProgramManagement/program-section-management/ProgramSectionManagementBlock";
+export * from "./Hub/ProgramManagement/program-section-management/blocks/create/ProgramSectionManagementCreateBlock";
+export * from "./Hub/ProgramManagement/program-section-management/blocks/edit/ProgramSectionManagementEditBlock";
+export * from "./Hub/ProgramManagement/program-section-management/blocks/edit-item/ProgramSectionManagementEditItemBlock";
 export * from "./Hub/ComingSoon/ComingSoonManagementBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsAccountBlock/SettingsAccountBlock";
 export * from "./Hub/Settings/SettingsManagement/SettingsPlansBlock/SettingsPlansBlock";

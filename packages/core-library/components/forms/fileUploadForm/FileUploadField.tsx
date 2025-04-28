@@ -1,5 +1,5 @@
 import { ErrorOutline } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { Stack, SxProps, Typography } from "@mui/material";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {
@@ -31,6 +31,8 @@ interface Props<T extends object> {
   uploadErrors?: string[];
   preUploadErrors?: string[];
   onUpload?(files: FileList | null): void;
+  triggerLabel?: string;
+  sx?: SxProps;
 }
 
 interface ComponentProps<T extends object>
@@ -70,6 +72,8 @@ export const FileUploadFieldComponent = <T extends object>({
   dragActiveLabel,
   fileOnUploadName,
   onUpload,
+  triggerLabel,
+  sx,
 }: ComponentProps<T>) => {
   const fileList = Array.from((field?.value as unknown as FileList) || []);
   const priorityErrors = [
@@ -97,7 +101,8 @@ export const FileUploadFieldComponent = <T extends object>({
             acceptTypes={acceptTypes}
             isDisabled={isLoading || isUploading || isRemoving}
             onUpload={handleFilesUpload}
-            text="Select File"
+            text={triggerLabel || "Select File"}
+            sx={sx}
           />
         }
       >

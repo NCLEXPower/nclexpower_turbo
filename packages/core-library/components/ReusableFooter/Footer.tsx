@@ -1,11 +1,11 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
 
 import Image from "next/image";
-import { NCLEXYellowLogo } from "../../assets";
+import { ArxeniusLogoYellow } from "../../assets";
 import { FooterProps } from "../../types/global";
 import { useMemo } from "react";
 import { Box, Grid, Typography } from "@mui/material";
@@ -16,8 +16,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const { isAuthenticated } = useAuthContext();
   const yearData = new Date().getFullYear();
   const memoYear = useMemo(() => yearData, [yearData]);
+  const { hideFooter } = useIsDesignVisible();
 
-  const isHidden = useIsDesignVisible() || isAuthenticated;
+  const isHidden = hideFooter || isAuthenticated;
 
   return (
     !isHidden && (
@@ -64,7 +65,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             >
               <Image
                 style={{ width: 150 }}
-                src={NCLEXYellowLogo}
+                src={ArxeniusLogoYellow}
                 alt="NCLEXLogo"
               />
             </Grid>
@@ -155,6 +156,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                           <li key={index}>
                             <a
                               href={item.path}
+                              target="_blank"
                               className="text-white hover:text-[#eec609]"
                               style={{
                                 fontSize: `clamp(0.75rem, 1vw + 0.3rem, 1.1rem)`,
@@ -183,7 +185,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
             Council of State Boards of Nursing, Inc (NCSBN®)
           </p>
           <p className="w-full text-center pt-4">
-            © {memoYear} NCLEXPower ™. All rights reserved.
+            © {memoYear} Arxenius. All Rights Reserved. Arxenius, the
+            CORE-Zigma System and all logos and trademarks displayed are owned
+            by Arxon Solutions, LLC.
           </p>
         </div>
       </Box>

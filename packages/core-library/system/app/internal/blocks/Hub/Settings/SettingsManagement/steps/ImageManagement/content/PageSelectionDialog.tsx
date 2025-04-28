@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { ImageGallery } from "./ImageGallery";
 import { DynamicImagesTypes, ImageCollectionType } from "../types/types";
 import { CategoryCardItem } from "./CategoryCardItem";
-import { NCLEXBlueLogo } from "../../../../../../../../../../assets";
+import { ArxeniusLogoBlue } from "../../../../../../../../../../assets";
 
 interface Props {
   selectedCard: "Web Customer" | "Web Backoffice" | "Image Gallery";
@@ -41,7 +41,7 @@ export const PageSelectionDialog = ({ selectedCard }: Props) => {
   return (
     <Box sx={{ display: "flex" }}>
       <BaseSidebar
-        logo={NCLEXBlueLogo}
+        logo={ArxeniusLogoBlue}
         menuList={imageCollection}
         selectedMenu={selectedMenu}
         setSelectedMenu={setSelectedMenu}

@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -21,7 +21,14 @@ type StaticRoutes = Record<
   | "order_summary"
   | "account_registration"
   | "device_not_recognized"
-  | "contact_us",
+  | "contact_us"
+  | "program_management_list"
+  | "program_management_list_create"
+  | "program_management_list_edit"
+  | "program_section_management"
+  | "program_section_management_create"
+  | "program_section_management_edit"
+  | "program_section_management_edit_item",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -48,6 +55,13 @@ export const STATIC_ROUTES: StaticRoutes = {
   order_summary: "/order-summary",
   device_not_recognized: "/device-enrollment",
   contact_us: "/contact",
+  program_management_list: "/hub/program/program-management-list",
+  program_management_list_create: "/hub/program/program-management-list/create",
+  program_management_list_edit: "/hub/program/program-management-list/edit",
+  program_section_management: "/hub/program/program-section-management",
+  program_section_management_create: "/hub/program/program-section-management/create",
+  program_section_management_edit: "/hub/program/program-section-management/edit",
+  program_section_management_edit_item: "/hub/program/program-section-management/edit-item",
 };
 
 const routeTitles: Record<string, string> = {

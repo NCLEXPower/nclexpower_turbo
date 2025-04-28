@@ -11,7 +11,7 @@ import {
 } from "core-library/hooks";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
-import { useDeviceSession } from "core-library/contexts/auth/hooks";
+import { AxiosError } from "axios";
 
 export interface SavedDataProps {
   email: string;
@@ -20,7 +20,7 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loading } = useAuthContext();
+  const { login, loginLoading } = useAuthContext();
   const { signInWithGoogle } = useGoogleSignIn();
   const { setItem, getItem, removeItem } = useLocalStorage("rm");
   const [rememberMe, setRememberMe] = useState(false);
@@ -78,10 +78,23 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
-        toast.executeToast("Invalid email or password", "top-right", false, {
-          toastId: 0,
-          type: "error",
-        });
+        const error = err as AxiosError;
+        if (error.response?.status == 401) {
+          toast.executeToast(String(error.response?.data), "top-right", false, {
+            toastId: 0,
+            type: "error",
+          });
+        } else {
+          toast.executeToast(
+            "Something went wrong, please try again later.",
+            "top-right",
+            false,
+            {
+              toastId: 0,
+              type: "error",
+            }
+          );
+        }
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, router, toast]
@@ -105,11 +118,10 @@ export function LoginFormBlock() {
       }
     }
   }, [getItem]);
-
   return (
     <LoginForm
       onSubmit={handleSubmit}
-      submitLoading={loading}
+      submitLoading={loginLoading}
       handleChangeRememberMe={handleChangeRememberMe}
       rememberMe={rememberMe}
       savedData={savedData}

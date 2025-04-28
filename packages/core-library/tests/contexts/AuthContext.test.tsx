@@ -6,13 +6,14 @@ import { act, renderHook, waitFor } from "../common";
 import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { clearSession } from "../../hooks";
 import { useAuthSessionIdleTimer } from "../../contexts/auth/hooks/useAuthSessionIdleTimer";
+import { useExecuteToast } from "../../contexts/ToastContext";
 
 jest.mock("../../config", () => ({
   config: {
     value: {
       BASEAPP: "mockAppName",
       SECRET_KEY:
-        "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", // Example hex key
+        "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
     },
   },
 }));
@@ -68,6 +69,13 @@ jest.mock("../../contexts/auth/hooks/useAuthSessionIdleTimer", () => ({
 }));
 
 jest.mock("jwt-decode", () => jest.fn(() => ({ token_id: "mockTokenId" })));
+
+jest.mock("../../contexts/ToastContext", () => ({
+  useExecuteToast: jest.fn(() => ({
+    executeToast: jest.fn(),
+    showToast: jest.fn(),
+  })),
+}));
 
 describe("useAuthContext", () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (

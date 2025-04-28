@@ -1,8 +1,8 @@
 /**
-* Property of the NCLEX Power.
-* Reuse as a whole or in part is prohibited without permission.
-* Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -15,8 +15,12 @@ import { useGetProgramList } from "core-library/hooks";
 
 export function WatchVideosBlock() {
   const router = useRouter();
-  const [sectionVideos, setSectionVideos] = useState<SectionVideosType[] | null>(null);
-  const [selectedVid, setSelectedVid] = useState<SectionVideosType | null>(null);
+  const [sectionVideos, setSectionVideos] = useState<
+    SectionVideosType[] | null
+  >(null);
+  const [selectedVid, setSelectedVid] = useState<SectionVideosType | null>(
+    null
+  );
   const [sectionMainTitle, setSectionMainTitle] = useState("");
   const [isWideScreen, setIsWideScreen] = useState(false);
   const { programList } = useGetProgramList();
@@ -35,7 +39,8 @@ export function WatchVideosBlock() {
     }
 
     if (programId) {
-      const programTitle = fetchedProgramList?.find((item) => item.id === programId)?.title || "Welcome to CORE Zigma System";
+      const programTitle =
+        fetchedProgramList?.find((item) => item.id === programId)?.title ?? "";
       setSectionMainTitle(programTitle);
     }
   }, [router.query]);

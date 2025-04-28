@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -19,8 +19,8 @@ import {
   FlipCardTwo,
   FlipCardTwoBack,
   LoginBG,
-  NCLEXBlueLogo,
-  NCLEXYellowLogo,
+  ArxeniusLogoBlue,
+  ArxeniusLogoYellow,
   PNBackground,
   PracticeTest,
   RNBackground,
@@ -34,14 +34,14 @@ export const LogoData: CardDataType[] = [
   {
     title: "Dark Logo",
     bgColor: "#404040",
-    imgSrc: NCLEXYellowLogo,
-    imgAlt: "NCLEXYellowLogo",
+    imgSrc: ArxeniusLogoYellow,
+    imgAlt: "ArxeniusLogoYellow",
   },
   {
     title: "White Logo",
     bgColor: "#ffffff",
-    imgSrc: NCLEXBlueLogo,
-    imgAlt: "NCLEXBlueLogo",
+    imgSrc: ArxeniusLogoBlue,
+    imgAlt: "ArxeniusLogoBlue",
   },
   {
     title: "Core Zigma Logo",

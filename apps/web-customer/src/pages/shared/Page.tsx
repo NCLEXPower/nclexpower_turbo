@@ -1,5 +1,5 @@
 /**
- * Property of the NCLEX Power.
+ * Property of the Arxon Solutions, LLC.
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
@@ -19,6 +19,7 @@ import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
 import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 import { GoLiveBlock } from "@/components/blocks/GoLive/GoLiveBlock";
+import { DeniedCountryBlock } from "@/components/blocks/NotAvailableBlock/DeniedCountryBlock";
 
 interface Props {
   slug?: string;
@@ -41,13 +42,9 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   if (error) {
     return <ErrorBox label={error.message} />;
   }
-  
+
   if (MaintenanceMode && MaintenanceMode.includes(config.value.SYSENV)) {
     return <MaintenanceBlock />;
-  }
-
-  if (data?.hasGoLive) {
-    return <GoLiveBlock />;
   }
 
   return (

@@ -1,5 +1,5 @@
 import { PriceButtonType } from "core-library/api/types";
-import { CoreZigmaLogo, NCLEXBlueLogo } from "core-library/assets";
+import { CoreZigmaLogo, ArxeniusLogoBlue } from "core-library/assets";
 import { DialogContents } from "core-library/components";
 
 export const PriceButtonDetails: PriceButtonType[] = [
@@ -18,7 +18,7 @@ export const PriceButtonDetails: PriceButtonType[] = [
 export const dataContent: DialogContents[] = [
   {
     id: 1,
-    title: "Welcome to NCLEX Power.",
+    title: "Welcome to Arxenius Review.",
     image: "", // A placeholder image for now, preparation for resources image.
     contentType: "text",
     content:
@@ -26,7 +26,7 @@ export const dataContent: DialogContents[] = [
   },
   {
     id: 2,
-    title: "How to use NCLEX Power.",
+    title: "How to use Arxenius Review.",
     image: CoreZigmaLogo,
     contentType: "video",
     content: "https://www.youtube.com/watch?v=H2jA88pESko",

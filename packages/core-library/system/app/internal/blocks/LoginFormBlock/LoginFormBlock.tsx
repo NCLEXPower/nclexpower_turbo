@@ -1,9 +1,8 @@
 /**
-
-Property of the NCLEX Power.
-Reuse as a whole or in part is prohibited without permission.
-Created by the Software Strategy & Development Division
-*/
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 
 import { Box } from "@mui/material";
 import { LoginForm } from "./LoginForm";
@@ -74,6 +73,7 @@ export function LoginFormBlock() {
       try {
         await login(data.email, passwordToUse);
       } catch (err) {
+        console.error(err);
         toast.executeToast("Invalid email or password", "top-right", false, {
           toastId: 0,
           type: "error",
