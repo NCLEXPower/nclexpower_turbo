@@ -4,16 +4,22 @@ import { textSx } from "../../../../SettingsStyles";
 import { gridData, policyConditions } from "../../../constants";
 import { EvaIcon } from "../../../../../../../../../../../components";
 
-export const PolicyGrid = () => {
+interface Props {
+  forTNC?: boolean;
+}
+
+export const PolicyGrid: React.FC<Props> = ({ forTNC = false }) => {
+  console.log(forTNC);
   return (
     <Grid
       container
       sx={{
         width: "100%",
+        minWidth: forTNC ? "630px" : "",
         bgcolor: "#0F2A710D",
       }}
     >
-      <Grid item xs={6} md={3}>
+      <Grid item xs={forTNC ? 3 : 6} md={3}>
         <Box>
           <Box
             sx={{
@@ -34,14 +40,14 @@ export const PolicyGrid = () => {
                   <EvaIcon name="arrow-right" width={20} height={20} />
                 </Box>
 
-                <Typography sx={{ fontSize: "clamp(15px,4vw,20px)" }}>
+                <Typography sx={{ fontSize: "clamp(15px,4vw,18px)" }}>
                   {data.timePeriod}
                 </Typography>
               </Box>
             ))}
         </Box>
       </Grid>
-      <Grid item xs={6} md={3}>
+      <Grid item xs={forTNC ? 3 : 6} md={3}>
         <Box>
           <Box
             sx={{
@@ -70,14 +76,14 @@ export const PolicyGrid = () => {
                   <EvaIcon name="arrow-right" width={20} height={20} />
                 </Box>
 
-                <Typography sx={{ fontSize: "clamp(15px,4vw,20px)" }}>
+                <Typography sx={{ fontSize: "clamp(15px,4vw,18px)" }}>
                   {data.amount}
                 </Typography>
               </Box>
             ))}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={forTNC ? 6 : 12} md={6}>
         <Box
           sx={{
             display: "flex",
@@ -90,9 +96,11 @@ export const PolicyGrid = () => {
               ...gridBoxSx,
               borderRight: "none",
               textAlign: "center",
+              height: { xs: "110px", sm: "90px" },
               borderLeft: {
-                xs: "none",
+                xs: forTNC ? "2px solid #0F2A714D" : "none",
                 md: "2px solid #0F2A714D",
+                lg: "2px solid #0F2A714D",
               },
             }}
           >
@@ -105,8 +113,9 @@ export const PolicyGrid = () => {
             sx={{
               borderBottom: "2px solid #0F2A714D",
               borderLeft: {
-                xs: "none",
+                xs: forTNC ? "2px solid #0F2A714D" : "none",
                 md: "2px solid #0F2A714D",
+                lg: "2px solid #0F2A714D",
               },
               padding: "20px 40px",
               paddingBottom: 0,

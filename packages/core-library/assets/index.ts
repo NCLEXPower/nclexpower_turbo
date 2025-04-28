@@ -4,8 +4,8 @@
  * Created by the Software Strategy & Development Division
  */
 
-export const NCLEXBlueLogo = require("./NCLEXBlueLogo.png");
-export const NCLEXYellowLogo = require("./NCLEXYellowLogo.png");
+export const ArxeniusLogoBlue = require("./ArxeniusLogoBlue.png");
+export const ArxeniusLogoYellow = require("./ArxeniusLogoYellow.png");
 export const CoreZigmaLogo = require("./CoreZigmaLogo.png");
 export const LoginBG = require("./LoginBG.png");
 
@@ -16,7 +16,7 @@ export const CarouselThree = require("./CarouselThree.png");
 
 export const CroppedCoreZigma = require("./CoreZigmaCropped.png");
 export const TransparentCoreZigma = require("./TransparentCoreZigma.png");
-export const IssueTrackingBG = require("./IssueTrackingBG.png")
+export const IssueTrackingBG = require("./IssueTrackingBG.png");
 
 export const EmptyStateImage = require("./EmptyState.svg");
 export const ErrorStateImage = require("./ErrorState.svg");
@@ -140,8 +140,8 @@ export const RNBackground = require("./RNBackground.png");
 export const DuplicateSession = require("./duplicate_session.svg");
 
 export const ImageLists = [
-  { id: 1, label: "NCLEX Blue Logo", image: NCLEXBlueLogo },
-  { id: 2, label: "NCLEX Yellow Logo", image: NCLEXYellowLogo },
+  { id: 1, label: "NCLEX Blue Logo", image: ArxeniusLogoBlue },
+  { id: 2, label: "NCLEX Yellow Logo", image: ArxeniusLogoYellow },
   { id: 3, label: "Core Zigma Logo", image: CoreZigmaLogo },
   { id: 4, label: "Login Background", image: LoginBG },
   { id: 5, label: "Carousel One", image: CarouselOne },
@@ -253,40 +253,3 @@ export const visaIcon = require("./visaIcon.svg");
 export const NotAvailableBG = require("./NotAvailableBG.png");
 export const noVideoImage = require("./programmanagement/noVideoImage.png");
 export const uploadImage = require("./programmanagement/uploadImage.jpg");
-
-export const HTN_01 = require("./content-card-faces/CV01_HTN_01.png");
-export const HTN_02 = require("./content-card-faces/CV01_HTN_02.png");
-export const HTN_03 = require("./content-card-faces/CV01_HTN_03.png");
-export const CAD_01 = require("./content-card-faces/CV02_CAD_01.png");
-export const CAD_02 = require("./content-card-faces/CV02_CAD_02.png");
-export const CAD_03 = require("./content-card-faces/CV02_CAD_03.png");
-export const CHF_01 = require("./content-card-faces/CV03_CHF_01.png");
-export const CHF_02 = require("./content-card-faces/CV03_CHF_02.png");
-export const VALVE_01 = require("./content-card-faces/CV04_VALVE_01.png");
-export const VALVE_02 = require("./content-card-faces/CV04_VALVE_02.png");
-export const VALVE_03 = require("./content-card-faces/CV04_VALVE_03.png");
-export const CMPY_01 = require("./content-card-faces/CV05_CMPY_01.png");
-export const CMPY_02 = require("./content-card-faces/CV05_CMPY_02.png");
-export const PERI_01 = require("./content-card-faces/CV06_PERI_01.png");
-export const PERI_02 = require("./content-card-faces/CV06_PERI_02.png");
-export const AA_01 = require("./content-card-faces/CV07_AA_01.png");
-export const AA_02 = require("./content-card-faces/CV07_AA_02.png");
-export const PAD_01 = require("./content-card-faces/CV08_PAD_01.png");
-export const PAD_02 = require("./content-card-faces/CV08_PAD_02.png");
-export const PAD_03 = require("./content-card-faces/CV08_PAD_03.png");
-export const PVD_01 = require("./content-card-faces/CV09_PVD_01.png");
-export const PVD_02 = require("./content-card-faces/CV09_PVD_02.png");
-export const PVD_03 = require("./content-card-faces/CV09_PVD_03.png");
-export const CHOL_01 = require("./content-card-faces/CV10_CHOL_01.png");
-export const CHOL_02 = require("./content-card-faces/CV10_CHOL_02.png");
-export const ECG_01 = require("./content-card-faces/CV11_ECG_01.png");
-export const ECG_02 = require("./content-card-faces/CV11_ECG_02.png");
-export const ECG_03 = require("./content-card-faces/CV11_ECG_03.png");
-export const ECG_04 = require("./content-card-faces/CV11_ECG_04.png");
-export const ECG_05 = require("./content-card-faces/CV11_ECG_05.png");
-export const ETC_01 = require("./content-card-faces/CV12_ETC_01.png");
-export const ETC_02 = require("./content-card-faces/CV12_ETC_02.png");
-export const ETC_03 = require("./content-card-faces/CV12_ETC_03.png");
-export const ETC_04 = require("./content-card-faces/CV12_ETC_04.png");
-export const ETC_05 = require("./content-card-faces/CV12_ETC_05.png");
-export const ETC_06 = require("./content-card-faces/CV12_ETC_06.png");

@@ -34,13 +34,8 @@ export const VideoWatchList: React.FC<VideoWatchListProps> = ({
       <div className="flex flex-col gap-2">
         {sectionVideos && sectionVideos.length > 0 ? (
           sectionVideos.map((item) => {
-            const {
-              secVidId,
-              secVidTitle,
-              secVidPlaceholder,
-              secVidDuration,
-              secVidAuthor,
-            } = item;
+            const { secVidId, secVidTitle, secVidPlaceholder, secVidAuthor } =
+              item;
             const isSelected = selectedVid?.secVidId === secVidId;
             return (
               <div
@@ -52,13 +47,12 @@ export const VideoWatchList: React.FC<VideoWatchListProps> = ({
                   src={secVidPlaceholder}
                   alt="placeholder"
                   className="w-[150px] rounded-[8px] drop-shadow-lg"
+                  width={100}
+                  height={100}
                 />
                 <div className="flex flex-col">
                   <h4 className="font-ptSans text-[#232323] font-bold text-[14px]">
                     {secVidTitle}
-                  </h4>
-                  <h4 className="font-ptSans text-[#9A9A9A] text-[14px]">
-                    {secVidDuration} minutes
                   </h4>
                   <h4 className="font-ptSans text-[#9A9A9A] text-[14px]">
                     Author: {secVidAuthor}

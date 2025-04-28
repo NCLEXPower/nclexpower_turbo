@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
 import { NCLEXBanner, ProceedButton, SignOutButton } from "./components";
-import { Card, ControlledCheckbox, EvaIcon } from "core-library/components";
+import {
+  Button,
+  Card,
+  ControlledCheckbox,
+  DialogBox,
+  EvaIcon,
+} from "core-library/components";
 import { Box, Typography } from "@mui/material";
 import { termsData } from "./constant/ContentData";
 import Divider from "core-library/components/Divider/Divider";
 import { ProductInformationLoader } from "core-library/system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/loader";
 import { usePaymentWalkthroughFormContext } from "../../PaymentWalkthroughContext";
+import { PrivacyPolicy } from "@/components/blocks/PrivacyPolicyBlock/PrivacyPolicy";
+import { useModal } from "core-library/hooks";
 
 interface Props {
   nextStep({}): void;
@@ -24,6 +31,7 @@ export function TermsCondition({
   onSave,
 }: Props) {
   const { form, loading } = usePaymentWalkthroughFormContext();
+  const { open, close, props } = useModal();
 
   if (loading) {
     return <ProductInformationLoader />;
@@ -42,6 +50,8 @@ export function TermsCondition({
     previous();
   };
 
+  const handleClick = () => open();
+
   return (
     <Box
       sx={{
@@ -53,6 +63,25 @@ export function TermsCondition({
         flexDirection: "column",
       }}
     >
+      <DialogBox
+        open={props.isOpen}
+        handleClose={close}
+        sx={{
+          "& .MuiPaper-root": {
+            minHeight: "90%",
+            minWidth: "90%",
+            pb: "50px",
+            borderRadius: "16px",
+          },
+          "& .MuiDialog-paper > .MuiTypography-root": {
+            height: "unset",
+            padding: "20px",
+            pb: 0,
+          },
+        }}
+      >
+        <PrivacyPolicy forPayment />
+      </DialogBox>
       <div className="lg:w-[800px] w-full">
         <Box
           sx={{
@@ -84,7 +113,7 @@ export function TermsCondition({
           <Card sx={{ padding: 5, width: "100%" }} elevation={4}>
             <Box sx={{ width: "100%" }}>
               <h1 className="pt-sans-bold text:lg md:text-2xl text-darkBlue">
-                Terms and Conditions
+                Terms, Policies and Conditions
               </h1>
               <Divider color="#0F2A71" thickness={3} sx={{ marginY: "20px" }} />
               <Card
@@ -122,13 +151,38 @@ export function TermsCondition({
                           fontSize: "clamp(0.90rem, 2.5vw, 1.2rem)",
                         }}
                       >
-                        {paragraph}
+                        {paragraph}{" "}
+                        {index === 0 && (
+                          <>
+                            <Button
+                              variant="text"
+                              sx={{
+                                display: "inline-flex",
+                                minHeight: "fit-content",
+                                minWidth: "fit-content",
+                                padding: 0,
+                                pb: "2.5px",
+                                margin: 0,
+                                fontSize: "inherit",
+                                fontWeight: "bold",
+                                textDecoration: "underline",
+                              }}
+                              onClick={handleClick}
+                            >
+                              here
+                            </Button>
+                            <span className="text-inherit">{".)"}</span>
+                          </>
+                        )}
                       </Typography>
                     ))}
                   </Box>
                 ))}
               </Card>
             </Box>
+            {/* <Box sx={{ width: "100%" }}>
+              <PrivacyPolicy forPayment />
+            </Box> */}
           </Card>
           <div className="w-full flex items-center justify-between my-4">
             <ControlledCheckbox

@@ -57,8 +57,8 @@ export const CardSlider: React.FC<Props> = ({
     <Box sx={cardSliderBox}>
       <PhotoSlider
         images={card.cardFaces.map((item) => ({
-          src: item.default.src,
-          key: item.default.src,
+          src: item,
+          key: item,
           width: 10,
           height: 10,
         }))}
