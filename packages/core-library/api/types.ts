@@ -57,6 +57,7 @@ export interface NotifyParams {
   goLiveId?: string | undefined;
   maintenanceId?: string | undefined;
   email: string;
+  emailNotificationType: number; // 0 golive - 1 country block
 }
 
 export interface SsoLoginParams {
