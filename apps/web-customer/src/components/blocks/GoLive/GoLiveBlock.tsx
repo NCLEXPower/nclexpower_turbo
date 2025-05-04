@@ -26,6 +26,7 @@ export const GoLiveBlock: React.FC<GoLiveBlockType> = ({ data }) => {
       const result = await notifyCb.execute({
         email: values.email,
         goLiveId: data?.goLive.id,
+        emailNotificationType: 0
       });
       if (result.data === 200 || result.status === 200) {
         alert("Successfully submitted.");
