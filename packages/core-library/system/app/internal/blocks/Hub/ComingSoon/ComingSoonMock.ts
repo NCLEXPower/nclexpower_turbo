@@ -14,6 +14,7 @@ export const TimezoneMockData: SelectOption[] = [
 export const TargetEnvironment: SelectOption[] = [
   { label: "Pre-Prod", value: "pre-prod" },
   { label: "Dev", value: "dev" },
+  { label: "UAT", value: "uat" },
 ];
 
 

@@ -16,11 +16,30 @@ jest.mock("console", () => ({
 }));
 
 describe("Content Date Schema", () => {
-  it("should validate valid data", async () => {
+  it("should validate valid data when countdown is disabled", async () => {
     const validData = {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: false,
+      countdownEnabled: false,
+      goLiveDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      countryKey: ["America/New_York"],
+      TargetEnvironment: "dev",
+      announcement: false,
+      isActive: true,
+    };
+
+    await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
+  });
+
+  it("should validate valid data when countdown is enabled", async () => {
+    const validData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: false,
+      countdownEnabled: true,
       goLiveDate: new Date(new Date().setDate(new Date().getDate() + 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
@@ -37,6 +56,7 @@ describe("Content Date Schema", () => {
     const invalidData = {
       description: "Event Description",
       hasNoSchedule: false,
+      countdownEnabled: true,
       goLiveDate: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
@@ -52,6 +72,7 @@ describe("Content Date Schema", () => {
       eventName: "Valid Title",
       description: "a".repeat(501),
       hasNoSchedule: false,
+      countdownEnabled: true,
       goLiveDate: new Date(),
       countries: ["USA"],
       timeZone: "America/New_York",
@@ -62,11 +83,12 @@ describe("Content Date Schema", () => {
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
   });
 
-  it("should return error when goLiveDate is before today", async () => {
+  it("should return error when goLiveDate is before today and countdown is enabled", async () => {
     const invalidData = {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: false,
+      countdownEnabled: true,
       goLiveDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       countries: ["USA"],
       timeZone: "America/New_York",
@@ -77,14 +99,30 @@ describe("Content Date Schema", () => {
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
   });
 
-  it("should return error when countries list is empty", async () => {
+  it("should return error when goLiveDate is missing and countdown is enabled", async () => {
+    const invalidData = {
+      eventName: "Event Title",
+      description: "Event Description",
+      hasNoSchedule: false,
+      countdownEnabled: true,
+      countries: ["USA"],
+      timeZone: "America/New_York",
+      countryKey: ["America/New_York"],
+      TargetEnvironment: "dev",
+    };
+
+    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
+  });
+
+  it("should return error when countryKey list is empty", async () => {
     const invalidData = {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: true,
-      countries: [],
+      countdownEnabled: false,
+      countries: ["USA"],
       timeZone: "America/New_York",
-      countryKey: ["America/New_York"],
+      countryKey: [],
       TargetEnvironment: "dev",
     };
 
@@ -96,6 +134,7 @@ describe("Content Date Schema", () => {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: true,
+      countdownEnabled: false,
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
@@ -110,6 +149,7 @@ describe("Content Date Schema", () => {
       eventName: "Event Title",
       description: "Event Description",
       hasNoSchedule: true,
+      countdownEnabled: false,
       countries: ["USA"],
       timeZone: "America/New_York",
       countryKey: ["America/New_York"],
@@ -119,28 +159,18 @@ describe("Content Date Schema", () => {
     await expect(contentDateSchema.isValid(validData)).resolves.toBe(true);
   });
 
-  it("should return error when timeZone is missing", async () => {
+  it("should return error when timeZone is missing and scheduling is enabled", async () => {
     const invalidData = {
       eventName: "Event Title",
       description: "Event Description",
-      hasNoSchedule: true,
+      hasNoSchedule: false,
+      countdownEnabled: true,
+      goLiveDate: new Date(new Date().setDate(new Date().getDate() + 1)),
       countries: ["USA"],
       countryKey: ["America/New_York"],
       TargetEnvironment: "dev",
-    };
-
-    await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
-  });
-
-  it("should return error when countryKey is empty", async () => {
-    const invalidData = {
-      eventName: "Event Title",
-      description: "Event Description",
-      hasNoSchedule: true,
-      countries: ["USA"],
-      timeZone: "America/New_York",
-      countryKey: [],
-      TargetEnvironment: "dev",
+      announcement: false,
+      isActive: true,
     };
 
     await expect(contentDateSchema.isValid(invalidData)).resolves.toBe(false);
