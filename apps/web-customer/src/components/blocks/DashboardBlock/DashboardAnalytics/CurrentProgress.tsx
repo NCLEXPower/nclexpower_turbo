@@ -22,7 +22,13 @@ export const CurrentProgress = () => {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", py: isMobile ? 4 : 0 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          py: isMobile ? 4 : 0,
+        }}
+      >
         <Box
           sx={{
             width: "50%",
@@ -86,12 +92,11 @@ export const CurrentProgress = () => {
               </Box>
             ))}
         </Box>
-
-        <Box sx={{ width: "50%" }}>
+        <Box sx={{ width: "35%" }}>
           <Chart
             type="Gauge"
             width={isMobile ? 200 : 275}
-            height={isMobile ? 200 : 275}
+            height={200}
             dataSet={analytics.data.currentProgressChart}
             options={CurrentProgressOption}
             sx={{ width: "100%" }}

@@ -1,11 +1,22 @@
-import { Box, Typography } from "@mui/material";
-import { progressTaken } from "./DashboardMock";
-import { useResolution } from "core-library/hooks";
+import { Box } from "@mui/material";
+
 import React from "react";
 
-export const TestsTaken: React.FC = () => {
-  const { isMobile } = useResolution();
+interface TestsTakenProps {
+  programTitle: string;
+  programSubtitleOne: string;
+  programSubtitleTwo: string;
+  programDay: string;
+  programSection: string;
+}
 
+export const TestsTaken: React.FC<TestsTakenProps> = ({
+  programTitle,
+  programSubtitleOne,
+  programSubtitleTwo,
+  programDay,
+  programSection,
+}) => {
   return (
     <React.Fragment>
       <Box
@@ -15,9 +26,22 @@ export const TestsTaken: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
-          pt: 3,
         }}
       >
+        <Box
+          sx={{
+            fontSize: "clamp(1.2rem, 1.5vw, 1.4rem)",
+            fontFamily: "PT Sans Narrow",
+            fontWeight: "bold",
+            backgroundColor: "rgba(0, 23, 63, 1)",
+            color: "white",
+            width: "100%",
+            paddingX: 4,
+            paddingY: 2,
+          }}
+        >
+          {programTitle}
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -26,63 +50,42 @@ export const TestsTaken: React.FC = () => {
             width: "100%",
             height: "90%",
             position: "relative",
+            borderTop: "5px",
           }}
         >
-          {progressTaken.map((item) => (
+          <Box sx={{ paddingTop: 4 }}>
             <Box
-              key={item.id}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "50%",
+                fontSize: "clamp(5rem, 5vw, 6rem)",
+                fontFamily: "Rajdhani",
+                fontWeight: "bold",
+                background:
+                  "linear-gradient(360deg, hsla(224, 32%, 14%, 1) 26%, hsla(223, 77%, 25%, 1) 49%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
               }}
             >
-              <Box
-                sx={{
-                  fontSize: "clamp(1.2rem, 1.5vw, 1.4rem)",
-                  fontFamily: "PT Sans Narrow",
-                  fontWeight: "bold",
-                  color: "rgba(0, 23, 63, 1)",
-                }}
-              >
-                {item.programTitle}
-              </Box>
-              <Box>
-                <Box
-                  sx={{
-                    fontSize: "clamp(5rem, 5vw, 6rem)",
-                    fontFamily: "Rajdhani",
-                    fontWeight: "bold",
-                    background:
-                      "linear-gradient(360deg, hsla(224, 32%, 14%, 1) 26%, hsla(223, 77%, 25%, 1) 49%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {item.programDay}
-                </Box>
-                <Box
-                  sx={{
-                    color: "rgba(154, 154, 154, 1)",
-                    textAlign: "center",
-                    fontFamily: "PT Sans Narrow",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {item.programSubTitle}
-                </Box>
-              </Box>
+              {programDay}
             </Box>
-          ))}
+            <Box
+              sx={{
+                color: "rgba(154, 154, 154, 1)",
+                textAlign: "center",
+                fontFamily: "PT Sans Narrow",
+                fontWeight: "bold",
+              }}
+            >
+              {programSubtitleOne}
+            </Box>
+          </Box>
           <Box
             sx={{
               position: "absolute",
-              width: "2.3px",
-              height: "57%",
+              width: "2px",
+              height: "75%",
               bgcolor: "darkblue",
-              right: "50%",
-              top: "30%",
+              right: "48%",
+              top: "12%",
             }}
           >
             <Box
@@ -99,6 +102,31 @@ export const TestsTaken: React.FC = () => {
               }}
             />
           </Box>
+          <Box sx={{ paddingTop: 4 }}>
+            <Box
+              sx={{
+                fontSize: "clamp(5rem, 5vw, 6rem)",
+                fontFamily: "Rajdhani",
+                fontWeight: "bold",
+                background:
+                  "linear-gradient(360deg, hsla(224, 32%, 14%, 1) 26%, hsla(223, 77%, 25%, 1) 49%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {programSection}
+            </Box>
+            <Box
+              sx={{
+                color: "rgba(154, 154, 154, 1)",
+                textAlign: "center",
+                fontFamily: "PT Sans Narrow",
+                fontWeight: "bold",
+              }}
+            >
+              {programSubtitleTwo}
+            </Box>
+          </Box>
         </Box>
         <Box
           sx={{
@@ -109,7 +137,7 @@ export const TestsTaken: React.FC = () => {
             fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
           }}
         >
-          Numbers of Tests Taken
+          Number of Tests Taken
         </Box>
       </Box>
     </React.Fragment>

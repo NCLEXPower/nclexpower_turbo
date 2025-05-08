@@ -32,7 +32,7 @@ export const AbilityAnalytics = () => {
       </Box>
       <Box
         sx={{
-          paddingTop: 10,
+          paddingTop: isMobile ? 10 : 0,
           display: "flex",
           justifyContent: "center",
         }}

@@ -16,14 +16,18 @@ export const progressTaken = [
   {
     id: 1,
     programTitle: "Body Systems",
-    programSubTitle: "Daily",
-    programDay: "10",
+    programSubTitleOne: "Daily",
+    programDay: "02",
+    programSection: "15",
+    programSubtitleTwo: "Section",
   },
   {
     id: 2,
     programTitle: "Patient Unit",
-    programSubTitle: "Section",
-    programDay: "12",
+    programSubTitleOne: "Daily",
+    programDay: "30",
+    programSection: "25",
+    programSubtitleTwo: "Section",
   },
 ];
 

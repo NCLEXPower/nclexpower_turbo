@@ -67,6 +67,7 @@ export const PerformanceIndicator = () => {
           display: "flex",
           justifyContent: "center",
           width: "100%",
+          paddingTop: !isMobile ? 10 : 0,
         }}
       >
         <Chart
@@ -74,7 +75,7 @@ export const PerformanceIndicator = () => {
           dataSet={analytics.data.performanceData}
           options={BarOptions}
           width={isMobile ? 500 : 550}
-          height={isMobile ? 450 : 750}
+          height={isMobile ? 450 : 1000}
           sx={{
             width: "100%",
           }}
