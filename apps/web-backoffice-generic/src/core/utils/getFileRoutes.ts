@@ -1,15 +1,14 @@
 import fs from "fs";
 import path from "path";
+import { FILE_EXTENSION_REGEX, MULTIPLE_SLASHES_REGEX } from "core-library";
 
 export const getAllRoutes = (): string[] => {
 
   const projectRoot = process.cwd();
   const pagesDir = path.join(projectRoot, "src", "pages");
 
-  console.log("Scanning pages directory:", pagesDir);
 
   if (!fs.existsSync(pagesDir)) {
-    console.warn(`Directory does not exist: ${pagesDir}`);
     return [];
   }
 
@@ -28,14 +27,14 @@ export const getAllRoutes = (): string[] => {
 
    if (entry.isDirectory()) {
      scanDir(entryPath, `${baseRoute}/${entry.name}`);
-   } else if (entry.isFile() && /\.(js|jsx|ts|tsx)$/.test(entry.name)) {
+   } else if (entry.isFile() && FILE_EXTENSION_REGEX.test(entry.name)) {
 
-    const routeName = entry.name.replace(/\.(js|jsx|ts|tsx)$/, "");
+    const routeName = entry.name.replace(FILE_EXTENSION_REGEX, "");
      if (routeName === "index") {
        routes.push(baseRoute || "/");
      } else {
 
-       const normalizedRoute = `${baseRoute}/${routeName}`.replace(/\/+/g, '/');
+       const normalizedRoute = `${baseRoute}/${routeName}`.replace(MULTIPLE_SLASHES_REGEX, "/");
        routes.push(normalizedRoute);
      }
    }
@@ -43,6 +42,5 @@ export const getAllRoutes = (): string[] => {
 };
 
 scanDir(pagesDir);
-console.log(`Found ${routes.length} routes`);
 return routes;
 };
