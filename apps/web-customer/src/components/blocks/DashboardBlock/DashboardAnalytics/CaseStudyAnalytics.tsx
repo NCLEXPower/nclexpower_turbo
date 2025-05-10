@@ -26,18 +26,22 @@ export const CaseStudyAnalytics = () => {
             sx={{
               backgroundColor: "white",
               borderRadius: 2,
-              pt: 10,
-              height: "90%",
+              height: "100%",
               width: "50%",
             }}
           >
             <Box sx={containerStyle}>
               <Typography
                 sx={{
-                  fontSize: isMobile ? "1.2rem" : "clamp(0.97rem, 1vw, 1.4rem)",
+                  fontSize: isMobile
+                    ? "1.2rem"
+                    : "clamp(1.2rem, 1.5vw, 1.4rem)",
                   fontFamily: "PT Sans Narrow",
                   fontWeight: "bold",
-                  color: "rgba(0, 23, 63, 1)",
+                  backgroundColor: "rgba(0, 23, 63, 1)",
+                  width: "100%",
+                  paddingX: 4,
+                  paddingY: 2,
                 }}
               >
                 {item.programType}
@@ -74,9 +78,7 @@ export const FinalStudyAnalytics = () => {
             key={index}
             sx={{
               borderRadius: 2,
-              pt: 10,
-              mb: 6,
-              height: "90%",
+              height: "100%",
               width: "50%",
               backgroundColor: "white",
             }}
@@ -84,14 +86,19 @@ export const FinalStudyAnalytics = () => {
             <Box sx={containerStyle}>
               <Typography
                 sx={{
-                  fontSize: isMobile ? "1.2rem" : "clamp(0.97rem, 1vw, 1.4rem)",
+                  fontSize: isMobile
+                    ? "1.2rem"
+                    : "clamp(1.2rem, 1.5vw, 1.4rem)",
                   fontFamily: "PT Sans Narrow",
                   fontWeight: "bold",
-                  maxWidth: "100%",
-                  width: "fit-content",
-                  overflowWrap: "anywhere",
+                  width: "100%",
                   whiteSpace: "normal",
-                  color: "rgba(0, 23, 63, 1)",
+                  backgroundColor: "rgba(0, 23, 63, 1)",
+                  paddingX: isMobile ? 2 : 0,
+
+                  positio: "absolute",
+                  top: 0,
+                  paddingY: 2,
                 }}
               >
                 {item.programType}
