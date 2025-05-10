@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
+import { FILE_EXTENSION_REGEX, MULTIPLE_SLASHES_REGEX } from "core-library";
 
 export const getAllRoutes = (): string[] => {
-  const resolveDir = path.join(__dirname, "..");
 
-  console.log("Resolved Dir:", resolveDir);
+  const projectRoot = process.cwd();
+  const pagesDir = path.join(projectRoot, "src", "pages");
 
-  if (!fs.existsSync(resolveDir)) {
-    console.warn(`Directory does not exist: ${resolveDir}`);
+
+  if (!fs.existsSync(pagesDir)) {
     return [];
   }
 
@@ -19,19 +20,27 @@ export const getAllRoutes = (): string[] => {
     for (const entry of entries) {
       const entryPath = path.join(currentDir, entry.name);
 
-      if (entry.isDirectory()) {
-        scanDir(entryPath, `${baseRoute}/${entry.name}`);
-      } else if (entry.isFile()) {
-        const routeName = entry.name.replace(/\.(js|jsx|ts|tsx)$/, "");
-        if (routeName === "index") {
-          routes.push(baseRoute || "/");
-        } else {
-          routes.push(`${baseRoute}/${routeName}`);
-        }
-      }
-    }
-  };
+       if (entry.name.startsWith('_') || entry.name.startsWith('.') || 
+       entry.name === 'api' || entry.name === 'node_modules') {
+     continue;
+   }
 
-  scanDir(resolveDir);
-  return routes;
+   if (entry.isDirectory()) {
+     scanDir(entryPath, `${baseRoute}/${entry.name}`);
+   } else if (entry.isFile() && FILE_EXTENSION_REGEX.test(entry.name)) {
+
+    const routeName = entry.name.replace(FILE_EXTENSION_REGEX, "");
+     if (routeName === "index") {
+       routes.push(baseRoute || "/");
+     } else {
+
+       const normalizedRoute = `${baseRoute}/${routeName}`.replace(MULTIPLE_SLASHES_REGEX, "/");
+       routes.push(normalizedRoute);
+     }
+   }
+ }
+};
+
+scanDir(pagesDir);
+return routes;
 };
