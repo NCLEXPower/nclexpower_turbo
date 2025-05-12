@@ -15,12 +15,12 @@ import {
   TextAreaField,
   ControlledSelectField,
 } from "../../../../../../components";
-import { IssueDescriptionBox } from "./IssueDescriptionBox";
 import {
   submitButtonStyle,
   iconButtonStyle,
   TextAreaStyle,
   badgeBgColor,
+  DescriptionBoxStyle,
 } from "./styles/style";
 import { Ticket } from "./IssueTrackingManagementBlock";
 import { formatDate } from "../../../../../../core";
@@ -256,10 +256,19 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({
           Description
         </Typography>
 
-        <IssueDescriptionBox
-          data-testid="issue-description-box"
-          description={data?.description}
-        />
+        <Box sx={DescriptionBoxStyle}>
+          <Typography
+            variant="body2"
+            sx={{
+              backgroundColor: "transparent",
+              color: "#3B0086",
+              fontSize: "12px",
+              fontFamily: '"Poppins", sans-serif',
+            }}
+          >
+            {data?.description ?? "No description available."}
+          </Typography>
+        </Box>
 
         <Box display="flex" alignItems="center" my={2}>
           <Divider
