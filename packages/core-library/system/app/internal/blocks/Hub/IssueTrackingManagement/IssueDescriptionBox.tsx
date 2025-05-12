@@ -5,18 +5,19 @@ Created by the Software Strategy & Development Division
 */
 
 import React from "react";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DescriptionBoxStyle } from "./styles/style";
 
 interface IssueDescriptionBoxProps {
   description?: string;
-  "data-testid"?: string; 
+  "data-testid"?: string;
 }
 
-export const IssueDescriptionBox: React.FC<IssueDescriptionBoxProps> = (props) => {
-  
+export const IssueDescriptionBox: React.FC<IssueDescriptionBoxProps> = (
+  props
+) => {
   return (
-    <DescriptionBoxStyle>
+    <Box sx={DescriptionBoxStyle}>
       <Typography
         data-testid={props["data-testid"]}
         variant="body2"
@@ -27,8 +28,8 @@ export const IssueDescriptionBox: React.FC<IssueDescriptionBoxProps> = (props) =
           fontFamily: '"Poppins", sans-serif',
         }}
       >
-        [{props.description ?? "No description available."}]
+        {props.description ?? "No description available."}
       </Typography>
-    </DescriptionBoxStyle>
+    </Box>
   );
 };

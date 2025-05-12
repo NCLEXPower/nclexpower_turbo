@@ -18,6 +18,8 @@ describe("IssueDescriptionBox", () => {
 
   it("renders fallback when description is not provided", () => {
     render(<IssueDescriptionBox data-testid="desc" />);
-    expect(screen.getByTestId("desc")).toHaveTextContent("[No description available.]");
+    expect(screen.getByTestId("desc")).toHaveTextContent(
+      "[No description available.]"
+    );
   });
 });

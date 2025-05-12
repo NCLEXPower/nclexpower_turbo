@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 type SelectOption = {
-  label: string;
+  label: string | React.ReactNode;
   value: string | number;
   xvalue?: number;
 };
@@ -29,7 +29,6 @@ type BaseSelectFieldProps = {
   placeholder?: TextFieldProps["placeholder"];
   disabled?: boolean;
   listSx?: SxProps;
-  SelectProps?: any; // testing this
 };
 
 export function SelectField({
@@ -42,7 +41,6 @@ export function SelectField({
   value,
   placeholder,
   listSx,
-  SelectProps,  // testing this
   ...rest
 }: BaseSelectFieldProps) {
   return (

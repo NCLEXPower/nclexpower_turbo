@@ -23,6 +23,7 @@ interface Props<T extends object> extends TextareaAutosizeProps {
   label?: string | JSX.Element | null;
   isLoading?: boolean;
   resizible?: boolean;
+  style?: React.CSSProperties;
   "data-testid"?: string;
 }
 
@@ -44,18 +45,22 @@ export const TextAreaField = <T extends FieldValues>({
               <FormHelperText error>{fieldState.error.message}</FormHelperText>
             ) : (
               label !== null && (
-                <Typography component="label" htmlFor={field?.name} display="flex">
+                <Typography
+                  component="label"
+                  htmlFor={field?.name}
+                  display="flex"
+                >
                   {label ?? ""}
                 </Typography>
               )
             )}
           </Grid>
           <Grid item>
-            <TextareaComponent 
-              {...controllerProps} 
-              {...props} 
+            <TextareaComponent
+              {...controllerProps}
+              {...props}
               {...nonRefField}
-              fieldState={fieldState} 
+              fieldState={fieldState}
             />
           </Grid>
         </Grid>
@@ -73,6 +78,7 @@ interface ComponentProps<T extends object>
 export const TextareaComponent = <T extends object>({
   field,
   fieldState,
+  style,
   ...props
 }: ComponentProps<T>) => {
   const theme = useTheme();
@@ -87,14 +93,14 @@ export const TextareaComponent = <T extends object>({
         fontSize: theme.typography.body1.fontSize,
         padding: "12px 16px",
         fontFamily: theme.typography.fontFamily,
-        color: theme.palette.appColors.essential["800"],
+        color: theme.palette.appColors.essential["800"] ?? "",
         borderRadius: "5px",
         resize: "none",
         borderColor: hasError ? theme.palette.error.main : undefined,
+        ...style,
       }}
       minRows={isMobile ? 10 : 5}
       {...props}
     />
   );
 };
-
