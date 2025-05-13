@@ -182,6 +182,7 @@ export const IssueTrackingManagementBlock = () => {
           ></Alert>
         </Box>
         <Typography
+          component="h1"
           sx={{
             fontSize: "30px",
             marginTop: "30px",
@@ -205,7 +206,7 @@ export const IssueTrackingManagementBlock = () => {
             ...titleStyle,
           }}
         >
-          Total: [ {rows.length} ] Concerns
+          Total: {rows.length} Concerns
         </Typography>
         <Card sx={{ mt: 5, width: "100%" }} elevation={0}>
           <DataGrid

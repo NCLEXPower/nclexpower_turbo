@@ -158,7 +158,7 @@ export const IssueDetailsModal: React.FC<IssueDetailsModalProps> = ({
               {data?.reference}
             </span>
           </Typography>
-          <IconButton onClick={onClose} sx={iconButtonStyle}>
+          <IconButton onClick={onClose} sx={iconButtonStyle} testId="close-btn">
             <CloseOutlinedIcon
               sx={{
                 fontSize: 14,
