@@ -182,6 +182,15 @@ export const AuthorizedHeader: MenuItems[] = [
     parentId: "",
     children: [],
   },
+  {
+    id: "13",
+    label: "Settings",
+    path: "/hub/settings",
+    icon: "settingsSquare",
+    menuId: "menu13",
+    parentId: "",
+    children: [],
+  },
 ];
 
 export const settings = {

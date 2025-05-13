@@ -22,6 +22,7 @@ import {
 import { keySquare, TRDSqaureWhite, TRDSquare } from "../../../assets";
 import { SvgIconProps, SxProps } from "@mui/material";
 import { KeySquareIcon } from "../../Icons/KeySquareIcon";
+import { SettingsSquareIcon } from "../../Icons/SettingsSquareIcon";
 
 export const IconComponent = (
   iconName: string,
@@ -73,6 +74,8 @@ export const IconComponent = (
       );
     case "keySquare":
       return <KeySquareIcon />;
+    case "settingsSquare":
+      return <SettingsSquareIcon />;
     case "TRDSquare":
       return (
         <Image
