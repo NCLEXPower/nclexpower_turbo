@@ -37,6 +37,42 @@ jest.mock("../../../core", () => ({
   formatDate: jest.fn((date: Date) => "January 1, 2024"),
 }));
 
+jest.mock("../../../components", () => {
+  const actual = jest.requireActual("../../../components");
+
+  return {
+    ...actual,
+    DataGrid: jest.fn(
+      ({ rows, columns, isLoading, "data-testid": dataTestId }) => (
+        <div data-testid={dataTestId || "data-grid"}>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : rows.length === 0 ? (
+            <div>No data</div>
+          ) : (
+            <div>
+              {rows.map((row: any, index: number) => (
+                <div key={row.id} data-testid={`row-${index}`}>
+                  {columns.map((col: any) => {
+                    const value = row[col.field];
+                    return (
+                      <div key={col.field}>
+                        {col.renderCell
+                          ? col.renderCell({ row, value })
+                          : String(value)}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    ),
+  };
+});
+
 beforeEach(() => {
   openMock.mockClear();
 });
