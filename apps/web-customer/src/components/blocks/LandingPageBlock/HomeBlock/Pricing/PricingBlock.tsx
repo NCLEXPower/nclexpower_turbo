@@ -105,7 +105,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         <div className="pt-10">
           <div className="flex lg:gap-5 gap-2 flex-wrap justify-center px-20">
             {PriceButtonDetails.length > 0 &&
-              PriceButtonDetails.map((nurseItem, index) => {
+              [...PriceButtonDetails].reverse().map((nurseItem, index) => {
                 const isSelected = nurseType === nurseItem.value;
                 const buttonClasses = `max-h-20 w-72 ${
                   isSelected
