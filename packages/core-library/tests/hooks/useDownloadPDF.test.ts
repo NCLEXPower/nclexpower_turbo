@@ -1,5 +1,4 @@
-import { renderHook, waitFor } from "../common";
-import { act } from "react";
+import { renderHook, waitFor, act } from "../common";
 import { useApiCallback } from "../../hooks";
 import { useDownloadPDF } from "../../hooks/useDownloadPDF";
 
@@ -17,7 +16,7 @@ jest.mock("./../../../core-library/hooks", () => ({
   useApiCallback: jest.fn(() => ({
     loading: false,
     execute: jest.fn().mockResolvedValueOnce({
-      data: { fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" }, 
+      data: { fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" },
     }),
   })),
 }));
@@ -29,7 +28,9 @@ beforeEach(() => {
 
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({ fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1" }),
+    json: async () => ({
+      fileUrl: "/api/v2/content/BaseContent/get-file-url?policy=1",
+    }),
     blob: async () => new Blob(["PDF content"], { type: "application/pdf" }),
   });
 
@@ -50,7 +51,7 @@ it("should download the correct PDF file when given a policyType", async () => {
 
   expect(global.fetch).toHaveBeenNthCalledWith(
     1,
-    expect.stringContaining("/api/v2/content/BaseContent/get-file-url?policy=1"),
+    expect.stringContaining("/api/v2/content/BaseContent/get-file-url?policy=1")
   );
 
   expect(global.fetch).toHaveBeenCalledTimes(1);
