@@ -10,6 +10,7 @@ import {
   ProductSelectionProps,
   ProductCardType,
 } from "core-library/types/global";
+import { formatCurrency } from "@/utils/formatHelper/formatCurrency";
 
 const ProductSelection = ({
   cardData,
@@ -47,26 +48,18 @@ const ProductSelection = ({
     option: number
   ) => {
     if (programTitle === 0) {
-      return option === selectedProduct ? "bg-[#0F2A7126]" : "bg-white";
+      return option === selectedProduct
+        ? "bg-[#0F2A7126] border-[rgba(15,42,113,0.42)]"
+        : "bg-white";
     }
 
     if (programTitle === 1) {
-      return option === selectedProduct ? "bg-[#084A4E26]" : "bg-white";
+      return option === selectedProduct
+        ? "bg-[#084A4E26] border-[rgba(8,74,78,0.42)]"
+        : "bg-white";
     }
 
     return "bg-white";
-  };
-
-  const formatPrice = (card: ProductCardType) => {
-    if (!card?.pricing) {
-      return "$0";
-    }
-
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: card.pricing?.currency || "USD",
-      minimumFractionDigits: 0,
-    }).format(card.pricing?.price || 0);
   };
 
   return (
@@ -89,7 +82,7 @@ const ProductSelection = ({
               return (
                 <div
                   key={index}
-                  className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl transition-all duration-300 shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.25)] border cursor-pointer ${getBackgroundColor(
+                  className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl transition-all duration-300 shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.25)] border border-[#dfdfdf] cursor-pointer ${getBackgroundColor(
                     card.programTitle,
                     selectedProduct,
                     card.programType
@@ -115,16 +108,25 @@ const ProductSelection = ({
                   </div>
 
                   <div className="w-full mx-auto text-right font-bold text-2xl lg:text-[35px]">
-                    {formatPrice(card)}
+                    {formatCurrency(
+                      card.pricing?.currency,
+                      card.pricing?.price
+                    )}
                   </div>
                 </div>
               );
             })}
           </RadioGroup>
+
+          <FormLabel>
+            <p className="text-[#8A8A8A] font-ptSansNarrow text-lg">
+              Both programs allow up to 6 months access to the system.
+            </p>
+          </FormLabel>
+          <hr className="text-[#BFBFBF]" />
         </FormControl>
 
-        <hr className="text-[#BFBFBF]" />
-        <div className="h-full flex flex-col justify-end px-12">
+        <div className="h-full flex flex-col justify-end px-8">
           <div className="relative w-full flex flex-col items-end">
             <div className="relative flex flex-col items-end w-full -bottom-6 z-10">
               <Image
@@ -145,14 +147,29 @@ const ProductSelection = ({
               />
             </div>
             <button
-              className={`text-primary py-3 ${cardData[0].programTitle === 0 ? "bg-darkBlue" : "bg-[#084A4E]"} rounded-xl w-full z-20`}
+              className={`text-primary py-3 ${cardData[0].programTitle === 0 ? "bg-darkBlue" : "bg-[#084A4E]"} rounded-xl w-full z-20 text-xl leading-[45px] font-bold`}
               onClick={handleProductDetails}
             >
-              Get Started
+              Buy Product
+            </button>
+            {/* Separator */}
+            <div className="flex items-center my-4 w-full">
+              <hr className="flex-grow text-[#BFBFBF]" />
+              <span className="px-2 text-sm font-normal text-[#BFBFBF]">
+                or
+              </span>
+              <hr className="flex-grow text-[#BFBFBF]" />
+            </div>
+            <button
+              className={`text-primary py-3 ${cardData[0].programTitle === 0 ? "bg-[#3456af]" : "bg-[#138d94]"} rounded-xl w-full z-20 text-xl leading-[45px] font-bold`}
+              onClick={handleProductDetails}
+            >
+              Start Free Trial
             </button>
           </div>
           <p className="text-sm text-[#8A8A8A]">
-            Both programs allow up to 6 months access to the system.
+            Free trial allow up to 24 hours access to the system with limited
+            contents.
           </p>
         </div>
       </div>

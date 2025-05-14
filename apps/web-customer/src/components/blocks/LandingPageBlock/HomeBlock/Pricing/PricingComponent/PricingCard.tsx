@@ -9,6 +9,7 @@ import {
 } from "core-library/types/global";
 import React from "react";
 import { EvaIcon } from "core-library/components";
+import { formatCurrency } from "@/utils/formatHelper/formatCurrency";
 
 interface CardProps {
   cardData: ProductCardType;
@@ -39,23 +40,27 @@ const PricingCard: React.FC<CardProps> = ({
   return (
     <div
       onClick={handleProductDetails}
-      className=" transition-all duration-300 h-full border border-darkGray bg-white w-[350px] px-12 py-5 rounded-md shadow-md flex flex-col"
+      className=" transition-all duration-300 h-full bg-white max-w-[381px] px-11 py-7 rounded-2xl flex flex-col shadow-[0px_3.35px_16.77px_0px_rgba(0,0,0,0.15)]"
     >
-      <p className="text-2xl w-full text-center">
+      <p className="text-3xl w-full text-center font-ptSans">
         {cardData.programType == 0
           ? "23 Days (Standard)"
           : "8 Days (Fast Track)"}
       </p>
-      <div className="w-full flex pb-5 justify-center items-center px-5 border-b -mt-3">
+      <div className="w-full flex pb-5 justify-center items-center px-5 border-b-2 border-[#d9d9d9] -mt-3">
         <div className="w-1/2 text-center">
           <div className="text-4xl font-Poppins font-bold">
-            <p>{cardData.pricing.price} </p>
-            <p className="text-sm -mt-4">{cardData.pricing.currency}</p>
+            <p>
+              {formatCurrency(
+                cardData?.pricing?.currency,
+                cardData?.pricing?.price
+              )}
+            </p>
           </div>
         </div>
       </div>
       <div className="w-full flex  justify-start items-start py-5 flex-grow">
-        <div className="text-xs flex flex-col">
+        <div className="text-xl flex flex-col">
           {InclusionsList.length > 0 &&
             InclusionsList.map((list, index) => (
               <div key={index} className="flex items-center gap-2">
@@ -63,12 +68,12 @@ const PricingCard: React.FC<CardProps> = ({
                   <EvaIcon
                     id="check-icon"
                     name="checkmark-circle-2-outline"
-                    fill="#4B4B4B"
+                    fill={ProgramTitle === 0 ? "#0F2A71" : "#084a4e"}
                     width={20}
                     height={20}
                   />
                 </span>
-                <p className="m-2">{list}</p>
+                <p className="m-1 font-ptSansNarrow text-xl">{list}</p>
               </div>
             ))}
         </div>
@@ -84,3 +89,6 @@ const PricingCard: React.FC<CardProps> = ({
   );
 };
 export default PricingCard;
+
+
+

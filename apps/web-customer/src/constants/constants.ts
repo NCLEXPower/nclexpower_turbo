@@ -4,14 +4,14 @@ import { DialogContents } from "core-library/components";
 
 export const PriceButtonDetails: PriceButtonType[] = [
   {
-    acronym: "RN",
-    label: "Registered Nurse",
-    value: 0,
-  },
-  {
     acronym: "PN",
     label: "Practical Nurse",
     value: 1,
+  },
+  {
+    acronym: "RN",
+    label: "Registered Nurse",
+    value: 0,
   },
 ];
 

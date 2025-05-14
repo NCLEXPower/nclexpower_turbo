@@ -28,6 +28,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   const [selectedItems, setSelectedItems] = React.useState<ProductCardType>(
     {} as ProductCardType
   );
+
   const handleClickOpen = (items: any) => {
     setSelectedItems(items);
     setOpen(true);
@@ -37,6 +38,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     setOpen(false);
     setSelectedItems({} as ProductCardType);
   };
+
   const [nurseType, setNurseType] = useState<number | null>(null);
   const [filteredItems, setFilteredItems] = useState<ProductListResponse[]>();
   const [, setEncryptedProduct] = useEncryptItem();
@@ -46,6 +48,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       ? dataSource.result.data
       : [];
   const router = useRouter();
+
   const handleSelectProduct = async (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
@@ -59,11 +62,12 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   };
 
   const filterItems = (keyword: number) => {
+    if (nurseType === keyword) return;
+    const filtered = products?.filter((item) => item.programTitle === keyword);
     setNurseType(keyword);
-    const filtered =
-      products && products.filter((item) => item.programTitle === keyword);
     setFilteredItems(filtered);
   };
+
   useEffect(() => {
     if (products.length > 0) {
       setFilteredItems(products.filter((item) => item.programTitle === 0));
@@ -80,14 +84,16 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   }, [router.asPath]);
 
   return (
-    <div
+    <section
       id="pricing"
       className="pt-20 pb-40 h-fit bg-[#fafafa] flex items-center justify-center"
     >
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col items-center px-10 text-center">
-          <p className="lg:text-4xl text-3xl font-bold">Pricing</p>
-          <p className="font-bold -mt-1">
+          <h2 className="lg:text-5xl text-4xl font-bold font-ptSans mb-8">
+            Pricing
+          </h2>
+          <p className="font-bold font-ptSans text-2xl text-[#282828] leading-9 -mt-1">
             For RNs and PNs, choose between our 8-day (Fast Track) or 23-day
             (Standard) program.
           </p>
@@ -101,30 +107,28 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
             {PriceButtonDetails.length > 0 &&
               PriceButtonDetails.map((nurseItem, index) => {
                 const isSelected = nurseType === nurseItem.value;
-                const isNotSelected =
-                  nurseType && nurseType !== nurseItem.value;
-
-                const buttonClasses = `max-h-20 ${
+                const buttonClasses = `max-h-20 w-72 ${
                   isSelected
-                    ? `w-80 ${nurseType ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                    : `w-72 ${index === 0 ? "bg-[#0c225c] " : "bg-slate-700"} ${
-                        isNotSelected ? "saturate-0" : ""
-                      } hover:scale-95`
-                } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2`;
+                    ? `${nurseType === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                    : !nurseType && index === 1
+                      ? "bg-[#0c225c]"
+                      : "bg-[#9a9a9a]"
+                } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2 hover:scale-105`;
                 return (
                   <button
                     key={index}
                     className={buttonClasses}
                     onClick={() => {
                       filterItems(nurseItem.value);
-                      setNurseType(nurseItem.value);
                     }}
                     aria-label={`Filter by ${nurseItem.label}`}
                   >
-                    <p className="font-bold text-3xl">
+                    <p className="font-bold text-5xl font-Poppins">
                       {nurseItem.acronym} <span className="font-normal">|</span>
                     </p>
-                    <p>{nurseItem.label}</p>
+                    <p className="font-ptSansNarrow text-2xl">
+                      {nurseItem.label}
+                    </p>
                   </button>
                 );
               })}
@@ -166,7 +170,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
