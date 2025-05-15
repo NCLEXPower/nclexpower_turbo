@@ -7,6 +7,7 @@ import {
   SocialMediaConfig,
   useDesignVisibility,
   useSocialMediaIcons,
+  useApiCallback,
 } from "core-library/hooks";
 
 export const DeniedCountryBlock: React.FC = () => {
@@ -18,9 +19,29 @@ export const DeniedCountryBlock: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = form;
-  const onSubmit = (data: DeniedCountryType) => {
-    console.log("value: ", data); //temporarily log the data as API is not yet available
+
+  const sendNotifyCallback = useApiCallback(
+    (api, data: DeniedCountryType) => {
+      try {
+        return api.web.sendNotify({
+          email: data.email,
+          emailNotificationType: 0,
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  );
+
+  const onSubmit = async (data: DeniedCountryType) => {
+    try {
+      const response = await sendNotifyCallback.execute(data);
+      reset();
+    } catch (error) {
+      console.error("Failed to execute API call:", error);
+    }
   };
 
   useDesignVisibility();
@@ -43,6 +64,7 @@ export const DeniedCountryBlock: React.FC = () => {
         onSubmit={onSubmit}
         handleSubmit={handleSubmit}
         isValid={isValid}
+        loading={sendNotifyCallback.loading}
       />
     </FormProvider>
   );

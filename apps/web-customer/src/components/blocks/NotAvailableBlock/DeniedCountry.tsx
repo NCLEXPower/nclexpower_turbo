@@ -18,6 +18,7 @@ type DeniedCountryProps = {
   onSubmit: (data: DeniedCountryType) => void;
   handleSubmit: UseFormHandleSubmit<DeniedCountryType>;
   isValid: boolean;
+  loading?: boolean;
 };
 
 export const DeniedCountry = ({
@@ -26,6 +27,7 @@ export const DeniedCountry = ({
   onSubmit,
   handleSubmit,
   isValid,
+  loading = false,
 }: DeniedCountryProps) => {
   const { isMobile } = useResolution();
 
@@ -181,6 +183,7 @@ export const DeniedCountry = ({
           />
           <Button
             onClick={handleSubmit(onSubmit)}
+            disabled={loading}
             sx={{
               color: "#0F2A71",
               backgroundColor: "#ffffff !important",
@@ -203,7 +206,7 @@ export const DeniedCountry = ({
               },
             }}
           >
-            Notify Me
+            {loading ? "Sending..." : "Notify Me"}
           </Button>
         </div>
         <div
