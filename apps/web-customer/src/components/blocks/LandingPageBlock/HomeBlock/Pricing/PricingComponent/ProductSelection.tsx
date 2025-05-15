@@ -10,7 +10,7 @@ import {
   ProductSelectionProps,
   ProductCardType,
 } from "core-library/types/global";
-import { formatCurrency } from "@/utils/formatHelper/formatCurrency";
+import { formatCurrency } from "core-library/format-currency";
 
 const ProductSelection = ({
   cardData,

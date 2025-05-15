@@ -9,7 +9,7 @@ import {
 } from "core-library/types/global";
 import React from "react";
 import { EvaIcon } from "core-library/components";
-import { formatCurrency } from "@/utils/formatHelper/formatCurrency";
+import { formatCurrency } from "core-library/format-currency";
 
 interface CardProps {
   cardData: ProductCardType;
@@ -89,6 +89,3 @@ const PricingCard: React.FC<CardProps> = ({
   );
 };
 export default PricingCard;
-
-
-
