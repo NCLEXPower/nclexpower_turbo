@@ -10,50 +10,7 @@ import { Box, Typography } from "@mui/material";
 import Divider from "core-library/components/Divider/Divider";
 import { useResolution } from "core-library/hooks";
 import { ProgressRing } from "core-library/components";
-
-const getLayoutConfig = (isMobile: boolean, index: number) => {
-  const isFirst = index === 0;
-  const isSecond = index === 1;
-
-  return {
-    top: !isMobile ? (isFirst ? 40 : isSecond ? 20 : 50) : isFirst ? 65 : 50,
-
-    left: !isMobile ? (isFirst ? 35 : isSecond ? 15 : 20) : isFirst ? 35 : 20,
-
-    progressSize: !isMobile
-      ? isFirst
-        ? 90
-        : isSecond
-          ? 130
-          : 80
-      : isFirst
-        ? 50
-        : 80,
-
-    labelTop: !isMobile
-      ? isFirst
-        ? "35%"
-        : isSecond
-          ? "40%"
-          : "30%"
-      : isFirst
-        ? "17%"
-        : "30%",
-
-    labelLeft: !isMobile
-      ? isFirst
-        ? "42%"
-        : isSecond
-          ? "72%"
-          : "63%"
-      : isFirst
-        ? "26%"
-        : "63%",
-
-    progressColor: index % 2 === 0 ? "#0F2A71" : "#181E2F",
-    dividerHeight: !isMobile ? "80px" : "60px",
-  };
-};
+import { getLayoutConfig } from "./LayoutConfig";
 
 export const TopicsCompleted = () => {
   const { isMobile } = useResolution();
@@ -74,15 +31,24 @@ export const TopicsCompleted = () => {
       </Typography>
 
       {analytics.data.topicCompleted.map((topic, index) => {
-        const config = getLayoutConfig(isMobile, index);
+        const {
+          top,
+          left,
+          size: progressSize,
+          labelTop,
+          labelLeft,
+        } = getLayoutConfig(isMobile, index);
+
+        const progressColor = index % 2 === 0 ? "#0F2A71" : "#181E2F";
+        const dividerHeight = isMobile ? "60px" : "80px";
 
         return (
           <Box
             key={topic.label}
             sx={{
               position: "absolute",
-              top: config.top,
-              left: config.left,
+              top,
+              left,
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
@@ -96,16 +62,16 @@ export const TopicsCompleted = () => {
             >
               <ProgressRing
                 value={topic.value}
-                size={config.progressSize}
-                color={config.progressColor}
+                size={progressSize}
+                color={progressColor}
               />
             </Box>
             <Box
               sx={{
                 display: "flex",
                 position: "absolute",
-                top: config.labelTop,
-                left: config.labelLeft,
+                top: labelTop,
+                left: labelLeft,
               }}
             >
               <Divider
@@ -114,8 +80,8 @@ export const TopicsCompleted = () => {
                   my: 2,
                   mr: 2,
                   width: "4px",
-                  height: config.dividerHeight,
-                  backgroundColor: config.progressColor,
+                  height: dividerHeight,
+                  backgroundColor: progressColor,
                 }}
               />
               <Box sx={{ paddingTop: 2 }}>
