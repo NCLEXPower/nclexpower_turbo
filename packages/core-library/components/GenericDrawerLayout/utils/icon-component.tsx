@@ -19,10 +19,14 @@ import {
   FiberManualRecord,
 } from "@mui/icons-material";
 
-import { keySquare, TRDSqaureWhite, TRDSquare } from "../../../assets";
+import {
+  keySquare,
+  TRDSqaureWhite,
+  TRDSquare,
+  settingsSquare,
+} from "../../../assets";
 import { SvgIconProps, SxProps } from "@mui/material";
 import { KeySquareIcon } from "../../Icons/KeySquareIcon";
-import { SettingsSquareIcon } from "../../Icons/SettingsSquareIcon";
 
 export const IconComponent = (
   iconName: string,
@@ -75,7 +79,13 @@ export const IconComponent = (
     case "keySquare":
       return <KeySquareIcon />;
     case "settingsSquare":
-      return <SettingsSquareIcon />;
+      return (
+        <Image
+          src={settingsSquare}
+          alt="settings-Square icon"
+          data-testid="settingsSquare"
+        />
+      );
     case "TRDSquare":
       return (
         <Image
