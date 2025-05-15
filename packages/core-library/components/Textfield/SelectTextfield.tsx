@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 type SelectOption = {
-  label: string;
+  label: string | React.ReactNode;
   value: string | number;
   xvalue?: number;
 };
