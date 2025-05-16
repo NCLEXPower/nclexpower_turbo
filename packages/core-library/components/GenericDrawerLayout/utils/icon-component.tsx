@@ -159,6 +159,16 @@ export const IconList = [
     ),
   },
   {
+    label: "settingsSquare",
+    icon: (
+      <Image
+        src={settingsSquare}
+        alt="settings-Square icon"
+        data-testid="settingsSquare"
+      />
+    ),
+  },
+  {
     label: "TRDSquare",
     icon: (
       <Image
