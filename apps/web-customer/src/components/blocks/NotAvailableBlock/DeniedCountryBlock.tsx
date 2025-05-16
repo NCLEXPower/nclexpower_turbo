@@ -3,6 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeniedCountryType, notAvailableSchema } from "./validation";
 import { DeniedCountry } from "./DeniedCountry";
+import { useExecuteToast } from "core-library/contexts";
 import {
   SocialMediaConfig,
   useDesignVisibility,
@@ -11,6 +12,7 @@ import {
 } from "core-library/hooks";
 
 export const DeniedCountryBlock: React.FC = () => {
+  const { showToast } = useExecuteToast();
   const form = useForm<DeniedCountryType>({
     mode: "all",
     resolver: yupResolver(notAvailableSchema),
@@ -23,17 +25,10 @@ export const DeniedCountryBlock: React.FC = () => {
   } = form;
 
   const sendNotifyCallback = useApiCallback(
-    (api, data: DeniedCountryType) => {
-      try {
-        return api.web.sendNotify({
-          email: data.email,
-          emailNotificationType: 1,
-        });
-      } catch (error) {
-        console.error("API call failed:", error);
-        throw error;
-      }
-    }
+    (api, data: DeniedCountryType) => api.web.sendNotify({
+        email: data.email,
+        emailNotificationType: 1,
+      })
   );
 
   const onSubmit = async (data: DeniedCountryType) => {
@@ -41,7 +36,7 @@ export const DeniedCountryBlock: React.FC = () => {
       const response = await sendNotifyCallback.execute(data);
       reset();
     } catch (error) {
-      console.error("Failed to execute API call:", error);
+      showToast("Error sending notification", "error");
     }
   };
 
