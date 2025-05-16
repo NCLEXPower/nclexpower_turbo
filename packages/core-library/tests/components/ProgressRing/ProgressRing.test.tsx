@@ -1,6 +1,4 @@
-// ProgressRing.test.tsx
-
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { ProgressRing } from "core-library/components";
 import "@testing-library/jest-dom";
 
