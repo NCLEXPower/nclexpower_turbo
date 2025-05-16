@@ -27,9 +27,10 @@ export const DeniedCountryBlock: React.FC = () => {
       try {
         return api.web.sendNotify({
           email: data.email,
-          emailNotificationType: 0,
+          emailNotificationType: 1,
         });
       } catch (error) {
+        console.error("API call failed:", error);
         throw error;
       }
     }
