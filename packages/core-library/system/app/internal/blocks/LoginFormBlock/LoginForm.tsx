@@ -27,6 +27,7 @@ type Props = {
   rememberMe: boolean;
   handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
   savedData: SavedDataProps | null;
+  isSubmitting: boolean;
 };
 
 export const LoginForm: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const LoginForm: React.FC<Props> = ({
   rememberMe,
   handleChangeRememberMe,
   savedData,
+  isSubmitting,
 }) => {
   const form = useForm<LoginFormType>({
     mode: "onSubmit",
@@ -156,7 +158,7 @@ export const LoginForm: React.FC<Props> = ({
 
       <Button
         disabled={submitLoading}
-        loading={submitLoading}
+        loading={submitLoading || isSubmitting}
         onClick={handleSubmit(onSubmit)}
         variant="contained"
         data-testid="signin"
