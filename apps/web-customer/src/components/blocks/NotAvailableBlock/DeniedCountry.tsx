@@ -32,27 +32,45 @@ export const DeniedCountry = ({
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100vh",
+        width: "100vw",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        py: "50px",
-      }}
-    >
-      <Image
-        src={NotAvailableBG}
-        alt="CoreZigma"
-        style={{
-          width: "100%",
-          height: "100vh",
-          position: "absolute",
-          objectFit: "cover",
-          zIndex: -1,
+        overflow: "hidden",
+        position: "relative",
+        margin: 0,
+        padding: 0,
+        left: 0, 
+        boxSizing: "border-box",
         }}
-      />
+    >
+    
+      <div style={{ 
+        position: "fixed", 
+        top: 0, 
+        left: 0, 
+        width: "100vw", 
+        height: "100vh", 
+        zIndex: -1,
+        backgroundColor: "#000", 
+      }}>
+        <Image
+          src={NotAvailableBG}
+          alt="CoreZigma"
+          priority
+          fill
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+          sizes="100vw"
+          quality={100}
+        />
+      </div>
+
       <div className="max-w-2xl mx-auto py-8 flex flex-col items-center">
         <div className="flex items-center justify-center gap-4">
           <Image

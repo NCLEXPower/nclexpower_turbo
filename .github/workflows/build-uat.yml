@@ -4,15 +4,9 @@ on:
   push:
     branches:
       - uat
-      - "feature/*"
-      - "hotfix/*"
-      - "release/*"
   pull_request:
     branches:
       - uat
-      - "feature/*"
-      - "hotfix/*"
-      - "release/*"
 
 jobs:
   build_and_test_core_library:
@@ -25,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 18
 
       - name: Install jq
         run: sudo apt-get install -y jq
