@@ -26,6 +26,7 @@ export function LoginFormBlock() {
   const [rememberMe, setRememberMe] = useState(false);
   const [savedData, setSavedData] = useState<SavedDataProps | null>(null);
   const { setItem, getItem, removeItem } = useLocalStorage("rm");
+  const [isSubmitting, setIsSubmittig] = useState(false)
 
   const isEncrypted = (password: string) => {
     return password.includes(":");
@@ -35,6 +36,7 @@ export function LoginFormBlock() {
     async (data: LoginParams) => {
       const key = config.value.SECRET_KEY;
       let passwordToUse = data.password;
+      setIsSubmittig(true);
 
       if (rememberMe) {
         const encryptedPassword = isEncrypted(data.password)
@@ -78,6 +80,8 @@ export function LoginFormBlock() {
           toastId: 0,
           type: "error",
         });
+      } finally {
+        setIsSubmittig(false);
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, toast]
@@ -118,6 +122,7 @@ export function LoginFormBlock() {
         rememberMe={rememberMe}
         savedData={savedData}
         handleChangeRememberMe={handleChangeRememberMe}
+        isSubmitting={isSubmitting}
       />
     </Box>
   );
