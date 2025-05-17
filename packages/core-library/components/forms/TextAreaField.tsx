@@ -44,18 +44,22 @@ export const TextAreaField = <T extends FieldValues>({
               <FormHelperText error>{fieldState.error.message}</FormHelperText>
             ) : (
               label !== null && (
-                <Typography component="label" htmlFor={field?.name} display="flex">
+                <Typography
+                  component="label"
+                  htmlFor={field?.name}
+                  display="flex"
+                >
                   {label ?? ""}
                 </Typography>
               )
             )}
           </Grid>
           <Grid item>
-            <TextareaComponent 
-              {...controllerProps} 
-              {...props} 
+            <TextareaComponent
+              {...controllerProps}
+              {...props}
               {...nonRefField}
-              fieldState={fieldState} 
+              fieldState={fieldState}
             />
           </Grid>
         </Grid>
@@ -91,10 +95,10 @@ export const TextareaComponent = <T extends object>({
         borderRadius: "5px",
         resize: "none",
         borderColor: hasError ? theme.palette.error.main : undefined,
+        ...props.style,
       }}
       minRows={isMobile ? 10 : 5}
       {...props}
     />
   );
 };
-
