@@ -94,4 +94,10 @@ describe("IconComponent", () => {
     const icon = screen.getByTestId("DotsIcon");
     expect(icon).toBeInTheDocument();
   });
+
+  it("should render settingsSquare when 'settingsSquare' is passed", () => {
+    renderIcon("settingsSquare");
+    const icon = screen.getByTestId("settingsSquare");
+    expect(icon).toBeInTheDocument();
+  });
 });
