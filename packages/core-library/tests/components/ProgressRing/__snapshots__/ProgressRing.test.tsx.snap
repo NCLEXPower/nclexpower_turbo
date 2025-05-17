@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressRing matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root css-rmz4vk"
+  >
+    <span
+      aria-valuenow="100"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-8wpdka-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 40px; height: 40px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-1idz92c-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate css-oxts8u-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="19.5"
+          stroke-width="5"
+          style="stroke-dasharray: 122.522; stroke-dashoffset: 0.000px;"
+        />
+      </svg>
+    </span>
+    <span
+      aria-valuenow="60"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-kvtw63-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 40px; height: 40px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-1idz92c-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate css-oxts8u-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="19.5"
+          stroke-width="5"
+          style="stroke-dasharray: 122.522; stroke-dashoffset: 49.009px;"
+        />
+      </svg>
+    </span>
+  </div>
+</DocumentFragment>
+`;

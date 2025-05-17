@@ -60,23 +60,29 @@ export const ComprehensiveAnalytics = () => {
           />
         </div>
       </Box>
+
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
           width: "100%",
+          overflowX: "auto",
           pt: 5,
         }}
       >
-        <Chart
-          type="Bar"
-          dataSet={analytics.data.comprehensiveData}
-          width={isMobile ? 550 : 450}
-          height={isMobile ? 500 : 750}
-          options={HorizontalBarOptions}
-          sx={{ width: "100%" }}
-        />
+        <Box
+          sx={{
+            minWidth: isMobile ? 550 : 800,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Chart
+            type="Bar"
+            dataSet={analytics.data.comprehensiveData}
+            width={isMobile ? 550 : 450}
+            height={500}
+            options={HorizontalBarOptions}
+          />
+        </Box>
       </Box>
     </React.Fragment>
   );
