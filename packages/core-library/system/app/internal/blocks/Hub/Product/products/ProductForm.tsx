@@ -49,7 +49,7 @@ export const ProductForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
     inclusionsData && inclusionsData.length > 0
       ? inclusionsData.map((item: GetAllInclusionResponse) => ({
           label: item.option,
-          value: item.option,
+          value: item.id,
         }))
       : [];
 
