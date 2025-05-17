@@ -3,13 +3,16 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeniedCountryType, notAvailableSchema } from "./validation";
 import { DeniedCountry } from "./DeniedCountry";
+import { useExecuteToast } from "core-library/contexts";
 import {
   SocialMediaConfig,
   useDesignVisibility,
   useSocialMediaIcons,
+  useApiCallback,
 } from "core-library/hooks";
 
 export const DeniedCountryBlock: React.FC = () => {
+  const { showToast } = useExecuteToast();
   const form = useForm<DeniedCountryType>({
     mode: "all",
     resolver: yupResolver(notAvailableSchema),
@@ -18,9 +21,23 @@ export const DeniedCountryBlock: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = form;
-  const onSubmit = (data: DeniedCountryType) => {
-    console.log("value: ", data); //temporarily log the data as API is not yet available
+
+  const sendNotifyCallback = useApiCallback(
+    (api, data: DeniedCountryType) => api.web.sendNotify({
+        email: data.email,
+        emailNotificationType: 1,
+      })
+  );
+
+  const onSubmit = async (data: DeniedCountryType) => {
+    try {
+      const response = await sendNotifyCallback.execute(data);
+      reset();
+    } catch (error) {
+      showToast("Error sending notification", "error");
+    }
   };
 
   useDesignVisibility();
@@ -43,6 +60,7 @@ export const DeniedCountryBlock: React.FC = () => {
         onSubmit={onSubmit}
         handleSubmit={handleSubmit}
         isValid={isValid}
+        loading={sendNotifyCallback.loading}
       />
     </FormProvider>
   );
