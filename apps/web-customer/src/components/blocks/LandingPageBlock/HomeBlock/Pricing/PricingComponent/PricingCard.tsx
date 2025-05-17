@@ -20,7 +20,7 @@ const PricingCard: React.FC<CardProps> = ({
   handleSelectProduct,
 }) => {
   const ProgramTitle = cardData.programTitle;
-  const InclusionsList = cardData.inclusions?.features;
+  const InclusionsList = cardData.inclusions;
 
   const handleProductDetails = () => {
     handleSelectProduct({
@@ -68,7 +68,7 @@ const PricingCard: React.FC<CardProps> = ({
                     height={20}
                   />
                 </span>
-                <p className="m-2">{list}</p>
+                <p className="m-2">{list.option}</p>
               </div>
             ))}
         </div>

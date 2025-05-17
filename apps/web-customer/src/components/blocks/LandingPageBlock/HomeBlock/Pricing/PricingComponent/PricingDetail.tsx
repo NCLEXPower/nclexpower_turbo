@@ -9,7 +9,7 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
   filteredCardData,
   onClose,
 }) => {
-  const InclusionsList = filteredCardData?.inclusions?.features ?? [];
+  const InclusionsList = filteredCardData?.inclusions ?? [];
   const ProgramTitle = filteredCardData.programTitle;
 
   return (
@@ -52,7 +52,7 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
         <div className="flex flex-col text-lg lg:text-2xl text-[#202020]">
           {InclusionsList &&
             InclusionsList.length > 0 &&
-            InclusionsList.map((list: string, index: number) => (
+            InclusionsList.map((list, index) => (
               <div
                 key={index}
                 className="flex items-center gap-2 font-ptSansNarrow"
@@ -66,7 +66,10 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
                     height={28}
                   />
                 </span>
-                <p className="m-2">{list}</p>
+                <p className="m-2">
+                  <span className="font-bold">{list.option}</span>
+                  {list.description}
+                </p>
               </div>
             ))}
         </div>
