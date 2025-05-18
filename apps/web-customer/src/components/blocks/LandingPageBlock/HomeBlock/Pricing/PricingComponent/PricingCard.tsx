@@ -19,8 +19,8 @@ const PricingCard: React.FC<CardProps> = ({
   cardData,
   handleSelectProduct,
 }) => {
-  const ProgramTitle = cardData.programTitle;
-  const InclusionsList = cardData.inclusions;
+  const programTitle = cardData.programTitle;
+  const inclusionsList = cardData.inclusions;
 
   const handleProductDetails = () => {
     handleSelectProduct({
@@ -56,8 +56,8 @@ const PricingCard: React.FC<CardProps> = ({
       </div>
       <div className="w-full flex  justify-start items-start py-5 flex-grow">
         <div className="text-xs flex flex-col">
-          {InclusionsList.length > 0 &&
-            InclusionsList.map((list, index) => (
+          {inclusionsList.length > 0 &&
+            inclusionsList.map((list, index) => (
               <div key={index} className="flex items-center gap-2">
                 <span>
                   <EvaIcon
@@ -75,7 +75,7 @@ const PricingCard: React.FC<CardProps> = ({
       </div>
       <div className="w-full flex gap-5 py-5 justify-center items-center px-2 font-semibold">
         <button
-          className={`${ProgramTitle === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"} text-white w-full py-2 rounded-lg`}
+          className={`${programTitle === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"} text-white w-full py-2 rounded-lg`}
         >
           Get Started
         </button>
