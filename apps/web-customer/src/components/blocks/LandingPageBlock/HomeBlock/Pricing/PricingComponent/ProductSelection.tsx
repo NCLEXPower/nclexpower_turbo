@@ -10,9 +10,8 @@ import {
   ProductSelectionProps,
   ProductCardType,
 } from "core-library/types/global";
-import { formatCurrency } from "core-library/utils/format-currency";
-import { RadioGroup, Radio } from "core-library/components/RadioGroup";
-import { Button } from "core-library/components";
+import { formatCurrency } from "core-library/utils";
+import { RadioGroup, Radio, Button } from "core-library/components";
 
 const getBackgroundColor = (
   programTitle: number,

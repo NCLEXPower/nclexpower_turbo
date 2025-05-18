@@ -2,7 +2,7 @@ import { Box, Grid, Paper } from '@mui/material';
 import React from 'react';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import { ControlledRadioGroup } from 'core-library/components/RadioGroup';
+import { ControlledRadioGroup } from 'core-library/components';
 import { McqSsValidationType, RowSchema } from '@/core/schema/mcq/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFormSubmissionBindingHooks } from 'core-library/hooks/index';

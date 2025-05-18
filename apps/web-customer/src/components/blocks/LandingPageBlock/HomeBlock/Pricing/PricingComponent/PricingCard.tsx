@@ -9,7 +9,7 @@ import {
 } from "core-library/types/global";
 import React from "react";
 import { EvaIcon } from "core-library/components";
-import { formatCurrency } from "core-library/utils/format-currency";
+import { formatCurrency } from "core-library/utils";
 
 interface CardProps {
   cardData: ProductCardType;
