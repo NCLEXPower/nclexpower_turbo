@@ -22,7 +22,7 @@ export default function PricingModal({
   cardData,
 }: PricingModalProps) {
   return (
-    <div className="py-6">
+    <div className="py-12">
       <p
         className="text-base font-normal cursor-pointer underline text-[#717171]"
         onClick={() => handleClickOpen(cardData)}

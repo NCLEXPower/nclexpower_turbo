@@ -18,12 +18,14 @@ import { ProductListResponse } from "core-library/api/types";
 import { PriceButtonDetails } from "@/constants/constants";
 import PricingModal from "./PricingComponent/PricingModal";
 import { ComponentState } from "core-library/components";
+import { Box, Typography, useTheme } from "@mui/material";
 
 interface Props {
   url?: string;
 }
 
 export const PricingBlock: React.FC<Props> = ({ url }) => {
+  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [selectedItems, setSelectedItems] = React.useState<ProductCardType>(
     {} as ProductCardType
@@ -55,6 +57,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
+
     setEncryptedProduct(encyptedData);
     await router.push({
       pathname: "/account/registration",
@@ -84,82 +87,138 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
   }, [router.asPath]);
 
   return (
-    <section
+    <Box
       id="pricing"
-      className="pt-20 pb-40 h-fit bg-[#fafafa] flex items-center justify-center"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "6.94rem 0 4.81px 0",
+        height: "fit-content",
+        backgroundColor: theme.palette.appColors.incidental["025"],
+      }}
     >
-      <div className="w-full flex flex-col items-center">
-        <div className="flex flex-col items-center px-10 text-center">
-          <h2 className="lg:text-5xl text-4xl font-bold font-ptSans mb-8">
+      <Box
+        sx={{
+          maxWidth: theme.sizes.contentWidth,
+          margin: "0 auto",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              fontSize: "3rem",
+              marginBottom: "2.2rem",
+              fontWeight: 700,
+              fontFamily: "PT Sans, sans-serif",
+              color: "#232323",
+            }}
+          >
             Pricing
-          </h2>
-          <p className="font-bold font-ptSans text-2xl text-[#282828] leading-9 -mt-1">
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              color: "#282828",
+              fontWeight: 700,
+              fontFamily: "PT Sans, sans-serif",
+            }}
+          >
             For RNs and PNs, choose between our 8-day (Fast Track) or 23-day
             (Standard) program.
-          </p>
-          <p className="font-ptSansNarrow -mt-1">
+          </Typography>
+          <Typography
+            className="font-ptSansNarrow -mt-1"
+            sx={{
+              fontFamily: "PT Sans Narrow, sans-serif",
+              marginTop: "1.56rem",
+              fontWeight: 400,
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              color: "#202020",
+            }}
+          >
             Both programs allow up to 6 months access to the system.
-          </p>
-        </div>
-
-        <div className="pt-10">
-          <div className="flex lg:gap-5 gap-2 flex-wrap justify-center px-20">
-            {PriceButtonDetails.length > 0 &&
-              [...PriceButtonDetails].reverse().map((nurseItem, index) => {
-                const isSelected = nurseType === nurseItem.value;
-                const buttonClasses = `max-h-20 w-72 ${
-                  isSelected
-                    ? `${nurseType === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"}`
-                    : !nurseType && index === 1
-                      ? "bg-[#0c225c]"
-                      : "bg-[#9a9a9a]"
-                } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2 hover:scale-105`;
-                return (
-                  <button
-                    key={index}
-                    className={buttonClasses}
-                    onClick={() => {
-                      filterItems(nurseItem.value);
-                    }}
-                    aria-label={`Filter by ${nurseItem.label}`}
-                  >
-                    <p className="font-bold text-5xl font-Poppins">
-                      {nurseItem.acronym} <span className="font-normal">|</span>
-                    </p>
-                    <p className="font-ptSansNarrow text-2xl">
-                      {nurseItem.label}
-                    </p>
-                  </button>
-                );
-              })}
-          </div>
-        </div>
-        <div className="w-full px-10 flex flex-col gap-5 mt-8 items-start justify-center">
-          <div className="flex gap-5 w-full justify-center self-center flex-wrap">
-            <ComponentState
-              data={dataSource}
-              isError={isError}
-              isLoading={isLoading}
-            >
-              {filteredItems &&
-                filteredItems.length > 0 &&
-                filteredItems.slice(0, 2).map((item, index) => (
-                  <div
-                    className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
-                    key={index}
-                  >
-                    <PricingCard
-                      cardData={item as unknown as ProductCardType}
-                      handleSelectProduct={handleSelectProduct}
-                    />
-                  </div>
-                ))}
-            </ComponentState>
-          </div>
-        </div>
-
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1.25rem",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            margin: "2.62rem 0",
+          }}
+        >
+          {PriceButtonDetails.length > 0 &&
+            [...PriceButtonDetails].reverse().map((nurseItem, index) => {
+              const isSelected = nurseType === nurseItem.value;
+              const buttonClasses = `max-h-20 w-72 ${
+                isSelected
+                  ? `${nurseType === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"}`
+                  : !nurseType && index === 1
+                    ? "bg-[#0c225c]"
+                    : "bg-[#9a9a9a]"
+              } whitespace-nowrap transition-all duration-300 text-white py-5 text-lg rounded-2xl flex items-center leading-4 px-5 text-left gap-2 hover:scale-105`;
+              return (
+                <button
+                  key={index}
+                  className={buttonClasses}
+                  onClick={() => {
+                    filterItems(nurseItem.value);
+                  }}
+                  aria-label={`Filter by ${nurseItem.label}`}
+                >
+                  <span className="font-bold text-5xl font-Poppins">
+                    {nurseItem.acronym} <span className="font-normal">|</span>
+                  </span>
+                  <span className="font-ptSansNarrow text-2xl">
+                    {nurseItem.label}
+                  </span>
+                </button>
+              );
+            })}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1.06rem",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <ComponentState
+            data={dataSource}
+            isError={isError}
+            isLoading={isLoading}
+          >
+            {filteredItems &&
+              filteredItems.length > 0 &&
+              filteredItems.slice(0, 2).map((item, index) => (
+                <Box
+                  className={`cursor-pointer border-2 border-transparent transition-all duration-300 ${nurseType == 1 ? "hover:border-[#08474b] hover:border-2 hover:scale-105 rounded-lg " : "hover:border-[#0c225c] hover:border-2 hover:scale-105 rounded-lg "}`}
+                  key={index}
+                >
+                  <PricingCard
+                    cardData={item as unknown as ProductCardType}
+                    handleSelectProduct={handleSelectProduct}
+                  />
+                </Box>
+              ))}
+          </ComponentState>
+        </Box>
         {filteredItems && filteredItems.length > 0 && (
-          <div>
+          <Box>
             <PricingModal
               handleClickOpen={() => handleClickOpen(filteredItems.slice(0, 2))}
               handleClose={handleClose}
@@ -167,10 +226,10 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
               handleSelectProduct={handleSelectProduct}
               cardData={selectedItems}
             />
-          </div>
+          </Box>
         )}
-      </div>
-    </section>
+      </Box>
+    </Box>
   );
 };
 

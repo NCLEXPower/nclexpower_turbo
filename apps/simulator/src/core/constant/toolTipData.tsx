@@ -1,4 +1,4 @@
-import { useToolbarSettings } from '../context/ToolbarSettingsContext';
+import { useToolbarSettings } from 'core-library/contexts/ToolbarSettingsContext';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';

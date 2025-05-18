@@ -13,7 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ControlledToast } from 'core-library/components';
 import { ProgressProvider } from '@/core/context/ProgressContext';
 import { MobileDetectionProvider } from 'core-library/contexts/MobileDetectionContext';
-import { ToolbarSettingsProvider } from '@/core/context/ToolbarSettingsContext';
+import { ToolbarSettingsProvider } from 'core-library/contexts/ToolbarSettingsContext';
 
 interface Props {
   questionaire: SsrMockQuestionaire[];

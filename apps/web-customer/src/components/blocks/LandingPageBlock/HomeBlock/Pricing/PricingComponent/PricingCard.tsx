@@ -9,7 +9,7 @@ import {
 } from "core-library/types/global";
 import React from "react";
 import { EvaIcon } from "core-library/components";
-import { formatCurrency } from "core-library/format-currency";
+import { formatCurrency } from "core-library/utils/format-currency";
 
 interface CardProps {
   cardData: ProductCardType;
@@ -37,6 +37,11 @@ const PricingCard: React.FC<CardProps> = ({
     });
   };
 
+  const formattedPrice = formatCurrency(
+    cardData?.pricing?.currency,
+    cardData?.pricing?.price
+  );
+
   return (
     <div
       onClick={handleProductDetails}
@@ -50,12 +55,7 @@ const PricingCard: React.FC<CardProps> = ({
       <div className="w-full flex pb-5 justify-center items-center px-5 border-b-2 border-[#d9d9d9] -mt-3">
         <div className="w-1/2 text-center">
           <div className="text-4xl font-Poppins font-bold">
-            <p>
-              {formatCurrency(
-                cardData?.pricing?.currency,
-                cardData?.pricing?.price
-              )}
-            </p>
+            <p>{formattedPrice}</p>
           </div>
         </div>
       </div>

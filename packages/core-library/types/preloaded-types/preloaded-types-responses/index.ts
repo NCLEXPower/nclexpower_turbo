@@ -1,3 +1,5 @@
+import react from "react";
+
 export type Header = {
   headerContentId: string;
   timeRemaining: any;
@@ -16,7 +18,8 @@ export type QuestionContentsPayload = {
 };
 
 export type ParsedChoices = {
-  Label: string;
+  Label?: string;
+  Element?: React.ReactNode;
   Value: number | boolean;
   XValue: number;
 };

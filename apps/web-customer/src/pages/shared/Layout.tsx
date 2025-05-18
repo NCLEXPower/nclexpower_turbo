@@ -42,6 +42,7 @@ import { ContentLoader } from "core-library/router";
 import { useRouter } from "core-library";
 import { dataContent } from "@/constants/constants";
 import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
+import { ToolbarSettingsProvider } from "core-library/contexts/ToolbarSettingsContext";
 
 const Layout: React.FC<
   React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
@@ -75,36 +76,37 @@ const Layout: React.FC<
     return <DuplicateSessionBlock />;
   }
 
-
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
       loading={loading}
     >
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme()}>
-          <CssBaseline />
-          <HeaderTitleContextProvider>
-            <FormSubmissionContextProvider>
-              <DrawerLayout
-                menu={headerMenu}
-                isAuthenticated={isAuthenticated}
-                headerStyles={headerStyles}
-                sidebarStyles={sidebarStyles}
-                onLogout={logout}
-                isPaid={isPaid}
-              >
-                <ContentLoader loading={loading || router.loading}>
-                  <LoadablePageContent loading={loading}>
-                    {children}
-                    <Footer info={CompanyInfo} list={list} />
-                    {shouldShowChatBotWidget && <ChatBotWidget />}
-                  </LoadablePageContent>
-                </ContentLoader>
-              </DrawerLayout>
-            </FormSubmissionContextProvider>
-          </HeaderTitleContextProvider>
-        </ThemeProvider>
+        <ToolbarSettingsProvider>
+          <ThemeProvider theme={theme()}>
+            <CssBaseline />
+            <HeaderTitleContextProvider>
+              <FormSubmissionContextProvider>
+                <DrawerLayout
+                  menu={headerMenu}
+                  isAuthenticated={isAuthenticated}
+                  headerStyles={headerStyles}
+                  sidebarStyles={sidebarStyles}
+                  onLogout={logout}
+                  isPaid={isPaid}
+                >
+                  <ContentLoader loading={loading || router.loading}>
+                    <LoadablePageContent loading={loading}>
+                      {children}
+                      <Footer info={CompanyInfo} list={list} />
+                      {shouldShowChatBotWidget && <ChatBotWidget />}
+                    </LoadablePageContent>
+                  </ContentLoader>
+                </DrawerLayout>
+              </FormSubmissionContextProvider>
+            </HeaderTitleContextProvider>
+          </ThemeProvider>
+        </ToolbarSettingsProvider>
       </QueryClientProvider>
     </PageLoaderContextProvider>
   );

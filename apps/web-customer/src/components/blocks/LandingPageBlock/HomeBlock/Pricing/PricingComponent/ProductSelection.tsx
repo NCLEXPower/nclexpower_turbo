@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import Image from "next/image";
 import {
   BlueDocument,
@@ -10,7 +10,27 @@ import {
   ProductSelectionProps,
   ProductCardType,
 } from "core-library/types/global";
-import { formatCurrency } from "core-library/format-currency";
+import { formatCurrency } from "core-library/utils/format-currency";
+import { RadioGroup, Radio } from "core-library/components/RadioGroup";
+import { Button } from "core-library/components";
+
+const getBackgroundColor = (
+  programTitle: number,
+  selectedProduct: number,
+  option: number
+) => {
+  if (programTitle === 0) {
+    return option === selectedProduct
+      ? { backgroundColor: "#0F2A7126", borderColor: "#0F2A716B" }
+      : { backgroundColor: "#fff", borderColor: "#dfdfdf" };
+  }
+  if (programTitle === 1) {
+    return option === selectedProduct
+      ? { backgroundColor: "#084A4E26", borderColor: "#084A4E6B" }
+      : { backgroundColor: "#fff", borderColor: "#dfdfdf" };
+  }
+  return { backgroundColor: "#fff", borderColor: "#dfdfdf" };
+};
 
 const ProductSelection = ({
   cardData,
@@ -18,17 +38,15 @@ const ProductSelection = ({
   setSelectedProduct,
   handleSelectProduct,
 }: ProductSelectionProps) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedProduct(Number(event.target.value));
+  const handleChange = (programType: number) => {
+    setSelectedProduct(programType);
   };
 
   const handleProductDetails = () => {
     const selectedCard = cardData.find(
       (card: ProductCardType) => card.programType === selectedProduct
     );
-
     if (!selectedCard) return;
-
     handleSelectProduct({
       amount: selectedCard.pricing.price,
       currency: selectedCard.pricing.currency,
@@ -42,93 +60,133 @@ const ProductSelection = ({
     });
   };
 
-  const getBackgroundColor = (
-    programTitle: number,
-    selectedProduct: number,
-    option: number
-  ) => {
-    if (programTitle === 0) {
-      return option === selectedProduct
-        ? "bg-[#0F2A7126] border-[rgba(15,42,113,0.42)]"
-        : "bg-white";
-    }
+  const radioOptions = cardData.map((card, index) => {
+    const isSelected = selectedProduct === card.programType;
+    const isLast = index === cardData.length - 1;
+    const { backgroundColor, borderColor } = getBackgroundColor(
+      card.programTitle,
+      selectedProduct,
+      card.programType
+    );
+    const formattedPrice = formatCurrency(
+      card.pricing?.currency,
+      card.pricing?.price
+    );
 
-    if (programTitle === 1) {
-      return option === selectedProduct
-        ? "bg-[#084A4E26] border-[rgba(8,74,78,0.42)]"
-        : "bg-white";
-    }
+    return {
+      Value: card.programType,
+      XValue: card.programType,
+      Element: (
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            padding: "1.81rem 1.5rem",
+            borderRadius: "1.06rem",
+            transition: "all 0.3s",
+            boxShadow: "0px 1px 4.2px 0px rgba(0,0,0,0.25)",
+            border: `1px solid ${borderColor}`,
+            cursor: "pointer",
+            backgroundColor,
+            mb: !isLast ? 5 : 0,
+          }}
+          onClick={() => handleChange(Number(card.programType))}
+        >
+          <Radio
+            value={card.programType}
+            checked={isSelected}
+            color="primary"
+            onChange={() => handleChange(Number(card.programType))}
+            label=""
+          />
 
-    return "bg-white";
-  };
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 700,
+                fontFamily: "PT Sans, sans-serif",
+                fontSize: "1.94rem",
+                lineHeight: "108%",
+              }}
+            >
+              {card.programType === 0 ? "Standard" : "Fast Track"}
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: 400,
+                fontFamily: "PT Sans, sans-serif",
+                fontSize: "0.94rem",
+                lineHeight: "108%",
+              }}
+            >
+              {card.programType === 0
+                ? "Twenty Three (23) Days"
+                : "Eight (8) Days"}
+            </Typography>
+          </Box>
+          <Typography
+            sx={{
+              width: "100%",
+              textAlign: "right",
+              fontWeight: 700,
+              fontSize: "2.18rem",
+            }}
+          >
+            {formattedPrice}
+          </Typography>
+        </Box>
+      ),
+    };
+  });
 
   return (
-    <div className="w-full xl:w-2/6 flex flex-col justify-between px-8 py-12 text-[#232323] bg-[#F2F2F2] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-2xl">
-      <div className="flex flex-col h-full space-y-12">
-        <FormControl className="h-1/2">
-          <FormLabel id="product-selection">
-            <h2 className="font-ptSans text-xl lg:text-3xl font-bold mb-6">
-              Product Selection
-            </h2>
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="product-selection"
-            name="product-selection-group"
-            value={selectedProduct}
-            onChange={handleChange}
-            className="space-y-3"
-          >
-            {cardData.map((card: any, index: any) => {
-              return (
-                <div
-                  key={index}
-                  className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl transition-all duration-300 shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.25)] border border-[#dfdfdf] cursor-pointer ${getBackgroundColor(
-                    card.programTitle,
-                    selectedProduct,
-                    card.programType
-                  )}`}
-                  onClick={() => setSelectedProduct(card.programType)}
-                >
-                  <div className="flex items-center justify-center w-full">
-                    <Radio
-                      value={card.programType}
-                      checked={selectedProduct === card.programType}
-                      className="hidden"
-                    />
-                    <div className="w-full font-ptSans flex flex-col items-start justify-start">
-                      <h1 className="text-xl font-ptSans lg:text-3xl font-bold -mb-4 pt-2">
-                        {card.programType === 0 ? "Standard" : "Fast Track"}
-                      </h1>
-                      <p className="text-sm font-ptSans font-normal">
-                        {card.programType == 0
-                          ? "Twenty Three (23) Days"
-                          : "Eight (8) Days"}
-                      </p>
-                    </div>
-                  </div>
+    <Box className="w-full xl:w-2/6 flex flex-col justify-between px-8 py-12 text-[#232323] bg-[#F2F2F2] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-2xl">
+      <Box className="flex flex-col h-full space-y-12">
+        <Typography
+          variant="h2"
+          sx={{
+            fontSize: "2.13rem",
+            fontweight: 700,
+            lineHeight: "108%",
+            fontFamily: "PT Sans, sans-serif",
+            marginBottom: "1.19rem",
+          }}
+        >
+          Product Selection
+        </Typography>
+        <RadioGroup
+          radio={radioOptions}
+          value={selectedProduct}
+          onChange={setSelectedProduct}
+        />
+        <Typography
+          sx={{
+            fontFamily: "PT Sans, sans-serif",
+            fontSize: "1.13rem",
+            color: "#8A8A8A",
+            fontWeight: 400,
+            lineHeight: "2.25rem",
+            marginTop: "9px",
+          }}
+        >
+          Both programs allow up to 6 months access to the system.
+        </Typography>
+        <Divider sx={{ borderColor: "#8A8A8A" }} />
 
-                  <div className="w-full mx-auto text-right font-bold text-2xl lg:text-[35px]">
-                    {formatCurrency(
-                      card.pricing?.currency,
-                      card.pricing?.price
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </RadioGroup>
-
-          <FormLabel>
-            <p className="text-[#8A8A8A] font-ptSansNarrow text-lg">
-              Both programs allow up to 6 months access to the system.
-            </p>
-          </FormLabel>
-          <hr className="text-[#BFBFBF]" />
-        </FormControl>
-
-        <div className="h-full flex flex-col justify-end px-8">
-          <div className="relative w-full flex flex-col items-end">
-            <div className="relative flex flex-col items-end w-full -bottom-6 z-10">
+        <Box className="h-full flex flex-col justify-end px-8">
+          <Box className="relative w-full flex flex-col items-end">
+            <Box className="relative flex flex-col items-end w-full -bottom-6 z-10">
               <Image
                 src={
                   cardData[0].programTitle === 0 ? BlueDocument : GreenDocument
@@ -145,35 +203,69 @@ const ProductSelection = ({
                 alt="Light Bulb Blue"
                 className="absolute -bottom-14 -right-16 w-[150px] h-[220px] md:w-[227px] md:h-[264px]"
               />
-            </div>
-            <button
-              className={`text-primary py-3 ${cardData[0].programTitle === 0 ? "bg-darkBlue" : "bg-[#084A4E]"} rounded-xl w-full z-20 text-xl leading-[45px] font-bold`}
+            </Box>
+
+            <Button
+              sx={{
+                color: "#fff",
+                backgroundColor:
+                  cardData[0].programTitle === 0 ? "#0F2A71" : "#084A4E",
+                borderRadius: "12.66px",
+                width: "100%",
+                zIndex: 20,
+                fontSize: "1.25rem",
+                lineHeight: "45px",
+                fontWeight: "bold",
+                py: 3,
+              }}
               onClick={handleProductDetails}
             >
               Buy Product
-            </button>
-            {/* Separator */}
-            <div className="flex items-center my-4 w-full">
-              <hr className="flex-grow text-[#BFBFBF]" />
-              <span className="px-2 text-sm font-normal text-[#BFBFBF]">
-                or
-              </span>
-              <hr className="flex-grow text-[#BFBFBF]" />
-            </div>
-            <button
-              className={`text-primary py-3 ${cardData[0].programTitle === 0 ? "bg-[#3456af]" : "bg-[#138d94]"} rounded-xl w-full z-20 text-xl leading-[45px] font-bold`}
+            </Button>
+
+            <Divider
+              sx={{
+                borderColor: "#8A8A8A",
+                width: "100%",
+                color: "rgba(138,138,138,0.67)",
+                fontSize: "14px",
+                margin: "1rem 0",
+              }}
+            >
+              or
+            </Divider>
+            <Button
+              sx={{
+                color: "#fff",
+                backgroundColor:
+                  cardData[0].programTitle === 0 ? "#3456af" : "#138d94",
+                borderRadius: "0.75rem",
+                width: "100%",
+                zIndex: 20,
+                fontSize: "1.25rem",
+                lineHeight: "45px",
+                fontWeight: "bold",
+                py: 3,
+              }}
               onClick={handleProductDetails}
             >
               Start Free Trial
-            </button>
-          </div>
-          <p className="text-sm text-[#8A8A8A]">
+            </Button>
+          </Box>
+          <Typography
+            sx={{
+              fontSize: "14px",
+              color: "#8A8A8A",
+              marginTop: "1rem",
+              textAlign: "center",
+            }}
+          >
             Free trial allow up to 24 hours access to the system with limited
             contents.
-          </p>
-        </div>
-      </div>
-    </div>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

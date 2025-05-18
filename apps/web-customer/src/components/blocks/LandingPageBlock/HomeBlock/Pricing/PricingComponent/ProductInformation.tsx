@@ -9,7 +9,9 @@ const ProductInformation = ({
   onClose,
   handleSelectProduct,
 }: ProductInformationProps) => {
-  const [selectedProduct, setSelectedProduct] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(
+    Array.isArray(cardData) ? cardData[1]?.programType : cardData?.programType
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
