@@ -23,11 +23,10 @@ import { useEffect } from "react";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
-  submitLoading?: boolean;
+  submitLoading: boolean;
   rememberMe: boolean;
   handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
   savedData: SavedDataProps | null;
-  isSubmitting: boolean;
 };
 
 export const LoginForm: React.FC<Props> = ({
@@ -36,7 +35,6 @@ export const LoginForm: React.FC<Props> = ({
   rememberMe,
   handleChangeRememberMe,
   savedData,
-  isSubmitting,
 }) => {
   const form = useForm<LoginFormType>({
     mode: "onSubmit",
@@ -158,7 +156,7 @@ export const LoginForm: React.FC<Props> = ({
 
       <Button
         disabled={submitLoading}
-        loading={submitLoading || isSubmitting}
+        loading={submitLoading}
         onClick={handleSubmit(onSubmit)}
         variant="contained"
         data-testid="signin"
