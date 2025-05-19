@@ -59,10 +59,10 @@ jobs:
         if: github.ref == 'refs/heads/uat'
         run: |
           cd apps/web-customer
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-uat
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --project arxenius-uat
 
       - name: Deploy web-backoffice-generic to Vercel (UAT)
         if: github.ref == 'refs/heads/uat'
         run: |
           cd apps/web-backoffice-generic
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-officeuat
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --project arxenius-officeuat
