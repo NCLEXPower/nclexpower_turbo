@@ -45,7 +45,7 @@ export * from "./Stepper/Stepper";
 export * from "./Info/InformationTitle";
 export * from "./forms/fileUploadForm/FileUploadField";
 export * from "./ProgressBar";
-export * from "./RadioGroup";
+export * from "./Radio/RadioGroup";
 export * from "./ToolTip/CustomToolTip";
 export * from "./PageLoader";
 export * from "./Badge/CustomBadge";
