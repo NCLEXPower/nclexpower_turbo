@@ -63,4 +63,4 @@ jobs:
         if: github.ref == 'refs/heads/preprod'
         run: |
           cd apps/web-customer
-          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --scope nclex-power --project nclexpower-sandbox
+          npx vercel --prod --token ${{ secrets.NCLEX_VERCEL_TOKEN }} --project arxenius-preprod
