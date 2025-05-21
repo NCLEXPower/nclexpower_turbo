@@ -1,4 +1,4 @@
-export function formatPrice(value: number, currency?: string): string {
+export function formatPrice(value?: number, currency?: string): string {
   if (!value) {
     return "$0";
   }
