@@ -26,6 +26,8 @@ export * from "./forms/FieldError";
 export * from "./forms/TextField";
 export * from "./forms/PhoneField";
 export * from "./forms/NumberField";
+export * from "./forms/radio/RadioButtonsField";
+export * from "./forms/radio/ProductRadioSelection";
 export * from "./blocks/HeaderTitleBlock";
 export * from "./blocks/PanelBlocks";
 export * from "./blocks/TextBlock";
