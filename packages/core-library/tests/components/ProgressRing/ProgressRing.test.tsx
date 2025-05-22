@@ -1,11 +1,18 @@
-import { render } from "@testing-library/react";
 import { ProgressRing } from "core-library/components";
 import "@testing-library/jest-dom";
+import { render } from "../../common";
 
-jest.mock("next/config", () => () => ({
-  publicRuntimeConfig: {
-    processEnv: {},
-  },
+jest.mock("core-library/config", () => ({
+  getConfig: jest
+    .fn()
+    .mockReturnValue({ publicRuntimeConfig: { processEnv: {} } }),
+  config: { value: jest.fn() },
+}));
+
+jest.mock("core-library/core/router", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
 }));
 
 describe("ProgressRing", () => {

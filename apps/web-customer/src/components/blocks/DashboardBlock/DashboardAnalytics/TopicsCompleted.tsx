@@ -10,7 +10,7 @@ import { Box, Typography } from "@mui/material";
 import Divider from "core-library/components/Divider/Divider";
 import { useResolution } from "core-library/hooks";
 import { ProgressRing } from "core-library/components";
-import { getLayoutConfig } from "./LayoutConfig";
+import { getLayoutConfig } from "core-library/utils/layout-config";
 
 export const TopicsCompleted = () => {
   const { isMobile } = useResolution();
