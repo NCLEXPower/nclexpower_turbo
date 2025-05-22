@@ -7,6 +7,7 @@ import {
   TextFieldProps,
   SxProps,
 } from "@mui/material";
+import { badgeBgColor } from "../../system/app/internal/blocks/Hub/IssueTrackingManagement/styles/style";
 
 type SelectOption = {
   label: string;
@@ -64,7 +65,10 @@ export function SelectField({
           <MenuItem
             key={option.xvalue ?? option.value}
             value={option.xvalue ?? option.value}
-            sx={{ ...listSx }}
+            sx={{
+              ...(badgeBgColor[String(option.label)] ?? {}),
+              ...listSx,
+            }}
           >
             {option.label}
           </MenuItem>

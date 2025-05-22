@@ -990,12 +990,8 @@ export type CaseStudyListResponse = {
   dateCreated: string;
 };
 
-export type UpdateStatusParams = {
-  proof: File;
-  notes: string;
-  refNo: string;
-  updateStatus: 0 | 1 | 2;
-};
+export type ContactResponse = ContactResponseType[];
+
 export type ContactResponseType = {
   id: string;
   name: string;
@@ -1004,5 +1000,6 @@ export type ContactResponseType = {
   email: string;
   phone: string;
   message: string;
+  status?: number;
   createdAt: string;
 };

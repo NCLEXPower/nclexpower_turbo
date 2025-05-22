@@ -23,6 +23,7 @@ import {
   AuthorizedRoutes,
   CategoryFormParams,
   ContactResponseType,
+  ContactResponse,
   CreateInclusionParams,
   CreateRegularType,
   CurrenciesResponse,
@@ -586,21 +587,32 @@ export class WebApiBackOffice {
   }
   public async getPdf(policyType: number) {
     return await this.axios.get<PolicyFileResponseType>(
-      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`
+      `/api/v2/content/BaseContent/get-file-url?policy=${policyType}`);
+  }
+
+  public async updateStatus(form: FormData) {
+    return await this.axios.post<boolean>(
+      `/api/v1/Customer/resolve-report-issue`,
+      form,
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
   }
+
   public async getAllContacts() {
     return await this.axios.get<ContactResponseType>(
       `/api/v2/content/BaseContent/get-contact-us`
     );
   }
-
   
   public async deleteContact(id: string) {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-contact-us`, { data: { id } }
     );
   }
+
+  public async getIssueReport() {
+    return await this.axios.get<ContactResponse>(
+      `/api/v2/content/BaseContent/get-contact-us`
+    );
+  }
 }
-
-
