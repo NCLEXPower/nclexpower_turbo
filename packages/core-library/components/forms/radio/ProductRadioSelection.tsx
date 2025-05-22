@@ -41,20 +41,17 @@ interface ProductRadioSelectionFieldProps<T extends object> {
   groupClassName?: string;
 }
 
-type ProductRadioSelectionComponentProps<T extends object> = Omit<
-  ControllerRenderProps<T, Path<T>>,
-  "onChange"
-> & {
+type ProductRadioSelectionComponentProps = {
   onChange(value: any): void;
   options: ProductRadioOption[];
   bgColor: string;
   formattedPrice: string;
   disabled?: boolean;
-  valueParser?: (
-    value: string
-  ) => UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
+  valueParser?: (value: string) => any;
   ariaLabelledby?: string;
   groupClassName?: string;
+  value?: any;
+  name?: string;
 };
 
 export const ProductRadioSelectionField = <T extends FieldValues>({
@@ -88,9 +85,7 @@ export const ProductRadioSelectionField = <T extends FieldValues>({
   />
 );
 
-const ProductRadioSelectionComponent = forwardRef(function Component<
-  T extends object,
->(
+const ProductRadioSelectionComponent = forwardRef(function Component(
   {
     options,
     onChange,
@@ -102,7 +97,7 @@ const ProductRadioSelectionComponent = forwardRef(function Component<
     ariaLabelledby = "product-selection",
     groupClassName = "space-y-3",
     ...props
-  }: Omit<ProductRadioSelectionComponentProps<T>, "ref">,
+  }: ProductRadioSelectionComponentProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
   return (
