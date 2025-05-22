@@ -74,7 +74,7 @@ export const ProductRadioSelectionField = <T extends FieldValues>({
     control={control}
     defaultValue={defaultValue}
     render={({ field }) => (
-      <ProductRadioSelectionComponent<T>
+      <ProductRadioSelectionComponent
         options={options}
         bgColor={bgColor}
         formattedPrice={formattedPrice}
