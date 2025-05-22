@@ -31,17 +31,17 @@ interface Props<T extends object> {
   ) => UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
 }
 
-type ComponentProps<T extends object> = Pick<
+type ComponentProps = Pick<
   RadioProps,
   "checked" | "disabled" | "color" | "inputProps"
 > &
-  Omit<ControllerRenderProps<T, Path<T>>, "onChange"> & {
+  Partial<Omit<ControllerRenderProps<any, string>, "onChange">> & {
     onChange(value: any): void;
     buttons: RadioButtonFieldOption[];
     withBorder?: boolean;
-    valueParser?: (
-      value: string
-    ) => UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
+    valueParser?: (value: string) => any;
+    value?: any;
+    name?: string;
   };
 
 export const RadioButtonsField = <T extends FieldValues>({
@@ -58,7 +58,7 @@ export const RadioButtonsField = <T extends FieldValues>({
     control={control}
     defaultValue={defaultValue}
     render={({ field }) => (
-      <RadioButtonsComponent<T>
+      <RadioButtonsComponent
         disabled={disabled}
         withBorder={withBorder}
         valueParser={valueParser}
@@ -69,7 +69,7 @@ export const RadioButtonsField = <T extends FieldValues>({
   />
 );
 
-const RadioButtonsComponent = forwardRef(function Component<T extends object>(
+const RadioButtonsComponent = forwardRef(function Component(
   {
     buttons,
     onChange,
@@ -77,7 +77,7 @@ const RadioButtonsComponent = forwardRef(function Component<T extends object>(
     withBorder = false,
     valueParser,
     ...props
-  }: Omit<ComponentProps<T>, "ref">,
+  }: ComponentProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) {
   return (
