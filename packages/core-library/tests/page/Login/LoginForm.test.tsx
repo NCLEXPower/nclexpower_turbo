@@ -25,7 +25,6 @@ describe("LoginForm", () => {
       <LoginForm
         onSubmit={mockOnSubmit}
         submitLoading={false}
-        isSubmitting={false}
         rememberMe={false}
         handleChangeRememberMe={function (
           event: React.ChangeEvent<HTMLInputElement>
@@ -48,7 +47,6 @@ describe("LoginForm", () => {
       <LoginForm
         onSubmit={mockOnSubmit}
         submitLoading={false}
-        isSubmitting={false}
         rememberMe={false}
         handleChangeRememberMe={function (
           event: React.ChangeEvent<HTMLInputElement>
@@ -77,7 +75,6 @@ describe("LoginForm", () => {
       <LoginForm
         onSubmit={mockOnSubmit}
         submitLoading={true}
-        isSubmitting={false}
         rememberMe={false}
         handleChangeRememberMe={function (
           event: React.ChangeEvent<HTMLInputElement>
@@ -96,7 +93,6 @@ describe("LoginForm", () => {
     render(
       <LoginForm
         onSubmit={mockOnSubmit}
-        isSubmitting={false}
         submitLoading={false}
         rememberMe={false}
         handleChangeRememberMe={function (
@@ -117,7 +113,6 @@ describe("LoginForm", () => {
       <LoginForm
         onSubmit={mockOnSubmit}
         submitLoading={false}
-        isSubmitting={false}
         rememberMe={false}
         handleChangeRememberMe={function (
           event: React.ChangeEvent<HTMLInputElement>
@@ -140,7 +135,6 @@ describe("LoginForm", () => {
       <LoginForm
         onSubmit={mockOnSubmit}
         submitLoading={false}
-        isSubmitting={false}
         rememberMe={false}
         handleChangeRememberMe={function (
           event: React.ChangeEvent<HTMLInputElement>

@@ -21,12 +21,11 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loading } = useAuthContext();
+  const { login, loading, loginLoading } = useAuthContext();
   const toast = useExecuteToast();
   const [rememberMe, setRememberMe] = useState(false);
   const [savedData, setSavedData] = useState<SavedDataProps | null>(null);
   const { setItem, getItem, removeItem } = useLocalStorage("rm");
-  const [submitLoading, setSubmitLoading] = useState(false)
 
   const isEncrypted = (password: string) => {
     return password.includes(":");
@@ -36,7 +35,6 @@ export function LoginFormBlock() {
     async (data: LoginParams) => {
       const key = config.value.SECRET_KEY;
       let passwordToUse = data.password;
-      setSubmitLoading(true);
 
       if (rememberMe) {
         const encryptedPassword = isEncrypted(data.password)
@@ -81,7 +79,6 @@ export function LoginFormBlock() {
           type: "error",
         });
       } finally {
-        setSubmitLoading(false);
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, toast]
@@ -118,7 +115,7 @@ export function LoginFormBlock() {
     >
       <LoginForm
         onSubmit={handleSubmit}
-        submitLoading={submitLoading}
+        submitLoading={loginLoading}
         rememberMe={rememberMe}
         savedData={savedData}
         handleChangeRememberMe={handleChangeRememberMe}

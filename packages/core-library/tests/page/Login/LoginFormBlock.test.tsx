@@ -66,7 +66,6 @@ describe("LoginFormBlock", () => {
       <LoginForm
         onSubmit={jest.fn()}
         submitLoading={false}
-        isSubmitting={false}
         rememberMe={true}
         savedData={{
           email: "test@example.com",
