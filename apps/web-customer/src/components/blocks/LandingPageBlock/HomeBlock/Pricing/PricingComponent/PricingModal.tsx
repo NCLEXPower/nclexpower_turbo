@@ -15,7 +15,6 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function PricingModal({
-  handleClickOpen,
   handleClose,
   handleSelectProduct,
   open,
@@ -23,12 +22,6 @@ export default function PricingModal({
 }: PricingModalProps) {
   return (
     <div className="py-6">
-      <p
-        className="text-base font-normal cursor-pointer underline text-[#717171]"
-        onClick={() => handleClickOpen(cardData)}
-      >
-        View more details
-      </p>
       <Dialog
         fullScreen
         open={open}
