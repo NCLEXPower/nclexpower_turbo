@@ -76,6 +76,7 @@ const routeTitles: Record<string, string> = {
   "/account/reset-link": "Reset Link Success",
   "/about": "About",
   "/account/registration": "Account Registration",
+  "/coming-soon": "Coming Soon",
 };
 
 export const useRouter = () => {
