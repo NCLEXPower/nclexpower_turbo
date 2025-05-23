@@ -53,9 +53,9 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
       key ?? "no-secret-key"
     );
     setEncryptedProduct(encyptedData);
-    await router.push({
-      pathname: "/account/registration",
-    });
+    if (filteredItems) {
+      handleClickOpen(filteredItems.slice(0, 2));
+    }
   };
 
   const filterItems = (keyword: number) => {
@@ -157,7 +157,6 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         {filteredItems && filteredItems.length > 0 && (
           <div>
             <PricingModal
-              handleClickOpen={() => handleClickOpen(filteredItems.slice(0, 2))}
               handleClose={handleClose}
               open={open}
               handleSelectProduct={handleSelectProduct}
