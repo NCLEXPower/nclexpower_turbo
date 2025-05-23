@@ -25,17 +25,6 @@ const ProductSelection = ({
   setSelectedProduct,
   handleSelectProduct,
 }: ProductSelectionProps) => {
-  const getBgColor = (
-    programType: number,
-    selectedProduct: number,
-    programTitle: number
-  ) => {
-    if (programType === selectedProduct) {
-      return programTitle === 0 ? " #0F2A7126" : "#084A4E26";
-    }
-    return "bg-white";
-  };
-
   const options: ProductRadioOption[] = cardData.map(
     (card: ProductCardType) => {
       const bgColor =
