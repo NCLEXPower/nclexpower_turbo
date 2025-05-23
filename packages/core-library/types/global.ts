@@ -189,9 +189,9 @@ export interface ProductCardType {
 
 export interface PricingModalProps {
   handleClose: () => void;
+  cardData: ProductCardType;
   handleSelectProduct: (item: SelectedProductType) => void;
   open: boolean;
-  cardData: ProductCardType;
 }
 
 export interface ProductInformationProps {

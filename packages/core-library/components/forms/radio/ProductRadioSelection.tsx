@@ -1,4 +1,4 @@
-import { Grid, RadioGroup } from "@mui/material";
+import { Grid, RadioGroup, Box, Typography, Divider } from "@mui/material";
 import { ForwardedRef, forwardRef, Fragment } from "react";
 import {
   Control,
@@ -31,8 +31,6 @@ interface ProductRadioSelectionFieldProps<T extends object> {
   control: Control<T>;
   defaultValue?: UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
   options: ProductRadioOption[];
-  bgColor: string;
-  formattedPrice: string;
   disabled?: boolean;
   valueParser?: (
     value: string
@@ -44,8 +42,6 @@ interface ProductRadioSelectionFieldProps<T extends object> {
 type ProductRadioSelectionComponentProps = {
   onChange(value: any): void;
   options: ProductRadioOption[];
-  bgColor: string;
-  formattedPrice: string;
   disabled?: boolean;
   valueParser?: (value: string) => any;
   ariaLabelledby?: string;
@@ -59,8 +55,6 @@ export const ProductRadioSelectionField = <T extends FieldValues>({
   control,
   defaultValue,
   options,
-  bgColor,
-  formattedPrice,
   disabled,
   valueParser,
   ariaLabelledby,
@@ -73,8 +67,6 @@ export const ProductRadioSelectionField = <T extends FieldValues>({
     render={({ field }) => (
       <ProductRadioSelectionComponent
         options={options}
-        bgColor={bgColor}
-        formattedPrice={formattedPrice}
         disabled={disabled}
         valueParser={valueParser}
         ariaLabelledby={ariaLabelledby}
@@ -90,8 +82,6 @@ const ProductRadioSelectionComponent = forwardRef(function Component(
     options,
     onChange,
     value,
-    bgColor,
-    formattedPrice,
     disabled,
     valueParser,
     ariaLabelledby = "product-selection",
@@ -109,42 +99,83 @@ const ProductRadioSelectionComponent = forwardRef(function Component(
       className={groupClassName}
       {...props}
     >
-      {options.map(({ option }, idx) => (
+      {options.map(({ option, bgColor, formattedPrice }, idx) => (
         <Fragment key={option.productType}>
-          <div
-            className={`flex items-center justify-between w-full px-6 py-3 rounded-2xl transition-all duration-300 shadow-[0px_1px_4.2px_0px_rgba(0,0,0,0.25)] border cursor-pointer ${bgColor}`}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              padding: "1.81rem 1.5rem",
+              borderRadius: "1.06rem",
+              transition: "all 0.3s",
+              boxShadow: "0px 1px 4.2px 0px rgba(0,0,0,0.25)",
+              // border: `1px solid ${borderColor}`,
+              cursor: "pointer",
+              backgroundColor: bgColor,
+              mb: idx !== options.length - 1 ? 5 : 0,
+            }}
             onClick={() => !disabled && onChange(option.productType)}
             tabIndex={0}
             role="button"
             aria-pressed={value === option.productType}
             style={{ outline: "none" }}
           >
-            <div className="flex items-center justify-center w-full">
-              <Radio
-                value={option.productType}
-                checked={value === option.productType}
-                className="hidden"
-                disabled={disabled}
-                inputProps={{
-                  "aria-label":
-                    option.productValue ?? `Product ${option.productType}`,
+            <Radio
+              value={option.productType}
+              checked={value === option.productType}
+              className="hidden"
+              disabled={disabled}
+              inputProps={{
+                "aria-label":
+                  option.productValue ?? `Product ${option.productType}`,
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: "100%",
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: 700,
+                  fontFamily: "PT Sans, sans-serif",
+                  fontSize: "1.94rem",
+                  lineHeight: "108%",
+                  color: "#232323",
                 }}
-              />
-              <div className="w-full font-ptSans flex flex-col items-start justify-start">
-                <h1 className="text-xl font-ptSans lg:text-3xl font-bold -mb-4 pt-2">
-                  {option.productType === 0 ? "Standard" : "Fast Track"}
-                </h1>
-                <p className="text-sm font-ptSans font-normal">
-                  {option.productType === 0
-                    ? "Twenty Three (23) Days"
-                    : "Eight (8) Days"}
-                </p>
-              </div>
-            </div>
-            <div className="w-full mx-auto text-right font-bold text-2xl lg:text-[35px]">
+              >
+                {option.productType === 0 ? "Standard" : "Fast Track"}
+              </Typography>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontFamily: "PT Sans, sans-serif",
+                  fontSize: "0.94rem",
+                  lineHeight: "108%",
+                }}
+              >
+                {option.productType === 0
+                  ? "Twenty Three (23) Days"
+                  : "Eight (8) Days"}
+              </Typography>
+            </Box>
+            <Typography
+              sx={{
+                width: "100%",
+                textAlign: "right",
+                fontWeight: 700,
+                fontSize: "2.18rem",
+              }}
+            >
               {formattedPrice}
-            </div>
-          </div>
+            </Typography>
+          </Box>
         </Fragment>
       ))}
     </RadioGroup>
