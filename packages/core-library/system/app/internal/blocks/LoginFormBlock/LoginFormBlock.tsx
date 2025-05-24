@@ -21,7 +21,7 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loading } = useAuthContext();
+  const { login, loading, loginLoading } = useAuthContext();
   const toast = useExecuteToast();
   const [rememberMe, setRememberMe] = useState(false);
   const [savedData, setSavedData] = useState<SavedDataProps | null>(null);
@@ -78,6 +78,7 @@ export function LoginFormBlock() {
           toastId: 0,
           type: "error",
         });
+      } finally {
       }
     },
     [savedData, rememberMe, setItem, removeItem, login, toast]
@@ -114,7 +115,7 @@ export function LoginFormBlock() {
     >
       <LoginForm
         onSubmit={handleSubmit}
-        submitLoading={loading}
+        submitLoading={loginLoading}
         rememberMe={rememberMe}
         savedData={savedData}
         handleChangeRememberMe={handleChangeRememberMe}
