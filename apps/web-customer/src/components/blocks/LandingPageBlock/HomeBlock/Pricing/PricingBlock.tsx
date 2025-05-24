@@ -145,7 +145,7 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
                     key={index}
                   >
                     <PricingCard
-                      cardData={item as unknown as ProductCardType}
+                      product={item as unknown as ProductCardType}
                       handleSelectProduct={handleSelectProduct}
                     />
                   </div>

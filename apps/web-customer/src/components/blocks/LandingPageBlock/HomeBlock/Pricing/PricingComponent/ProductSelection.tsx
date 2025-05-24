@@ -122,7 +122,6 @@ const ProductSelection = ({
             })}
           </RadioGroup>
         </FormControl>
-
         <hr className="text-[#BFBFBF]" />
         <div className="h-full flex flex-col justify-end px-12">
           <div className="relative w-full flex flex-col items-end">

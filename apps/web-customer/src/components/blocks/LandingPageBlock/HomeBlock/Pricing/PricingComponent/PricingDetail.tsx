@@ -6,11 +6,10 @@ import { EvaIcon } from "core-library/components";
 import { PricingDetailProps } from "core-library/types/global";
 
 const PricingDetail: React.FC<PricingDetailProps> = ({
-  filteredCardData,
+  filteredCardData: filteredProduct,
   onClose,
 }) => {
-  const InclusionsList = filteredCardData?.inclusions?.features ?? [];
-  const ProgramTitle = filteredCardData.programTitle;
+  const { inclusions: features, programTitle } = filteredProduct;
 
   return (
     <div className="w-full   xl:w-4/6  lg:pl-16 my-6 ">
@@ -33,7 +32,7 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
           <h3 className="text-[#818181] text-lg lg:text-2xl font-ptSans ">
             Product Type
           </h3>
-          {ProgramTitle === 0 ? (
+          {programTitle === 0 ? (
             <h2 className="text-darkBlue text-2xl lg:text-4xl font-ptSans font-semibold">
               Registed Nurse (RN)
             </h2>
@@ -50,9 +49,9 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
         </p>
 
         <div className="flex flex-col text-lg lg:text-2xl text-[#202020]">
-          {InclusionsList &&
-            InclusionsList.length > 0 &&
-            InclusionsList.map((list: string, index: number) => (
+          {features &&
+            features.length > 0 &&
+            features.map((list, index) => (
               <div
                 key={index}
                 className="flex items-center gap-2 font-ptSansNarrow"
@@ -66,7 +65,10 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
                     height={28}
                   />
                 </span>
-                <p className="m-2">{list}</p>
+                <p className="m-2">
+                  <span className="font-bold">{list.option}</span>
+                  {list.description}
+                </p>
               </div>
             ))}
         </div>

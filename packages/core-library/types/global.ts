@@ -165,9 +165,7 @@ export interface SelectedProductType {
   productDescription: string;
   programTitle: number;
   programType: number;
-  inclusions: {
-    features: string[];
-  };
+  inclusions: InclusionType[];
 }
 
 export interface ProductCardType {
@@ -181,11 +179,13 @@ export interface ProductCardType {
     price: number;
     currency: string;
   };
-  inclusions: {
-    // temporarily placed just to addressed the ticket. https://app.clickup.com/t/86epzggjz
-    features: string[];
-  };
+  inclusions: InclusionType[];
 }
+
+export type InclusionType = {
+  option: string;
+  description: string;
+};
 
 export interface PricingModalProps {
   handleClose: () => void;
