@@ -188,7 +188,6 @@ export type InclusionType = {
 };
 
 export interface PricingModalProps {
-  handleClickOpen: (item: ProductCardType) => void;
   handleClose: () => void;
   handleSelectProduct: (item: SelectedProductType) => void;
   open: boolean;
