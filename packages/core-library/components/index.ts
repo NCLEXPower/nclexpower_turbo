@@ -94,3 +94,4 @@ export * from "./ScrollTop/ScrollTop";
 
 export * from "./ComponentState/ComponentState";
 export { default as Divider } from "./Divider/Divider";
+export * from "./ProgressRing/ProgressRing";

@@ -1,103 +1,117 @@
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
+
 import React from "react";
 import { analytics } from "./DashboardMock";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Divider from "core-library/components/Divider/Divider";
+import { useResolution } from "core-library/hooks";
+import { ProgressRing } from "core-library/components";
+import { getLayoutConfig } from "core-library/utils/layout-config";
 
 export const TopicsCompleted = () => {
+  const { isMobile } = useResolution();
+
   return (
-    <Box>
+    <Box sx={{ position: "relative", height: 180 }}>
       <Typography
         sx={{
-          fontWeight: "semibold",
+          fontWeight: "bold",
           marginBottom: 8,
-          pt: 5,
-          color: "rgba(35, 35, 35, 0.44)",
+          color: "#00173F",
           fontFamily: "PT Sans Narrow",
-          fontSize: "1.3rem",
+          fontSize: "1.75rem",
+          textAlign: "center",
         }}
       >
         Percent Topic Completed
       </Typography>
-      {analytics.data.topics.map((topic, index) => (
-        <Box
-          key={index}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexDirection: "column",
-            paddingY: 8,
-          }}
-        >
-          <Box sx={{ position: "relative", display: "inline-flex" }}>
-            <CircularProgress
-              variant="determinate"
-              value={topic.percentage}
-              size={200}
-              thickness={5}
-              sx={{
-                color: index % 2 === 0 ? "#0F2A71" : "#181E2F",
-                "& .MuiCircularProgress-circle": {
-                  strokeLinecap: "round",
-                },
-              }}
-            />
+
+      {analytics.data.topicCompleted.map((topic, index) => {
+        const {
+          top,
+          left,
+          size: progressSize,
+          labelTop,
+          labelLeft,
+        } = getLayoutConfig(isMobile, index);
+
+        const progressColor = index % 2 === 0 ? "#0F2A71" : "#181E2F";
+        const dividerHeight = isMobile ? "60px" : "80px";
+
+        return (
+          <Box
+            key={topic.label}
+            sx={{
+              position: "absolute",
+              top,
+              left,
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <Box
               sx={{
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                position: "absolute",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                position: "relative",
+                display: "inline-flex",
               }}
             >
-              <Typography
-                variant="caption"
-                component="div"
-                color="text.primary"
-                sx={{ fontSize: 18, fontWeight: "bold" }}
-              >
-                {`${topic.percentage}%`}
-              </Typography>
+              <ProgressRing
+                value={topic.value}
+                size={progressSize}
+                color={progressColor}
+              />
             </Box>
-          </Box>
-          <Box sx={{ marginLeft: 2, width: "100%", marginY: 4 }}>
-            <Typography
+            <Box
               sx={{
-                fontWeight: "bold",
-                color: "rgba(59, 61, 83, 1)",
-                fontFamily: "PT Sans Narrow",
-                fontSize: "2rem",
+                display: "flex",
+                position: "absolute",
+                top: labelTop,
+                left: labelLeft,
               }}
             >
-              {`${topic.percentage}%`}
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                marginTop: 1,
-                display: "inline-block",
-                fontFamily: "PT Sans Narrow",
-                fontSize: "1.5rem",
-                color: "#23232380",
-              }}
-            >
-              {topic.name}
               <Divider
+                orientation="vertical"
                 sx={{
                   my: 2,
-                  width: "100%",
-                  backgroundColor: index % 2 === 0 ? "#0F2A71" : "#181E2F",
-                  height: "4px",
+                  mr: 2,
+                  width: "4px",
+                  height: dividerHeight,
+                  backgroundColor: progressColor,
                 }}
               />
-            </Typography>
+              <Box sx={{ paddingTop: 2 }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    color: "rgba(59, 61, 83, 1)",
+                    fontFamily: "PT Sans Narrow",
+                    fontSize: "clamp(1rem, 0.7rem + 1.5vw, 2.5rem)",
+                  }}
+                >
+                  {`${topic.value}%`}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    marginTop: 1,
+                    display: "inline-block",
+                    fontFamily: "PT Sans Narrow",
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)",
+                    color: "#23232380",
+                  }}
+                >
+                  {topic.label}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      ))}
+        );
+      })}
     </Box>
   );
 };
