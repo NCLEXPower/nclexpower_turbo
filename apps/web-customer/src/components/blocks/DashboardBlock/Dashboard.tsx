@@ -12,6 +12,7 @@ import {
 } from "./DashboardAnalytics";
 import { useSensitiveInformation } from "core-library/hooks";
 import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
+import { progressTaken } from "./DashboardAnalytics/DashboardMock";
 
 export const Dashboard: React.FC = () => {
   const { customer } = useSensitiveInformation();
@@ -47,22 +48,26 @@ export const Dashboard: React.FC = () => {
         <CurrentProgress2 />
       </div>
 
-      <div
-        className="col-span-4 row-span-2 col-start-3 row-start-2 bg-white rounded-lg w-full"
-        data-tour="step-5"
-      >
-        <CurrentProgress />
-      </div>
+      {progressTaken.map((item, index) => (
+        <div
+          className={`${
+            index === 0 ? "col-start-3" : "col-start-6"
+          } col-span-3 row-span-2 row-start-2 bg-white rounded-lg overflow-hidden`}
+          data-tour="step-6"
+        >
+          <TestsTaken
+            key={item.programTitle}
+            programTitle={item.programTitle}
+            programSubtitleOne={item.programSubTitleOne}
+            programDay={item.programDay}
+            programSection={item.programSection}
+            programSubtitleTwo={item.programSubtitleTwo}
+          />
+        </div>
+      ))}
 
       <div
-        className="col-span-3 row-span-2 col-start-7 row-start-2 bg-white rounded-lg w-full"
-        data-tour="step-6"
-      >
-        <TestsTaken />
-      </div>
-
-      <div
-        className="col-span-5 row-span-2 col-start-10 row-start-2 bg-darkBlue rounded-lg w-full flex relative flex-wrap "
+        className="col-span-4 row-span-2 col-start-9 row-start-2 rounded-lg w-full flex relative flex-wrap overflow-hidden "
         data-tour="step-7"
       >
         <CaseStudyAnalytics />
@@ -92,29 +97,39 @@ export const Dashboard: React.FC = () => {
           />
         </Box>
       </div>
+
       <div
-        className="col-span-3 row-span-4 row-start-5 bg-white rounded-lg p-6 w-full"
+        className="col-span-6 row-span-1 col-start-1 row-start-4 bg-white rounded-lg w-full"
+        data-tour="step-5"
+      >
+        <CurrentProgress />
+      </div>
+
+      <div
+        className="col-start-7 col-span-6 row-span-1 row-start-4 bg-white rounded-lg p-3 w-full"
         data-tour="step-8"
       >
         <TopicsCompleted />
       </div>
+
       <div
-        className="col-span-5 row-span-4 col-start-4 row-start-5 bg-white p-6 w-full"
+        className="col-span-6 row-span-4 col-start-1 row-start-6 row-end-9 bg-white rounded-lg p-6 w-full "
+        data-tour="step-10"
+      >
+        <PerformanceIndicator />
+      </div>
+
+      <div
+        className="col-span-6 row-span-2 col-start-7 row-start-6 bg-white rounded-lg p-6 w-full"
         data-tour="step-9"
       >
         <ComprehensiveAnalytics />
       </div>
       <div
-        className="col-span-8 row-span-4 row-start-9 bg-white rounded-lg p-6 w-full"
+        className="col-start-7 col-span-6 row-span-1 row-start-8 bg-white rounded-lg p-6 w-full"
         data-tour="step-11"
       >
         <AbilityAnalytics />
-      </div>
-      <div
-        className="col-span-6 row-span-4 col-start-9 row-start-5 row-end-9 bg-white rounded-lg p-6 w-full "
-        data-tour="step-10"
-      >
-        <PerformanceIndicator />
       </div>
     </div>
   );
