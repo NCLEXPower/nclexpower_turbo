@@ -27,8 +27,8 @@ interface Props {
 export const PricingBlock: React.FC<Props> = ({ url }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [selectedItems, setSelectedItems] = React.useState<ProductCardType>(
-    {} as ProductCardType
+  const [selectedItems, setSelectedItems] = React.useState<ProductCardType[]>(
+    []
   );
 
   const [nurseType, setNurseType] = useState<number | null>(null);
@@ -43,13 +43,13 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
 
   const handleOpenModal = () => {
     if (!filteredItems) return;
-    const item: any = filteredItems.slice(0, 2);
+    const item: ProductCardType[] = filteredItems.slice(0, 2);
     setSelectedItems(item);
     setOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedItems({} as ProductCardType);
+    setSelectedItems([]);
     setOpen(false);
   };
 
@@ -60,12 +60,16 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     setFilteredItems(filtered);
   };
 
-  const handleSelectProduct = (product: SelectedProductType) => {
+  const handleSelectProduct = (
+    product: SelectedProductType,
+    isTrial: boolean
+  ) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
-      JSON.stringify({ ...product }),
+      JSON.stringify({ ...product, isTrial }),
       key ?? "no-secret-key"
     );
+
     setEncryptedProduct(encyptedData);
     router.push({
       pathname: "/account/registration",
@@ -221,7 +225,6 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
         {filteredItems && filteredItems.length > 0 && (
           <Box>
             <PricingModal
-              // handleClickOpen={() => handleClickOpen(filteredItems.slice(0, 2))}
               handleClose={handleCloseModal}
               open={open}
               handleSelectProduct={handleSelectProduct}

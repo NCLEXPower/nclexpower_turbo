@@ -60,22 +60,25 @@ const ProductSelection = ({
     setSelectedProduct(watchedProduct);
   }, [watchedProduct, setSelectedProduct]);
 
-  const handleProductDetails = () => {
+  const handleProductDetails = (isTrial: boolean = false) => {
     const selectedCard = cardData.find(
       (card: ProductCardType) => card.programType === watchedProduct
     );
     if (!selectedCard) return;
-    handleSelectProduct({
-      amount: selectedCard.pricing.price,
-      currency: selectedCard.pricing.currency,
-      productName: selectedCard.productName,
-      productDescription: selectedCard.productDescription,
-      programTitle: selectedCard.programTitle,
-      pricingId: selectedCard.pricingId,
-      productId: selectedCard.id,
-      programType: selectedCard.programType,
-      inclusions: selectedCard.inclusions,
-    });
+    handleSelectProduct(
+      {
+        amount: selectedCard.pricing.price,
+        currency: selectedCard.pricing.currency,
+        productName: selectedCard.productName,
+        productDescription: selectedCard.productDescription,
+        programTitle: selectedCard.programTitle,
+        pricingId: selectedCard.pricingId,
+        productId: selectedCard.id,
+        programType: selectedCard.programType,
+        inclusions: selectedCard.inclusions,
+      },
+      isTrial
+    );
   };
 
   return (
@@ -148,7 +151,7 @@ const ProductSelection = ({
                 fontWeight: "bold",
                 py: 3,
               }}
-              onClick={handleProductDetails}
+              onClick={() => handleProductDetails()}
             >
               Buy Product
             </Button>
@@ -177,7 +180,7 @@ const ProductSelection = ({
                 fontWeight: "bold",
                 py: 3,
               }}
-              onClick={handleProductDetails}
+              onClick={() => handleProductDetails(true)}
             >
               Start Free Trial
             </Button>

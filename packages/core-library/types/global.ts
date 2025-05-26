@@ -13,6 +13,7 @@ import {
   StringValue,
 } from "./common";
 import { PanelListItem } from "./page";
+import { ProductListResponse } from "core-library/api/types";
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
@@ -170,34 +171,19 @@ export interface SelectedProductType {
   };
 }
 
-export interface ProductCardType {
-  id: string;
-  productName: string;
-  productDescription: string;
-  programType: number;
-  programTitle: number;
-  pricingId: string;
-  pricing: {
-    price: number;
-    currency: string;
-  };
-  inclusions: {
-    // temporarily placed just to addressed the ticket. https://app.clickup.com/t/86epzggjz
-    features: string[];
-  };
-}
+export type ProductCardType = ProductListResponse;
 
 export interface PricingModalProps {
   handleClose: () => void;
-  cardData: ProductCardType;
-  handleSelectProduct: (item: SelectedProductType) => void;
+  cardData: ProductCardType[];
+  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
   open: boolean;
 }
 
 export interface ProductInformationProps {
   onClose: () => void;
-  cardData: ProductCardType;
-  handleSelectProduct: (item: SelectedProductType) => void;
+  cardData: ProductCardType[];
+  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
 }
 
 export interface PricingDetailProps {
@@ -209,7 +195,7 @@ export interface ProductSelectionProps {
   cardData: ProductCardType[];
   selectedProduct: number;
   setSelectedProduct: (value: number) => void;
-  handleSelectProduct: (item: SelectedProductType) => void;
+  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
 }
 
 export type NavigationItemType = {
