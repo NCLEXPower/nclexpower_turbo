@@ -4,6 +4,7 @@ import { EMAIL_REGEX } from "../../../../../utils";
 export const loginSchema = yup.object({
   email: yup
     .string()
+    .trim()
     .email("Please provide a valid email")
     .matches(EMAIL_REGEX, "Please provide a valid email")
     .required("Email is required")
