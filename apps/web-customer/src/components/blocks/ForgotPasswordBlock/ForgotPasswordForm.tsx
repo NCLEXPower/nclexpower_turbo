@@ -25,7 +25,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
   resetTime,
 }) => {
   const form = useForm({
-    mode: "onSubmit",
+    mode: "onChange",
     resolver: yupResolver(forgotPasswordSchema),
     defaultValues: forgotPasswordSchema.getDefault(),
   });
@@ -78,11 +78,9 @@ export const ForgotPasswordForm: React.FC<Props> = ({
               <TextField
                 control={control}
                 label="Email"
+                placeholder="Your Email"
                 name="email"
-                sx={{
-                  borderRadius: "10px",
-                  width: "100%",
-                }}
+                sx={{ borderRadius: "10px" }}
                 inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
               />
               {showAlert && (
