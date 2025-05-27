@@ -52,6 +52,10 @@ interface Props<T extends object> {
   sx?: DialogProps["sx"];
   inputProps?: OutlinedInputProps["inputProps"];
   endAdornment?: OutlinedInputProps["endAdornment"];
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 export const TextField = <T extends FieldValues>({
@@ -73,6 +77,10 @@ interface ComponentProps<T extends object>
   extends Omit<Props<T>, "name" | "control" | "defaultValue"> {
   field?: ControllerRenderProps<T, Path<T>>;
   fieldState?: ControllerFieldState;
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 export const TextFieldComponent = <T extends object>({
@@ -84,8 +92,10 @@ export const TextFieldComponent = <T extends object>({
   onFocus,
   onBlur,
   onEnter,
+  onChange,
   isLoading,
   errorTooltipDisabled,
+  value,
   ...props
 }: ComponentProps<T>) => {
   const field = { ...rawField, inputRef: rawField?.ref, ref: undefined };
@@ -97,13 +107,13 @@ export const TextFieldComponent = <T extends object>({
     Object.keys(fieldState.error.types).length > 1;
 
   const result = props.isregister
-    ? zxcvbn(field.value == undefined ? "" : field.value)
+    ? zxcvbn(value ?? field.value ?? "")
     : zxcvbn("");
 
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        {fieldState?.error?.message ? (
+        {fieldState?.error?.message && fieldState?.isDirty ? (
           <FormHelperText error>{fieldState?.error?.message}</FormHelperText>
         ) : (
           label !== null && (
@@ -125,10 +135,11 @@ export const TextFieldComponent = <T extends object>({
                   {...field}
                   id={field?.name}
                   data-testid={props["data-testid"] || `${field.name}-field`}
-                  error={!!fieldState?.error?.message}
+                  error={!!fieldState?.error?.message && fieldState?.isDirty}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  value={field?.value ?? ""}
+                  value={value ?? field?.value ?? ""}
+                  onChange={onChange ?? field?.onChange}
                   onKeyDown={(e) => e.key === "Enter" && onEnter && onEnter()}
                 />
                 {props.icon && props.icon}

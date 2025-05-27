@@ -8,6 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Button } from "core-library/components";
+import { useEffect, useState } from "react";
+import { useDebounce } from "core-library/hooks";
 
 interface Props {
   onSubmit: (values: ForgotPasswordType) => void;
@@ -24,8 +26,19 @@ export const ForgotPasswordForm: React.FC<Props> = ({
   isExpired,
   resetTime,
 }) => {
+  const [email, setEmail] = useState("");
+  const [debouncedEmail, setDebouncedEmail] = useState("");
+
+  useDebounce(
+    () => {
+      setDebouncedEmail(email);
+    },
+    500,
+    [email]
+  );
+
   const form = useForm({
-    mode: "onChange",
+    mode: "onSubmit",
     resolver: yupResolver(forgotPasswordSchema),
     defaultValues: forgotPasswordSchema.getDefault(),
   });
@@ -33,8 +46,16 @@ export const ForgotPasswordForm: React.FC<Props> = ({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isValid },
   } = form;
+
+  useEffect(() => {
+    setValue("email", debouncedEmail, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  }, [debouncedEmail, setValue]);
 
   return (
     <section className="h-auto sm:h-screen w-screen flex flex-col items-center justify-center pt-sans-caption overflow-hidden">
@@ -82,6 +103,8 @@ export const ForgotPasswordForm: React.FC<Props> = ({
                 name="email"
                 sx={{ borderRadius: "10px" }}
                 inputProps={{ style: { padding: 15, borderRadius: "10px" } }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               {showAlert && (
                 <div className="pt-2">
