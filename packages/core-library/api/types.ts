@@ -1006,3 +1006,10 @@ export type ContactResponseType = {
   message: string;
   createdAt: string;
 };
+export type CountryListResponse = {
+  id?: string;
+  country_Name: string; 
+  country_Code: string; 
+  value?: string;
+  label?: string;
+};

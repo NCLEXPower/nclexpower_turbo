@@ -1,16 +1,21 @@
 import React from "react";
-import { Typography, Container, Stack } from "@mui/material";
+import { Typography, Container, Stack, CircularProgress } from "@mui/material";
 import {
   DateField,
   GenericSelectField,
   MultipleSelectField,
 } from "../../../../../../components";
-import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
+import { TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { Control } from "react-hook-form";
 import { ContentDateType } from "./validation";
 import LiveCountdown from "./LiveCountDown";
 import { MappedCountry } from "./types";
+
+interface CountryOption {
+  value: string;
+  label: string;
+}
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
@@ -20,6 +25,8 @@ type ComingSoonProps = {
   mappedCountries: MappedCountry[];
   isCountdownEnabled: boolean;
   onCountdownToggle: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  countriesList: CountryOption[];
+  isCountriesLoading: boolean;
 };
 
 const ComingSoonManagement = ({
@@ -30,7 +37,10 @@ const ComingSoonManagement = ({
   mappedCountries,
   isCountdownEnabled,
   onCountdownToggle,
+  countriesList,
+  isCountriesLoading,
 }: ComingSoonProps) => {
+
   return (
     <Stack direction="row">
       <Container sx={{ width: 600 }}>
@@ -166,20 +176,26 @@ const ComingSoonManagement = ({
               >
                 Included Countries:
               </Typography>
-              <MultipleSelectField
-                sx={{
-                  borderRadius: "8px",
-                  width: "100%",
-                  backgroundColor: "#FFF",
-                  border: "1px solid #3B0086",
-                  marginTop: 2,
-                }}
-                control={control}
-                name="countryKey"
-                options={CountryMockData}
-                disabled={isActive}
-                multiple
-              />
+              {isCountriesLoading ? (
+                <div className="flex justify-center items-center py-4">
+                  <CircularProgress size={24} sx={{ color: "#3B0086" }} />
+                </div>
+              ) : (
+                <MultipleSelectField
+                  sx={{
+                    borderRadius: "8px",
+                    width: "100%",
+                    backgroundColor: "#FFF",
+                    border: "1px solid #3B0086",
+                    marginTop: 2,
+                  }}
+                  control={control}
+                  name="countryKey"
+                  options={countriesList}
+                  disabled={isActive}
+                  multiple
+                />
+              )}
             </Container>
             <LiveCountdown mappedCountries={mappedCountries} />
           </Container>
@@ -206,20 +222,26 @@ const ComingSoonManagement = ({
             >
               Included Countries:
             </Typography>
-            <MultipleSelectField
-              sx={{
-                borderRadius: "8px",
-                width: "100%",
-                backgroundColor: "#FFF",
-                border: "1px solid #3B0086",
-                marginTop: 2,
-              }}
-              control={control}
-              name="countryKey"
-              options={CountryMockData}
-              disabled={isActive}
-              multiple
-            />
+            {isCountriesLoading ? (
+              <div className="flex justify-center items-center py-4">
+                <CircularProgress size={24} sx={{ color: "#3B0086" }} />
+              </div>
+            ) : (
+              <MultipleSelectField
+                sx={{
+                  borderRadius: "8px",
+                  width: "100%",
+                  backgroundColor: "#FFF",
+                  border: "1px solid #3B0086",
+                  marginTop: 2,
+                }}
+                control={control}
+                name="countryKey"
+                options={countriesList}
+                disabled={isActive}
+                multiple
+              />
+            )}
           </Container>
         )}
       </Container>
