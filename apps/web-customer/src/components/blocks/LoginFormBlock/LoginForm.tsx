@@ -24,6 +24,8 @@ import Image from "next/image";
 import { LoginBG } from "core-library/assets";
 import { useKeyDown } from "core-library/hooks/useKeyDown";
 import { useResolution } from "core-library/hooks";
+import { Decryption } from "core-library";
+import { config } from "core-library/config";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
@@ -57,9 +59,41 @@ export const LoginForm: React.FC<Props> = ({
   useEffect(() => {
     if (savedData) {
       setValue("email", savedData.email);
-      setValue("password", savedData.password);
+      if (showPassword && savedData.password) {
+        const key = config.value.SECRET_KEY ?? "no-secret-key";
+        const decrypted = Decryption(savedData.password, key) ?? "";
+        setValue("password", decrypted);
+      } else {
+        setValue("password", savedData.password || "");
+      }
     }
-  }, [savedData, setValue]);
+  }, [showPassword, savedData, setValue]);
+
+  const handleRememberMeNotification = async () => {
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") {
+        new Notification("Login Info Saved", {
+          body: "Your email and password will be remembered for next time.",
+        });
+      } else if (Notification.permission !== "denied") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          new Notification("Login Info Saved", {
+            body: "Your email and password will be remembered for next time.",
+          });
+        }
+      }
+    }
+  };
+
+  const onRememberMeCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.checked) {
+      handleRememberMeNotification();
+    }
+    handleChangeRememberMe(event);
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === "Enter") {
@@ -181,7 +215,7 @@ export const LoginForm: React.FC<Props> = ({
               <div className="my-2 flex items-center justify-between ">
                 <Checkbox
                   checked={rememberMe}
-                  onChange={handleChangeRememberMe}
+                  onChange={onRememberMeCheckboxChange}
                   label="Remember me"
                   sx={{
                     borderRadius: 4,
