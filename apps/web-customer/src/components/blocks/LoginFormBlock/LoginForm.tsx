@@ -69,32 +69,6 @@ export const LoginForm: React.FC<Props> = ({
     }
   }, [showPassword, savedData, setValue]);
 
-  const handleRememberMeNotification = async () => {
-    if ("Notification" in window) {
-      if (Notification.permission === "granted") {
-        new Notification("Login Info Saved", {
-          body: "Your email and password will be remembered for next time.",
-        });
-      } else if (Notification.permission !== "denied") {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          new Notification("Login Info Saved", {
-            body: "Your email and password will be remembered for next time.",
-          });
-        }
-      }
-    }
-  };
-
-  const onRememberMeCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.checked) {
-      handleRememberMeNotification();
-    }
-    handleChangeRememberMe(event);
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -215,7 +189,7 @@ export const LoginForm: React.FC<Props> = ({
               <div className="my-2 flex items-center justify-between ">
                 <Checkbox
                   checked={rememberMe}
-                  onChange={onRememberMeCheckboxChange}
+                  onChange={handleChangeRememberMe}
                   label="Remember me"
                   sx={{
                     borderRadius: 4,
