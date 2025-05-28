@@ -40,6 +40,18 @@ const ComingSoonManagement = ({
   countriesList,
   isCountriesLoading,
 }: ComingSoonProps) => {
+  if (isCountriesLoading) {
+    return (
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ width: "100%", height: "100%" }}
+      >
+        <CircularProgress size={40} sx={{ color: "#3B0086" }} />
+      </Stack>
+    );
+  }
 
   return (
     <Stack direction="row">
@@ -176,26 +188,20 @@ const ComingSoonManagement = ({
               >
                 Included Countries:
               </Typography>
-              {isCountriesLoading ? (
-                <div className="flex justify-center items-center py-4">
-                  <CircularProgress size={24} sx={{ color: "#3B0086" }} />
-                </div>
-              ) : (
-                <MultipleSelectField
-                  sx={{
-                    borderRadius: "8px",
-                    width: "100%",
-                    backgroundColor: "#FFF",
-                    border: "1px solid #3B0086",
-                    marginTop: 2,
-                  }}
-                  control={control}
-                  name="countryKey"
-                  options={countriesList}
-                  disabled={isActive}
-                  multiple
-                />
-              )}
+              <MultipleSelectField
+                sx={{
+                  borderRadius: "8px",
+                  width: "100%",
+                  backgroundColor: "#FFF",
+                  border: "1px solid #3B0086",
+                  marginTop: 2,
+                }}
+                control={control}
+                name="countryKey"
+                options={countriesList}
+                disabled={isActive}
+                multiple
+              />
             </Container>
             <LiveCountdown mappedCountries={mappedCountries} />
           </Container>
@@ -222,26 +228,20 @@ const ComingSoonManagement = ({
             >
               Included Countries:
             </Typography>
-            {isCountriesLoading ? (
-              <div className="flex justify-center items-center py-4">
-                <CircularProgress size={24} sx={{ color: "#3B0086" }} />
-              </div>
-            ) : (
-              <MultipleSelectField
-                sx={{
-                  borderRadius: "8px",
-                  width: "100%",
-                  backgroundColor: "#FFF",
-                  border: "1px solid #3B0086",
-                  marginTop: 2,
-                }}
-                control={control}
-                name="countryKey"
-                options={countriesList}
-                disabled={isActive}
-                multiple
-              />
-            )}
+            <MultipleSelectField
+              sx={{
+                borderRadius: "8px",
+                width: "100%",
+                backgroundColor: "#FFF",
+                border: "1px solid #3B0086",
+                marginTop: 2,
+              }}
+              control={control}
+              name="countryKey"
+              options={countriesList}
+              disabled={isActive}
+              multiple
+            />
           </Container>
         )}
       </Container>

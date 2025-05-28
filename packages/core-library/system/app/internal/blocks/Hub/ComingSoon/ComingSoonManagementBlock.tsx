@@ -6,8 +6,8 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApiCallback } from "../../../../../../hooks";
-import { CountryListResponse, CreateGoliveSchedule } from "../../../../../../api/types";
+import { useApi, useApiCallback } from "../../../../../../hooks"; 
+import { CreateGoliveSchedule } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
 import { MappedCountry } from "./types";
 import { cacheKeyFor } from "../../../../../../utils/cacheKey";
@@ -31,46 +31,45 @@ const mapResponseToCountry = (data: {
 
 export const ComingSoonManagementBlock: React.FC = () => {
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
-  const [countriesList, setCountriesList] = useState<Array<{value: string, label: string}>>([]);
-  const [isCountriesLoading, setIsCountriesLoading] = useState(true);
   const cache = useRef<Map<string, MappedCountry>>(new Map());
   
   const { showToast } = useExecuteToast();
   
-  const getCountries = useApiCallback((api) => 
-    api.webbackoffice.getAllCountries()
-  );
+  const countries = useApi((api) => api.webbackoffice.getAllCountries());
+  
+  const countriesList = useMemo(() => {
+
+    if (!countries || countries.loading) return [];
+    
+    try {
+      let countryData: any[] = [];
+      
+      if (countries.result) {
+        if (Array.isArray(countries.result)) {
+          countryData = countries.result;
+        } else if (countries.result.data && Array.isArray(countries.result.data)) {
+          countryData = countries.result.data;
+        }
+      } else if (Array.isArray(countries)) {
+        countryData = countries;
+      }
+      
+      const formattedList = countryData.map((country) => ({
+        value: country.country_Code,
+        label: country.country_Name
+      }));
+      return formattedList;
+    } catch (error) {
+      console.error('Error formatting countries:', error);
+      return [];
+    }
+  }, [countries]);
   
   useEffect(() => {
-    async function fetchCountries() {
-      try {
-        setIsCountriesLoading(true);
-        const response = await getCountries.execute();        
-        let countryData: CountryListResponse[] = [];
-        
-        if (response?.data) {
-          countryData = Array.isArray(response.data) 
-            ? response.data as CountryListResponse[] 
-            : [];
-        } else if (Array.isArray(response)) {
-          countryData = response as CountryListResponse[];
-        }
-      
-        const formattedCountries = countryData.map((country) => ({
-          value: country.country_Code,
-          label: country.country_Name  
-        }));
-        
-        setCountriesList(formattedCountries);
-      } catch (error) {
-        showToast("Error loading countries", "error");
-      } finally {
-        setIsCountriesLoading(false);
-      }
+    if (countries.error) {
+      showToast("Error loading countries", "error");
     }
-    
-    fetchCountries();
-  }, []);
+  }, [countries.error, showToast]);
 
   const getCountryTimezones = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
@@ -201,7 +200,7 @@ export const ComingSoonManagementBlock: React.FC = () => {
             isCountdownEnabled={countdownEnabled}
             onCountdownToggle={handleCountdownToggle}
             countriesList={countriesList}
-            isCountriesLoading={isCountriesLoading || getCountries.loading}
+            isCountriesLoading={countries.loading}
           />
           <ComingSoonForm
             control={control}
