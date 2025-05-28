@@ -23,7 +23,7 @@ import { useEffect } from "react";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
-  submitLoading?: boolean;
+  submitLoading: boolean;
   rememberMe: boolean;
   handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
   savedData: SavedDataProps | null;
