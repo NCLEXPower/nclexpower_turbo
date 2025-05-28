@@ -166,6 +166,7 @@ export interface SelectedProductType {
   productDescription: string;
   programTitle: number;
   programType: number;
+  isTrial?: boolean;
   inclusions: {
     features: string[];
   };
@@ -176,14 +177,14 @@ export type ProductCardType = ProductListResponse;
 export interface PricingModalProps {
   handleClose: () => void;
   cardData: ProductCardType[];
-  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
   open: boolean;
 }
 
 export interface ProductInformationProps {
   onClose: () => void;
   cardData: ProductCardType[];
-  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
 }
 
 export interface PricingDetailProps {
@@ -195,7 +196,7 @@ export interface ProductSelectionProps {
   cardData: ProductCardType[];
   selectedProduct: number;
   setSelectedProduct: (value: number) => void;
-  handleSelectProduct: (item: SelectedProductType, isTrial: boolean) => void;
+  handleSelectProduct: (item: SelectedProductType) => void;
 }
 
 export type NavigationItemType = {

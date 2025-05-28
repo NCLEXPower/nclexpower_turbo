@@ -65,20 +65,18 @@ const ProductSelection = ({
       (card: ProductCardType) => card.programType === watchedProduct
     );
     if (!selectedCard) return;
-    handleSelectProduct(
-      {
-        amount: selectedCard.pricing.price,
-        currency: selectedCard.pricing.currency,
-        productName: selectedCard.productName,
-        productDescription: selectedCard.productDescription,
-        programTitle: selectedCard.programTitle,
-        pricingId: selectedCard.pricingId,
-        productId: selectedCard.id,
-        programType: selectedCard.programType,
-        inclusions: selectedCard.inclusions,
-      },
-      isTrial
-    );
+    handleSelectProduct({
+      amount: selectedCard.pricing.price,
+      currency: selectedCard.pricing.currency,
+      productName: selectedCard.productName,
+      productDescription: selectedCard.productDescription,
+      programTitle: selectedCard.programTitle,
+      pricingId: selectedCard.pricingId,
+      productId: selectedCard.id,
+      programType: selectedCard.programType,
+      inclusions: selectedCard.inclusions,
+      isTrial,
+    });
   };
 
   return (

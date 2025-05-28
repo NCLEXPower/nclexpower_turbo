@@ -60,13 +60,10 @@ export const PricingBlock: React.FC<Props> = ({ url }) => {
     setFilteredItems(filtered);
   };
 
-  const handleSelectProduct = (
-    product: SelectedProductType,
-    isTrial: boolean
-  ) => {
+  const handleSelectProduct = (product: SelectedProductType) => {
     const key = config.value.SECRET_KEY;
     const encyptedData = Encryption(
-      JSON.stringify({ ...product, isTrial }),
+      JSON.stringify({ ...product }),
       key ?? "no-secret-key"
     );
 
