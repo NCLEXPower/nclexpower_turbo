@@ -59,6 +59,11 @@ describe("ComingSoonManagement component", () => {
     },
   ];
 
+  const countriesList = [
+    { value: "USA", label: "United States" },
+    { value: "CAN", label: "Canada" },
+  ];
+
   const renderComponent = (
     props: Partial<React.ComponentProps<typeof ComingSoonManagement>> = {}
   ) => {
@@ -70,6 +75,8 @@ describe("ComingSoonManagement component", () => {
       mappedCountries,
       isCountdownEnabled: true,
       onCountdownToggle,
+      countriesList: countriesList,
+      isCountriesLoading: false,
     };
 
     return render(<ComingSoonManagement {...defaultProps} {...props} />);
@@ -134,10 +141,27 @@ describe("ComingSoonManagement component", () => {
         mappedCountries={mappedCountries}
         isCountdownEnabled={true}
         onCountdownToggle={onCountdownToggle}
+        countriesList={countriesList}
+        isCountriesLoading={false}
       />
     );
     expect(
       window.getComputedStyle(screen.getByText("Go Live Date:")).opacity
     ).toBe("0.5");
+  });
+
+  it("displays loading state when isCountriesLoading is true", () => {
+    renderComponent({ isCountriesLoading: true });
+
+    expect(screen.queryByText("Coming Soon Management")).not.toBeInTheDocument();
+    expect(screen.getByRole("progressbar")).toBeInTheDocument();
+  });
+
+  it("correctly renders the countries list in the dropdown", () => {
+    renderComponent();
+
+    const dropdown = screen.getByTestId("multiple-select-field");
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown).toHaveAttribute("options");
   });
 });
