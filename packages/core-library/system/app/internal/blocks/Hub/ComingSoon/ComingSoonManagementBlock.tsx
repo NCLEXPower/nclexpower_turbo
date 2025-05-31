@@ -6,7 +6,7 @@ import ComingSoonManagement from "./ComingSoonManagement";
 import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useApiCallback } from "../../../../../../hooks";
+import { useApi, useApiCallback } from "../../../../../../hooks"; 
 import { CreateGoliveSchedule } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
 import { MappedCountry } from "./types";
@@ -32,6 +32,44 @@ const mapResponseToCountry = (data: {
 export const ComingSoonManagementBlock: React.FC = () => {
   const [mappedCountries, setMappedCountries] = useState<MappedCountry[]>([]);
   const cache = useRef<Map<string, MappedCountry>>(new Map());
+  
+  const { showToast } = useExecuteToast();
+  
+  const countries = useApi((api) => api.webbackoffice.getAllCountries());
+  
+  const countriesList = useMemo(() => {
+
+    if (!countries || countries.loading) return [];
+    
+    try {
+      let countryData: any[] = [];
+      
+      if (countries.result) {
+        if (Array.isArray(countries.result)) {
+          countryData = countries.result;
+        } else if (countries.result.data && Array.isArray(countries.result.data)) {
+          countryData = countries.result.data;
+        }
+      } else if (Array.isArray(countries)) {
+        countryData = countries;
+      }
+      
+      const formattedList = countryData.map((country) => ({
+        value: country.country_Code,
+        label: country.country_Name
+      }));
+      return formattedList;
+    } catch (error) {
+      console.error('Error formatting countries:', error);
+      return [];
+    }
+  }, [countries]);
+  
+  useEffect(() => {
+    if (countries.error) {
+      showToast("Error loading countries", "error");
+    }
+  }, [countries.error, showToast]);
 
   const getCountryTimezones = useApiCallback((api, args) => {
     const { countryKey, goLiveDate } = args as {
@@ -51,14 +89,13 @@ export const ComingSoonManagementBlock: React.FC = () => {
       api.webbackoffice.createGoliveSchedule(args)
   );
 
-  const { showToast } = useExecuteToast();
-
   const form = useForm<ContentDateType>({
     mode: "all",
     resolver: yupResolver(contentDateSchema),
     defaultValues: {
       hasNoSchedule: false,
       countdownEnabled: false,
+      countryKey: [], 
     },
   });
 
@@ -88,11 +125,11 @@ export const ComingSoonManagementBlock: React.FC = () => {
     }
   };
 
-  const selectedCountries = watch("countryKey");
+  const selectedCountries = watch("countryKey") || [];
   const goLiveDate = watch("goLiveDate");
 
   async function fetchTimezones() {
-    if (!selectedCountries || !goLiveDate) {
+    if (!selectedCountries || selectedCountries.length === 0 || !goLiveDate) {
       setMappedCountries([]);
       return;
     }
@@ -162,6 +199,8 @@ export const ComingSoonManagementBlock: React.FC = () => {
             mappedCountries={memoizedMappedCountries}
             isCountdownEnabled={countdownEnabled}
             onCountdownToggle={handleCountdownToggle}
+            countriesList={countriesList}
+            isCountriesLoading={countries.loading}
           />
           <ComingSoonForm
             control={control}
