@@ -15,6 +15,7 @@ interface Props {
   disabled?: boolean;
   sx?: SxProps;
   disableRipple?: boolean;
+  "data-testid"?: string;
 }
 
 export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
@@ -27,9 +28,11 @@ export const IconButton: React.FC<React.PropsWithChildren<Props>> = ({
   disabled,
   sx,
   disableRipple,
+  ...props
 }) => {
   return (
     <MuiIconButton
+      data-testid={props["data-testid"]}
       aria-label={ariaLabel}
       size={size}
       onClick={onClick}
