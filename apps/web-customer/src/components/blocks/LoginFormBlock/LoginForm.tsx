@@ -106,7 +106,7 @@ export const LoginForm: React.FC<Props> = ({
       </div>
       <div className="flex flex-col justify-center w-full h-auto lg:w-[40rem] xl:w-[68rem] px-12 xl:px-60 lg:px-24 mt-12 md:mt-0">
         <div
-          className="flex items-center justify-end cursor-pointer text-darkBlue"
+          className="inline-flex items-center self-end cursor-pointer text-darkBlue"
           onClick={handleBack}
         >
           <ArrowBackIosNewIcon fontSize="small" />
