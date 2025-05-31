@@ -127,7 +127,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({
         <div className="flex items-center justify-center mt-8 pt-sans-narrow-regular text-lg sm:text-xl">
           <p className="text-darkGray">Don't have an account?</p>
           <Link
-            href="/#pricing"
+            href="/nclex#pricing"
             className="ml-1 font pt-sans-narrow-bold underline text-darkBlue cursor-pointer "
             style={{ backgroundColor: "transparent" }}
           >
