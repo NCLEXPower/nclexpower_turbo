@@ -11,28 +11,33 @@ import React from "react";
 import { EvaIcon } from "core-library/components";
 
 interface CardProps {
-  cardData: ProductCardType;
+  product: ProductCardType;
   handleSelectProduct: (values: SelectedProductType) => void;
 }
 
-const PricingCard: React.FC<CardProps> = ({
-  cardData,
-  handleSelectProduct,
-}) => {
-  const ProgramTitle = cardData.programTitle;
-  const InclusionsList = cardData.inclusions?.features;
+const PricingCard: React.FC<CardProps> = ({ product, handleSelectProduct }) => {
+  const {
+    pricing,
+    productName,
+    pricingId,
+    inclusions: features,
+    productDescription,
+    programTitle,
+    programType, // 0 = 23 Days : 1 = 8 Days
+    id,
+  } = product;
 
   const handleProductDetails = () => {
     handleSelectProduct({
-      amount: cardData.pricing.price,
-      currency: cardData.pricing.currency,
-      productName: cardData.productName,
-      productDescription: cardData.productDescription,
-      programTitle: cardData.programTitle,
-      pricingId: cardData.pricingId,
-      productId: cardData.id,
-      programType: cardData.programType, // 0 = 23 Days : 1 = 8 Days
-      inclusions: cardData.inclusions,
+      amount: pricing.price,
+      currency: pricing.currency,
+      productName: productName,
+      productDescription: productDescription,
+      programTitle: programTitle,
+      pricingId: pricingId,
+      productId: id,
+      programType: programType,
+      inclusions: features,
     });
   };
 
@@ -42,22 +47,22 @@ const PricingCard: React.FC<CardProps> = ({
       className=" transition-all duration-300 h-full border border-darkGray bg-white w-[350px] px-12 py-5 rounded-md shadow-md flex flex-col"
     >
       <p className="text-2xl w-full text-center">
-        {cardData.programType == 0
+        {product.programType == 0
           ? "23 Days (Standard)"
           : "8 Days (Fast Track)"}
       </p>
       <div className="w-full flex pb-5 justify-center items-center px-5 border-b -mt-3">
         <div className="w-1/2 text-center">
           <div className="text-4xl font-Poppins font-bold">
-            <p>{cardData.pricing.price} </p>
-            <p className="text-sm -mt-4">{cardData.pricing.currency}</p>
+            <p>{pricing.price} </p>
+            <p className="text-sm -mt-4">{pricing.currency}</p>
           </div>
         </div>
       </div>
       <div className="w-full flex  justify-start items-start py-5 flex-grow">
         <div className="text-xs flex flex-col">
-          {InclusionsList.length > 0 &&
-            InclusionsList.map((list, index) => (
+          {features.length > 0 &&
+            features.map((list, index) => (
               <div key={index} className="flex items-center gap-2">
                 <span>
                   <EvaIcon
@@ -68,14 +73,14 @@ const PricingCard: React.FC<CardProps> = ({
                     height={20}
                   />
                 </span>
-                <p className="m-2">{list}</p>
+                <p className="m-2">{list.option}</p>
               </div>
             ))}
         </div>
       </div>
       <div className="w-full flex gap-5 py-5 justify-center items-center px-2 font-semibold">
         <button
-          className={`${ProgramTitle === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"} text-white w-full py-2 rounded-lg`}
+          className={`${programTitle === 1 ? "bg-[#08474b]" : "bg-[#0c225c]"} text-white w-full py-2 rounded-lg`}
         >
           Get Started
         </button>
