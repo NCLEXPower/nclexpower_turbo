@@ -227,7 +227,7 @@ export const LoginForm: React.FC<Props> = ({
                   Need an account?
                 </p>
                 <Link
-                  href="/#pricing"
+                  href="/nclex#pricing"
                   className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer no-background "
                 >
                   Create One
