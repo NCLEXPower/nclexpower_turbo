@@ -24,6 +24,8 @@ import Image from "next/image";
 import { LoginBG } from "core-library/assets";
 import { useKeyDown } from "core-library/hooks/useKeyDown";
 import { useResolution } from "core-library/hooks";
+import { Decryption } from "core-library";
+import { config } from "core-library/config";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
@@ -57,9 +59,15 @@ export const LoginForm: React.FC<Props> = ({
   useEffect(() => {
     if (savedData) {
       setValue("email", savedData.email);
-      setValue("password", savedData.password);
+      if (showPassword && savedData.password) {
+        const key = config.value.SECRET_KEY ?? "no-secret-key";
+        const decrypted = Decryption(savedData.password, key) ?? "";
+        setValue("password", decrypted);
+      } else {
+        setValue("password", savedData.password || "");
+      }
     }
-  }, [savedData, setValue]);
+  }, [showPassword, savedData, setValue]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === "Enter") {
@@ -227,7 +235,7 @@ export const LoginForm: React.FC<Props> = ({
                   Need an account?
                 </p>
                 <Link
-                  href="/#pricing"
+                  href="/nclex#pricing"
                   className="ml-1 font font-ptSansNarrow font-bold underline text-darkBlue cursor-pointer no-background "
                 >
                   Create One
