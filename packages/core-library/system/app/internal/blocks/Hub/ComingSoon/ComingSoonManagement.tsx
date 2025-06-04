@@ -1,16 +1,21 @@
 import React from "react";
-import { Typography, Container, Stack } from "@mui/material";
+import { Typography, Container, Stack, CircularProgress } from "@mui/material";
 import {
   DateField,
   GenericSelectField,
   MultipleSelectField,
 } from "../../../../../../components";
-import { CountryMockData, TimezoneMockData } from "./ComingSoonMock";
+import { TimezoneMockData } from "./ComingSoonMock";
 import { SwitchButton } from "../../../../../../components/Button/SwitchButton";
 import { Control } from "react-hook-form";
 import { ContentDateType } from "./validation";
 import LiveCountdown from "./LiveCountDown";
 import { MappedCountry } from "./types";
+
+interface CountryOption {
+  value: string;
+  label: string;
+}
 
 type ComingSoonProps = {
   control: Control<ContentDateType>;
@@ -20,6 +25,8 @@ type ComingSoonProps = {
   mappedCountries: MappedCountry[];
   isCountdownEnabled: boolean;
   onCountdownToggle: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  countriesList: CountryOption[];
+  isCountriesLoading: boolean;
 };
 
 const ComingSoonManagement = ({
@@ -30,7 +37,22 @@ const ComingSoonManagement = ({
   mappedCountries,
   isCountdownEnabled,
   onCountdownToggle,
+  countriesList,
+  isCountriesLoading,
 }: ComingSoonProps) => {
+  if (isCountriesLoading) {
+    return (
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ width: "100%", height: "100%" }}
+      >
+        <CircularProgress size={40} sx={{ color: "#3B0086" }} />
+      </Stack>
+    );
+  }
+
   return (
     <Stack direction="row">
       <Container sx={{ width: 600 }}>
@@ -176,7 +198,7 @@ const ComingSoonManagement = ({
                 }}
                 control={control}
                 name="countryKey"
-                options={CountryMockData}
+                options={countriesList}
                 disabled={isActive}
                 multiple
               />
@@ -216,7 +238,7 @@ const ComingSoonManagement = ({
               }}
               control={control}
               name="countryKey"
-              options={CountryMockData}
+              options={countriesList}
               disabled={isActive}
               multiple
             />

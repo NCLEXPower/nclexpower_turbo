@@ -15,6 +15,10 @@ jest.mock("../../../core/router", () => ({
 
 const mockGetCountryTimezonesExecute = jest.fn();
 const mockCreateGoliveScheduleExecute = jest.fn();
+const mockCountriesData = [
+  { country_Code: "USA", country_Name: "United States" },
+  { country_Code: "CAN", country_Name: "Canada" },
+];
 
 jest.mock("../../../../core-library/hooks", () => ({
   useApiCallback: jest.fn((callback) => {
@@ -25,6 +29,13 @@ jest.mock("../../../../core-library/hooks", () => ({
       return { execute: mockCreateGoliveScheduleExecute, loading: false };
     }
     return { execute: jest.fn(), loading: false };
+  }),
+  useApi: jest.fn(() => {
+    return {
+      loading: false,
+      error: null,
+      result: mockCountriesData,
+    };
   }),
 }));
 
@@ -124,6 +135,60 @@ describe("ComingSoonManagementBlock", () => {
           ],
         },
       ]);
+    });
+  });
+
+  it("correctly processes countries data for dropdown", async () => {
+    render(<ComingSoonManagementBlock />);
+
+    await waitFor(() => {
+      const managementComponent = screen.getByTestId("coming-soon-management");
+      const props = JSON.parse(managementComponent.textContent || "{}");
+
+      expect(props.countriesList).toEqual([
+        { value: "USA", label: "United States" },
+        { value: "CAN", label: "Canada" },
+      ]);
+      expect(props.isCountriesLoading).toBe(false);
+    });
+  });
+
+  it("handles form submission correctly", async () => {
+    mockCreateGoliveScheduleExecute.mockResolvedValue({ data: "success" });
+
+    render(<ComingSoonManagementBlock />);
+
+    const formComponent = screen.getByTestId("coming-soon-form");
+    expect(formComponent).toBeInTheDocument();
+    
+    const mockSubmission = async () => {
+      await mockCreateGoliveScheduleExecute(mockWatchValues);
+      mockSetValue("isActive", true);
+      mockShowToast("Successful", "success");
+    };
+
+    await mockSubmission();
+
+    expect(mockCreateGoliveScheduleExecute).toHaveBeenCalledWith(mockWatchValues);
+    expect(mockSetValue).toHaveBeenCalledWith("isActive", true);
+    expect(mockShowToast).toHaveBeenCalledWith("Successful", "success");
+  });
+
+  it("handles API errors correctly", async () => {
+    const hooksMock = require("../../../../core-library/hooks");
+    hooksMock.useApi.mockReturnValueOnce({
+      loading: false,
+      error: "API error",
+      result: null,
+    });
+
+    render(<ComingSoonManagementBlock />);
+
+    await waitFor(() => {
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "Error loading countries",
+        "error"
+      );
     });
   });
 });
