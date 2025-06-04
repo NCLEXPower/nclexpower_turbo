@@ -7,7 +7,7 @@ import ComingSoonForm from "./ComingSoonForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useApi, useApiCallback } from "../../../../../../hooks"; 
-import { CreateGoliveSchedule } from "../../../../../../api/types";
+import { CreateGoliveSchedule, CountryListResponse } from "../../../../../../api/types";
 import { useExecuteToast } from "../../../../../../contexts";
 import { MappedCountry } from "./types";
 import { cacheKeyFor } from "../../../../../../utils/cacheKey";
@@ -38,27 +38,17 @@ export const ComingSoonManagementBlock: React.FC = () => {
   const countries = useApi((api) => api.webbackoffice.getAllCountries());
   
   const countriesList = useMemo(() => {
-
     if (!countries || countries.loading) return [];
     
     try {
-      let countryData: any[] = [];
+      const countryData: CountryListResponse[] = Array.isArray(countries.result) 
+        ? countries.result 
+        : (countries.result?.data || []);
       
-      if (countries.result) {
-        if (Array.isArray(countries.result)) {
-          countryData = countries.result;
-        } else if (countries.result.data && Array.isArray(countries.result.data)) {
-          countryData = countries.result.data;
-        }
-      } else if (Array.isArray(countries)) {
-        countryData = countries;
-      }
-      
-      const formattedList = countryData.map((country) => ({
+      return countryData.map((country) => ({
         value: country.country_Code,
         label: country.country_Name
       }));
-      return formattedList;
     } catch (error) {
       console.error('Error formatting countries:', error);
       return [];
