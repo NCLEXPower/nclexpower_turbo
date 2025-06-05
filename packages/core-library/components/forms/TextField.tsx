@@ -103,8 +103,7 @@ export const TextFieldComponent = <T extends object>({
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        {fieldState?.error?.message &&
-        (fieldState?.isDirty || fieldState?.isTouched) ? (
+        {fieldState?.error?.message ? (
           <FormHelperText error>{fieldState?.error?.message}</FormHelperText>
         ) : (
           label !== null && (
