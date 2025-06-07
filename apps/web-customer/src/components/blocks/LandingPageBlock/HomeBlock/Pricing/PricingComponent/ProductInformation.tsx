@@ -24,6 +24,7 @@ const ProductInformation = ({
     ? cardData.find((card) => card.programType === selectedProduct)
     : cardData;
 
+  if (!filteredCardData) return null;
   if (loading) {
     return (
       <ProductDetailSkeletonLoader

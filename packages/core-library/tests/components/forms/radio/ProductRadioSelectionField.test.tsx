@@ -35,8 +35,6 @@ function WrapperComponent({ disabled = false }: { disabled?: boolean }) {
         name="selection"
         control={methods.control}
         options={options}
-        bgColor="bg-blue-100"
-        formattedPrice="$100"
         disabled={disabled}
       />
       <span data-testid="current-value">{methods.watch("selection")}</span>
@@ -49,7 +47,8 @@ describe("ProductRadioSelectionField", () => {
     render(<WrapperComponent />);
     expect(screen.getByText("Standard")).toBeInTheDocument();
     expect(screen.getByText("Fast Track")).toBeInTheDocument();
-    expect(screen.getAllByText("$100")).toHaveLength(2);
+    expect(screen.getByText("$100")).toBeInTheDocument();
+    expect(screen.getByText("$200")).toBeInTheDocument();
   });
 
   it("checks the default radio option", () => {
