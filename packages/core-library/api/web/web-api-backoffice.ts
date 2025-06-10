@@ -67,6 +67,7 @@ import {
   CaseStudyListResponse,
   GetProgramParams,
   DeleteProgramSectionParams,
+  CountryListResponse
 } from "../types";
 import { CategoryResponseType } from "../../core/hooks/types";
 import { StandardProgramListType } from "../../types/wc/programList";
@@ -594,11 +595,14 @@ export class WebApiBackOffice {
       `/api/v2/content/BaseContent/get-contact-us`
     );
   }
-
-  
   public async deleteContact(id: string) {
     return await this.axios.delete(
       `/api/v2/content/BaseContent/delete-contact-us`, { data: { id } }
+    );
+  }
+  public async getAllCountries() {
+    return await this.axios.get<CountryListResponse[]>(
+      `/api/v2/internal/baseInternal/internal-country-list`
     );
   }
 }
