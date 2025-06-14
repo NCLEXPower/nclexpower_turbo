@@ -26,6 +26,7 @@ export const contactSchema = yup.object({
   categoryId: yup.string().required("Concern Category is required").default(""),
   email: yup
     .string()
+    .trim()
     .matches(EMAIL_REGEX, "Invalid email")
     .required("Email is required")
     .default(""),
