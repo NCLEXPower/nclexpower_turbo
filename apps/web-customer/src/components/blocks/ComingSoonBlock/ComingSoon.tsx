@@ -104,7 +104,9 @@ export const ComingSoonPage: React.FC<Props> = ({ onSubmit, loading }) => {
                   "& .MuiInputBase-input": {
                     color: "#D9D9D9",
                   },
-                  "& .MuiInputBase-input:focus": {},
+                  "& .MuiInputBase-input:focus": {
+                    color: "#232323",
+                  },
                 }}
                 inputProps={{
                   style: {
