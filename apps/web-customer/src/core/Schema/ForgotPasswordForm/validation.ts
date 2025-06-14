@@ -6,8 +6,7 @@ export const forgotPasswordSchema = yup.object({
   email: yup
     .string()
     .trim()
-    .email("Email must be in a valid email format")
-    .matches(EMAIL_REGEX, "Please provide a valid email")
+    .matches(EMAIL_REGEX, "Email must be in a valid email format")
     .required("Email is required")
     .default(""),
 });
