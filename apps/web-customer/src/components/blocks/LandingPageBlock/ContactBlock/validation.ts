@@ -5,6 +5,7 @@
  */
 import { STRING_REGEX } from "core-library";
 import { DEFAULT_PHONE_COUNTRY_CODE } from "core-library/types/constant";
+import { EMAIL_REGEX } from "core-library";
 import * as yup from "yup";
 
 export const contactSchema = yup.object({
@@ -25,13 +26,10 @@ export const contactSchema = yup.object({
   categoryId: yup.string().required("Concern Category is required").default(""),
   email: yup
     .string()
-    .email("Invalid email")
+    .matches(EMAIL_REGEX, "Invalid email")
     .required("Email is required")
     .default(""),
-  message: yup
-    .string()
-    .required("Message is required")
-    .default(""),
+  message: yup.string().required("Message is required").default(""),
 });
 
 export type ContactFormType = yup.InferType<typeof contactSchema>;
