@@ -5,27 +5,31 @@
  */
 
 import React from "react";
-import { useDecryptOrder } from "core-library/core/utils/useDecryptOrder";
-import { useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library";
 import { Card, Typography } from "@mui/material";
-import { useResolution } from "core-library/hooks";
+import { useApi, useResolution } from "core-library/hooks";
 import { EvaIcon } from "core-library/components";
+import { NotFoundBlock } from "../NotFoundBlock/NotFoundBlock";
 
-type Props = {};
+type Props = {
+  reference: string;
+};
 
-export const OrderSummaryBlock: React.FC<Props> = () => {
+export const OrderSummaryBlock: React.FC<Props> = ({ reference }) => {
   const router = useRouter();
-  const orderDetail = useDecryptOrder();
   const { isMobile } = useResolution();
+  const order = useApi(
+    async (api) => await api.web.getOrderByReference(reference),
+    [reference]
+  );
 
-  if (!orderDetail) {
-    /* can cause flicker */
-    router.replace("/");
-    return;
+  if (order.loading) return <p>Loading please wait...</p>;
+
+  if (!order) {
+    return <NotFoundBlock />;
   }
 
-  return orderDetail ? (
+  return (
     <div className="w-full h-auto lg:h-screen relative flex flex-col justify-center items-center px-4">
       <div
         className={`${isMobile ? "w-full" : "w-2/3"} flex justify-start py-4`}
@@ -77,15 +81,15 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
                   color: "#0F2A71",
                 }}
               >
-                {orderDetail.productName} (
-                {orderDetail.programTitle == 0 ? "RN" : "PN"})
+                {order.result?.data.productName} (
+                {order.result?.data.programTitle == 0 ? "RN" : "PN"})
               </Typography>
               <div>
                 <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
                   Duration:{" "}
                 </Typography>
                 <div className="text-[#0F2A71] font-semibold text-end">
-                  {orderDetail.programType == 0 ? (
+                  {order.result?.data.programType == 0 ? (
                     <Typography
                       sx={{
                         fontFamily: "PT Sans Narrow",
@@ -97,7 +101,7 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
                       {" "}
                       23 Days (Standard)
                     </Typography>
-                  ) : orderDetail.programType == 1 ? (
+                  ) : order.result?.data.programType == 1 ? (
                     <Typography
                       sx={{
                         fontFamily: "PT Sans Narrow",
@@ -118,7 +122,7 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
                 Description :{" "}
               </Typography>
               <Typography sx={{ fontFamily: "PT Sans Narrow" }}>
-                {orderDetail.productDescription}
+                {order.result?.data.productDescription}
               </Typography>
             </div>
           </div>
@@ -133,12 +137,13 @@ export const OrderSummaryBlock: React.FC<Props> = () => {
               <Typography
                 sx={{ fontFamily: "PT Sans Narrow", fontWeight: 800 }}
               >
-                {orderDetail.amount}.00 {orderDetail.currency}
+                {order.result?.data.pricing.price}.00{" "}
+                {order.result?.data.pricing.currency}
               </Typography>
             </div>
           </div>
         </div>
       </Card>
     </div>
-  ) : null;
+  );
 };

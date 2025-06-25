@@ -1,6 +1,5 @@
 import { useCookies as useReactCookies } from "react-cookie";
-
-const WHITELISTED_COOKIES = [""];
+import { config } from "../config";
 
 export const useClearCookies = () => {
   const [cookies, , removeCookie] = useReactCookies();
@@ -26,4 +25,4 @@ const deleteAllDocumentCookies = () =>
   });
 
 const cookieDeletable = (cookie: string) =>
-  WHITELISTED_COOKIES.every((c) => !cookie.includes(c));
+  config.value.WHITELISTED_COOKIES.every((c: string) => !cookie.includes(c));

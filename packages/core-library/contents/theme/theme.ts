@@ -1,8 +1,8 @@
-import '@mui/x-data-grid/themeAugmentation';
-import { createTheme } from "@mui/material";
+import "@mui/x-data-grid/themeAugmentation";
+import { createTheme } from "@mui/material/styles";
 import { CmsTenant } from "../../types/tenant";
 import { ColorGenerator } from "./color-generator";
-import { gridClasses } from '@mui/x-data-grid';
+import { gridClasses } from "@mui/x-data-grid";
 
 export const DEFAULT_LOGO = {
   width: 300,
@@ -588,12 +588,14 @@ export const theme = (tenant?: CmsTenant | null) => {
       MuiDataGrid: {
         styleOverrides: {
           root: {
-            [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-              outline: 'none',
-            },
-            [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
-              outline: 'none',
-            },
+            [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]:
+              {
+                outline: "none",
+              },
+            [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
+              {
+                outline: "none",
+              },
           },
         },
       },

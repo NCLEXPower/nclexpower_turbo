@@ -4,18 +4,14 @@
  * Created by the Software Strategy & Development Division
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Grid, IconButton } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { LoginFormType, loginSchema } from "core-library/system";
-import { Checkbox } from "core-library/components/Checkbox/Checkbox";
-import { GoogleIcon } from "../../icons/GoogleIcon";
 import { TextField } from "core-library/components";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useShowPassword } from "../ForgotPasswordBlock/ChangePasswordBlock/useShowPassword";
-import { useClientSecretKey } from "core-library/contexts";
-import { SavedDataProps } from "./LoginFormBlock";
 import { Button } from "core-library/components";
 import CoreZigma from "../../images/CoreZigma.png";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -23,58 +19,25 @@ import Link from "next/link";
 import Image from "next/image";
 import { LoginBG } from "core-library/assets";
 import { useKeyDown } from "core-library/hooks/useKeyDown";
-import { useResolution } from "core-library/hooks";
-import { Decryption } from "core-library";
-import { config } from "core-library/config";
 
 type Props = {
   onSubmit: (values: LoginFormType) => void;
   submitLoading?: boolean;
-  rememberMe: boolean;
-  handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  savedData: SavedDataProps | null;
   handleBack: () => void;
-  signInWithGoogle: () => void;
 };
 
 export const LoginForm: React.FC<Props> = ({
   onSubmit,
   submitLoading,
-  rememberMe,
-  handleChangeRememberMe,
-  savedData,
   handleBack,
-  signInWithGoogle,
 }) => {
   const form = useForm({
     mode: "onSubmit",
     resolver: yupResolver(loginSchema),
     defaultValues: loginSchema.getDefault(),
   });
-
-  const { handleForgotPasswordClick } = useClientSecretKey();
   const { showPassword, handleClickShowPassword } = useShowPassword();
   const { control, handleSubmit, setValue } = form;
-
-  useEffect(() => {
-    if (savedData) {
-      setValue("email", savedData.email);
-      if (showPassword && savedData.password) {
-        const key = config.value.SECRET_KEY ?? "no-secret-key";
-        const decrypted = Decryption(savedData.password, key) ?? "";
-        setValue("password", decrypted);
-      } else {
-        setValue("password", savedData.password || "");
-      }
-    }
-  }, [showPassword, savedData, setValue]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleSubmit(onSubmit)();
-    }
-  };
 
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
@@ -186,28 +149,6 @@ export const LoginForm: React.FC<Props> = ({
                   />
                 </Box>
               </Grid>
-              <div className="my-2 flex items-center justify-between ">
-                <Checkbox
-                  checked={rememberMe}
-                  onChange={handleChangeRememberMe}
-                  label="Remember me"
-                  sx={{
-                    borderRadius: 4,
-                    "@media (max-width: 400px)": {
-                      fontSize: "12px",
-                    },
-                    "@media (min-width: 500px)": {
-                      fontSize: "16px",
-                    },
-                  }}
-                />
-                <p
-                  onClick={handleForgotPasswordClick}
-                  className="ml-1 font-ptSansNarrow font-normal underline text-darkBlue cursor-pointer sm:text-sm md:text-md lg:text-lg"
-                >
-                  Forgot Password?
-                </p>
-              </div>
               <div className="gap-4 flex items-center">
                 <Button
                   disabled={submitLoading}

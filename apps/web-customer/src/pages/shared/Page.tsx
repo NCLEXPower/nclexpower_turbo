@@ -11,18 +11,14 @@ import {
 } from "core-library/contexts";
 import Layout from "./Layout";
 import { ControlledToast, ErrorBox } from "core-library/components";
-import { ClientSecretKeyContextProvider } from "core-library/contexts";
 import { SsrTypes } from "core-library/types/global";
 import CSPHead from "core-library/components/CSPHead";
 import { MaintenanceBlock } from "@/components/blocks/MaintenanceBlock/MaintenanceBlock";
-import withAuth from "core-library/core/utils/withAuth";
 import { config } from "core-library/config";
-import { ContentDataContextProvider } from "core-library/contexts/content/ContentDataContext";
 import { GoLiveBlock } from "@/components/blocks/GoLive/GoLiveBlock";
 import { DeniedCountryBlock } from "@/components/blocks/NotAvailableBlock/DeniedCountryBlock";
 
 interface Props {
-  slug?: string;
   data?: SsrTypes;
   generatedNonce?: string;
   error?: any;
@@ -33,7 +29,6 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
   data,
   generatedNonce,
   error,
-  slug,
 }) => {
   const MaintenanceMode =
     data && data.MaintenanceStatus?.currentMaintenanceMode;
@@ -53,13 +48,11 @@ const Page: React.FC<React.PropsWithChildren<Props>> = ({
       <BusinessQueryContextProvider>
         <AuthProvider>
           <ToastProvider>
-            <ClientSecretKeyContextProvider>
-              <ControlledToast autoClose={5000} hideProgressBar={false} />
-              <Layout
-                shouldShowChatBotWidget={shouldShowChatBotWidget}
-                children={children}
-              />
-            </ClientSecretKeyContextProvider>
+            <ControlledToast autoClose={5000} hideProgressBar={false} />
+            <Layout
+              shouldShowChatBotWidget={shouldShowChatBotWidget}
+              children={children}
+            />
           </ToastProvider>
         </AuthProvider>
       </BusinessQueryContextProvider>

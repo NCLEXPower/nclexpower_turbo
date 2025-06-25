@@ -9,7 +9,6 @@ import { useEffect, useMemo, useState } from "react";
 type StaticRoutes = Record<
   | "home"
   | "hub"
-  | "logout"
   | "page_not_found"
   | "account_setup"
   | "login"
@@ -28,7 +27,8 @@ type StaticRoutes = Record<
   | "program_section_management"
   | "program_section_management_create"
   | "program_section_management_edit"
-  | "program_section_management_edit_item",
+  | "program_section_management_edit_item"
+  | "payment_setup",
   string
 >;
 type TransitionOptions = ArgumentTypes<NextRouter["push"]>[2];
@@ -42,7 +42,6 @@ type PathParameters = {
 export const STATIC_ROUTES: StaticRoutes = {
   home: "/",
   hub: "/hub",
-  logout: "/logout",
   page_not_found: "/404",
   account_setup: "/account_setup",
   login: "/login",
@@ -59,15 +58,18 @@ export const STATIC_ROUTES: StaticRoutes = {
   program_management_list_create: "/hub/program/program-management-list/create",
   program_management_list_edit: "/hub/program/program-management-list/edit",
   program_section_management: "/hub/program/program-section-management",
-  program_section_management_create: "/hub/program/program-section-management/create",
-  program_section_management_edit: "/hub/program/program-section-management/edit",
-  program_section_management_edit_item: "/hub/program/program-section-management/edit-item",
+  program_section_management_create:
+    "/hub/program/program-section-management/create",
+  program_section_management_edit:
+    "/hub/program/program-section-management/edit",
+  program_section_management_edit_item:
+    "/hub/program/program-section-management/edit-item",
+  payment_setup: "/hub/payment-setup",
 };
 
 const routeTitles: Record<string, string> = {
   "/": "Home",
   "/hub": "Hub",
-  "/logout": "Logout",
   "/404": "Page Not Found",
   "/account_setup": "Account Setup",
   "/login": "Login",
