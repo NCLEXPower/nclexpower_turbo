@@ -113,11 +113,11 @@ export const useStandardAuth = (): AuthService => {
   function setSecurityMeasures(result: LoginResponse, has2FA?: boolean) {
     if (has2FA) {
       setTwoFactorAuthenticationToken(
-        result.twoFactorAuthInformation.twoFactorToken
+        result?.twoFactorAuthInformation.twoFactorToken
       );
-      setAccountReference(result.accountReference);
+      setAccountReference(result?.accountReference);
       setTwoFactorAuthenticationCookie(
-        result.twoFactorAuthInformation.twoFactorToken,
+        result?.twoFactorAuthInformation.twoFactorToken,
         {
           path: "/",
           sameSite: "strict",
@@ -125,7 +125,7 @@ export const useStandardAuth = (): AuthService => {
           domain: `.${window.location.hostname}`,
         }
       );
-      setReference(result.accountReference, {
+      setReference(result?.accountReference, {
         path: "/",
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
@@ -135,17 +135,17 @@ export const useStandardAuth = (): AuthService => {
       clearResolvedProductId();
       clearTwoFactorAuthentication();
       clearCookies();
-      setAccessToken(result.accessTokenResponse.accessToken);
-      setRefreshToken(result.accessTokenResponse.refreshToken);
-      setAccountReference(result.accountReference);
-      setSession(result.sessionId);
-      setReference(result.accountReference, {
+      setAccessToken(result?.accessTokenResponse.accessToken);
+      setRefreshToken(result?.accessTokenResponse.refreshToken);
+      setAccountReference(result?.accountReference);
+      setSession(result?.sessionId);
+      setReference(result?.accountReference, {
         path: "/",
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
         domain: `.${window.location.hostname}`,
       });
-      setSingleCookie(result.accessTokenResponse.accessToken, {
+      setSingleCookie(result?.accessTokenResponse.accessToken, {
         path: "/",
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
@@ -169,24 +169,30 @@ export const useStandardAuth = (): AuthService => {
     loading,
     isAuthenticated,
     login: async (options?: LoginOptions) => {
-      const { email, password } = options || {};
+      try {
+        const { email, password } = options || {};
 
-      if (!email || !password) {
-        throw new Error("Email and password are required");
+        if (!email || !password) {
+          throw new Error("Email and password are required");
+        }
+
+        const result = await loginCb.execute({
+          email: email,
+          password: password,
+        });
+
+        if (result?.data.twoFactorAuthInformation?.has2FactorAuthentication) {
+          setSecurityMeasures(result?.data, true);
+          return { requires2FA: true };
+        }
+
+        setSecurityMeasures(result?.data, false);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error("Something went wrong during login", error);
+        setIsAuthenticated(false);
+        throw error;
       }
-
-      const result = await loginCb.execute({
-        email: email,
-        password: password,
-      });
-
-      if (result.data.twoFactorAuthInformation?.has2FactorAuthentication) {
-        setSecurityMeasures(result.data, true);
-        return { requires2FA: true };
-      }
-
-      setSecurityMeasures(result.data, false);
-      setIsAuthenticated(true);
     },
     logout,
     softLogout,
