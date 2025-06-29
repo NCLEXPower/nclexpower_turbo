@@ -11,11 +11,11 @@ import {
   inputStyle,
   textFieldSx,
 } from "./personalInformationStyles";
-import { CustomerTokenizeInformations } from "../../../../../../../../api/types";
 import { useEffect } from "react";
+import { AccountReferenceInformation } from "../../../../../../../../contexts/AccountReferenceContext";
 
 interface PersonalInformationBlockProps {
-  userInfo?: CustomerTokenizeInformations;
+  userInfo: AccountReferenceInformation;
 }
 
 export const PersonalInformationBlock: React.FC<
@@ -26,7 +26,7 @@ export const PersonalInformationBlock: React.FC<
     resolver: yupResolver(accountSchema),
     defaultValues: userInfo,
   });
-  const { control, handleSubmit, setValue, reset } = form;
+  const { control, reset } = form;
 
   useEffect(() => {
     if (userInfo) {
@@ -170,14 +170,15 @@ export const PersonalInformationBlock: React.FC<
               overflow: "hidden",
             }}
           >
-            {userInfo?.imgUrl && userInfo?.imgUrl !== "None" && (
+            {/* Needs to be added in backend first. */}
+            {/* {userInfo?.imgUrl && userInfo?.imgUrl !== "None" && (
               <Image
                 src={userInfo.imgUrl}
                 alt="profile picture"
                 fill
                 className="object-cover"
               />
-            )}
+            )} */}
           </Box>
           <Typography
             sx={{
