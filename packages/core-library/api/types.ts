@@ -136,6 +136,11 @@ export type CurrenciesResponse = {
   name_plural: string;
 };
 
+export type CountryListResponse = {
+  country_Code: string;
+  country_Name: string;
+};
+
 export type PricingListResponse = {
   id: string;
   price: number;
