@@ -12,9 +12,9 @@ import { useAtom } from "jotai";
 import { CreateRegularAtom } from "../../../useAtomic";
 import { useBusinessQueryContext } from "../../../../../../../../../../../../../contexts";
 import { SummaryAccordionLoader } from "../loader";
-import { useSensitiveInformation } from "../../../../../../../../../../../../../hooks";
 import { convertToCreateRegularType } from "../../../utils/convertToCreateRegularType";
 import { usePageLoaderContext } from "../../../../../../../../../../../../../contexts/PageLoaderContext";
+import { useInternalInfo } from "../../../../../../../../../../../../../hooks";
 
 interface Props {
   nextStep(values: Partial<ContainedRegularQuestionType>): void;
@@ -33,7 +33,7 @@ export const QuestionSummary: React.FC<Props> = ({
 
   const { businessQueryCreateRegularQuestion } = useBusinessQueryContext();
   const { mutateAsync, isLoading } = businessQueryCreateRegularQuestion();
-  const { internal } = useSensitiveInformation();
+  const internalInformation = useInternalInfo();
 
   const { contentLoader, setContentLoader } = usePageLoaderContext();
 
@@ -46,9 +46,9 @@ export const QuestionSummary: React.FC<Props> = ({
 
   async function onSubmit() {
     try {
-      if (questionnaireAtom) {
+      if (questionnaireAtom && internalInformation) {
         await mutateAsync(
-          convertToCreateRegularType(questionnaireAtom, internal)
+          convertToCreateRegularType(questionnaireAtom, internalInformation)
         );
       }
     } catch (error) {

@@ -18,7 +18,8 @@ const HTTP_OPTIONS: HttpOptions = {
     "Content-Type": "application/json",
     "X-Environment":
       process.env.NODE_ENV === "development" ? "local" : config.value.SYSENV,
-    "X-Time-Zone": getTimeZone(), // we should create a middleware to get the timezone dynamically.
+    "X-Time-Zone": getTimeZone(),
+    "X-Platform": config.value.BASEAPP === "webc_app" ? true : false,
   },
   onRequest: (req) => {
     const accessToken = getItem<string | undefined>("accessToken");

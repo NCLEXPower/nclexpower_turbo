@@ -16,9 +16,8 @@ const PricingDetail: React.FC<PricingDetailProps> = ({
     <div className="w-full   xl:w-4/6  lg:pl-16 my-6 ">
       <Box sx={{ position: "relative", cursor: "pointer" }}>
         <Toolbar onClick={onClose} aria-label="close">
-          <ArrowBackIcon />
           <p className="text-base ml-3 underline text-darkBlue font-bold">
-            Go Back
+            Close (Esc)
           </p>
         </Toolbar>
       </Box>

@@ -1,9 +1,9 @@
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
 import React, { useCallback } from "react";
 import { DDCAnswerOptionType } from "../../../../../../types";
-import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { PlainSelectField } from "../../../../../../../../../../../../../../../../components/Textfield/SelectField/PlainSelectField";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
+import { useSidebarStyles } from "../../../../../../../../../../../../../../../../hooks";
 
 export interface DDCQuestionProps {
   ddcData: {
@@ -13,7 +13,7 @@ export interface DDCQuestionProps {
 }
 
 export const DDCItem: React.FC<DDCQuestionProps> = ({ ddcData }) => {
-  const { wordWrap } = useStyle();
+  const { wordWrap } = useSidebarStyles();
 
   const renderDropdown = useCallback(
     (optionName: string, answers: DDCAnswerOptionType[]) => {

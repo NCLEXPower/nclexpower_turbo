@@ -4,11 +4,7 @@ import PricingDetail from "./PricingDetail";
 import { ProductInformationProps } from "core-library/types/global";
 import { ProductDetailSkeletonLoader } from "./ProductDetailSkeletonLoader";
 
-const ProductInformation = ({
-  cardData,
-  onClose,
-  handleSelectProduct,
-}: ProductInformationProps) => {
+const ProductInformation = ({ cardData, onClose }: ProductInformationProps) => {
   const [selectedProduct, setSelectedProduct] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +36,6 @@ const ProductInformation = ({
         cardData={Array.isArray(cardData) ? cardData : [cardData]}
         selectedProduct={selectedProduct}
         setSelectedProduct={setSelectedProduct}
-        handleSelectProduct={handleSelectProduct}
       />
     </div>
   );

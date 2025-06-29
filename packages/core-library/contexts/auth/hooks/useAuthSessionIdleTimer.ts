@@ -3,12 +3,13 @@ import { useIdleTimer } from "react-idle-timer";
 import { useApiCallback } from "../../../hooks";
 import { useAuthSession } from "../hooks";
 import { config } from "../../../config";
+import { useCallback } from "react";
 
 export type AliveCheck = { lastRequest: string } | undefined;
 
 interface Props {
   sessionId?: string;
-  onSessionExpired: AsyncFunction;
+  onSessionExpired: () => Promise<void>;
 }
 
 const startSessionCheckAfterMinutes =
@@ -30,26 +31,43 @@ export const useAuthSessionIdleTimer = ({
   );
   const [aliveCheck, setAliveCheck, clearAliveCheck] = useAuthSession();
 
+  const handleSessionExpiration = useCallback(async () => {
+    clearAliveCheck();
+    await onSessionExpired();
+  }, [onSessionExpired]);
+
   const idleTimer = useIdleTimer({
     onIdle: async () => {
+      if (!sessionId) {
+        await handleSessionExpiration();
+        return;
+      }
+
       try {
         await sessionCb.execute(sessionId);
-        idleTimer.start();
+        idleTimer.reset();
       } catch (e: any) {
-        await handleSessionExpiration();
+        if (e.response?.status === 401 || e.response?.status === 403) {
+          await handleSessionExpiration();
+        } else {
+          idleTimer.reset();
+        }
       }
     },
     onAction: async () => {
       if (!aliveCheck) {
-        resetAliveCheck();
+        setAliveCheck({ lastRequest: new Date().toISOString() });
+        return;
       }
 
-      if (oneMinutePassed(aliveCheck!)) {
+      if (oneMinutePassed(aliveCheck)) {
         try {
-          await keepAliveCb.execute(sessionId);
-          resetAliveCheck();
-        } catch {
-          await handleSessionExpiration();
+          await keepAliveCb.execute(sessionId!);
+          setAliveCheck({ lastRequest: new Date().toISOString() });
+        } catch (e: any) {
+          if (e.response?.status === 401 || e.response?.status === 403) {
+            await handleSessionExpiration();
+          }
         }
       }
     },
@@ -59,33 +77,22 @@ export const useAuthSessionIdleTimer = ({
     crossTab: true,
     syncTimers: 400,
     name: sessionId,
-    onMessage: handleSessionExpiration,
     timeout: startSessionCheckAfterMinutes * 60000,
   });
 
-  function startIdleTimer() {
-    resetAliveCheck();
-    idleTimer.start();
-  }
-
-  function resetAliveCheck() {
+  const startIdleTimer = useCallback(() => {
     setAliveCheck({ lastRequest: new Date().toISOString() });
-  }
+    idleTimer.start();
+  }, [idleTimer]);
 
-  function stopIdleTimer() {
+  const stopIdleTimer = useCallback(() => {
     clearAliveCheck();
-    idleTimer.message({}, false);
     idleTimer.reset();
-  }
-
-  async function handleSessionExpiration() {
-    clearAliveCheck();
-    await onSessionExpired();
-  }
+    idleTimer.pause();
+  }, [idleTimer]);
 
   return { start: startIdleTimer, stop: stopIdleTimer };
 };
 
 const oneMinutePassed = (session: AliveCheck) =>
-  session &&
-  new Date() >= addMinutes(parseISO(session.lastRequest as string), 1);
+  session && new Date() >= addMinutes(parseISO(session.lastRequest), 1);

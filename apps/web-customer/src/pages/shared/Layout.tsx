@@ -3,9 +3,16 @@
  * Reuse as a whole or in part is prohibited without permission.
  * Created by the Software Strategy & Development Division
  */
-import React from "react";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import {
+  ThemeProvider,
+  CssBaseline,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { LoadablePageContent } from "@/components/LoadablePageContent";
 import {
   useAuthContext,
@@ -14,60 +21,78 @@ import {
 } from "core-library/contexts";
 import { Footer } from "core-library/components/ReusableFooter/Footer";
 import {
-  CompanyInfo,
+  FooterStaticInfo,
   CustomerMenus,
-  list,
+  FooterSocialLinks,
 } from "core-library/core/utils/contants/wc/HomePageData";
 import {
   ChatBotWidget,
   DrawerLayout,
-  ErrorBox,
   MultiContentDialog,
 } from "core-library/components";
-import {
-  useConfirmedIntent,
-  useNewAccount,
-} from "core-library/contexts/auth/hooks";
-import { usePaymentSuccessRedirect } from "@/core/hooks/usePaymentSuccessRedirect";
 import { theme } from "core-library/contents/theme/theme";
-import {
-  useAuthInterceptor,
-  usePreventDuplicateSession,
-  useStyle,
-  useWebHeaderStyles,
-} from "core-library/hooks";
+import { useExtraConfig, usePreventDuplicateSession } from "core-library/hooks";
 import { PageLoaderContextProvider } from "core-library/contexts/PageLoaderContext";
-import { useContentDataContext } from "core-library/contexts/content/ContentDataContext";
 import { ContentLoader } from "core-library/router";
-import { useRouter } from "core-library";
-import { dataContent } from "@/constants/constants";
 import { DuplicateSessionBlock } from "core-library/system/app/internal/blocks";
+import { dataContent } from "@/constants/constants";
+import { AccountReferenceProvider } from "core-library/contexts/AccountReferenceContext";
 
-const Layout: React.FC<
-  React.PropsWithChildren<{ shouldShowChatBotWidget?: boolean }>
-> = ({ children, shouldShowChatBotWidget }) => {
-  const router = useRouter();
-  const queryClient = new QueryClient();
-  const { isAuthenticated, logout, loading, isPaid } = useAuthContext();
-  const headerMenu = CustomerMenus(isAuthenticated);
-  const headerStyles = useWebHeaderStyles();
-  const sidebarStyles = useStyle();
-  const [confirmValue] = useConfirmedIntent();
-  const [isNewAccount] = useNewAccount(); //this is a temporary implementation
-  usePaymentSuccessRedirect(confirmValue);
-  useAuthInterceptor();
-  const showWelcomeDialog = isAuthenticated && isNewAccount;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
+
+interface LayoutProps {
+  shouldShowChatBotWidget?: boolean;
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  shouldShowChatBotWidget,
+}) => {
+  const [mounted, setMounted] = useState(false);
+  const { isAuthenticated, logout, loading } = useAuthContext();
+  const config = useExtraConfig();
 
   const { duplicate } = usePreventDuplicateSession();
+  const menu = useMemo(() => CustomerMenus(isAuthenticated), [isAuthenticated]);
 
-  if (showWelcomeDialog) {
+  // This modal below doesn't work yet.
+  // if (
+  //   config?.config.isNewlyCreated &&
+  //   config?.config.isPaid &&
+  //   isAuthenticated
+  // ) {
+  //   return (
+  //     <MultiContentDialog
+  //       content={dataContent}
+  //       open={true}
+  //       handleClose={() => {}}
+  //       showTour
+  //     />
+  //   );
+  // }
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
     return (
-      <MultiContentDialog
-        content={dataContent}
-        open={showWelcomeDialog}
-        handleClose={() => {}}
-        showTour
-      />
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
     );
   }
 
@@ -75,37 +100,41 @@ const Layout: React.FC<
     return <DuplicateSessionBlock />;
   }
 
-
   return (
     <PageLoaderContextProvider
       isAuthenticated={isAuthenticated}
       loading={loading}
     >
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme()}>
-          <CssBaseline />
-          <HeaderTitleContextProvider>
-            <FormSubmissionContextProvider>
-              <DrawerLayout
-                menu={headerMenu}
-                isAuthenticated={isAuthenticated}
-                headerStyles={headerStyles}
-                sidebarStyles={sidebarStyles}
-                onLogout={logout}
-                isPaid={isPaid}
-              >
-                <ContentLoader loading={loading || router.loading}>
-                  <LoadablePageContent loading={loading}>
-                    {children}
-                    <Footer info={CompanyInfo} list={list} />
-                    {shouldShowChatBotWidget && <ChatBotWidget />}
-                  </LoadablePageContent>
-                </ContentLoader>
-              </DrawerLayout>
-            </FormSubmissionContextProvider>
-          </HeaderTitleContextProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <AccountReferenceProvider
+        isAuthenticated={isAuthenticated}
+        authLoading={loading}
+      >
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme()}>
+            <CssBaseline />
+            <HeaderTitleContextProvider>
+              <FormSubmissionContextProvider>
+                <DrawerLayout
+                  menu={menu}
+                  isAuthenticated={isAuthenticated && config?.config.isPaid}
+                  onLogout={logout}
+                >
+                  <ContentLoader loading={loading}>
+                    <LoadablePageContent loading={loading}>
+                      {children}
+                      <Footer
+                        info={FooterStaticInfo}
+                        list={FooterSocialLinks}
+                      />
+                      {shouldShowChatBotWidget && <ChatBotWidget />}
+                    </LoadablePageContent>
+                  </ContentLoader>
+                </DrawerLayout>
+              </FormSubmissionContextProvider>
+            </HeaderTitleContextProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AccountReferenceProvider>
     </PageLoaderContextProvider>
   );
 };

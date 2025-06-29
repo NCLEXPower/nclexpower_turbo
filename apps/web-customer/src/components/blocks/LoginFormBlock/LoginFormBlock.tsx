@@ -1,17 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { LoginParams } from "core-library/types/types";
+import React, { useState } from "react";
 import { LoginForm } from "./LoginForm";
-import { config } from "core-library/config";
-import { Encryption } from "core-library/utils/Encryption";
-import { Decryption } from "core-library/utils/Decryption";
-import {
-  useDeviceInfo,
-  useGoogleSignIn,
-  useLocalStorage,
-} from "core-library/hooks";
 import { useAuthContext, useExecuteToast } from "core-library/contexts";
 import { useRouter } from "core-library/core/router";
-import { AxiosError } from "axios";
+import { LoginOptions } from "core-library/contexts/auth/types";
+import { useExtraConfig } from "core-library/hooks";
 
 export interface SavedDataProps {
   email: string;
@@ -20,11 +12,9 @@ export interface SavedDataProps {
 }
 
 export function LoginFormBlock() {
-  const { login, loginLoading } = useAuthContext();
-  const { signInWithGoogle } = useGoogleSignIn();
-  const { setItem, getItem, removeItem } = useLocalStorage("rm");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [savedData, setSavedData] = useState<SavedDataProps | null>(null);
+  const { login } = useAuthContext();
+  const config = useExtraConfig();
+  const [loading, setLoading] = useState(false);
   const toast = useExecuteToast();
   const router = useRouter();
 
@@ -32,101 +22,32 @@ export function LoginFormBlock() {
     router.push((route) => route.home);
   };
 
-  const isEncrypted = (password: string) => {
-    return password.includes(":");
-  };
-
-  const handleSubmit = useCallback(
-    async (data: LoginParams) => {
-      const key = config.value.SECRET_KEY;
-      let passwordToUse = data.password;
-
-      if (rememberMe) {
-        const encryptedPassword = isEncrypted(data.password)
-          ? data.password
-          : await Encryption(data.password, key ?? "no-secret-key");
-
-        const obj: SavedDataProps = {
-          email: data.email,
-          password: encryptedPassword,
-          rememberMe: true,
-        };
-        setItem(JSON.stringify(obj));
+  async function handleSubmit({ email, password }: LoginOptions) {
+    try {
+      setLoading(true);
+      const result = await login({ email, password });
+      if (result?.requires2FA) {
+        await router.push((router) => router.account_verification_otp);
       } else {
-        removeItem();
-      }
-
-      if (savedData) {
-        const decryptedPassword = Decryption(
-          savedData.password,
-          key ?? "no-secret-key"
-        );
-        const invalidPassword =
-          data.password !== savedData.password &&
-          data.password !== decryptedPassword;
-
-        if (invalidPassword) {
-          toast.executeToast("Invalid email or password", "top-right", false, {
-            toastId: 0,
-            type: "error",
-          });
-          return;
-        }
-        passwordToUse = decryptedPassword || data.password;
-      }
-
-      try {
-        await login(data.email, passwordToUse);
-      } catch (err) {
-        const error = err as AxiosError;
-        if (error.response?.status == 401) {
-          toast.executeToast(String(error.response?.data), "top-right", false, {
-            toastId: 0,
-            type: "error",
-          });
+        if (!config?.config.isPaid) {
+          await router.push((router) => router.payment_setup);
         } else {
-          toast.executeToast(
-            "Something went wrong, please try again later.",
-            "top-right",
-            false,
-            {
-              toastId: 0,
-              type: "error",
-            }
-          );
+          await router.push((router) => router.hub);
         }
       }
-    },
-    [savedData, rememberMe, setItem, removeItem, login, router, toast]
-  );
-
-  const handleChangeRememberMe = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRememberMe(event.target.checked);
-  };
-
-  useEffect(() => {
-    const item = getItem();
-    if (typeof item === "string") {
-      try {
-        const parsedRm: SavedDataProps = JSON.parse(item);
-        setSavedData(parsedRm);
-        setRememberMe(parsedRm.rememberMe);
-      } catch (error) {
-        console.error("Failed to parse saved data", error);
-      }
+    } catch (err) {
+      toast.showToast("Something went wrong during login", "error");
+      console.error(`Something went wrong during login: ${err}`);
+    } finally {
+      setLoading(false);
     }
-  }, [getItem]);
+  }
+
   return (
     <LoginForm
       onSubmit={handleSubmit}
-      submitLoading={loginLoading}
-      handleChangeRememberMe={handleChangeRememberMe}
-      rememberMe={rememberMe}
-      savedData={savedData}
+      submitLoading={loading}
       handleBack={handleBack}
-      signInWithGoogle={signInWithGoogle}
     />
   );
 }

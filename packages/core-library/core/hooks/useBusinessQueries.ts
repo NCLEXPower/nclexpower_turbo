@@ -47,7 +47,7 @@ import {
   ContactFormType,
   GetSectionParams,
   GetAllSectionsResponseType,
-  GetProgramParams
+  GetProgramParams,
 } from "../../api/types";
 import { PricingParams, ProductParams } from "../../types/types";
 import { useAccessToken } from "../../contexts/auth/hooks";
@@ -143,22 +143,6 @@ export const useCreateCategorySubmission = (
   return useAppMutation<AxiosResponse<number, AxiosError>, CategoryFormParams>(
     async (data) => {
       const result = await submissionCategoryCb.execute({ ...data });
-      return result;
-    },
-    opt
-  );
-};
-
-export const useCreateCustomer = (
-  opt?: MutOpt<AxiosResponse<number, AxiosError>>
-) => {
-  const createCustomerSubmissionCb = useApiCallback(
-    async (api, args: CreateCustomerParams) =>
-      await api.web.web_ssr_create_customer(args)
-  );
-  return useAppMutation<AxiosResponse<any, AxiosError>, CreateCustomerParams>(
-    async (data) => {
-      const result = await createCustomerSubmissionCb.execute({ ...data });
       return result;
     },
     opt
@@ -767,7 +751,9 @@ export const useGetSectionsByType = (
   queryKey: string[],
   sectionType: GetSectionParams
 ): UseQueryResult<GetAllSectionsResponseType | undefined, any> => {
-  const getSectionsByType = useApi((api) => api.webbackoffice.getSectionListByType(sectionType));
+  const getSectionsByType = useApi((api) =>
+    api.webbackoffice.getSectionListByType(sectionType)
+  );
 
   return useQuery<ApiServiceErr>(
     queryKey,
@@ -780,7 +766,7 @@ export const useGetSectionsByType = (
 };
 
 export const useGetAllSections = (
-  queryKey: string[],
+  queryKey: string[]
 ): UseQueryResult<GetAllSectionsResponseType | undefined, any> => {
   const getAllSections = useApi((api) => api.webbackoffice.getAllSections());
 
@@ -795,7 +781,7 @@ export const useGetAllSections = (
 };
 
 export const useGetAllPrograms = (
-  queryKey: string[],
+  queryKey: string[]
 ): UseQueryResult<StandardProgramListType | undefined, any> => {
   const getAllPrograms = useApi((api) => api.webbackoffice.getAllPrograms());
 
@@ -813,7 +799,9 @@ export const useGetAllProgramsByType = (
   queryKey: string[],
   programType: GetProgramParams
 ): UseQueryResult<StandardProgramListType | undefined, any> => {
-  const getProgramsByType = useApi((api) => api.webbackoffice.getAllProgramsByType(programType));
+  const getProgramsByType = useApi((api) =>
+    api.webbackoffice.getAllProgramsByType(programType)
+  );
 
   return useQuery<ApiServiceErr>(
     queryKey,

@@ -24,18 +24,9 @@ import { useEffect } from "react";
 type Props = {
   onSubmit: (values: LoginFormType) => void;
   submitLoading: boolean;
-  rememberMe: boolean;
-  handleChangeRememberMe: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  savedData: SavedDataProps | null;
 };
 
-export const LoginForm: React.FC<Props> = ({
-  onSubmit,
-  submitLoading,
-  rememberMe,
-  handleChangeRememberMe,
-  savedData,
-}) => {
+export const LoginForm: React.FC<Props> = ({ onSubmit, submitLoading }) => {
   const form = useForm<LoginFormType>({
     mode: "onSubmit",
     resolver: yupResolver(loginSchema),
@@ -46,13 +37,6 @@ export const LoginForm: React.FC<Props> = ({
     form;
   const { showPassword, handleClickShowPassword } = useShowPassword();
   useFormFocusOnError<LoginFormType>(formState.errors, setFocus);
-
-  useEffect(() => {
-    if (savedData) {
-      setValue("email", savedData.email);
-      setValue("password", savedData.password);
-    }
-  }, [savedData, setValue]);
 
   useKeyDown("Enter", () => handleSubmit(onSubmit)());
 
@@ -134,25 +118,6 @@ export const LoginForm: React.FC<Props> = ({
         }}
         data-testid="password-input"
       />
-
-      <Grid
-        container
-        sx={{
-          marginY: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "300px",
-        }}
-      >
-        <Checkbox
-          checked={rememberMe}
-          onChange={handleChangeRememberMe}
-          label="Keep me logged in"
-          sx={{ borderRadius: 4, fontSize: "14px" }}
-          data-testid="checkbox"
-        />
-      </Grid>
 
       <Button
         disabled={submitLoading}

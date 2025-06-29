@@ -20,24 +20,16 @@ const PricingCard: React.FC<CardProps> = ({ cardData, handleOpen }) => {
   const ProgramTitle = cardData.programTitle;
   const InclusionsList = cardData.inclusions?.features;
 
-  const handleProductDetails = () => {
-    handleOpen({
-      amount: cardData.pricing.price,
-      currency: cardData.pricing.currency,
-      productName: cardData.productName,
-      productDescription: cardData.productDescription,
-      programTitle: cardData.programTitle,
-      pricingId: cardData.pricingId,
-      productId: cardData.id,
-      programType: cardData.programType, // 0 = 23 Days : 1 = 8 Days
-      inclusions: cardData.inclusions,
-    });
-  };
-
   const formattedPrice = formatPrice(
     cardData?.pricing?.price,
     cardData?.pricing?.currency
   );
+
+  function handleProductDetails() {
+    handleOpen({
+      productId: cardData.id,
+    });
+  }
 
   return (
     <div

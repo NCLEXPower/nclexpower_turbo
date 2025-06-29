@@ -1,4 +1,4 @@
-import { useSanitizedInputs, useStyle } from "../../../../hooks";
+import { useSanitizedInputs } from "../../../../hooks";
 import { BackgroundInfo } from "../../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/BackgroundInfo/BackgroundInfo";
 import { SectionContent } from "../../../../system/app/internal/types";
 import { render, screen } from "../../../common";
@@ -15,7 +15,7 @@ jest.mock("../../../../core/router", () => ({
 }));
 
 jest.mock("../../../../hooks", () => ({
-  useStyle: jest.fn(() => ({
+  useSidebarStyles: jest.fn(() => ({
     wordWrap: {
       "& *": {
         wordWrap: "break-word",

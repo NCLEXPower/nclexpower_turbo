@@ -96,3 +96,5 @@ export * from "./ComponentState/ComponentState";
 export * from "./forms/radio/ProductRadioSelection";
 export { default as Divider } from "./Divider/Divider";
 export * from "./ProgressRing/ProgressRing";
+export * from "./ErrorBoundaryV2";
+export * from "./HydrationWrapper";

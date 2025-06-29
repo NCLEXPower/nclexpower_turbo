@@ -6,6 +6,9 @@ import { useApiCallback } from "./useApi";
 import { config } from "../config";
 import { useSingleCookie } from "./useCookie";
 
+/**
+ * @deprecated this hook is deprecated
+ */
 export const useValidateToken = () => {
   const [validateAuthorized, setValidateAuthorized] = useState<boolean>(false);
   const toast = useExecuteToast();

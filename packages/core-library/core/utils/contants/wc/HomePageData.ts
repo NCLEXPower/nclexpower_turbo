@@ -5,7 +5,7 @@
  */
 import { MenuItems } from "../../../../api/types";
 
-export const list = [
+export const FooterSocialLinks = [
   {
     items: [
       { label: "About", path: "/about" },
@@ -23,7 +23,7 @@ export const list = [
     ],
   },
 ];
-export const CompanyInfo = {
+export const FooterStaticInfo = {
   address: "1700 Eureka Rd Ste 155 Roseville, California 95661",
   phone: "1-866-800-3030",
   website: "info@arxenius.com",

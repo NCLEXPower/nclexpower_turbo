@@ -57,14 +57,6 @@ export const useSingleCookie = (): [
   return useCookie<string>(config.value.SCOOKIE);
 };
 
-export const useAccountIdCookie = (): [
-  string | null,
-  (value: string | null, options?: CookieSetOptions) => void,
-  VoidFunction,
-] => {
-  return useCookie<string>(config.value.ACOOKIE);
-};
-
 export const useAnalyticsDetails = (): [
   string | null,
   (value: string | null, options?: CookieSetOptions) => void,
@@ -73,18 +65,18 @@ export const useAnalyticsDetails = (): [
   return useCookie<string>("analytics");
 };
 
-export const useDeviceId = (): [
+export const useReferenceCookie = (): [
   string | null,
   (value: string | null, options?: CookieSetOptions) => void,
   VoidFunction,
 ] => {
-  return useCookie<string>("devid");
+  return useCookie<string>(config.value.ACREF);
 };
 
-export const useGeoCountry = (): [
+export const useTwoFactorAuthenticationCookie = (): [
   string | null,
   (value: string | null, options?: CookieSetOptions) => void,
   VoidFunction,
 ] => {
-  return useCookie<string>("geocountry");
+  return useCookie<string>("2faToken");
 };

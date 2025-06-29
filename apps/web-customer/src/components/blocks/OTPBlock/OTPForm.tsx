@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { OTPSchema, OTPType } from "../../../core/Schema";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,26 +10,24 @@ import { CoreZigmaLogo, VerifyAccountBg } from "core-library/assets";
 
 type Props = {
   onSubmit: (values: OTPType) => void;
-  submitLoading: boolean;
+  loading: boolean;
   resendRemainingTime: number;
   onResend: () => Promise<void>;
-  isResendLoading?: boolean;
-  email: string;
+  email?: string;
 };
 
 const OTPForm: React.FC<Props> = ({
   onSubmit,
-  submitLoading,
+  loading,
   resendRemainingTime,
   onResend,
-  isResendLoading,
   email,
 }) => {
   const form = useForm<OTPType>({
     mode: "all",
     resolver: yupResolver(OTPSchema),
   });
-
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const { handleSubmit, control } = form;
 
   const otpValue = useWatch({
@@ -37,7 +35,17 @@ const OTPForm: React.FC<Props> = ({
     name: "otp",
   });
 
-  const disabledOtp = otpValue?.length !== 6;
+  const disabledOtp = otpValue?.length !== 6 || hasSubmitted;
+
+  const handleFormSubmit = async (values: OTPType) => {
+    if (hasSubmitted) return;
+    setHasSubmitted(true);
+    try {
+      await onSubmit(values);
+    } finally {
+      setHasSubmitted(false);
+    }
+  };
 
   return (
     <section className="h-screen relative">
@@ -72,7 +80,7 @@ const OTPForm: React.FC<Props> = ({
                   variant="outlined"
                   resendRemainingTime={resendRemainingTime}
                   onResend={onResend}
-                  isResendLoading={isResendLoading}
+                  isResendLoading={loading}
                 />
               </Stack>
               <Button
@@ -85,9 +93,9 @@ const OTPForm: React.FC<Props> = ({
                   mt: 2,
                   borderRadius: "6px",
                 }}
-                loading={submitLoading}
-                disabled={submitLoading || disabledOtp}
-                onClick={handleSubmit(onSubmit)}
+                loading={loading}
+                disabled={loading || disabledOtp}
+                onClick={handleSubmit(handleFormSubmit)}
               >
                 Continue
               </Button>

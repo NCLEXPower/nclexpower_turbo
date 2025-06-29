@@ -60,7 +60,6 @@ describe("useAuthSessionIdleTimer", () => {
       crossTab: true,
       syncTimers: 400,
       timeout: 10 * 6000,
-      onMessage: expect.any(Function),
       name: undefined,
     });
   });

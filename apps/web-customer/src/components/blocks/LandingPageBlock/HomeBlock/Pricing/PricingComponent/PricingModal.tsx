@@ -16,7 +16,6 @@ const Transition = React.forwardRef(function Transition(
 
 export default function PricingModal({
   handleClose,
-  handleSelectProduct,
   open,
   cardData,
 }: PricingModalProps) {
@@ -29,11 +28,7 @@ export default function PricingModal({
         TransitionComponent={Transition}
       >
         <div className="min-h-screen">
-          <ProductInformation
-            cardData={cardData}
-            onClose={handleClose}
-            handleSelectProduct={handleSelectProduct}
-          />
+          <ProductInformation cardData={cardData} onClose={handleClose} />
         </div>
       </Dialog>
     </div>

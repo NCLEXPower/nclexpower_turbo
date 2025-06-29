@@ -31,7 +31,6 @@ import {
   useConfirmPayment,
   useCheckoutSession,
   useGetAllReportedIssues,
-  useCreateCustomer,
   useGetIrtThetaCalcScratch,
   useGetRegularQuestionDDCategory,
   useCreateReportIssue,
@@ -56,7 +55,7 @@ import {
   useGetSectionsByType,
   useGetAllSections,
   useGetAllPrograms,
-  useGetAllProgramsByType
+  useGetAllProgramsByType,
 } from "../core/hooks/useBusinessQueries";
 import { CategoryResponseType, MutOpt } from "../core/hooks/types";
 import { AxiosError, AxiosResponse } from "axios";
@@ -93,7 +92,7 @@ import {
   ContactFormType,
   GetSectionParams,
   GetAllSectionsResponseType,
-  GetProgramParams
+  GetProgramParams,
 } from "../api/types";
 import { PricingParams, ProductParams } from "../types/types";
 import { StandardProgramListType } from "../types/wc/programList";
@@ -212,15 +211,6 @@ interface BusinessQueryContextValue {
   businessQueryGetAllReportedIssues: (
     queryKey: string[]
   ) => UseQueryResult<ReportedIssuesResponse[] | undefined, any>;
-
-  businessQueryCreateCustomer: (
-    opt?: MutOpt<AxiosResponse<number, AxiosError>>
-  ) => UseMutationResult<
-    AxiosResponse<number, AxiosError<unknown, any>>,
-    any,
-    CreateCustomerParams,
-    unknown
-  >;
 
   businessQueryCreateRegularQuestion: (
     opt?: MutOpt<AxiosResponse<number, AxiosError>>
@@ -352,16 +342,16 @@ interface BusinessQueryContextValue {
   >;
 
   businessQueryGetAllSections: (
-    queryKey: string[],
+    queryKey: string[]
   ) => UseQueryResult<GetAllSectionsResponseType | undefined, any>;
 
   businessQueryGetSectionsByType: (
     queryKey: string[],
     params: GetSectionParams
   ) => UseQueryResult<GetAllSectionsResponseType | undefined, any>;
-  
+
   businessQueryGetAllPrograms: (
-    queryKey: string[],
+    queryKey: string[]
   ) => UseQueryResult<StandardProgramListType | undefined, any>;
 
   businessQueryGetAllProgramsByType: (
@@ -399,7 +389,6 @@ export const BusinessQueryContextProvider: React.FC<
   const businessQueryGetIrtZeroCalc = useGetIrtZeroCalc;
   const businessQueryCheckoutSession = useCheckoutSession;
   const businessQueryGetAllReportedIssues = useGetAllReportedIssues;
-  const businessQueryCreateCustomer = useCreateCustomer;
   const businessQueryGetThetaCalcScratch = useGetIrtThetaCalcScratch;
   const businessQueryGetRegularQuestionDDCategory =
     useGetRegularQuestionDDCategory;
@@ -450,7 +439,6 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryConfirmPayment,
         businessQueryCheckoutSession,
         businessQueryGetAllReportedIssues,
-        businessQueryCreateCustomer,
         businessQueryGetThetaCalcScratch,
         businessQueryGetRegularQuestionDDCategory,
         businessQueryCreateReportIssue,
@@ -475,7 +463,7 @@ export const BusinessQueryContextProvider: React.FC<
         businessQueryGetSectionsByType,
         businessQueryGetAllSections,
         businessQueryGetAllPrograms,
-        businessQueryGetAllProgramsByType
+        businessQueryGetAllProgramsByType,
       }}
     >
       {children}

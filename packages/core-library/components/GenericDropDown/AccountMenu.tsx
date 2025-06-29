@@ -10,7 +10,6 @@ import { useRouter } from "../../core";
 import { useResolution } from "../../hooks";
 import { useAccessControl } from "../../hooks/useAccessControl";
 import { getRoleName } from "../../core/utils/permission";
-import { useSensitiveInformation } from "../../hooks/useSensitiveInformation";
 import { Menu_Items } from "../UserProfile/Menu-Items";
 import { EvaIcon } from "../EvaIcon";
 import { AcountMenuLoader } from "../GenericHeader/acoountMenuLoader";
@@ -47,18 +46,15 @@ export const AccountMenu: React.FC<Props> = ({
   const isInHub = router.pathname?.startsWith("/hub") || false;
   const isInWebcHub = isInHub && appName.includes("c");
 
-  const { isMobile } = useResolution();
-
-  const { internal, customer, loading } = useSensitiveInformation();
   const { accessLevel } = useAccessControl();
   const roleName = getRoleName(accessLevel ?? -1);
 
-  if (loading) return <AcountMenuLoader />;
+  // if (loading) return <AcountMenuLoader />;
 
-  const userName =
-    internal?.firstname && internal?.lastname
-      ? `${internal.firstname} ${internal.lastname}`
-      : `${customer?.firstname} ${customer?.lastname}`;
+  // const userName =
+  //   internal?.firstname && internal?.lastname
+  //     ? `${internal.firstname} ${internal.lastname}`
+  //     : `${customer?.firstname} ${customer?.lastname}`;
 
   return (
     <Box>
@@ -85,7 +81,7 @@ export const AccountMenu: React.FC<Props> = ({
               letterSpacing: "0.5px",
             }}
           >
-            {userName}
+            {/* {userName} */}
           </Typography>
           <Typography
             variant="body2"

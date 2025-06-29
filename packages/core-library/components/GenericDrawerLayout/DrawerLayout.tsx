@@ -1,104 +1,126 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
+"use client";
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { Header } from "../GenericHeader/Header";
-import { Sidebar } from "../";
+import { ErrorBoundaryV2, Sidebar } from "../";
 import {
+  useHeaderStyles,
   useIsDesignVisible,
-  useIsMounted,
   useResolution,
-  useRouteBasedVisibility,
+  useSidebarStyles,
 } from "../../hooks";
 import { useScroll } from "../../core/hooks/useScroll";
 import { Main } from "./content/Main";
 import MenuIcon from "@mui/icons-material/Menu";
 import { WebHeaderStylesType } from "../../types/web-header-style";
 import { MenuItems } from "../../api/types";
-import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
-import { useRouter } from "../../core";
-import { config } from "../../config";
-import { usePaid } from "../../contexts/auth/hooks";
-import { Decryption } from "../../utils";
+import { isCustomer, useRouter } from "../../core";
 
-type DrawerLayoutType = {
-  menu: Array<MenuItems>;
-  isAuthenticated: boolean;
-  onLogout?: () => void;
-  loading?: boolean;
-  headerStyles?: WebHeaderStylesType;
-  sidebarStyles?: WebSidebarStylesType;
-  isPaid: string | undefined;
+interface DrawerLayoutProps {
+  menu: MenuItems[];
+  children: React.ReactNode;
+  isAuthenticated?: boolean;
+  onLogout?: () => Promise<void>;
+}
+
+const useCustomHeaderStyles = (
+  isArxenius: boolean,
+  headerStyles: WebHeaderStylesType
+) => {
+  return useMemo(
+    () =>
+      isArxenius
+        ? {
+            ...headerStyles,
+            drawerHeader: { bgcolor: "#00173F", color: "white" },
+          }
+        : headerStyles,
+    [isArxenius, headerStyles]
+  );
 };
 
 export const DrawerLayout: React.FC<
-  React.PropsWithChildren<DrawerLayoutType>
-> = ({
-  menu,
-  children,
-  isAuthenticated,
-  onLogout,
-  headerStyles,
-  sidebarStyles,
-  isPaid,
-}) => {
+  React.PropsWithChildren<DrawerLayoutProps>
+> = ({ menu, children, isAuthenticated, onLogout }) => {
+  const [isHydrated, setIsHydrated] = useState(false);
   const { hideHeader } = useIsDesignVisible();
   const { isMobile } = useResolution();
-  const mounted = useIsMounted();
-
-  const [open, setOpen] = useState(true);
-
   const { isScrolled } = useScroll();
-
   const router = useRouter();
+  const headerStyles = useHeaderStyles();
+  const sidebarStyles = useSidebarStyles();
 
-  const isInHub = router.pathname?.startsWith("/hub") || false;
-  const appName = config.value.BASEAPP;
-  const inWebc = appName.includes("c");
-  const isInWebcHub = isAuthenticated && isInHub && inWebc;
-  const parsedIsPaid =
-    isAuthenticated && inWebc
-      ? Decryption(isPaid ?? ":", config.value.SECRET_KEY)
-      : "yes";
+  const [open, setOpen] = useState(() => !!isAuthenticated);
 
-  const handleDrawer = () => {
+  const inHub = useMemo(
+    () => router.pathname?.startsWith("/hub") || false,
+    [router.pathname]
+  );
+
+  const isArxenius = useMemo(
+    () => !!isAuthenticated && isCustomer && inHub,
+    [isAuthenticated, inHub]
+  );
+
+  const customHeaderStyles = useCustomHeaderStyles(isArxenius, headerStyles);
+
+  const handleDrawerToggle = useCallback(() => {
     setOpen((prev) => !prev);
-  };
+  }, []);
+
+  const handleNavigate = useCallback(
+    (path: string) => {
+      router.push({ pathname: path });
+    },
+    [router]
+  );
+
+  const logout = useCallback(async () => {
+    await onLogout?.();
+    await router.push((router) => router.login);
+  }, [onLogout]);
 
   useEffect(() => {
-    if (isMobile) {
-      setOpen(false);
-    } else if (isAuthenticated) {
-      setOpen(true);
-    } else {
-      setOpen(!inWebc);
-    }
-  }, [inWebc, isAuthenticated, isMobile]);
+    setOpen(!isAuthenticated);
+  }, [isAuthenticated]);
 
-  if (!mounted) return;
+  useEffect(() => {
+    setIsHydrated(true);
+    setOpen(!!isAuthenticated);
+  }, [isAuthenticated]);
 
-  const customHeaderStyles = isInWebcHub
-    ? {
-        drawerHeader: {
-          bgcolor: "#00173F",
-          color: "white",
-        },
-      }
-    : headerStyles;
+  if (!isHydrated) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  const shouldRenderSidebar = menu.length > 0 && isAuthenticated;
+  const shouldRenderDrawerButton = !open && isAuthenticated;
 
   return (
     <Box display="flex">
-      {menu.length > 0 &&
-        (isAuthenticated || isMobile) &&
-        parsedIsPaid !== "no" && (
+      <ErrorBoundaryV2 context="Sidebar">
+        {shouldRenderSidebar && (
           <Sidebar
             {...sidebarStyles}
             isMobile={isMobile}
             menu={menu}
-            open={open}
-            setOpen={handleDrawer}
+            open={open && shouldRenderSidebar}
+            setOpen={handleDrawerToggle}
             isAuthenticated={isAuthenticated}
             onLogout={onLogout}
           />
         )}
+      </ErrorBoundaryV2>
       <Main open={open} isMobile={isMobile}>
         <Box
           display="flex"
@@ -108,17 +130,18 @@ export const DrawerLayout: React.FC<
         >
           <Header
             {...customHeaderStyles}
-            hidden={hideHeader ?? false}
+            hidden={!!hideHeader}
+            isArxenius={isArxenius}
             drawerButton={
-              ((!open && isAuthenticated) || isMobile) && (
+              shouldRenderDrawerButton && (
                 <Button
-                  onClick={handleDrawer}
-                  sx={{ color: isInWebcHub && "white" }}
+                  onClick={handleDrawerToggle}
+                  sx={{ color: isArxenius ? "white" : undefined }}
                   aria-label="toggle-sidebar"
                 >
                   <MenuIcon
                     sx={{
-                      color: inWebc && !isScrolled ? "white" : "#00173F",
+                      color: isArxenius && !isScrolled ? "white" : "#00173F",
                     }}
                   />
                 </Button>
@@ -126,7 +149,10 @@ export const DrawerLayout: React.FC<
             }
             menu={menu}
             isAuthenticated={isAuthenticated}
-            onLogout={onLogout}
+            logout={logout}
+            path={router.pathname}
+            handleNavigate={handleNavigate}
+            isMobile={isMobile}
           />
           <Box height="100%">{children}</Box>
         </Box>

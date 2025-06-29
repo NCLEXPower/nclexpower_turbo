@@ -13,6 +13,10 @@ import {
   SsoLoginParams,
   SsoVerify2FAParams,
   EnrolledDeviceUpdaterParams,
+  LogoutParamsV2,
+  AccountReferenceResponse,
+  ExtraConfigResponse,
+  CreateUserWithAutoLoginResponse,
 } from "../types";
 import {
   EnrollDeviceResponseType,
@@ -20,6 +24,7 @@ import {
   internalAccountType,
 } from "../../types/types";
 import qs from "query-string";
+import { CustomerOptions } from "../../types/global";
 
 export class AuthApi {
   constructor(
@@ -46,6 +51,54 @@ export class AuthApi {
       `/api/v2/internal/baseInternal/login`,
       params
     );
+  }
+
+  public create_user(params: CustomerOptions) {
+    return this.ssrAxios.post<CreateUserWithAutoLoginResponse>(
+      `/api/customer/create`,
+      params
+    );
+  }
+
+  public async resendOtp() {
+    return await this.ssrAxios.post("/api/auth/2fa/resend");
+  }
+
+  public async verifyOtp(params: { code: string }) {
+    return await this.ssrAxios.post<LoginResponse>(
+      `/api/auth/2fa/verify`,
+      params
+    );
+  }
+
+  public getEmailFromTwoFactor() {
+    return this.ssrAxios.get<string>("/api/auth/2fa/get-email");
+  }
+
+  public async getExtraConfigByReferenceWithToken(reference?: string) {
+    return await this.axios.get<ExtraConfigResponse>(
+      `/api/v2/internal/baseInternal/get-extra-config-by-reference`,
+      {
+        headers: {
+          "account-reference": reference,
+        },
+      }
+    );
+  }
+
+  public accountReference(reference: string | undefined) {
+    return this.axios.get<AccountReferenceResponse>(
+      `/api/v2/internal/baseInternal/account/details`,
+      {
+        headers: {
+          "account-reference": reference,
+        },
+      }
+    );
+  }
+
+  public logout(params: LogoutParamsV2) {
+    return this.axios.post(`/api/v2/internal/baseInternal/logout`, params);
   }
 
   public loginFromSession(sessionId: string) {
@@ -137,14 +190,22 @@ export class AuthApi {
    * @returns response code
    */
   public session(sessionId: string) {
-    return this.axios.get(
-      `/api/v2/internal/baseInternal/session?${qs.stringify({ sessionId })}`
-    );
+    return this.axios.get(`/api/v2/internal/baseInternal/session`, {
+      headers: {
+        "X-Session-Id": sessionId,
+      },
+    });
   }
 
   public keepAlive(sessionId: string) {
     return this.axios.post(
-      `/api/v2/internal/baseInternal/session/keep-alive?${qs.stringify({ sessionId })}`
+      `/api/v2/internal/baseInternal/session/keep-alive`,
+      {},
+      {
+        headers: {
+          "X-Session-Id": sessionId,
+        },
+      }
     );
   }
 }

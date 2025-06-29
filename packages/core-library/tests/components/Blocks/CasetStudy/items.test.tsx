@@ -23,7 +23,7 @@ jest.mock("../../../../components", () => ({
 }));
 
 jest.mock("../../../../hooks", () => ({
-  useStyle: jest.fn(() => ({
+  useSidebarStyles: jest.fn(() => ({
     wordWrap: { wordWrap: "break-word" },
   })),
 }));

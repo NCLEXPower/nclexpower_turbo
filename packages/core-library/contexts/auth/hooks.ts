@@ -5,6 +5,12 @@ import { AliveCheck } from "./hooks/useAuthSessionIdleTimer";
 export const useAccessToken = () =>
   useSessionStorage<string | undefined>("accessToken", undefined);
 
+export const useTwoFactorAuthenticationToken = () =>
+  useSessionStorage<string | undefined>("2FAToken", undefined);
+
+export const useAccountReference = () =>
+  useSessionStorage<string | undefined>("accountReference", undefined);
+
 export const useRefreshToken = () =>
   useSessionStorage<string | undefined>("refreshToken", undefined);
 
@@ -52,3 +58,9 @@ export const useNewAccount = () =>
 
 export const usePaid = () =>
   useSessionStorage<string | undefined>("ispaid", undefined);
+
+export const useResolvedProductId = () =>
+  useSessionStorage<string | undefined>("resolved_pi", undefined);
+
+export const useTrial = () =>
+  useSessionStorage<boolean | undefined>("trial", undefined);

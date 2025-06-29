@@ -10,18 +10,16 @@ import {
   ConfirmPaymentResponse,
   ContactFormType,
   CreateCustomerDumpParams,
-  CreateCustomerParams,
-  CreateCustomerResponse,
   CreatePaymentIntentParams,
   CreateSalesParams,
   GoLiveStatusResponse,
   NotifyParams,
   OrderSummaryResponse,
   PaymentIntentResponse,
+  ProductStorageResponse,
   ReportIssueType,
   ResendCodeParams,
   ResetPasswordParams,
-  ScheduleResponse,
   SelectEmailResponse,
   UpdatePaymentIntentParams,
   ValidateResetLinkTokenParams,
@@ -31,6 +29,7 @@ import {
 import { Encryption } from "../../utils";
 import { ChatBotOptionResponse } from "../../types/chatbot";
 import { AllSalesProps } from "../../hooks/analytics/types";
+import { CustomerOptions } from "../../types/global";
 export class WebApi {
   constructor(
     private readonly axios: AxiosInstance,
@@ -61,6 +60,18 @@ export class WebApi {
     return this.ssrAxios.post<VerificationResponse>(
       `/api/reset/send-link`,
       params
+    );
+  }
+
+  public async verify_product_reference(reference?: string) {
+    return await this.axios.get<boolean>(
+      `/api/v1/Customer/verify-product-by-reference?${qs.stringify({ reference })}`
+    );
+  }
+
+  public async getOrderByReference(reference?: string) {
+    return await this.axios.get<ProductStorageResponse>(
+      `/api/v1/Order/get-order-reference-id?${qs.stringify({ reference })}`
     );
   }
 
@@ -132,13 +143,6 @@ export class WebApi {
     );
   }
 
-  public web_ssr_create_customer(params: CreateCustomerParams) {
-    return this.ssrAxios.post<CreateCustomerResponse>(
-      `/api/customer/create`,
-      params
-    );
-  }
-
   public web_create_customer_dump(params: CreateCustomerDumpParams) {
     return this.axios.post<number>(
       `/api/v1/Customer/create-customer-dump`,
@@ -189,21 +193,34 @@ export class WebApi {
     return this.axios.get<T>(`/${url}?${qs.stringify(params)}`);
   }
 
+  /**
+   *
+   * @deprecated this api no longer use.
+   */
   public async create_order_summary(props: {
     orderNumber: string | undefined;
-    productId: string;
-    accountId: string | undefined;
-    pricingId: string | undefined;
+    reference?: string;
   }) {
     return await this.axios.post<string>(
       `/api/v1/Order/create-order-summary`,
-      props
+      props,
+      {
+        headers: {
+          "account-reference": props.reference,
+        },
+      }
     );
   }
 
-  public async getOrderSummary(accountId: string | undefined) {
+  public async create_order_id(productId: string) {
+    return await this.axios.get<string>(
+      `/api/v1/Order/create-order-reference-id?${qs.stringify({ productId })}`
+    );
+  }
+
+  public async getOrderSummary(reference?: string) {
     return await this.axios.get<OrderSummaryResponse>(
-      `/api/v1/Order/get-order-summary?${qs.stringify({ accountId })}`
+      `/api/v1/Order/get-order-summary?${qs.stringify({ reference })}`
     );
   }
 

@@ -3,7 +3,7 @@ import {
   useApi,
   useApiCallback,
   useColumns,
-  useSensitiveInformation,
+  useGetUserId,
 } from "../../../../../../hooks";
 import { Alert, Card, DataGrid } from "../../../../../../components";
 import { useAccountId } from "../../../../../../contexts/auth/hooks";
@@ -13,15 +13,15 @@ import { CaseListChip } from "./CaseListChip";
 import { useDateFormat } from "../core/hooks";
 
 export const CaseStudyListViewBlock = () => {
-  const { internal } = useSensitiveInformation();
   const { getFormattedDate } = useDateFormat();
+  const id = useGetUserId();
 
   const caseStudyListCb = useApi(
     (api) =>
       api.webbackoffice.caseStudyList({
-        TokenizeInformationId: internal?.id ?? "",
+        TokenizeInformationId: id,
       }),
-    [internal?.id]
+    [id]
   );
 
   const caseStudyLists = useMemo(

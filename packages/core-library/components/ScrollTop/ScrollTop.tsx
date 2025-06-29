@@ -1,8 +1,9 @@
 import { useScroll } from "../../core";
 import { IconButton } from "../Button/IconButton";
 import { useCookie } from "../../hooks/useCookie";
-import { useWebHeaderStyles } from "../../hooks";
+
 import { EvaIcon } from "../EvaIcon";
+import { useHeaderStyles } from "../../hooks";
 
 interface ScrollTopProps {
   forCookieConsent?: boolean;
@@ -15,7 +16,7 @@ export const ScrollTop: React.FC<ScrollTopProps> = ({
 }) => {
   const { scrollTop } = useScroll();
   const [cookieConsent] = useCookie<string | null>(COOKIE_NAME);
-  const { ToTopButtonSx } = useWebHeaderStyles();
+  const { ToTopButtonSx } = useHeaderStyles();
 
   return (
     <IconButton

@@ -2,13 +2,13 @@ import { Box, Typography } from "@mui/material";
 import { SectionContent } from "../../../../../../../../../../../../../types";
 import {
   useSanitizedInputs,
-  useStyle,
+  useSidebarStyles,
 } from "../../../../../../../../../../../../../../../../hooks";
 
 export const BackgroundInfo: React.FC<{ content: SectionContent[] }> = ({
   content,
 }) => {
-  const { wordWrap } = useStyle();
+  const { wordWrap } = useSidebarStyles();
   const { purifyInputs } = useSanitizedInputs({});
 
   return (

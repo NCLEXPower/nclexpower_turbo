@@ -49,8 +49,6 @@ export interface OpenPagesResponse {
 export interface LoginParams {
   email: string;
   password: string;
-  appName: string;
-  deviceId: string;
 }
 
 export interface NotifyParams {
@@ -72,7 +70,6 @@ export interface CreatePaymentIntentParams {
   programTitle: number;
   productId: string;
   pricingId: string;
-  accountId: string | undefined;
 }
 export interface UpdatePaymentIntentParams {
   paymentIntentId: string;
@@ -85,14 +82,22 @@ export interface PaymentIntentResponse {
 }
 export interface LoginResponse {
   accessTokenResponse: AccessTokenResponse;
-  responseCode: number | undefined;
-  is2FaEnabled: boolean;
-  twoFactorCodeExpiryTime: string;
-  accountId: string;
-  accessLevel: number;
+  accountReference: string;
+  accessLevel: number; // change to access group id in the future.
   sessionId: string;
-  fingerprint: string; //deprecated
-  isPaid: string;
+  twoFactorAuthInformation: TwoFactorInformation;
+  responseCode: number;
+}
+
+export interface CreateUserWithAutoLoginResponse {
+  code: number;
+  loginResponse: LoginResponse;
+}
+
+export interface TwoFactorInformation {
+  has2FactorAuthentication: boolean;
+  twoFactorToken: string;
+  twoFactorTokenExpiryTime: string;
 }
 
 export interface RefreshTokenResponse {
@@ -101,6 +106,10 @@ export interface RefreshTokenResponse {
 
 export interface LogoutParams {
   accessToken: string;
+  refreshToken: string;
+}
+
+export interface LogoutParamsV2 {
   refreshToken: string;
 }
 
@@ -125,6 +134,11 @@ export type CurrenciesResponse = {
   rounding: number;
   code: string;
   name_plural: string;
+};
+
+export type CountryListResponse = {
+  country_Code: string;
+  country_Name: string;
 };
 
 export type PricingListResponse = {
@@ -251,6 +265,7 @@ export interface CategoryResponse {
   updatedAt: string;
 }
 
+// deprecated
 export interface CreateCustomerParams {
   firstname: string;
   middlename: string | null;
@@ -261,10 +276,6 @@ export interface CreateCustomerParams {
   productId: string;
   totalAmount: number;
   privacyServicePolicy: boolean;
-}
-
-export interface CreateCustomerResponse {
-  accountId: string;
 }
 
 export interface CreateCustomerDumpParams {
@@ -344,6 +355,21 @@ export type OrderSummaryResponse = {
   currencyId: string;
 };
 
+export type ProductStorageResponse = {
+  id: string;
+  productName: string;
+  productDescription: string;
+  programTitle: number;
+  programType: number;
+  pricingId: string;
+  pricing: ProductPricingReturnValue;
+};
+
+export type ProductPricingReturnValue = {
+  price: number;
+  currency: string;
+};
+
 export type ResendCodeParams = {
   email: string;
 };
@@ -385,6 +411,14 @@ export type Verify2FAParams = {
 export type SsoVerify2FAParams = {
   email: string;
   code: string;
+};
+
+export type ExtraConfigResponse = {
+  config: {
+    isPaid: boolean;
+    isError: boolean;
+    isNewlyCreated: boolean;
+  };
 };
 
 export type ReportIssueType = {
@@ -988,7 +1022,7 @@ export type PolicyFileResponseType = {
 };
 
 export type GetCaseStudyListParams = {
-  TokenizeInformationId: string;
+  TokenizeInformationId: string | null;
 };
 
 export type CaseStudyListResponse = {
@@ -1014,10 +1048,16 @@ export type ContactResponseType = {
   message: string;
   createdAt: string;
 };
-export type CountryListResponse = {
-  id?: string;
-  country_Name: string; 
-  country_Code: string; 
-  value?: string;
-  label?: string;
+
+export type AccountReferenceResponse = {
+  customerInfo: AccountReferenceInformation;
+  internalInfo: AccountReferenceInformation;
+};
+
+type AccountReferenceInformation = {
+  id: string;
+  firstname: string;
+  middlename?: string;
+  lastname: string;
+  email: string;
 };

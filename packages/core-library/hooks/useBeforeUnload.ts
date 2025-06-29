@@ -44,6 +44,7 @@ export function useBeforeUnload(enabled: boolean, handler?: VoidFunction) {
       nextRouteRef.current = route;
 
       if (handler) {
+        console.log("handle is called", handler);
         handler?.();
         router.events.emit("routeChangeError");
         throw "routeChange aborted";

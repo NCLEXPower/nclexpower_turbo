@@ -12,6 +12,12 @@ import {
   ProductSelectionProps,
   ProductCardType,
 } from "core-library/types/global";
+import { useApiCallback } from "core-library/hooks";
+import {
+  useResolvedProductId,
+  useTrial,
+} from "core-library/contexts/auth/hooks";
+import { useRouter } from "core-library";
 import { formatPrice } from "core-library/utils";
 import {
   ProductRadioSelectionField,
@@ -23,8 +29,23 @@ const ProductSelection = ({
   cardData,
   selectedProduct,
   setSelectedProduct,
-  handleSelectProduct,
 }: ProductSelectionProps) => {
+  const router = useRouter();
+  const [, setTrial] = useTrial();
+  const { control, watch } = useForm({
+    defaultValues: { product: selectedProduct },
+  });
+
+  const watchedProduct = watch("product");
+  useEffect(() => {
+    setSelectedProduct(watchedProduct);
+  }, [watchedProduct, setSelectedProduct]);
+  const [, setResolvedProductId] = useResolvedProductId();
+  // change this to generic implementation of creating reference.
+  const createOrderIdCb = useApiCallback(async (api, id: string) =>
+    api.web.create_order_id(id)
+  );
+
   const options: ProductRadioOption[] = cardData.map(
     (card: ProductCardType) => {
       const bgColor =
@@ -50,34 +71,6 @@ const ProductSelection = ({
       };
     }
   );
-
-  const { control, watch } = useForm({
-    defaultValues: { product: selectedProduct },
-  });
-
-  const watchedProduct = watch("product");
-  useEffect(() => {
-    setSelectedProduct(watchedProduct);
-  }, [watchedProduct, setSelectedProduct]);
-
-  const handleProductDetails = (isTrial: boolean = false) => {
-    const selectedCard = cardData.find(
-      (card: ProductCardType) => card.programType === watchedProduct
-    );
-    if (!selectedCard) return;
-    handleSelectProduct({
-      amount: selectedCard.pricing.price,
-      currency: selectedCard.pricing.currency,
-      productName: selectedCard.productName,
-      productDescription: selectedCard.productDescription,
-      programTitle: selectedCard.programTitle,
-      pricingId: selectedCard.pricingId,
-      productId: selectedCard.id,
-      programType: selectedCard.programType,
-      inclusions: selectedCard.inclusions,
-      isTrial,
-    });
-  };
 
   return (
     <Box className="w-full xl:w-2/6 flex flex-col justify-between px-8 py-12 text-[#232323] bg-[#F2F2F2] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-2xl">
@@ -149,7 +142,7 @@ const ProductSelection = ({
                 fontWeight: "bold",
                 py: 3,
               }}
-              onClick={() => handleProductDetails()}
+              onClick={() => handleProductDetails(false)}
             >
               Buy Product
             </Button>
@@ -198,6 +191,17 @@ const ProductSelection = ({
       </Box>
     </Box>
   );
+
+  async function handleProductDetails(isTrial: boolean = false) {
+    const selectedCard = cardData.find(
+      (card: ProductCardType) => card.programType === watchedProduct
+    );
+    if (!selectedCard) return;
+    const { data } = await createOrderIdCb.execute(selectedCard.id);
+    setResolvedProductId(data);
+    setTrial(isTrial);
+    await router.push((router) => router.account_registration);
+  }
 };
 
 export default ProductSelection;

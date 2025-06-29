@@ -2,14 +2,29 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useRegisterWizardSteps } from "./steps/useSteps";
 import { OrderSummaryBlock } from "../blocks";
-import { useDesignVisibility } from "core-library/hooks";
+import { useApi, useDesignVisibility } from "core-library/hooks";
 import Image from "next/image";
 import { RegistrationBG } from "core-library/assets";
 import Link from "next/link";
+import { useResolvedProductId } from "core-library/contexts/auth/hooks";
+import { NotFoundBlock } from "../blocks/NotFoundBlock/NotFoundBlock";
 
 export const RegistrationWalkthroughForm = () => {
+  const [resolvedProductId] = useResolvedProductId();
+  const verifyProductReference = useApi(
+    async (api) => await api.web.verify_product_reference(resolvedProductId),
+    [resolvedProductId]
+  );
   useDesignVisibility();
   const { render } = useRegisterWizardSteps();
+
+  if (verifyProductReference.loading) {
+    return <p>Loading Please wait...</p>;
+  }
+
+  if (!resolvedProductId || !verifyProductReference.result?.data) {
+    return <NotFoundBlock />;
+  }
 
   return (
     <div className="w-full lg:flex lg:justify-around lg:flex-row md:flex-col lg:relative lg:items-center">
@@ -26,7 +41,7 @@ export const RegistrationWalkthroughForm = () => {
       />
 
       <Box className="w-full lg:w-3/5 flex flex-col justify-center h-auto">
-        <OrderSummaryBlock />
+        <OrderSummaryBlock reference={resolvedProductId} />
       </Box>
       <Box className="w-full lg:w-2/5 flex flex-col gap-8 px-12 py-8 justify-between h-full">
         <div className="flex flex-col leading-none text-center gap-3.5">

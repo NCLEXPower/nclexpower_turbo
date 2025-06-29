@@ -1,4 +1,5 @@
 import getConfig from "next/config";
+import { parseDelimitedList } from "../types";
 
 const {
   publicRuntimeConfig: { processEnv },
@@ -12,8 +13,7 @@ export const config = {
       LOCAL_API_URL: processEnv.NEXT_PRIVATE_LOCAL_API_URL!,
       XAPIKEY: processEnv.NEXT_PRIVATE_XAPI_KEY!,
       SCOOKIE: processEnv.NEXT_PRIVATE_SINGLE_COOKIE!,
-      ACOOKIE: processEnv.NEXT_PRIVATE_AC_COOKIE!,
-      ANLYTCSCOOKIE: processEnv.NEXT_PRIVATE_ANALYTICS_COOKIE!,
+      ACREF: processEnv.NEXT_PRIVATE_AC_REF!,
       VERCELURL: processEnv.NEXT_PRIVATE_BASE_URL,
       SECRET_KEY: processEnv.NEXT_PRIVATE_SECRET_KEY!,
       BASEAPP: processEnv.NEXT_PRIVATE_BASE_APP!,
@@ -32,6 +32,10 @@ export const config = {
       SITEKEY: processEnv.NEXT_PRIVATE_RECAPTCHA_SITE_KEY!,
       MIXPANEL_URL: processEnv.NEXT_PRIVATE_MIXPANEL_RESOURCE_URL,
       MIXPANEL_TOKEN: processEnv.NEXT_PRIVATE_MIXPANEL_TOKEN,
+      WHITELISTED_COOKIES: parseDelimitedList(
+        processEnv.NEXT_PRIVATE_WHITELISTED_COOKIES,
+        ";"
+      ),
       APIIPKEY: processEnv.NEXT_PRIVATE_APIIP_KEY!,
       APIIPURL: processEnv.NEXT_PRIVATE_APIIP_URL!,
       API64URL: processEnv.NEXT_PRIVATE_API64_URL!,
