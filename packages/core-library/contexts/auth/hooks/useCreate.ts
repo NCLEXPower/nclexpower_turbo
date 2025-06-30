@@ -4,14 +4,12 @@
  * Created by the Software Strategy & Development Division
  */
 import { useApiCallback } from "../../../hooks";
-import { CustomerOptions } from "../../../types/global";
+import { CustomerOptions, InternalOptions } from "../../../types/global";
 
 export type CreateParams<T extends "customer" | "internal"> = {
   type?: T;
   fields: T extends "customer" ? CustomerOptions : InternalOptions;
 };
-
-export type InternalOptions = {};
 
 export const useCreate = <T extends "customer" | "internal">(
   params: CreateParams<T> & { isCustomerCondition?: boolean }
@@ -23,7 +21,13 @@ export const useCreate = <T extends "customer" | "internal">(
     async (api, args: CustomerOptions) => await api.auth.create_user(args)
   );
 
-  const loading = type === "customer" ? customersCb.loading : false;
+  const internalCb = useApiCallback(
+    async (api, args: InternalOptions) =>
+      await api.auth.web_create_internal_account(args)
+  );
+
+  const loading =
+    type === "customer" ? customersCb.loading : internalCb.loading;
 
   async function createCustomer(args: CustomerOptions) {
     try {
@@ -34,7 +38,14 @@ export const useCreate = <T extends "customer" | "internal">(
     }
   }
 
-  async function createInternal(args: InternalOptions) {}
+  async function createInternal(args: InternalOptions) {
+    try {
+      return await internalCb.execute(args);
+    } catch (error) {
+      console.error(`Something went wrong with internal creation: ${error}.`);
+      throw error;
+    }
+  }
 
   const execute = (
     additionalArgs?: Partial<CustomerOptions | InternalOptions>

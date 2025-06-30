@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { InternalOptions, useCreate } from "./useCreate";
+import { useCreate } from "./useCreate";
 import { isCustomer } from "../../../core";
-import { CustomerOptions } from "../../../types/global";
+import { CustomerOptions, InternalOptions } from "../../../types/global";
 
 export const useLazyCreate = () => {
   const initialFields = isCustomer

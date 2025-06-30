@@ -18,9 +18,8 @@ import {
   useSingleCookie,
   useTwoFactorAuthenticationCookie,
 } from "../../../hooks/useCookie";
-import { InternalOptions } from "../hooks/useCreate";
 import { useLazyCreate } from "../hooks/useLazyCreate";
-import { CustomerOptions } from "../../../types/global";
+import { CustomerOptions, InternalOptions } from "../../../types/global";
 
 export const useStandardAuth = (): AuthService => {
   const router = useRouter();

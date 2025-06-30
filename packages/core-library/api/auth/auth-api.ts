@@ -165,7 +165,7 @@ export class AuthApi {
 
   public web_create_internal_account(params: internalAccountType) {
     return this.axios.post<number>(
-      "/api/v2/internal/baseInternal/internal-account-creation/",
+      "/api/v2/internal/baseInternal/internal-account-creation",
       params
     );
   }
