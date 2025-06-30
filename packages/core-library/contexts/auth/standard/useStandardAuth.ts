@@ -21,6 +21,7 @@ import {
 import { InternalOptions } from "../hooks/useCreate";
 import { useLazyCreate } from "../hooks/useLazyCreate";
 import { CustomerOptions } from "../../../types/global";
+import { internalAccountType } from "../../../types/types";
 
 export const useStandardAuth = (): AuthService => {
   const router = useRouter();
@@ -44,6 +45,9 @@ export const useStandardAuth = (): AuthService => {
   const logoutCb = useApiCallback((api, p: LogoutParamsV2) =>
     api.auth.logout(p)
   );
+  const createInternalCb = useApiCallback((api, p: internalAccountType) =>
+    api.auth.web_create_internal_account(p)
+  );
 
   const authSessionIdleTimer = useAuthSessionIdleTimer({
     onSessionExpired: async () => {
@@ -53,7 +57,7 @@ export const useStandardAuth = (): AuthService => {
     sessionId: session || accessToken,
   });
 
-  const loading = loginCb.loading || logoutCb.loading || isCreateTasksRunning;
+  const loading = loginCb.loading || logoutCb.loading || createInternalCb.loading || isCreateTasksRunning;
   isAuthenticated;
 
   useEffect(() => {
@@ -165,6 +169,15 @@ export const useStandardAuth = (): AuthService => {
     }
   }
 
+  async function createInternal(params: internalAccountType) {
+    try {
+      return await createInternalCb.execute(params);
+    } catch (error) {
+      console.error(`Something went wrong during internal account creation: ${error}`);
+      throw error;
+    }
+  }
+
   return {
     loading,
     isAuthenticated,
@@ -202,6 +215,7 @@ export const useStandardAuth = (): AuthService => {
       throw new Error("Not implemented");
     },
     register,
+    createInternal,
     setSecurityMeasures,
   };
 };
