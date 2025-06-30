@@ -3,7 +3,6 @@ import { isCustomer } from "../../core";
 import { CustomerOptions } from "../../types/global";
 import { InternalOptions } from "./hooks/useCreate";
 import { LoginResponse } from "../../api/types";
-import { internalAccountType } from "../../types/types";
 
 export type LoginOptions = {
   email: string;
@@ -27,7 +26,6 @@ export type AuthService = {
   register(
     params: typeof isCustomer extends true ? CustomerOptions : InternalOptions
   ): Promise<any>;
-  createInternal: (params: internalAccountType) => Promise<any>;
   softLogout: (options?: SoftLogoutOptions) => Promise<void>;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   setIsAuthTasksRunning: (isAuthTasksRunning: boolean) => void;
