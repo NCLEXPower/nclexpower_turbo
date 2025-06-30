@@ -55,18 +55,16 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
 
       setCSPHeader(context.res as ServerResponse, csp);
 
-      const result = (await getServerSidePropsFn?.(context)) || { props: {} };
-
-      const slug = context.resolvedUrl;
-
       if (getServerSidePropsFn) {
+        const result = await getServerSidePropsFn(context);
+
         if ("props" in result) {
           return {
             ...result,
             props: {
               ...result.props,
               __N_SSP: true,
-              slug,
+              slug: context.resolvedUrl,
               generatedNonce,
               data: {
                 MaintenanceStatus,
@@ -77,20 +75,15 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             },
           };
         }
-
         return result;
       }
 
       return {
         props: {
-          slug,
           generatedNonce,
-          __N_SSP: true,
           data: {
             MaintenanceStatus,
             endpoints,
-            hasGoLive: hasGoLiveActive,
-            hasChatBotWidget,
           },
         },
       };
@@ -98,7 +91,6 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       return {
         props: {
           error: error instanceof Error ? error.message : "Unknown error",
-          __N_SSP: true,
         },
       };
     }

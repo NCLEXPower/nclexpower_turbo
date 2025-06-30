@@ -70,6 +70,7 @@ describe("withCSP", () => {
       mockEndpointResources
     );
   });
+
   it("should generate and set the CSP header", async () => {
     const mockGetServerSideProps = jest
       .fn()
@@ -87,11 +88,15 @@ describe("withCSP", () => {
 
     expect(result).toEqual({
       props: {
+        __N_SSP: true,
+        slug: undefined,
         test: "test value",
         generatedNonce: "test-nonce",
         data: {
           MaintenanceStatus: mockMaintenanceStatus,
           endpoints: mockEndpointResources,
+          hasGoLive: undefined,
+          hasChatBotWidget: undefined,
         },
       },
     });
@@ -120,7 +125,7 @@ describe("withCSP", () => {
     const result = await withCSP()(mockContext as GetServerSidePropsContext);
 
     expect(result).toEqual({
-      props: { error: { message: "Test error" } },
+      props: { error: "Test error" },
     });
   });
 });
