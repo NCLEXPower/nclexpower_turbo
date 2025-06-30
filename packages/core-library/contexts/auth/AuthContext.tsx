@@ -11,6 +11,7 @@ const mapAuthService = (authService: AuthService) => ({
   login: authService.login,
   logout: authService.logout,
   register: authService.register,
+  createInternal: authService.createInternal,
   softLogout: authService.softLogout,
   setIsAuthenticated: authService.setIsAuthenticated,
   setIsAuthTasksRunning: authService.setIsAuthTasksRunning,
