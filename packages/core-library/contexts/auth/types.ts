@@ -1,7 +1,6 @@
 import { AxiosResponse } from "axios";
 import { isCustomer } from "../../core";
-import { CustomerOptions } from "../../types/global";
-import { InternalOptions } from "./hooks/useCreate";
+import { CustomerOptions, InternalOptions } from "../../types/global";
 import { LoginResponse } from "../../api/types";
 
 export type LoginOptions = {
@@ -23,9 +22,7 @@ export type AuthService = {
   isAuthenticated: boolean;
   login: (options: LoginOptions) => Promise<LoginOptionReturnValues | void>;
   logout: () => Promise<void>;
-  register(
-    params: typeof isCustomer extends true ? CustomerOptions : InternalOptions
-  ): Promise<any>;
+  register(params: CustomerOptions | InternalOptions): Promise<any>;
   softLogout: (options?: SoftLogoutOptions) => Promise<void>;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   setIsAuthTasksRunning: (isAuthTasksRunning: boolean) => void;

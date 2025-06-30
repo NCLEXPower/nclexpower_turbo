@@ -154,9 +154,7 @@ export const useStandardAuth = (): AuthService => {
     }
   }
 
-  async function register(
-    params: typeof isCustomer extends true ? CustomerOptions : InternalOptions
-  ) {
+  async function register(params: CustomerOptions | InternalOptions) {
     try {
       return await create({ ...params });
     } catch (error) {

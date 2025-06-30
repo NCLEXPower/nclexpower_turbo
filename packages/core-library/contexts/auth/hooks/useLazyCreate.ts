@@ -14,9 +14,7 @@ export const useLazyCreate = () => {
   });
 
   const create = useCallback(
-    async (
-      fields: typeof isCustomer extends true ? CustomerOptions : InternalOptions
-    ) => {
+    async (fields: CustomerOptions | InternalOptions) => {
       try {
         return await execute(fields);
       } catch (error) {
@@ -29,7 +27,7 @@ export const useLazyCreate = () => {
 
   return {
     create: create as (
-      fields: typeof isCustomer extends true ? CustomerOptions : InternalOptions
+      fields: CustomerOptions | InternalOptions
     ) => Promise<any>,
     loading,
   };
