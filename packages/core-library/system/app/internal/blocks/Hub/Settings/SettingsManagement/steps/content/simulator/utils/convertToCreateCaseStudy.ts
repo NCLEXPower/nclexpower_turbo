@@ -8,7 +8,7 @@ import { ContainedCaseStudyQuestionType } from "../types";
 
 export const convertToCreateCaseStudy = (
   containedCaseStudyQuestion: ContainedCaseStudyQuestionType,
-  internal: TokenizeInformations | undefined
+  email: string
 ) => {
   const mainCaseStudyContentCollectionDtos = [
     {
@@ -57,12 +57,8 @@ export const convertToCreateCaseStudy = (
     },
   ];
 
-  if (!internal) {
-    throw new Error("Internal is undefined");
-  }
-
   return {
-    email: internal.email,
+    email: email,
     contentDto: {
       type: "",
       mainType:

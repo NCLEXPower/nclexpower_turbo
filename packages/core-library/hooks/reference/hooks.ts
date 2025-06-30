@@ -27,3 +27,10 @@ export const useAccountName = (): string | null => {
     ? `${customerInfo.firstname} ${customerInfo.lastname}`
     : internalInfo && `${internalInfo.firstname} ${internalInfo.lastname}`;
 };
+
+export const useGetUserId = (): string | null => {
+  const { customerInfo, internalInfo } = useAccountReferenceContext();
+  return isCustomer && customerInfo
+    ? customerInfo.id
+    : internalInfo && internalInfo.id;
+};

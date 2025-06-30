@@ -1022,7 +1022,7 @@ export type PolicyFileResponseType = {
 };
 
 export type GetCaseStudyListParams = {
-  TokenizeInformationId: string;
+  TokenizeInformationId: string | null;
 };
 
 export type CaseStudyListResponse = {

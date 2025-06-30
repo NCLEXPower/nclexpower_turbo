@@ -24,11 +24,11 @@ import { CaseStudyLoader } from "../../loader";
 import { useExecuteToast } from "../../../../../../../../../../../../../../contexts";
 import { convertToCreateCaseStudy } from "../../../../utils/convertToCreateCaseStudy";
 import {
+  useAccountEmail,
   useApiCallback,
   useBeforeUnload,
   useSanitizedInputs,
-  useSensitiveInformation,
-  useStyle,
+  useSidebarStyles,
 } from "../../../../../../../../../../../../../../hooks";
 import { CreateRegularType } from "../../../../../../../../../../../../../../api/types";
 
@@ -106,12 +106,14 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
   const [caseStudyAtom] = useAtom(CreateCaseStudyAtom);
   const { contentLoader, setContentLoader } = usePageLoaderContext();
   const { purifyInputs } = useSanitizedInputs({});
-  const { wordWrap } = useStyle();
+  const { wordWrap } = useSidebarStyles();
+  const email = useAccountEmail();
+
   const createCaseStudyQuestion = useApiCallback(
     async (api, args: CreateRegularType) =>
       await api.webbackoffice.createRegularQuestion(args)
   );
-  const { internal } = useSensitiveInformation();
+
   const { showToast } = useExecuteToast();
 
   useEffect(() => {
@@ -132,9 +134,9 @@ export const CaseStudySummary: React.FC<CaseStudySummaryProps> = ({
 
   async function onSubmit() {
     try {
-      if (caseStudyAtom) {
+      if (caseStudyAtom && email) {
         const result = await createCaseStudyQuestion.execute(
-          convertToCreateCaseStudy(caseStudyAtom, internal)
+          convertToCreateCaseStudy(caseStudyAtom, email)
         );
         if (result.status === 200) {
           showToast("Case Study created successfully", "success");

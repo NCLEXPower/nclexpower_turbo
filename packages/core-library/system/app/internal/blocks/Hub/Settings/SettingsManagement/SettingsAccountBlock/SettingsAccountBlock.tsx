@@ -3,7 +3,7 @@ import { sectionSx, subtitleSx, titleSx } from "../SettingsStyles";
 import { PersonalInformationBlock } from "./PersonalInformationBlock";
 import { GoogleBlock } from "./GoogleBlock";
 import { DeleteAccountBlock } from "./DeleteAccountBlock";
-import { useSensitiveInformation } from "../../../../../../../../hooks";
+import { useCustomerInfo } from "../../../../../../../../hooks";
 
 interface SettingAccountBlockProps {
   title: string;
@@ -14,7 +14,8 @@ export const SettingsAccountBlock: React.FC<SettingAccountBlockProps> = ({
   title,
   subtitle,
 }) => {
-  const { customer } = useSensitiveInformation();
+  // change this to generic if necessary
+  const customerInformation = useCustomerInfo();
 
   return (
     <Box component="section" sx={sectionSx}>
@@ -37,7 +38,9 @@ export const SettingsAccountBlock: React.FC<SettingAccountBlockProps> = ({
           gap: "20px",
         }}
       >
-        <PersonalInformationBlock userInfo={customer} />
+        {customerInformation && (
+          <PersonalInformationBlock userInfo={customerInformation} />
+        )}
         <Box
           sx={{
             display: "flex",

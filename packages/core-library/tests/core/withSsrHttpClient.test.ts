@@ -3,7 +3,6 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
 import Http from "../../http-client";
 import { config } from "../../config";
-import { getTimeZone } from "../../utils";
 
 jest.mock("../../config", () => ({
   config: { value: jest.fn() },
@@ -65,6 +64,7 @@ describe("withSsrHttpClient", () => {
         "Content-Type": "application/json",
         "X-Environment": config.value.SYSENV,
         "X-Time-Zone": "GMT",
+        "X-Platform": false,
       },
       onError: expect.any(Function),
       onRequest: expect.any(Function),
@@ -79,7 +79,21 @@ describe("withSsrHttpClient", () => {
     expect(mockRes.json).toHaveBeenCalledWith({ message: "success" });
   });
 
+  it("should execute the route handler with req and res", async () => {
+    const routeHandler = jest.fn((req, res) => {
+      res.status(200).json({ message: "success" });
+    });
+    mockHandler.mockReturnValue(routeHandler);
+
+    await withSsrHttpClient(mockHandler)(mockReq as any, mockRes as any);
+
+    expect(routeHandler).toHaveBeenCalledWith(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: "success" });
+  });
+
   it("should use iron-session with the correct session options", () => {
+    withSsrHttpClient(mockHandler);
     expect(withIronSessionApiRoute).toHaveBeenCalledWith(
       expect.any(Function),
       sessionOptions

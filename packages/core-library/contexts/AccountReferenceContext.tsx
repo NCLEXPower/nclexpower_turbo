@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { useApi } from "../hooks";
 import { useAccountReference } from "./auth/hooks";
-import { useAuthContext } from "./auth/AuthContext";
 
 export type AccountReferenceInformation = {
   id: string;
@@ -15,6 +14,7 @@ export type AccountReferenceInformation = {
   middlename?: string;
   lastname: string;
   email: string;
+  // imgurl: string; // this might need to be added also in backend.
 };
 
 export type AccountReferenceResponse = {
@@ -55,7 +55,9 @@ export const AccountReferenceProvider: React.FC<
   const [reference] = useAccountReference();
 
   const accountReference = useApi((api) =>
-    api.auth.accountReference(reference)
+    isAuthenticated
+      ? api.auth.accountReference(reference)
+      : Promise.resolve(null)
   );
 
   const loading = authLoading || accountReference.loading;
