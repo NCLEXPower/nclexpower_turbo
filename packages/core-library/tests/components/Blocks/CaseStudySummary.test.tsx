@@ -19,6 +19,13 @@ jest.mock("../../../contexts/PageLoaderContext", () => ({
   usePageLoaderContext: jest.fn(),
 }));
 
+jest.mock("../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: jest.fn().mockReturnValue({
+    customerInfo: {},
+    internalInfo: {},
+  }),
+}));
+
 const mockSetActiveStep = jest.fn();
 const mockActiveStepAtom = jest.fn();
 

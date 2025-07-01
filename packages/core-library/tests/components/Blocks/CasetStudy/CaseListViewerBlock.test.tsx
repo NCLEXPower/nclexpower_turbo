@@ -1,6 +1,5 @@
 import { CaseStudyListViewBlock } from "../../../../system/app/internal/blocks";
 import { render, screen } from "../../../common";
-import { useAccountReferenceContext } from "../../../../contexts/AccountReferenceContext";
 
 jest.mock("../../../../config", () => ({
   getConfig: jest
