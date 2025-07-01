@@ -140,9 +140,17 @@ export interface ProductListResponse {
   productName: string;
   pricingId: string;
   categoryId: string;
-  productDescription: string | null;
+  productDescription: string;
   programType: number;
   programTitle: number;
+  pricing: PricingListResponse;
+  inclusions: {
+    inclusionsId: string;
+    features: string[];
+    createdAt: string;
+    updatedAt: string;
+  };
+  category?: GetCategoryType;
 }
 
 export interface CreateSalesParams {
@@ -1005,4 +1013,11 @@ export type ContactResponseType = {
   phone: string;
   message: string;
   createdAt: string;
+};
+export type CountryListResponse = {
+  id?: string;
+  country_Name: string; 
+  country_Code: string; 
+  value?: string;
+  label?: string;
 };
