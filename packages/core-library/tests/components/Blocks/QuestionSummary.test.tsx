@@ -2,8 +2,6 @@ import { fireEvent, screen, waitFor } from "../../common";
 import { render } from "@testing-library/react";
 import { QuestionSummary } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/regular/QuestionSummary";
 import { SummaryAccordion } from "../../../components";
-import ConfirmationModal from "../../../components/Dialog/DialogFormBlocks/RegularQuestion/ConfirmationDialog";
-import { usePageLoaderContext } from "../../../contexts/PageLoaderContext";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../../../contents/theme/theme";
 
@@ -13,6 +11,13 @@ jest.mock("../../../config", () => ({
 
 jest.mock("../../../core/router", () => ({
   useRouter: jest.fn(),
+}));
+
+jest.mock("../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: jest.fn().mockReturnValue({
+    customerInfo: {},
+    internalInfo: {},
+  }),
 }));
 
 jest.mock(
