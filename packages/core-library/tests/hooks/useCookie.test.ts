@@ -1,4 +1,10 @@
-import { useCookie, useDeviceId, useGeoCountry } from "../../hooks/useCookie";
+import {
+  useAnalyticsDetails,
+  useCookie,
+  useReferenceCookie,
+  useSingleCookie,
+  useTwoFactorAuthenticationCookie,
+} from "../../hooks/useCookie";
 import { renderHook } from "../common";
 
 jest.mock("../../config", () => ({
@@ -8,25 +14,29 @@ jest.mock("../../config", () => ({
 const key = "test";
 const anotherKey = "anotherTest";
 
-// Create an object to simulate the stored cookie values
 let mockCookies: Record<string, string | null> = {
-  geocountry: null,
-  devid: null,
+  session_cookie: null,
+  analytics: null,
+  reference_cookie: null,
+  "2faToken": null,
 };
 
 jest.mock("react-cookie", () => ({
   useCookies: jest.fn().mockImplementation((keys: string[]) => [
-    mockCookies, // Return the mock state
-    (key: string, newValue: string | null) => {
-      mockCookies[key] = newValue; // Simulate setting a cookie
+    mockCookies,
+    (key: string, newValue: string | null, options?: any) => {
+      mockCookies[key] = newValue;
     },
-    (key: string) => {
-      mockCookies[key] = null; // Simulate removing a cookie
+    (key: string, options?: any) => {
+      mockCookies[key] = null;
     },
   ]),
 }));
 
 describe("useCookie", () => {
+  const key = "test";
+  const anotherKey = "anotherTest";
+
   afterEach(() => {
     mockCookies[key] = null;
     mockCookies[anotherKey] = null;
@@ -84,48 +94,105 @@ describe("useCookie", () => {
 });
 
 describe("Custom Cookie Hooks", () => {
-  afterEach(() => {
-    mockCookies.geocountry = null;
-    mockCookies.devid = null;
+  beforeEach(() => {
+    // Reset all cookies before each test
+    mockCookies.session_cookie = null;
+    mockCookies.analytics = null;
+    mockCookies.reference_cookie = null;
+    mockCookies["2faToken"] = null;
   });
 
-  it("should return initial value for useGeoCountry", () => {
-    const { result } = renderHook(() => useGeoCountry());
-    expect(result.current[0]).toBeNull();
+  describe("useSingleCookie", () => {
+    it("should use the correct cookie key from config", () => {
+      const { result } = renderHook(() => useSingleCookie());
+      expect(result.current[0]).toBeNull();
+    });
+
+    it("should clear session cookie", () => {
+      const { result, rerender } = renderHook(() => useSingleCookie());
+      result.current[1]("session_value");
+      result.current[2]();
+      rerender();
+      expect(result.current[0]).toBeNull();
+      expect(mockCookies.session_cookie).toBeNull();
+    });
   });
 
-  it("should set and get value for useGeoCountry", () => {
-    const { result, rerender } = renderHook(() => useGeoCountry());
-    result.current[1]("US");
-    rerender();
-    expect(result.current[0]).toBe("US");
+  describe("useAnalyticsDetails", () => {
+    it("should use 'analytics' as cookie key", () => {
+      const { result } = renderHook(() => useAnalyticsDetails());
+      expect(result.current[0]).toBeNull();
+    });
+
+    it("should set and get analytics cookie value", () => {
+      const { result, rerender } = renderHook(() => useAnalyticsDetails());
+      result.current[1]("analytics_value");
+      rerender();
+      expect(result.current[0]).toBe("analytics_value");
+      expect(mockCookies.analytics).toBe("analytics_value");
+    });
+
+    it("should clear analytics cookie", () => {
+      const { result, rerender } = renderHook(() => useAnalyticsDetails());
+      result.current[1]("analytics_value");
+      result.current[2]();
+      rerender();
+      expect(result.current[0]).toBeNull();
+      expect(mockCookies.analytics).toBeNull();
+    });
   });
 
-  it("should clear value for useGeoCountry", () => {
-    const { result, rerender } = renderHook(() => useGeoCountry());
-    result.current[1]("US");
-    result.current[2]();
-    rerender();
-    expect(result.current[0]).toBeNull();
+  describe("useReferenceCookie", () => {
+    it("should clear reference cookie", () => {
+      const { result, rerender } = renderHook(() => useReferenceCookie());
+      result.current[1]("reference_value");
+      result.current[2]();
+      rerender();
+      expect(result.current[0]).toBeNull();
+      expect(mockCookies.reference_cookie).toBeNull();
+    });
   });
 
-  it("should return initial value for useDeviceId", () => {
-    const { result } = renderHook(() => useDeviceId());
-    expect(result.current[0]).toBeNull();
+  describe("useTwoFactorAuthenticationCookie", () => {
+    it("should use '2faToken' as cookie key", () => {
+      const { result } = renderHook(() => useTwoFactorAuthenticationCookie());
+      expect(result.current[0]).toBeNull();
+    });
+
+    it("should set and get 2FA token cookie value", () => {
+      const { result, rerender } = renderHook(() =>
+        useTwoFactorAuthenticationCookie()
+      );
+      result.current[1]("2fa_token_value");
+      rerender();
+      expect(result.current[0]).toBe("2fa_token_value");
+      expect(mockCookies["2faToken"]).toBe("2fa_token_value");
+    });
+
+    it("should clear 2FA token cookie", () => {
+      const { result, rerender } = renderHook(() =>
+        useTwoFactorAuthenticationCookie()
+      );
+      result.current[1]("2fa_token_value");
+      result.current[2]();
+      rerender();
+      expect(result.current[0]).toBeNull();
+      expect(mockCookies["2faToken"]).toBeNull();
+    });
   });
 
-  it("should set and get value for useDeviceId", () => {
-    const { result, rerender } = renderHook(() => useDeviceId());
-    result.current[1]("device-123");
-    rerender();
-    expect(result.current[0]).toBe("device-123");
-  });
+  describe("Cookie Isolation", () => {
+    it("should clear cookies independently", () => {
+      const { result: sessionHook } = renderHook(() => useSingleCookie());
+      const { result: analyticsHook } = renderHook(() => useAnalyticsDetails());
 
-  it("should clear value for useDeviceId", () => {
-    const { result, rerender } = renderHook(() => useDeviceId());
-    result.current[1]("device-123");
-    result.current[2]();
-    rerender();
-    expect(result.current[0]).toBeNull();
+      sessionHook.current[1]("session1");
+      analyticsHook.current[1]("analytics1");
+
+      sessionHook.current[2]();
+
+      expect(mockCookies.session_cookie).toBeNull();
+      expect(mockCookies.analytics).toBe("analytics1");
+    });
   });
 });
