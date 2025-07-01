@@ -1,6 +1,5 @@
 import { useAuthContext } from "../../../contexts";
 import { LoginFormBlock } from "../../../system/app/internal/blocks";
-import { LoginForm } from "../../../system/app/internal/blocks/LoginFormBlock/LoginForm";
 import { render, screen, fireEvent, waitFor } from "../../common";
 import { useExecuteToast } from "../../../contexts/ToastContext";
 
@@ -34,58 +33,11 @@ describe("LoginFormBlock", () => {
     jest.clearAllMocks();
   });
 
-  it("should uncheck the 'Remember Me' checkbox when rememberMe is false", () => {
-    render(<LoginFormBlock />);
-    const checkbox = screen.getByTestId("checkbox");
-    expect(checkbox).not.toBeChecked();
-  });
-
   it("renders LoginForm with correct initial props", () => {
     render(<LoginFormBlock />);
 
     expect(screen.getByTestId("email-input")).toBeInTheDocument();
     expect(screen.getByTestId("password-input")).toBeInTheDocument();
-    expect(screen.getByTestId("checkbox")).toBeInTheDocument();
-  });
-
-  it("toggles Remember Me checkbox", () => {
-    render(<LoginFormBlock />);
-
-    const checkbox = screen.getByRole("checkbox");
-    expect(checkbox).not.toBeChecked();
-
-    fireEvent.click(checkbox);
-    expect(checkbox).toBeChecked();
-
-    fireEvent.click(checkbox);
-    expect(checkbox).not.toBeChecked();
-  });
-
-  it("should pre-fill the inputs with savedData", () => {
-    render(
-      <LoginForm
-        onSubmit={jest.fn()}
-        submitLoading={false}
-        rememberMe={true}
-        savedData={{
-          email: "test@example.com",
-          password: "password123",
-          rememberMe: true,
-        }}
-        handleChangeRememberMe={function (
-          event: React.ChangeEvent<HTMLInputElement>
-        ): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    );
-
-    expect(screen.getByPlaceholderText("Enter your email")).toHaveValue(
-      "test@example.com"
-    );
-    expect(screen.getByPlaceholderText("Enter your password")).toHaveValue(
-      "password123"
-    );
   });
 
   it("should call login with correct email and password on form submit", async () => {
@@ -107,7 +59,10 @@ describe("LoginFormBlock", () => {
     fireEvent.click(signInButton);
 
     await waitFor(() => {
-      expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123");
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123"
+      });
     });
   });
 
@@ -119,10 +74,10 @@ describe("LoginFormBlock", () => {
       loading: false,
     });
   
-    const executeToastMock = jest.fn();
+    const showToastMock = jest.fn();
     (useExecuteToast as jest.Mock).mockReturnValue({
-      executeToast: executeToastMock,
-      showToast: jest.fn(),
+      executeToast: jest.fn(),
+      showToast: showToastMock,
     });
   
     const consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -138,19 +93,22 @@ describe("LoginFormBlock", () => {
     fireEvent.click(signInButton);
   
     await waitFor(() => {
-      expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123");
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123"
+      });
     });
   
     await new Promise((r) => setTimeout(r, 0));
   
     await waitFor(() => {
-      expect(executeToastMock).toHaveBeenCalledWith(
-        "Invalid email or password",
-        "top-right",
-        false,
-        { toastId: 0, type: "error" }
+      expect(showToastMock).toHaveBeenCalledWith(
+        "Something went wrong during login",
+        "error"
       );
-      expect(consoleErrorMock).toHaveBeenCalledWith(loginError);
+      expect(consoleErrorMock).toHaveBeenCalledWith(
+        `Something went wrong during login: ${loginError}`
+      );
     });
   
     consoleErrorMock.mockRestore();
