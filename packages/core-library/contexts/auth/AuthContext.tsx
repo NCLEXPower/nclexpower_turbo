@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{
 export const useAuthContext = () => {
   const authContext = useContext(context);
   if (!authContext) {
-    throw new Error("useAuthContext must be used with an AuthProvider");
+    throw new Error("useAuthContext must be used within an AuthProvider");
   }
   return authContext;
 };
