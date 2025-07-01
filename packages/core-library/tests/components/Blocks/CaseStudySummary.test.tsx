@@ -19,6 +19,10 @@ jest.mock("../../../contexts/PageLoaderContext", () => ({
   usePageLoaderContext: jest.fn(),
 }));
 
+jest.mock("../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: () => ({ accountId: "mock-account-id" }),
+}));
+
 const mockSetActiveStep = jest.fn();
 const mockActiveStepAtom = jest.fn();
 
