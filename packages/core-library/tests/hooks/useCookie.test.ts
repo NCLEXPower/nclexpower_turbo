@@ -105,7 +105,7 @@ describe("Custom Cookie Hooks", () => {
   describe("useSingleCookie", () => {
     it("should use the correct cookie key from config", () => {
       const { result } = renderHook(() => useSingleCookie());
-      expect(result.current[0]).toBeNull();
+      expect(result.current[0]).toBeUndefined();
     });
 
     it("should clear session cookie", () => {

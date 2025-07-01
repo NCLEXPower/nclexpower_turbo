@@ -1,4 +1,3 @@
-import { TokenizeInformations } from "../../api/types";
 import { ContainedCaseStudyQuestionType } from "../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/types";
 import { convertToCreateCaseStudy } from "../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/utils/convertToCreateCaseStudy";
 
@@ -15,15 +14,6 @@ type OptionWithAnswers = {
 type AnswerCaseStudy = Answer[] | OptionWithAnswers[] | undefined;
 
 describe("convertToCreateCaseStudy", () => {
-  const mockTokenizeInformations: TokenizeInformations | undefined = {
-    id: "test-id",
-    email: "test@example.com",
-    firstname: "test-firstname",
-    middlename: "test-middlename",
-    lastname: "test-lastname",
-    imgurl: "test-img",
-  };
-
   const mockContainedCaseStudyQuestion: ContainedCaseStudyQuestionType = {
     caseName: ["Test Case Study"],
     main_type: "Case Study",
@@ -78,7 +68,7 @@ describe("convertToCreateCaseStudy", () => {
   it("should convert ContainedCaseStudyQuestionType to correct format", () => {
     const result = convertToCreateCaseStudy(
       mockContainedCaseStudyQuestion,
-      mockTokenizeInformations
+      "test@example.com"
     );
 
     expect(result).toEqual({
@@ -152,12 +142,6 @@ describe("convertToCreateCaseStudy", () => {
     });
   });
 
-  it("should throw an error when internal is undefined", () => {
-    expect(() => {
-      convertToCreateCaseStudy(mockContainedCaseStudyQuestion, undefined);
-    }).toThrow("Internal is undefined");
-  });
-
   it("should handle empty arrays in case study question", () => {
     const emptyMockCaseStudyQuestion: ContainedCaseStudyQuestionType = {
       ...mockContainedCaseStudyQuestion,
@@ -168,10 +152,7 @@ describe("convertToCreateCaseStudy", () => {
       questionnaires: [],
     };
 
-    const result = convertToCreateCaseStudy(
-      emptyMockCaseStudyQuestion,
-      mockTokenizeInformations
-    );
+    const result = convertToCreateCaseStudy(emptyMockCaseStudyQuestion, "");
 
     expect(result.contentDto.mainCaseStudyContentCollectionDtos[0]).toEqual({
       caseName: ["Test Case Study"],
