@@ -1,5 +1,6 @@
 import { CaseStudyListViewBlock } from "../../../../system/app/internal/blocks";
 import { render, screen } from "../../../common";
+import { useAccountReferenceContext } from "../../../../contexts/AccountReferenceContext";
 
 jest.mock("../../../../config", () => ({
   getConfig: jest
@@ -10,6 +11,13 @@ jest.mock("../../../../config", () => ({
 
 jest.mock("../../../../core/router", () => ({
   useRouter: jest.fn(),
+}));
+
+jest.mock("../../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: jest.fn().mockReturnValue({
+    customerInfo: {},
+    internalInfo: {},
+  }),
 }));
 
 jest.mock("@mui/x-data-grid", () => {
