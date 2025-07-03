@@ -23,15 +23,17 @@ export function ForgotPasswordFormBlock() {
     async (api, args: ResendCodeParams) => await api.web.web_reset_link(args)
   );
 
-  return (
-    <ForgotPasswordForm
-      onSubmit={handleSubmit}
-      submitLoading={emailCb.loading || resetLinkCb.loading || state.loading}
-      isExpired={isExpired}
-      showAlert={showAlert}
-      resetTime={state.remainingTime}
-    />
-  );
+  // return (
+  //   <ForgotPasswordForm
+  //     onSubmit={handleSubmit}
+  //     submitLoading={emailCb.loading || resetLinkCb.loading || state.loading}
+  //     isExpired={isExpired}
+  //     showAlert={showAlert}
+  //     resetTime={state.remainingTime}
+  //   />
+  // );
+
+  return <p>Forgot password page is under re-engineering.</p>;
 
   async function handleSubmit(values: ForgotPasswordType) {
     try {
