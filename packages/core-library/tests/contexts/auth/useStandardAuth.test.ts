@@ -1,7 +1,6 @@
-import React from "react";
 import { useRouter } from "../../../core";
 import { useApiCallback } from "../../../hooks";
-import { act, renderHook, waitFor } from "../../common";
+import { act, renderHook } from "../../common";
 import {
   useAccessToken,
   useRefreshToken,
