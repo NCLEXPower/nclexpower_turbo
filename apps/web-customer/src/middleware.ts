@@ -93,11 +93,44 @@ const SECURITY_CONFIG = {
 };
 
 export async function middleware(request: NextRequest) {
-  const url = request.nextUrl.clone();
-  const country = request.geo?.country ?? "";
+  try {
+    const geoResponse = await handleGeoBlocking(request);
+    if (geoResponse) return geoResponse;
 
-  const geoStatus = await fetchGoLiveStatus(country);
-  if (geoStatus) {
+    const securityResponse = await applySecurityHeaders(request);
+    if (securityResponse) return securityResponse;
+
+    const authState = await getAuthState(request);
+    const twoFactorResponse = await handle2FAVerification(request, {
+      twoFactorToken: authState.twoFactorToken,
+    });
+    if (twoFactorResponse) return twoFactorResponse;
+
+    const routeResponse = await handleRouteProtection(
+      request,
+      authState.isAuthenticated,
+      { token: authState.token, reference: authState.reference }
+    );
+    if (routeResponse) return routeResponse;
+
+    return applyFinalSecurityHeaders(NextResponse.next());
+  } catch (error) {
+    console.error("Middleware execution failed:", error);
+    return new NextResponse(null, { status: 200 });
+  }
+}
+
+async function handleGeoBlocking(
+  request: NextRequest
+): Promise<NextResponse | null> {
+  try {
+    const country = request.geo?.country ?? "";
+    if (!country) return null;
+
+    const geoStatus = await fetchGoLiveStatus(country);
+    if (!geoStatus) return null;
+
+    const url = request.nextUrl;
     const isAllowedCountry =
       geoStatus.goLive?.countries.includes(country) ?? false;
     const isBlockedPage = url.pathname.includes(
@@ -121,35 +154,12 @@ export async function middleware(request: NextRequest) {
         country
       );
     }
+
+    return null;
+  } catch (error) {
+    console.error("Geo-blocking check failed, proceeding without it:", error);
+    return null; // Fail open - don't block if geo check fails
   }
-
-  // Phase 1: Security Headers & Basic Checks
-  const securityResponse = await applySecurityHeaders(request);
-  if (securityResponse) return securityResponse;
-
-  // // Phase 2: Authentication State
-  const token = request.cookies.get("arxtoken")?.value;
-  const reference = request.cookies.get("accountref")?.value;
-  const twoFactorToken = request.cookies.get("2faToken")?.value;
-  const isAuthenticated = token
-    ? await validateTokenWithRetry(token, 2)
-    : false;
-
-  const twoFactorResponse = await handle2FAVerification(request, {
-    twoFactorToken,
-  });
-
-  if (twoFactorResponse) return twoFactorResponse;
-  //Phase 3: Route Protection Logic
-  const routeResponse = await handleRouteProtection(request, isAuthenticated, {
-    token,
-    reference,
-  });
-
-  if (routeResponse) return routeResponse;
-
-  // // Phase 4: Final Response with Additional Protections
-  return applyFinalSecurityHeaders(NextResponse.next());
 }
 
 async function fetchGoLiveStatus(
@@ -157,20 +167,43 @@ async function fetchGoLiveStatus(
 ): Promise<GoLiveStatusSsr | null> {
   if (!country) return null;
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2500); // Shorter timeout
+
   try {
-    const encodedCountry = encodeURIComponent(country);
-    const url = `${API_URL}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodedCountry}`;
+    const response = await fetch(
+      `${API_URL}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodeURIComponent(country)}`,
+      {
+        headers: SECURITY_HEADERS,
+        signal: controller.signal,
+      }
+    );
 
-    const response = await secureFetch(url, {
-      method: "GET",
-      headers: SECURITY_HEADERS,
-    });
-
+    if (!response.ok) return null;
     return await response.json();
-  } catch (error) {
-    console.error("Geo-blocking check failed:", error);
+  } catch (error: any) {
+    if (error.name !== "AbortError") {
+      console.error("Geo status fetch failed:", error);
+    }
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
+}
+
+async function getAuthState(request: NextRequest) {
+  const token = request.cookies.get("arxtoken")?.value;
+  const reference = request.cookies.get("accountref")?.value;
+  const twoFactorToken = request.cookies.get("2faToken")?.value;
+
+  if (!request.nextUrl.pathname.startsWith("/hub")) {
+    return { token, reference, twoFactorToken, isAuthenticated: false };
+  }
+
+  const isAuthenticated = token
+    ? await validateTokenWithRetry(token, 2)
+    : false;
+  return { token, reference, twoFactorToken, isAuthenticated };
 }
 
 function withCountryCookie(
@@ -407,7 +440,7 @@ async function getExtraConfigByReference(
 
 async function secureFetch(url: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 3000);
 
   try {
     const response = await fetch(url, {
