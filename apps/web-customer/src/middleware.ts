@@ -1,165 +1,431 @@
-import { ValidateTokenParams } from "core-library/api/types";
+/**
+ * Property of the Arxon Solutions, LLC.
+ * Reuse as a whole or in part is prohibited without permission.
+ * Created by the Software Strategy & Development Division
+ */
 import { GoLiveStatusSsr } from "core-library/types/global";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
+const OTP_VERIFICATION_PATH = "/account/verification/otp";
+const ENV = process.env.NODE_ENV;
+const API_URL =
+  ENV === "production"
     ? process.env.NEXT_PUBLIC_API_URL
     : process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
-const headers = {
+const GEO_BLOCKING_CONFIG = {
+  blockedPagePath: "/blocked",
+  comingSoonPagePath: "/coming-soon",
+  homePagePath: "/",
+  countryCookieName: "client_country",
+};
+
+const SECURITY_HEADERS = {
   "Content-Type": "application/json",
-  "x-api-key": process.env.NEXT_PUBLIC_XAPI_KEY,
-  "X-Environment": process.env.NEXT_PUBLIC_SYSENV,
+  "x-api-key": process.env.NEXT_PUBLIC_XAPI_KEY!,
+  "X-Environment": process.env.NEXT_PUBLIC_SYSENV!,
   "X-Time-Zone": Intl.DateTimeFormat().resolvedOptions().timeZone,
-} as HeadersInit | undefined;
+  "X-Platform":
+    process.env.NEXT_PUBLIC_BASE_APP === "webc_app" ? "true" : "false",
+} as const;
+
+type AuthParams = {
+  token?: string;
+  reference?: string;
+  twoFactorToken?: string;
+};
+
+type ExtraConfigResponse = {
+  //duplicated from types.ts in api requests.
+  config: {
+    isPaid: boolean;
+    isError: boolean;
+    isNewlyCreated: boolean;
+  };
+};
+
+const PUBLIC_ROUTES = [
+  "/login",
+  "/about",
+  "/contact",
+  "/account/registration",
+  "/",
+  "/coming-soon",
+  //other public routes...
+];
+
+const BLOCKED_USER_AGENTS = [
+  "curl",
+  "PostmanRuntime",
+  "BadBot",
+  "wget",
+  "python-requests",
+  "HTTPie",
+  "Go-http-client",
+  "Java/",
+  "libwww-perl",
+  "WinHTTP",
+  "RestSharp",
+  "node-fetch",
+];
+
+const SENSITIVE_QUERY_PARAMS = [
+  "payment_intent",
+  "payment_intent_client_secret",
+  "redirect_status",
+  "token",
+  "auth",
+  "api_key",
+  "secret",
+  "password",
+];
+
+const SECURITY_CONFIG = {
+  hsts: "max-age=63072000; includeSubDomains; preload",
+  permissionsPolicy: [
+    "geolocation=()",
+    "microphone=()",
+    "camera=()",
+    "fullscreen=(self)",
+    "payment=()",
+  ].join(", "),
+};
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
-  const tokenId = request.cookies.get("nclex_customer");
-  const accountId = request.cookies.get("nclex_account");
-  const ipGeo = request.cookies.get("geocountry");
-  const proceedToHubUrl = new URL("/hub", request.url);
-  const proceedToHome = new URL("/", request.url);
-  const proceedToLoginUrl = new URL("/login", request.url);
-  const proceedToDeniedCountry = new URL("/blocked", request.url);
-  const proceedToComingSoon = new URL("/coming-soon", request.url);
-  const proceed2faUrl = new URL("/account/verification/otp", request.url);
-  const proceedPaymentSetupUrl = new URL("/hub/payment-setup", request.url);
-  const publicRoutes = [
-    "/login",
-    "/about",
-    "/contact",
-    "/account/registration",
-    "/",
-  ];
-  const { pathname, searchParams } = url;
   const country = request.geo?.country ?? "";
-  const response = withCustomCookie(NextResponse.next(), country);
-  const goLiveStatus = await IsCountryBlocked(country, baseUrl);
-  const isBlocked = goLiveStatus?.blocked;
-  const isLive = goLiveStatus?.goLiveStatus;
-  const isComingSoonPage = pathname.includes("coming-soon");
-  const isBlockedPage = pathname.includes("blocked");
 
-  if ((isComingSoonPage && !isLive) || (isBlockedPage && !isBlocked)) {
-    return NextResponse.redirect(proceedToHome);
-  }
-
-  if (!pathname.includes("blocked") && goLiveStatus && goLiveStatus?.blocked) {
-    return withCustomCookie(
-      NextResponse.redirect(proceedToDeniedCountry),
-      country
+  const geoStatus = await fetchGoLiveStatus(country);
+  if (geoStatus) {
+    const isAllowedCountry =
+      geoStatus.goLive?.countries.includes(country) ?? false;
+    const isBlockedPage = url.pathname.includes(
+      GEO_BLOCKING_CONFIG.blockedPagePath
     );
-  }
 
-  if (!isComingSoonPage && isLive) {
-    return withCustomCookie(
-      NextResponse.redirect(proceedToComingSoon),
-      country
-    );
-  }
-
-  if (publicRoutes.includes(pathname)) {
-    url.pathname = `/nclex${pathname}`;
-    return NextResponse.redirect(url);
-  }
-
-  if (pathname.startsWith("/nclex")) {
-    url.pathname = pathname.replace(/^\/nclex/, "") || "/";
-    return NextResponse.rewrite(url);
-  }
-
-  // const hasTwoFactorAuth = await HasTwoFactorAuth(
-  //   { accountId: accountId?.value ?? "" },
-  //   baseUrl
-  // );
-
-  // if (hasTwoFactorAuth && !tokenId) {
-  //   if (pathname !== "/account/verification/otp") {
-  //     return NextResponse.redirect(proceed2faUrl);
-  //   }
-  //   return NextResponse.next();
-  // }
-
-  if (!tokenId) {
-    if (pathname.startsWith("/hub") || pathname === "/hub/payment-setup") {
-      return NextResponse.redirect(proceedToLoginUrl);
+    if (!isAllowedCountry && !isBlockedPage) {
+      return withCountryCookie(
+        NextResponse.redirect(
+          new URL(GEO_BLOCKING_CONFIG.blockedPagePath, request.url)
+        ),
+        country
+      );
     }
+
+    if (isAllowedCountry && isBlockedPage) {
+      return withCountryCookie(
+        NextResponse.redirect(
+          new URL(GEO_BLOCKING_CONFIG.homePagePath, request.url)
+        ),
+        country
+      );
+    }
+  }
+
+  // Phase 1: Security Headers & Basic Checks
+  const securityResponse = await applySecurityHeaders(request);
+  if (securityResponse) return securityResponse;
+
+  // // Phase 2: Authentication State
+  const token = request.cookies.get("arxtoken")?.value;
+  const reference = request.cookies.get("accountref")?.value;
+  const twoFactorToken = request.cookies.get("2faToken")?.value;
+  const isAuthenticated = token
+    ? await validateTokenWithRetry(token, 2)
+    : false;
+
+  const twoFactorResponse = await handle2FAVerification(request, {
+    twoFactorToken,
+  });
+
+  if (twoFactorResponse) return twoFactorResponse;
+  //Phase 3: Route Protection Logic
+  const routeResponse = await handleRouteProtection(request, isAuthenticated, {
+    token,
+    reference,
+  });
+
+  if (routeResponse) return routeResponse;
+
+  // // Phase 4: Final Response with Additional Protections
+  return applyFinalSecurityHeaders(NextResponse.next());
+}
+
+async function fetchGoLiveStatus(
+  country: string
+): Promise<GoLiveStatusSsr | null> {
+  if (!country) return null;
+
+  try {
+    const encodedCountry = encodeURIComponent(country);
+    const url = `${API_URL}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodedCountry}`;
+
+    const response = await secureFetch(url, {
+      method: "GET",
+      headers: SECURITY_HEADERS,
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error("Geo-blocking check failed:", error);
+    return null;
+  }
+}
+
+function withCountryCookie(
+  response: NextResponse,
+  country: string
+): NextResponse {
+  response.cookies.set(GEO_BLOCKING_CONFIG.countryCookieName, country, {
+    path: "/",
+    secure: ENV === "production",
+    sameSite: "strict",
+    httpOnly: true,
+  });
+  return response;
+}
+
+async function applySecurityHeaders(request: NextRequest) {
+  const url = request.nextUrl;
+
+  if (url.protocol === "http:" && ENV === "production") {
+    return NextResponse.redirect(`https://${url.host}${url.pathname}`, 301);
+  }
+
+  const userAgent = request.headers.get("user-agent") || "";
+  if (BLOCKED_USER_AGENTS.some((agent) => userAgent.includes(agent))) {
+    return new NextResponse("Access Denied", {
+      status: 403,
+      headers: {
+        "Content-Type": "text/plain",
+        "X-Blocked-Reason": "Disallowed User-Agent",
+      },
+    });
+  }
+
+  return null;
+}
+
+function applyFinalSecurityHeaders(response: NextResponse): NextResponse {
+  response.headers.set("Strict-Transport-Security", SECURITY_CONFIG.hsts);
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", SECURITY_CONFIG.permissionsPolicy);
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+
+  return response;
+}
+
+async function handleRouteProtection(
+  request: NextRequest,
+  isAuthenticated: boolean,
+  params: AuthParams
+): Promise<NextResponse | null> {
+  const { pathname, searchParams } = request.nextUrl;
+
+  if (SENSITIVE_QUERY_PARAMS.some((param) => searchParams.has(param))) {
+    const cleanUrl = request.nextUrl.clone();
+    SENSITIVE_QUERY_PARAMS.forEach((param) =>
+      cleanUrl.searchParams.delete(param)
+    );
+    return NextResponse.redirect(cleanUrl);
+  }
+
+  if (isAuthenticated && PUBLIC_ROUTES.includes(pathname)) {
+    return NextResponse.redirect(new URL("/hub", request.url));
+  }
+
+  if (pathname.startsWith("/hub")) {
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL("/404", request.url));
+    }
+
+    return await handlePaymentRequirement(request, params);
+  }
+
+  return null;
+}
+
+async function handle2FAVerification(
+  request: NextRequest,
+  params: AuthParams
+): Promise<NextResponse | null> {
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith(OTP_VERIFICATION_PATH)) return null;
+  if (PUBLIC_ROUTES.some((route) => pathname.startsWith(route))) return null;
+
+  if (!params.twoFactorToken) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  try {
+    if (params.twoFactorToken) {
+      const isValid = await validate2FAToken(params.twoFactorToken);
+      if (isValid) return null;
+    }
+
+    return handleInvalid2FAState(request);
+  } catch (error) {
+    console.error("2FA verification error:", error);
+    return handleInvalid2FAState(request, true);
+  }
+}
+
+async function validate2FAToken(twoFactorToken: string): Promise<boolean> {
+  const response = await secureFetch(
+    `${API_URL}/api/v2/internal/baseInternal/app/two-factor-authentication/validate-token`,
+    {
+      headers: {
+        ...SECURITY_HEADERS,
+        TwoFactorAuthorization: twoFactorToken,
+      },
+    }
+  );
+  return response.ok && (await response.json()).valid;
+}
+
+function handleInvalid2FAState(
+  request: NextRequest,
+  clearAll = false
+): NextResponse {
+  const response = NextResponse.redirect(
+    new URL(OTP_VERIFICATION_PATH, request.url)
+  );
+  response.cookies.delete("2faToken");
+
+  if (clearAll) {
+    response.cookies.delete("arxtoken");
+    response.cookies.delete("accountref");
+  }
+
+  return response;
+}
+
+async function handlePaymentRequirement(
+  request: NextRequest,
+  params: AuthParams
+): Promise<NextResponse | null> {
+  const { pathname } = request.nextUrl;
+  const PAYMENT_PATHS = [
+    "/hub/payment-setup",
+    "/hub/payment-success", // not existing yet. just adding here.
+    "/hub/payment-cancel", // same...
+  ];
+
+  try {
+    const config = await getExtraConfigByReference(params);
+    if (!config?.config) return null;
+
+    if (PAYMENT_PATHS.includes(pathname) && config.config.isPaid) {
+      return NextResponse.redirect(new URL("/hub", request.url));
+    }
+
+    if (!PAYMENT_PATHS.includes(pathname) && !config.config.isPaid) {
+      return NextResponse.redirect(new URL("/hub/payment-setup", request.url));
+    }
+  } catch (error) {
+    console.error("Payment requirement check failed:", error);
+  }
+  return null;
+}
+
+async function validateTokenWithRetry(
+  token: string,
+  retries: number
+): Promise<boolean> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const isValid = await validateToken(token);
+      if (isValid) return true;
+
+      if (i < retries - 1)
+        await new Promise((resolve) => setTimeout(resolve, 100));
+    } catch (error) {
+      console.error(`Token validation attempt ${i + 1} failed:`, error);
+    }
+  }
+  return false;
+}
+
+async function validateToken(token: string): Promise<boolean> {
+  if (!token) return false;
+
+  try {
+    const url = `${API_URL}/api/v2/internal/baseInternal/app/validate-token`;
+
+    const response = await secureFetch(url, {
+      headers: {
+        ...SECURITY_HEADERS,
+        Authorization: `Bearer ${token}`,
+        "X-Request-ID": crypto.randomUUID(),
+      },
+    });
+
+    const contentType = response.headers.get("content-type");
+    if (contentType?.includes("application/json")) {
+      return response.ok;
+    }
+
+    return response.ok;
+  } catch (error) {
+    console.error("Token validation failed:", error);
+    return false;
+  }
+}
+
+async function getExtraConfigByReference(
+  params: AuthParams
+): Promise<ExtraConfigResponse | null> {
+  if (!params.token || !params.reference) return null;
+
+  try {
+    const response = await secureFetch(
+      `${API_URL}/api/v2/internal/baseInternal/get-extra-config-by-reference`,
+      {
+        headers: {
+          ...SECURITY_HEADERS,
+          Authorization: `Bearer ${params.token}`,
+          "account-reference": params.reference,
+          "X-Request-ID": crypto.randomUUID(),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const data = await response.json();
+      return data;
+    }
+    return null;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function secureFetch(url: string, init?: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+
+  try {
+    const response = await fetch(url, {
+      ...init,
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     return response;
+  } catch (error) {
+    clearTimeout(timeout);
+    console.error("Fetch error:", error);
+    throw error;
   }
-
-  const isTokenValid = await validateTokenSsr(
-    {
-      accessToken: tokenId.value,
-      appName: process.env.NEXT_PUBLIC_BASE_APP ?? "no-app",
-    },
-    baseUrl,
-    headers
-  );
-
-  if (!isTokenValid) {
-    return NextResponse.redirect(proceedToLoginUrl);
-  }
-
-  const isPaid = await IsAccountPaid(
-    {
-      accountId: accountId?.value ?? "",
-      accessToken: tokenId.value,
-    },
-    baseUrl
-  );
-
-  if (pathname === "/hub/payment-setup" && !isPaid) {
-    return NextResponse.next();
-  }
-
-  if (pathname === "/hub" && !isPaid) {
-    return NextResponse.redirect(proceedPaymentSetupUrl);
-  }
-
-  if (publicRoutes.includes(pathname)) {
-    return NextResponse.redirect(proceedToHubUrl);
-  }
-
-  if (pathname === "/hub/payment-setup") {
-    if (!tokenId) {
-      return NextResponse.redirect(proceedToLoginUrl);
-    }
-    return NextResponse.next();
-  }
-
-  if (pathname === "/nclex/login") {
-    return NextResponse.next();
-  }
-
-  if (
-    pathname === "/hub" &&
-    (searchParams.has("payment_intent") ||
-      searchParams.has("payment_intent_client_secret") ||
-      searchParams.has("redirect_status"))
-  ) {
-    const params = {
-      paymentIntentId: searchParams.get("payment_intent") ?? "",
-      accountId: accountId?.value ?? "",
-      country: ipGeo?.value ?? request.geo?.country,
-      accessToken: tokenId.value,
-    };
-    await paymentConfirmed(params, baseUrl);
-    searchParams.delete("payment_intent");
-    searchParams.delete("payment_intent_client_secret");
-    searchParams.delete("redirect_status");
-
-    url.search = searchParams.toString();
-
-    return NextResponse.redirect(url);
-  }
-
-  await userAgentValidation(request);
-  await enforceHttpToHttps(request);
-
-  return NextResponse.next();
 }
 
 export const config = {
@@ -169,207 +435,12 @@ export const config = {
     "/about",
     "/contact",
     "/account/registration",
-    "/blocked",
     "/coming-soon",
     "/",
     "/nclex/:path*",
   ],
 };
 
-function withCustomCookie(res: NextResponse, country: string) {
-  res.cookies.set("client_country", country);
-  return res;
-}
-
 /**
  * Isolate all functions below to core-library..
  */
-
-export async function IsCountryBlocked(
-  clientCountry: string | undefined,
-  publicUrl: string | undefined
-): Promise<GoLiveStatusSsr | undefined> {
-  try {
-    if (!clientCountry) {
-      return;
-    }
-
-    if (!publicUrl) {
-      return;
-    }
-
-    const encodedCountry = encodeURIComponent(clientCountry);
-    const url = `${publicUrl}/api/v2/internal/baseInternal/active-schedule?clientCountry=${encodedCountry}`;
-
-    const requestHeaders: HeadersInit = {
-      ...(headers || {}),
-    };
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: requestHeaders,
-    });
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error occurred while checking ispaid:", error);
-  }
-}
-
-export async function IsAccountPaid(
-  params: { accountId: string; accessToken: string | undefined | null },
-  publicUrl: string | undefined
-) {
-  if (!params.accessToken) return;
-
-  try {
-    const requestHeaders: HeadersInit = {
-      ...headers,
-      Authorization: `Bearer ${params.accessToken}`,
-    };
-
-    const accountId = params.accountId;
-
-    const response = await fetch(`${publicUrl}/api/v1/Customer/account-paid`, {
-      method: "POST",
-      headers: requestHeaders,
-      body: JSON.stringify({ accountId }),
-    });
-    return response.json();
-  } catch (error) {
-    console.error("Error occurred while checking ispaid:", error);
-  }
-}
-
-export async function HasTwoFactorAuth(
-  params: { accountId: string },
-  publicUrl: string | undefined
-): Promise<boolean> {
-  try {
-    if (!publicUrl) {
-      throw new Error("Public URL is undefined");
-    }
-
-    const requestHeaders: HeadersInit = {
-      ...headers,
-    };
-    const response = await fetch(
-      `${publicUrl}/api/v2/internal/baseInternal/identify-two-factor-authentication`,
-      {
-        method: "POST",
-        headers: requestHeaders,
-        body: JSON.stringify(params),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`API call failed with status: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    if (typeof result !== "boolean") {
-      throw new Error("Unexpected response format from the API");
-    }
-
-    return result;
-  } catch (error) {
-    console.error("Error in HasTwoFactorAuth:", error);
-    return false;
-  }
-}
-
-async function paymentConfirmed(
-  params: {
-    paymentIntentId: string;
-    accountId: string;
-    country?: string | undefined;
-    accessToken: string | undefined | null;
-  },
-  publicUrl: string | undefined
-) {
-  if (!params.accessToken) return;
-
-  try {
-    const requestHeaders: HeadersInit = {
-      ...headers,
-      Authorization: `Bearer ${params.accessToken}`,
-    };
-
-    const response = await fetch(
-      `${publicUrl}/api/v1/Customer/payment-confirmed`,
-      {
-        method: "POST",
-        headers: requestHeaders,
-        body: JSON.stringify(params),
-      }
-    );
-
-    if (response.ok) {
-      return true;
-    }
-  } catch (error) {
-    console.error("Error occurred while confirming payment:", error);
-  }
-}
-
-async function validateTokenSsr(
-  params: ValidateTokenParams,
-  publicUrl: string | undefined,
-  customHeaders: HeadersInit | undefined
-) {
-  if (!params.accessToken) return false;
-
-  try {
-    const response = await fetch(
-      `${publicUrl}/api/v2/internal/baseInternal/validate-token`,
-      {
-        method: "POST",
-        headers: customHeaders,
-        body: JSON.stringify(params),
-      }
-    );
-
-    if (response.ok) {
-      return true;
-    }
-
-    return false;
-  } catch (error) {
-    console.error(`Token validation failed:`, error);
-    return false;
-  }
-}
-
-const blockedUserAgents = ["curl", "PostmanRuntime", "BadBot"];
-
-async function userAgentValidation(request: NextRequest) {
-  const userAgent = request.headers.get("user-agent") || "";
-
-  if (blockedUserAgents.some((agent) => userAgent.includes(agent))) {
-    return new NextResponse(
-      JSON.stringify({ error: "Access Denied: Disallowed User-Agent " }),
-      { status: 403, headers: { "Content-Type": "application/json" } }
-    );
-  }
-
-  return NextResponse.next();
-}
-
-async function enforceHttpToHttps(request: NextRequest) {
-  const url = request.nextUrl;
-
-  if (url.protocol === "http:") {
-    return NextResponse.redirect(`https://${url.host}${url.pathname}`, 301);
-  }
-
-  const response = NextResponse.next();
-  response.headers.set(
-    "Strict-Transport-Security",
-    "max-age=63072000; includeSubDomains; preload"
-  );
-  response.headers.set("X-Frame-Options", "DENY");
-  response.headers.set("X-Content-Type-Options", "nosniff");
-  return response;
-}

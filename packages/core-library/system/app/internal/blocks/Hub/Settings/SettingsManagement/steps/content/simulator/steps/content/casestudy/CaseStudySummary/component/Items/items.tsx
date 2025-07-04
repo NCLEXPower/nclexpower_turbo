@@ -6,7 +6,6 @@ import {
   DDClozeTableAnswerOption,
   QuestionnaireItem,
 } from "../../../../../../../../../../../../../types";
-import { useStyle } from "../../../../../../../../../../../../../../../../hooks";
 import { ParsedHtml } from "../../../../../../../../../../../../../../../../components";
 import { DDTItem } from "./DDTItem";
 import { BowtieSummary } from "./BowtieSummary";
@@ -16,6 +15,7 @@ import { HCPQuestion } from "./HCPQuestion";
 import { DNDQuestion } from "./DNDQuestion";
 import { DNDSummary } from "./DNDSummary";
 import { DNDAnswerOptionType } from "../../../../../../types";
+import { useSidebarStyles } from "../../../../../../../../../../../../../../../../hooks";
 
 const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
   return (
@@ -34,7 +34,7 @@ const AnswerList: React.FC<{ answers: AnswerOption[] }> = ({ answers }) => {
 export const Items: React.FC<{ content: QuestionnaireItem[] }> = ({
   content,
 }) => {
-  const { wordWrap } = useStyle();
+  const { wordWrap } = useSidebarStyles();
 
   const renderQuestionType = (data: QuestionnaireItem) => {
     switch (data.questionType) {

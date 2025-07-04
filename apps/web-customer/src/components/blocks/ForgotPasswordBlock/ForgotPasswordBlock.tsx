@@ -2,17 +2,16 @@ import { ForgotPasswordForm } from "./ForgotPasswordForm";
 import { useState } from "react";
 import { ForgotPasswordAtom, ForgotPasswordType } from "../../../core/Schema";
 import { useRouter } from "core-library/core/router";
-import { useApiCallback } from "core-library/hooks";
+import { useApiCallback, useOTPManager } from "core-library/hooks";
 import { useAtom } from "jotai";
 import { useExecuteToast } from "core-library/contexts";
-import { useOtpVerification } from "@/core/hooks/useOtpVerification";
 import { ResendCodeParams } from "core-library/api/types";
 
 export function ForgotPasswordFormBlock() {
   const [, setAtomEmail] = useAtom(ForgotPasswordAtom);
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const [showAlert, setshowAlert] = useState<boolean>(false);
-  const { setResetTime, resetTime } = useOtpVerification();
+  const [state, actions] = useOTPManager();
   const { executeToast } = useExecuteToast();
   const router = useRouter();
 
@@ -24,15 +23,17 @@ export function ForgotPasswordFormBlock() {
     async (api, args: ResendCodeParams) => await api.web.web_reset_link(args)
   );
 
-  return (
-    <ForgotPasswordForm
-      onSubmit={handleSubmit}
-      submitLoading={emailCb.loading || resetLinkCb.loading || router.loading}
-      isExpired={isExpired}
-      showAlert={showAlert}
-      resetTime={resetTime}
-    />
-  );
+  // return (
+  //   <ForgotPasswordForm
+  //     onSubmit={handleSubmit}
+  //     submitLoading={emailCb.loading || resetLinkCb.loading || state.loading}
+  //     isExpired={isExpired}
+  //     showAlert={showAlert}
+  //     resetTime={state.remainingTime}
+  //   />
+  // );
+
+  return <p>Forgot password page is under re-engineering.</p>;
 
   async function handleSubmit(values: ForgotPasswordType) {
     try {
@@ -62,7 +63,6 @@ export function ForgotPasswordFormBlock() {
         });
         if (resetLinkResult.data.responseCode === 508) {
           const minutes = resetLinkResult.data.waitTimeInMinutes * 60;
-          setResetTime(minutes);
           setshowAlert(false);
           executeToast(
             `Something went wrong. Please try again later.`,

@@ -10,13 +10,11 @@ import {
   FinalStudyAnalytics,
   CurrentProgress2,
 } from "./DashboardAnalytics";
-import { useSensitiveInformation } from "core-library/hooks";
-import { formatCustomerName } from "@/utils/formatHelper/formatCustomerName";
 import { progressTaken } from "./DashboardAnalytics/DashboardMock";
+import { useAccountName } from "core-library/hooks";
 
 export const Dashboard: React.FC = () => {
-  const { customer } = useSensitiveInformation();
-  const customerName = formatCustomerName(customer);
+  const name = useAccountName();
 
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US", {
@@ -36,7 +34,7 @@ export const Dashboard: React.FC = () => {
             fontWeight: "bold",
           }}
         >
-          WELCOME ! {customerName} |
+          WELCOME ! {name} |
           <span className="text-[25px]"> {formattedDate}</span>
         </Typography>
       </div>

@@ -1,7 +1,5 @@
-import React from "react";
-import { render, screen, act, fireEvent, userEvent } from "../../common";
+import { render, screen } from "../../common";
 import { CaseStudySummary } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content";
-import { TableView } from "../../../system/app/internal/blocks/Hub/Settings/SettingsManagement/steps/content/simulator/steps/content/casestudy/CaseStudySummary/component/TableView";
 import { usePageLoaderContext } from "../../../contexts";
 import { useAtom } from "jotai";
 
@@ -19,6 +17,13 @@ jest.mock("../../../hooks/useBeforeUnload.ts", () => ({
 
 jest.mock("../../../contexts/PageLoaderContext", () => ({
   usePageLoaderContext: jest.fn(),
+}));
+
+jest.mock("../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: jest.fn().mockReturnValue({
+    customerInfo: {},
+    internalInfo: {},
+  }),
 }));
 
 const mockSetActiveStep = jest.fn();

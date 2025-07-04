@@ -13,7 +13,7 @@ import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 export interface SidebarButtonProps extends Partial<WebSidebarStylesType> {
   navigation: MenuItems;
   pathname: string;
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
   isDrawerOpen: boolean;
   onNavigate: () => void;
 }

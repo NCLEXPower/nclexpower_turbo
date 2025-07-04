@@ -8,7 +8,6 @@ import {
   ThemeBackgroundColorSelection,
 } from "../../types/page";
 import { CmsTenant } from "../../types/tenant";
-import { AccountSetupBlock } from "../../components/blocks/AccountSetupBlock/AccountSetupBlock";
 
 export const parseContent = (
   contents: PageContentValues[],

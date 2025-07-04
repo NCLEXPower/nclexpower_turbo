@@ -16,7 +16,7 @@ import { WebSidebarStylesType } from "../../types/web-sidebar-styles";
 export interface SidebarListButtonProps extends Partial<WebSidebarStylesType> {
   navigation: MenuItems;
   pathname: string;
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
   showDivider?: boolean;
   isDrawerOpen: boolean;
   onNavigate: () => void;

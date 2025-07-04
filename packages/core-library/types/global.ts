@@ -14,6 +14,7 @@ import {
 } from "./common";
 import { PanelListItem } from "./page";
 import { ProductListResponse } from "core-library/api/types";
+import { RouteType } from "./types";
 
 export interface CmsGlobals {
   buttons?: ButtonsEntity[] | null;
@@ -27,6 +28,30 @@ export interface CmsGlobals {
   classifiers?: ClassifierEntity[] | null;
   icons?: IconsEntity[] | null;
 }
+
+export type CustomerOptions = {
+  firstname: string;
+  middlename?: string;
+  lastname: string;
+  reference?: string;
+  email: string;
+  password: string;
+  orderNumber?: string;
+  isAgreeWithPrivacyPolicy: boolean;
+  isTrial?: boolean;
+};
+
+export type InternalOptions = {
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  email: string;
+  imgurl: string;
+  username: string;
+  password: string;
+  accessLevel: number;
+  routers: RouteType[];
+};
 
 export type PreloadedGlobals = Pick<CmsGlobals, "labels">;
 interface ClassifierEntity {
@@ -158,18 +183,7 @@ export interface SliderConfigType {
 }
 
 export interface SelectedProductType {
-  pricingId: string;
   productId: string;
-  amount: number;
-  currency: string;
-  productName: string;
-  productDescription: string;
-  programTitle: number;
-  programType: number;
-  isTrial?: boolean;
-  inclusions: {
-    features: string[];
-  };
 }
 
 export type ProductCardType = ProductListResponse;
@@ -184,7 +198,6 @@ export interface PricingModalProps {
 export interface ProductInformationProps {
   onClose: () => void;
   cardData: ProductCardType[];
-  handleSelectProduct: (item: SelectedProductType) => void;
 }
 
 export interface PricingDetailProps {
@@ -196,7 +209,6 @@ export interface ProductSelectionProps {
   cardData: ProductCardType[];
   selectedProduct: number;
   setSelectedProduct: (value: number) => void;
-  handleSelectProduct: (item: SelectedProductType) => void;
 }
 
 export type NavigationItemType = {

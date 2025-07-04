@@ -1,3 +1,6 @@
+/**
+ * @deprecated this should be deprecated.
+ */
 export function formatCustomerName(customer?: {
   firstname?: string;
   middlename?: string;

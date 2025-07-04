@@ -1,7 +1,6 @@
 "use client";
 import React, {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -12,20 +11,17 @@ import {
   useApiCallback,
   useCountryFromIp,
   useFormDirtyState,
-  useSensitiveInformation,
-  useValidateToken,
 } from "core-library/hooks";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { PaymentTerms, paymentTermsSchema } from "./validation";
 import {
+  AccountReferenceResponse,
   CreatePaymentIntentParams,
-  CreateSalesParams,
-  CustomerTokenizeInformations,
   OrderSummaryResponse,
 } from "core-library/api/types";
 import {
-  useAccountId,
+  useAccountReference,
   useCheckoutIntent,
   usePaymentIntentId,
   useSecretClient,
@@ -37,9 +33,8 @@ import {
 } from "core-library/contexts";
 import { loadStripe, Stripe, StripeElements } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { Encryption, useRouter } from "core-library";
+import { useRouter } from "core-library";
 import { config } from "core-library/config";
-import { useGeoCountry } from "core-library/hooks/useCookie";
 
 interface Props {
   publishableKey: string;
@@ -49,7 +44,7 @@ export interface UsePaymentWizardFormContextValue {
   form: UseFormReturn<PaymentTerms>;
   isDirty: boolean;
   setIsDirty: (values: boolean) => void;
-  basicInformation: CustomerTokenizeInformations | undefined;
+  basicInformation: AccountReferenceResponse["customerInfo"] | undefined;
   orderSummary: OrderSummaryResponse | undefined;
   loading: boolean;
   clientSecret: string | undefined;
@@ -63,7 +58,7 @@ const PaymentWizardFormContext =
     form: {} as UseFormReturn<PaymentTerms>,
     isDirty: false,
     setIsDirty: () => null,
-    basicInformation: {} as CustomerTokenizeInformations,
+    basicInformation: {} as AccountReferenceResponse["customerInfo"],
     orderSummary: {} as OrderSummaryResponse,
     loading: false,
     clientSecret: undefined,
@@ -82,31 +77,31 @@ export interface PaymentExecutionProps {
 export const usePaymentWalkthroughFormContext = () =>
   useContext(PaymentWizardFormContext);
 
-
 export const PaymentWizardFormContextProvider: React.FC<
   React.PropsWithChildren<Props>
 > = ({ children, publishableKey }) => {
   const { businessQueryCreatePaymentIntent } = useBusinessQueryContext();
   const { mutateAsync, isLoading } = businessQueryCreatePaymentIntent();
-  const { customer, loading: coreload } = useSensitiveInformation();
-  const { isAuthenticated, setIsPaid } = useAuthContext();
-  const [accountId] = useAccountId();
+  const { isAuthenticated } = useAuthContext();
+  const [reference] = useAccountReference();
   const [, setCheckoutIntent] = useCheckoutIntent();
   const [clientSecret, setClientSecret] = useSecretClient();
-  const [, setGeoCountry, clearGeoCountry] = useGeoCountry();
   const [paymentIntentId, setPaymentIntentId] = usePaymentIntentId();
   const { geoData } = useCountryFromIp(config.value.APIIPKEY);
-  const { tokenValidated, loading: validateLoading } = useValidateToken();
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
-  const router = useRouter()
+
   const changePaymentStatusCb = useApiCallback(
     async (api, accountId: string | undefined) =>
       await api.web.changePaymentStatus(accountId)
   );
-  const createSalesCb = useApiCallback(
-    async (api, args: CreateSalesParams) => await api.web.createSales(args)
+
+  const getOrderSummary = useApi((api) => api.web.getOrderSummary(reference));
+
+  const accountReference = useApi((api) =>
+    api.auth.accountReference(reference)
   );
+
   const toast = useExecuteToast();
   const form = useForm<PaymentTerms>({
     resolver: yupResolver(paymentTermsSchema),
@@ -121,8 +116,6 @@ export const PaymentWizardFormContextProvider: React.FC<
     }
   }, [publishableKey]);
 
-  const getOrderSummary = useApi((api) => api.web.getOrderSummary(accountId));
-
   const { isDirty, setIsDirty } = useFormDirtyState(form.formState);
 
   useEffect(() => {
@@ -130,7 +123,6 @@ export const PaymentWizardFormContextProvider: React.FC<
       try {
         const order = getOrderSummary.result?.data;
         const params = {
-          accountId: accountId,
           amount: order?.price,
           currency: order?.currency,
           pricingId: order?.pricingId,
@@ -139,8 +131,8 @@ export const PaymentWizardFormContextProvider: React.FC<
           productName: order?.productName,
           programTitle: order?.programTitle,
         } as CreatePaymentIntentParams;
-        setGeoCountry(geoData?.countryCode ?? "US");
         const result = await mutateAsync({ ...params });
+        console.log("result", result);
         setCheckoutIntent(result.data.paymentIntentId);
         setClientSecret(result.data.clientSecret);
         setPaymentIntentId(result.data.paymentIntentId);
@@ -168,48 +160,33 @@ export const PaymentWizardFormContextProvider: React.FC<
 
   async function executeChangePaymentStatus() {
     try {
-      const result = await changePaymentStatusCb.execute(accountId);
-      const parsedIsPaid =
-        config.value.BASEAPP === "webc_app"
-          ? Encryption(
-            result.status === 200 ? "yes" : "no",
-            config.value.SECRET_KEY
-          )
-          : result.data.isPaid;
-      if (result.status === 200) {
-        setIsPaid(parsedIsPaid);
-        await router.push((route) => route.hub);
-      }
-    } catch (error) { }
+      // const result = await changePaymentStatusCb.execute(accountId);
+    } catch (error) {}
   }
 
   async function executePayment(params: PaymentExecutionProps) {
     try {
       const { stripe, elements } = params;
       if (!stripe || !elements || !isAuthenticated) return;
-      if (tokenValidated) {
-        const { error } = await stripe.confirmPayment({
-          elements,
-          confirmParams: {
-            return_url: `${window.location.origin}/hub`,
-            payment_method_data: {
-              billing_details: {
-                email: customer?.email,
-                name: customer?.firstname,
-              },
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/hub`,
+          payment_method_data: {
+            billing_details: {
+              email: accountReference.result?.data.customerInfo.email,
+              name: accountReference.result?.data.customerInfo.firstname,
             },
           },
-          redirect: "if_required",
-        });
+        },
+        redirect: "if_required",
+      });
 
-        if (error) {
-          // create another API call to count payment failed -> more than 3 then -> logout
-          clearGeoCountry();
-          toast.showToast("Payment failed. Please try again.", "error");
-          return;
-        } else {
-          await executeChangePaymentStatus();
-        }
+      if (error) {
+        toast.showToast("Payment failed. Please try again.", "error");
+        return;
+      } else {
+        await executeChangePaymentStatus();
       }
     } catch (error) {
       console.error(
@@ -231,14 +208,13 @@ export const PaymentWizardFormContextProvider: React.FC<
             form,
             isDirty,
             setIsDirty,
-            basicInformation: customer,
+            basicInformation: accountReference.result?.data.customerInfo,
             orderSummary: getOrderSummary.result?.data,
             loading:
               getOrderSummary.loading ||
-              coreload ||
               isLoading ||
-              validateLoading ||
-              changePaymentStatusCb.loading,
+              changePaymentStatusCb.loading ||
+              accountReference.loading,
             clientSecret,
             paymentIntentId,
             stripePromise,
@@ -248,17 +224,15 @@ export const PaymentWizardFormContextProvider: React.FC<
             form,
             isDirty,
             form.watch("IsAgree"),
-            customer,
+            accountReference.result?.data,
             getOrderSummary.result?.data,
             getOrderSummary.loading,
-            coreload,
             clientSecret,
             paymentIntentId,
             publishableKey,
             stripePromise,
             changePaymentStatusCb.loading,
             isLoading,
-            validateLoading,
           ]
         )}
       >

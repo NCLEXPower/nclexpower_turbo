@@ -11,7 +11,6 @@ interface Props {
   queryClient: QueryClient;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
-  isPaid: string | undefined;
 }
 
 export const InternalPageEntryPoint: React.FC<
@@ -24,7 +23,6 @@ export const InternalPageEntryPoint: React.FC<
   logout,
   isAuthenticated,
   children,
-  isPaid,
 }) => {
   return (
     <React.Fragment>
@@ -37,7 +35,6 @@ export const InternalPageEntryPoint: React.FC<
           queryClient={queryClient}
           tokenValidated={tokenValidated}
           children={children}
-          isPaid={isPaid}
         />
       </BusinessQueryContextProvider>
     </React.Fragment>

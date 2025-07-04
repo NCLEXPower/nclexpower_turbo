@@ -12,6 +12,13 @@ jest.mock("../../../../core/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("../../../../contexts/AccountReferenceContext", () => ({
+  useAccountReferenceContext: jest.fn().mockReturnValue({
+    customerInfo: {},
+    internalInfo: {},
+  }),
+}));
+
 jest.mock("@mui/x-data-grid", () => {
   const actualModule = jest.requireActual("@mui/x-data-grid");
   return {

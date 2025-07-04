@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from "../../common";
 import { Header, Props } from "../../../components/GenericHeader/Header";
 import { useRouter } from "../../../core";
 import { useResolution } from "../../../hooks";
-import { NavigationType } from "../../../types/navigation";
 import { MenuItems } from "../../../api/types";
 
 jest.mock("../../../config", () => ({
@@ -25,10 +24,11 @@ const DEFAULT_PROPS: Props = {
     { label: "Login", path: "/login" },
   ] as MenuItems[],
   drawerButton: <button>Drawer</button>,
-  onLogout: jest.fn(),
-  drawerHeader: {},
-  headerLinkSx: {},
-  loginButtonSx: {},
+  logout: jest.fn(),
+  isArxenius: false,
+  path: "",
+  isMobile: false,
+  handleNavigate: jest.fn(),
 };
 
 describe("Header", () => {
@@ -53,12 +53,17 @@ describe("Header", () => {
   });
 
   it("should navigates to the correct path when menu item is clicked", () => {
-    render(<Header {...DEFAULT_PROPS} />);
+    const mockHandleNavigate = jest.fn();
+
+    render(<Header {...DEFAULT_PROPS} handleNavigate={mockHandleNavigate} />);
+
     fireEvent.click(screen.getByTestId("menu-item-Home"));
-    expect(mockFn).toHaveBeenCalledWith({ pathname: "/" });
+    expect(mockHandleNavigate).toHaveBeenCalledWith("/");
 
     fireEvent.click(screen.getByTestId("menu-item-Login"));
-    expect(mockFn).toHaveBeenCalledWith({ pathname: "/login" });
+    expect(mockHandleNavigate).toHaveBeenCalledWith("/login");
+
+    expect(mockFn).not.toHaveBeenCalled();
   });
 
   it("should render AccountMenu when authenticated", () => {
@@ -68,7 +73,7 @@ describe("Header", () => {
 
   it("handles logout click", async () => {
     render(
-      <Header {...DEFAULT_PROPS} isAuthenticated={true} onLogout={mockFn} />
+      <Header {...DEFAULT_PROPS} isAuthenticated={true} logout={mockFn} />
     );
     fireEvent.click(screen.getByTestId("account-menu-button"));
 

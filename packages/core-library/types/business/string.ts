@@ -51,3 +51,14 @@ export function parseBase64toJSON(value: string) {
     return null;
   }
 }
+
+export function parseDelimitedList(
+  value: string | undefined,
+  delimiter = ";"
+): string[] {
+  if (!value) return [];
+  return value
+    .split(delimiter)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
