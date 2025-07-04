@@ -440,7 +440,7 @@ async function getExtraConfigByReference(
 
 async function secureFetch(url: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 3000);
 
   try {
     const response = await fetch(url, {
