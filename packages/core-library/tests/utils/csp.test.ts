@@ -119,12 +119,10 @@ describe("withCSP", () => {
   });
 
   it("should return error in props if an exception occurs", async () => {
-    (getMaintenanceMode as jest.Mock).mockRejectedValueOnce(
-      new Error("Test error")
-    );
-    (getEndpointResources as jest.Mock).mockRejectedValueOnce(
-      new Error("Test error")
-    );
+    jest.spyOn(Promise, "race").mockImplementation((promises) => {
+      return Promise.reject(new Error("Test error"));
+    });
+
     const result = await withCSP()(mockContext as GetServerSidePropsContext);
 
     expect(result).toEqual({
