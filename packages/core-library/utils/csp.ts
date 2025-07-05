@@ -59,12 +59,17 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
   }
 };
 
-const retry = async <T>(fn: () => Promise<T>, retries = 2): Promise<T> => {
+const retry = async <T>(
+  fn: () => Promise<T>,
+  retries = 3,
+  delay = 1000
+): Promise<T> => {
   try {
     return await fn();
   } catch (err) {
     if (retries <= 0) throw err;
-    return retry(fn, retries - 1);
+    await new Promise((res) => setTimeout(res, delay));
+    return retry(fn, retries - 1, delay * 2); // Exponential backoff
   }
 };
 
@@ -90,7 +95,7 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
         await Promise.race([
           apiCalls,
           new Promise<[any, any, any, any]>((_, reject) =>
-            setTimeout(() => reject(new Error("API calls timed out")), 5000)
+            setTimeout(() => reject(new Error("API calls timed out")), 15000)
           ),
         ]);
 
