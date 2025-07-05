@@ -84,18 +84,16 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
 
       setCSPHeader(context.res as ServerResponse, csp);
 
-      const apiCalls = Promise.all([
-        retry(() => getEndpointResources()),
-        retry(() => getMaintenanceMode()),
-        retry(() => getHasActiveGoLive(country)),
-        retry(() => getHasChatBotWidget()),
-      ]);
-
       const [endpoints, MaintenanceStatus, hasGoLiveActive, hasChatBotWidget] =
         await Promise.race([
-          apiCalls,
+          Promise.all([
+            retry(() => getEndpointResources()),
+            retry(() => getMaintenanceMode()),
+            retry(() => getHasActiveGoLive(country)),
+            retry(() => getHasChatBotWidget()),
+          ]),
           new Promise<[any, any, any, any]>((_, reject) =>
-            setTimeout(() => reject(new Error("API calls timed out")), 15000)
+            setTimeout(() => reject(new Error("API timed out after 8s")), 8000)
           ),
         ]);
 
