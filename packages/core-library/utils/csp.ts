@@ -59,6 +59,15 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
   }
 };
 
+const retry = async <T>(fn: () => Promise<T>, retries = 2): Promise<T> => {
+  try {
+    return await fn();
+  } catch (err) {
+    if (retries <= 0) throw err;
+    return retry(fn, retries - 1);
+  }
+};
+
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
     const startTime = Date.now();
@@ -71,10 +80,10 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       setCSPHeader(context.res as ServerResponse, csp);
 
       const apiCalls = Promise.all([
-        getEndpointResources(),
-        getMaintenanceMode(),
-        getHasActiveGoLive(country),
-        getHasChatBotWidget(),
+        retry(() => getEndpointResources()),
+        retry(() => getMaintenanceMode()),
+        retry(() => getHasActiveGoLive(country)),
+        retry(() => getHasChatBotWidget()),
       ]);
 
       const [endpoints, MaintenanceStatus, hasGoLiveActive, hasChatBotWidget] =
