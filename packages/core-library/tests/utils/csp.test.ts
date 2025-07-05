@@ -106,10 +106,13 @@ describe("withCSP", () => {
     const result = await withCSP()(mockContext as GetServerSidePropsContext);
     expect(result).toEqual({
       props: {
+        __N_SSP: true,
         generatedNonce: "test-nonce",
         data: {
           MaintenanceStatus: mockMaintenanceStatus,
           endpoints: mockEndpointResources,
+          hasGoLive: undefined,
+          hasChatBotWidget: undefined,
         },
       },
     });
@@ -119,13 +122,22 @@ describe("withCSP", () => {
     (getMaintenanceMode as jest.Mock).mockRejectedValueOnce(
       new Error("Test error")
     );
-    jest
-      .mocked(getEndpointResources)
-      .mockRejectedValueOnce(new Error("Test error"));
+    (getEndpointResources as jest.Mock).mockRejectedValueOnce(
+      new Error("Test error")
+    );
     const result = await withCSP()(mockContext as GetServerSidePropsContext);
 
     expect(result).toEqual({
-      props: { error: "Test error" },
+      props: {
+        error: "Test error",
+        generatedNonce: "test-nonce",
+        data: {
+          MaintenanceStatus: { isMaintenance: false },
+          endpoints: [],
+          hasGoLive: { goLive: null },
+          hasChatBotWidget: { hasChatBot: false },
+        },
+      },
     });
   });
 });

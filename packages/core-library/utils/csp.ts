@@ -15,84 +15,119 @@ import {
   getHasChatBotWidget,
 } from "../ssr";
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_API_URL
-    : process.env.NEXT_PUBLIC_LOCAL_API_URL;
+export const generateCSP = (generatedNonce: string): string => {
+  const connectSrc = [
+    "'self'",
+    config.value.API_URL,
+    config.value.LOCAL_API_URL,
+    config.value.VERCELURL,
+    "*.vercel.app",
+    "*.herokuapp.com",
+    "https://js.stripe.com",
+    "https://api.ipify.org",
+    "https://www.google.com",
+    "https://www.gstatic.com",
+    "wss://nclexdev-6ecb32719de0.herokuapp.com",
+    "wss://*.herokuapp.com",
+    "wss://*.vercel.app",
+    "https://*.vercel.app",
+    "blob:",
+  ].join(" ");
 
-export const generateCSP = (generatedNonce: string): string =>
-  `default-src 'self' *.vercel.app; script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' https://js.stripe.com *.vercel.app *.herokuapp.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
-  config.value.STRIPE_URL_JS +
-  " " +
-  `; form-action 'self'; base-uri 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; connect-src ` +
-  config.value.API_URL +
-  " " +
-  config.value.LOCAL_API_URL +
-  " " +
-  config.value.VERCELURL +
-  " *.vercel.app *.herokuapp.com https://js.stripe.com https://api.ipify.org https://www.google.com https://www.gstatic.com wss://nclexdev-6ecb32719de0.herokuapp.com wss://*.herokuapp.com wss://*.vercel.app https://*.vercel.app " +
-  ` blob:; img-src 'self' data: blob: webpack:; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live https://www.google.com https://www.gstatic.com ` +
-  config.value.STRIPE_URL_JS +
-  ";";
+  return `
+    default-src 'self' *.vercel.app;
+    script-src 'self' 'nonce-${generatedNonce}' 'unsafe-eval' 
+      https://js.stripe.com *.vercel.app *.herokuapp.com 
+      https://vercel.live https://www.google.com https://www.gstatic.com ${config.value.STRIPE_URL_JS};
+    form-action 'self';
+    base-uri 'self';
+    object-src 'self';
+    style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline';
+    connect-src ${connectSrc};
+    img-src 'self' data: blob: webpack:;
+    font-src 'self' data: https://fonts.gstatic.com;
+    frame-src 'self' *.vercel.app https://js.stripe.com https://vercel.live 
+      https://www.google.com https://www.gstatic.com ${config.value.STRIPE_URL_JS};
+  `
+    .replace(/\n\s+/g, " ")
+    .trim();
+};
 
 export const setCSPHeader = (res: ServerResponse, csp: string): void => {
-  const isDevelopment = process.env.NODE_ENV === "development";
-  if (res != null && !isDevelopment && !res.headersSent) {
+  if (process.env.NODE_ENV !== "development" && res && !res.headersSent) {
     res.setHeader("Content-Security-Policy", csp);
   }
 };
 
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
+    const startTime = Date.now();
+
     try {
       const country = context.req.cookies["client_country"] || "";
       const generatedNonce = nonce();
       const csp = generateCSP(generatedNonce);
-      const endpoints = await getEndpointResources();
-      const MaintenanceStatus = await getMaintenanceMode();
-      const hasGoLiveActive = await getHasActiveGoLive(country);
-      const hasChatBotWidget = await getHasChatBotWidget();
 
       setCSPHeader(context.res as ServerResponse, csp);
 
-      if (getServerSidePropsFn) {
-        const result = await getServerSidePropsFn(context);
+      const apiCalls = Promise.all([
+        getEndpointResources(),
+        getMaintenanceMode(),
+        getHasActiveGoLive(country),
+        getHasChatBotWidget(),
+      ]);
 
-        if ("props" in result) {
-          return {
-            ...result,
-            props: {
-              ...result.props,
-              __N_SSP: true,
-              slug: context.resolvedUrl,
-              generatedNonce,
-              data: {
-                MaintenanceStatus,
-                endpoints,
-                hasGoLive: hasGoLiveActive,
-                hasChatBotWidget,
-              },
-            },
-          };
-        }
-        return result;
-      }
+      const [endpoints, MaintenanceStatus, hasGoLiveActive, hasChatBotWidget] =
+        await Promise.race([
+          apiCalls,
+          new Promise<[any, any, any, any]>((_, reject) =>
+            setTimeout(() => reject(new Error("API calls timed out")), 5000)
+          ),
+        ]);
 
-      return {
-        props: {
-          generatedNonce,
-          data: {
-            MaintenanceStatus,
-            endpoints,
-          },
+      const baseProps = {
+        __N_SSP: true,
+        generatedNonce,
+        data: {
+          MaintenanceStatus,
+          endpoints,
+          hasGoLive: hasGoLiveActive,
+          hasChatBotWidget,
         },
       };
+
+      if (!getServerSidePropsFn) {
+        return { props: baseProps };
+      }
+
+      const result = await getServerSidePropsFn(context);
+      if ("props" in result) {
+        return {
+          ...result,
+          props: {
+            ...result.props,
+            ...baseProps,
+            slug: context.resolvedUrl,
+          },
+        };
+      }
+      return result;
     } catch (error: any) {
+      console.error(`withCSP error:`, error);
       return {
         props: {
           error: error instanceof Error ? error.message : "Unknown error",
+          generatedNonce: nonce(),
+          data: {
+            MaintenanceStatus: { isMaintenance: false },
+            endpoints: [],
+            hasGoLive: { goLive: null },
+            hasChatBotWidget: { hasChatBot: false },
+          },
         },
       };
+    } finally {
+      console.log(`withCSP completed in ${Date.now() - startTime}ms`);
     }
   };
 };
