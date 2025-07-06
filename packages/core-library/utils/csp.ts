@@ -59,10 +59,28 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
   }
 };
 
+const perfMetrics: Record<string, number> = {};
+
+const retry = async <T>(
+  fn: () => Promise<T>,
+  retries = 3,
+  delay = 1000
+): Promise<T> => {
+  try {
+    const start = Date.now();
+    const result = await fn();
+    perfMetrics[fn.name] = Date.now() - start; // Track actual execution time
+    return result;
+  } catch (err) {
+    if (retries <= 0) throw err;
+    await new Promise((res) => setTimeout(res, delay));
+    return retry(fn, retries - 1, delay * 2);
+  }
+};
+
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
     const startTime = Date.now();
-    const perfMetrics: Record<string, number> = {};
 
     try {
       const country = context.req.cookies["client_country"] || "";
@@ -70,23 +88,6 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
       const csp = generateCSP(generatedNonce);
 
       setCSPHeader(context.res as ServerResponse, csp);
-
-      const retry = async <T>(
-        fn: () => Promise<T>,
-        retries = 3,
-        delay = 1000
-      ): Promise<T> => {
-        try {
-          const start = Date.now();
-          const result = await fn();
-          perfMetrics[fn.name] = Date.now() - start; // Track actual execution time
-          return result;
-        } catch (err) {
-          if (retries <= 0) throw err;
-          await new Promise((res) => setTimeout(res, delay));
-          return retry(fn, retries - 1, delay * 2);
-        }
-      };
 
       let timeoutId: NodeJS.Timeout;
 
