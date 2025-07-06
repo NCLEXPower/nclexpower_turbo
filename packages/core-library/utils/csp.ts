@@ -59,23 +59,10 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
   }
 };
 
-const retry = async <T>(
-  fn: () => Promise<T>,
-  retries = 3,
-  delay = 1000
-): Promise<T> => {
-  try {
-    return await fn();
-  } catch (err) {
-    if (retries <= 0) throw err;
-    await new Promise((res) => setTimeout(res, delay));
-    return retry(fn, retries - 1, delay * 2); // Exponential backoff
-  }
-};
-
 export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
   return async (context: GetServerSidePropsContext) => {
     const startTime = Date.now();
+    const perfMetrics: Record<string, number> = {};
 
     try {
       const country = context.req.cookies["client_country"] || "";
@@ -84,6 +71,25 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
 
       setCSPHeader(context.res as ServerResponse, csp);
 
+      const retry = async <T>(
+        fn: () => Promise<T>,
+        retries = 3,
+        delay = 1000
+      ): Promise<T> => {
+        try {
+          const start = Date.now();
+          const result = await fn();
+          perfMetrics[fn.name] = Date.now() - start; // Track actual execution time
+          return result;
+        } catch (err) {
+          if (retries <= 0) throw err;
+          await new Promise((res) => setTimeout(res, delay));
+          return retry(fn, retries - 1, delay * 2);
+        }
+      };
+
+      let timeoutId: NodeJS.Timeout;
+
       const [endpoints, MaintenanceStatus, hasGoLiveActive, hasChatBotWidget] =
         await Promise.race([
           Promise.all([
@@ -91,10 +97,13 @@ export const withCSP = (getServerSidePropsFn?: GetServerSideProps) => {
             retry(() => getMaintenanceMode()),
             retry(() => getHasActiveGoLive(country)),
             retry(() => getHasChatBotWidget()),
-          ]),
-          new Promise<[any, any, any, any]>((_, reject) =>
-            setTimeout(() => reject(new Error("API timed out after 8s")), 8000)
-          ),
+          ]).finally(() => clearTimeout(timeoutId)),
+          new Promise<[any, any, any, any]>((_, reject) => {
+            timeoutId = setTimeout(() => {
+              console.log("API Metrics Before Timeout:", perfMetrics);
+              reject(new Error("API timed out after 8s"));
+            }, 8000);
+          }),
         ]);
 
       const baseProps = {

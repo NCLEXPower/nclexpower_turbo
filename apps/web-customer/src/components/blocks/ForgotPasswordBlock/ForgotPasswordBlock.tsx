@@ -2,7 +2,7 @@ import { ForgotPasswordForm } from "./ForgotPasswordForm";
 import { useState } from "react";
 import { ForgotPasswordAtom, ForgotPasswordType } from "../../../core/Schema";
 import { useRouter } from "core-library/core/router";
-import { useApiCallback, useOTPManager } from "core-library/hooks";
+import { useApiCallback } from "core-library/hooks";
 import { useAtom } from "jotai";
 import { useExecuteToast } from "core-library/contexts";
 import { ResendCodeParams } from "core-library/api/types";
@@ -11,7 +11,7 @@ export function ForgotPasswordFormBlock() {
   const [, setAtomEmail] = useAtom(ForgotPasswordAtom);
   const [isExpired, setIsExpired] = useState<boolean>(false);
   const [showAlert, setshowAlert] = useState<boolean>(false);
-  const [state, actions] = useOTPManager();
+  const [resetTime, setResetTime] = useState<number>(0);
   const { executeToast } = useExecuteToast();
   const router = useRouter();
 
@@ -23,17 +23,15 @@ export function ForgotPasswordFormBlock() {
     async (api, args: ResendCodeParams) => await api.web.web_reset_link(args)
   );
 
-  // return (
-  //   <ForgotPasswordForm
-  //     onSubmit={handleSubmit}
-  //     submitLoading={emailCb.loading || resetLinkCb.loading || state.loading}
-  //     isExpired={isExpired}
-  //     showAlert={showAlert}
-  //     resetTime={state.remainingTime}
-  //   />
-  // );
-
-  return <p>Forgot password page is under re-engineering.</p>;
+  return (
+    <ForgotPasswordForm
+      onSubmit={handleSubmit}
+      submitLoading={emailCb.loading || resetLinkCb.loading}
+      isExpired={isExpired}
+      showAlert={showAlert}
+      resetTime={resetTime}
+    />
+  );
 
   async function handleSubmit(values: ForgotPasswordType) {
     try {
@@ -61,8 +59,9 @@ export function ForgotPasswordFormBlock() {
         const resetLinkResult = await resetLinkCb.execute({
           email: values.email,
         });
-        if (resetLinkResult.data.responseCode === 508) {
+        if (resetLinkCb.status === "error") {
           const minutes = resetLinkResult.data.waitTimeInMinutes * 60;
+          setResetTime(minutes);
           setshowAlert(false);
           executeToast(
             `Something went wrong. Please try again later.`,
@@ -72,8 +71,10 @@ export function ForgotPasswordFormBlock() {
           );
           return;
         }
-        setshowAlert(true);
-        await router.push((route) => route.reset_link_success);
+        if (resetLinkCb.status === "success") {
+          setshowAlert(true);
+          await router.push((route) => route.reset_link_success);
+        }
       }
     } catch (error) {
       console.error(error);

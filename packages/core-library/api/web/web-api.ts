@@ -57,9 +57,9 @@ export class WebApi {
   }
 
   public web_reset_link(params: ResendCodeParams) {
-    return this.ssrAxios.post<VerificationResponse>(
-      `/api/reset/send-link`,
-      params
+    const { email } = params;
+    return this.axios.post<VerificationResponse>(
+      `/api/v2/internal/baseInternal/send-password-reset-link?${qs.stringify({ email })}`
     );
   }
 

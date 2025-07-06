@@ -330,7 +330,6 @@ export type SelectEmailResponse = {
 };
 
 export type VerificationResponse = {
-  responseCode: number;
   waitTimeInMinutes: number;
 };
 
