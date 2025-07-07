@@ -1,7 +1,12 @@
 import { GetServerSidePropsContext } from "next";
 import { ServerResponse } from "http";
-import { withCSP, generateCSP, setCSPHeader } from "../../utils";
-import { getEndpointResources, getMaintenanceMode } from "../../ssr";
+import { withCSP, generateCSP } from "../../utils";
+import {
+  getEndpointResources,
+  getHasActiveGoLive,
+  getHasChatBotWidget,
+  getMaintenanceMode,
+} from "../../ssr";
 import { nonce } from "../../types";
 import { MaintenanceSsr } from "../../types/global";
 import { IncomingMessage } from "http";
@@ -46,6 +51,7 @@ describe("withCSP", () => {
   const maintenanceModeMock: MaintenanceSsr = mockMaintenanceStatus;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     mockRes = {
       setHeader: jest.fn(),
       headersSent: false,
@@ -69,6 +75,10 @@ describe("withCSP", () => {
     (getEndpointResources as jest.Mock).mockResolvedValue(
       mockEndpointResources
     );
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("should generate and set the CSP header", async () => {
@@ -136,6 +146,64 @@ describe("withCSP", () => {
           hasChatBotWidget: { hasChatBot: false },
         },
       },
+    });
+  });
+
+  describe("retry functionality", () => {
+    it("should delay before retrying", async () => {
+      const mockFn = jest
+        .fn()
+        .mockRejectedValueOnce(new Error("First fail"))
+        .mockResolvedValue("success");
+
+      const promise = withCSP(() => Promise.resolve({ props: {} }))(
+        mockContext as GetServerSidePropsContext
+      );
+
+      expect(mockFn).toHaveBeenCalledTimes(0);
+
+      jest.advanceTimersByTime(1000);
+
+      await promise;
+    });
+
+    it("should use exponential backoff when retrying failed API calls", async () => {
+      (getMaintenanceMode as jest.Mock)
+        .mockRejectedValueOnce(new Error("First fail"))
+        .mockRejectedValueOnce(new Error("Second fail"))
+        .mockResolvedValue(mockMaintenanceStatus);
+
+      const promise = withCSP()(mockContext as GetServerSidePropsContext);
+      jest.advanceTimersByTime(3000);
+
+      await promise;
+      expect(getMaintenanceMode).toHaveBeenCalledTimes(5);
+    });
+
+    it("should eventually fail after max retries", async () => {
+      const error = new Error("Test error");
+
+      (getMaintenanceMode as jest.Mock).mockRejectedValue(error);
+      (getEndpointResources as jest.Mock).mockRejectedValue(error);
+      (getHasActiveGoLive as jest.Mock).mockRejectedValue(error);
+      (getHasChatBotWidget as jest.Mock).mockRejectedValue(error);
+
+      const promise = withCSP()(mockContext as GetServerSidePropsContext);
+
+      jest.advanceTimersByTime(7000);
+
+      await expect(promise).resolves.toEqual({
+        props: {
+          error: "Test error",
+          generatedNonce: "test-nonce",
+          data: {
+            MaintenanceStatus: { isMaintenance: false },
+            endpoints: [],
+            hasGoLive: { goLive: null },
+            hasChatBotWidget: { hasChatBot: false },
+          },
+        },
+      });
     });
   });
 });
