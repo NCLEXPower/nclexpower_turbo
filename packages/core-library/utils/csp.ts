@@ -61,7 +61,7 @@ export const setCSPHeader = (res: ServerResponse, csp: string): void => {
 
 const perfMetrics: Record<string, number> = {};
 
-const retry = async <T>(
+export const retry = async <T>(
   fn: () => Promise<T>,
   retries = 3,
   delay = 1000
