@@ -5,28 +5,16 @@ import ErrorImage from "../../../assets/monitor.png";
 import { EvaIcon} from "core-library/components";
 import { useRouter } from "core-library";
 
-interface Props {}
-
-const ErrorBlock: React.FC<Props> = () => {
-
+const ErrorBlock = () => {
   const router = useRouter();
 
   const Back = () => {
     router.back();
   };
 
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, []);
-
   return (
     <Box
-      className="z-1000 w-full h-screen bg-rgba(0, 0, 0, 0.7) flex justify-center items-center"
+      className="w-full h-screen bg-rgba(0, 0, 0, 0.7) flex justify-center items-center"
       sx={{
         bgcolor: "rgba(0, 0, 0, 0.7)",
       }}
