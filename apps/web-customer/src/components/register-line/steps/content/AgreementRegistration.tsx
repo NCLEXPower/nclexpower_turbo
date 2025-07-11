@@ -67,7 +67,8 @@ export const AgreementRegistration: React.FC<Props> = ({
 
     try {
       const result = await onSubmit(data, captchaToken);
-      if (result) await router.push((router) => router.hub);
+      // if (result) await router.push((router) => router.hub);
+      if (result) await router.push((router) => router.login);
     } catch (error) {
       console.error("Error during form submission:", error);
       reset();
