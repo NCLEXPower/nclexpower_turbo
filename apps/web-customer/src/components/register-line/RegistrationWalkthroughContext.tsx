@@ -124,7 +124,7 @@ export const RegistrationWizardFormContextProvider: React.FC<
           response.status === 200 &&
           !loading
         ) {
-          setSecurityMeasures(response.data, false);
+          // setSecurityMeasures(response.data, false);
           return response.data.responseCode === 200 && response.status === 200;
         }
       }
