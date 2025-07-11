@@ -54,8 +54,8 @@ export class AuthApi {
   }
 
   public create_user(params: CustomerOptions) {
-    return this.ssrAxios.post<CreateUserWithAutoLoginResponse>(
-      `/api/customer/create`,
+    return this.axios.post<CreateUserWithAutoLoginResponse>(
+      `/api/v2/internal/baseInternal/create-customer`,
       params
     );
   }
